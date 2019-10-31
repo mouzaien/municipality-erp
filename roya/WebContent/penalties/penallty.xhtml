@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>تسجيل مخالفة</title>
+</h:head>
+<ui:composition template="../pages/menuBar.xhtml">
+	<ui:define name="content">
+		<!-- 		<p:messages id="Msg" autoUpdate="true" closable="true" /> -->
+		<div class="row" style="color: color: #428bca">
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">تسجيل
+				مخالفة</h3>
+		</div>
+		<div style="background-color: white; border-top: 5px solid #428BCA;"
+			class="container col-md-12">
+			<br />
+			<h:form id="includeform">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="مخالفة على" />
+						</div>
+						<div class="col-md-2">
+						<p:selectOneMenu id="filterId" styleClass="form-control"  filter="true" filterMatchMode="contains"
+									 required="true" value="#{penaltyBean.fineFilterType}"  converter="fineTypeConverter"
+									requiredMessage="اختر غرض التوجيه " var="ppp">
+								<f:selectItems value="#{penaltyBean.fineFilterTypes}"
+									var="fineFilter" itemLabel="#{fineFilter.name}"
+									itemValue="#{fineFilter.id}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:selectOneMenu id="typ" styleClass="form-control"  filter="true" filterMatchMode="contains"
+									 required="true" value="#{commentBean.applicationPurpose}"
+									requiredMessage="اختر غرض التوجيه " var="p">
+									<f:selectItem itemLabel=" اختر غرض التوجيه " itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+										itemValue="#{pp.id} " value="#{commentBean.wrkPurposes}" />
+								</p:selectOneMenu>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="نوع النشاط" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control" id="activId"
+								required="true" value="#{penaltyBean.activityType}">
+								<f:selectItems value="#{penaltyBean.activitiesTypes}"
+									var="activ" itemLabel="#{activ.name}" itemValue="#{activ.id}"></f:selectItems>
+							</h:selectOneMenu>
+						</div>
+					</div>
+					<br />
+					<h:panelGroup id="licInfo">
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="رقم الرخصة" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText styleClass="form-control" required="true"
+									id="licId" readonly="true"
+									value="#{penaltyBean.reqFinesMaster.fLicenceNo}"
+									requiredMessage="يجب ادخال رقم الرخصة">
+								</h:inputText>
+							</div>
+							<div class="col-md-1">
+								<p:commandButton value="تحديد" type="button"
+									onclick="PF('dlg1').show();" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="الإسم التجاري" />
+							</div>
+							<div class="col-md-5">
+								<h:inputText styleClass="form-control"
+									value="#{penaltyBean.reqFinesMaster.fTradeMarkName}" id="cName"
+									readonly="true" requiredMessage="يجب ادخال الإسم  التجاري">
+								</h:inputText>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="صاحب المنشأة" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control" readonly="true"
+									value="#{penaltyBean.reqFinesMaster.fIdNo}"
+									requiredMessage="يجب ادخال صاحب المنشأة ">
+								</h:inputText>
+							</div>
+							<div class="col-md-3">
+								<h:inputText styleClass="form-control" readonly="true"
+									value="#{penaltyBean.reqFinesMaster.fName}">
+								</h:inputText>
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="الرقم المميز" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control" readonly="true"
+									value="#{penaltyBean.reqFinesMaster.fKeycode}"
+									requiredMessage="يجب ادخال الرقم المميز">
+								</h:inputText>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="عنوان  المنشأة" />
+							</div>
+							<div class="col-md-5">
+								<h:inputText styleClass="form-control" readonly="true"
+									value="#{penaltyBean.reqFinesMaster.fAddress}"
+									requiredMessage="يجب ادخال صاحب المنشأة ">
+								</h:inputText>
+							</div>
+
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="بداية  الرخصة" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control"
+									value="#{penaltyBean.reqFinesMaster.fLicStartDate}"
+									readonly="true" requiredMessage="يجب ادخال تاريخ بداية الرحصة">
+								</h:inputText>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="رقم المخطط" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control"
+									value="#{penaltyBean.reqFinesMaster.fMapNo}" readonly="true"
+									requiredMessage="يجب ادخال رقم المخطط">
+								</h:inputText>
+							</div>
+
+							<div class="col-md-1">
+								<h:outputLabel styleClass="btxt" value="رقم القطعة" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control"
+									value="#{penaltyBean.reqFinesMaster.fBlockNo}" readonly="true"
+									requiredMessage="يجب ادخال رقم القطعة">
+								</h:inputText>
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="نهاية الرخصة" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText styleClass="form-control"
+									value="#{penaltyBean.reqFinesMaster.fLicEndDate}"
+									readonly="true" requiredMessage="يجب ادخال تاريخ نهاية الرحصة">
+								</h:inputText>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="المراقب" />
+							</div>
+							<div class="col-md-3">
+								<p:selectOneMenu styleClass="form-control" id="visorId"
+									filter="true" filterMatchMode="contains" required="true"
+									value="#{penaltyBean.supervisorId}">
+									<f:selectItems value="#{penaltyBean.supervisors}" var="visor"
+										itemLabel="#{visor.name}" itemValue="#{visor.id}"></f:selectItems>
+								</p:selectOneMenu>
+							</div>
+						</div>
+					</h:panelGroup>
+					<br />
+					<div class="col-md-4"></div>
+					<div class="row">
+						<div class="col-md-2" style="padding-right: 0 !important">
+							<h:commandButton value="طباعة الفاتورة"
+								style="float:left;font-family: kufi !important;width:100%;"
+								styleClass="btn btn-primary">
+								<f:ajax execute="@form" render="@form"></f:ajax>
+							</h:commandButton>
+						</div>
+						<div class="col-md-1" style="padding-right: 0 !important">
+							<h:commandButton value="حفظ"
+								style="float:left;font-family: kufi !important;width:100%;"
+								styleClass="btn btn-primary">
+								<f:ajax execute="@form" render="@form"></f:ajax>
+							</h:commandButton>
+						</div>
+						<div class="col-md-1" style="padding-right: 0 !important">
+							<h:commandButton value="جديد"
+								style="font-family: kufi !important;width:100%;"
+								styleClass="btn btn-primary">
+								<f:ajax execute="@form" render="@form"></f:ajax>
+							</h:commandButton>
+						</div>
+						<div class="col-md-2" style="padding-right: 0 !important">
+							<h:commandButton value="مواطن جيد"
+								style="font-family: kufi !important; width:100%;"
+								styleClass="btn btn-primary">
+								<f:ajax execute="@form" render="@form"></f:ajax>
+							</h:commandButton>
+						</div>
+					</div>
+					<br />
+				</div>
+			</h:form>
+		</div>
+		<br />
+		<div class="row">
+			<h:form id="fines">
+				<h:panelGroup id="table">
+					<div class="col-md-12 ">
+						<div class="table-responsive">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th style="width: 5%"></th>
+										<th style="width: 30%">مسمى المخالفة</th>
+										<th style="width: 10%">الحد الأدنى</th>
+										<th style="width: 10%">الحد الأعلى</th>
+										<th style="width: 5%">العدد</th>
+										<th style="width: 10%">القيمة</th>
+										<th style="width: 10%">المجموع</th>
+										<th style="width: 5%"></th>
+										<th style="width: 5%"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<ui:repeat var="det" varStatus="x"
+										value="#{penaltyBean.codesFinesList}">
+										<tr>
+											<h:panelGroup id="fineData">
+												<td>#{x.index+1}</td>
+												<h:panelGroup id="fineValues">
+													<td><div>
+															<p:selectOneMenu styleClass="form-control" id="finerIdB"
+																rendered="#{det.visible}" converter="fineConverter"
+																filter="true" filterMatchMode="contains" required="true"
+																value="#{penaltyBean.selectedCodeFiner}">
+																<p:ajax process="@this" update="fines:table"
+																	listener="#{penaltyBean.updateFiner(det)}" />
+																<f:selectItems value="#{penaltyBean.codesFines}" itemLabelEscaped="#{finer.fineDesc}" itemDescription="#{finer.fineDesc}"
+																	var="finer"
+																	itemLabel="#{finer.shortDesc}"
+																	itemValue="#{finer}"></f:selectItems>
+															</p:selectOneMenu>
+															<h:outputLabel value="#{det.fineDesc}"
+																rendered="#{!det.visible}"
+																style="width:100% !important;">
+															</h:outputLabel>
+														</div></td>
+													<td>#{det.fineMinimumValue}</td>
+													<td>#{det.fineSupermumValue}</td>
+												</h:panelGroup>
+												<td><h:inputText disabled="false"
+														value="#{det.fineNbr}" style="width:100% !important;">
+														<p:ajax event="blur" process="@this,fines:table"
+															update="sumId"
+															listener="#{penaltyBean.calcFineValSum(det)}" />
+													</h:inputText></td>
+												<td><h:inputText disabled="false"
+														value="#{det.fineValue}" style="width:100% !important;">
+														<p:ajax event="blur" process="@this,fines:table"
+															listener="#{penaltyBean.calcFineValSum(det)}"
+															update="sumId" />
+													</h:inputText></td>
+											</h:panelGroup>
+											<td><h:inputText disabled="true" id="sumId"
+													value="#{det.fineValSum}" style="width:100% !important;">
+												</h:inputText><a></a></td>
+											<td><p:commandButton id="xx" rendered="#{!det.visible}"
+													style="width: 13px; height: 24px;" icon="fa fa-times"
+													styleClass=" btn btn-danger">
+													<p:ajax listener="#{penaltyBean.deleteFiner(det)}"
+														process="fines:table" update="fines:table" />
+												</p:commandButton></td>
+											<td><h:commandButton id="addBtn" style="float:right"
+													value="اضافة" styleClass="btn btn-success">
+													<p:ajax listener="#{penaltyBean.addFiner(det)}"
+														process="fines:table" update="fines:table" />
+												</h:commandButton></td>
+										</tr>
+										<tr>
+										</tr>
+									</ui:repeat>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<h:form>
+			<p:dialog header="تحديد" widgetVar="dlg1" modal="true" minHeight="50">
+				<div class="row">
+					<h:panelGrid columns="3" style="margin-bottom:30px"
+						cellpadding="20" columnClasses="licNo ,trdName">
+						<p:selectOneListbox id="advanced"
+							value="#{penaltyBean.trdMasterFile}" style="width: 700px"
+							converter="themeConverter" var="t" filter="true"
+							filterMatchMode="contains">
+							<f:selectItems value="#{penaltyBean.licTrdMasterFileList}"
+								var="trdMasterFile"
+								itemLabel="#{trdMasterFile.licNo}|#{trdMasterFile.trdName}"
+								itemValue="#{trdMasterFile}" />
+							<p:column width="20%">
+								<h:outputText value="#{t.licNo}" />
+							</p:column>
+							<p:column width="500px">
+								<h:outputText value="#{t.trdName}" />
+							</p:column>
+						</p:selectOneListbox>
+					</h:panelGrid>
+				</div>
+				<div class="row">
+					<h:commandButton value="موافق" styleClass="btn btn-primary"
+						action="#{penaltyBean.checkLic}">
+						<p:ajax process="@form" update="includeform:licInfo"
+							oncomplete="PF('dlg1').hide();"></p:ajax>
+					</h:commandButton>
+					<button type="button" class="btn btn-primary"
+						onclick="PF('dlg1').hide();">رجوع</button>
+					-->
+				</div>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/template.xhtml">
+	<ui:define name="top">
+	</ui:define>
+	<ui:define name="content">
+			<style>
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+</style>
+			<h:form id="includeform">
+				<div class="image-box-footer">
+					<p:commandButton icon="ui-icon ui-icon-assignment-return"
+						action="#{requestBean.add}" value="#{msg['send']}" update="@form">
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+
+				</div>
+
+				<p:messages closable="true" autoUpdate="true"></p:messages>
+
+				<div class="card card-w-title">
+
+					<h1 style="color: #7CB342;">
+						طلب جديد<span class="fa fa-fw fa-file-text-o"></span>
+					</h1>
+
+					<br></br> <br></br> <br></br>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-8," layout="grid"
+						styleClass="ui-panelgrid-blank form-group" 
+						style="border:0px none; background-color:transparent; direction:rtl">
+						<p:outputLabel value="الموضوع" />
+						<h:panelGroup styleClass="md-inputfield">
+
+							<p:inputText id="subjectId" styleClass="form-control"
+								value="#{requestBean.subject}" required="true"
+								requiredMessage="موضوع المعاملة مطلوب"
+								style="width:100%" />
+							<label>الموضوع</label>
+						</h:panelGroup>
+
+						<p:outputLabel value="الشرح" />
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputTextarea styleClass="form-control" rows="10" cols="30"
+								style="width:100%" value="#{requestBean.description}"
+								required="true" requiredMessage="الشرح مطلوب" id="desc" />
+							<label>الشرح</label>
+						</h:panelGroup>
+					</p:panelGrid>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-6"> -->
+<!-- 						<h3 class="page-header" -->
+<!-- 							style="margin: 0px 0 20px ! important; color: #428bca">طلب -->
+<!-- 							جديد</h3> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<br></br> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-2"> -->
+<!-- 						<h:outputLabel styleClass="btxt" value="الموضــوع" /> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-8"> -->
+<!-- 						<p:inputText style="width:100%" id="subjectId" -->
+<!-- 							styleClass="form-control" value="#{requestBean.subject}" -->
+<!-- 							required="true" requiredMessage="موضوع المعاملة مطلوب" /> -->
+
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<br></br> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-2"> -->
+<!-- 						<h:outputLabel styleClass="btxt" value="الشرح" /> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-8"> -->
+<!-- 						<p:inputTextarea style="width:100%" id="desc" rows="10" -->
+<!-- 							autoResize="true" styleClass="form-control" -->
+<!-- 							value="#{requestBean.description}" required="true" -->
+<!-- 							requiredMessage="الشرح مطلوب" /> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<br></br> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-10"> -->
+<!-- 						<h:commandButton value="إرسال" action="#{requestBean.add}" -->
+<!-- 							style="float:left;" styleClass="btn btn-primary"> -->
+<!-- 						</h:commandButton> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+			</h:form>
+<!-- 		</div> -->
+	</ui:define>
+</ui:composition>
+</html>

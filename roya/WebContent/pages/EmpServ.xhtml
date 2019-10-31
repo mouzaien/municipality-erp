@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+		rel="stylesheet" type="text/css"></link>
+</h:head>
+<body>
+	<ui:composition template="./WebTemplate.xhtml">
+		<ui:define name="top">خدمات الموظف الشخصية</ui:define>
+		<ui:define name="content">
+			<p:growl id="g" autoUpdate="true" />
+			<p:accordionPanel
+				style="margin-top: 50px;margin-bottom: 30px; font-size: large;">
+
+				<p:tab title="طلبات خاصــــة">
+					<h:form>
+						<div class="container-fluid" style="margin: 15px;">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<h:form>
+										<p:commandLink value="طلب أجازة اعتيادية"
+											class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+											type="button" process="@this"
+											
+											action="#{employeeServiceBean.OpenNormalVacRequestDlg}"
+											style="width: 100%;font-size: 22px !important;height:50px !important;" />
+									</h:form>
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب أجازة اضطرارية "
+									
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;"
+										process="@this"
+										action="#{employeeServiceBean.openEtraridlg(actionEvent)}" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<h:form>
+										<p:commandLink value="طلب استئذان"
+											class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+											type="button" process="@this"
+											style="width: 100%;font-size:  22px !important;"
+											action="#{employeeServiceBean.OpenPermissionRequestDlg(actionEvent)}" />
+
+									</h:form>
+								</div>
+							</div>
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب  دورة تدريبية"
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب  مهمة عمـل "
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب تعريف بالراتب"
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+							</div>
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب  مباشرة بعد العلاج "
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  19px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب  كشـف طبـي "
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب تحويل للعــلاج"
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+							</div>
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب  تقرير طبي"
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب استقالة  "
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<p:commandLink value="طلب تقاعد مبـكر"
+										class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+										type="button" style="width: 100%;font-size:  22px !important;" />
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</p:tab>
+				<p:tab title="طلبات العمــــل">
+					<div class="container-fluid" style="margin: 15px;">
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب  دعم فني"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب تأمين مواد  "
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب  تأمين حاسب"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب   صيانة"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value=" طلب خارج دوام  "
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب  انتداب"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-md-4 col-sm-4 col-xs-12">
+								<p:commandLink value="طلب   برنت أحوال"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									type="button" style="width: 100%;font-size:  22px !important;" />
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-12"></div>
+							<div class="col-md-4 col-sm-4 col-xs-12"></div>
+						</div>
+					</div>
+
+				</p:tab>
+			</p:accordionPanel>
+
+			<p:dialog widgetVar="PermRequestDlg" id="PermRequestDlgId"
+				width="650" height="350" modal="true" resizable="false"
+				closable="false" style="direction: rtl;" header="نموذج طلب استئذان"
+				showEffect="fade" hideEffect="clip">
+				<f:facet name="footer">
+					<h:form>
+						<p:commandButton value="الرجوع "
+							style="float: left;margin-bottom: 2px;" icon="fa fa-mail-reply"
+							class="btn btn-default" onclick="PF('PermRequestDlg').hide();" />
+					</h:form>
+					<h:form>
+						<p:commandButton value="ارسال طلب الأستذان "
+							style="float: right;margin-bottom: 2px;" icon="fa fa-paperclip"
+							class="btn btn-default" />
+					</h:form>
+				</f:facet>
+				<h:form>
+					<p:panelGrid columns="2" style="font-size: large !important;">
+						<p:outputLabel value="اليوم" />
+						<p:row>
+							<p:selectOneMenu value="#{employeeServiceBean.selectDayOfWeek}"
+								style="width: 150px;direction: rtl;display: inline-table;"
+								panelStyle="width: 200px;">
+								<f:selectItems value="#{employeeServiceBean.weekDays}" />
+							</p:selectOneMenu>
+                                &nbsp;&nbsp;
+                                <p:outputLabel value="التاريخ" /> &nbsp;&nbsp;
+                                <p:inputText style="width: 150px;" />
+						</p:row>
+						<p:outputLabel value="اسم الموظف" />
+						<p:outputLabel value="#{employeeServiceBean.currentUserName}" />
+						<p:outputLabel value="وقت المغادرة" />
+						<p:row>
+							<p:selectOneMenu value="#{employeeServiceBean.selectedMinute}"
+								style="width: 150px;direction: rtl;display: inline-table;">
+								<f:selectItems value="#{employeeServiceBean.minutes}" />
+							</p:selectOneMenu>
+							<p:outputLabel value=":" />
+							<p:selectOneMenu value="#{employeeServiceBean.selectedHour}"
+								style="width: 150px;direction: rtl;display: inline-table;">
+								<f:selectItems value="#{employeeServiceBean.hoursDays}" />
+							</p:selectOneMenu>
+						</p:row>
+						<p:outputLabel value="الوظيفة " />
+						<p:outputLabel value="{#}" />
+						<p:outputLabel value="القسم" />
+						<p:outputLabel value="#{employeeServiceBean.currentUserDept}" />
+						<p:outputLabel value="سبب الاستئذان" />
+						<p:inputText style="width: 100% !important;" />
+						<p:outputLabel value="وقت  العودة" />
+						<p:row>
+							<p:selectOneMenu value="#{employeeServiceBean.selectedMinute}"
+								style="width: 150px;direction: rtl;display: inline-table;">
+								<f:selectItems value="#{employeeServiceBean.minutes}" />
+							</p:selectOneMenu>
+							<p:outputLabel value=":" />
+							<p:selectOneMenu value="#{employeeServiceBean.selectedHour}"
+								style="width: 150px;direction: rtl;display: inline-table;">
+								<f:selectItems value="#{employeeServiceBean.hoursDays}" />
+							</p:selectOneMenu>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+
+
+
+
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

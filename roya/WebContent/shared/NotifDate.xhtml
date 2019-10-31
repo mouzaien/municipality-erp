@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<head>
+<link rel="stylesheet" type="text/css"
+	href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+<!-- <script type="text/javascript" -->
+<!-- 	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.min.js"></script> -->
+
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+
+
+
+<style>
+.inputCal {
+	border-left-width: 0;
+	border-right-width: 0;
+	border-top-width: 0;
+	border-bottom-style: ridge;
+	width: 60%;
+}
+</style>
+</head>
+
+
+
+<h:panelGroup>
+
+	<input type="text" class="inputCal" name="notifDate" id="notifDate" />
+
+	<script type="text/javascript">
+		$("#notifDate").focus(function() {
+
+			$('.calendars-cmd-today ').html('اليوم');
+			$('.calendars-cmd-prev').html('السابق >');
+			$('.calendars-cmd-next').html(' > اللاحق ');
+			$('.calendars-ctrl').css('display', 'none');
+			$('.calendars-month').css('width', '244px');
+			$('.calendars-month').css('float', 'right');
+			$('.calendars').css('width', '245px');
+
+		});
+
+		$("#notifDate").calendarsPicker({
+			calendar : $.calendars.instance('ummalqura'),
+			language : 'ar'
+		});
+	</script>
+
+
+
+</h:panelGroup>
+
+
+</html>

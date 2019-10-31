@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:growl id="msgs" showDetail="true" autoUpdate="true" />
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="حفظ" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-save" rendered="#{! articlesBean.newFlag}">
+						<f:ajax execute="@form" render="@form"
+							listener="#{articlesBean.addArticle}"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">إضافة وتعديل
+						الاصناف</h1>
+
+
+					<h3 style="text-align: right:;">إضافة صنف جديد</h3>
+
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="النوع" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneRadio id="console"
+								value="#{articlesBean.article.artType}">
+								<f:selectItem itemLabel="مستديمة" itemValue="2" />
+								<f:selectItem itemLabel="مستهلك" itemValue="1" />
+							</p:selectOneRadio>
+
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الاسم" />
+						</div>
+						<div class="ui-g-2">
+
+							<p:inputText class="form-control" id="name" required="true"
+								requiredMessage="ادخل الاسم"
+								value="#{articlesBean.article.name}"></p:inputText>
+
+						</div>
+
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الرمز" />
+						</div>
+
+						<div class="ui-g-2">
+
+							<p:inputText class="form-control" required="true" id="code"
+								requiredMessage="ادخل الرمز"
+								value="#{articlesBean.article.code}" />
+
+						</div>
+
+					</div>
+
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الرئيسى" />
+						</div>
+
+						<div class="ui-g-2">
+							<p:selectOneMenu class="form-control" id="groupId" filterMatchMode="contains" filter="true"
+								required="true" requiredMessage="اختر المجموعة الرئيسية"
+								value="#{articlesBean.groupId}">
+								<!-- 								<f:ajax listener="#{articlesBean.updateSubGroups}" -->
+								<!-- 									execute="groupId" event="valueChange" render="sub"></f:ajax> -->
+								<f:selectItem itemLabel="اختر المجموعة الرئيسية "></f:selectItem>
+
+								<f:selectItems value="#{articlesBean.articleGroups}" var="x"
+									itemLabel="#{x.code} | #{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</p:selectOneMenu>
+
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الفرعى" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="sub" class="form-control" required="true" filterMatchMode="contains" filter="true"
+								requiredMessage="اختر المجموعة الفرعية"
+								value="#{articlesBean.article.subGroupId}">
+								<f:selectItem itemLabel="اختر المجموعة الفرعية "></f:selectItem>
+								<f:selectItems value="#{articlesBean.articleSubGroups}" var="x"
+									itemLabel="#{x.code} |#{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</p:selectOneMenu>
+
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الوحدة" />
+						</div>
+
+						<div class="ui-g-2">
+							<p:selectOneMenu class="form-control" required="true" filterMatchMode="contains" filter="true"
+								requiredMessage="اختر الوحدة "
+								value="#{articlesBean.article.itemUniteId}" style="width:100%">
+
+								<f:selectItem itemLabel="اختر الوحدة  "></f:selectItem>
+
+								<f:selectItems value="#{articlesBean.unites}" var="x"
+									itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="المستودع" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu class="form-control" required="true"
+								requiredMessage="اختر المستودع " style="width:100%"
+								value="#{articlesBean.article.strNo}">
+
+								<f:selectItem itemLabel="اختر المستودع  "></f:selectItem>
+
+								<f:selectItems value="#{inventoryMasterBean.allWareHouses}" var="x"
+									itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
+									<p:ajax listener="#{articlesBean.reloadStrArticles}" update="table_Store"></p:ajax>
+							</p:selectOneMenu>
+
+						</div>
+					</div>
+					<p:separator></p:separator>
+					<br />
+					<h3 style="text-align: center;">الأصناف</h3>
+					<br />
+					<p:dataTable id="table_Store" var="item" widgetVar="serch"
+						value="#{articlesBean.articles}" emptyMessage="لايوجد بيانات"
+						rowIndexVar="rowIndex" paginatorPosition="bottom" editable="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{articlesBean.filterArticles}" paginator="true"
+						rows="12">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('serch').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:ajax event="rowEdit" listener="#{articlesBean.onRowEdit}" />
+						<p:ajax event="rowEditCancel"
+							listener="#{articlesBean.onRowCancel}" />
+
+						<p:column headerText="الرقم" style="width: 5%">
+							<h:outputText value="#{rowIndex+1}" />
+						</p:column>
+						<p:column headerText="الاسم" style="width: 15%"
+							filterBy="#{item.name}" filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="nameInput" value="#{item.name}"
+										style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="الوحدة" filterBy="#{item.itemUnite.name}"
+							filterMatchMode="contains" style="width: 10%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.itemUnite.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu class="form-control" required="true"
+										requiredMessage="اختر الوحدة " value="#{item.itemUniteId}"
+										style="width:100%">
+										<f:selectItems value="#{articlesBean.unites}" var="x"
+											itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="الرمز" filterBy="#{item.code}"
+							filterMatchMode="contains" style="width: 10%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.code}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="codeInput" value="#{item.code}"
+										style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="الرئيسية"
+							filterBy="#{item.articleSubGroup.articleGroup.name}"
+							filterMatchMode="contains" style="width: 15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.articleSubGroup.articleGroup.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu id="table_groupId" required="true"
+										requiredMessage="اختر المجموعة الرئيسية"
+										value="#{item.articleSubGroup.groupId}">
+										<f:ajax
+											listener="#{articlesBean.updateTableSubGroups(item.articleSubGroup.groupId)}"
+											execute="table_groupId" event="valueChange"
+											render="table_sub"></f:ajax>
+										<f:selectItems value="#{articlesBean.articleGroups}" var="x"
+											itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="الفرعية"
+							filterBy="#{item.articleSubGroup.name}"
+							filterMatchMode="contains" style="width: 15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.articleSubGroup.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu id="table_sub" class="form-control"
+										required="true" requiredMessage="اختر المجموعة الفرعية"
+										style="width:100%" value="#{item.subGroupId}">
+										<f:selectItems value="#{articlesBean.articleSubGroups}"
+											var="x" itemLabel="#{x.code} |#{x.name}" itemValue="#{x.id}"></f:selectItems>
+									</p:selectOneMenu>
+
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="المستودع"
+							filterBy="#{item.whsWarehouses.storeName}"
+							filterMatchMode="contains" style="width: 15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.whsWarehouses.storeName}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu class="form-control" required="true"
+										requiredMessage="اختر المستودع " style="width:100%"
+										value="#{item.strNo}">
+										<f:selectItems value="#{articlesBean.warehouses}" var="x"
+											itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="تعديل" style="width:5%">
+							<p:rowEditor style="color: green; text-align:center ;" />
+						</p:column>
+						<p:column headerText="حذف" style="width:5%; text-align:center ;">
+							<p:commandButton immediate="true" icon="ui-icon-delete"
+								style="background-color: red; font-size: large"
+								action="#{articlesBean.deleteArticleById(item.id)}">
+
+								<p:ajax update="includeform:table_Store"></p:ajax>
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

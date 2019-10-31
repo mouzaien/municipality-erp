@@ -1,0 +1,666 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{usersParamBean.loadUsers}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">
+								إعدادات المستخدمين</h3>
+						</div>
+						<br /> <br /> <br />
+						<div class="row" align="left">
+							<p:commandButton value="إظافة"
+								oncomplete=" PF('addDialog').show()"
+								style="float:left;font-family: kufi !important;"
+								action="#{usersParamBean.addUser}" process="@this"
+								update="includeform:addPG">
+							</p:commandButton>
+							<!-- 							<p:commandButton value="طباعة" style="float:left;font-family: kufi !important;" -->
+							<!-- 								onclick="this.form.target='_blank'" -->
+							<!-- 								action="#{loanBean.printReportAction}"> -->
+							<!-- 							</p:commandButton> -->
+							<!-- 							<p:commandButton value="إنشاء مستخدم جديد " icon="fa fa-plus" -->
+							<!-- 								style="float: left;margin-top: 4px;" process="@this" -->
+							<!-- 								action="#{userSettingBean.createUserBtnAction(actionEvent)}" /> -->
+						</div>
+						<br />
+
+						<div class="row">
+							<p:dataTable var="userItem" id="allusersettingdt"
+								widgetVar="loanVar" value="#{usersParamBean.usersList}"
+								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+								paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{usersParamBean.filteredUsers}" paginator="true"
+								rows="17">
+
+								<p:column id="idcol" headerText="المسلسل"
+									filterBy="#{userItem.userId}" filterMatchMode="contains"
+									width="8%" style="text-align: center;">
+                            #{userItem.userId}
+                        </p:column>
+								<p:column headerText="اسم المستخدم"
+									filterBy="#{userItem.employeeName}" filterMatchMode="contains"
+									width="18%">
+                            #{userItem.employeeName}
+                        </p:column>
+								<p:column headerText="معرف الدخول" width="12%"
+									style="text-align: center;">
+                            #{userItem.username}
+                        </p:column>
+								<p:column width="15%" headerText="  الإدارة-القسم"
+									filterBy="#{userItem.deptName}"
+									filterMatchMode="contains" style="text-wrap: none;">
+                            #{userItem.deptName}
+                        </p:column>
+								<p:column width="20%" headerText="الوظيفة"
+									style="text-wrap: none;">
+                            #{userItem.jobName}
+                        </p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="10%">
+									<p:commandButton oncomplete="PF('editUserDlg').show();"
+										action="#{usersParamBean.loadUser(userItem)}" process="@this"
+										icon="ui-icon-search"
+										update="includeform:empEditAccordPanelId">
+<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
+<!-- 											target="#{usersParamBean.user}" /> -->
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<br />
+						<!-- 									<div align="center" class="row"> -->
+						<!-- 									<h:commandButton value="طباعة" -->
+						<!-- 										styleClass="btn btn-primary" -->
+						<!-- 										onclick="this.form.target='_blank'" -->
+						<!-- 										action="#{licencesListBean.printReportAction}"> -->
+						<!-- 									</h:commandButton> -->
+						<!-- 									</div> -->
+					</div>
+
+
+
+
+
+					<p:dialog widgetVar="addDialog" width="80%"
+						header="إنشاء مستخدم جديد" modal="true" dir="rtl" closable="true">
+						<h:panelGroup id="addPG">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<p:outputLabel value=" اللقب" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{usersParamBean.user.titleId}"
+											style="width: 100%" required="true"
+											requiredMessage="يرجي إختيار اللقب" id="newTitle">
+											<f:selectItem itemLabel="أختر اللقب" itemValue="" />
+											<f:selectItems var="tit" itemValue="#{tit.id}"
+												itemLabel="#{tit.title}"
+												value="#{loadingDataBean.titlesList}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="الاسم الأول" />
+									</div>
+									<div class="col-md-2">
+										<p:inputText value="#{usersParamBean.firstName}"
+											style="width: 100%" required="true"
+											requiredMessage="الاسم الأول مطلوب" />
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="الأسم الأخير" />
+									</div>
+									<div class="col-md-2">
+										<p:inputText value="#{usersParamBean.lastName}"
+											style="width: 100%" />
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<p:outputLabel value="معرف الدخول " />
+									</div>
+									<div class="col-md-2">
+										<p:inputText value="#{usersParamBean.user.loginName}"
+											style="width: 100%" required="true"
+											requiredMessage="معرف الدخول مطلوب" id="newloginname" />
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="كلمة المرور" />
+									</div>
+									<div class="col-md-2">
+										<p:password value="#{usersParamBean.user.password}"
+											feedback="true" style="width: 100%" required="true"
+											requiredMessage="كلمة المرور مطلوبة" id="newpass"
+											weakLabel="كلمة المرور ضعيفة" goodLabel="كلمة المرور جيدة"
+											strongLabel="كلمة المرور قوية " />
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="  المدير المباشر" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{usersParamBean.user.mgrId}"
+											style="width: 100%" filter="true" required="true"
+											requiredMessage="اختر المدير المباشر" id="newmgr">
+											<f:selectItem itemLabel="أختر المدير المباشر" itemValue="" />
+											<f:selectItems var="mgr" itemValue="#{mgr.userId}"
+												itemLabel="#{mgr.employeeName}"
+												value="#{usersParamBean.usersList}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<p:outputLabel value="نظام سير العمل" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{usersParamBean.user.wrkRoleId}"
+											style="width: 100%" required="true" requiredMessage="">
+											<f:selectItem itemLabel="أختر نظام سير العمل" itemValue="" />
+											<f:selectItems var="role" itemValue="#{role.id}"
+												itemLabel="#{role.roleName}"
+												value="#{loadingDataBean.wrkRolesList}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="الدائرة الوظيفية" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{usersParamBean.user.deptId}"
+											id="newdepartment" required="true"
+											requiredMessage="الدائرة الوظيفية مطلوبة" style="width: 100%"
+											filter="true">
+											<p:ajax event="change" update="sectionlist,jobList"
+												listener="#{usersParamBean.loadSectionListChangeEvent}" />
+											<f:selectItem itemLabel="أختر الإدارة" itemValue="" />
+											<f:selectItems var="dept" itemValue="#{dept.id}"
+												itemLabel="#{dept.deptName}"
+												value="#{loadingDataBean.depatmentList}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="القسم" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu required="true"
+											requiredMessage="يرجي أختيار القسم"
+											value="#{usersParamBean.user.wrkSectionId}" id="sectionlist"
+											style="width: 100%">
+											<p:ajax event="change" update="jobList"
+												listener="#{usersParamBean.loadJobsListChangeEvent}" />
+											<f:selectItem itemLabel="أختر القسم" itemValue="" />
+											<f:selectItems var="sect" itemValue="#{sect.id}"
+												itemLabel="#{sect.sectionName}"
+												value="#{usersParamBean.sectionsList}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<p:outputLabel value="الدرجة الوظيفية" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{usersParamBean.user.jobId}"
+											required="true" requiredMessage="أدخل الدرجة الوظيفية أولا"
+											id="jobList" style="width: 100%">
+											<f:selectItem itemLabel="أختر الوظيفة" itemValue="" />
+											<f:selectItems var="job" itemValue="#{job.id}"
+												itemLabel="#{job.jobName}"
+												value="#{usersParamBean.jobsList}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-2">
+										<p:outputLabel value="رقم الجوال" />
+									</div>
+									<div class="col-md-2">
+										<p:inputText value="#{usersParamBean.user.mobileNumber}"
+											style="width: 100%" required="true"
+											requiredMessage="رقم الجوال مطلوب" id="newMobileNumber">
+											<!-- 											<f:validator validatorId="utilities.PhoneNumberValidator" /> -->
+										</p:inputText>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+										<br />
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التوقيع" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload
+													widgetVar="RecordsUploader1" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadSignature}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list1"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التأشير" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload
+													widgetVar="RecordsUploader2" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadMarque}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list1"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التوقيع عن رئيس البلدية" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload 
+													widgetVar="RecordsUploader3" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadPresidentSignature}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list1"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<h:outputLabel value="  " />
+
+										</div>
+										<div>
+											<ul>
+												<h:panelGroup id="att-list1">
+													<br></br>
+													<ui:repeat var="attach"
+														value="#{usersParamBean.attachList}">
+														<div class="row">
+															<div class="col-md-5">
+																<h:outputLabel value="#{attach.label}" />
+															</div>
+															<div class="col-md-1">
+																<h:commandButton class="btn btn-danger" immediate="true"
+																	render="att-list" value="إلغاء"
+																	actionListener="#{usersParamBean.deleteAttchFile(attach.attachRealName)}">
+																</h:commandButton>
+															</div>
+														</div>
+													</ui:repeat>
+												</h:panelGroup>
+											</ul>
+										</div>
+									</div>
+							<!-- 							<div class="container-fluid"> -->
+							<!-- 								<div class="row"> -->
+
+							<!-- 									<div class="col-md-6"> -->
+							<!-- 										<p:commandButton value="حفظ المستخدم" -->
+							<!-- 											process="@this,newdepartment,newTitle,newmgr,newpass,newfirst,newlast,sectionlist,jobList,newMobileNumber,newloginname" -->
+							<!-- 											action="#{userSettingBean.saveUserBtnAction(actionEvent)}" -->
+							<!-- 											update="includeform:allusersettingdt" style="width: 100%" -->
+							<!-- 											icon="fa fa-save" /> -->
+							<!-- 									</div> -->
+							<!-- 									<div class="col-md-6"> -->
+							<!-- 										<p:commandButton value="رجوع" icon="fa fa-close" -->
+							<!-- 											style="width: 100%" process="@this" -->
+							<!-- 											action="#{userSettingBean.createUserfooterBtnAction(actionEvent)}" /> -->
+							<!-- 									</div> -->
+							<!-- 								</div> -->
+							<!-- 							</div> -->
+
+							<p:messages id="messages" autoUpdate="true" />
+						</h:panelGroup>
+						<div align="center">
+							<p:commandButton value="موافق" styleClass="btn btn-primary"
+								action="#{usersParamBean.saveUser}" style="margin-left:3px;"
+								onsuccess="PF('addDialog').hide();">
+							</p:commandButton>
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onsuccess="PF('addDialog').hide();" />
+						</div>
+					</p:dialog>
+
+					<p:dialog widgetVar="editUserDlg" showEffect="fade"
+						hideEffect="explode" dir="rtl" closable="true" width="80%"
+						id="editDlgId"
+						header="  تعديل بيانات المستخدم  #{usersParamBean.user.employeeName}"
+						modal="true">
+						<p:accordionPanel id="empEditAccordPanelId">
+							<p:tab id="basicEditTab001" title="تعديل بيانات الاسم ">
+								<h:form id="edituserform"
+									style="font-size: medium;font-weight: bold;">
+									<div class="row">
+										<br />
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="الأســم الأول" />
+											</div>
+											<div class="col-md-4">
+												<p:inputText value="#{usersParamBean.user.firstName}"
+													id="editnewFirstNameID" />
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value="الاســم الأخير" />
+											</div>
+											<div class="col-md-4">
+												<p:inputText value="#{usersParamBean.user.lastName}"
+													id="editnewLastNameID" />
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="الاســم بالعربي" />
+											</div>
+											<div class="col-md-4">
+												<p:inputText value="#{usersParamBean.user.employeeName}"
+													id="editnewArNameID" />
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value="الاســم بالافرنجي" />
+											</div>
+											<div class="col-md-4">
+												<p:inputText value="#{usersParamBean.user.employeeEname}"
+													id="editnewEnNameID" />
+											</div>
+										</div>
+									</div>
+									<br />
+									<div align="left">
+										<p:commandButton value="تعديل" icon="fa fa-floppy-o"
+											action="#{usersParamBean.updateUser}" />
+									</div>
+									<br />
+								</h:form>
+							</p:tab>
+							<p:tab id="deptEditTab001"
+								title="تعديل الموقع الاداري - نقل المستخدم">
+								<h:form id="deptEditTabFormId">
+									<div class="row">
+										<div class="col-md-12">
+											<br />
+											<div class="col-md-2">
+												<p:outputLabel value="الرقم الوظيفي" />
+											</div>
+											<div class="col-md-4">
+												<p:inputText value="#{usersParamBean.user.employeeNumber}"
+													id="editEmpno" />
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value="  المدير المباشر" />
+											</div>
+											<div class="col-md-4">
+												<p:selectOneMenu value="#{usersParamBean.user.mgrId}"
+													style="width: 100%" filter="true" required="true"
+													requiredMessage="اختر المدير المباشر" id="Editnewmgr">
+													<f:selectItem itemLabel="أختر المدير المباشر" itemValue="" />
+													<f:selectItems var="mgr" itemValue="#{mgr.userId}"
+														itemLabel="#{mgr.employeeName}"
+														value="#{usersParamBean.usersList}" />
+												</p:selectOneMenu>
+											</div>
+
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="نظام سير العمل" />
+											</div>
+											<div class="col-md-4">
+												<p:selectOneMenu id="EditROLE"
+													value="#{usersParamBean.user.wrkRoleId}"
+													style="width: 100%" required="true" requiredMessage="">
+													<f:selectItem itemLabel="أختر نظام سير العمل" itemValue="" />
+													<f:selectItems var="role" itemValue="#{role.id}"
+														itemLabel="#{role.roleName}"
+														value="#{loadingDataBean.wrkRolesList}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value="الدائرة الوظيفية" />
+											</div>
+											<div class="col-md-4">
+												<p:selectOneMenu value="#{usersParamBean.user.deptId}"
+													id="Editnewdepartment" required="true"
+													requiredMessage="الدائرة الوظيفية مطلوبة"
+													style="width: 100%" filter="true">
+													<p:ajax event="change" update="Editsectionlist,EditjobList"
+														listener="#{usersParamBean.loadSectionListChangeEvent}" />
+													<f:selectItem itemLabel="أختر الإدارة" itemValue="" />
+													<f:selectItems var="dept" itemValue="#{dept.id}"
+														itemLabel="#{dept.deptName}"
+														value="#{loadingDataBean.depatmentList}" />
+												</p:selectOneMenu>
+											</div>
+
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="القسم" />
+											</div>
+											<div class="col-md-4">
+												<p:selectOneMenu required="true"
+													requiredMessage="يرجي أختيار القسم"
+													value="#{usersParamBean.user.wrkSectionId}"
+													id="Editsectionlist" style="width: 100%">
+													<p:ajax event="change" update="EditjobList"
+														listener="#{usersParamBean.loadJobsListChangeEvent}" />
+													<f:selectItem itemLabel="أختر القسم" itemValue="" />
+													<f:selectItems var="sect" itemValue="#{sect.id}"
+														itemLabel="#{sect.sectionName}"
+														value="#{usersParamBean.sectionsList}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value="الدرجة الوظيفية" />
+											</div>
+											<div class="col-md-4">
+												<p:selectOneMenu value="#{usersParamBean.user.jobId}"
+													required="true" requiredMessage="أدخل الدرجة الوظيفية أولا"
+													id="EditjobList" style="width: 100%">
+													<f:selectItem itemLabel="أختر الوظيفة" itemValue="" />
+													<f:selectItems var="job" itemValue="#{job.id}"
+														itemLabel="#{job.jobName}"
+														value="#{usersParamBean.jobsList}" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<br />
+									<div align="left">
+										<p:commandButton value="تعديل" icon="fa fa-floppy-o"
+											process="@this" action="#{usersParamBean.updateUser}"
+											update="Editnewmgr,EditROLE,Editnewdepartment,Editsectionlist,EditjobList,editEmpno" />
+									</div>
+									<p:messages autoUpdate="true" />
+								</h:form>
+							</p:tab>
+							<p:tab id="pwdEditTab001" title="تعديل  كلمة المرور">
+								<h:form id="pwduserform"
+									style="font-size: medium;font-weight: bold;">
+									<div class="row">
+										<br />
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="كلمة المرور" />
+											</div>
+											<div class="col-md-2">
+												<p:password value="#{usersParamBean.user.password}"
+													required="true" requiredMessage="كلمة المرور مطلوبة"
+													id="newPwdId" />
+											</div>
+										</div>
+									</div>
+									<div align="left">
+										<p:commandButton value="تعديل" icon="fa fa-floppy-o"
+											process="@this" action="#{usersParamBean.updateUserPassword}"
+											update="newPwdId" />
+									</div>
+									<p:growl autoUpdate="true" />
+								</h:form>
+							</p:tab>
+
+
+
+							<p:tab id="signTab" title="التواقيع">
+								<h:form id="signuserform"
+									style="font-size: medium;font-weight: bold;">
+									<div class="row">
+										<br />
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التوقيع" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload
+													widgetVar="RecordsUploader11" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadSignature}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التأشير" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload
+													widgetVar="RecordsUploader12" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadMarque}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-2">
+												<p:outputLabel value="التوقيع عن رئيس البلدية" />
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload 
+													widgetVar="RecordsUploader13" multiple="true"
+													fileUploadListener="#{usersParamBean.uploadPresidentSignature}"
+													uploadLabel="ارفاق" cancelLabel="إلغاء" update="att-list"
+													label="تحديد المرفق" previewWidth="0" process="@this"
+													allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+													sizeLimit="300000000" />
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-2">
+											<h:outputLabel value="  " />
+
+										</div>
+										<div>
+											<ul>
+												<h:panelGroup id="att-list">
+													<br></br>
+													<ui:repeat var="attach"
+														value="#{usersParamBean.attachList}">
+														<div class="row">
+															<div class="col-md-5">
+																<h:outputLabel value="#{attach.label}" />
+															</div>
+															<div class="col-md-1">
+																<h:commandButton class="btn btn-danger" immediate="true"
+																	render="att-list" value="إلغاء"
+																	actionListener="#{usersParamBean.deleteAttchFile(attach.attachRealName)}">
+																</h:commandButton>
+															</div>
+														</div>
+													</ui:repeat>
+												</h:panelGroup>
+											</ul>
+										</div>
+									</div>
+
+									<div align="left">
+										<p:commandButton value="تعديل" icon="fa fa-floppy-o"
+											process="@this" action="#{usersParamBean.updateProfile}" />
+									</div>
+									<p:growl autoUpdate="true" />
+								</h:form>
+							</p:tab>
+						</p:accordionPanel>
+						<br />
+						<div align="center">
+							<p:commandButton value="رجوع" icon="fa fa-close" immediate="true"
+								onsuccess="PF('editUserDlg').hide();" />
+						</div>
+					</p:dialog>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

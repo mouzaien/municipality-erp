@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+
+	<p class="text-center">
+		<h:outputLabel
+			style="colour:rgba(9, 62, 6, 0.78); font-weight:bold; font-size:30px;"
+			value="#{msg['health.certificate']}">
+		</h:outputLabel>
+
+	</p>
+
+
+	<br> </br>
+	<p:messages autoUpdate="true" closable="true" showSummary="true" />
+	<div class="panel panel-primary"
+		style="border-color: rgb(150, 202, 66);">
+		<div class="panel-heading"
+			style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+			<p:outputLabel value="#{msg['arcrecord.data']}" />
+		</div>
+
+
+
+		<div class="panel-body"
+			style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+
+			<div class="row">
+				<div class="col-md-6">
+
+					<div class="row">
+						<div class="col-md-5">
+							<p:outputLabel value="#{msg['record.number']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel value=""></p:outputLabel>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5">
+							<p:outputLabel value="#{msg['income.date']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel value=""></p:outputLabel>
+						</div>
+					</div>
+					
+
+			</div>
+
+
+		</div>
+	</div>
+
+	<div class="panel panel-primary"
+		style="border-color: rgb(150, 202, 66);">
+		<div class="panel-heading"
+			style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+			<p:outputLabel value="#{msg['applicant.data']}"></p:outputLabel>
+		</div>
+
+		<div class="panel-body"
+			style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+			<div class="row">
+				<div class="col-md-6">
+
+					<div class="row">
+							<div class="col-md-5">
+							<p:outputLabel value="#{msg['proof.type']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+					
+					<div class="row">
+							<div class="col-md-5">
+							<p:outputLabel value="#{msg['name']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+					
+					<div class="row">
+							<div class="col-md-5">
+							<p:outputLabel value="#{msg['work']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+					
+					<div class="row">
+							<div class="col-md-5">
+							<p:outputLabel value="#{msg['proof.type']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+					
+					<div class="row">
+							<div class="col-md-5">
+							<p:outputLabel value="#{msg['proof.type']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+					
+					
+					
+					
+					
+					
+					
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-5">
+							<p:outputLabel value="#{msg['proof.number']}"></p:outputLabel>
+						</div>
+
+						<div class="colmd-4">
+							<p:outputLabel
+								value="#{mainManagedBean.mailExecutor.employeeVacation.remainTotalVacationPeriod}"></p:outputLabel>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p:outputPanel id="formPanel">
+		<div class="panel panel-primary"
+			style="border-color: rgb(150, 202, 66);">
+			<div class="panel-heading"
+				style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+				<p:outputLabel value="بيانات  الاجازة"></p:outputLabel>
+			</div>
+			<div class="panel-body"
+				style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="مدة الاجازة"></p:outputLabel>
+							</div>
+							<div class="colmd-4">
+								<p:inputText id="vacprd"
+									rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}">
+									<p:ajax event="blur" update="VACEND,salList,valvac,VACWRKFROM,VACWRKto" process="@this"
+										listener="#{mainManagedBean.mailExecutor.checkdate}">
+									</p:ajax>
+
+								</p:inputText>
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}"
+									rendered="#{mainManagedBean.mailExecutor.readOnly}" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="تاريخ نهاية الاجازة"></p:outputLabel>
+							</div>
+							<div class="col-md-4">
+
+								<p:outputLabel id="VACEND"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationEnd}"></p:outputLabel>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="صرف الراتب"></p:outputLabel>
+							</div>
+
+							<div class="colmd-4">
+								<p:selectOneMenu id="salList" rendered="#{!mainManagedBean.mailExecutor.readOnly}" disabled="#{mainManagedBean.mailExecutor.disableList}"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.vactionCalc}" 
+									style="width:20%; dir:rtl;">
+									<f:selectItem itemLabel="#{msg['without.salary']}" itemValue="2" />
+									<f:selectItem itemLabel="#{msg['with.salary']}" itemValue="1" />
+									
+								</p:selectOneMenu>
+								<p:outputLabel id="sal"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.vactionCalcLabel}" rendered="#{mainManagedBean.mailExecutor.readOnly}"></p:outputLabel>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="الى تاريخ"></p:outputLabel>
+							</div>
+
+							<div class="colmd-4">
+								<p:outputLabel id="VACWRKto"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.HDateVacationTo}" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="تاريخ اخر اجازة"></p:outputLabel>
+							</div>
+							<div class="colmd-4">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.lastVacationDate}" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="تاريخ بدء الاجازة"></p:outputLabel>
+							</div>
+
+							<div class="col-md-4">
+
+								<p:inputMask id="VACASTRT"
+									rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}"
+									mask="99/99/9999" size="8">
+									<p:ajax event="blur" update="VACEND" process="@this"
+										listener="#{mainManagedBean.mailExecutor.checkdate}" />
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputMask>
+
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}"
+									rendered="#{mainManagedBean.mailExecutor.readOnly}" />
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<p:outputLabel value="القيمة المادية للاجازة"></p:outputLabel>
+							</div>
+
+
+							<div class="col-md-4">
+
+								<p:outputLabel id="valvac"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.costVacation}"></p:outputLabel>
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6">
+
+								<p:outputLabel value="عن خدمته من تاريخ"></p:outputLabel>
+							</div>
+
+							<div class="col-md-4">
+
+								<p:outputLabel id="VACWRKFROM"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.HDatevacationFrom}"></p:outputLabel>
+							</div>
+
+						</div>
+
+
+						<div class="row">
+							<div class="col-md-5">
+								<p:outputLabel value="مدة اخر اجازة"></p:outputLabel>
+							</div>
+
+							<div class="colmd-4">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.employeeVacation.lastVacationPeriod}"></p:outputLabel>
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-5">
+
+								<p:outputLabel value="عن الخدمة"></p:outputLabel>
+							</div>
+
+
+							<div class="col-md-4">
+
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.lastVacationService}"></p:outputLabel>
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<br></br> <br></br>
+			<div class="text-right">
+				<p:commandButton value="#{msg['send']}" icon="fa fa-paperclip"
+				process="@this" class="btn btn-default" rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+				action="#{mainManagedBean.saveAction}" />
+
+			<p:commandButton value="#{msg['accept']}" style=" " icon="fa fa-paperclip"
+				process="@this" class="btn btn-default" rendered="#{mainManagedBean.mailExecutor.acceptRendered}"
+				action="#{mainManagedBean.acceptAction}" />
+
+
+			<p:commandButton value="#{msg['back']}" icon="fa fa-mail-reply" action="mails" immediate="true" process="@this"
+							class="btn btn-default" />
+
+			</div>
+			<br></br>
+
+		</div>
+	</p:outputPanel>
+	</div>
+</h:body>
+
+</html>

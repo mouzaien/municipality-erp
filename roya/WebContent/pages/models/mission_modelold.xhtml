@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<br />
+
+<p class="text-center">
+	<h:outputLabel
+		style="color: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 30px;"
+		value="#{msg['mission.model']}" />
+</p>
+<br />
+<p:messages autoUpdate="true" closable="true" showSummary="true" />
+
+<!-- /.col-lg-4 -->
+<div class="col-lg-12">
+	<div class="panel panel-primary"
+		style="border-color: rgb(150, 202, 66);">
+		<div class="panel-heading"
+			style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+			<h:outputLabel value="#{msg['employee.info']}" />
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['name']}" />
+						</div>
+						<div class="col-md-4">
+							<h:outputLabel style=" font-weight: bold; "
+								value="#{mainManagedBean.employer.name}" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['job']}" />
+						</div>
+						<div class="col-md-4">
+							<h:outputLabel style=" font-weight: bold;"
+								value="#{mainManagedBean.employer.job}" />
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-4">
+							<h:outputLabel value="#{msg['section']}" />
+						</div>
+						<div class="col-md-3">
+							<h:outputLabel style=" font-weight: bold; ;"
+								value="#{mainManagedBean.employer.department}" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="col-lg-12">
+	<div class="panel panel-primary"
+		style="border-color: rgb(150, 202, 66);">
+		<div class="panel-heading"
+			style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+			<h:outputLabel value="#{msg['model.data']}" />
+		</div>
+		<div class="panel-body">
+
+			<h:form prependId="false" styleClass="form-inline">
+
+				<p:outputPanel id="formPanel">
+					<div class="col-md-8">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['day']}" />
+						</div>
+						<div class="col-md-3">
+							<p:selectOneMenu id="missionDay"
+								value="#{mainManagedBean.mailExecutor.missionDay}"
+								style="width:100%; dir:rtl;">
+								<f:selectItem itemLabel="#{msg['select.day']}"
+									itemValue="" noSelectionOption="true" />
+								<f:selectItem itemLabel="#{msg['sunday']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['monday']}" itemValue="2" />
+								<f:selectItem itemLabel="#{msg['tuesday']}" itemValue="3" />
+								<f:selectItem itemLabel="#{msg['wednesday']}" itemValue="4" />
+								<f:selectItem itemLabel="#{msg['thursday']}" itemValue="5" />
+							</p:selectOneMenu>
+						</div>
+
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['date']}" />
+						</div>
+						<div class="col-md-3">
+							<p:inputMask id="missionDate"
+								value="#{mainManagedBean.mailExecutor.missionDate}"
+								mask="99/99/9999" size="8">
+									<f:validator validatorId="utilities.UmmAlQUraValidator"  />
+							</p:inputMask>
+						</div>
+
+					</div>
+
+
+
+					<br />
+					<br />
+					<br />
+					<div class="col-md-8">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['reason']}" />
+						</div>
+						<div class="col-md-3">
+							<p:inputText id="reason"
+								value="#{mainManagedBean.mailExecutor.reason}" size="48"
+								 />
+						</div>
+					</div>
+					<br />
+					<br />
+					<br />
+
+					<div class="col-md-8">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['leaving.date']}" />
+						</div>
+						<div class="col-md-5">
+							<p:selectOneMenu id="leavingMinute"
+								value="#{mainManagedBean.mailExecutor.leavingMinute}"
+								style="width:40%; dir:rtl;" >
+								<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+								<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+								<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+								<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+								<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+								<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+							</p:selectOneMenu>
+							:
+							<p:selectOneMenu id="leavingHour"
+								value="#{mainManagedBean.mailExecutor.leavingHour}"
+								style="width:40%; dir:rtl;" >
+								<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+									itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+
+							</p:selectOneMenu>
+						</div>
+
+
+
+					</div>
+
+					<br />
+					<br />
+					<br />
+					<div class="col-md-8">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['return.date']}" />
+						</div>
+						<div class="col-md-5">
+							<p:selectOneMenu id="returnMinute"
+								value="#{mainManagedBean.mailExecutor.returnMinute}"
+								style="width:40%; dir:rtl;" >
+								<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+								<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+								<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+								<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+								<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+								<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+							</p:selectOneMenu>
+							:
+							<p:selectOneMenu id="returnHour"
+								value="#{mainManagedBean.mailExecutor.returnHour}"
+								style="width:40%; dir:rtl;" >
+								<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+									itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+
+							</p:selectOneMenu>
+						</div>
+
+
+
+					</div>
+
+
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<div class="text-right">
+						<p:commandButton value="ارسال  " icon="fa fa-paperclip"
+							class="btn btn-default"
+							actionListener="#{mainManagedBean.saveAction}" ajax="true"
+							process="@form" update="formPanel" />
+						<p:commandButton value="الرجوع " icon="fa fa-mail-reply"
+							class="btn btn-default" />
+
+					</div>
+				</p:outputPanel>
+			</h:form>
+		</div>
+	</div>
+</div>
+</html>

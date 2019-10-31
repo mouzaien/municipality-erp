@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<!-- 	<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link> -->
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+			<ui:define name="content">
+				<!-- <style>
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	border: 0 none;
+	margin: 1px 0;
+	padding: 0px 0px;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #3F729B !important;
+	color: #ffffff !important;
+	border-color: #3F729B;
+	height: 40px;
+}
+
+.ui-datatable tr.ui-state-highlight {
+	cursor: pointer;
+	background-color: #2aa550;
+}
+</style> -->
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer" align="left">
+						<p:commandButton value="إظافة"
+							oncomplete=" PF('addDialog').show()" icon="ui-icon ui-icon-add"
+							styleClass="cyan-btn"
+							action="#{announcementBean.addAnnouncement}" process="@this"
+							update="includeform:addRS">
+						</p:commandButton>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+
+						<h1 style="color: #7CB342; text-align: center;">
+							#{msg['bid.annoucement']} <span class="fa fa-fw fa-bullseye"></span>
+						</h1>
+
+
+						<br />
+						<div class="ui-g">
+							<p:dataTable value="#{announcementBean.announcements}" widgetVar="cellemp"
+								var="announcement" id="inboxdt" paginator="true" rows="12"
+								emptyMessage="لا يوجد" rowIndexVar="rowIndex"
+								paginatorPosition="bottom" selectionMode="single"
+								selection="#{announcementBean.selectedAnnouncement}"
+								rowKey="#{announcement.id}"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column style="text-align: center;" headerText="م" width="6%">
+			                                   #{announcement.id}
+			                                </p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الصحيفة" width="40%">#{announcement.newsPaper}
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الصحيفة" width="40%">
+									<p:selectCheckboxMenu id="news" var="newEle" style="width:50%"
+										panelStyleClass="empClass"
+										value="#{announcement.newspapersList}" label="إختر الصحيفة"
+										multiple="false" filter="true" filterMatchMode="contains"
+										converter="newsConverter">
+										<f:selectItems value="#{loadingDataBean.newspapersList}" />
+										<p:ajax event="change" process="@this"
+											listener="#{announcementBean.updateAnnouncement(announcement)}"
+											update="inboxdt"></p:ajax>
+										<!-- 										<p:ajax event="toggleSelect" process="@this" /> -->
+									</p:selectCheckboxMenu>
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="آخر أجل لتقديم العطاءات" width="20%">#{announcement.hLastTenderDate}
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="تاريخ فتح المظاريف" width="20%">#{announcement.openEnvDate} - #{announcement.lastTenderTime} #{(announcement.timeFlag == 1)?'صباحا':'ظهرا'}
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="7%">
+									<p:commandButton oncomplete="PF('addDialog').show();"
+										icon="ui-icon-search"
+										action="#{announcementBean.loadAnnouncemntsDetails}"
+										process="@this" 
+										update="includeform:addRS">
+										<f:setPropertyActionListener value="#{announcement}"
+											target="#{announcementBean.announcement}" />
+									</p:commandButton>
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الطباعة" width="7%">
+									<div class="image-box-footer" align="left">
+										<p:commandButton ajax="false" immediate="true"
+											icon="ui-icon-print" rendered="#{!announcementBean.addMode}"
+											onclick="this.form.target='_blank'"
+											action="#{announcementBean.printReport}">
+											<f:setPropertyActionListener value="#{announcement}"
+												target="#{announcementBean.selectedAnnouncement}" />
+										</p:commandButton>
+									</div>
+									<!-- 									<h:commandButton immediate="true" value="طباعة" -->
+									<!-- 										styleClass="btn btn-primary" -->
+									<!-- 										onclick="this.form.target='_blank'" -->
+									<!-- 										action="#{announcementBean.printReport}"> -->
+									<!-- 										<f:setPropertyActionListener value="#{announcement}" -->
+									<!-- 											target="#{announcementBean.selectedAnnouncement}" /> -->
+									<!-- 									</h:commandButton> -->
+								</p:column>
+							</p:dataTable>
+						</div>
+
+						<p:dialog widgetVar="addDialog" width="70%" header="" modal="true"
+							dir="rtl" closable="true">
+							<h:panelGroup id="addRS">
+								<h2 style="color: #7CB342; text-align: center;">إضافة
+									مزايدة</h2>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt"
+											value="آخر أجل لتقديم العطاءات" />
+									</div>
+									<div class="ui-g-2" style="text-align: right; padding: 0px;">
+										<h:panelGroup rendered="#{announcementBean.addMode}">
+											<ui:include src="../shared/calender.xhtml" />
+										</h:panelGroup>
+										<h:outputLabel
+											value="#{announcementBean.announcement.hLastTenderDate}"
+											rendered="#{!announcementBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:inputNumber value="#{announcementBean.hour}" size="8"
+											rendered="#{announcementBean.addMode}" required="true"
+											placeholder="الساعة" minValue="01" maxValue="12" />
+
+									</div>
+									<div class="ui-g-1">
+										<h:outputLabel
+											value="#{announcementBean.announcement.lastTenderTime}"
+											rendered="#{!announcementBean.addMode}" />
+										<p:spacer width="10px" />
+									</div>
+									<div class="ui-g-1">
+										<p:selectBooleanButton value="#{announcementBean.morning}"
+											disabled="#{!announcementBean.addMode}" onLabel="ص"
+											offLabel="م" style="width:60px" />
+									</div>
+
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt" value="تاريخ فتح المظاريف"
+											required="true" />
+									</div>
+									<div class="ui-g-2">
+										<h:panelGroup rendered="#{announcementBean.addMode}">
+											<ui:include src="../shared/NotifDate.xhtml"></ui:include>
+										</h:panelGroup>
+										<h:outputLabel
+											value="#{announcementBean.announcement.openEnvDate}"
+											rendered="#{!announcementBean.addMode}" />
+									</div>
+								</div>
+
+
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt" value="اختر  الصحيفة" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectCheckboxMenu id="news" var="newEle" style="width:50%"
+											panelStyleClass="empClass"
+											value="#{announcementBean.announcement.newspapersList}"
+											label="إختر الصحيفة" multiple="false" filter="true"
+											filterMatchMode="contains" converter="newsConverter">
+											<f:selectItems value="#{loadingDataBean.newspapersList}"
+												itemDisabled="#{!announcementBean.addMode}" />
+											<f:ajax execute="@this"></f:ajax>
+											<p:ajax event="toggleSelect" process="@this" />
+										</p:selectCheckboxMenu>
+									</div>
+								</div>
+
+
+								<p:separator />
+								<h2 style="color: #7CB342; text-align: center;">العقارات</h2>
+								<br />
+								<h:panelGroup rendered="#{announcementBean.addMode}">
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="العقار" />
+										</div>
+										<div class="ui-g-4" style="padding: 0px;">
+											<p:selectOneMenu id="groupId" styleClass="form-control"
+												filter="true" filterMatchMode="contains" style="width:90%"
+												value="#{announcementBean.realEstateId}">
+												<!-- 												<f:ajax render="name" execute="groupId" -->
+												<!-- 													listener="#{announcementBean.updateRealName()}"></f:ajax> -->
+												<f:selectItem itemLabel="اختر العقار" />
+												<f:selectItems value="#{announcementBean.realEstates}"
+													var="x" itemLabel="#{x.fullName}" itemValue="#{x.id}">
+												</f:selectItems>
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="المسمى" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText style="width:100%" id="name"
+												styleClass="form-control"
+												value="#{announcementBean.realEstateName}" />
+										</div>
+									</div>
+
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="المساحة" />
+										</div>
+										<div class="ui-g-4">
+											<p:inputText id="area" value="#{announcementBean.area}"
+												style="width:50%" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="قيمة النسخة" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputNumber id="copyVal"
+												value="#{announcementBean.copyValue}" style="width:50px"
+												placeholder="قيمة النسخة" />
+										</div>
+									</div>
+
+									<br />
+									<div class="image-box-footer" align="left">
+										<p:commandButton value="إضافة"
+											actionListener="#{announcementBean.addRealState}"
+											class="btn btn-primary">
+											<f:ajax execute="addRS"
+												render="groupId name area copyVal rsdetails"></f:ajax>
+										</p:commandButton>
+									</div>
+
+								</h:panelGroup>
+								<br />
+								<p:dataTable
+									value="#{announcementBean.announcement.annDetailsList}"
+									var="announcement" id="rsdetails" paginator="true" rows="12"
+									emptyMessage="لا يوجد" rowIndexVar="rowIndex"
+									paginatorPosition="bottom"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+									<f:facet name="header">العقارات
+   								 </f:facet>
+									<p:column style="text-align: center;" headerText="م" width="5%">
+			                                   #{rowIndex+1}
+			                                </p:column>
+									<p:column style="text-align: right;"
+										headerText="العقارات المطروحة للإستثمار" width="40%">#{announcement.name}
+								</p:column>
+									<p:column style="white-space: nowrap;" headerText="المساحة"
+										width="10%">#{announcement.area}
+								</p:column>
+									<p:column style="white-space: nowrap;" headerText="قيمة النسخة"
+										width="10%">#{announcement.copyValue}
+								</p:column>
+								</p:dataTable>
+
+								<br />
+								<div class="image-box-footer" align="center">
+									<p:commandButton value="حفظ" styleClass="btn btn-primary"
+										rendered="#{announcementBean.addMode}" update="@form"
+										action="#{announcementBean.save}" style="margin-left:3px;"
+										onsuccess="PF('addDialog').hide();">
+									</p:commandButton>
+									<p:commandButton value="رجوع" styleClass="btn btn-primary"
+										immediate="true" onsuccess="PF('addDialog').hide();" />
+
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

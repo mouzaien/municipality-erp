@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-06-26T10:05:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="letter" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
+	<property name="ireport.zoom" value="1.24184264611831"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<parameter name="textSize" class="java.lang.Integer"/>
+	<parameter name="copy" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pose" class="java.lang.String"/>
+	<parameter name="prName" class="java.lang.String"/>
+	<parameter name="real" class="java.lang.String"/>
+	<parameter name="secName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="wName" class="java.lang.String"/>
+	<parameter name="nSign" class="java.io.InputStream"/>
+	<parameter name="sign3" class="java.io.InputStream"/>
+	<parameter name="prSign" class="java.io.InputStream"/>
+	<parameter name="sign2" class="java.io.InputStream"/>
+	<parameter name="tName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="appSubject" class="java.lang.String">
+		<fieldDescription><![CDATA[appSubject]]></fieldDescription>
+	</field>
+	<field name="firstCopy" class="java.lang.String">
+		<fieldDescription><![CDATA[firstCopy]]></fieldDescription>
+	</field>
+	<field name="appHdate" class="java.lang.String">
+		<fieldDescription><![CDATA[appHdate]]></fieldDescription>
+	</field>
+	<field name="signedBy" class="java.lang.Integer">
+		<fieldDescription><![CDATA[signedBy]]></fieldDescription>
+	</field>
+	<field name="printedBy" class="java.lang.Integer">
+		<fieldDescription><![CDATA[printedBy]]></fieldDescription>
+	</field>
+	<field name="appAttach" class="java.lang.String">
+		<fieldDescription><![CDATA[appAttach]]></fieldDescription>
+	</field>
+	<field name="appNo" class="java.lang.String">
+		<fieldDescription><![CDATA[appNo]]></fieldDescription>
+	</field>
+	<field name="markedIn" class="java.lang.String">
+		<fieldDescription><![CDATA[markedIn]]></fieldDescription>
+	</field>
+	<field name="wroteIn" class="java.lang.String">
+		<fieldDescription><![CDATA[wroteIn]]></fieldDescription>
+	</field>
+	<field name="longCommentArabStr" class="java.lang.String">
+		<fieldDescription><![CDATA[longCommentArabStr]]></fieldDescription>
+	</field>
+	<field name="longComment" class="java.lang.String">
+		<fieldDescription><![CDATA[longComment]]></fieldDescription>
+	</field>
+	<field name="appPapers" class="java.lang.Integer">
+		<fieldDescription><![CDATA[appPapers]]></fieldDescription>
+	</field>
+	<field name="secondCopy" class="java.lang.String">
+		<fieldDescription><![CDATA[secondCopy]]></fieldDescription>
+	</field>
+	<field name="WRKAPPID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[WRKAPPID]]></fieldDescription>
+	</field>
+	<field name="appId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="appTo" class="java.lang.String">
+		<fieldDescription><![CDATA[appTo]]></fieldDescription>
+	</field>
+	<field name="signedIn" class="java.lang.String">
+		<fieldDescription><![CDATA[signedIn]]></fieldDescription>
+	</field>
+	<field name="commentType" class="java.lang.Integer">
+		<fieldDescription><![CDATA[commentType]]></fieldDescription>
+	</field>
+	<field name="signType" class="java.lang.String">
+		<fieldDescription><![CDATA[signType]]></fieldDescription>
+	</field>
+	<field name="fontSize" class="java.lang.Integer">
+		<fieldDescription><![CDATA[fontSize]]></fieldDescription>
+	</field>
+	<field name="printedIn" class="java.lang.String">
+		<fieldDescription><![CDATA[printedIn]]></fieldDescription>
+	</field>
+	<field name="markedBy" class="java.lang.Integer">
+		<fieldDescription><![CDATA[markedBy]]></fieldDescription>
+	</field>
+	<field name="wroteBy" class="java.lang.Integer">
+		<fieldDescription><![CDATA[wroteBy]]></fieldDescription>
+	</field>
+	<variable name="currentPage" class="java.lang.Integer" resetType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="276" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="344" y="146" width="123" height="28" uuid="738c5349-153b-4e96-97c3-ee50dfa9e0b0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="14" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{secName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="9" y="141" width="97" height="21" uuid="8a6b1008-b8c7-4e08-b197-30fb45ec7ee5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{signedIn}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="9" y="160" width="97" height="21" uuid="5bf18dd9-5233-4b22-9ed6-dd70ddea0ab6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{appPapers}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="114" y="177" width="357" height="24" uuid="01db089b-c1c7-4368-9575-b06ebec88784"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appSubject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="9" y="124" width="97" height="21" uuid="a99ed421-ec3e-40c6-bc97-6175f79f28bb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="184" width="104" height="17" uuid="4b1cbc27-e786-4674-b56f-669489135596"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="8" isBold="true" pdfEncoding="Cp1252" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("رقم السجل7000874847 ")
+.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="401" y="139" width="63" height="18" uuid="3fb43c04-0c20-421e-b015-cae1564fe71b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="8" isBold="true" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("405/266")
+.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="29" y="195" width="88" height="10" uuid="4f1fecd5-0616-40b8-a93b-81746efe9feb"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="3of9" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA["700874847"]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="65" y="199" width="423" height="24" uuid="a65b517d-9735-40b8-b90d-9503337540cf">
+					<printWhenExpression><![CDATA[$F{commentType}.intValue()!= 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="2" y="223" width="516" height="23" uuid="39db8b92-1306-434b-b05f-a9f0486e8527">
+					<printWhenExpression><![CDATA[$P{copy} == 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="15" isBold="true" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{firstCopy}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="b655d2ea-96af-4dc6-84bd-897d82c14b05">
+					<printWhenExpression><![CDATA[($P{textSize} == 9) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="2f3185bb-d9dd-4377-9d6d-5da679707e9e">
+					<printWhenExpression><![CDATA[($P{textSize} == 10) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="5efb6178-1535-4419-8bdd-ace68d34d891">
+					<printWhenExpression><![CDATA[($P{textSize} == 11) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="f9773428-7755-475a-a7c3-7cdc959e88ae">
+					<printWhenExpression><![CDATA[($P{textSize} == 12) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="98595a6e-cfb8-4b03-8f97-0fe5ba0f716c">
+					<printWhenExpression><![CDATA[($P{textSize} == 13) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="957766ff-439e-45d3-bddd-c4e0418055c4">
+					<printWhenExpression><![CDATA[($P{textSize} == 14) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="0cba406e-1821-45ac-ae93-b7682b031a74">
+					<printWhenExpression><![CDATA[($P{textSize} == 15) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="17" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="0d2e2edf-b620-412d-ad24-711e023c2286">
+					<printWhenExpression><![CDATA[($P{textSize} == 16) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="18" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="9246aea7-c5b7-4bd7-ae1b-fc373d505bce">
+					<printWhenExpression><![CDATA[($P{textSize} == 17) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="19" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="246" width="539" height="30" uuid="98fbb3bd-8e80-4996-906c-b1398adf2884">
+					<printWhenExpression><![CDATA[($P{textSize} == 18) && ($V{PAGE_NUMBER}.equals(new Integer(1)))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="20" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{appTo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="145" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="19" y="49" width="212" height="86" uuid="c7b950f3-afd3-4080-87dc-a7c850d23384">
+					<printWhenExpression><![CDATA[($P{copy} == 0) && (!$F{signType}.equals("A"))]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[($F{signType}.equals("N"))?$P{sign3}:$P{nSign}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement positionType="Float" x="480" y="47" width="38" height="23" uuid="627a0d3a-acf0-4b1f-b269-2754709bd279"/>
+				<imageExpression><![CDATA[$P{sign2}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement positionType="Float" x="344" y="70" width="100" height="50" uuid="7d175ec8-e9e2-4829-900d-be3e709a9895">
+					<printWhenExpression><![CDATA[new Boolean($F{signType}.equals("A"))]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{prSign}]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="235" y="120" width="276" height="21" uuid="24103468-c346-4e3a-8ef2-52c966b4473b">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{secondCopy}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="19" y="30" width="212" height="24" uuid="8f922ebb-7de9-4cb3-b9b6-86ffbf33c3c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{signedBy} == null)?"":(($F{signType}.equals("A"))?"أمين منطقة القصيم":(($F{signType}.equals("N"))?"رئيس بلدية محافظة البكيرية":$P{pose}))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="19" y="111" width="212" height="24" uuid="203b811d-250c-45e6-b6d8-58817c13a323"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{signType}.equals("A")) ?  "م. محمد مبارك المجلي":(($F{signType}.equals("N")) ? $P{prName}:$P{real})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="24a8949e-3f9d-40a2-aa30-8b91297eac4c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{textSize} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="5ef6721c-72d3-46ef-bc36-ca4bf10a8611">
+					<printWhenExpression><![CDATA[$P{textSize} == 10]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="53abae9a-b8ea-47a5-9fb9-a7f4c90d3405">
+					<printWhenExpression><![CDATA[$P{textSize} == 11]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="57169951-34d3-485c-a4c6-ae803ae68e60">
+					<printWhenExpression><![CDATA[$P{textSize} == 12]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="9f8ee692-b5d1-4d4f-b920-e15660da8962">
+					<printWhenExpression><![CDATA[$P{textSize} == 13]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="c8b4bcb2-0260-4af6-a4a3-84421e9232a7">
+					<printWhenExpression><![CDATA[$P{textSize} == 14]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="ab936b00-f126-497e-9f14-99f684d11fb6">
+					<printWhenExpression><![CDATA[$P{textSize} == 15]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="15" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="7fcf30ce-3849-4ff5-8f28-82991154f603">
+					<printWhenExpression><![CDATA[$P{textSize} == 16]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="91d756a8-6fd9-468a-9153-8e5cac52b4b7">
+					<printWhenExpression><![CDATA[$P{textSize} == 17]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="17" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="16" y="3" width="525" height="20" uuid="03c2d6ad-c561-4651-aeef-7f2a2d9524e6">
+					<printWhenExpression><![CDATA[$P{textSize} == 18]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="18" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+$F{longCommentArabStr}+"\nوالسلام عليكم ورحمة الله وبركاته\t\t\t\t\t\t"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="215" y="5" width="324" height="21" forecolor="#FF0000" uuid="0420255f-3c36-4e14-a4d1-25a8e36f5069"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="13" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# معا_ضد_الإرهاب_والفكر_الضال"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="39" width="215" height="21" uuid="e307d8f0-1e75-4bfb-a3f6-3e9cd0760e2a"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="13" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{wName}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="2" y="4" width="200" height="50" uuid="779e45ce-7325-45c4-9c08-a4e509549519"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{licencesListBean.searchLicences}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+
+				<p class="text-center">
+					<h:outputLabel styleClass="btxt"
+						style="font-weight:bold; font-size:30px;"
+						value="#{msg['licences']}">
+					</h:outputLabel>
+
+				</p>
+
+				<h:form id="includeform">
+
+
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">#{msg['list.licences']}
+							</h3>
+						</div>
+
+						<div class="panel-body">
+
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-2">
+											<h:outputLabel value="#{msg['licence.deliver']}"
+												styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:selectOneMenu id="typeList" styleClass="form-control"
+												value="#{licencesListBean.typeLicence}"
+												style="width:100%; dir:rtl;">
+												<f:selectItem itemLabel="#{msg['new.delivered']}"
+													itemValue="1" />
+												<f:selectItem itemLabel="#{msg['will.finish']}"
+													itemValue="2" />
+												<f:selectItem itemLabel="#{msg['finished']}" itemValue="3" />
+												<f:ajax
+													render="includeform:period_panel includeform:licencedt"
+													execute="typeList" event="change"
+													listener="#{licencesListBean.resetFields}" />
+											</h:selectOneMenu>
+										</div>
+										<h:panelGroup id="period_panel">
+											<div class="col-md-2">
+												<h:outputLabel value="#{msg['delivered.in']}"
+													rendered="#{(licencesListBean.typeLicence==1)? true:false}"
+													styleClass="btxt" />
+												<h:outputLabel value="#{msg['finish.in']}"
+													rendered="#{(licencesListBean.typeLicence==2)? true:false}"
+													styleClass="btxt" />
+											</div>
+											<div class="col-md-2">
+												<h:inputText value="#{licencesListBean.period}" size="2"
+													rendered="#{(licencesListBean.typeLicence==3)? false:true}"
+													styleClass="form-control" />
+											</div>
+										</h:panelGroup>
+
+
+										<div class="col-md-3">
+											<h:commandButton value="#{msg['search']}"
+												styleClass="btn btn-primary"
+												style="float: left; font-family: kufi !important; margin-left: 5px; margin-right: 5px;">
+												<f:ajax execute="@form" render="includeform:licencedt"
+													listener="#{licencesListBean.searchLicences}"></f:ajax>
+											</h:commandButton>
+
+										</div>
+
+										<div class="col-md-1"></div>
+
+									</div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<p:dataTable var="licenceItem" id="licencedt"  paginatorPosition="bottom"
+											value="#{licencesListBean.licencesList}"
+											emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											filteredValue="#{licencesListBean.filteredLicences}"
+											paginator="true" rows="12">
+
+											<p:column style="text-align: center;" headerText="الرخصة"
+												filterBy="#{licenceItem.licNo}" filterMatchMode="contains"
+												width="5%">
+			                                    #{licenceItem.licNo}
+			                                </p:column>
+											<p:column style="white-space: nowrap;"
+												headerText="#{msg['commercial.name']}" width="25%"
+												filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+												#{licenceItem.trdName}										
+											</p:column>
+											<p:column style="white-space: nowrap;"
+												headerText="#{msg['address']}" width="25%"
+												filterBy="#{licenceItem.licAdress}"
+												filterMatchMode="contains">										
+												#{licenceItem.licAdress}										
+											</p:column>
+											<p:column style="white-space: nowrap;"
+												headerText="#{msg['licence.owner']}" width="20%"
+												filterBy="#{licenceItem.licOwnerName}"
+												filterMatchMode="contains">										
+												#{licenceItem.licOwnerName}										
+											</p:column>
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="#{msg['licence.start.date']}" width="10%"
+												filterBy="#{licenceItem.licBeginDate}"
+												filterMatchMode="contains">										
+												#{licenceItem.licBeginDate}										
+											</p:column>
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="#{msg['licence.end.date']}" width="10%"
+												filterBy="#{licenceItem.licEndDate}"
+												filterMatchMode="contains">										
+												#{licenceItem.licEndDate}										
+											</p:column>
+											<p:column width="5%" style="text-align:center"
+												headerText="#{msg['details']}">
+												<p:commandButton onclick="PF('penality_dlg').show()" style="background-color: #3F729B;"
+													action="#{licencesListBean.loadAttachmentByLicenceId}"
+													icon="fa fa-file-text" update="includeform:myDialog">
+													<f:setPropertyActionListener value="#{licenceItem}"
+														target="#{licencesListBean.licence}" />
+												</p:commandButton>
+
+
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+					<p:dialog widgetVar="penality_dlg" id="penality_dlgId" width="70%" header="المرفقات"
+						style="margin-top: -127px;" hideEffect="fade" showEffect="explode"
+						dir="rtl" modal="true" resizable="false">
+						<h:panelGroup id="myDialog">
+							<div style="width: 100%">
+								<div style="float: right; width: 100%">
+									<div class="row">
+<!-- 										<div style="color: color: #428bca"> -->
+<!-- 											<h3 class="page-header" -->
+<!-- 												style="margin: 0px 0 20px ! important; color: #428bca"> -->
+<!-- 												المرفقات</h3> -->
+<!-- 										</div> -->
+										<div class="panel-body">
+											<p:outputLabel
+												rendered="#{licencesListBean.attList eq null }"
+												value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel>
+											<ul>
+												<h:panelGroup id="AttachmantTab">
+													<ui:repeat value="#{licencesListBean.attList}" var="att">
+														<div class="panel panel-default">
+															<div class="panel-body">قام بارفاقه
+																#{att.ownerName}</div>
+															<div class="panel-footer">
+																<div class="container-fluid">
+																	<h:outputLink target="_blank" value="#{att.attLink}"
+																		rendered="#{!att.ireportFile}">
+																أضغط هنا لتحميل الملف
+															</h:outputLink>
+																</div>
+															</div>
+														</div>
+													</ui:repeat>
+												</h:panelGroup>
+											</ul>
+										</div>
+									</div>
+
+									<br /> <br />
+
+									<div>
+
+										<button type="button" class="btn btn-primary"
+											onclick="PF('penality_dlg').hide();"
+											style="float: left; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
+											data-dismiss="modal">رجوع</button>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</h:panelGroup>
+						<div />
+					</p:dialog>
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

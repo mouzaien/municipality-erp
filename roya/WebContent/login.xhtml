@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+       <title>نظام رؤية للتعاملات الالكترونية</title>
+        <h:outputScript name="js/layout.js" library="serenity-layout" />
+        <h:outputScript name="js/ripple.js" library="serenity-layout" />
+    </h:head>
+
+    <h:body styleClass="login-body">
+    <h:form prependId="false">
+    
+    <style>
+    body .ui-messages .ui-messages-error{
+    
+    width: 37%;
+    position: absolute;
+    top: 100px;
+    left: 30%;
+    direction: rtl;
+    }
+    </style>
+        <div class="login-panel ui-fluid">
+            <div class="login-panel-header">
+                <p:graphicImage name="images/login/icon-logo.png" library="serenity-layout" />
+            </div>
+            <div class="login-panel-content">
+                <div class="ui-g">
+                    <div class="ui-g-12" >
+                        <h1>برنامج رؤية</h1>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="username"
+													style="font-family: 'kufi' !important;font-size: medium;width: 100%;text-transform: uppercase"
+													value="#{loginBean.userName}" required="true"
+													requiredMessage="#{msg['empty.user']}" />
+                            <label>المستخدم</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password
+													style="font-family: 'kufi' !important; width: 100%"
+													id="password" value="#{loginBean.passWord}" required="true"
+													requiredMessage="#{msg['empty.password']}" />
+                            <label>كلمة العبور</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-6 ">
+<!--                         <p:selectBooleanCheckbox id="rememberme" /> -->
+<!--                         <p:outputLabel for="rememberme" value="Remember Me?" /> -->
+                    </div>
+                    <div class="ui-g-6 password-reset">
+<!--                         <h:outputLink>Reset Password</h:outputLink> -->
+                    </div>
+                    <br></br>
+                     <br></br>
+                    <div class="ui-g-12">
+                        <p:commandButton ajax="false" value="#{msg['login']}"
+													process="pass name"
+													style="font-size: x-large !important; font-weight: bold !important;"
+													icon="fa fa-sign-in" 
+													action="#{loginBean.login}" />
+                    </div>
+                    <p:messages autoUpdate="true"></p:messages>
+<!--                     <div class="ui-g-12"> -->
+<!--                         Don't have an account? <h:outputLink value="#">Sign Up</h:outputLink> now. -->
+<!--                     </div> -->
+                </div>
+            </div>
+        </div>
+        
+        <h:outputStylesheet name="css/layout-moody.css" library="serenity-layout" />
+        </h:form>
+        
+        <h:form prependId="false">
+					<p:dialog header="الدعم الفنى " dir="rtl" width="300" closeOnEscape="true" draggable="false" minWidth="300" minHeight="180"
+						widgetVar="dlg2" modal="true" height="150">
+						
+						<h:outputText style="color:#428bca"
+							value="   من فضلك ادخل اسم المستخدم المراد الدخول به" />
+						<br></br>
+						<br></br>
+						<div>
+
+							<div class="text-center">
+								<p:inputText id="supp_user" required="false" requiredMessage="ادخل اسم المستخدم"
+									placeholder="ادخل اسم المستخدم" style="text-transform: uppercase"
+									value="#{loginBean.empUserName}" />
+
+							</div>
+						</div>
+
+						<br></br>
+						<h:commandButton styleClass="btn btn-primary btn-sm btn-block"
+							action="#{loginBean.supportLogin}" value="دخول"></h:commandButton>
+					</p:dialog>
+				</h:form>
+    </h:body>
+
+</html>

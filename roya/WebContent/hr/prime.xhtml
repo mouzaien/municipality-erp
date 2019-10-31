@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+						<h:panelGroup id="buttons">
+							<p:commandButton id="saveBtn" value="#{msg['save']}"
+								icon="ui-icon ui-icon-save" styleClass="cyan-btn"
+								action="#{jobsBean.savePrimes}" update="@form">
+							</p:commandButton>
+							<!-- rendered="#{not empty jobsBean.primesList}" -->
+
+							<!-- 		<p:spacer width="10" height="10"></p:spacer>
+ -->
+
+						</h:panelGroup>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<div>
+							<h1 style="color: #7CB342; text-align: center;">
+								صرف العلاوة السنوية <span class="fa fa-fw fa-credit-card"></span>
+							</h1>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="السنة">
+
+									</p:outputLabel>
+
+
+								</div>
+								<div class="ui-g-1">
+									<p:inputText class="form-control" type="number"
+										value="#{jobsBean.year}" placeholder="إدخل السنة" />
+								</div>
+								<div class="ui-g-1">
+
+									<p:commandButton styleClass="orange-btn"
+										icon="ui-icon ui-icon-check"
+										action="#{jobsBean.calculatePrimes}" update="@form">
+									</p:commandButton>
+								</div>
+
+
+							</div>
+
+							<br />
+
+
+						</div>
+						<div>
+							<p:dataTable var="primeItem" id="inboxdt"
+								value="#{jobsBean.primesList}" emptyMessage="لايوجد بيانات"
+								rowIndexVar="rowIndex" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{jobsBean.filteredPrimes}" paginator="true"
+								rows="17">
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+								<p:column style="text-align: center;" headerText="رقم الموظف"
+									filterBy="#{primeItem.id.empno}" filterMatchMode="contains"
+									width="10%">
+                                    #{primeItem.id.empno}
+                                </p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="السجل المدني" width="10%"
+									filterBy="#{primeItem.nationalId}" filterMatchMode="contains">										
+										#{primeItem.nationalId} 									
+								</p:column>
+								<p:column style="white-space: nowrap;" headerText="الموظف"
+									width="30%" filterBy="#{primeItem.empName}"
+									filterMatchMode="contains">										
+										#{primeItem.empName}										
+								</p:column>
+								<!-- 								<p:column style="white-space: nowrap;text-align: center;" -->
+								<!-- 									headerText="الجنسية" width="10%" -->
+								<!-- 									filterBy="#{primeItem.nationality}" filterMatchMode="contains">										 -->
+								<!-- 										#{primeItem.nationality} 									 -->
+								<!-- 								</p:column> -->
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="المرتبة" width="10%"
+									filterBy="#{primeItem.rankName}" filterMatchMode="contains">										
+										#{primeItem.rankName} 									
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الدرجة قبل العلاوة" width="10%"
+									filterBy="#{primeItem.oldClassnumber}"
+									filterMatchMode="contains">										
+										#{primeItem.oldClassnumber} 									
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الراتب قبل العلاوة" width="10%"
+									filterBy="#{primeItem.oldBasicSalary}"
+									filterMatchMode="contains">										
+										#{primeItem.oldBasicSalary} 									
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الدرجة بعد العلاوة" width="10%"
+									filterBy="#{primeItem.classNumber}" filterMatchMode="contains">										
+										#{primeItem.classNumber} 									
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الراتب بعد العلاوة" width="10%"
+									filterBy="#{primeItem.basicSalary}" filterMatchMode="contains">										
+										#{primeItem.basicSalary} 									
+								</p:column>
+							</p:dataTable>
+						</div>
+						<br />
+
+					</div>
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

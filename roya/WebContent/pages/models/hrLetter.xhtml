@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<f:metadata>
+	<f:viewAction action="#{mainManagedBean.mailExecutor.init}"
+		phase="APPLY_REQUEST_VALUES" />
+</f:metadata>
+<h:head>
+
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 98%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right;
+}
+</style>
+</h:head>
+<h:body>
+
+	<div class="card card-w-title">
+
+
+		<h1 style="color: #7CB342; text-align: center;">
+			#{msg['salary.definition']}<span class="fa fa-fw fa-dollar"></span>
+		</h1>
+		<br></br>
+		<h:panelGroup id="panel">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="image-box-footer" style="float: left">
+				<p:commandButton rendered="#{! mainManagedBean.mailExecutor.viewer}"
+					value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return"
+					action="#{mainManagedBean.saveAction}">
+					<f:ajax execute="@form bnk ibn" />
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['reception']}"
+					styleClass="green-btn ui-state-hover"
+					icon="fa fa-fw fa-check-circle"
+					rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized}"
+					immediate="true"
+					action="#{mainManagedBean.mailExecutor.acceptAction}">
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['refuse']}"
+					icon="ui-icon ui-icon-cancel"
+					rendered="#{mainManagedBean.mailExecutor.viewer  and mainManagedBean.mailExecutor.authorized}"
+					immediate="true"
+					action="#{mainManagedBean.mailExecutor.refuseAction}">
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['send.request']}"
+					styleClass="cyan-btn ui-state-hover" icon="fa fa-fw fa-send"
+					rendered="#{! mainManagedBean.mailExecutor.viewer}"
+					action="#{mainManagedBean.mailExecutor.sendRequestForHrletter}">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['accept']}" immediate="true"
+					styleClass="indigo-btn flat ui-state-hover"
+					icon="fa fa-fw fa-thumbs-up"
+					rendered="#{mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.authorized}"
+					action="#{mainManagedBean.mailExecutor.acceptActionForHr}">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['print']}" icon="fa fa-fw fa-print"
+					immediate="true" styleClass="purple-btn"
+					onclick="this.form.target='_blank'"
+					rendered="#{mainManagedBean.mailExecutor.canPrint}"
+					action="#{mainManagedBean.mailExecutor.printHrLetterReportAction}">
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<h:panelGroup>
+					<p:commandButton
+						rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized}"
+						value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();"
+						styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel"></p:commandButton>
+				</h:panelGroup>
+
+
+			</div>
+
+
+
+			<!-- 			<p:commandButton rendered="false" -->
+			<!-- 				actionListener="#{mainManagedBean.mailExecutor.hrLetterPanelShow}" -->
+			<!-- 				update="panel" process="@form" -->
+			<!-- 				value="طلب خطاب تعريف الراتب لاى جهة "></p:commandButton> -->
+
+			<!-- 			<p:commandButton rendered="false" -->
+			<!-- 				actionListener="#{mainManagedBean.mailExecutor.transferSalaryPanelShow}" -->
+			<!-- 				update="panel" process="@form" style="width: 203px;" -->
+			<!-- 				value="طلب خطاب   تحويل  الراتب  للبنك"></p:commandButton> -->
+
+
+			<div class="ui-g" style="float: right;">
+
+				<p:selectOneRadio disabled="#{mainManagedBean.mailExecutor.viewer}"
+					id="city" immediate="true"
+					value="#{mainManagedBean.mailExecutor.updateViewFlage}"
+					layout="lineDirection" columns="2">
+					<p:ajax update="panel" process="@form"
+						listener="#{mainManagedBean.mailExecutor.updateView}" />
+					<f:selectItem itemLabel="#{msg['comment.direction.dde']}"
+						itemValue="232" />
+
+					<f:selectItem itemLabel="#{msg['comment.direction.bank']}"
+						itemValue="233">
+					</f:selectItem>
+				</p:selectOneRadio>
+			</div>
+			<br />
+			<br />
+			<br />
+
+			<p:panel>
+				<f:facet name="header">
+					<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['employee.details']}
+                    </f:facet>
+
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['name']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.employeeInfo.firstName} #{mainManagedBean.mailExecutor.employeeInfo.secondName} #{mainManagedBean.mailExecutor.employeeInfo.thirdName} #{mainManagedBean.mailExecutor.employeeInfo.forthName}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['iban.number']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.employeeInfo.accountNumber}" />
+					</div>
+				</div>
+				<br></br>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['rank']}" styleClass="btxt" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.empHistoricalInfo.rankNumber} " />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['bank.account']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{fn:substring(mainManagedBean.mailExecutor.employeeInfo.accountNumber, 9,24)}" />
+					</div>
+				</div>
+				<br></br>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['bank.name']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{mainManagedBean.mailExecutor.bank.name}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['job']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.empHistoricalInfo.govJob4.jobName} " />
+					</div>
+				</div>
+				<br></br>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['principal.salary']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.empHistoricalInfo.basicSalary} " />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['allowances']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.empHistoricalInfo.transferSalary} " />
+					</div>
+				</div>
+				<br></br>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['record.civilian']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-4">
+						<h:outputLabel
+							value="#{mainManagedBean.mailExecutor.employeeInfo.nationalNumber} " />
+					</div>
+
+				</div>
+				<br></br>
+
+			</p:panel>
+			<p:panel></p:panel>
+
+
+			<br></br>
+
+
+			<h:panelGroup
+				rendered="#{mainManagedBean.mailExecutor.transferSalary}">
+
+				<p:panel>
+
+					<f:facet name="header">
+						<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;بيانات الطلب
+                    </f:facet>
+					<h:panelGroup rendered="#{! mainManagedBean.mailExecutor.viewer}">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="#{msg['bank.name.receivers']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu id="bnk" required="true"
+									requiredMessage="#{msg['bank.choose.required']}"
+									value="#{mainManagedBean.mailExecutor.bankId}"
+									style="width:100%">
+									<f:selectItem itemLabel="#{msg['bank.choose']}" itemValue=""
+										noSelectionOption="true" />
+
+									<f:selectItems value="#{mainManagedBean.mailExecutor.banks}"
+										var="bank" itemValue="#{bank.id}" itemLabel="#{bank.name}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="#{msg['iban.number']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-4">
+								<p:inputText required="true" id="ibn" style="width:100%"
+									styleClass="form-control"
+									requiredMessage=" #{msg['iban.number.required']} "
+									validatorMessage="#{msg['iban.number.validation']}"
+									value="#{mainManagedBean.mailExecutor.iban}">
+									<f:validateLength maximum="24" minimum="24"></f:validateLength>
+								</p:inputText>
+							</div>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{mainManagedBean.mailExecutor.viewer}">
+
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="#{msg['bank.name.receivers']} "
+									styleClass="btxt" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu id="bnkoo" disabled="true" style="width:100%"
+									value="#{mainManagedBean.mailExecutor.hrLetterRequest.bankId}">
+									<f:selectItem itemLabel="#{msg['bank.choose']} " itemValue=""
+										noSelectionOption="true" />
+
+									<f:selectItems value="#{mainManagedBean.mailExecutor.banks}"
+										var="bank" itemValue="#{bank.id}" itemLabel="#{bank.name}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="#{msg['iban.number']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-4">
+								<h:outputLabel required="true"
+									value="#{mainManagedBean.mailExecutor.hrLetterRequest.ibanNumber}">
+								</h:outputLabel>
+							</div>
+						</div>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{! mainManagedBean.mailExecutor.viewer}">
+						<div class="ui-widget-header"
+							style="background-color: #2196F3; border-color: #2196F3;">
+							<span class="fa fa-fw fa-info-circle"></span>
+							<h:outputLabel class="col-md-12"
+								value="#{msg['iban.attachment.info']}"></h:outputLabel>
+						</div>
+
+					</h:panelGroup>
+					<br></br>
+					<h:panelGroup
+						rendered="#{ mainManagedBean.mailExecutor.currentUserId == mainManagedBean.mailExecutor.priviledge  }">
+						<div class="ui-widget-header"
+							style="background-color: #FFC107; border-color: #FFC107;">
+							<span class="fa fa-fw fa-warning"></span>
+							<h:outputLabel class="col-md-12" value="#{msg['iban.edit']}"></h:outputLabel>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="#{msg['bank.name.receivers']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-4">
+								<p:selectOneMenu id="console" required="true"
+									requiredMessage="#{msg['bank.choose.required']}"
+									value="#{mainManagedBean.mailExecutor.bankId}"
+									style="width:261px;direction:rtl">
+									<f:selectItem itemLabel="#{msg['bank.choose.required']} "
+										itemValue="" noSelectionOption="true" />
+
+									<f:selectItems value="#{mainManagedBean.mailExecutor.banks}"
+										var="bank" itemValue="#{bank.id}" itemLabel="#{bank.name}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="#{msg['iban.number']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-4">
+								<p:inputText required="true" style="width: 260px"
+									requiredMessage="#{msg['iban.number.required']}"
+									validatorMessage="#{msg['iban.number.validation']}"
+									value="#{mainManagedBean.mailExecutor.iban}">
+									<f:validateLength maximum="24" minimum="24"></f:validateLength>
+								</p:inputText>
+							</div>
+						</div>
+
+
+
+
+						<p:commandButton style="float:left" process="@form" update="panel"
+							actionListener="#{mainManagedBean.mailExecutor.updateUserInfo}"
+							value=" #{msg['edit.info']}"></p:commandButton>
+					</h:panelGroup>
+					<br></br>
+
+					<h:panelGroup rendered="#{! mainManagedBean.mailExecutor.viewer}">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<p:outputLabel styleClass="btxt" value="#{msg['attach']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-8">
+								<p:fileUpload id="NewRecordUpload" style="width:100%"
+									widgetVar="NewRecordUploader" multiple="true" required="true"
+									fileUploadListener="#{mainManagedBean.mailExecutor.uploadFile}"
+									uploadLabel="#{msg['attach']}" cancelLabel="#{msg['cancel']}"
+									label="#{msg['select.attachment']}" previewWidth="0"
+									process="@this"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx)$/"
+									sizeLimit="300000000">
+								</p:fileUpload>
+
+							</div>
+						</div>
+
+					</h:panelGroup>
+
+				</p:panel>
+
+
+
+
+			</h:panelGroup>
+
+
+
+
+
+			<br></br>
+			<h:panelGroup rendered="#{mainManagedBean.mailExecutor.hrLetter}">
+				<p:panel>
+
+					<f:facet name="header">
+						<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;بيانات الطلب
+                    </f:facet>
+
+
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<h:outputLabel value="#{msg['target']}" styleClass="btxt" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<p:inputText id="purpose" style="width:100%"
+								requiredMessage="#{msg['target.required']}"
+								rendered="#{! mainManagedBean.mailExecutor.viewer}"
+								value="#{mainManagedBean.mailExecutor.purposForHrLetter}"></p:inputText>
+							<h:outputLabel rendered="#{mainManagedBean.mailExecutor.viewer}"
+								value="#{mainManagedBean.mailExecutor.hrLetterRequest.purpose}" />
+
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<h:outputLabel value="#{msg['senders.direction']}"
+								styleClass="btxt" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<p:inputText id="dest" styleClass="form-control"
+								style="width:100%"
+								requiredMessage="#{msg['sender.direction.required']}"
+								rendered="#{! mainManagedBean.mailExecutor.viewer}"
+								value="#{mainManagedBean.mailExecutor.hrLetterDestenation}"></p:inputText>
+							<h:outputLabel rendered="#{mainManagedBean.mailExecutor.viewer}"
+								value="#{mainManagedBean.mailExecutor.hrLetterRequest.destination}" />
+						</div>
+					</div>
+					<div class="ui-g">
+						<h:panelGroup rendered="#{! mainManagedBean.mailExecutor.viewer}">
+							<h:outputText> #{msg['salary.defenition.direction']} </h:outputText>
+						</h:panelGroup>
+
+					</div>
+
+
+				</p:panel>
+
+				<p:dialog header="#{msg['add.explanation.confirmation']}"
+					widgetVar="dlgRefuse" height="300" width="500">
+
+					<h:panelGroup id="refPopup">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel value="#{msg['redirect.transaction']}" />
+							<p:selectOneMenu id="typ" styleClass="form-control"
+								value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+								var="d" style=" width:100%">
+
+								<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+									itemValue="#{pp.idStr} " value="#{mainManagedBean.wrkPurposes}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+							<p:inputTextarea cols="30" rows="5" style="width:100%"
+								value="#{mainManagedBean.mailExecutor.wrkAppComment}">
+							</p:inputTextarea>
+
+
+						</p:panelGrid>
+						<br></br>
+						<br></br>
+						<div style="direction: initial;">
+
+
+							<p:commandButton value="#{msg['back']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								styleClass=" orange-btn">
+							</p:commandButton>
+							<p:spacer width="4"></p:spacer>
+							<!-- 												<button type="button" class="btn btn-green" -->
+							<!-- 													data-dismiss="modal">#{msg['back']}</button> -->
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check"
+								action="#{mainManagedBean.mailExecutor.refuseAction}">
+								<f:ajax execute="refPopup"></f:ajax>
+							</p:commandButton>
+
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+
+			</h:panelGroup>
+		</h:panelGroup>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+
+</style>
+</h:head>
+<ui:composition template="./WebTemplate.xhtml">
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" />
+		<p class="text-center">
+			<h:outputLabel styleClass="btxt"
+				 value="   مباشرة 	موظف بعد الاجازة " />
+		</p>
+		<br />
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+
+		<!-- /.col-lg-4 -->
+		<div class="col-md-12">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h:outputLabel 
+						value=" عرض بيانات  
+					الموظف و الاجازة" />
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel value="الاسم" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel
+										style=" font-weight: bold; "
+										value="عبد الله عبد الكريم" />
+								</div>
+							</div>
+
+
+
+
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel 
+										value="رقم القرار" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel style=" font-weight: bold;" value="254154" />
+								</div>
+							</div>
+
+
+
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel 
+										value="نوع الاجازة"  />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel
+										style=" font-weight: bold; ;"
+										value="اجازة اعتيادية" />
+								</div>
+							</div>
+
+
+
+
+
+
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-4">
+									<h:outputLabel 
+										value="مدة الاجازة" />
+								</div>
+								<div class="col-md-3">
+									<h:outputLabel
+										style=" font-weight: bold; ;"
+										value="30 يوم" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<h:outputLabel 
+										value="تاريخ القرار " />
+								</div>
+								<div class="col-md-3">
+									<h:outputLabel
+										style=" font-weight: bold; ;"
+										value="12 12 2012" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<h:outputLabel 
+										value="اعتبارا من تاريخ" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel
+										style=" font-weight: bold; ;"
+										value="12 12 2013 " />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="panel panel-info" >
+				<div class="panel-heading">
+					<h:outputLabel 
+						value=" بيانات المباشرة" />
+				</div>
+				<div class="panel-body">
+
+					<h:form styleClass="form-inline">
+						<div class="form-group">
+							<label >وحيث ان المذكور قد
+								باشر عمله من يوم :</label>
+							<h:selectOneMenu styleClass="form-control">
+
+
+								<f:selectItem itemLabel="الاحد" itemValue="الاحد"></f:selectItem>
+								<f:selectItem itemLabel="الاثنين" itemValue="الاثنين"></f:selectItem>
+								<f:selectItem itemLabel="الثلاثاء" itemValue="الثلاثاء"></f:selectItem>
+								<f:selectItem itemLabel="الاربعاء" itemValue="الاربعاء"></f:selectItem>
+								<f:selectItem itemLabel="الخميس" itemValue="الخميس"></f:selectItem>
+
+							</h:selectOneMenu>
+
+
+							<!-- 	<label>بتاريخ م </label> <input type="date" style="height: 30px;" />   -->
+						</div>
+						<br></br>
+						<br></br>
+						<br></br>
+						<br></br>
+						<div class="text-right">
+							<p:commandButton value="ارسال  " 
+								icon="fa fa-paperclip" class="btn btn-default" ajax="false" />
+
+
+							<p:commandButton value=" معاينة  "
+								style=" " icon="fa fa-paperclip"
+								class="btn btn-default" />
+
+
+							<p:commandButton value="الرجوع " 
+								icon="fa fa-mail-reply" class="btn btn-default" />
+
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+
+	</ui:define>
+</ui:composition>
+</html>

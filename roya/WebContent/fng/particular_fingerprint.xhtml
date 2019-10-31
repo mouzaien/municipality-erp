@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+
+	</h:head>
+
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer">
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="#{msg['save']}"
+							icon="ui-icon ui-icon-save" styleClass="cyan-btn"
+							action="#{particularFingerprintBean.saveFingerprint}">
+							<f:ajax execute="@form"></f:ajax>
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="#{msg['cancel']}"
+							styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel"
+							update="@form" action="#{particularFingerprintBean.cancel}">
+						</p:commandButton>
+					</div>
+					<br />
+					<br />
+					<div class="card card-w-title" style="direction: rtl;">
+
+						<p:panel id="details_data">
+							<f:facet name="header">
+								<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; إستثناء فردي
+                    </f:facet>
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox
+										value="#{particularFingerprintBean.higriMode}">
+										<p:ajax update="pDates1" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="الموظف" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<p:selectOneMenu id="empNBList" filter="true"
+										filterMatchMode="contains"
+										value="#{particularFingerprintBean.check.userId}"
+										style="width:100%">
+										<f:selectItem itemValue=""
+											itemLabel="#{msg['choose.employee']}" />
+										<f:selectItems value="#{loadingDataBean.employersList}"
+											var="emp" itemValue="#{emp.userId}"
+											itemLabel="#{emp.employeeName}" />
+									</p:selectOneMenu>
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="الحالة" styleClass="btxt" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<p:selectOneMenu style="width:100%"
+										value="#{particularFingerprintBean.check.checktype}">
+										<f:selectItem itemValue="1" itemLabel="بداية عمل" />
+										<f:selectItem itemValue="2" itemLabel="نهاية عمل" />
+										<f:selectItem itemValue="3" itemLabel="بداية إضافي" />
+										<f:selectItem itemValue="4" itemLabel="نهاية إضافي" />
+										<f:selectItem itemValue="5" itemLabel="خروج" />
+										<f:selectItem itemValue="6" itemLabel="عودة من الخروج" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<br></br>
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="التاريخ" styleClass="btxt" />
+								</div>
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-4"> -->
+								<!-- 									<ui:include src="../shared/calender.xhtml" /> -->
+
+								<!-- 									<p:calendar id="date" pattern="dd/MM/yyyy" -->
+								<!-- 										value="#{particularFingerprintBean.selectedDate}"> -->
+								<!-- 									</p:calendar> -->
+
+
+								<!-- 								</div> -->
+
+
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates1">
+										<p:inputText id="hiri1"
+											value="#{particularFingerprintBean.selectedDate}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ "
+											rendered="#{particularFingerprintBean.higriMode}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric1"
+											value="#{particularFingerprintBean.selectedDate_G}"
+											pattern="dd/MM/yyyy"
+											rendered="#{!particularFingerprintBean.higriMode}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+
+							</div>
+							<br></br>
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="الوقت القياسي" styleClass="btxt" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<p:selectBooleanButton
+										value="#{particularFingerprintBean.afternoon}" onLabel="م"
+										offLabel="ص" style="width:60px" />
+									<p:spacer width="5" />
+									<p:inputNumber value="#{particularFingerprintBean.seconds}"
+										size="8" placeholder="ثانية" minValue="00" maxValue="59" />
+									<p:spacer width="5" />
+									<p:inputNumber value="#{particularFingerprintBean.minutes}"
+										size="8" placeholder="دقيقة" minValue="00" maxValue="59" />
+									<p:spacer width="5" />
+									<p:inputNumber value="#{particularFingerprintBean.hours}"
+										size="8" placeholder="ساعة" minValue="00" maxValue="12" />
+								</div>
+							</div>
+						</p:panel>
+					</div>
+					<br />
+					<br />
+
+				</h:form>
+
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

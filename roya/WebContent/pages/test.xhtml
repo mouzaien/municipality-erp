@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Use Dynamic Web TWAIN to Scan</title>
+   
+    <script  type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/dynamsoft.webtwain.config.js" />
+		<script  type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/dynamsoft.webtwain.config.js" />
+<script type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/scanContent.js" />
+</h:head>
+<ui:composition template="../pages/menuBar.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform">
+
+
+
+			<button type="button" class="btn btn-primary " data-toggle="modal"
+				data-target="#myModal">الارفاق</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">اضافة المرفقات</h4>
+						</div>
+						<div class="modal-body">
+
+							<h:outputLabel>اختر نوع المسح الضوئى</h:outputLabel>
+							<select size="1" id="source" style="position: relative;" /> <br></br>
+							<br></br> <input class="btn btn-primary btn-sm" type="button"
+								value="مسح ضوئى" onclick="AcquireImage();" /> <input
+								class="btn btn-primary btn-sm" type="button"
+								value=" ارفاق من الجهاز" onclick="LoadImage();" />
+								<br></br>
+					
+<label>
+								 <input
+								type="radio" value="jpg" name="ImageType" id="imgTypejpeg" />JPEG</label>
+							<label><input type="radio" value="tif" name="ImageType"
+								id="imgTypetiff" />TIFF</label> <label><input type="radio"
+								value="pdf" name="ImageType" id="imgTypepdf" checked="checked" />PDF</label>
+							<!-- dwtcontrolContainer is the default div id for Dynamic Web TWAIN control.
+    If you need to rename the id, you should also change the id in the dynamsoft.webtwain.config.js accordingly. -->
+							<div class="col-md-3" id="dwtcontrolContainer"  onclick="ShowImageEditor();"></div>
+							<br></br> <input class="btn btn-danger btn-sm" type="button"
+								value="حذف الكل    " onclick="removeِAllImage();" /> <input
+								class="btn btn-primary btn-sm" type="button" value="حفظ"
+								onclick="btnUpload_onclick();" />
+
+
+						</div>
+						<div class="modal-footer">
+
+							<input class="btn btn-success btn-sm" type="button"
+								value="   رجوع " data-dismiss="modal" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+	
+
+
+
+
+

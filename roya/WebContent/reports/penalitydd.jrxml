@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-07-29T10:59:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penality" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl002.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="fineNo" class="java.lang.Integer"/>
+	<parameter name="LOGO_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select fd.id, FD.FINE_NO, f.fine_code, f.FINE_DESC , fd.fine_value,M.FINE_DATE , M.F_NAME, M.F_LICENCE_NO, M.F_ID_NO, M.F_FINE_CASE, B.BILL_NO,B.BILL_DATE,
+(SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('PENALITIES_RESP'))  PRSIGN,
+(SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = m.F_SUPERVISOR_CODE)  SUPSIGN
+from REQ_FINES_DETAILS fd, REQ_FINES_SETUP f,REQ_FINES_master m,pay_lic_bills b
+where M.FINE_NO=FD.FINE_NO and m.fine_no =  $P{fineNo} 
+and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="FINE_NO" class="java.math.BigDecimal"/>
+	<field name="FINE_CODE" class="java.lang.String"/>
+	<field name="FINE_DESC" class="java.lang.String"/>
+	<field name="FINE_VALUE" class="java.math.BigDecimal"/>
+	<field name="FINE_DATE" class="java.lang.String"/>
+	<field name="F_NAME" class="java.lang.String"/>
+	<field name="F_LICENCE_NO" class="java.lang.String"/>
+	<field name="F_ID_NO" class="java.lang.String"/>
+	<field name="F_FINE_CASE" class="java.math.BigDecimal"/>
+	<field name="BILL_NO" class="java.lang.String"/>
+	<field name="BILL_DATE" class="java.lang.String"/>
+	<field name="PRSIGN" class="java.io.InputStream"/>
+	<field name="SUPSIGN" class="java.io.InputStream"/>
+	<variable name="amount" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{FINE_VALUE}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="186" splitType="Stretch">
+			<textField>
+				<reportElement x="198" y="118" width="159" height="52" uuid="9c5f06ba-3f25-49e8-ad78-54552062789e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المخالفات"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="0" width="149" height="56" uuid="ea3b0938-a942-47f6-a9f0-22220208e239">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="149" height="20" uuid="85ecbd55-df0f-489c-9a9a-8ddeaf53ee19">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم المخالفة : "+($F{FINE_NO}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="149" height="20" uuid="c84005f6-c60b-4f8b-a818-74e516c33188">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تاريخ المخالفة : "+$F{FINE_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="217" y="10" width="120" height="90" uuid="342e838f-98d0-4de8-9beb-c21211f90e06"/>
+				<imageExpression><![CDATA[$P{LOGO_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="154" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="486" y="124" width="69" height="30" uuid="ce0ec8bf-96ee-4ef7-bebe-a4e843fe8af3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم المادة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="124" width="90" height="30" uuid="3bb5bd92-1c5c-4444-9d57-4f2adf3cdb4b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المبلغ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="124" width="396" height="30" uuid="52ae93f4-efc5-42b9-806c-87c9a5f7c515">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مسمى الغرامة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="5" width="534" height="90" uuid="06563bee-27ef-4886-8c23-fcb69690872f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="18" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إسم المواطن : "+$F{F_NAME}+"\n"+
+"رقم السجل المدني: "+$F{F_ID_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+"\n"+
+"رقم الرخصة: "+$F{F_LICENCE_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+"\n"+
+"حالة السداد: "+
+(($F{F_FINE_CASE}.intValue() == 2)?("تم سداد الفاتورة بإيصال رقم: "+$F{BILL_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+" بتاريخ: "+$F{BILL_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")):("لم يتم سداد الفاتورة"))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="98" width="159" height="24" uuid="92407b27-5656-4bea-8e5c-919253d720fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الغرامات"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="90" height="30" uuid="c43dce01-c273-40d5-9123-f9ca8593d3d9">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{FINE_VALUE}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="486" y="0" width="69" height="30" uuid="f5bf4603-a270-433d-941a-cfc8d6b2b294"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FINE_CODE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="396" height="30" uuid="19321620-fab5-4fa1-b94c-3de35ecef9ed">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{FINE_DESC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="219" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="20" y="50" width="212" height="86" uuid="452bef1b-5d83-4987-adec-063d0ddc66bf"/>
+				<imageExpression><![CDATA[$F{PRSIGN}]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="380" y="60" width="150" height="56" uuid="d3a7518d-fc2d-4672-a20e-435a42104cd4"/>
+				<imageExpression><![CDATA[$F{SUPSIGN}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="20" y="26" width="212" height="24" uuid="cf025a0b-563f-45ce-b37c-f54f4cec682c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مدير الرقابة الشاملة"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="380" y="36" width="150" height="24" uuid="1cd5ac52-bed6-437d-8c87-a54ab78bf1f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المراقب"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="0" y="0" width="90" height="30" uuid="c2c87cdd-b10b-4b1f-93a4-5f2fd00b4d5d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{amount}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="100" height="30" uuid="61c59d18-a68b-432f-97dc-040810b51407">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إجمالي المبلغ:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

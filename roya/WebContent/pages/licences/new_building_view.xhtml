@@ -1,0 +1,974 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+
+<h:body>
+	<div class="container col-md-12 "
+		style="background-color: white; border-top: 5px solid #428BCA;">
+		<br />
+		<div>
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">#{msg['new.building.license']}</h3>
+		</div>
+
+
+
+
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['identity']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-6">
+							<h:outputLabel
+								value="#{newBuildingBean.newBuilding.licNewAplOwnerId}" />
+							-
+							<h:outputLabel value="#{newBuildingBean.owner.completeName}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['request.date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel id="name"
+								value="#{newBuildingBean.newBuilding.licNewHDate}" />
+						</div>
+
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['cheque.Number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{newBuildingBean.newBuilding.licNewSakNo}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['cheque.Date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{newBuildingBean.newBuilding.licNewSakDate}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['his.source']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{newBuildingBean.newBuilding.licNewSakSource}" />
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['plan']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{newBuildingBean.newBuilding.licNewPlnNo}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['pieces']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-6">
+							<h:outputLabel
+								value="#{newBuildingBean.newBuilding.piecesNumbers}" />
+						</div>
+					</div>
+					<br />
+					<h:panelGroup
+						rendered="#{(newBuildingBean.engineeringOffice) || (!newBuildingBean.planningManager)}">
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['street']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText value="#{newBuildingBean.newBuilding.licNewStreet}"
+									styleClass="form-control"
+									rendered="#{newBuildingBean.engineeringOffice}" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewStreet}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['building.description']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldDesc}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldDesc}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['bill.number']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBillNumber}" />
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['description']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-10">
+								<h:inputTextarea rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewNotes}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewNotes}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+						<br />
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['building.type']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:selectOneMenu styleClass="form-control"
+									disabled="#{!newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldTyp}"
+									style="width:100%; dir:rtl;">
+									<f:selectItem itemLabel="#{msg['armed']}" itemValue="1" />
+									<f:selectItem itemLabel="#{msg['hanger']}" itemValue="2" />
+								</h:selectOneMenu>
+							</div>
+
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['building.use']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:selectOneMenu styleClass="form-control"
+									disabled="#{!newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldUse}">
+									<!-- 									<f:selectItems value="#{loadingDataBean.buildingUsageList}" -->
+									<!-- 										var="use" itemValue="#{use.id}" itemLabel="#{use.name}" /> -->
+									<f:selectItem itemLabel="بناء سكني" itemValue="1" />
+									<f:selectItem itemLabel="بناء تجاري" itemValue="2" />
+									<f:selectItem itemLabel="بناء سكني تجاري" itemValue="11" />
+									<f:selectItem itemLabel="برج جوال" itemValue="15" />
+									<f:selectItem itemLabel="صراف آلي" itemValue="14" />
+									<f:selectItem itemLabel="بناء حكومي" itemValue="12" />
+								</h:selectOneMenu>
+							</div>
+
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['engineering.desc']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-2">
+								<h:selectOneMenu styleClass="form-control"
+									disabled="#{!newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewEngineeringOffice}">
+									<f:selectItems value="#{loadingDataBean.engineeringOfficeList}"
+										var="off" itemValue="#{off.id}" itemLabel="#{off.title}" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+						<br />
+						<!-- 						<div class="row"> -->
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:outputLabel value="#{msg['plan']}" styleClass="btxt" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:inputText value="#{newBuildingBean.newBuilding.licNewPlnNo}" -->
+						<!-- 									styleClass="form-control" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:outputLabel value="#{msg['pieces']}" styleClass="btxt" /> -->
+						<!-- 								<p:commandButton value="إضافة" styleClass="btn btn-primary" -->
+						<!-- 									style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
+						<!-- 									actionListener="#{newBuildingBean.addPiece}" -->
+						<!-- 									update="piecesList"> -->
+						<!-- 								</p:commandButton> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-6"> -->
+						<!-- 								<p:dataGrid var="pc" -->
+						<!-- 									value="#{newBuildingBean.newBuilding.pieces}" columns="6" -->
+						<!-- 									style="width : 100%" emptyMessage="" layout="grid" rows="10" -->
+						<!-- 									id="piecesList"> -->
+
+						<!-- 									<h:inputText value="#{pc.id.pieceId}" styleClass="form-control" /> -->
+						<!-- 								</p:dataGrid> -->
+
+
+						<!-- 							</div> -->
+						<!-- 						</div> -->
+						<!-- 						<br /> -->
+
+
+
+
+
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<p:panelGrid style="width:100%;margin-top:20px;">
+									<f:facet name="header">
+										<p:row>
+											<p:column colspan="7">
+												<h:outputLabel value="الحدود" styleClass="btxt" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="5">
+												<h:outputLabel value="الإتجاه" styleClass="btxt" />
+											</p:column>
+											<p:column colspan="1">
+												<h:outputLabel value="الأبعاد" styleClass="btxt" />
+											</p:column>
+											<p:column colspan="1">
+												<h:outputLabel value="الإرتداد" styleClass="btxt" />
+											</p:column>
+										</p:row>
+
+									</f:facet>
+									<p:row>
+										<p:column colspan="1">
+											<h:outputLabel value="شمالا" styleClass="btxt" />
+										</p:column>
+										<p:column colspan="4">
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewNorthBorder}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewNorthBorder}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewNorthDim}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewNorthDim}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewNorthRebound}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewNorthRebound}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="1">
+											<h:outputLabel value="جنوبا" styleClass="btxt" />
+										</p:column>
+										<p:column colspan="4">
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewSouthBorder}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewSouthBorder}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewSouthDim}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewSouthDim}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewSouthRebound}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewSouthRebound}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="1">
+											<h:outputLabel value="شرقا" styleClass="btxt" />
+										</p:column>
+										<p:column colspan="4">
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewEastBorder}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewEastBorder}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewEastDim}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewEastDim}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewEastRebound}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewEastRebound}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="1">
+											<h:outputLabel value="غربا" styleClass="btxt" />
+										</p:column>
+										<p:column colspan="4">
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewWestBorder}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewWestBorder}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewWestDim}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewWestDim}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+										<p:column>
+											<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+												value="#{newBuildingBean.newBuilding.licNewWestRebound}"
+												styleClass="form-control" />
+											<h:outputLabel
+												value="#{newBuildingBean.newBuilding.licNewWestRebound}"
+												rendered="#{!newBuildingBean.engineeringOffice}" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</div>
+						</div>
+
+						<!-- 						<br /> -->
+						<!-- 						<div class="row"> -->
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:outputLabel value="المساحة  الكلية" styleClass="btxt" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-1"> -->
+						<!-- 								<h:inputText -->
+						<!-- 									value="#{newBuildingBean.newBuilding.licNewBldTotalArea}" -->
+						<!-- 									styleClass="form-control" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:outputLabel value="طول السور" styleClass="btxt" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-1"> -->
+						<!-- 								<h:inputText -->
+						<!-- 									value="#{newBuildingBean.newBuilding.licNewWallTotalLength}" -->
+						<!-- 									styleClass="form-control" /> -->
+						<!-- 							</div> -->
+
+						<!-- 						</div> -->
+
+
+
+
+
+
+
+
+
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['land.area']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewLandArea}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewLandArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['basement.construction.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewRedroomArea}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewRedroomArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['ground.construction.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldGroundArea}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldGroundArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['floor.number']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldRepeatingNum}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldRepeatingNum}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['repeated.construction.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldRepeatingArea}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldRepeatingArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['ground.annex.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewAttGroundArea}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewAttGroundArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['upper.annex.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewAttUpperArea}"
+									styleClass="form-control">
+									<p:ajax event="blur" update="totalArea" process="@this"
+										listener="#{newBuildingBean.calculateArea}">
+									</p:ajax>
+								</h:inputText>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewAttUpperArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['units.number']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldUnitsCount}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldUnitsCount}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['total.construction.area']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText id="totalArea"
+									rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldTotalArea}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldTotalArea}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['floor.height']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewFloorHeight}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewFloorHeight}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['max.building.height']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldMaxHeight}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldMaxHeight}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['building.percentage']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldPercentage}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewBldPercentage}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['fence.length']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewWallTotalLength}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewWallTotalLength}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['fence.max.height']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewWallMaxHeight}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewWallMaxHeight}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['street.level']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewStreetLevel}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewStreetLevel}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['finishing.facade']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<h:inputText rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewForntFinish}"
+									styleClass="form-control" />
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewForntFinish}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+
+						<br />
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['surveyor']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-4">
+								<h:selectOneMenu styleClass="form-control"
+									disabled="#{!newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewBldGeographic}">
+									<f:selectItem itemValue=""
+										itemLabel="#{msg['choose.employee']}" />
+									<f:selectItems value="#{newBuildingBean.usersList}" var="emp"
+										itemValue="#{emp.userId}" itemLabel="#{emp.employeeName}" />
+								</h:selectOneMenu>
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['issue.date']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<p:inputMask rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewIssueDate}"
+									mask="99/99/9999" dir="ltr" size="5">
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputMask>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewIssueDate}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['expiry.licence.date']}"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-1">
+								<p:inputMask rendered="#{newBuildingBean.engineeringOffice}"
+									value="#{newBuildingBean.newBuilding.licNewEndDate}"
+									mask="99/99/9999" dir="ltr" size="5">
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputMask>
+								<h:outputLabel
+									value="#{newBuildingBean.newBuilding.licNewEndDate}"
+									rendered="#{!newBuildingBean.engineeringOffice}" />
+							</div>
+						</div>
+						<h:panelGroup rendered="#{newBuildingBean.engineeringOffice}">
+							<br />
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['chose.kroki']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<p:fileUpload id="RecordsUploaderEngID"
+										widgetVar="RecordsEngUploader" multiple="true" auto="true"
+										fileUploadListener="#{newBuildingBean.enterBldKrokiImage}"
+										uploadLabel="ارفاق" cancelLabel="إلغاء" label="اختيار الكروكي"
+										previewWidth="0" process="@this"
+										allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+										sizeLimit="300000000" />
+								</div>
+							</div>
+						</h:panelGroup>
+					</h:panelGroup>
+
+
+
+
+
+					<h:panelGroup rendered="#{newBuildingBean.planningManager}">
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="يجب إرفاق الكروكي التنظيمي"
+									style="color: red;font-size: larger;" styleClass="btxt" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['chose.kroki']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-4">
+								<p:fileUpload id="RecordsUploaderID" widgetVar="RecordsUploader"
+									multiple="true" auto="true"
+									fileUploadListener="#{newBuildingBean.enterImage}"
+									uploadLabel="ارفاق" cancelLabel="إلغاء" label="اختيار الكروكي"
+									previewWidth="0" process="@this"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+									sizeLimit="300000000" />
+							</div>
+						</div>
+						<br />
+
+
+					</h:panelGroup>
+
+
+
+
+
+
+					<br />
+					<h:panelGroup rendered="#{!newBuildingBean.activatePrint}">
+						<div class="row">
+							<div class="col-md-7">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" الارفاق " />
+
+									</div>
+									<div class="col-md-10">
+										<p:fileUpload id="upload" widgetVar="newCommentFileUpload100"
+											multiple="true" update="att-list"
+											fileUploadListener="#{newBuildingBean.uploadFile}"
+											uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+											label="تحديد المرفق" sizeLimit="300000000" previewWidth="30" />
+									</div>
+									<h:commandButton id="btn_1" value="uploadFiles"
+										style="display: none">
+										<f:ajax event="click"
+											listener="#{newBuildingBean.refreshFilesUploaded}"
+											render="att-list">
+										</f:ajax>
+									</h:commandButton>
+								</div>
+								<br></br>
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="  " />
+
+									</div>
+									<div>
+										<ul>
+											<h:panelGroup id="att-list">
+												<br></br>
+												<ui:repeat var="attach"
+													value="#{newBuildingBean.attachList}">
+													<div class="row">
+														<div class="col-md-5">
+															<h:outputLabel value="#{attach.attachRealName}" />
+														</div>
+														<div class="col-md-1">
+															<h:commandButton class="btn btn-danger" immediate="true"
+																render="att-list" value="إلغاء"
+																actionListener="#{newBuildingBean.deleteAttchFile(attach.attachRealName)}">
+															</h:commandButton>
+														</div>
+													</div>
+												</ui:repeat>
+											</h:panelGroup>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-5">
+
+								<br></br> <a
+									href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+									id="FileLoderID" class="btn btn-primary"
+									style="display: none; float: left; margin-left: 84px;"
+									onclick="notVisibleDIv()"> تحميل المرفقات </a>
+								<div style="display: inline;">
+									<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+										class="btn btn-primary icon-pencil" onclick="visibleDIv()"
+										style="padding-top: 1px; padding-bottom: 1px;"> <img
+										src="#{facesContext.externalContext.requestContextPath}/resources/images/scanner-200.png"
+										width="40" height="40" border="0"></img>
+
+									</a>
+									<div class="col-md-6" id="divError"
+										style="display: none; float: left;">
+										<h:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح"
+											style="color:red"></h:outputLabel>
+									</div>
+
+								</div>
+
+
+							</div>
+						</div>
+					</h:panelGroup>
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<h:commandButton value="#{msg['back']}" action="mails"
+								immediate="true"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								class="btn btn-primary">
+
+							</h:commandButton>
+
+							<h:panelGroup rendered="#{!newBuildingBean.lastStep}">
+								<button type="button" class="btn btn-primary "
+									style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
+									data-toggle="modal" data-target="#refuseModal">#{msg['refuse']}</button>
+							</h:panelGroup>
+
+							<h:commandButton value="#{msg['accept']}"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								styleClass="btn btn-primary"
+								rendered="#{!newBuildingBean.lastStep}"
+								action="#{newBuildingBean.acceptAction}">
+
+							</h:commandButton>
+
+							<h:outputLink id="gg" rendered="#{newBuildingBean.activatePrint}"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+								value="#{newBuildingBean.url}" target="_blank">
+								<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+								<span class="ui-button-text">#{msg['print']}</span>
+								<f:ajax execute="@form"></f:ajax>
+							</h:outputLink>
+
+							<div id="refuseModal" class="modal fade" tabindex="-1"
+								role="dialog" aria-labelledby="gridModalLabel123"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="modal-title" id="gridModalLabel123">#{msg['add.explanation.confirmation']}</h4>
+										</div>
+										<h:panelGroup id="refPopup">
+											<div class="modal-body">
+												<div class="container-fluid bd-example-row">
+													<br></br>
+
+													<div class="row">
+														<div class="col-md-3">
+															<h:outputLabel styleClass="btxt"
+																value="#{msg['redirect.transaction']}" />
+														</div>
+														<div class="col-md-7">
+
+															<h:selectOneMenu id="typ" styleClass="form-control"
+																value="#{newBuildingBean.applicationPurpose}" var="d"
+																style=" margin-left: 1px;">
+
+																<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+																	itemValue="#{pp.idStr} "
+																	value="#{newBuildingBean.wrkPurposes}" />
+															</h:selectOneMenu>
+
+
+														</div>
+
+													</div>
+													<br></br>
+													<div class="row ">
+														<div class="col-md-3">
+															<h:outputLabel styleClass="btxt"
+																value="#{msg['explanation']}" />
+														</div>
+
+
+														<div class="col-md-7">
+															<h:inputTextarea value="#{newBuildingBean.wrkAppComment}"
+																styleClass="form-control">
+															</h:inputTextarea>
+														</div>
+
+													</div>
+
+													<br></br>
+
+
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-green"
+														data-dismiss="modal">#{msg['back']}</button>
+													<h:commandButton style="float:left"
+														value="#{msg['confirmation']}"
+														styleClass="btn btn-primary"
+														action="#{newBuildingBean.refuseAction}">
+														<f:ajax execute="refPopup"></f:ajax>
+													</h:commandButton>
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<p:dialog widgetVar="PrintBillDlgVar" id="PrintBillDlg" modal="true"
+				showEffect="explode" width="50%" resizable="false" responsive="true">
+				<h:form>
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="alert alert-success" style="font-size: x-large;">
+								تمت إضافة الفاتورة رقم : #{newBuildingBean.newBillNmber}</div>
+
+						</div>
+						<div class="row" style="text-align: center;">
+
+							<h:commandButton style="float:left;margin-left:3px;"
+								value="طباعة الفاتورة" immediate="true"
+								styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+								action="#{newBuildingBean.printBarcodeReport}">
+
+
+							</h:commandButton>
+
+
+
+
+						</div>
+
+					</div>
+				</h:form>
+			</p:dialog>
+		</h:form>
+		<script>
+			function visibleDIv() {
+				document.getElementById("FileLoderID").style.display = "block";
+				document.getElementById("divError").style.display = "block";
+			}
+			function notVisibleDIv() {
+
+				document.getElementById("divError").style.display = "none";
+				document.getElementById("FileLoderID").style.display = "none";
+				document.getElementById("includeform:btn_1").click();
+			}
+		</script>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="./menuBar.xhtml">
+		<ui:define name="top">
+             انشاء خطاب
+            </ui:define>
+		<ui:define name="content">
+
+			<p:messages id="Msg" autoUpdate="true" closable="true" />
+			<div style="background-color: white; border-top: 5px solid #428BCA;"
+				class="container col-md-12">
+				<br></br>
+				<div>
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">انشاء
+						خطاب</h3>
+				</div>
+
+
+				<h:form id="includeform">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row ">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value="موجه إلي" />
+								</div>
+								<div class="col-md-8">
+									<h:inputText id="newwrkdto" styleClass="form-control"
+										value="#{commentBean.wrkComment.appTo}" required="true"
+										requiredMessage=" يجب إدخال جهة التوجيه " />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value="التوجيه" />
+								</div>
+								<div class="col-md-8">
+									<h:selectOneMenu id="typ" styleClass="form-control"
+										value="#{commentBean.applicationPurpose}" var="p">
+										<f:selectItem itemLabel=" اختر غرض التوجيه " itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+											itemValue="#{pp.id} " value="#{commentBean.wrkPurposes}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value="صورة  أعلي" />
+
+								</div>
+								<div class="col-md-8">
+									<h:inputText style="width:100%" id="newwrkhighcopy"
+										value="#{commentBean.wrkComment.firstCopy}"
+										styleClass="form-control" />
+								</div>
+
+							</div>
+							<br></br>
+						</div>
+						<div class="col-md-6">
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value="الموضــوع" />
+								</div>
+								<div class="col-md-8">
+									<p:inputText style="width:100%" id="newwrktopic" onkeypress="validateNumericInput(event, this.text)"
+										styleClass="form-control"
+										value="#{commentBean.wrkComment.appSubject}" required="true"
+										requiredMessage="موضوع المعاملة مطلوب" />
+
+								</div>
+
+							</div>
+
+
+
+
+
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value="صورة  أدنى" />
+
+								</div>
+								<div class="col-md-8">
+									<h:inputText id="newwrklowcopy" style="width:100%"
+										value="#{commentBean.wrkComment.secondCopy}"
+										styleClass="form-control" />
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value=" نوع الخطاب " />
+
+								</div>
+								<div class="col-md-8">
+									<h:selectOneMenu id="d" value="#{commentBean.commentType}"
+										styleClass="form-control" var="d" required="true"
+										requiredMessage="يجب أختيار نوع الخطاب ">
+										<f:selectItem itemLabel="اختر  نوع الخطاب " itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="type" itemLabel="#{type.commentTypeName}"
+											itemValue="#{type.id} " value="#{loadingDataBean.commentTypes}" />
+									</h:selectOneMenu>
+								</div>
+
+							</div>
+							<br></br>
+
+
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-md-1">
+							<h:outputLabel styleClass="btxt" value="نص الخطاب" />
+
+						</div>
+						<div class="col-md-10">
+<!-- 																		<p:editor id="editor" widgetVar="editorWidget" value="#{commentBean.wrkComment.longComment}" width="600" /> -->
+													<h:inputTextarea escape="false" required="true" rows="10" cols="30"  lang="ar"
+														requiredMessage=" نص الخطاب مطلوب " id="test"
+														value="#{commentBean.wrkComment.longComment}" 
+														styleClass="form-control arabicStyle" >
+													
+														
+														</h:inputTextarea>
+
+						</div>
+						
+						<div class="col-md-11">
+						<h:commandButton style="float:left;margin-top:5px" value="معاينة"
+								styleClass="btn btn-primary"
+								onclick="this.form.target='_blank'"
+								action="#{commentBean.viewReportAction}">
+								
+							</h:commandButton>
+<!-- 							<h:commandButton value="معاينة  " -->
+<!-- 								style="float:left;    margin-top: 9px;" class="btn btn-success" -->
+<!-- 								rendered="true"> -->
+<!-- 								<f:ajax execute="@form" render="xx" -->
+<!-- 									listener="#{commentBean.showComment}"></f:ajax> -->
+<!-- 							</h:commandButton> -->
+						</div>
+					</div>
+					<br></br>
+					<!-- 				<div class="col-md-10"> -->
+					<!-- 				<h:commandButton value="معاينة الخطاب " style="float:left" -->
+					<!-- 					class="btn btn-success" rendered="true"> -->
+					<!-- 					<f:ajax execute="@form" render="xx" -->
+					<!-- 						listener="#{commentBean.showComment}"></f:ajax> -->
+					<!-- 				</h:commandButton> -->
+					<!-- 				</div> -->
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="حجم النص" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu id="fontSizeText" 
+								value="#{commentBean.fontSize}" required="true"
+								requiredMessage=" إختر حجم النص ">
+								<f:selectItems value="#{loadingDataBean.fontSizeList}" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+					<br></br>
+					<h:panelGroup rendered="false">
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="    خطاب شخصى" />
+
+							</div>
+							<div class="col-md-1">
+								<h:selectBooleanCheckbox style="width:100%"
+									value="#{commentBean.personalFlag}" />
+							</div>
+
+						</div>
+					</h:panelGroup>
+					<br></br>
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="عدد المرفقات" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText id="attachNB" styleClass="form-control"
+								value="#{commentBean.attachNB}" required="true"
+								requiredMessage=" يجب إدخال عدد المرفقات " />
+
+
+						</div>
+
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-1">
+							<h:outputLabel styleClass="btxt" value=" الارفاق " />
+
+						</div>
+						<div class="col-md-10">
+							<p:fileUpload id="upload" widgetVar="newCommentFileUpload100"
+								multiple="true" update="att-list"
+								fileUploadListener="#{commentBean.uploadFile}"
+								uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+								label="تحديد المرفق" sizeLimit="300000000" previewWidth="90" />
+						</div>
+
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="  " />
+
+						</div>
+						<div>
+							<ul>
+
+
+								<h:panelGroup id="att-list">
+									<br></br>
+									<ui:repeat var="attach" value="#{commentBean.attachList}">
+										<li style="color: #428bca">#{attach.attachRealName}</li>
+									</ui:repeat>
+								</h:panelGroup>
+
+							</ul>
+						</div>
+
+
+					</div>
+
+
+					<hr></hr>
+			<button type="button" class="btn btn-primary " data-toggle="modal"  style="display :none"
+				data-target="#myModal" >الارفاق</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">اضافة المرفقات</h4>
+						</div>
+						<div class="modal-body">
+
+							<h:outputLabel>اختر نوع المسح الضوئى</h:outputLabel>
+							<select size="1" id="source" style="position: relative;" /> <br></br>
+							<br></br> <input class="btn btn-primary btn-sm" type="button"
+								value="مسح ضوئى" onclick="AcquireImage();" /> <input
+								class="btn btn-primary btn-sm" type="button"
+								value=" ارفاق من الجهاز" onclick="LoadImage();" />
+								<br></br>
+					
+<label>
+								 <input
+								type="radio" value="jpg" name="ImageType" id="imgTypejpeg" />JPEG</label>
+							<label><input type="radio" value="tif" name="ImageType"
+								id="imgTypetiff" />TIFF</label> <label><input type="radio"
+								value="pdf" name="ImageType" id="imgTypepdf" checked="checked" />PDF</label>
+							<!-- dwtcontrolContainer is the default div id for Dynamic Web TWAIN control.
+    If you need to rename the id, you should also change the id in the dynamsoft.webtwain.config.js accordingly. -->
+							<div class="col-md-3" id="dwtcontrolContainer"  onclick="ShowImageEditor();"></div>
+							<br></br> <input class="btn btn-danger btn-sm" type="button"
+								value="حذف الكل    " onclick="removeِAllImage();" /> <input
+								class="btn btn-primary btn-sm" type="button" value="حفظ"
+								onclick="btnUpload_onclick();" />
+
+
+						</div>
+						<div class="modal-footer">
+
+							<input class="btn btn-success btn-sm" type="button"
+								value="   رجوع " data-dismiss="modal" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+					<div class="row">
+
+						<div class="text-center">
+
+
+							<h:commandButton value="إرسال الخطاب "
+								style="float:left   ;  margin-left: 11px;"
+								actionListener="#{commentBean.addComment}"
+								class="btn btn-primary">
+								<f:ajax execute="@form" render="@form"></f:ajax>
+							</h:commandButton>
+
+
+
+						</div>
+						<h:commandLink value="رجوع إلي البريد الألكتروني" rendered="false"
+							action="mails" styleClass="" style="float: left;" />
+
+					</div>
+
+					<br></br>
+					<div class="col-md-2"></div>
+
+
+
+
+
+				</h:form>
+			</div>
+
+
+
+
+
+
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

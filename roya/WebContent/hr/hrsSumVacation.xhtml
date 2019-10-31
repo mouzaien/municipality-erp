@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template.xhtml">
+	<p:growl autoUpdate="true" showDetail="false" />
+
+	<ui:define name="content">
+		<h:form id="includeform">
+			<!-- 			<p:messages autoUpdate="true" closable="true"></p:messages> -->
+			<p:growl id="msgs" showDetail="true" autoUpdate="true" />
+
+			<div class="image-box-footer">
+				<p:commandButton value="إضافة" styleClass="cyan-btn"
+					icon="ui-icon ui-icon-add" oncomplete=" PF('addDialog').show()"
+					process="@this" update="includeform:addPG" />
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">
+					الاجازات<span class="fa fa-fw fa-umbrella"></span>
+				</h1>
+				<!-- 				<div class="ui-g"> -->
+				<!-- 					<div class="ui-g-1"> -->
+				<!-- 						<p:outputLabel value="الأداراة"></p:outputLabel> -->
+				<!-- 					</div> -->
+				<!-- 					<div class="ui-g-2"> -->
+				<!-- 						<p:selectOneMenu id="section" filter="true" -->
+				<!-- 							filterMatchMode="contains" style="width:100%" -->
+				<!-- 							value="#{hrsVacSoldBean.deptId}" autoWidth="true"> -->
+				<!-- 							<f:selectItem itemValue="" itemLabel="إختر  الإدارة" /> -->
+				<!-- 							<f:selectItems value="#{loadingDataBean.depatmentList}" -->
+				<!-- 								var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" /> -->
+				<!-- 							<f:ajax listener="#{hrsVacSoldBean.loadEmployeBarDpt}"></f:ajax> -->
+				<!-- 						</p:selectOneMenu> -->
+				<!-- 					</div> -->
+				<!-- 					<div class="ui-g-1"> -->
+				<!-- 						<p:outputLabel value="الموظف"></p:outputLabel> -->
+				<!-- 					</div> -->
+				<!-- 					<div class="ui-g-2"> -->
+				<!-- 						<p:selectCheckboxMenu> -->
+
+				<!-- 						</p:selectCheckboxMenu> -->
+				<!-- 					</div> -->
+				<!-- 				</div> -->
+
+				<p:dataTable var="item" id="vacTable"
+					value="#{hrsVacSoldBean.hrsVacSoldList}"
+					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" editable="true"
+					paginatorPosition="bottom" widgetVar="outfineset"
+					sortOrder="descending"
+					filteredValue="#{hrsVacSoldBean.filterHrsVacSoldList}"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true" rows="10">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+								onkeyup="PF('outfineset').filter()"
+								style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+						<br />
+					</f:facet>
+					<p:ajax event="rowEdit" listener="#{hrsVacSoldBean.onRowEdit}"
+						update=":includeform:msgs" />
+					<p:ajax event="rowEditCancel"
+						listener="#{hrsVacSoldBean.onRowCancel}"
+						update=":includeform:msgs" />
+					<p:column style="text-align: center;" headerText="رقم " width="5%">
+                                   #{rowIndex +1}
+                     </p:column>
+					<p:column headerText="سنة الإستحقاق"
+						style="white-space: nowrap;text-align: center;" width="8%"
+						filterMatchMode="contains" filterBy="#{item.currentYear}">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.currentYear}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.currentYear}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="text-align: center;" headerText="رقم الموظف"
+						filterMatchMode="contains" filterBy="#{item.employeeNumber}"
+						width="8%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.employeeNumber}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.employeeNumber}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="text-align: center;" headerText="إسم الموظف"
+						filterMatchMode="contains" filterBy="#{item.empName}" width="21%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.empName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.empName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="text-align: center;" headerText="نوع الإجازة"
+						filterMatchMode="contains" filterBy="#{item.vacType}" width="10%">
+
+
+						<!-- 								<p:inputText value="#{item.vacType}" style="width:100%" /> -->
+						<p:selectOneMenu id="list_vac_type" filter="true" disabled="true"
+							filterMatchMode="contains" style="opacity: 1"
+							value="#{item.vacType}">
+
+							<f:selectItems value="#{vacationInf.vacationtype}" var="vactype"
+								itemLabel="#{vactype.vacation_Name}" itemValue="#{vactype.id}" />
+						</p:selectOneMenu>
+
+
+					</p:column>
+					<p:column headerText="الرصيد السابق"
+						style="white-space: nowrap;text-align: center;" width="10%"
+						filterMatchMode="contains" filterBy="#{item.oldSold}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.oldSold}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.oldSold}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="الرصيد السنوي المستحق"
+						style="white-space: nowrap;text-align: center;" width="10%"
+						filterMatchMode="contains" filterBy="#{item.currentYearSold}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.currentYearSold}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.currentYearSold}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="الإجازات المتمتع بها هذا العام"
+						style="white-space: nowrap;text-align: center;" width="13%"
+						filterMatchMode="contains" filterBy="#{item.currentYearTaken}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.currentYearTaken}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.currentYearTaken}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="الرصيد المتاح"
+						style="white-space: nowrap;text-align: center;" width="10%"
+						filterMatchMode="contains" filterBy="#{item.avalibelSold}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.avalibelSold}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{item.avalibelSold}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="تعديل" style="text-align: center;" width="5%">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+
+				<p:dialog widgetVar="addDialog" width="50%" header="" modal="true"
+					dir="rtl" closable="true">
+					<h:panelGroup id="addPG">
+						<h3 style="color: #7CB342; text-align: center;">إضافة إجازة
+							لموظف</h3>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="الموظف" />
+							</div>
+							<div class="ui-g-5">
+
+								<p:selectOneMenu
+									value="#{hrsVacSoldBean.hrsVacSold.employeeNumber}"
+									required="true" requiredMessage="إختر الموظف" filter="true"
+									filterMatchMode="contains">
+
+									<f:selectItem itemLabel="إختر الموظف" itemValue="" />
+
+									<f:selectItems value="#{hrsVacSoldBean.employers}" var="emp"
+										itemLabel="#{emp.employeNumber} - #{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName} "
+										itemValue="#{emp.employeNumber}" />
+								</p:selectOneMenu>
+
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="السنة" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="employeeList" required="true"
+									requiredMessage="إدخل السنة"
+									value="#{hrsVacSoldBean.hrsVacSold.currentYear}" filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="إختر السنة" itemValue=""></f:selectItem>
+									<f:selectItems value="#{hrsVacSoldBean.years}" var="year"
+										itemLabel="#{year}" itemValue="#{year}"></f:selectItems>
+
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="نوع الإجازة" />
+							</div>
+							<div class="ui-g-5">
+								<p:selectOneMenu id="list_vac_type" filter="true"
+									filterMatchMode="contains" required="true"
+									requiredMessage="إختر نوع الاجازة"
+									value="#{hrsVacSoldBean.hrsVacSold.vacType}">
+									<f:selectItem itemLabel="#{msg['vacation.selectvactype']}"
+										itemValue="" />
+									<f:selectItems value="#{vacationInf.vacationtype}"
+										var="vactype" itemLabel="#{vactype.vacation_Name}"
+										itemValue="#{vactype.id}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="الرصيد السابق" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputNumber id="old_sold" maxValue="999" required="true"
+									requiredMessage="إدخل الرصيد السابق"
+									value="#{hrsVacSoldBean.hrsVacSold.oldSold}"></p:inputNumber>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="الرصيد السنوي" />
+							</div>
+							<div class="ui-g-5">
+								<p:inputNumber id="current_year_sold" maxValue="999"
+									required="true" requiredMessage="إدخل الرصيد السنوي"
+									value="#{hrsVacSoldBean.hrsVacSold.currentYearSold}"></p:inputNumber>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="الأيام المتمتع بها" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputNumber id="current_year_taken" maxValue="999"
+									required="true" requiredMessage="إدخل  الأيام المتمع بها"
+									value="#{hrsVacSoldBean.hrsVacSold.currentYearTaken}"></p:inputNumber>
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="left">
+
+							<p:commandButton value="حفظ"
+								action="#{hrsVacSoldBean.saveVacaiton}"
+								onsuccess=" PF('addDialog').hide()" styleClass="cyan-btn"
+								update=":includeform:vacTable">
+							</p:commandButton>
+							<p:spacer width="10px" height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								onsuccess="PF('addDialog').hide();" />
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

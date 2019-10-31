@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+<body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+
+			<p:messages id="Msg" autoUpdate="true" closable="true" />
+
+
+			<h:form id="includeform">
+				<style>
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+</style>
+				<div class="card card-w-title">
+					<h1 style="color: #7CB342; text-align: center;">
+						#{msg['new.income']} <span class="fa fa-fw fa-edit"></span>
+					</h1>
+					<br></br>
+
+					<div class="image-box-footer">
+						<h:panelGroup id="buttons">
+							<p:commandButton id="send_btn"
+								update="buttons destPanel srcPanel"
+								rendered="#{!newIncomeBean.savedClicked}"
+								icon="ui-icon ui-icon-assignment-return" value="#{msg['save']}"
+								action="#{newIncomeBean.SaveIncome}">
+							</p:commandButton>
+							<p:commandButton id="attch_btn" 
+								update="buttons destPanel srcPanel"
+								rendered="#{newIncomeBean.savedClicked}"
+								icon="ui-icon ui-icon-assignment-return" value="إحالة"
+								action="#{newIncomeBean.addtransAttachs}">
+							</p:commandButton>
+						</h:panelGroup>
+						<p:spacer width="10" height="10"></p:spacer>
+						<ui:include src="/DWT_Scan_Upload_Demo.xhtml" />
+					</div>
+
+					<br />
+					<p:panel id="srcPanel">
+						<f:facet name="header">
+							<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['income.trans.data']}
+                    </f:facet>
+						<div class="ui-g" dir="rtl">
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['income.letter.no']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:inputText id="incomeNoFromSender"
+									placeholder=" #{msg['income.letter.no']} " style="width:100%"
+									value="#{newIncomeBean.newRecord.letterFromNo}" />
+							</div>
+							<div class="ui-md-2">
+								بتاريخ :
+								<ui:include src="/shared/calender.xhtml"></ui:include>
+							</div>
+							<div class="ui-md-2">
+								<p:selectOneMenu value="#{newIncomeBean.newRecord.attachsType}"
+									id="newAttchyp" filter="true" filterMatchMode="contains"
+									style="width:100% ;">
+									<f:selectItem itemLabel="#{msg['attach.type']}" itemValue="" />
+									<f:selectItems value="#{newIncomeBean.documentsTypes}"
+										var="app" itemLabel="#{app.name}" itemValue="#{app.id}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-md-2">
+								عدد المرفقات
+								<p:inputNumber id="attachNumber" maxlength="2" maxValue="999"
+									minValue="0" value="#{newIncomeBean.newRecord.attachNB}">
+								</p:inputNumber>
+							</div>
+							<!-- 							<p:inputText id="incomedateFromSender" -->
+							<!-- 								placeholder="#{msg['income.letter.date']} " style="width:100%" -->
+							<!-- 								value="#{newIncomeBean.newRecord.letterFromDate}" /> -->
+						</div>
+						<div class="ui-g" dir="rtl">
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['sender']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
+									style="width:100%" id="letterFrom3" styleClass="form-control"
+									value="#{newIncomeBean.newRecord.letterFrom}" required="true"
+									requiredMessage="#{msg['sender.required']}">
+									<f:selectItem itemLabel="#{msg['choose.sender.or.source']} "
+										itemValue="" />
+									<f:selectItems value="#{loadingDataBean.listLetterFrom}"
+										var="letter" itemLabel="#{letter.wrkLetterFromName}"
+										itemValue="#{letter.wrkLetterfromId}" />
+								</p:selectOneMenu>
+
+							</div>
+							<div class="ui-md-1">
+								<p:commandLink immediate="true" style="float:right"
+									action="#{newIncomeBean.showAddFromDlg(actionEvent)}">
+									<div class="fa fa-plus" style="font-size: x-large;"></div>
+								</p:commandLink>
+							</div>
+							<div class="ui-md-1">
+								<h:outputLabel value="#{msg['mobile.number']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:inputText id="incomemobileNo" style="width:100% ;"
+									value="#{newIncomeBean.newRecord.mobileNumber}" />
+							</div>
+
+						</div>
+						<div class="ui-g" dir="rtl">
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['subject.transaction']}" />
+							</div>
+							<div class="ui-md-10">
+								<p:inputText value="#{newIncomeBean.newRecord.recTitle}"
+									required="true" requiredMessage="#{msg['subject.requird']}"
+									style="width:100%;" id="newRectitle" />
+							</div>
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['transaction.type']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectOneMenu
+									value="#{newIncomeBean.newRecord.applicationType}"
+									id="newRecordtyp" required="true" filter="true"
+									filterMatchMode="contains" style="width:100% ;"
+									requiredMessage="#{msg['transaction.type.requird']}">
+									<f:selectItem itemLabel="#{msg['choose.transaction.type']}"
+										itemValue="" />
+									<f:selectItems value="#{newIncomeBean.listApplicationType}"
+										var="app" itemLabel="#{app.arcApplicationType}"
+										itemValue="#{app.arcAppliactionTypeId}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
+						<br />
+					</p:panel>
+
+
+					<p:panel id="destPanel">
+						<f:facet name="header">
+							<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['dest.data']}
+                    </f:facet>
+						<div class="ui-g" dir="rtl">
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['send.to']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectOneMenu filter="true"
+									value="#{newIncomeBean.newWrkApplication.toUserId}"
+									style="width:100% ;" id="newRecordaftersaveto"
+									filterMatchMode="contains" styleClass="form-control"
+									effect="fade">
+									<f:selectItem itemLabel="#{msg['send.after.save']}"
+										itemValue="" />
+									<f:selectItems value="#{newIncomeBean.listWrkArchiveRecipt}"
+										var="archiv" itemLabel="#{archiv.wrkArchiveRecipentTitle}"
+										itemValue="#{archiv.wrkArchiveRecipentId}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['copy.send.to']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectCheckboxMenu filter="true" filterMatchMode="contains"
+									style="width:60% ;" layout="grid" columns="1"
+									value="#{newIncomeBean.copyList}"
+									label="#{msg['choose.copy.recipt']}" required="false"
+									requiredMessage="#{msg['reciept.required']}" effect="fade">
+									<f:selectItems value="#{newIncomeBean.listWrkArchiveRecipt}"
+										var="archivcop"
+										itemLabel="#{archivcop.wrkArchiveRecipentTitle}"
+										itemValue="#{archivcop.wrkArchiveRecipentId}" />
+								</p:selectCheckboxMenu>
+							</div>
+						</div>
+						<div class="ui-g" dir="rtl">
+							<!-- 							<div class="ui-md-2"> -->
+							<!-- 								<h:outputLabel value="#{msg['transaction.reciept']}" -->
+							<!-- 									rendered="false" /> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-md-2"> -->
+							<!-- 								<p:selectOneMenu value="#{newIncomeBean.newRecord.letterTo}" -->
+							<!-- 									rendered="false" style="width:100%" id="newRecordto" -->
+							<!-- 									required="true" styleClass="form-control" filter="true" -->
+							<!-- 									filterMatchMode="contains" -->
+							<!-- 									requiredMessage="#{msg['reciept.required']}" -->
+							<!-- 									panelStyle="width:300px"> -->
+							<!-- 									<f:selectItem itemLabel="#{msg['choose.recipt']}" itemValue="" /> -->
+							<!-- 									<f:selectItems value="#{newIncomeBean.listLetterTo}" -->
+							<!-- 										var="letterTo" itemLabel="#{letterTo.wrkLetterToName}" -->
+							<!-- 										itemValue="#{letterTo.wrkLetterToId}" /> -->
+							<!-- 								</p:selectOneMenu> -->
+							<!-- 							</div> -->
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['transaction.urgent']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectBooleanCheckbox
+									value="#{newIncomeBean.newIncomeIsImportant}" />
+							</div>
+							<div class="ui-md-2">
+								<h:outputLabel value="ملاحظة" />
+							</div>
+							<div class="ui-md-4">
+								<p:inputTextarea id="incomecomment" styleClass="form-control"
+									rows="1"
+									value="#{newIncomeBean.newWrkApplication.applicationUsercomment}"
+									style="width: 100%;overflow: auto ;font-size: small !important;" />
+							</div>
+
+						</div>
+						<div class="ui-g" dir="rtl">
+							<div class="ui-md-2">
+								<h:outputLabel value="#{msg['target']}" />
+							</div>
+							<div class="ui-md-2">
+								<p:selectOneMenu
+									value="#{newIncomeBean.newWrkApplication.applicationPurpose}"
+									id="newRecordpurp" required="true" style="width:100%"
+									filter="true" filterMatchMode="contains"
+									requiredMessage="#{msg['target.required']}"
+									panelStyle="width:150px" styleClass="form-control">
+									<f:selectItem itemLabel="#{msg['send.target']}" itemValue="" />
+									<f:selectItems value="#{newIncomeBean.listWrkPurpose}"
+										var="purpose" itemLabel="#{purpose.purpName}"
+										itemValue="#{purpose.purpId}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
+						<br />
+					</p:panel>
+					<div class="row">
+						<div class="col-md-6">
+							<p:dialog header="#{msg['attach.refernce.transaction']}"
+								widgetVar="dlgAttch" Height="500" width="400">
+
+								<!-- Modal content-->
+								<div>
+
+									<div>
+										<p:dataTable id="p-att-id" var="atta"
+											value="#{newIncomeBean.previousAttachList}">
+											<p:column>
+												<p:commandButton value="#{msg['press.download']}"
+													ajax="false" immediate="true" class="panel-footer"
+													icon="ui-icon-arrowthick-1-s">
+													<p:fileDownload
+														value="#{newIncomeBean.getFile(atta.attachName)}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</div>
+									<br></br> <br></br>
+
+									<p:commandButton value="#{msg['close']}" immediate="true"
+										icon="ui-icon ui-icon-keyboard-arrow-left"
+										styleClass=" orange-btn" onclick="PF('dlgAttch').hide()">
+									</p:commandButton>
+								</div>
+
+							</p:dialog>
+							<br></br>
+
+							<h:panelGroup id="citizenNationalId">
+								<h:panelGroup rendered="#{newIncomeBean.citizenFlag}">
+									<div class="row">
+										<div class="col-md-4">
+											<h:outputLabel value="#{msg['nationnal.id']}" />
+										</div>
+										<div class="col-md-7">
+											<h:inputText styleClass="form-control"
+												style="font-size: small !important;"
+												value="#{newIncomeBean.recordsExtension.nationalId}" />
+										</div>
+									</div>
+									<br></br>
+								</h:panelGroup>
+							</h:panelGroup>
+
+						</div>
+					</div>
+
+					<br></br>
+					<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
+						width="300" hideEffect="fade" showEffect="explode" dir="rtl"
+						modal="true" resizable="false" header="#{msg['print.barcode']}">
+						<h:panelGroup id="signfrndlg">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="row">
+										<div class="col-md-2"></div>
+										<h:outputLabel value="#{msg['confirm.print.barcode']}" />
+									</div>
+									<br></br> <br></br>
+									<div style="float: left;">
+										<p:commandButton value="#{msg['print']}" immediate="true"
+											onclick="this.form.target='_blank'" ajax="false"
+											icon="ui-icon ui-icon-local-printshop"
+											action="#{newIncomeBean.printBarcodeReport}">
+										</p:commandButton>
+										<p:commandButton value="#{msg['close']}" immediate="true"
+											icon="ui-icon ui-icon-keyboard-arrow-left"
+											styleClass=" orange-btn"
+											onclick="PF('print-barcode-dlg').hide()">
+										</p:commandButton>
+									</div>
+
+								</div>
+
+							</div>
+						</h:panelGroup>
+
+					</p:dialog>
+				</div>
+				<h:inputHidden id="mylst" />
+			</h:form>
+
+			<p:dialog widgetVar="add-from-dlg" id="add-from-dlg-id" modal="true"
+				width="400" height="150" header="#{msg['add.income.source']}"
+				resizable="false" closable="true">
+				<h:form>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-12 ui-lg-12" style="direction: rtl;">
+							<br></br>
+							<p:inputText id="input001"
+								style="width:100% ;font-size: small !important;"
+								placeholder="#{msg['please.add.name.source']}" required="true"
+								requiredMessage="#{msg['required.field']}"
+								value="#{newIncomeBean.newIncomeFrom}" />
+						</div>
+
+
+
+					</div>
+					<br></br>
+					<br></br>
+					<div class="ui-g" style="float: left;">
+						<p:commandButton style="width:100%" value="#{msg['save']}"
+							process="@this,input001"
+							update="input001,:includeform:letterFrom3"
+							action="#{newIncomeBean.saveNewFrom(ae)}" />
+
+					</div>
+				</h:form>
+			</p:dialog>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

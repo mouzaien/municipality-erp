@@ -1,0 +1,399 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/template.xhtml">
+
+
+	<ui:define name="content">
+		<style>
+				.ui-selectonemenu-filter-container {
+				 Width:100% !important;
+				 direction: rtl;
+				 
+				}
+				 .ui-selectonemenu-items-wrapper{
+				 direction: rtl;
+				}
+				.ui-selectonemenu-panel .ui-selectonemenu-filter{
+				padding-right:35px;
+				}
+				.ui-selectonemenu .ui-selectonemenu-label{
+				text-align: right !important;
+				}
+				
+				.card h1:first-child{
+				float: right;;
+				font-weight:bold;
+				font-size: 26px;
+				}
+				h1 .fa{
+				color:#7CB342;
+				}
+				.card h1:first-child{
+				    margin-top: 26px;
+				    margin-right: 45px;
+				
+				}
+		</style>
+<h:form id="includeform">
+		<p:messages id="Msg" autoUpdate="true" closable="true" />
+		 <div class="image-box-footer">
+		 <p:commandButton value= "#{msg['send']}"
+					icon="ui-icon ui-icon-assignment-return" 
+					action="#{commentBean.addComment}" >
+					<f:ajax execute="@form"></f:ajax>
+			</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+			 <p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save" styleClass="cyan-btn" 
+					action="#{commentBean.saveComment}">
+					<f:ajax execute="@form"></f:ajax>
+			</p:commandButton>
+			<p:spacer width="10" height="10"></p:spacer>
+			      	<p:commandButton  value="#{msg['preview']}" icon="ui-icon ui-icon-visibility" styleClass="deep-orange-btn ui-state-hover"
+							 onclick="this.form.target='_blank'" ajax="false"
+							action="#{commentBean.viewReportAction}">
+			</p:commandButton>
+<!-- 				<ui:include src="/DWT_Scan_Upload_Demo.xhtml"/> -->
+              </div>
+				
+			<br/>
+		          <div class="card card-w-title">
+		                  
+                            <h1 style="color:#7CB342;">#{commentBean.header}<span class="fa fa-fw fa-edit"></span></h1>
+                          
+                            <br></br>
+                             <br></br>
+                              <br></br>
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+                               	<p:outputLabel for="newwrkdto"  value="#{msg['directed.to']}" />
+                                <h:panelGroup styleClass="md-inputfield">
+                                	
+                                    <p:inputText style="width:100%" id="newwrkdto" value="#{commentBean.wrkComment.appTo}" required="true"
+                                    requiredMessage="#{msg['directed.to.required']}" />
+                                    <label>#{msg['directed.add']}</label>
+                                </h:panelGroup>
+
+                                <p:outputLabel for="newwrktopic" value="#{msg['subject']}"/>
+                                <h:panelGroup styleClass="md-inputfield">
+                               <p:inputText style="width:100%" id="newwrktopic"
+									value="#{commentBean.wrkComment.appSubject}" required="true"
+									requiredMessage="#{msg['subject.requird']}" />
+									<label>#{msg['subject.add']}</label>
+								</h:panelGroup>
+                                <p:outputLabel for="typ" value="#{msg['orientation']}" />
+                             
+                                <p:selectOneMenu id="typ" style="width:100%"
+									filter="true" filterMatchMode="contains"
+									value="#{commentBean.applicationPurpose}" required="true"
+									requiredMessage="#{msg['orientation.required']}" var="p">
+									<f:selectItem itemLabel="#{msg['orientation.required']}" itemValue=""
+										noSelectionOption="true"  />
+									<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+										itemValue="#{pp.id} " value="#{commentBean.wrkPurposes}" />
+								</p:selectOneMenu>
+					    	
+                                <p:outputLabel for="d" value="#{msg['comment.type']}" />
+                              	<p:selectOneMenu id="d" value="#{commentBean.commentType}"
+									 var="d" required="true" style="width:100%"
+									requiredMessage="#{msg['comment.type.required']} ">
+									<f:selectItem itemLabel=" #{msg['comment.type.add']} " itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems var="type" itemLabel="#{type.commentTypeName}"
+										itemValue="#{type.id} "
+										value="#{loadingDataBean.commentTypes}" />
+								</p:selectOneMenu>
+
+                               <p:outputLabel value="#{msg['upper.image']}" />
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText style="width:100%"
+									value="#{commentBean.wrkComment.firstCopy}"
+									styleClass="form-control" />
+									<label>"#{msg['upper.image.add']}"</label>
+							</h:panelGroup>
+                                <p:outputLabel  value="#{msg['lower.image']}" />
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText id="newwrklowcopy" style="width:100%"
+									value="#{commentBean.wrkComment.secondCopy}"
+									styleClass="form-control" />
+									<label>#{msg['lower.image.add']}</label>
+							</h:panelGroup>
+</p:panelGrid>
+<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+                                <p:outputLabel for="" value="#{msg['comment.text']}" />
+                                <h:panelGroup styleClass="md-inputfield">
+	                                <p:inputTextarea required="true" 
+										style="width:100%; overflow-y: scroll;height: 500px; "
+										requiredMessage=" #{msg['comment.text.required']} " id="newwrkcontent"
+										value="#{commentBean.wrkComment.longCommentArabStr}"
+										styleClass="ui-grid-col-8">
+										<f:ajax render="newwrkcontent" execute="newwrkcontent"></f:ajax>
+								</p:inputTextarea>
+								<label>#{msg['comment.text.add']}</label>
+								</h:panelGroup>
+</p:panelGrid>		
+<p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">					
+                                <p:outputLabel for="fontSizeText"  value="#{msg['size.text']}" />
+	                             <p:selectOneMenu id="fontSizeText" value="#{commentBean.fontSize}"
+									required="true" requiredMessage="#{msg['size.text.required']}">
+									<f:selectItems value="#{loadingDataBean.fontSizeList}" />
+							    </p:selectOneMenu>
+
+                                <p:outputLabel for="attachNB" value="#{msg['attach.nb']}" />
+                               	<p:inputText id="attachNB" styleClass="form-control"
+									value="#{commentBean.attachNB}" required="true"
+									requiredMessage=" #{msg['attach.nb.required']} " />
+									
+                              
+                            </p:panelGrid>
+
+                           
+                        </div>
+                        
+        <h:inputHidden id="mylst"/>
+
+
+                        </h:form>
+<!-- 		<div style="background-color: white; border-top: 5px solid #428BCA;" -->
+<!-- 			class="container col-md-12"> -->
+<!-- 			<br></br> -->
+
+<!-- 			<h:form id="includeform"> -->
+<!-- 				<link href="https://fonts.googleapis.com/icon?family=Material+Icons" -->
+<!-- 					rel="stylesheet"></link> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-6"> -->
+<!-- 						<h3 class="page-header" -->
+<!-- 							style="margin: 0px 0 20px ! important; color: #428bca"> -->
+<!-- 							</h3> -->
+
+<!-- 					</div> -->
+<!-- 					<div class="col-md-5"> -->
+					
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+<!-- 				<br></br> -->
+
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-6"> -->
+
+<!-- 						<div class="row "> -->
+<!-- 							<div class="col-md-2"> -->
+							
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+							
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel styleClass="btxt" value="التوجيه" /> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<p:selectOneMenu id="typ" styleClass="form-control" -->
+<!-- 									filter="true" filterMatchMode="contains" -->
+<!-- 									value="#{commentBean.applicationPurpose}" required="true" -->
+<!-- 									requiredMessage="اختر غرض التوجيه " var="p"> -->
+<!-- 									<f:selectItem itemLabel=" اختر غرض التوجيه " itemValue="" -->
+<!-- 										noSelectionOption="true" /> -->
+<!-- 									<f:selectItems var="pp" itemLabel="#{pp.purposeName}" -->
+<!-- 										itemValue="#{pp.id} " value="#{commentBean.wrkPurposes}" /> -->
+<!-- 								</p:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel styleClass="btxt" value="صورة  أعلى" /> -->
+
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+								
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+
+<!-- 					</div> -->
+<!-- 					<div class="col-md-6"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h:outputLabel styleClass="btxt" value="الموضــوع" /> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<p:inputText style="width:100%"  -->
+<!-- 									styleClass="form-control" -->
+<!-- 									value="#{commentBean.wrkComment.appSubject}" required="true" -->
+<!-- 									requiredMessage="موضوع المعاملة مطلوب" /> -->
+
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel styleClass="btxt" value="صورة  أدنى" /> -->
+
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<p:inputText id="newwrklowcopy" style="width:100%" -->
+<!-- 									value="#{commentBean.wrkComment.secondCopy}" -->
+<!-- 									styleClass="form-control" /> -->
+
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel styleClass="btxt" value=" نوع الخطاب " /> -->
+
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+							
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+
+
+<!-- 					</div> -->
+
+<!-- 				</div> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-1"> -->
+<!-- 						<p:outputLabel styleClass="btxt" value="نص الخطاب" /> -->
+
+<!-- 					</div> -->
+<!-- 					<div class="col-md-10"> -->
+						
+
+<!-- 					</div> -->
+
+<!-- 				</div> -->
+<!-- 				<br></br> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-1"> -->
+<!-- 						<p:outputLabel styleClass="btxt" value="حجم النص" /> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-2"> -->
+<!-- 						<p:selectOneMenu id="fontSizeText" value="#{commentBean.fontSize}" -->
+<!-- 							required="true" requiredMessage=" إختر حجم النص "> -->
+<!-- 							<f:selectItems value="#{loadingDataBean.fontSizeList}" /> -->
+<!-- 						</p:selectOneMenu> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-1"> -->
+<!-- 						<p:outputLabel styleClass="btxt" value="عدد المرفقات" /> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-1"> -->
+<!-- 						<p:inputText id="attachNB" styleClass="form-control" -->
+<!-- 							value="#{commentBean.attachNB}" required="true" -->
+<!-- 							requiredMessage=" يجب إدخال عدد المرفقات " /> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-5"> -->
+						
+<!-- 					</div> -->
+<!-- 					<div class="col-md-1"> -->
+						
+<!-- 					</div> -->
+
+<!-- 				</div> -->
+
+<!-- 				<div class="row"> -->
+
+<!-- 					<div class="col-md-7"> -->
+<!-- 						<br></br> -->
+
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel styleClass="btxt" value=" الارفاق " /> -->
+
+<!-- 							</div> -->
+<!-- 							<div class="col-md-10"> -->
+<!-- 								<p:fileUpload id="upload" widgetVar="newCommentFileUpload100" -->
+<!-- 									multiple="true" update="att-list" -->
+<!-- 									fileUploadListener="#{commentBean.uploadFile}" -->
+<!-- 									uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء" -->
+<!-- 									label="تحديد المرفق" sizeLimit="300000000" previewWidth="30" /> -->
+<!-- 							</div> -->
+<!-- 							<p:commandButton id="btn_1" value="uploadFiles" -->
+<!-- 								style="display: none"> -->
+<!-- 								<f:ajax event="click" -->
+<!-- 									listener="#{commentBean.refreshFilesUploaded}" -->
+<!-- 									render="att-list"> -->
+<!-- 								</f:ajax> -->
+<!-- 							</p:commandButton> -->
+<!-- 						</div> -->
+<!-- 						<br></br> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<p:outputLabel value="  " /> -->
+<!-- 							</div> -->
+<!-- 							<div> -->
+<!-- 								<ul> -->
+<!-- 									<p:panel id="att-list"> -->
+<!-- 										<br></br> -->
+<!-- 										<ui:repeat var="attach" value="#{commentBean.attachList}"> -->
+<!-- 											<div class="row"> -->
+<!-- 												<div class="col-md-5"> -->
+<!-- 													<p:outputLabel value="#{attach.attachRealName}" /> -->
+<!-- 												</div> -->
+<!-- 												<div class="col-md-1"> -->
+<!-- 													<p:commandButton class="btn btn-danger" immediate="true" -->
+<!-- 														render="att-list" value="إلغاء" -->
+<!-- 														actionListener="#{commentBean.deleteAttchFile(attach.attachRealName)}"> -->
+<!-- 													</p:commandButton> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</ui:repeat> -->
+<!-- 									</p:panel> -->
+<!-- 								</ul> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-5"> -->
+<!-- 						<br></br> <a href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat" -->
+<!-- 							id="FileLoderID" class="btn btn-primary" -->
+<!-- 							style="display: none; float: left; margin-left: 84px;" -->
+<!-- 							onclick="notVisibleDIv()"> تحميل المرفقات </a> -->
+<!-- 						<div style="display: inline;"> -->
+<!-- 							<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe" -->
+<!-- 								class="btn btn-primary icon-pencil" onclick="visibleDIv()"> -->
+<!-- 								<i class="material-icons">scanner</i> -->
+<!-- 							</a> -->
+<!-- 							<div class="col-md-6" id="divError" -->
+<!-- 								style="display: none; float: left;"> -->
+<!-- 								<p:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح" -->
+<!-- 									style="color:red"></p:outputLabel> -->
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 						<br /> <br /> <br /> <br /> -->
+<!-- 					</div> -->
+
+<!-- 				</div> -->
+
+<!-- 			</h:form> -->
+
+<!-- 		</div> -->
+		<script>
+				function visibleDIv() {
+					document.getElementById("FileLoderID").style.display = "block";
+					document.getElementById("divError").style.display = "block";
+				}
+				function notVisibleDIv() {
+
+					document.getElementById("divError").style.display = "none";
+					document.getElementById("FileLoderID").style.display = "none";
+					document.getElementById("includeform:btn_1").click();
+				}
+				
+				
+			</script>
+	</ui:define>
+</ui:composition>
+</html>

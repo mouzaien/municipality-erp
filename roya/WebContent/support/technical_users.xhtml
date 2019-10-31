@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">#{msg['technical.users']}
+						</h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<p:dataTable var="techItem" id="techTable"
+									value="#{technicalUsersBean.technicalUsersList}"
+									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									filteredValue="#{technicalUsersBean.filteredTechnicalUsersList}"
+									paginator="true" rows="12">
+
+									<p:column headerText="رقم الموظف"
+										filterBy="#{techItem.technicalId}" filterMatchMode="contains"
+										style="width:10%;text-align: center;">
+										<h:outputText value="#{techItem.technicalId}" />
+									</p:column>
+									<p:column headerText="إسم الموظف"
+										filterBy="#{techItem.technicalName}"
+										filterMatchMode="contains" style="width:30%">
+										<h:outputText value="#{techItem.technicalName}" />
+									</p:column>
+									<p:column headerText="الملاحظات" style="width:50%">
+										<h:outputText value="#{techItem.description}" />
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="#{msg['details']}">
+										<p:commandButton
+											action="#{technicalUsersBean.loadSelectedTechnical(techItem)}"
+											icon="ui-icon-search" oncomplete="PF('tech_dlg').show()"
+											update="myDialog">
+										</p:commandButton>
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="#{msg['delete']}">
+										<p:commandButton
+											action="#{technicalUsersBean.removeTechnicalUser(techItem)}"
+											icon="fa fa-times" update="techTable">
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+								<br /> <br />
+								<div align="center">
+									<p:commandButton value="إضافة" styleClass="btn btn-primary"
+										action="#{technicalUsersBean.addTechnicalUser}"
+										oncomplete="PF('tech_dlg').show()" update="myDialog">
+									</p:commandButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<p:dialog widgetVar="tech_dlg" id="tech_dlgId" width="70%"
+				hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+				resizable="false">
+				<h:form id="myDialog">
+					<div style="width: 100%">
+						<div style="float: right; width: 100%">
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="الموظف" />
+								</div>
+
+
+								<div class="col-md-5">
+									<p:selectOneMenu styleClass="form-control" id="employerAll"
+										filter="true" filterMatchMode="contains" required="true"
+										value="#{technicalUsersBean.technicalUser.technicalId}">
+										<f:ajax execute="@this"></f:ajax>
+										<f:selectItems value="#{loadingDataBean.employersList}"
+											var="emp" itemLabel="#{emp.firstName}"
+											itemValue="#{emp.userId}" />
+									</p:selectOneMenu>
+								</div>
+
+							</div>
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="المنصب"></h:outputLabel>
+								</div>
+								<div class="col-md-5">
+									<p:inputText value="#{technicalUsersBean.technicalUser.roleId}" required="true" requiredMessage="المنصب مطلوبة" />
+								</div>
+
+
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="الملاحظات" />
+
+								</div>
+								<div class="col-md-5">
+									<p:inputTextarea
+										value="#{technicalUsersBean.technicalUser.description}"
+										style="width: 100%"
+										required="true" requiredMessage="الملاحظات مطلوبة" />
+								</div>
+							</div>
+							<br></br>
+						</div>
+					</div>
+					<br />
+					<br />
+					<div align="center">
+						<p:commandButton value="#{msg['save']}" class="btn btn-primary"
+							style="font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							actionListener="#{technicalUsersBean.saveTechnicalUserAction}"
+							update=":includeform:techTable" onsuccess="PF('tech_dlg').hide()">
+						</p:commandButton>
+						<p:commandButton value="رجوع" immediate="true"
+							style="font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="btn btn-primary" onclick="PF('tech_dlg').hide()" />
+					</div>
+				</h:form>
+			</p:dialog>
+
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">#{msg['scenario']}
+						</h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<p:dataTable var="scenarioItem" id="scenarioTable"
+									value="#{scenarioBean.scenarioList}"
+									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									filteredValue="#{scenarioBean.filteredScenarioList}"
+									paginator="true" rows="12">
+
+									<p:column headerText="رقم النموذج"
+										filterBy="#{scenarioItem.modelId}" filterMatchMode="contains"
+										style="width:15%">
+										<h:outputText value="#{scenarioItem.modelId}" />
+									</p:column>
+									<p:column headerText="إسم النموذج"
+										filterBy="#{scenarioItem.scenarioLabel}"
+										filterMatchMode="contains" style="width:65%">
+										<h:outputText value="#{scenarioItem.scenarioLabel}" />
+									</p:column>
+									<p:column headerText="عدد الخطوات" style="width:10%">
+										<h:outputText value="#{scenarioItem.stepsCount}" />
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="#{msg['details']}">
+										<p:commandButton
+											action="#{scenarioBean.loadSelectedScenario(scenarioItem)}"
+											icon="ui-icon-search" oncomplete="PF('scenario_dlg').show()"
+											update="myDialog">
+										</p:commandButton>
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="#{msg['delete']}">
+										<p:commandButton
+											action="#{scenarioBean.removeScenario(scenarioItem)}"
+											icon="fa fa-times" update="scenarioTable">
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+								<br /> <br />
+								<div align="center">
+									<p:commandButton value="إضافة" styleClass="btn btn-primary"
+										action="#{scenarioBean.addScenario}"
+										oncomplete="PF('scenario_dlg').show()" update="myDialog">
+									</p:commandButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<p:dialog widgetVar="scenario_dlg" id="scenario_dlgId" width="70%"
+				hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+				resizable="false">
+				<h:form id="myDialog">
+					<div style="width: 100%">
+						<div style="float: right; width: 100%">
+							<h:panelGroup rendered="#{!scenarioBean.addMode}">
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" رقم النموذج " />
+									</div>
+
+
+									<div class="col-md-5">
+										<h:outputLabel value=" #{scenarioBean.scenario.modelId}" />
+									</div>
+
+								</div>
+							</h:panelGroup>
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="إسم النموذج"></h:outputLabel>
+								</div>
+								<div class="col-md-5">
+									<h:outputLabel value="#{scenarioBean.scenario.scenarioLabel}"
+										rendered="#{!scenarioBean.addMode}" />
+									<h:selectOneMenu id="empList" styleClass="form-control"
+										rendered="#{scenarioBean.addMode}"
+										value="#{scenarioBean.scenario.modelId}">
+										<f:selectItem itemLabel="#{msg['select.model']}" itemValue="" />
+										<f:selectItems value="#{scenarioBean.modelList}" var="mods"
+											itemLabel="#{mods.type}" itemValue="#{mods.id}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-2">
+									<p:commandButton value="#{msg['add']}" class="btn btn-primary"
+										style="font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+										actionListener="#{scenarioBean.addStep}"
+										update="scenarioDocTable">
+									</p:commandButton>
+								</div>
+
+							</div>
+							<br></br>
+							<h:panelGroup rendered="#{!scenarioBean.addMode}">
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="عدد الخطوات " />
+
+									</div>
+									<div class="col-md-5">
+										<h:outputLabel value="#{scenarioBean.scenario.stepsCount}"
+											rendered="#{!scenarioBean.addMode}" />
+										<!-- 									<p:inputText value=" #{scenarioBean.scenario.stepsCount}" -->
+										<!-- 										rendered="#{scenarioBean.addMode}" /> -->
+									</div>
+								</div>
+							</h:panelGroup>
+							<br></br>
+							<div class="row">
+								<div class="col-md-12">
+									<p:dataTable var="scenarioDocItem" id="scenarioDocTable"
+										value="#{scenarioBean.scenario.documents}" editable="true"
+										emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+										paginator="true" rows="12">
+
+										<p:ajax event="rowEdit" listener="#{scenarioBean.onRowEdit}" />
+										<p:ajax event="rowEditCancel"
+											listener="#{scenarioBean.onRowCancel}" />
+
+										<p:column headerText="الخطوة" style="width:10%">
+											<h:outputText value="#{scenarioDocItem.stepId}" />
+										</p:column>
+										<p:column headerText="من" style="width:35%">
+											<p:cellEditor>
+												<f:facet name="output">
+													<!-- 													<h:outputText -->
+													<!-- 														value="#{scenarioDocItem.fromUser.description}" /> -->
+													<h:selectOneMenu styleClass="form-control"
+														value="#{scenarioDocItem.fromId}" disabled="true">
+														<f:selectItems value="#{scenarioBean.propertiesList}"
+															var="from" itemLabel="#{from.description}"
+															itemValue="#{from.id}" />
+													</h:selectOneMenu>
+												</f:facet>
+												<f:facet name="input">
+													<h:selectOneMenu id="fromList" styleClass="form-control"
+														value="#{scenarioDocItem.fromId}">
+														<f:selectItems value="#{scenarioBean.propertiesList}"
+															var="from" itemLabel="#{from.description}"
+															itemValue="#{from.id}" />
+													</h:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="إلى" style="width:35%">
+											<p:cellEditor>
+												<f:facet name="output">
+													<!-- 													<h:outputText value="#{scenarioDocItem.toUser.description}" /> -->
+													<h:selectOneMenu styleClass="form-control" disabled="true"
+														value="#{scenarioDocItem.toId}">
+														<f:selectItems value="#{scenarioBean.propertiesList}"
+															var="to" itemLabel="#{to.description}"
+															itemValue="#{to.id}" />
+													</h:selectOneMenu>
+												</f:facet>
+												<f:facet name="input">
+													<h:selectOneMenu id="toList" styleClass="form-control"
+														value="#{scenarioDocItem.toId}">
+														<f:selectItems value="#{scenarioBean.propertiesList}"
+															var="to" itemLabel="#{to.description}"
+															itemValue="#{to.id}" />
+													</h:selectOneMenu>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="الإعتماد" style="width:10%">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{scenarioDocItem.signed}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{scenarioDocItem.signed}"
+														style="width:100%" label="code" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="حذف" style="width:5%">
+											<p:commandButton
+												action="#{scenarioBean.removeStep(scenarioDocItem)}"
+												icon="fa fa-times" update="scenarioDocTable">
+											</p:commandButton>
+										</p:column>
+										<p:column style="width:5%">
+											<p:rowEditor />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<br />
+					<div align="center">
+						<p:commandButton value="#{msg['save']}" class="btn btn-primary"
+							style="font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							actionListener="#{scenarioBean.saveScenarioAction}"
+							update=":includeform:scenarioTable"
+							onsuccess="PF('scenario_dlg').hide()">
+						</p:commandButton>
+						<p:commandButton value="رجوع" immediate="true"
+							style="font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="btn btn-primary" onclick="PF('scenario_dlg').hide()" />
+					</div>
+				</h:form>
+			</p:dialog>
+
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

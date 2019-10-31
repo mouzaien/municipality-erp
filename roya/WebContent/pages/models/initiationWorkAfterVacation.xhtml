@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+		<style>
+				body .ui-dialog .ui-dialog-titlebar{
+				float: right;
+				width: 92%;
+				background-color: #472d985c;
+				
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon{
+				float: none;
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-title{
+				float: right;;
+		         }
+		</style>
+	<p:messages autoUpdate="true" closable="true"></p:messages>
+	<br></br>
+	<h:panelGroup
+		rendered="#{! mainManagedBean.mailExecutor.disabledButtonForError}">
+		<div class="image-box-footer">
+        	<p:commandButton value="#{msg['send']}" id="send"
+							disabled="#{mainManagedBean.mailExecutor.disabledButton}"
+							rendered="#{ ! mainManagedBean.mailExecutor.actionMode }"
+							icon="ui-icon ui-icon-assignment-return" >
+							<f:ajax execute="@form" event="click"
+								render="date send xx dateLable  dayLable"
+								listener="#{mainManagedBean.saveAction}" />
+						</p:commandButton>
+						
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['accept']}" icon="ui-icon ui-icon-check"
+					action="#{mainManagedBean.mailExecutor.acceptAction}"
+					rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}" styleClass=" cyan-btn">
+					<f:ajax execute="@this" />
+				</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+<!-- 				<h:panelGroup -->
+<!-- 							rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}"> -->
+                        <h:panelGroup>
+							<p:commandButton  rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}"  value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();" styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel"></p:commandButton>
+						</h:panelGroup>
+            
+			
+
+		
+     </div>	
+     <br/>
+	<div class="card card-w-title">
+					
+							      
+                            <h1 style="color:#7CB342; text-align: center;">#{msg['work.after.vacation']} <span class="fa fa-fw fa-ioxhost"></span></h1>
+                          	<br></br>	
+		
+		 <p:panel>
+     <f:facet name="header" >
+                     <span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['vacation.last.details']}
+                    </f:facet>
+       <p:panelGrid columns="4"  columnClasses="ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+       <h:outputLabel value="#{msg['decision.number']} " ></h:outputLabel>
+       <h:outputLabel style=" font-weight: bold;" value="#{mainManagedBean.mailExecutor.employeeVacation.excuseNumber}" />
+       <h:outputLabel value="#{msg['vacation.period']}" ></h:outputLabel>
+       <h:outputLabel style=" font-weight: bold; ;" value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}" ></h:outputLabel>
+       
+        <h:outputLabel value="#{msg['vacation.type']}"  ></h:outputLabel>
+       <h:outputLabel style=" font-weight: bold; ;" value="#{msg['normal']}" ></h:outputLabel>
+       <h:outputLabel value="#{msg['decision.date']}"  />
+       <h:outputLabel style=" font-weight: bold; ;" value="#{mainManagedBean.mailExecutor.employeeVacation.excuseDateHigri}" />
+       
+       
+       <h:outputLabel value="#{msg['start.date.work']}"  />
+       <h:outputLabel style=" font-weight: bold; ;" id="date" disabled="#{mainManagedBean.mailExecutor.disabledButton}" value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}" />
+      
+ 	    <p:spacer></p:spacer>
+ 	     <p:spacer></p:spacer>
+	   </p:panelGrid>
+       </p:panel>
+       
+       
+       
+       <p:panel id="xx">
+       
+       
+     <f:facet name="header" >
+                     <span class="fa fa-fw fa-thumbs-up"></span> &nbsp;&nbsp;  #{msg['start.work.detail']}
+                    </f:facet>
+       <p:panelGrid columns="4"  columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+        <h:outputLabel value="#{msg['emp.start.work']}"  ></h:outputLabel>
+        
+        <p:panelGrid>
+        	<p:inputText id="day" disabled="true" style="width:100%; font-weight:bold;"
+					rendered="#{!mainManagedBean.mailExecutor.disabledButton}"
+					value="#{mainManagedBean.mailExecutor.employeeInitiation.intaionDay}"></p:inputText>
+				<p:outputLabel id="dayLable" 
+					rendered="#{mainManagedBean.mailExecutor.disabledButton}"
+					value="#{mainManagedBean.mailExecutor.employeeInitiation.intaionDay}"></p:outputLabel>
+        </p:panelGrid>
+        <label class="btxt">#{msg['in.date']}</label>
+          <!--this input have same id of anthoer component  id="date" -->
+        	<p:inputMask  style="width:100%"
+						disabled="#{mainManagedBean.mailExecutor.disabledButton}"
+						rendered="#{!mainManagedBean.mailExecutor.disabledButton}"
+						value="#{mainManagedBean.mailExecutor.employeeInitiation.intaionHigriDate}"
+						mask="99/99/9999" size="8" validatorMessage="#{msg['correct.date']}">
+						<f:validator validatorId="utilities.UmmAlQUraValidator" />
+						<p:ajax update="day" process="@form" event="keyup"
+							listener="#{mainManagedBean.mailExecutor.updatDay()}" />
+
+
+				</p:inputMask>
+				<p:outputLabel id="dateLable"
+					rendered="#{mainManagedBean.mailExecutor.disabledButton}"
+					value="#{mainManagedBean.mailExecutor.employeeInitiation.intaionHigriDate}" />
+	   </p:panelGrid>
+       </p:panel>
+		
+		
+		
+		
+		
+		<div class="panel-body"></div>
+		<div >
+			<br></br>
+			
+
+			<div class="panel-body">
+
+				<h:form>
+					<h:panelGroup >
+						<div class="col-md-12">
+							<div class="col-md-3">
+								<label class="btxt">
+									:</label>
+							</div>
+							<div class="col-md-3">
+
+							
+
+							</div>
+							<!-- 		<div class="col-md-4">
+								<p:selectOneMenu style="width: 180px;" disabled="true" 
+									value="#{mainManagedBean.mailExecutor.employeeInitiation.intaionDay}">
+									<f:selectItem itemLabel="اختر اليوم " itemValue=""
+										noSelectionOption="true"></f:selectItem>
+									<f:selectItem itemLabel="الاحد" itemValue="الاحد"></f:selectItem>
+									<f:selectItem itemLabel="الاثنين" itemValue="الاثنين"></f:selectItem>
+									<f:selectItem itemLabel="الثلاثاء" itemValue="الثلاثاء"></f:selectItem>
+									<f:selectItem itemLabel="الاربعاء" itemValue="الاربعاء"></f:selectItem>
+									<f:selectItem itemLabel="الخميس" itemValue="الخميس"></f:selectItem>
+
+								</p:selectOneMenu>
+							</div> -->
+
+							<div class="col-md-1">
+								
+							</div>
+							<div class="col-md-3">
+							
+							</div>
+
+						</div>
+					</h:panelGroup>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<div class="text-right">
+					
+
+						<!-- 						<h:commandButton style="float:left" value="#{msg['refuse']}" -->
+						<!-- 							immediate="true" -->
+						<!-- 							rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}" -->
+						<!-- 							class="btn btn-primary" -->
+						<!-- 							action="#{mainManagedBean.mailExecutor.refuseAction}"> -->
+						<!-- 							<f:ajax execute="@form" /> -->
+						<!-- 						</h:commandButton> -->
+					
+
+							<p:dialog header="#{msg['add.explanation.confirmation']}" widgetVar="dlgRefuse" height="300" width="500">
+							 
+							  	<h:panelGroup id="refPopup">
+							  	 <p:panelGrid columns="2"  columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+      
+                                 	<h:outputLabel value="#{msg['redirect.transaction']}" />
+                                 		<p:selectOneMenu id="typ" styleClass="form-control"
+															value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+															var="d" style=" width:100%">
+
+															<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+																itemValue="#{pp.idStr} "
+																value="#{mainManagedBean.wrkPurposes}" />
+														</p:selectOneMenu>
+														
+															<h:outputLabel styleClass="btxt"
+															value="#{msg['explanation']}" />
+                                 	                    <p:inputTextarea cols="30" rows="5" style="width:100%"
+															value="#{mainManagedBean.mailExecutor.wrkAppComment}">
+														</p:inputTextarea>
+      
+      
+	  							 </p:panelGrid>
+	  							 <br></br>
+	  							 <br></br>
+										<div >
+										
+										
+											<p:commandButton value="#{msg['back']}" 
+												immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+												styleClass=" orange-btn"  >
+												</p:commandButton>
+												<p:spacer width="4"></p:spacer>
+<!-- 												<button type="button" class="btn btn-green" -->
+<!-- 													data-dismiss="modal">#{msg['back']}</button> -->
+													<p:commandButton 
+													value="#{msg['confirmation']}" icon="ui-icon ui-icon-check"
+													action="#{mainManagedBean.mailExecutor.refuseAction}">
+													<f:ajax execute="refPopup"></f:ajax>
+												</p:commandButton>
+											
+										</div>
+									</h:panelGroup>
+							</p:dialog>
+					
+
+
+
+						
+
+					</div>
+				</h:form>
+			</div>
+		</div>
+</div>
+	</h:panelGroup>
+	<p:panel
+		rendered="#{mainManagedBean.mailExecutor.disabledButtonForError}">
+		<h:outputLabel value="#{msg['msg.no.start.work']}"></h:outputLabel>
+	</p:panel>
+
+</h:body>
+</html>

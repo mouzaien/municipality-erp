@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-04-08T11:01:44 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bill_fuel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a78b5a73-92e4-4012-bcf4-4ee6744b3667">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<parameter name="LOGO_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="transactionId" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select TO_CHAR(TO_DATE (F.CREATED_IN, 'dd/mm/yy'), 'dd/mm/yyyy') as CREATED_IN,F.ID,F.DELIVERY_QTY,TO_CHAR(TO_DATE (F.START_DATE, 'dd/mm/yy'), 'dd/mm/yyyy') as START_DATE,TO_CHAR(TO_DATE (F.END_DATE, 'dd/mm/yy'), 'dd/mm/yyyy') as END_DATE,CM.NAME as model, CB.NAME as brand, FT.NAME as fuelT,C.MATRICULE,
+C.NUM_DOOR, US.EMPNAME,DEPT.DEPT_NAME 
+from fuel_transaction f,user_cars uc,car c,car_model cm, 
+car_brand cb, fuel_type ft,arc_users us,wrk_dept dept
+where f.id= $P{transactionId} and UC.USER_ID=US.USER_ID  and C.FUEL_TYPE=FT.ID and F.USER_CAR_ID=UC.ID and UC.CAR_ID=C.ID and C.CAR_MODEL=CM.ID and CM.BRAND_ID=CB.ID and US.DEPT_ID=DEPT.ID]]>
+	</queryString>
+	<field name="CREATED_IN" class="java.lang.String"/>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="DELIVERY_QTY" class="java.math.BigDecimal"/>
+	<field name="START_DATE" class="java.lang.String"/>
+	<field name="END_DATE" class="java.lang.String"/>
+	<field name="MODEL" class="java.lang.String"/>
+	<field name="BRAND" class="java.lang.String"/>
+	<field name="FUELT" class="java.lang.String"/>
+	<field name="MATRICULE" class="java.lang.String"/>
+	<field name="NUM_DOOR" class="java.math.BigDecimal"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<field name="DEPT_NAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="510" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="87" y="116" width="380" height="52" uuid="1c08043b-3086-44f5-945d-2fd682f44759"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["صرف محروقات"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="0" width="149" height="80" uuid="f60773f4-ba6a-427f-afd3-08d810cfb985">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="120" height="65" uuid="88f5361c-3dd3-4e3c-9346-a76d0fbe7112"/>
+				<imageExpression><![CDATA[$P{LOGO_DIR}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="87" y="181" width="283" height="329" uuid="ec0db1c8-e039-4691-8993-2511a51f97f3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("\n"+$F{FUELT}+"\n\n"+
+$F{DELIVERY_QTY}+"\n\n"+
+$F{BRAND}+" - "+$F{MODEL}+"\n\n"+
+$F{MATRICULE}+"\n\n"+
+$F{NUM_DOOR}+"\n\n"+
+$F{EMPNAME}+"\n\n"+
+$F{DEPT_NAME}+"\n\n"+
+$F{CREATED_IN}+"\n\n"+
+$F{CREATED_IN}+"\n\n"+
+$F{START_DATE}+"\n\n"+
+$F{END_DATE}+"\n\n").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="181" width="97" height="329" uuid="f7a270bd-ec3d-41df-b954-2b08041b3f94">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\nنوع المحروقات: "+"\n\n"+
+"الكمية: "+"\n\n"+
+"المركبة: "+"\n\n"+
+"رقم اللوحة: "+"\n\n"+
+"رقم الباب: "+"\n\n"+
+"صاحب السيارة: "+"\n\n"+
+"الإدارة: "+"\n\n"+
+"تاريخ الفاتورة: "+"\n\n"+
+"من تاريخ : "+"\n\n"+
+"إلى تاريخ : "+"\n\n"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="10" y="69" width="101" height="36" forecolor="#F51128" uuid="9c253ba0-f97d-48d2-9a49-8817fdb5ab6e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{ID}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</summary>
+</jasperReport>

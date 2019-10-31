@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+
+	<p class="text-center">
+		<h:outputLabel styleClass="btxt"
+			style="font-weight:bold; font-size:30px;"
+			value="#{msg['autorization.model']}">
+		</h:outputLabel>
+
+	</p>
+
+	<h:form prependId="false">
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="col-lg-12"
+			style="background-color: white; border-top: 5px solid #428BCA">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">#{msg['request.data']}
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p:outputPanel id="formPanel">
+
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<p:outputLabel
+										value="#{mainManagedBean.mailExecutor.autorizationDate}" />
+
+								</div>
+
+
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['autorization.nb']}"
+										styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel value="#{mainManagedBean.mailExecutor.autorizationNB}" />
+								</div>
+
+
+							</div>
+
+							<br />
+							<br />
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['reason']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel value="#{mainManagedBean.mailExecutor.reason}" />
+								</div>
+							</div>
+							<br />
+							<br />
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['leaving.date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-2">
+									
+									<h:outputLabel
+										value="#{mainManagedBean.mailExecutor.leavingMinute}" />
+									<h:outputLabel value=" : " />
+									<h:outputLabel
+										value="#{mainManagedBean.mailExecutor.leavingHour}" />
+								</div>
+								
+							</div>
+							<br />
+							<br />
+							<div class="row">
+
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['return.date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-2">
+									
+									<h:outputLabel
+										value="#{mainManagedBean.mailExecutor.returnMinute}" />
+									<h:outputLabel value=" : " />
+									<h:outputLabel
+										value="#{mainManagedBean.mailExecutor.returnHour}" />
+
+								</div>
+								
+
+							</div>
+							<h:commandButton value="#{msg['back']}" action="mails"
+								immediate="true"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								class="btn btn-primary">
+								<f:ajax execute="@form"></f:ajax>
+							</h:commandButton>
+							<h:commandButton value="#{msg['accept']}" icon="fa fa-paperclip"
+								class="btn btn-primary"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								rendered="#{(mainManagedBean.mailExecutor.signedAutorized)}"
+								action="#{mainManagedBean.mailExecutor.acceptAction}">
+								<f:ajax execute="@this"></f:ajax>
+							</h:commandButton>
+
+							<h:panelGroup
+								rendered="#{(mainManagedBean.mailExecutor.signedAutorized)}">
+								<button type="button" class="btn btn-primary "
+									style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
+									data-toggle="modal" data-target="#gridSystemModal2">#{msg['refuse']}</button>
+							</h:panelGroup>
+
+
+							<div id="gridSystemModal2" class="modal fade" tabindex="-1"
+								role="dialog" aria-labelledby="gridModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="modal-title" id="gridModalLabel">#{msg['add.explanation.confirmation']}</h4>
+										</div>
+										<h:panelGroup id="refPopup">
+											<div class="modal-body">
+												<div class="container-fluid bd-example-row">
+													<br></br>
+
+													<div class="row">
+														<div class="col-md-3">
+															<h:outputLabel styleClass="btxt"
+																value="#{msg['redirect.transaction']}" />
+														</div>
+														<div class="col-md-7">
+
+															<h:selectOneMenu id="typ" styleClass="form-control"
+																value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+																var="d" style=" margin-left: 1px;">
+
+																<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+																	itemValue="#{pp.idStr} "
+																	value="#{mainManagedBean.wrkPurposes}" />
+															</h:selectOneMenu>
+
+
+														</div>
+
+													</div>
+													<br></br>
+													<div class="row ">
+														<div class="col-md-3">
+															<h:outputLabel styleClass="btxt"
+																value="#{msg['explanation']}" />
+														</div>
+
+
+														<div class="col-md-7">
+															<h:inputTextarea
+																value="#{mainManagedBean.mailExecutor.wrkAppComment}"
+																styleClass="form-control">
+															</h:inputTextarea>
+														</div>
+
+													</div>
+
+													<br></br>
+
+
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-green"
+														data-dismiss="modal">#{msg['back']}</button>
+													<h:commandButton style="float:left"
+														value="#{msg['confirmation']}"
+														styleClass="btn btn-primary"
+														action="#{mainManagedBean.mailExecutor.refuseAction}">
+														<f:ajax execute="refPopup"></f:ajax>
+													</h:commandButton>
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+							</div>
+
+
+						</p:outputPanel>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

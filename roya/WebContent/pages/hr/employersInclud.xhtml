@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<style>
+/* .ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer { */
+/* 	text-align: center; */
+/* 	padding: 4px 10px 10px; */
+/* 	background: transparent; */
+/* 	height: 40px; */
+/* 	color: black; */
+/* 	font-size: 22px; */
+/* 	border: none; */
+/* } */
+
+/* body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-datatable-footer .ui-inputfield */
+/* 	{ */
+/* 	color: #7e7676; */
+/* 	font-size: 25px; */
+/* 	text-align: center; */
+/* } */
+</style>
+</h:head>
+<body>
+	<h:form id="vcs">
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				الموظفين<span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+			<br /> <br /> <br />
+			<p:dataTable id="emp" var="employer"
+				value="#{employersBean.employers}" editable="true"
+				widgetVar="cellemp" paginatorPosition="bottom"
+				filteredValue="#{employersBean.filtredEmployers}"
+				sortBy="#{employer.employeNumber}" sortOrder="descending" rows="13"
+				paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+							style="width:150px" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
+				<p:ajax event="rowEdit" update="emp"
+					listener="#{employersBean.onRowEdit}" />
+				<p:ajax event="rowEditCancel" update="emp"
+					listener="#{employersBean.onRowCancel}" />
+				<p:column headerText="الرقم الوظيفي"
+					filterBy="#{employer.employeNumber}" filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.employeNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="period" value="#{employer.employeNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="الاسم" filterBy="#{employer.firstName}"
+					filterMatchMode="contains" width="20%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.firstName}" />
+							<!--  value="#{employer.firstName} #{employer.secondName} #{employer.thirdName} #{employer.forthName}"  -->
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="start" value="#{employer.firstName}"
+								style="width:96%" mask="99/99/9999" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="السجل المدني"
+					filterBy="#{employer.nationalNumber}" filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.nationalNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="end" value="#{employer.nationalNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="الحساب" width="17%"
+					filterBy="#{employer.accountNumber}" filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.accountNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="fromserv" value="#{employer.accountNumber}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="البنك" width="17%"
+					filterBy="#{employer.accountNumber}" filterMatchMode="contains">
+					#{employer.bank.name}
+				</p:column>
+				<p:column headerText="الجوال" filterBy="#{employer.mobileNumber}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.mobileNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="toserv" value="#{employer.mobileNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="الحالة" filterBy="#{employer.socialityState}"
+					filterMatchMode="contains" width="7%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.socialityState}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="excuseNum" value="#{employer.socialityState}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="الجنس" filterBy="#{employer.sex}" width="7%"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{employer.sex}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="excusedate" value="#{employer.sex}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%">
+					<p:commandButton icon="ui-icon ui-icon-search"
+						action="#{employersBean.goToEmployeeDetails(employer.employeNumber)}">
+
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+		</div>
+	</h:form>
+</body>
+
+</html>

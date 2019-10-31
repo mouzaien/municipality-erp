@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="letter" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="192"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="national_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[يييي]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_name" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="print_type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[ييي]]></defaultValueExpression>
+	</parameter>
+	<parameter name="current_user" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[22]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 'حيث تقدم الينا المواطن/ـه ' || $P{C_name} ||chr(10)||
+'رقم السجل المدني : '|| $P{national_id} ||chr(10)||
+'بطلب '|| $P{print_type}  ||'  حيث يلزم الإطلاع علي مهنة المذكور , لذا نأمل موافاتنا ببيان للأحوال المدنية عن المذكور (برنت) موضحا به المهنة حتي نتمكن من إستكمال إجراءات الترخيص . '   txt
+, to_char(LIC_AHWAL_PRINT.nextval,'0000') no
+,date_converter(sysdate) dt ,
+' تمت الطباعة بواسطة  '||GET_REAL_EMPNAME($P{current_user})||' في ' ||date_converter(sysdate)||' هـ ' curr_user_info ,
+GET_REAL_EMPNAME((select PROP_VALUE from SYS_PROPERTIES where PROP_NAME ='KHEDMA_ID')) KhemaName,
+(select ddd from WRK_PROFILE_SIGN where user_id = ((select PROP_VALUE from SYS_PROPERTIES where PROP_NAME ='KHEDMA_ID'))) sign
+
+from dual]]>
+	</queryString>
+	<field name="TXT" class="java.lang.String"/>
+	<field name="NO" class="java.lang.String"/>
+	<field name="DT" class="java.lang.String"/>
+	<field name="CURR_USER_INFO" class="java.lang.String"/>
+	<field name="KHEMANAME" class="java.lang.String"/>
+	<field name="SIGN" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="122" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="418" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image>
+				<reportElement positionType="Float" x="46" y="259" width="169" height="78" uuid="d5299529-0598-4cab-b531-14476c1fbbec"/>
+				<imageExpression><![CDATA[$F{SIGN}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="9" y="20" width="97" height="20" uuid="8a6b1008-b8c7-4e08-b197-30fb45ec7ee5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DT}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="19" y="329" width="212" height="20" uuid="203b811d-250c-45e6-b6d8-58817c13a323"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KHEMANAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="30" y="129" width="488" height="57" uuid="c5ec94ad-a03c-4ea1-b0a2-2de10b66ef84"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="17" isBold="true" pdfEncoding="Identity-H"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم ورحمة الله وبركاته\n"+($F{TXT}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="9" y="0" width="97" height="20" uuid="a99ed421-ec3e-40c6-bc97-6175f79f28bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="87" width="555" height="27" uuid="9842f507-12e0-4208-a045-274c912c1996"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المكرم / مدير إدارة الأحوال المدنية بمحافظة البكيرية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="5" width="109" height="20" uuid="fae03c22-1504-4d6e-9852-ae35e8c7e8ff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[طلب برنت أحوال]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="19" y="239" width="212" height="20" uuid="d90e526a-5e4a-4fdc-85b7-a48e343b9e84"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مدير إدارة الخدمة الشاملة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="-34" width="100" height="20" uuid="e6bd93f5-2fc7-4550-8c37-5ad23cf877d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الخدمة الشاملة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="30" y="196" width="488" height="23" uuid="6af110fe-9769-4b2a-91b3-4c97a056bd7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ والسلام عليكم ورحمة الله وبركاته,,,]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="0" y="363" width="514" height="20" uuid="6c326e5f-6642-4bd2-8e72-c7616d5b116b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CURR_USER_INFO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="202" y="5" width="324" height="20" forecolor="#FF0000" uuid="0420255f-3c36-4e14-a4d1-25a8e36f5069"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# معا_ضد_الإرهاب_والفكر_الضال"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

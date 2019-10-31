@@ -1,0 +1,750 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<style>
+/* .ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer { */
+/* 	text-align: center; */
+/* 	padding: 4px 10px 10px; */
+/* 	background: transparent; */
+/* 	height: 40px; */
+/* 	color: black; */
+/* 	font-size: 22px; */
+/* 	border: none; */
+/* } */
+
+/* body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-datatable-footer .ui-inputfield */
+/* 	{ */
+/* 	color: #7e7676; */
+/* 	font-size: 25px; */
+/* 	text-align: center; */
+/* } */
+</style>
+</h:head>
+
+
+<f:view>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+
+					<div class="image-box-footer">
+
+						<p:commandButton value="إظافة" icon="ui-icon-add"
+							oncomplete=" PF('addOvertimeDialog').show()"
+							action="#{overtimeBean.addOvertime}" process="@this"
+							update="includeform:addDialog">
+
+							<f:ajax execute="@form"></f:ajax>
+						</p:commandButton>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<div>
+							<h1 style="color: #7CB342; text-align: center;">
+								خارج الدوام <span class="fa fa-fw fa-clock-o"></span>
+							</h1>
+							<div>
+								<h:panelGroup id="details_data">
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu id="empNBList" filter="true"
+												filterMatchMode="contains"
+												value="#{overtimeBean.employerNB}">
+												<f:selectItem itemValue=""
+													itemLabel="#{msg['choose.employee']}" />
+												<f:selectItems value="#{overtimeBean.employersList}"
+													var="emp" itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+												<f:ajax
+													render="includeform:details_data includeform:inboxdt"
+													execute="empNBList" event="change"
+													listener="#{overtimeBean.loadEmployer}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.job}" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.rankName}" />
+										</div>
+
+
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:outputLabel
+												value="#{overtimeBean.employer.firstApplicationDate}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.basicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="جهة العمل" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.department}" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+						</div>
+						<br />
+
+						<div>
+							<p:dataTable var="overItem" id="inboxdt" widgetVar="overVar"
+								value="#{overtimeBean.overtimeList}"
+								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+								paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{overtimeBean.filteredOvertimeList}"
+								paginator="true" rows="17">
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="من تاريخ" width="20%"
+									filterBy="#{overItem.fromDate}" filterMatchMode="contains">										
+										#{overItem.fromDate} 									
+									</p:column>
+								<p:column style="white-space: nowrap;" headerText="إلى تاريخ"
+									width="20%" filterBy="#{overItem.toDate}"
+									filterMatchMode="contains">										
+										#{overItem.toDate}										
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="شهر و سنة الصرف" width="25%"
+									filterBy="#{overItem.yearOverTime}/#{overItem.monthOvertime}"
+									filterMatchMode="contains">										
+										#{overItem.yearOverTime}/#{overItem.monthOvertime}									
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="المبلغ" width="20%"
+									filterBy="#{overItem.deservedTotlal}"
+									filterMatchMode="contains">										
+										#{overItem.deservedTotlal}									
+									</p:column>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="15%">
+									<p:commandButton oncomplete="PF('detailsDG').show();"
+										action="#{overtimeBean.loadOvertimeDetails}"
+										icon="ui-icon-search" update="includeform:myDialog">
+										<f:setPropertyActionListener value="#{overItem}"
+											target="#{overtimeBean.overtime}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</div>
+
+					<p:dialog widgetVar="addOvertimeDialog" modal="true" width="70%"
+						dir="rtl">
+
+						<h2 style="color: #7CB342; text-align: center;">إظافة خارج
+							دوام</h2>
+						<br />
+						<h:panelGroup id="addDialog">
+							<div>
+								<h:panelGroup id="dataPG">
+
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-3">
+											<h:outputLabel value="هجري  :  " />
+											<p:selectBooleanCheckbox value="#{overtimeBean.higriMode}">
+												<p:ajax update="pDates1,pDates12" process="@this"></p:ajax>
+											</p:selectBooleanCheckbox>
+										</div>
+
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu id="empList" filter="true"
+												filterMatchMode="contains"
+												value="#{overtimeBean.employerNB}">
+												<f:selectItem itemValue=""
+													itemLabel="#{msg['choose.employee']}" />
+												<f:selectItems value="#{overtimeBean.employersList}"
+													var="emp" itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName}" />
+
+												<f:ajax render="includeform:dataPG includeform:inboxdt"
+													execute="empList" event="change"
+													listener="#{overtimeBean.loadEmployer}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.job}" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.rankName}" />
+										</div>
+
+
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{overtimeBean.employer.firstApplicationDate}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.basicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="جهة العمل" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{overtimeBean.employer.department}" />
+										</div>
+									</div>
+								</h:panelGroup>
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="من تاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:panelGroup id="pDates1">
+											<p:inputText id="hiri1" value="#{overtimeBean.dateFrom}"
+												onfocus="loadCalendar();" required="true"
+												requiredMessage="يرجى اختيار تاريخ"
+												rendered="#{overtimeBean.higriMode}"
+												styleClass="form-control form-controlCal">
+											</p:inputText>
+
+											<p:calendar id="gric1" value="#{overtimeBean.dateFrom_G}"
+												pattern="dd/MM/yyyy" rendered="#{!overtimeBean.higriMode}">
+												<f:validator validatorId="utilities.UmmAlQUraValidator" />
+											</p:calendar>
+										</h:panelGroup>
+									</div>
+
+
+									<!-- 									<div class="ui-g-2"> -->
+									<!-- 										<p:calendar pattern="dd/MM/yyyy" -->
+									<!-- 											value="#{overtimeBean.overtime.fromGrigDate}"> -->
+									<!-- 											<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+									<!-- 										</p:calendar> -->
+									<!-- 									</div> -->
+
+									<div class="ui-g-2">
+										<h:outputLabel value="إلى تاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:panelGroup id="pDates12">
+											<p:inputText id="hiri12" value="#{overtimeBean.dateTo}"
+												onfocus="loadCalendar();" required="true"
+												requiredMessage="يرجى اختيار تاريخ"
+												rendered="#{overtimeBean.higriMode}"
+												styleClass="form-control form-controlCal">
+											</p:inputText>
+
+											<p:calendar id="gric12" value="#{overtimeBean.dateTo_G}"
+												pattern="dd/MM/yyyy" rendered="#{!overtimeBean.higriMode}">
+												<f:validator validatorId="utilities.UmmAlQUraValidator" />
+
+											</p:calendar>
+										</h:panelGroup>
+									</div>
+
+
+									<!-- 									<div class="ui-g-2"> -->
+									<!-- 										<p:calendar pattern="dd/MM/yyyy" -->
+									<!-- 											value="#{overtimeBean.overtime.toGrigDate}"> -->
+									<!-- 											<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+									<!-- 										</p:calendar> -->
+									<!-- 									</div> -->
+								</div>
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام عادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.normalDays}"
+											class="form-control">
+											<p:ajax event="blur" update="normalTotal,total"
+												process="@this"
+												listener="#{overtimeBean.calculateNormalOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات عادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.normalHours}"
+											class="form-control">
+											<p:ajax event="blur" update="normalTotal,total"
+												process="@this"
+												listener="#{overtimeBean.calculateNormalOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي العادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="normalTotal"
+											value="#{overtimeBean.overtime.normalValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام عطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.holidays}"
+											class="form-control">
+											<p:ajax event="blur" update="holidayTotal,total"
+												process="@this"
+												listener="#{overtimeBean.calculateHolidayOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات عطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.holidaysHours}"
+											class="form-control">
+											<p:ajax event="blur" update="holidayTotal,total"
+												process="@this"
+												listener="#{overtimeBean.calculateHolidayOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي العطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="holidayTotal"
+											value="#{overtimeBean.overtime.holidaysValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام أعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.feastDays}"
+											class="form-control">
+											<p:ajax event="blur" update="aidTotal,total" process="@this"
+												listener="#{overtimeBean.calculateAidOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات أعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.feastHours}"
+											class="form-control">
+											<p:ajax event="blur" update="aidTotal,total" process="@this"
+												listener="#{overtimeBean.calculateAidOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي الأعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="aidTotal"
+											value="#{overtimeBean.overtime.feastValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="شهر الصرف" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu
+											value="#{overtimeBean.overtime.monthOvertime}">
+											<f:selectItems value="#{loadingDataBean.monthsList}"
+												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameAr}" />
+											<f:selectItem itemLabel="اجازه عيد الفطر" itemValue="13"></f:selectItem>
+											<f:selectItem itemLabel="اجازه عيد الاضحى" itemValue="14"></f:selectItem>
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="لعام" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{overtimeBean.overtime.yearOverTime}"
+											class="form-control" />
+									</div>
+
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2">
+										<h:outputLabel value="المبلغ المستحق" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="total"
+											value="#{overtimeBean.overtime.deservedTotlal}" />
+									</div>
+								</div>
+
+							</div>
+
+						</h:panelGroup>
+						<br />
+						<div align="left" class="image-box-footer">
+							<p:commandButton value="موافق" styleClass="btn btn-primary"
+								action="#{overtimeBean.saveOvertime}"
+								onsuccess="PF('addOvertimeDialog').hide();">
+								<p:ajax update="inboxdt"></p:ajax>
+							</p:commandButton>
+							<p:spacer width="10" height="10"></p:spacer>
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onsuccess="PF('addOvertimeDialog').hide();" />
+						</div>
+					</p:dialog>
+
+					<p:dialog header="بيانات خارج الدوام" widgetVar="detailsDG"
+						id="detailsDGId" width="70%" style="margin-top: -127px;"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+						<h:panelGroup id="myDialog">
+							<div>
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<h:outputLabel value="الموظف" styleClass="btxt" />
+									</div>
+									<div class="ui-g-3">
+										<h:outputLabel value="#{overtimeBean.employer.name}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:selectOneMenu id="empList2" filter="true"
+											filterMatchMode="contains"
+											rendered="#{overtimeBean.updateMode}"
+											value="#{overtimeBean.employerNB}">
+											<f:selectItem itemValue=""
+												itemLabel="#{msg['choose.employee']}" />
+											<f:selectItems value="#{overtimeBean.employersList}"
+												var="emp" itemValue="#{emp.employeNumber}"
+												itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+											<f:ajax render="includeform:myDialog" execute="empList2"
+												event="change" listener="#{overtimeBean.loadEmployer}" />
+										</p:selectOneMenu>
+
+
+
+
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="الوظيفة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.employer.job}" />
+									</div>
+
+									<div class="ui-g-2">
+										<h:outputLabel value="المرتبة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.employer.rankName}" />
+									</div>
+
+
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel
+											value="#{overtimeBean.employer.firstApplicationDate}" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.employer.basicSalary}" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="جهة العمل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.employer.department}" />
+									</div>
+								</div>
+
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="من تاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.fromDate}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputMask value="#{overtimeBean.overtime.fromDate}"
+											rendered="#{overtimeBean.updateMode}" mask="99/99/9999"
+											dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+									</div>
+
+									<div class="ui-g-2">
+										<h:outputLabel value="إلى تاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.toDate}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputMask value="#{overtimeBean.overtime.toDate}"
+											rendered="#{overtimeBean.updateMode}" mask="99/99/9999"
+											dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+									</div>
+								</div>
+
+
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام عادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.normalDays}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.normalDays}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="normalTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateNormalOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات عادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.normalHours}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.normalHours}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="normalTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateNormalOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي العادية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="normalTotal1"
+											value="#{overtimeBean.overtime.normalValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام عطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.holidays}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.holidays}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="holidayTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateHolidayOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات عطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.holidaysHours}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.holidaysHours}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="holidayTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateHolidayOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي العطل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="holidayTotal1"
+											value="#{overtimeBean.overtime.holidaysValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="أيام أعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.feastDays}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.feastDays}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="aidTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateAidOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="ساعات أعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.feastHours}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.feastHours}"
+											rendered="#{overtimeBean.updateMode}" class="form-control">
+											<p:ajax event="blur" update="aidTotal1,total1"
+												process="@this"
+												listener="#{overtimeBean.calculateAidOvertime}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="إجمالي الأعياد" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="aidTotal1"
+											value="#{overtimeBean.overtime.feastValue}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="شهر الصرف" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.month}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:selectOneMenu
+											value="#{overtimeBean.overtime.monthOvertime}"
+											rendered="#{overtimeBean.updateMode}">
+											<f:selectItems value="#{loadingDataBean.monthsList}"
+												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameAr}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="لعام" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{overtimeBean.overtime.yearOverTime}"
+											rendered="#{!overtimeBean.updateMode}" />
+										<p:inputText value="#{overtimeBean.overtime.yearOverTime}"
+											rendered="#{overtimeBean.updateMode}" class="form-control" />
+									</div>
+
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2"></div>
+									<div class="ui-g-2">
+										<h:outputLabel value="المبلغ المستحق" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="total1"
+											value="#{overtimeBean.overtime.deservedTotlal}" />
+									</div>
+								</div>
+							</div>
+
+							<br />
+							<br />
+							<div align="left" class="image-box-footer">
+								<p:commandButton value="تعديل"
+									rendered="#{!overtimeBean.updateMode}"
+									styleClass="btn btn-primary" process="@this"
+									action="#{overtimeBean.activateUpdateMode}" update="myDialog" />
+								<p:commandButton value="حفظ" styleClass="btn btn-primary"
+									action="#{overtimeBean.updateOvertime}"
+									rendered="#{overtimeBean.updateMode}"
+									onsuccess="PF('detailsDG').hide();" />
+
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('detailsDG').hide();" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<!-- <link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" /> -->
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<ui:composition template="/template.xhtml">
+
+
+	<ui:define name="content">
+
+		<h:form id="includeform">
+
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="image-box-footer" align="left">
+
+
+				<p:commandButton value="#{msg['back']}" action="mails"
+					immediate="true" class="btn btn-primary"
+					icon="ui-icon ui-icon-arrow-back">
+
+				</p:commandButton>
+				<p:spacer width="10px" height="10px"></p:spacer>
+				<p:commandButton value="#{msg['print.report']}"
+					action="#{newReqFinBean.printt}" styleClass="orange-btn"
+					onclick="this.form.target='_blank'" icon="ui-icon ui-icon-print">
+
+				</p:commandButton>
+				<!-- 										<h:outputLink id="gg" -->
+				<!-- 											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
+				<!-- 											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" -->
+				<!-- 											value="#{newReqFinBean.url}" target="_blank"> -->
+				<!-- 											<span class="ui-button-icon-left ui-icon ui-c fa fa-print" /> -->
+				<!-- 											<span class="ui-button-text">#{msg['print']}</span> -->
+
+				<!-- 										</h:outputLink> -->
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+
+				<h1 style="color: #7CB342; text-align: center;">
+					#{msg['new.fin_req']} <span class="fa fa-fw fa-print"></span>
+				</h1>
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_fromnumber']}"
+							styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText id="fromNumber" value="#{newReqFinBean.fromNumber}"
+							styleClass="form-control">
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_tonumber']}"
+							styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText id="toNumber" value="#{newReqFinBean.toNumber}"
+							styleClass="form-control">
+						</p:inputText>
+					</div>
+					<!-- 									<div class="ui-g-2"> -->
+					<!-- 										<h:selectOneMenu id="empList" styleClass="form-control" -->
+					<!-- 											value="#{NewBuildingWallBean.newBuilding.licWallReqType}"> -->
+					<!-- 											<f:selectItem itemLabel="إختر نوع الطلب" itemValue="" /> -->
+					<!-- 											<f:selectItems -->
+					<!-- 												value="#{loadingDataBean.buildingPaperTypeList}" var="bld" -->
+					<!-- 												itemLabel="#{bld.name}" itemValue="#{bld.id}" /> -->
+					<!-- 										</h:selectOneMenu> -->
+					<!-- 									</div> -->
+				</div>
+
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_fromdate']} "
+							styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:calendar value="#{newReqFinBean.fromDate}"
+							styleClass="form-control">
+						</p:calendar>
+					</div>
+
+					<div class="ui-g-2">
+						<h:outputLabel value=" #{msg['new.fin_todate']}" styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:calendar value="#{newReqFinBean.toDate}"
+							styleClass="form-control">
+						</p:calendar>
+					</div>
+
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_nationid']}"
+							styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText value="#{newReqFinBean.identifierNumber}"
+							styleClass="form-control">
+							<p:ajax process="@this" event="change" update="name"
+								listener="#{newReqFinBean.loadnameEmployerbynationid}" />
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-2">
+						<h:outputLabel id="name"
+							value="#{newReqFinBean.listEmployer.firstName} #{newReqFinBean.listEmployer.seconedName} #{newReqFinBean.listEmployer.thirdName} #{newReqFinBean.listEmployer.fourthName} "
+							styleClass="btxt" />
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_licence']}" styleClass="btxt" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText value="#{newReqFinBean.licenceNumber}"
+							styleClass="form-control">
+							<!-- 											<p:ajax process="@this" event="change" update="licname" -->
+							<!-- 									listener="#{newReqFinBean.loadLicwnceByNumber}" /> -->
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-2">
+						<h:outputLabel id="licname"
+							value="#{newReqFinBean.listlicence.trdName}" styleClass="btxt" />
+					</div>
+
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value=" #{msg['new.fin_supervisor']} "
+							styleClass="btxt" />
+					</div>
+					<div>
+						<p:selectOneMenu id="empssort" filter="true"
+							filterMatchMode="contains" value="#{newReqFinBean.checkNumber}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{newReqFinBean.users}" var="user"
+								itemLabel="#{user.username}#{user.lastName} #{user.userId}"
+								itemValue="#{user.userId}" />
+						</p:selectOneMenu>
+					</div>
+
+
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel value="#{msg['new.fin_status']}" styleClass="btxt" />
+					</div>
+					<div>
+						<p:selectOneMenu id="StatusPayed"
+							value="#{newReqFinBean.statusPayed}">
+							<f:selectItem itemLabel="غير مسدده" itemValue="1" />
+							<f:selectItem itemLabel="مسدده" itemValue="2" />
+
+						</p:selectOneMenu>
+					</div>
+
+
+				</div>
+
+			</div>
+		</h:form>
+
+		<script>
+			function visibleDIv() {
+				document.getElementById("FileLoderID").style.display = "block";
+				document.getElementById("divError").style.display = "block";
+			}
+			function notVisibleDIv() {
+
+				document.getElementById("divError").style.display = "none";
+				document.getElementById("FileLoderID").style.display = "none";
+				document.getElementById("includeform:btn_1").click();
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>

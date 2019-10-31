@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+
+<h:body>
+
+	<ui:composition template="/template.xhtml">
+
+
+		<p:growl autoUpdate="true" showDetail="false" />
+		<ui:define name="content">
+			<h:form id="includeform">
+				<style>
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right !important;
+	border-bottom: 1px solid #333;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+</style>
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="card card-w-title">
+					<br></br>
+					<div style="color: color: #428bca">
+
+						<h1 style="color: #7CB342; float: right;">
+							#{msg['deliver.transaction']}<span class="fa fa-fw fa-language"></span>
+						</h1>
+
+						<br></br> <br></br> <br></br>
+
+						<p:panelGrid columns="5"
+							columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+							layout="grid" styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel value="#{msg['section']}" styleClass="btxt" />
+							<p:selectOneMenu id="section" filter="true"
+								filterMatchMode="contains" value="#{deptRecordsBean.deptId}"
+								style="width:60%" disabled="true">
+								<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{loadingDataBean.depatmentList}"
+									var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" />
+								<f:ajax render="inboxdt" execute="section" event="change"
+									listener="#{deptRecordsBean.loadDeptRecs()}" />
+							</p:selectOneMenu>
+
+							<p:selectOneRadio value="#{deptRecordsBean.mode}" columns="1">
+								<f:selectItem itemLabel="#{msg['not.reciept']}" itemValue="0" />
+								<f:selectItem itemLabel="#{msg['reciept']}" itemValue="1" />
+								<p:ajax event="valueChange" onsuccess="fun();"
+									listener="#{deptRecordsBean.onRadioChange}" />
+							</p:selectOneRadio>
+
+
+							<p:commandButton style="float:left;"
+								value="#{msg['print.document']}" id="bt1"
+								styleClass="purple-btn" icon="ui-icon ui-icon-local-printshop"
+								onclick="this.form.target='_blank'"
+								rendered="#{deptRecordsBean.canPrint}"
+								action="#{deptRecordsBean.saveAndPrint}" ajax="false">
+							</p:commandButton>
+
+							<p:commandButton style="float:left;"
+								value="#{msg['refreshMail']}" id="refresch" icon="fa fa-refresh">
+								<f:ajax render="@form" listener="#{deptRecordsBean.init}"
+									execute="inboxdt"></f:ajax>
+							</p:commandButton>
+						</p:panelGrid>
+
+					</div>
+					<br />
+					<div class="row">
+						<p:dataTable var="recItem" id="inboxdt" widgetVar="overVar"
+							style="direction: rtl;" value="#{deptRecordsBean.deptRecords}"
+							binding="#{table}" selection="#{deptRecordsBean.selectedRecords}"
+							rowKey="#{recItem.arcId}" emptyMessage="#{msg['no.data']}"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{deptRecordsBean.filteredRecords}"
+							paginator="true" rows="17" editable="true">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="قائمة المعاملات:"
+										style="float: right; font-weight: bold;font-size: larger;" />
+									<br />
+								</p:outputPanel>
+								<br></br>
+							</f:facet>
+							<p:ajax event="rowSelectCheckbox" update="@form"
+								listener="#{deptRecordsBean.onDeptChange}" />
+							<p:ajax event="rowUnselectCheckbox" update="@form"
+								listener="#{deptRecordsBean.onDeptChange}" />
+							<p:ajax event="rowEdit" onstart="display();"
+								listener="#{deptRecordsBean.onRowEdit}" process="inboxdt" />
+							<p:ajax event="rowEditCancel"
+								listener="#{deptRecordsBean.onRowCancel}" />
+							<p:column selectionMode="multiple"
+								style="width:56px;text-align:center" />
+							<p:column headerText="#{msg['department.name']}" width="30%"
+								filterBy="#{recItem.receiverDepName}" filterMatchMode="contains">
+								<p:selectOneMenu id="sectionout" style="width:100%"
+									filter="true" filterMatchMode="contains"
+									value="#{recItem.receiverDeptId}"
+									disabled="#{deptRecordsBean.mode != 0}">
+									<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
+									<f:ajax listener="#{deptRecordsBean.onDeptChange}"
+										render="@form" execute="inboxdt"></f:ajax>
+									<f:selectItems value="#{deptRecordsBean.recDeptsList}"
+										var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}">
+									</f:selectItems>
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="رقم المعاملة" width="20%"
+								filterBy="#{recItem.incomeNo}" filterMatchMode="contains">										
+										#{recItem.incomeNo} 									
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['subject']}" width="55%"
+								filterBy="#{recItem.subject}" filterMatchMode="contains">										
+										#{recItem.subject}										
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="الواد الخارجي" width="10%"
+								filterBy="#{recItem.letterFromNo}" filterMatchMode="contains">										
+										#{recItem.letterFromNo}										
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="تاريخ الوارد" width="10%"
+								filterBy="#{recItem.letterFromDate}" filterMatchMode="contains">										
+										#{recItem.letterFromDate}										
+									</p:column>
+							<p:column headerText="#{msg['attachments']}"
+								style="text-align:center;width:10%"
+								styleClass="#{recItem.modified}">
+								<p:cellEditor onclick="display();">
+									<f:facet name="output">
+										<h:outputText value="#{recItem.attachNb}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{recItem.attachNb}" />
+
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="width:10%;text-align:center"
+								headerText="#{msg['update']}"
+								visible="#{deptRecordsBean.mode != 1}">
+								<p:rowEditor></p:rowEditor>
+							</p:column>
+							<p:column style="width:8%;text-align:center"
+								headerText="التفاصيل">
+								<p:commandButton style="float:left;"
+									id="refresch" icon="ui-icon ui-icon-visibility"
+									action="#{deptRecordsBean.viewDetails(recItem)}">
+
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+				<script>
+					function fun() {
+						document.getElementById('includeform:refresch').click();
+					}
+					function display() {
+						var indexes = "";
+						jQuery("tbody .ui-chkbox-box").each(
+								function() {
+									if (jQuery(this)
+											.hasClass("ui-state-active")) {
+										indexes = indexes
+												+ (indexes === "" ? "" : ",")
+												+ jQuery(this).closest("tr")
+														.attr("data-ri");
+									}
+								});
+						if (document.getElementById('includeform:inboxdt:'
+								+ indexes + ':sectionout_label').textContent == "#{msg['choose.dept']}")
+							document.getElementById('divPrint').style.display = 'none';
+					}
+				</script>
+				<style>
+.red {
+	background-color: red;
+	background-image: none;
+}
+
+.normal {
+	background-color: blue;
+	background-image: none;
+}
+</style>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

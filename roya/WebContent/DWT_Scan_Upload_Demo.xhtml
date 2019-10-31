@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Scan, Load, Upload | Dynamic Web TWAIN SDK | Dynamsoft</title>
+	<meta http-equiv="description"
+		content="The sample demonstrates how to scan documents or import local images in browsers with Dynamic Web TWAIN, and then upload them in various ways." />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/ds.demo.css" />
+
+
+	<!--     <h:outputStylesheet name="css/layout-moody.css" library="serenity-layout" /> -->
+	<!--        <h:outputStylesheet name="css/fonts.css" library="serenity-layout"></h:outputStylesheet>		 -->
+	<script type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/dynamsoft.webtwain.config.js"></script>
+	<script type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/dynamsoft.webtwain.initiate.js"></script>
+
+	<script src="Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+	<script type="application/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/scanContent.js"></script>
+</h:head>
+
+<h:body>
+
+	<p:commandButton value="الماسح" type="button"
+		onclick="PF('dlg3').show();" icon="ui-icon ui-icon-scanner"
+		styleClass="purple-btn" />
+	<p:dialog header="إرفاق الملفات" widgetVar="dlg3" modal="true"
+		height="500">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+
+					<div class="modal-body">
+						<div id="main">
+							<div class="container">
+								<div class="ct-lt clearfix">
+									<!-- dwtcontrolContainer is the default div id for Dynamic Web TWAIN control.
+             If you need to rename the id, you should also change the id in the dynamsoft.webtwain.config.js accordingly. -->
+									<div id="dwtcontrolContainer"></div>
+								</div>
+								<div class="ct-rt">
+									<div class="content clearfix">
+										<div class="section">
+											<input type="button" value="المسح الضوئي"
+												onclick="AcquireImage();" class="btn mr20"
+												style="font-weight: bold;" /> <input type="button"
+												value="سطح المكتب" onclick="LoadImages();" class="btn"
+												style="background-color: #0757e742; font-weight: bold;" />
+											<br />
+											<div class="item mt10 radioGroup">
+												<label for="pdf"> <input type="radio"
+													checked="checked" value="pdf" name="ImageType" id="pdf"
+													disabled="disabled" /> PDF
+												</label> :صيغة الملف المرفوع
+												<!--                             <label for="jpeg" style="margin-right: 12px;"> -->
+												<!--                                 <input type="radio" value="jpg" name="ImageType" id="jpeg" checked="checked" /> JPG -->
+												<!--                             </label> -->
+												<!--                             <label for="tiff" style="margin-right: 12px;"> -->
+												<!--                                 <input type="radio" value="tif" name="ImageType" id="tiff" /> TIF -->
+												<!--                             </label> -->
+
+											</div>
+											<!--                         <div class="mt10"> -->
+											<!--                             <div> -->
+											<!--                                 <label>Script Language :</label> -->
+											<!--                                 <select size="1" id="ddlLanguages" class="w60p fr" onchange="languageSelected();"></select> -->
+											<!--                                 <div id="tipInfo"> -->
+											<!--                                     <p>Make sure your servrer supports the language you choose!</p> -->
+											<!--                                 </div> -->
+											<!--                             </div> -->
+											<!--                         </div> -->
+										</div>
+										<div id="extra-fields-div-id" class="section"
+											style="display: none">
+											<div>
+												<!--                             <label>HTTP Form Fields: </label> -->
+												<!--                             <div type="text" class="addBtn w60p fr" onclick="addAField()">&plus;</div> -->
+											</div>
+											<br />
+											<div id="div-extra-fields" class=""
+												style="display: none; max-height: 70px;">
+												<div class="div-fields-item">
+													<input type="text" class="w47p mb15"
+														placeholder="Field Name" /> : <input type="text"
+														class="w47p mb15" placeholder="Field Value" />
+												</div>
+											</div>
+										</div>
+										<div class="section" style="width: 100%; float: left;">
+											<div
+												style="width: 50%; float: left; border-right: solid 1px #e7e7e7;">
+												<input type="button" value="رفع الملفات"
+													onclick="UploadImage();" class="mt10 mb10 btn bgBlue"
+													style="width: 100px;" />
+											</div>
+											<!--                         <div style="width:67%;float:left; padding-left:5%;"> -->
+											<!--                             <label> -->
+											<!--                                 <input type="checkbox" value="quiet" id="quietScan" />Hide progress bar on uploading</label> -->
+											<!--                             <br /> -->
+											<!--                             <label> -->
+											<!--                                 <input type="checkbox" value="directly" id="uploadDirectly" />Direct upload from file system</label> -->
+											<!--                         </div> -->
+										</div>
+										<div class="section" style="width: 100%; float: left;">
+											<div>الملفات المرفوعة</div>
+											<div id="resultWrap">
+												<table id='div-uploadedFile'>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</p:dialog>
+	<!-- Modal -->
+
+
+
+</h:body>
+
+</html>

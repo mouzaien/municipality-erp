@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exchange_report" language="groovy" pageWidth="933" pageHeight="660" orientation="Landscape" whenNoDataType="NoPages" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
+	<property name="ireport.zoom" value="0.7181761481074908"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
+	<parameter name="memoReceiptNo" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\projects\\methnab\\roya\\WebContent\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  GEN.STOCK_FIN_ENTRY_NO,stock.STRNAME,supp.RELATEDENTITYNAME as SUPPNAME,gen.STOCK_FIN_ENTRY_HDATE,gen.STOCK_BUY_NO,gen.STOCK_BUY_DATE,gen.STOCK_NOTICE_NO,gen.STOCK_NOTICE_DATE,
+(SELECT SUM(detail.total) from WHS_stock_in_details detail where detail.STOCKMASTER_IN = gen.ID and gen.id =$P{memoReceiptNo}) as Total,
+(
+select HRS_SIGNS.SIGN_JOB_NAME   FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 1
+)REQ_NAME,(
+select  WRK_PROFILE_SIGN.DDD  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 1)
+REQ_SIGN,(
+select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 1
+)REQ_sign_DATE,
+(select HRS_SIGNS.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 2)
+STORE_MGR,
+(select  WRK_PROFILE_SIGN.DDD  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 2
+)STORE_MGR_SIGN,(
+select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 2
+)STORE_MGR_SIGN_DATE,(
+select HRS_SIGNS.SIGN_JOB_NAME   FROM hrs_signs,WRK_PROFILE_SIGN , arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 3
+)STORE_DEAN_NAME,(
+select  WRK_PROFILE_SIGN.DDD  FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 3
+)STORE_DEAN_SIGN,(
+select HRS_SIGNS.SIGN_DATE   FROM hrs_signs,WRK_PROFILE_SIGN, arc_records ac
+where doc_id= $P{memoReceiptNo}  and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and HRS_SIGNS.ARC_RECORD_ID = AC.ID and AC.APP_TYPE=197 and  sign_step_id = 3
+)STORE_DEAN_SIGN_DATE
+
+ FROM WHS_STOCK_ENTRY_MASTER gen ,WHS_wAREHOUSES stock,FIN_ENTITY supp
+
+
+where GEN.ID= $P{memoReceiptNo}
+and gen.STOCK_NO=stock.STRNO and gen.STOCK_SUPPLIER_ID = supp.RELATEDENTITYID]]>
+	</queryString>
+	<field name="STOCK_FIN_ENTRY_NO" class="java.math.BigDecimal"/>
+	<field name="STRNAME" class="java.lang.String"/>
+	<field name="SUPPNAME" class="java.lang.String"/>
+	<field name="STOCK_FIN_ENTRY_HDATE" class="java.lang.String"/>
+	<field name="STOCK_BUY_NO" class="java.math.BigDecimal"/>
+	<field name="STOCK_BUY_DATE" class="java.lang.String"/>
+	<field name="STOCK_NOTICE_NO" class="java.math.BigDecimal"/>
+	<field name="STOCK_NOTICE_DATE" class="java.lang.String"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="REQ_NAME" class="java.lang.String"/>
+	<field name="REQ_SIGN" class="java.io.InputStream"/>
+	<field name="REQ_SIGN_DATE" class="java.lang.String"/>
+	<field name="STORE_MGR" class="java.lang.String"/>
+	<field name="STORE_MGR_SIGN" class="java.io.InputStream"/>
+	<field name="STORE_MGR_SIGN_DATE" class="java.lang.String"/>
+	<field name="STORE_DEAN_NAME" class="java.lang.String"/>
+	<field name="STORE_DEAN_SIGN" class="java.io.InputStream"/>
+	<field name="STORE_DEAN_SIGN_DATE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="235" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+			<staticText>
+				<reportElement x="621" y="80" width="128" height="18" uuid="157a02b9-dd09-41f4-9863-6e6edf1962ee">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[الشئون البلدية و القروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="597" y="105" width="128" height="18" uuid="8734f0d1-629e-4945-8b25-88d9eb638168">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[بلدية محافظة المذنب]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="145" y="164" width="47" height="20" uuid="2f82dac3-e962-472f-8147-e206034d025f"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STOCK_NOTICE_DATE} == null?"":(""+$F{STOCK_NOTICE_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="164" width="47" height="20" uuid="d9d01d16-12bf-41ed-b1b7-624f1b1a7d7b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STOCK_NOTICE_NO} == null?"":(""+$F{STOCK_NOTICE_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="239" y="164" width="33" height="20" uuid="61360405-cd33-49f2-a893-1d17777f9f5d"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="270" y="164" width="40" height="20" uuid="246a397d-b4c2-4130-9b11-91b302f10095"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="358" y="164" width="47" height="20" uuid="57c103c6-a214-4fd9-b366-f3b7c9c751a8"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="164" width="47" height="20" uuid="68af4e22-c7d6-446f-9739-d16222cdd9f2"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="164" width="47" height="20" uuid="e01ef70a-b0f4-490e-9fa6-9132611cecaf"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STOCK_BUY_DATE} == null?"":(""+$F{STOCK_BUY_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="164" width="47" height="20" uuid="b23680f5-802e-406d-a1be-d069cac43954"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STOCK_BUY_NO} == null?"":(""+$F{STOCK_BUY_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="501" y="164" width="101" height="20" uuid="e8c67a53-6d66-4042-8fb3-958f849b8fdf"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUPPNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-21" y="93" width="100" height="20" uuid="07fb5b2a-24a4-4b30-90e7-df0205794e29"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STOCK_FIN_ENTRY_NO} == null?"":(""+$F{STOCK_FIN_ENTRY_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="649" y="127" width="100" height="20" uuid="3899328a-d139-45f0-b621-ee04f6159eac"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="865" height="22" isPrintInFirstWholeBand="true" uuid="246c5a19-eb39-4b66-8a2e-2c31e2b75edd"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="memoReceiptNo">
+					<subreportParameterExpression><![CDATA[$P{memoReceiptNo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="105">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="-6" y="47" width="190" height="15" uuid="0e637288-862e-4b35-91e3-169bd85e821b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_MGR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="-6" y="69" width="190" height="15" uuid="5e11d5f3-6412-4adc-b6d5-5050e1c87bb3"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="254" y="53" width="190" height="15" uuid="c1db0b94-21a7-4f74-95e2-88be48957896"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="254" y="71" width="190" height="15" uuid="d599c8f5-c805-4262-9684-e388d79ecf4b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="539" y="50" width="190" height="15" uuid="11458c70-de13-4f98-81d0-bc5ab1a5252e"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REQ_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="539" y="67" width="190" height="22" uuid="9bd534a8-f218-47a6-9484-09cb64412a4c"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REQ_SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="-3" width="100" height="20" uuid="0ead7f5e-979e-423b-b0b0-644bca64c12c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{TOTAL} == null)?"":((!($F{TOTAL}+"").contains('.'))?($F{TOTAL}+""):String.format("%.2f", $F{TOTAL}).split("\\.")[0])).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="127" y="-3" width="37" height="20" uuid="1e35a960-b818-45e1-8dd6-0d513e99270c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{TOTAL} == null||(!($F{TOTAL}+"").contains('.')))?"":String.format("%.2f", $F{TOTAL}).split("\\.")[1].replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

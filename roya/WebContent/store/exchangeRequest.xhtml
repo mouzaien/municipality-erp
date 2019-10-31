@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
+<head>
+
+
+
+</head>
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<style>
+td {
+	background: #0d83e321 !important;
+	height: 29px;
+	color: #0f0e0e !important;
+	border-color: #3F729B;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+	margin-top: -4px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	font-size: small !important;
+	text-align: right;
+	border-bottom: 1px solid black;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	font-weight: bolder !important;
+	font-size: small !important;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+	margin-right: 2pc;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+	{
+	margin: 0px 20px 0 1px;
+	direction: rtl;
+	float: right;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close
+	{
+	margin-right: -46px;
+}
+
+body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label
+	{
+	padding-right: 29px;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-inputfield
+	{
+	text-align: right;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+</style>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="image-box-footer">
+			<h:panelGroup  id="saveBtnGrp">
+				<p:commandButton value="حفظ" id="saveBtn"
+					icon="ui-icon ui-icon-assignment-return" ajax="false" immediate="true" rendered="#{exchangeRequestBean.canSave}"
+					action="#{exchangeRequestBean.save}" process="notes">
+
+				</p:commandButton></h:panelGroup>
+			</div>
+			<br />
+			<div class="card card-w-title" style="direction: rtl;">
+
+
+				<h1 style="color: #7CB342; text-align: center; direction: ltr;">
+					طلب صرف مواد<span class="ui-icon ui-icon-phone-in-talk"></span>
+				</h1>
+				<br></br>
+				<div class="col-md-7">
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<h:outputLabel value="اختر الصنف" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<p:selectOneMenu styleClass="col-md-5" id="itemId"
+								style="width:100%" value="#{exchangeRequestBean.item}" required="true" requiredMessage="من فضلك إختر الصنف"
+								filterMatchMode="contains" filter="true">
+								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""></f:selectItem>
+								<f:selectItems value="#{exchangeRequestBean.articleList}"
+									var="item" itemValue="#{item.id}" itemLabel="#{item.name}"></f:selectItems>
+								<f:ajax execute="itemId"
+									listener="#{exchangeRequestBean.updateUnite}"
+									render="itemId unit"></f:ajax>
+							</p:selectOneMenu>
+						</div>
+
+					</div>
+
+					<br></br>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:outputLabel value="العدد المطلوب"></p:outputLabel>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:inputText styleClass="form-control"   id="count"  style="width:50%"  required="true"
+								value="#{exchangeRequestBean.requestDetailsRecord.count}" 
+								requiredMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
+
+							</p:inputText>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<h:panelGroup id="unit">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" style="font-size:large"
+										value="  #{exchangeRequestBean.article.itemUnite.name eq null ? '  ':( exchangeRequestBean.article.itemUnite.name )} "></h:outputLabel>
+								</div>
+							</h:panelGroup>
+						</div>
+
+					</div>
+
+					<br></br>
+
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:outputLabel value="المواصفات "></p:outputLabel>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:inputText id="desc" styleClass="form-control"
+								style="width:100%"
+								value="#{exchangeRequestBean.requestDetailsRecord.notes}"></p:inputText>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<p:commandButton id="addBtn" icon="ui-icon ui-icon-add-to-photos"
+								styleClass="cyan-btn"  
+								disabled="#{!exchangeRequestBean.allowAdd}" value="اضافة">
+								<f:ajax listener="#{exchangeRequestBean.addTenderItem}"
+									execute="desc  count" render="table desc count addBtn saveBtnGrp"></f:ajax>
+							</p:commandButton>
+						</div>
+
+					</div>
+
+					<br></br>
+				</div>
+				<div class="row">
+					<h:panelGroup id="table">
+						<div class="col-md-8 ">
+
+							<div class="table-responsive">
+								<table style="width: 100%">
+									<thead>
+										<tr>
+											<th style="width: 10%; text-align: right;">رقم</th>
+											<th style="width: 30%; text-align: right;">اسم الصنف</th>
+											<th style="width: 20%; text-align: right;">العدد</th>
+											<th style="width: 10%; text-align: right;">الوحدة</th>
+											<th style="width: 30%; text-align: right;">المواصفات</th>
+											<th style="width: 10%; text-align: right;">حذف</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat var="det" varStatus="x"
+											value="#{exchangeRequestBean.exchangeRequestDetails}">
+											<tr>
+												<td>#{x.index+1}</td>
+												<td>#{det.tenderItemName}</td>
+												<td>#{det.count}</td>
+												<td>#{det.uniteName}</td>
+												<td>#{det.notes}</td>
+												<td><p:commandButton id="xx"
+														style="width: 13px; height: 24px;" icon="fa fa-times"
+														styleClass=" red-btn">
+														<f:ajax
+															listener="#{exchangeRequestBean.removeRecord(det)}"
+															render=":includeform"></f:ajax>
+													</p:commandButton></td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</h:panelGroup>
+				</div>
+				<hr></hr>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<p:outputLabel value="ملاحظات"></p:outputLabel>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-8">
+						<p:inputTextarea style="width:100%"
+							pt:placeholder="ملاحظات.........." id="notes"
+							value="#{exchangeRequestBean.request.notes}"></p:inputTextarea>
+					</div>
+
+				</div>
+
+
+
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

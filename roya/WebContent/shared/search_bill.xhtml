@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<f:metadata>
+		<f:viewAction action="#{billBean.loadAllBills}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+
+	<!-- 	<h:head> -->
+
+	<!-- 		<link -->
+	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
+	<!-- 			rel="stylesheet" type="text/css"></link> -->
+	<!-- 	</h:head> -->
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+		<ui:composition template="/template.xhtml">
+
+			<!-- 			<ui:define name="second-menu"> -->
+			<!-- 				<br></br> -->
+			<!-- 				<br></br> -->
+			<!-- 				<div style="margin-right: 20%;"> -->
+			<!-- 					<div class="navbar-default sidebar" role="navigation"> -->
+			<!-- 						<div class="sidebar-nav navbar-collapse"> -->
+			<!-- 							<ul class="nav" id="side-menu"> -->
+			<!-- 								<li><h:form> -->
+			<!-- 										<h:commandLink immediate="true" action="#{billBean.addBill}" -->
+			<!-- 											value="#{msg['new.bill']}"> -->
+			<!-- 											<f:ajax execute="@form"></f:ajax> -->
+			<!-- 											<i class="glyphicon glyphicon-pencil"></i> -->
+			<!-- 										</h:commandLink> -->
+
+			<!-- 									</h:form></li> -->
+			<!-- 							</ul> -->
+			<!-- 						</div> -->
+			<!-- 						/.sidebar-collapse -->
+			<!-- 					</div> -->
+			<!-- 				</div> -->
+			<!-- 			</ui:define> -->
+
+			<!-- 			<p class="text-center"> -->
+			<!-- 					<h:outputLabel styleClass="btxt" -->
+			<!-- 						style="font-weight:bold; font-size:30px;" value=""> -->
+			<!-- 					</h:outputLabel> -->
+			<!-- 				</p> -->
+
+			<ui:define name="content">
+
+				<h:form id="includeform">
+					<p:growl autoUpdate="true" showDetail="false" />
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer" align="left">
+
+						<p:commandButton value="إضافة فاتورة" styleClass="cyan-btn"
+							icon="ui-icon ui-icon-add" action="#{billBean.addBill}">
+							<f:ajax execute="@form"></f:ajax>
+						</p:commandButton>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							#{msg['bills']}</h1>
+						<br />
+						<h3 style="text-align: right;">#{msg['list.bills']}</h3>
+						<br />
+						<p:dataTable value="#{billBean.billsList}" var="billItem"
+							id="inboxdt" rowKey="#{billItem.wrkId}" widgetVar="bill_dt"
+							paginator="true" rows="12" emptyMessage="لا يوجد"
+							paginatorPosition="bottom" rowIndexVar="rowIndex"
+							filteredValue="#{billBean.filteredBills}"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+							<p:column style="text-align: center;"
+								headerText="#{msg['bill.number']}" filterMatchMode="contains"
+								filterBy="#{billItem.billNumber}" width="10%">
+                                    #{billItem.billNumber}
+
+                                </p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['bill.owner.name']}" width="30%"
+								filterMatchMode="contains" filterBy="#{billItem.billOwnerName}">										
+										#{billItem.billOwnerName}										
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['bill.date']}" width="15%"
+								filterMatchMode="contains" filterBy="#{billItem.billDate}">										
+										#{billItem.billDate}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['receipt.number']}" width="15%"
+								filterMatchMode="contains" filterBy="#{billItem.collectionSR}">										
+										#{billItem.collectionSR}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['receipt.date']}" width="15%"
+								filterMatchMode="contains" filterBy="#{billItem.payHijriDate}">										
+										#{billItem.payHijriDate}										
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['payment.status']}" width="10%"
+								filterMatchMode="contains" filterBy="#{billItem.sadadStatus}">										
+										#{(billItem.sadadStatus)}	
+									</p:column>
+							<p:column width="5%" style="text-align:center"
+								headerText="#{msg['details']}">
+								<p:commandButton action="#{billBean.loadSelectedBill}"
+									process="@this" icon="ui-icon-search">
+									<f:setPropertyActionListener value="#{billItem}"
+										target="#{billBean.payLicBill}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

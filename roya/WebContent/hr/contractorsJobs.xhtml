@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<!-- 
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+
+	<style>
+body {
+	margin: 0px;
+}
+</style>
+</h:head> -->
+<h:body>
+
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="image-box-footer">
+					<p:commandButton value="إظافة" action="#{contractorJobBean.addJob}"
+						onclick="PF('job_dlg').show()" update="includeform:myDialog">
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						#{msg['contractor.job.title']} <span class="fa fa-fw fa-users"></span>
+					</h1>
+					<br></br>
+					<div>
+						<h3>#{msg['contractor.data']}</h3>
+					</div>
+
+
+
+
+					<div class="ui-g">
+
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="التصنيف" />
+						</div>
+						<div class="ui-g-4">
+
+							<p:selectOneMenu id="list1"
+								value="#{contractorJobBean.categoryId}">
+								<f:selectItem itemLabel="اختر التصنيف" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems var="cat"
+									value="#{contractorJobBean.jobCategorieslist}"
+									itemValue="#{cat.id}" itemLabel="#{cat.name}" />
+								<f:ajax render="includeform:jobsdt" execute="list1"
+									event="change"
+									listener="#{contractorJobBean.loadJobsByCategory}" />
+							</p:selectOneMenu>
+
+						</div>
+
+
+						<br /> <br />
+						<div class="row">
+							<p:dataTable var="jobItem" id="jobsdt"
+								value="#{contractorJobBean.jobsList}"
+								emptyMessage="لايوجد بيانات" paginatorPosition="bottom"
+								filteredValue="#{contractorJobBean.filteredJobsList}"
+								widgetVar="vtWidget" paginator="true" rows="12" editable="true"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+								<p:ajax event="rowEdit"
+									listener="#{contractorJobBean.onRowEdit}" />
+								<p:ajax event="rowEditCancel"
+									listener="#{contractorJobBean.onRowCancel}" />
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column headerText="الرمز" style="width:20%">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{jobItem.jobCode}" />
+										</f:facet>
+										<f:facet name="input">
+											<h:outputText value="#{jobItem.jobCode}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="المسمى الوظيفي" style="width:60%">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{jobItem.jobName}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{jobItem.jobName}" style="width:100%"
+												label="name" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column style="width:20%" headerText="تعديل">
+									<p:rowEditor />
+								</p:column>
+							</p:dataTable>
+						</div>
+						<br></br>
+						<p:dialog header="بيانات الوظيفة" widgetVar="job_dlg" width="70%"
+							id="job_dlgId" style="margin-top: -127px;" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<p:messages autoUpdate="true" closable="true" />
+							<h:panelGroup id="myDialog">
+
+
+								<div class="ui-g">
+
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="التصنيف" />
+									</div>
+									<div class="ui-g-2">
+
+										<p:selectOneMenu styleClass="form-control"
+											value="#{contractorJobBean.job.CATegoryId}">
+											<f:selectItem itemLabel="اختر التصنيف" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems var="cat"
+												value="#{contractorJobBean.jobCategorieslist}"
+												itemValue="#{cat.id}" itemLabel="#{cat.name}" />
+										</p:selectOneMenu>
+
+									</div>
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الرمز" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{contractorJobBean.job.jobCode}"
+											style="width:100%" class="form-control" />
+									</div>
+									<p:spacer width="100px" height="20px"></p:spacer>
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt" value="المسمى الوظيفي" />
+									</div>
+									<div class="ui-g-2">
+
+										<p:inputText value="#{contractorJobBean.job.jobName}"
+											style="width:100%" class="form-control" />
+
+									</div>
+
+								</div>
+								<br />
+
+								<div align="left" class="image-box-footer">
+
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="حفظ"
+										action="#{contractorJobBean.saveJob}"
+										update="includeform:jobsdt">
+									</p:commandButton>
+
+								</div>
+								<div></div>
+
+							</h:panelGroup>
+							<div />
+						</p:dialog>
+					</div>
+				</div>
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+
+
+</h:body>
+
+</html>

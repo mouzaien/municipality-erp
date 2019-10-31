@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+</h:head>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.ownername']}" styleClass="btxt"/>
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licOwnerName}"></p:outputLabel>
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.mainActv']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licMainActivity}"></p:outputLabel>
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.subActv']}"  styleClass="btxt"/>
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licSubActivities}"></p:outputLabel>
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.tradeName']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licTrdName}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.buildOwner']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licBuildingOwner}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.trdaddrs']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licTrdAddress}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.trdArea']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licTrdArea}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.AdvAreaSum']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licTotalAdvArea}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.specialNum']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licSpecialNumber}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.trdYears']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licValidityYears}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.billsts']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licBillstatus}" />
+							</div>
+
+
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.licNumber']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licNumber}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.licStartdate']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licStartDate}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.licEndDate']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licEndDate}" />
+							</div>
+						</div>
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3"></div>
+							<div class="col-md-9">
+								<div class="form-inline">
+									<p:commandButton value="#{msg['trd.trans.doc']}" />
+									<p:commandButton value="#{msg['trd.recieve.doc']}" />
+									<p:commandButton value="#{msg['trd.bill.doc']}" />
+									<p:commandButton value="#{msg['trd.preview.doc']}" />
+									
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="row" style="margin: 5px;">
+							<div class="col-md-3">
+								<h:outputLabel value="#{msg['trd.lic.model.licrequestType']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-9">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licExtractionType}" />
+							</div>
+
+						</div>
+						<div class="row">
+							<h:form>
+
+								<p:graphicImage style="width:50% ;height:50%;"
+									value="#{mainManagedBean.mailExecutor.streamedcontent}">
+									<f:param name="pid"
+										value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationId}" />
+								</p:graphicImage>
+
+							</h:form>
+						</div>
+					</div>
+				</div>
+				<p:separator></p:separator>
+				<div class="row">
+					<div class="col-md-4" style="text-align: center;">
+						<p:outputLabel value="#{msg['trd.created.by']}" />
+						<br />
+						<p:outputLabel
+							value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationCreatedByName}" />
+						<br />
+						<p:outputLabel
+							value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationCreatedIn}" />
+					</div>
+					<div class="col-md-4" style="text-align: center;">
+						<p:outputLabel value="#{msg['trd.marked.by']}" />
+						<br></br>
+						<p:outputLabel
+							rendered="#{mainManagedBean.mailExecutor.selectedTrdApplication.marked}"
+							value=" #{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationMarkedByName}" />
+						<br />
+						<p:outputLabel
+							rendered="#{mainManagedBean.mailExecutor.selectedTrdApplication.marked}"
+							value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationMarkedIn}" />
+
+						<p:outputLabel
+							rendered="#{!mainManagedBean.mailExecutor.selectedTrdApplication.marked}"
+							value="#{msg['trd.notMarked']}" />
+						<br />
+						<p:commandButton
+							rendered="#{!mainManagedBean.mailExecutor.selectedTrdApplication.marked}"
+							value="#{msg['trd.markBtn']}" immediate="true" action="#{mainManagedBean.mailExecutor.acceptAction}" />
+
+					</div>
+					<div class="col-md-4" style="text-align: center;">
+						<p:outputLabel value="#{msg['trd.signed.by']}" />
+						<br />
+						<p:outputLabel
+							rendered="#{mainManagedBean.mailExecutor.selectedTrdApplication.signed}"
+							value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationSignedByName}" />
+						<br />
+						<p:outputLabel
+							rendered="#{mainManagedBean.mailExecutor.selectedTrdApplication.signed}"
+							value="#{mainManagedBean.mailExecutor.selectedTrdApplication.licApplicationSignedIn}" />
+						<p:outputLabel
+							rendered="#{!mainManagedBean.mailExecutor.selectedTrdApplication.signed}"
+							value="#{msg['trd.notSigned']}" />
+						<br />
+						<p:commandButton
+							rendered="#{(!mainManagedBean.mailExecutor.selectedTrdApplication.signed) and (mainManagedBean.mailExecutor.selectedTrdApplication.marked)}"
+							value="#{msg['trd.signBtn']}"  action="#{mainManagedBean.mailExecutor.acceptAction}" />
+					</div>
+				</div>
+			</div>
+	
+</html>

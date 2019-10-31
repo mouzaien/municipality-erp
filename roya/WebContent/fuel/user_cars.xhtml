@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">تسليم
+							المركبات</h3>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-10" />
+									<div class="col-md-1">
+										<p:commandButton ajax="false" value="طباعة"
+											icon="ui-icon-print" onclick="this.form.target='_blank'"
+											action="#{userCarsBean.printUserCarsReport}">
+										</p:commandButton>
+									</div>
+									<div class="col-md-1">
+										<p:commandButton value="إضافة"
+											style="float:left;font-family: kufi !important;"
+											action="#{userCarsBean.addUserCar}"
+											oncomplete="PF('userCar_dlg').show()"
+											update="includeform:addPG">
+										</p:commandButton>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<p:dataTable var="carItem" id="carTable"
+									value="#{userCarsBean.userCarsList}"
+									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									filteredValue="#{userCarsBean.filteredUserCarsList}"
+									paginator="true" rows="12">
+									<p:column headerText="النوع"
+										filterBy="#{carItem.car.model.name}"
+										filterMatchMode="contains"
+										style="width:25%;text-align:center;">
+										<h:outputText value="#{carItem.car.model.name}" />
+									</p:column>
+									<p:column headerText="رقم اللوحة"
+										filterBy="#{carItem.car.matricule}" filterMatchMode="contains"
+										style="width:25%;text-align:center;">
+										<h:outputText value="#{carItem.car.matricule}" />
+									</p:column>
+									<p:column headerText="صاحب المركبة"
+										filterBy="#{carItem.user.employeeName}"
+										filterMatchMode="contains"
+										style="width:36%;text-align:center;">
+										<h:outputText value="#{carItem.user.employeeName}" />
+									</p:column>
+									<p:column width="7%" style="text-align:center"
+										headerText="#{msg['details']}">
+										<p:commandButton oncomplete="PF('userCar_dlg').show();"
+											action="#{userCarsBean.loadSelectedCar}" process="@this"
+											icon="ui-icon-search" update="includeform:addPG">
+											<f:setPropertyActionListener value="#{carItem}"
+												target="#{userCarsBean.userCar}" />
+										</p:commandButton>
+									</p:column>
+<!-- 									<p:column width="7%" style="text-align:center" -->
+<!-- 										headerText="تعديل صاحب المركبة"> -->
+<!-- 										<p:commandButton immediate="true"  -->
+<!-- 											icon="ui-icon-edit" update="@form" -->
+<!-- 											action="#{userCarsBean.deleteCar}"> -->
+<!-- 											<p:confirm header="تعديل صاحب المركبة" message="هذه العملية ستسحب المركبة من هذا الموظف. هل تريد الإستمرار؟" icon="ui-icon-alert" /> -->
+<!-- 											<f:setPropertyActionListener value="#{carItem}" -->
+<!-- 												target="#{userCarsBean.userCar}" /> -->
+
+<!-- 										</p:commandButton> -->
+<!-- 									</p:column> -->
+									<p:column width="7%" style="text-align:center"
+										headerText="#{msg['delete']}">
+										<p:commandButton id="delete" immediate="true"
+											icon="ui-icon-trash" update="@form"
+											action="#{userCarsBean.deleteCar}">
+											<f:setPropertyActionListener value="#{carItem}"
+												target="#{userCarsBean.userCar}" />
+
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<p:dialog widgetVar="userCar_dlg" id="userCar_dlgId"
+					header="تسليم المركبات" width="40%" hideEffect="fade"
+					showEffect="explode" dir="rtl" modal="true" resizable="false">
+					<h:panelGroup id="addPG">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="الموظف" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:selectOneMenu id="empList" filterMatchMode="contains"
+										filter="true" rendered="#{userCarsBean.addMode}"
+										value="#{userCarsBean.userCar.userId}">
+										<f:selectItem itemLabel="يرجي اختر الموظف" itemValue="" />
+										<f:selectItems value="#{loadingDataBean.employersList}"
+											var="emp" itemLabel="#{emp.employeeName}"
+											itemValue="#{emp.userId}" />
+									</p:selectOneMenu>
+									<p:outputLabel
+										value="#{userCarsBean.userCar.user.employeeName}"
+										rendered="#{!userCarsBean.addMode}" />
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="المصنع" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:selectOneMenu value="#{userCarsBean.carBrandId}"
+										style="width: 100%" required="true"
+										rendered="#{userCarsBean.addMode}"
+										requiredMessage="يرجي إختيار المصنع">
+										<f:selectItem itemLabel="أختر المصنع" itemValue="" />
+										<f:selectItems var="cont" itemValue="#{cont.id}"
+											itemLabel="#{cont.name}"
+											value="#{loadingDataBean.carBrandsList}" />
+										<p:ajax event="change" update="models_list" process="@this"
+											listener="#{userCarsBean.loadCarModels}" />
+									</p:selectOneMenu>
+									<p:outputLabel
+										value="#{userCarsBean.userCar.car.model.brand.name}"
+										rendered="#{!userCarsBean.addMode}" />
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="النوع" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:selectOneMenu id="models_list"
+										value="#{userCarsBean.carModelId}" style="width: 100%"
+										required="true" rendered="#{userCarsBean.addMode}"
+										requiredMessage="يرجي إختيار نوع المركبة">
+										<f:selectItem itemLabel="أختر نوع المركبة" itemValue="" />
+										<f:selectItems var="cont" itemValue="#{cont.id}"
+											itemLabel="#{cont.name}"
+											value="#{userCarsBean.carModelsList}" />
+										<p:ajax event="change" update="cars_list" process="@this"
+											listener="#{userCarsBean.loadCars}" />
+									</p:selectOneMenu>
+									<p:outputLabel value="#{userCarsBean.userCar.car.model.name}"
+										rendered="#{!userCarsBean.addMode}" />
+								</div>
+
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="المركبة" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:selectOneMenu id="cars_list"
+										value="#{userCarsBean.userCar.carId}" style="width: 100%"
+										required="true" rendered="#{userCarsBean.addMode}"
+										requiredMessage="يرجي إختيار المركبة">
+										<f:selectItem itemLabel="أختر المركبة" itemValue="" />
+										<f:selectItems var="cont" itemValue="#{cont.id}"
+											itemLabel="#{cont.matricule}"
+											value="#{userCarsBean.carsList}" />
+										<p:ajax event="change" update="car_details" process="@this"
+											listener="#{userCarsBean.loadCarDetails}" />
+									</p:selectOneMenu>
+									<p:outputLabel value="#{userCarsBean.userCar.car.matricule}"
+										rendered="#{!userCarsBean.addMode}" />
+								</div>
+
+							</div>
+						</div>
+						<br />
+						<h:panelGroup id="car_details">
+							<div class="row">
+
+								<div class="col-md-12">
+									<div class="col-md-3">
+										<p:outputLabel value="صنف المركبة" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel
+											value="#{userCarsBean.userCar.car.vehicleType.name}" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel value="سنة الصنع" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel value="#{userCarsBean.userCar.car.yearModel}" />
+									</div>
+
+								</div>
+							</div>
+							<br />
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-3">
+										<p:outputLabel value="رقم الباب" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel value="#{userCarsBean.userCar.car.numDoor}" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel value="نوع المحروقات" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<p:outputLabel
+											value="#{userCarsBean.userCar.car.fuelType.name}" />
+									</div>
+								</div>
+
+							</div>
+						</h:panelGroup>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="تاريخ الإستلام" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:calendar value="#{userCarsBean.userCar.deliveryDate}"
+										rendered="#{userCarsBean.addMode}" locale="ar"
+										navigator="true" pattern="dd/MM/yyyy">
+									</p:calendar>
+									<p:outputLabel value="#{userCarsBean.userCar.deliveryDate}"
+										rendered="#{!userCarsBean.addMode}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="العداد" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<p:inputText value="#{userCarsBean.userCar.deliveryCounter}"
+										rendered="#{userCarsBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{userCarsBean.userCar.deliveryCounter}"
+										rendered="#{!userCarsBean.addMode}" />
+								</div>
+							</div>
+						</div>
+						<br />
+
+						<div align="center">
+							<p:commandButton value="حفظ" styleClass="btn btn-primary"
+								update="@form" rendered="#{userCarsBean.addMode}"
+								action="#{userCarsBean.save}" style="margin-left:3px;"
+								onsuccess="PF('userCar_dlg').hide();">
+							</p:commandButton>
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onsuccess="PF('userCar_dlg').hide();" />
+						</div>
+						<p:messages id="messages" autoUpdate="true" />
+					</h:panelGroup>
+
+
+				</p:dialog>
+				<script>
+					PrimeFaces.locales['ar'] = {
+						closeText : 'إغلق',
+						prevText : 'إلى الخلف',
+						nextText : 'إلى الأمام',
+						currentText : 'بداية',
+						monthNames : [ 'يناير', 'فبراير', 'مارس', 'ابريل',
+								'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر',
+								'أكتوبر', 'نوفمبر', 'ديسمبر' ],
+						monthNamesShort : [ 'يناير', 'فبراير', 'مارس', 'ابريل',
+								'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر',
+								'أكتوبر', 'نوفمبر', 'ديسمبر' ],
+						dayNames : [ 'يوم الأحد‎', 'يوم الإثنين‎',
+								'يوم الثلاثاء‎', '‏يوم الأَرْبعاء‎',
+								'‏يوم الخَمِيس‎', 'يوم الجُمْعَة‎‎',
+								'يوم السَّبْت' ],
+						dayNamesShort : [ 'الأحد‎', 'الإثنين‎', 'الثلاثاء‎',
+								'الأَرْبعاء‎', 'الخَمِيس‎', 'الجُمْعَة‎‎',
+								'السَّبْت' ],
+						dayNamesMin : [ 'الأحد‎', 'الإثنين‎', 'الثلاثاء‎',
+								'الأَرْبعاء‎', 'الخَمِيس‎', 'الجُمْعَة‎‎',
+								'السَّبْت' ],
+						weekHeader : 'الأسبوع',
+						firstDay : 1,
+						isRTL : false,
+						showMonthAfterYear : false,
+						yearSuffix : '',
+						timeOnlyTitle : 'الوقت فقط',
+						timeText : 'الوقت',
+						hourText : 'ساعة',
+						minuteText : 'دقيقة',
+						secondText : 'ثانية',
+						ampm : false,
+						month : 'الشهر',
+						week : 'الأسبوع',
+						day : 'اليوم',
+						allDayText : 'سا ئراليوم'
+					};
+					function openPopup() {
+						document.getElementById('time2').value = null
+						document.getElementById('time3').value = null
+						$('#myScaleModal').modal('show');
+					}
+					function closePopup() {
+						$('#myScaleModal').modal('hide');
+					}
+				</script>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

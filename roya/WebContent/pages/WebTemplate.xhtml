@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+
+	<h:outputStylesheet name="./css/default.css" />
+	<h:outputStylesheet name="./css/cssLayout.css" />
+	<h:outputStylesheet name="./css/style.css" />
+	<title>غرفة البكيرية</title>
+
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+	<script>
+		$ = jQuery;
+	</script>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/bootstrap-arabic.js" />
+
+
+</h:head>
+
+<h:body style="font-family: 'kufi' !important;">
+
+	<h:form id="tempform">
+		<p:idleMonitor timeout="900000">
+			<p:ajax event="idle" listener="#{templateBean.logOutbtn}" />
+		</p:idleMonitor>
+		<nav class="navbar navbar-default"
+			style="margin-bottom: 2px;padding:2px;
+		background-color: #F2F4F8;
+		border:0px;">
+
+		<div class="navbar-header">
+			<span
+				style="font-family: 'kufi' !important; font-size: x-large; color: #036fab; font-weight: bold;">نظام
+				التعاملات الألكترونية</span>
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><p:commandLink actionListener="#{homeBean.goInbox}"
+						style="font-family: 'kufi' !important;"
+						value="#{msg['new.inbox']}" /></li>
+				<li><span class="badge"
+					style="font-family: 'kufi' !important; font-size: small; background-color: #449d44;">#{inboxBean.unreadInboxCount}</span>
+				</li>
+				<li class="dropdown" style="font-family: 'kufi' !important;"><a
+					href="#" class="dropdown-toggle " data-toggle="dropdown"
+					role="button" aria-expanded="false">#{templateBean.findCurrentUser().employeeName}
+						<span class=" glyphicon glyphicon-user"></span>
+				</a>
+					<ul class="dropdown-menu" role="menu"
+						style="font-family: 'kufi' !important;">
+						<li><p:commandLink value="#{msg['control.board']}"
+								style="    font-family: 'kufi' !important;" /></li>
+						<li><p:commandLink value="#{msg['service.board']}"
+								style="    font-family: 'kufi' !important;" /></li>
+						<li><p:commandLink value="#{msg['go.home']}" ajax="false"
+								action="#{templateBean.goToHome}"
+								style="    font-family: 'kufi' !important;" /></li>
+						<li class="divider"></li>
+
+					</ul></li>
+				<li><p:commandLink value="#{msg['logout']}" ajax="false"
+						style="font-family: 'kufi' !important;"
+						action="#{templateBean.logOutbtn(action)}" /></li>
+			</ul>
+		</div>
+
+		</nav>
+		<div style="height: 1px; width100 %; background-color: #036fab"></div>
+
+
+
+
+		<div class="container-fluid">
+			<div class="row" style="width: 100%">
+				<div class="col-md-2" style="border-left: none;">
+					<h:form id="form">
+						<img
+							src="#{facesContext.externalContext.requestContextPath}/resources/images/logo.png"
+							width="100%" />
+
+						<p:panelMenu id="XXXX" model="#{loginBean.model}"
+							style="font-size: medium;" />
+					</h:form>
+				</div>
+				<div class="col-md-10">
+					<div style="height: 528px;">
+						<div class="panel "
+							style="color: #036fab; font-family: 'kufi' !important; font-size: 25px; font-weight: bold; background-color: transparent; margin-bottom: 5px; border: none;">
+							<ui:insert name="top" />
+						</div>
+						<div>
+							<ui:insert name="content" id="cont-ui" />
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</h:form>
+	<div
+		style="position: fixed; left: 0px; bottom: 0px; color: white; height: 20px; width: 100%;; background: #999; font-family: 'cocon' !important; background-color: #036fab; text-align: center;">
+		#{msg['copyright']} &copy; 2015</div>
+</h:body>
+
+</html>

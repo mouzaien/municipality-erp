@@ -1,0 +1,419 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{beneficiaryDataBean.loadPeoples}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">
+								إعدادات المواطنين</h3>
+						</div>
+
+						<div class="row" align="left">
+							<p:commandButton value="إظافة"
+								oncomplete=" PF('addDialog').show()"
+								style="float:left;font-family: kufi !important;"
+								action="#{beneficiaryDataBean.addPeople}" process="@this"
+								update="includeform:addPG">
+							</p:commandButton>
+						</div>
+						<br />
+
+						<div class="row">
+							<p:dataTable var="userItem" id="allusersettingdt"
+								widgetVar="loanVar" value="#{beneficiaryDataBean.peoplesList}"
+								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+								paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{beneficiaryDataBean.filteredPeoples}"
+								paginator="true" rows="17">
+
+								<p:column id="idcol" headerText="الهوية"
+									filterBy="#{userItem.nationalId}" filterMatchMode="contains"
+									width="10%" style="text-align: center;">
+                            #{userItem.nationalId}
+                        </p:column>
+								<p:column headerText="الإسم" filterBy="#{userItem.completeName}"
+									filterMatchMode="contains" width="40%">
+                            #{userItem.completeName}
+                        </p:column>
+								<!-- 								<p:column headerText="الجنسية" width="12%" -->
+								<!-- 									style="text-align: center;"> -->
+								<!--                             #{userItem.nationality.nationalityName} -->
+								<!--                         </p:column> -->
+								<p:column width="40%" headerText="تاريخ الميلاد"
+									filterBy="#{userItem.dateOfBirth}" filterMatchMode="contains"
+									style="text-wrap: none;text-align: center;">
+                            #{userItem.dateOfBirth}
+                        </p:column>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="10%">
+									<p:commandButton oncomplete="PF('addDialog').show();"
+										action="#{beneficiaryDataBean.loadPeople(userItem)}"
+										process="@this" icon="ui-icon-search"
+										update="includeform:addPG">
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<br />
+						<!-- 									<div align="center" class="row"> -->
+						<!-- 									<h:commandButton value="طباعة" -->
+						<!-- 										styleClass="btn btn-primary" -->
+						<!-- 										onclick="this.form.target='_blank'" -->
+						<!-- 										action="#{licencesListBean.printReportAction}"> -->
+						<!-- 									</h:commandButton> -->
+						<!-- 									</div> -->
+					</div>
+
+
+
+
+
+					<p:dialog widgetVar="addDialog" width="80%"
+						header="إنشاء مواطن جديد" modal="true" dir="rtl" closable="true">
+						<h:panelGroup id="addPG">
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" * الاسم الاول " />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.firstName}"
+											required="true" requiredMessage=" يجب إدخال الاسم  الاول " />
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.firstName}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" * الاسم الثاني " />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.seconedName}"
+											required="true"
+											requiredMessage=" يجب إدخال الاسم  الثاني     ">
+
+										</h:inputText>
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.seconedName}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+								</div>
+							</div>
+							<br></br>
+
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="  الاسم الثالث " />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.thirdName}"
+											required="true" requiredMessage=" يجب إدخال الاسم  الثالث " />
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.thirdName}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" * الاسم الاخير " />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.fourthName}"
+											required="true"
+											requiredMessage=" يجب إدخال الاسم  الاخير     ">
+
+										</h:inputText>
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.fourthName}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+								</div>
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" *السجل المدنى" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											rendered="#{beneficiaryDataBean.addMode}"
+											value="#{beneficiaryDataBean.peopleInfo.nationalId}"
+											required="true"
+											requiredMessage=" يجب إدخال رقم السجل  المدنى  "
+											validatorMessage=" يجب إدخال رقم السجل  المدنى بشكل صحيح">
+											<f:validator validatorId="nationalIdValidator"></f:validator>
+										</h:inputText>
+										<p:outputLabel
+											value="#{beneficiaryDataBean.peopleInfo.nationalId}"
+											rendered="#{!beneficiaryDataBean.addMode}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="*نوع الهوية" />
+									</div>
+									<div class="col-md-4">
+										<p:selectOneMenu id="types" styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.paperType}"
+											required="true" style=" margin-left: 1px;">
+											<f:selectItem itemLabel="    نوع  الهوية " itemValue="" />
+											<f:selectItems var="nat" itemLabel="#{nat.typeName}"
+												itemValue="#{nat.typeId}" value="#{loadingDataBean.nationalityTypeList}" />
+										</p:selectOneMenu>
+
+
+									</div>
+
+								</div>
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="*تاريخ الهوية" />
+									</div>
+									<div class="col-md-4">
+
+										<p:inputMask value="#{beneficiaryDataBean.peopleInfo.idDate}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.idDate}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="*مصدر الهوية" />
+									</div>
+									<div class="col-md-4">
+										<p:selectOneMenu id="places" styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.idSource}"
+											required="true" requiredMessage=" يجب إدخال مصدر الهوية  "
+											style=" margin-left: 1px;" filter="true">
+											<f:selectItem itemLabel="    مصدر الهوية " itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems var="pp" itemLabel="#{pp.placeName}"
+												itemValue="#{pp.placeName}"
+												value="#{loadingDataBean.nationalIdPlacesList}" />
+										</p:selectOneMenu>
+
+									</div>
+								</div>
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="*الجنسية" />
+									</div>
+									<div class="col-md-4">
+										<p:selectOneMenu id="nationality" styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.nationalityId}"
+											required="true" requiredMessage=" يجب اختيار الجنسية  "
+											style=" margin-left: 1px;">
+											<f:selectItem itemLabel="    الجنسية " itemValue="" />
+											<f:selectItems var="dd" itemLabel="#{dd.nationalityName}"
+												itemValue="#{dd.nationalityId}"
+												value="#{loadingDataBean.nationalityList}" />
+										</p:selectOneMenu>
+
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="*تاريخ  الميلاد " />
+									</div>
+									<div class="col-md-4">
+										<p:inputMask
+											value="#{beneficiaryDataBean.peopleInfo.dateOfBirth}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.dateOfBirth}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+									</div>
+								</div>
+							</div>
+							<br></br>
+
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="  الرمز  البريدى" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.postalCode}" />
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.postalCode}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" العنوان" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.address}" />
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.address}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+
+								</div>
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" *رقم الجوال" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.mobileNumber}"
+											required="true" requiredMessage=" يجب إدخال رقم الجوال  " />
+
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.mobileNumber}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" رقم المنزل" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.homeNumber}" />
+
+										<!-- 										<p:outputLabel -->
+										<!-- 											value="#{beneficiaryDataBean.peopleInfo.homeNumber}" -->
+										<!-- 											rendered="#{!beneficiaryDataBean.addMode}" /> -->
+									</div>
+								</div>
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" رقم العمل" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.workNumber}" />
+
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.workNumber}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" الجنس" />
+									</div>
+									<div class="col-md-4">
+										<p:selectOneMenu styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.gender}"
+											style=" margin-left: 1px;" filter="true">
+											<f:selectItem itemLabel="  ذكر " itemValue="M" />
+											<f:selectItem itemLabel="    انثى " itemValue="F" />
+										</p:selectOneMenu>
+									</div>
+
+								</div>
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" البريد الالكترونى" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.email}" />
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.email}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value="  صندوق البريد" />
+									</div>
+									<div class="col-md-4">
+										<h:inputText styleClass="form-control"
+											value="#{beneficiaryDataBean.peopleInfo.postalBox}" />
+										<!-- 											<p:outputLabel -->
+										<!-- 												value="#{beneficiaryDataBean.peopleInfo.postalBox}" -->
+										<!-- 												rendered="#{!beneficiaryDataBean.addMode}" /> -->
+
+									</div>
+								</div>
+							</div>
+
+
+							<p:messages id="messages" autoUpdate="true" />
+
+							<br />
+							<br />
+							<div align="center">
+								<!-- 							<h:commandButton value="حفظ" styleClass="btn  btn-primary" -->
+								<!-- 								style="margin-left:3px;"> -->
+								<!-- 								<f:ajax execute="includeform:addPG" render="includeform:addPG" -->
+								<!-- 									listener="#{beneficiaryDataBean.save}"></f:ajax> -->
+
+								<!-- 							</h:commandButton> -->
+								<p:commandButton value="حفظ" styleClass="btn btn-primary"
+									rendered="#{beneficiaryDataBean.addMode}"
+									action="#{beneficiaryDataBean.save}" style="margin-left:3px;">
+								</p:commandButton>
+								<p:commandButton value="تعديل" styleClass="btn btn-primary"
+									update="@form" onsuccess="PF('addDialog').hide();"
+									rendered="#{!beneficiaryDataBean.addMode}"
+									action="#{beneficiaryDataBean.update}" style="margin-left:3px;">
+								</p:commandButton>
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('addDialog').hide();" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,67 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/serenity">
+   <h:form>
+    <div class="layout-topbar">
+        <a href="dashboard.xhtml" class="topbar-logo">
+            <p:graphicImage name="images/logo-slim.png" library="serenity-layout" />
+            <span class="app-name">SERENITY</span>
+        </a>
+
+        <p:graphicImage name="images/logo-slim.png" library="serenity-layout" styleClass="mobile-logo" />
+
+        <a href="#" class="menu-btn">
+            <i class="material-icons">&#xE5D2;</i>
+        </a>
+
+        <a href="#" class="topbar-menu-btn">
+            <i class="material-icons">&#xE853;</i>
+        </a>
+
+        <div class="layout-topbar-menu-wrapper">
+            <div class="sidebar-logo">
+                <a href="dashboard.xhtml"> 
+                    <p:graphicImage name="images/logo-slim.png" library="serenity-layout" />
+                    <span class="app-name">SERENITY</span>
+                </a>
+                <a href="#" class="sidebar-anchor" title="Toggle Menu"></a>
+            </div>            
+            <ul class="topbar-menu animated">
+                <li class="profile-item">
+                    <a href="#">       
+                        <span class="profile-image-wrapper">
+<!--                             <p:graphicImage name="images/avatar4.png" library="serenity-layout" /> -->
+                        </span>                     
+                        <span class="topbar-item-name profile-name">#{loginBean.currentUser.employeeName}</span>
+                    </a>
+
+                    <ul class="animated">
+                    	<li role="menuitem">
+                    	<p:commandLink action="profile" immediate="true">
+											<i class="material-icons">&#xE7FD;</i>
+											#{loginBean.currentUser.employeeName} </p:commandLink></li>
+					   <li role="menuitem">
+                        <p:commandLink action="#{loginBean.logout}" ajax="false" immediate="true">
+											
+							  <i class="material-icons">&#xE8AC;</i>
+							  <span>خروج</span>
+						</p:commandLink>	
+                            
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                 <p:commandLink action="#{loginBean.logout}" ajax="false" immediate="true">					
+							  <i class="material-icons" title="">&#xE8AC;</i>
+<!-- 							  خروج -->
+				</p:commandLink>	
+                </li>
+            </ul>
+        </div>
+    </div>
+</h:form>
+</ui:composition>

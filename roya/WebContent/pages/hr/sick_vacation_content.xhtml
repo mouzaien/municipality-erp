@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+
+</h:head>
+<h:body>
+
+	<div class="image-box-footer" style="float: left">
+
+
+		<p:commandButton value="#{msg['back']}" action="mails"
+			immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+			styleClass=" orange-btn">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+
+
+		<p:spacer width="10" height="10"></p:spacer>
+		<p:commandButton value="#{msg['send']}"
+			styleClass="indigo-btn flat ui-state-hover" immediate="true"
+			icon="fa fa-fw fa-thumbs-up" action="#{sickVacationBean.saveAction}">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+		<p:spacer width="10" height="10"></p:spacer>
+
+		<ui:include src="/DWT_Scan_Upload_Demo.xhtml" />
+
+	</div>
+	<br />
+	<br />
+	<div class="card card-w-title" style="direction: rtl;">
+		<p style="color: #7CB342; text-align: center;">
+			<p:outputLabel style="font-weight:bold; font-size:30px;"
+				value="#{msg['sick.vacation']}">
+				<span class="fa fa-fw fa-sun-o"></span>
+			</p:outputLabel>
+
+		</p>
+		<br />
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div>
+			<p:panel>
+				<f:facet name="header">
+					<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['vacation.score']}
+                    </f:facet>
+
+
+				<br></br>
+				<h:panelGroup id="details_data">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel styleClass="btxt" value="#{msg['section']}" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:selectOneMenu id="section" styleClass="form-control"
+											value="#{sickVacationBean.departmentId}">
+											<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
+											<f:selectItems value="#{loadingDataBean.depatmentList}"
+												var="dept" itemValue="#{dept.id}"
+												itemLabel="#{dept.deptName}" />
+											<f:ajax render="empList" execute="section" event="change"
+												listener="#{sickVacationBean.loadEmployersByDept}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel styleClass="btxt"
+											value="#{msg['employee.name']}" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:selectOneMenu id="empList" styleClass="form-control"
+											value="#{sickVacationBean.employerId}">
+											<f:selectItem itemValue=""
+												itemLabel="#{msg['choose.employee']}" />
+											<f:selectItems value="#{sickVacationBean.employersList}"
+												var="empr" itemLabel="#{empr.employeeName}"
+												itemValue="#{empr.userId}" />
+											<p:ajax process="@this" update="details"
+												listener="#{sickVacationBean.loadEmployerData}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+
+
+
+								<br />
+								<h:panelGroup id="details">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="الوظيفة" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.employer.job}"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="المرتبة" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.employer.rank}"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="تاريخ أول تعيين" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel
+											value="#{sickVacationBean.employer.firstApplicationDate}"></p:outputLabel>
+									</div>
+								</div>
+
+
+
+
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="الراتب الأساسي" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel
+											value="#{sickVacationBean.employer.basicSalary}"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="جهة العمل" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.employer.department}"></p:outputLabel>
+									</div>
+								</div>
+
+
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="رصيد الراتب كامل" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.scoreTotalSalary}" />
+										-
+										<p:outputLabel value="180" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="رصيد نصف الراتب"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.scoreHalfSalary}" />
+										-
+										<p:outputLabel value="180" />
+									</div>
+								</div>
+
+
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="رصيد ربع الراتب"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.scoreQuarterSalary}" />
+										-
+										<p:outputLabel value="180" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<p:outputLabel value="رصيد بدون راتب"></p:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:outputLabel value="#{sickVacationBean.scoreWithoutSalary}" />
+										-
+										<p:outputLabel value="180" />
+									</div>
+								</div>
+</h:panelGroup>
+
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</p:panel>
+		</div>
+		<br></br>
+		<p:panel>
+			<f:facet name="header">
+				<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['vacation.data']}
+                    </f:facet>
+
+
+
+			<div class="panel-body">
+				<div class="row">
+
+					<p:outputPanel id="formPanel">
+
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="هجري  :  " />
+								<p:selectBooleanCheckbox value="#{sickVacationBean.higriMode}">
+									<p:ajax update="SICK-START" process="@this"></p:ajax>
+								</p:selectBooleanCheckbox>
+							</div>
+						</div>
+
+						<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="تاريخ بدء الاجازة" styleClass="btxt"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:panelGroup id="SICK-START">
+									<p:inputText id="hiri1" value="#{sickVacationBean.higriDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار تاريخ"
+										rendered="#{sickVacationBean.higriMode}"
+										styleClass="form-control form-controlCal">
+										<p:ajax event="blur" update="VACEND,valvac" process="@this"
+											listener="#{sickVacationBean.calculateEndDate}">
+										</p:ajax>
+									</p:inputText>
+
+									<p:calendar id="gric1" value="#{sickVacationBean.grigDate}"
+										pattern="dd/MM/yyyy" rendered="#{!sickVacationBean.higriMode}">
+										<p:ajax event="blur" update="VACEND,valvac" process="@this"
+											listener="#{sickVacationBean.calculateEndDate}">
+										</p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="مدة الإجازة" styleClass="btxt"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:inputText id="vacprd" styleClass="form-control input-small"
+									value="#{sickVacationBean.selectVacation.vacationPeriod}">
+									<p:ajax event="blur" update="VACEND,valvac" process="@this"
+										listener="#{sickVacationBean.calculateEndDate}" />
+
+								</p:inputText>
+							</div>
+						</div>
+
+						<br></br>
+
+						<div class="ui-g">
+						
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="المستشفى"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:inputText styleClass="form-control input-small"
+									value="#{sickVacationBean.selectVacation.hospital}" />
+							</div>
+							
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="تاريخ نهاية الاجازة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:panelGroup id="VACEND">
+									<p:outputLabel
+										value="#{sickVacationBean.selectVacation.higriVacationEnd}" />
+								</h:panelGroup>
+							</div>
+						</div>
+
+						<!-- 						<div class="row"> -->
+						<!-- 							<div class="col-md-2"> -->
+
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-3"> -->
+						<!-- 								<h:panelGroup> -->
+
+						<!-- 								</h:panelGroup> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-2"> -->
+
+						<!-- 							</div> -->
+						<!-- 							<div class="col-md-3"> -->
+
+						<!-- 							</div> -->
+
+						<!-- 							<div class="col-md-2"> -->
+						<!-- 								<h:commandButton id="calcDate" -->
+						<!-- 									value="#{msg['calcul.return.date']}" class="btn btn-primary" -->
+						<!-- 									style="font-size: 10px !important;margin-left: 5px;margin-right: 5px;display:none !important"> -->
+						<!-- 									<f:ajax render="VACEND" execute="@form" -->
+						<!-- 										listener="#{sickVacationBean.calculateEndDate}"> -->
+						<!-- 									</f:ajax> -->
+						<!-- 								</h:commandButton> -->
+						<!-- 							</div> -->
+						<!-- 						</div> -->
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="القيمة المادية للاجازة"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel id="valvac"
+									value="#{sickVacationBean.selectVacation.costVacation}"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="مدة آخر إجازة"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel
+									value="#{sickVacationBean.selectVacation.lastVacationPeriod}" />
+							</div>
+						</div>
+
+
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="تاريخ آخر إجازة" styleClass="btxt"></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel
+									value="#{sickVacationBean.selectVacation.lastVacationDate}" />
+							</div>
+
+						</div>
+
+
+						<br />
+
+					</p:outputPanel>
+
+					<br />
+
+
+					<script type="text/javascript">
+						$(".form-controlCal").focus(function() {
+
+							$('.calendars-cmd-today ').html('اليوم');
+							$('.calendars-cmd-prev').html('السابق >');
+							$('.calendars-cmd-next').html(' > اللاحق ');
+							$('.calendars-ctrl').css('display', 'none');
+							$('.calendars-month').css('width', '244px');
+							$('.calendars-month').css('float', 'right');
+							$('.calendars').css('width', '245px');
+
+						});
+
+						$(".form-controlCal")
+								.calendarsPicker(
+										{
+											calendar : $.calendars
+													.instance('ummalqura'),
+											language : 'ar',
+											onSelect : function(date) {
+												document.getElementById(
+														'includeform:calcDate')
+														.click();
+											}
+										});
+					</script>
+				</div>
+			</div>
+		</p:panel>
+	</div>
+</h:body>
+</html>

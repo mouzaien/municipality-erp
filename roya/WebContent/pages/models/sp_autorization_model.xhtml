@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+
+	<p class="text-center">
+		<h:outputLabel styleClass="btxt"
+			style="font-weight:bold; font-size:30px;"
+			value="#{msg['autorization.model']}">
+		</h:outputLabel>
+
+	</p>
+
+	<h:form prependId="false">
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="col-lg-12"
+			style="background-color: white; border-top: 5px solid #428BCA">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">#{msg['request.data']}
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p:outputPanel id="formPanel">
+
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<ui:include src="../../shared/calender.xhtml" />
+
+								</div>
+
+
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['autorization.nb']}"
+										styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:outputLabel value="#{mainManagedBean.mailExecutor.autorizationNB}" />
+								</div>
+
+
+							</div>
+
+							<br />
+							<br />
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['reason']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<h:inputText id="reason" styleClass="form-control"
+										value="#{mainManagedBean.mailExecutor.reason}" size="48" />
+								</div>
+							</div>
+							<br />
+							<br />
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['leaving.date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-2">
+									<h:selectOneMenu id="leavingHour" class="form-control"
+										value="#{mainManagedBean.mailExecutor.leavingHour}"
+										style=" dir:rtl;">
+										<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+											itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-2">
+									<h:selectOneMenu id="leavingMinute" class="form-control"
+										value="#{mainManagedBean.mailExecutor.leavingMinute}"
+										style=" dir:rtl;">
+										<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+										<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+										<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+										<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+										<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+										<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<br />
+							<br />
+							<div class="row">
+
+								<div class="col-md-2">
+									<h:outputLabel value="#{msg['return.date']}" styleClass="btxt" />
+								</div>
+								<div class="col-md-2">
+									<h:selectOneMenu id="returnHour" class="form-control"
+										value="#{mainManagedBean.mailExecutor.returnHour}"
+										style=" dir:rtl;">
+										<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+											itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+
+									</h:selectOneMenu>
+
+								</div>
+								<div class="col-md-2">
+									<h:selectOneMenu id="returnMinute" class="form-control"
+										value="#{mainManagedBean.mailExecutor.returnMinute}"
+										style=" dir:rtl;">
+										<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+										<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+										<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+										<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+										<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+										<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+									</h:selectOneMenu>
+
+
+								</div>
+
+							</div>
+							<h:commandButton value="#{msg['back']}" action="mails"
+								immediate="true"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								class="btn btn-primary">
+								<f:ajax execute="@form"></f:ajax>
+							</h:commandButton>
+							<h:commandButton value="#{msg['send']}" class="btn btn-primary"
+								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+								rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+								action="#{mainManagedBean.saveAction}" update="formPanel">
+								<f:ajax execute="@form"></f:ajax>
+							</h:commandButton>
+							
+
+						</p:outputPanel>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

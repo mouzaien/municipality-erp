@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+
+            <ui:define name="top">
+
+            </ui:define>
+
+            <ui:define name="content">
+                <p:growl id="dd" autoUpdate="true" showDetail="true" />
+                <p:panel header="ملخص معاملات الموظفين" style="border: none;" >
+                    <p:chart type="bar" model="#{empsumbean.barModel}" style="height:300px">
+                        <p:ajax event="itemSelect" listener="#{empsumbean.itemSelect}"  />
+                    </p:chart>
+
+
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

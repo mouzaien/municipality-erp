@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-07-19T12:20:42 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compact_performance" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="881c8676-2582-483e-93e8-99b614fd5604">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL2"/>
+	<parameter name="SUBREPORT_DIR2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\habib\\JaspersoftWorkspace\\MyReports\\sub_compact_performance_floors.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="performanceId" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\habib\\JaspersoftWorkspace\\MyReports\\sub_compact_performance_goals.jasper"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select P.JOB_DESCRIPTION,P.JOB_NO,(select empname from arc_users where user_id = A.MGR_ID) mgr, 
+A.EMPNAME,D.DEPT_NAME,
+(SELECT PR.SIGN2 FROM WRK_PROFILE PR,HRS_signs WHERE doc_id = $P{performanceId} and model_id=246 and sign_step_id = 2 and PR.USER_ID = sign_user_id)  MGRSIGN,
+(SELECT PR.SIGN2 FROM WRK_PROFILE PR,HRS_signs WHERE doc_id = $P{performanceId} and model_id=246 and sign_step_id = 3 and PR.USER_ID = sign_user_id)  HRSIGN
+from hrs_compact_performance P,arc_users a,WRK_DEPT d 
+where P.EMPID=A.USER_ID and A.DEPT_ID=D.ID and P.ID=$P{performanceId} ]]>
+	</queryString>
+	<field name="JOB_DESCRIPTION" class="java.lang.String"/>
+	<field name="JOB_NO" class="java.lang.String"/>
+	<field name="MGR" class="java.lang.String"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<field name="DEPT_NAME" class="java.lang.String"/>
+	<field name="MGRSIGN" class="java.io.InputStream"/>
+	<field name="HRSIGN" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="209" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="237" y="30" width="291" height="20" uuid="d0915714-81d4-4b15-a54c-065b4f4a1d82"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التاريخ: "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="117" y="3" width="321" height="20" uuid="8e792a16-acee-4bf6-9554-13d33cb74845"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الدليل الإرشادي للائحة إدارة الأداء الوظيفي]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="377" y="50" width="151" height="20" uuid="69ddad22-8d58-4e70-95ae-503f14a03887"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع المدير(المقيم): "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="50" width="140" height="20" uuid="642716ef-9736-4351-a301-d58228b3a109">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع المعتمد: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="30" width="211" height="20" uuid="f32e7e57-39fc-4c20-9eba-b05f0a7c2210"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع الموظف: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="50" width="211" height="20" uuid="c7f93a91-88e1-4d25-813c-f3350e45da74"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع مدير عام إدارة الموارد البشرية: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="79" width="500" height="20" backcolor="#EDEBEB" uuid="a1dd4940-afa0-4501-93dd-c09ad9e2d0f0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ميثاق الأداء للموظف على الوظيفة الإشرافية "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="99" width="250" height="20" uuid="332bb5e7-85ed-477b-9eb0-794d0d908072">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إسم الموظف: "+$F{EMPNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="99" width="250" height="20" uuid="50684eb0-6e9e-46a3-9e87-75cd903c70f0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوكالة/الإدارة العامة: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="119" width="250" height="20" uuid="46b73946-4843-4ef3-9146-fd801f967e7b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المسمى الوظيفي: "+$F{JOB_DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="119" width="250" height="20" uuid="23e98c11-6ae8-4869-9eb9-aee8e7f50dbd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["القسم/الإدارة: "+$F{DEPT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="139" width="250" height="20" uuid="cec9af94-bf2a-443e-9155-85420e096223"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم الوظيفي: "+$F{JOB_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="139" width="250" height="20" uuid="7297a2cf-924a-4f31-9962-f4cf463643ac"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المدير(المقيم): "+$F{MGR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="159" width="500" height="20" backcolor="#EDEBEB" uuid="f17deb91-f92d-4b7e-a344-0f0ae079aa3a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أولا: الأهداف"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="179" width="60" height="30" uuid="647568bc-fda9-4ae9-8d7e-b03b91465158">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الناتج المستهدف"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="87" y="179" width="60" height="30" uuid="33ce4975-7f3f-4dc8-9a40-f9c766911ba9">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوزن النسبي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="179" width="60" height="30" uuid="8ba97313-ab7b-4ce3-8090-72e8b5c33e60">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["معيار القياس"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="179" width="320" height="30" uuid="73e97778-e11f-4f6f-baad-11e1520917ff">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الهدف"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="377" y="50" width="72" height="20" uuid="ab25d2d8-83ed-4ecf-952d-bbeb33839225">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$F{MGRSIGN}]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="27" y="50" width="72" height="20" uuid="f0c4a7e8-55cb-48b3-9d5e-6a309bfed600">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$F{HRSIGN}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement positionType="Float" x="27" y="0" width="500" height="20" isPrintInFirstWholeBand="true" uuid="8bd740f2-e30e-4343-8965-3381fffd4c3f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="performanceId">
+					<subreportParameterExpression><![CDATA[$P{performanceId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR1}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement positionType="Float" x="27" y="0" width="500" height="20" isPrintInFirstWholeBand="true" uuid="e00cff3f-cfac-4647-9c0e-effac7950f60">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="performanceId">
+					<subreportParameterExpression><![CDATA[$P{performanceId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR2}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<line>
+				<reportElement x="27" y="1" width="501" height="1" uuid="854dbda0-8a6d-44fd-98f0-49ea545183be">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

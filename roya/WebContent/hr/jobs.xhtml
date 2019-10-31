@@ -1,0 +1,403 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
+<!-- 				action="#{jobsBean.loadJobs}"></f:viewAction> -->
+		</f:metadata>
+		<!-- <link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link> -->
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+
+						<p:commandButton value="إظافة" oncomplete=" PF('job_dlg').show()"
+							action="#{jobsBean.addJob}" process="@this"
+							update="includeform:myDialog">
+						</p:commandButton>
+
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							إحداث وظيفة <span class="fa fa-fw fa-briefcase"></span>
+						</h1>
+						<br></br>
+
+
+						<p:dataTable var="jobItem" id="inboxdt"
+							value="#{jobsBean.jobsList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{jobsBean.filteredJobs}" paginator="true"
+							rows="17">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+
+
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="الرقم" width="10%" filterBy="#{jobItem.jobNumber}"
+								filterMatchMode="contains">										
+										#{jobItem.jobNumber} 									
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="الوظيفة"
+								width="40%" filterBy="#{jobItem.gov4.jobName}"
+								filterMatchMode="contains">										
+										#{jobItem.gov4.jobName}										
+									</p:column>
+							<p:column style="white-space: nowrap; text-align: center;"
+								headerText="كود الوظيفة" width="20%"
+								filterBy="#{jobItem.gov4.jobCode}" filterMatchMode="contains">										
+										#{jobItem.gov4.jobCode}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="المرتبة" width="10%" filterBy="#{jobItem.rankCode}"
+								filterMatchMode="contains">										
+										#{jobItem.rankCode} 									
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="تاريخ اللإحداث" width="10%"
+								filterBy="#{jobItem.jobDate}" filterMatchMode="contains">										
+										#{jobItem.jobDate} 									
+									</p:column>
+							<p:column width="10%" style="text-align:center"
+								headerText="#{msg['details']}">
+								<p:commandButton onclick="PF('job_dlg').show()"
+									action="#{jobsBean.loadSelectedJob}" process="@this"
+									icon="ui-icon-search" update="includeform:myDialog">
+									<f:setPropertyActionListener value="#{jobItem}"
+										target="#{jobsBean.job}" />
+								</p:commandButton>
+
+
+							</p:column>
+						</p:dataTable>
+
+						<br />
+						<!-- 									<div align="center" class="row"> -->
+						<!-- 									<h:commandButton value="طباعة" -->
+						<!-- 										styleClass="btn btn-primary" -->
+						<!-- 										onclick="this.form.target='_blank'" -->
+						<!-- 										action="#{licencesListBean.printReportAction}"> -->
+						<!-- 									</h:commandButton> -->
+						<!-- 									</div> -->
+
+
+
+
+						<p:dialog header="بيانات الوظيفة" widgetVar="job_dlg"
+							id="job_dlgId" width="70%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+									<!-- 								<div style="float: right; width: 100%"> -->
+									<!-- 									<div class="row"> -->
+									<!-- 										<h4 class="page-header" -->
+									<!-- 											style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات -->
+									<!-- 											الوظيفة</h4> -->
+
+									<div class="ui-g">
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="التصنيف" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:selectOneMenu id="list1" required="true"
+											
+												requiredMessage="يرجى اختيار التصنيف"
+												styleClass="form-control" value="#{jobsBean.job.categoryId}">
+												<f:selectItem itemLabel="اختر التصنيف" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="cat"
+													value="#{loadingDataBean.jobCategorieslist}"
+													itemValue="#{cat.id}" itemLabel="#{cat.name}" />
+												<f:ajax render="list3" execute="list1" event="change"
+													listener="#{jobsBean.loadJobsByCategory}" />
+											</p:selectOneMenu>
+
+										</div>
+
+
+
+										<br></br>
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="المرتبة" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:selectOneMenu id="list2" required="true"
+												requiredMessage="يرجى اختيار المرتبة "
+												disabled="#{(jobsBean.consultMode) || (jobsBean.tahwirMode) || (jobsBean.damageMode)}"
+												value="#{jobsBean.job.rankCode}">
+
+												<f:selectItem itemLabel="اختر المرتبة" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="rank"
+													value="#{loadingDataBean.jobRankslist}"
+													itemValue="#{rank.id.rankCode}"
+													itemLabel="#{rank.rankName}" />
+<!-- 												<f:ajax render="list3" execute="list2" event="change" -->
+<!-- 													listener="#{jobsBean.loadJobsByCategory}" /> -->
+											</p:selectOneMenu>
+
+										</div>
+
+
+										<br></br>
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="مسمى الوظيفة" />
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu id="list3" required="true" filter="true"
+												filterMatchMode="contains"
+												requiredMessage="يرجى ادخال  مسمى الوظيفة"
+												disabled="#{(jobsBean.consultMode) || (jobsBean.damageMode)}"
+												value="#{jobsBean.job.jobCode}">
+												<f:selectItems value="#{jobsBean.jobsLabelList}" var="role"
+													itemLabel="#{role.jobName}" itemValue="#{role.jobCode}" />
+												<p:ajax process="@this" update="job_code" 
+												listener="#{jobsBean.loadHistricalJob}"/>
+											</p:selectOneMenu>
+										</div>
+
+										<br></br>
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="كود الوظيفة" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText class="form-control" id="job_code"
+												value="#{jobsBean.job.jobCode}"></p:inputText>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="رقم الوظيفة" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText class="form-control"
+												value="#{jobsBean.job.jobNumber}" />
+											<h:outputLabel
+												rendered="#{(jobsBean.consultMode) || (jobsBean.tahwirMode) || (jobsBean.damageMode)}"
+												value="#{jobsBean.job.jobNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="تاريخ اللإحداث" />
+										</div>
+										<div class="ui-g-4">
+											<p:calendar
+												rendered="#{(!jobsBean.consultMode) and (!jobsBean.tahwirMode) and (!jobsBean.damageMode)}"
+												value="#{jobsBean.job.girgJobDate}" dir="ltr">
+												<!-- <f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+											</p:calendar>
+											<h:outputLabel
+												rendered="#{(jobsBean.consultMode) || (jobsBean.tahwirMode) || (jobsBean.damageMode)}"
+												value="#{jobsBean.job.jobDate}" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt"
+												value="السنة المالية للإحداث" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:inputText class="form-control"
+												rendered="#{(!jobsBean.consultMode) and (!jobsBean.tahwirMode) and (!jobsBean.damageMode)}"
+												value="#{jobsBean.job.jobYear}" />
+											<h:outputLabel
+												rendered="#{(jobsBean.consultMode) || (jobsBean.tahwirMode) || (jobsBean.damageMode)}"
+												value="#{jobsBean.job.jobYear}" />
+
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="جهة الوظيفة" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:selectOneMenu id="list4"
+												requiredMessage="يرجى ادخال  جهة الوظيفة"
+												disabled="#{jobsBean.consultMode}" styleClass="form-control"
+												value="#{jobsBean.job.depatmentCode}">
+												<f:selectItems value="#{loadingDataBean.departmentslist}"
+													var="dept" itemLabel="#{dept.name}" itemValue="#{dept.id}" />
+											</p:selectOneMenu>
+
+										</div>
+
+
+										<br></br>
+
+
+										<!-- 											<h:panelGroup rendered="#{!jobsBean.consultMode}"> -->
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="حالة الوظيفة" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:selectOneMenu id="list5"
+												disabled="#{(jobsBean.consultMode) || (jobsBean.tahwirMode)||(jobsBean.addMode)||(jobsBean.changeMode) || (jobsBean.damageMode) || (jobsBean.updateMode)}"
+												styleClass="form-control" value="#{jobsBean.job.jobstatus}">
+												<f:selectItem itemLabel="شاغرة" itemValue="1" />
+												<f:selectItem itemLabel="مشغولة" itemValue="3" />
+											</p:selectOneMenu>
+
+										</div>
+										<!-- 											</h:panelGroup> -->
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="بدل الضرر" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:selectOneMenu id="list6" styleClass="form-control"
+												disabled="#{(jobsBean.consultMode) || (jobsBean.changeMode)|| (jobsBean.tahwirMode) || (jobsBean.updateMode)}"
+												value="#{jobsBean.job.insteadDamage}">
+												<f:selectItem itemLabel="#{msg['no']}" itemValue="0" />
+												<f:selectItem itemLabel="#{msg['yes']}" itemValue="1" />
+											</p:selectOneMenu>
+
+										</div>
+
+										<br></br>
+
+
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt"
+												value="طبيعة العمل لمربوط أول درجة" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:inputText class="form-control"
+												rendered="#{(!jobsBean.consultMode) and (!jobsBean.changeMode) and (!jobsBean.tahwirMode) and (!jobsBean.updateMode)}"
+												value="#{jobsBean.job.naturalFirstBascal}" />
+											<h:outputLabel
+												rendered="#{(jobsBean.consultMode) || (jobsBean.changeMode)|| (jobsBean.tahwirMode) || (jobsBean.updateMode)}"
+												value="#{jobsBean.job.naturalFirstBascal}" />
+
+										</div>
+
+
+
+
+
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt"
+												value="طبيعة العمل للمرتب الأساسي" />
+										</div>
+										<div class="ui-g-4">
+
+											<p:inputText class="form-control"
+												rendered="#{(!jobsBean.consultMode) and (!jobsBean.changeMode) and (!jobsBean.tahwirMode) and (!jobsBean.updateMode)}"
+												value="#{jobsBean.job.naturalBascal}" />
+
+											<h:outputLabel
+												rendered="#{(jobsBean.consultMode) || (jobsBean.changeMode)|| (jobsBean.tahwirMode) || (jobsBean.updateMode)}"
+												value="#{jobsBean.job.naturalBascal}" />
+
+										</div>
+
+
+
+
+
+
+
+
+									</div>
+									<!-- 									</div> -->
+
+
+
+
+
+									<div align="left" class="image-box-footer">
+
+										<p:commandButton value="رجوع" immediate="true"
+											onclick="PF('job_dlg').hide()" />
+
+										<p:spacer width="10px" height="10px"></p:spacer>
+
+										<p:commandButton value="حفظ"
+											rendered="#{!jobsBean.consultMode}"
+											action="#{jobsBean.saveJob}" onsuccess="PF('job_dlg').hide()"
+											update="includeform:inboxdt">
+										</p:commandButton>
+										<p:spacer width="10px" height="10px"></p:spacer>
+										<p:commandButton value="تعديل"
+											rendered="#{jobsBean.consultMode}"
+											action="#{jobsBean.activateUpdateFields}" process="@this"
+											update="includeform:myDialog ,includeform:inboxdt">
+										</p:commandButton>
+										<p:spacer width="10px" height="10px"></p:spacer>
+
+										<p:commandButton value="تفعيل السلخ"
+											rendered="#{jobsBean.consultMode}"
+											action="#{jobsBean.activateChangeFields}" process="@this"
+											update="includeform:myDialog,includeform:inboxdt">
+										</p:commandButton>
+										<p:spacer width="10px" height="10px"></p:spacer>
+
+										<p:commandButton value="تفعيل التحوير"
+											rendered="#{jobsBean.consultMode}"
+											action="#{jobsBean.activateTahwirFields}" process="@this"
+											update="includeform:myDialog,includeform:inboxdt">
+										</p:commandButton>
+										<p:spacer width="10px" height="10px"></p:spacer>
+
+										<p:commandButton value="تفعيل البدلات"
+											rendered="#{jobsBean.consultMode}"
+											action="#{jobsBean.activateDamageFields}" process="@this"
+											update="includeform:myDialog,includeform:inboxdt">
+										</p:commandButton>
+
+
+									</div>
+									<div></div>
+								</div>
+							</h:panelGroup>
+							<div />
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

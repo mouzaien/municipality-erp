@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://services.pegaxchange.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://services.pegaxchange.com" xmlns:intf="http://services.pegaxchange.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://services.pegaxchange.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getAllProducts">
+    <complexType/>
+   </element>
+   <element name="getAllProductsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getAllProductsReturn" type="impl:Product"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Product">
+    <sequence>
+     <element name="category" nillable="true" type="xsd:string"/>
+     <element name="id" type="xsd:int"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="unitPrice" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <element name="insertProduct">
+    <complexType>
+     <sequence>
+      <element name="product" type="impl:Product"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="insertProductResponse">
+    <complexType/>
+   </element>
+   <element name="searchById">
+    <complexType>
+     <sequence>
+      <element name="id" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchByIdResponse">
+    <complexType>
+     <sequence>
+      <element name="searchByIdReturn" type="impl:Product"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="insertProductResponse">
+
+      <wsdl:part element="impl:insertProductResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchByIdRequest">
+
+      <wsdl:part element="impl:searchById" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchByIdResponse">
+
+      <wsdl:part element="impl:searchByIdResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllProductsResponse">
+
+      <wsdl:part element="impl:getAllProductsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllProductsRequest">
+
+      <wsdl:part element="impl:getAllProducts" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertProductRequest">
+
+      <wsdl:part element="impl:insertProduct" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ProductCatalogServiceImpl">
+
+      <wsdl:operation name="getAllProducts">
+
+         <wsdl:input message="impl:getAllProductsRequest" name="getAllProductsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getAllProductsResponse" name="getAllProductsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertProduct">
+
+         <wsdl:input message="impl:insertProductRequest" name="insertProductRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:insertProductResponse" name="insertProductResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchById">
+
+         <wsdl:input message="impl:searchByIdRequest" name="searchByIdRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchByIdResponse" name="searchByIdResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ProductCatalogServiceImplSoapBinding" type="impl:ProductCatalogServiceImpl">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getAllProducts">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllProductsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllProductsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertProduct">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="insertProductRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="insertProductResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchById">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchByIdRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchByIdResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ProductCatalogServiceImplService">
+
+      <wsdl:port binding="impl:ProductCatalogServiceImplSoapBinding" name="ProductCatalogServiceImpl">
+
+         <wsdlsoap:address location="http://localhost:8080/webForSoap/services/ProductCatalogServiceImpl"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:metadata>
+	<f:viewAction action="#{internalMemoBean.init}"
+		phase="APPLY_REQUEST_VALUES" />
+</f:metadata>
+
+<ui:composition template="./menuBar.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform">
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+		
+			<p:messages closable="true" autoUpdate="true"></p:messages>
+			<div style="background-color: white; border-top: 5px solid #428BCA;"
+				class="container col-md-12">
+				<br></br>
+				<div>
+					<h3 class="page-header"
+						style="margin: 0px 0 8px ! important; color: #428bca">
+						نقل المعاملات بين بريدين</h3>
+				</div>
+
+
+
+
+				<br></br>
+
+				<div class="row">
+				<p:treeTable id="empTR" value="#{transferInboxBean.allEmployeesTree}" var="sec"
+									selectionMode="checkbox" scrollable="true" scrollHeight="300"
+									selection="#{archiveBean.selectedNodes}"
+									style="height: 150px;position: absolute !important;">
+
+									<p:ajax event="select" listener="#{archiveBean.onNodeSelect}"
+										update="includeform:recordTable" />
+									<p:ajax event="unselect"
+										listener="#{archiveBean.onNodeUnselect}"
+										update="includeform:recordTable" />
+									<p:column>
+										<h:outputText value="#{sec.structDescription}" />
+									</p:column>
+								</p:treeTable>
+<!-- 						<h:commandButton style="float: left;" -->
+<!-- 							action="" -->
+<!-- 							styleClass="btn btn-primary" value="إرسال"> -->
+<!-- 							<f:ajax execute="@form"></f:ajax> -->
+<!-- 						</h:commandButton> -->
+					</div>
+					</div>
+		</h:form>
+	</ui:define>
+	<br></br>
+</ui:composition>
+
+
+</html>

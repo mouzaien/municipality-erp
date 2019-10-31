@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-07-26T11:47:57 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_compact_performance" pageWidth="500" pageHeight="842" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="917f5014-24c0-4e1c-9f9f-26f6d00e1cb6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL2"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="Dataset1" uuid="301a0851-80d8-4a48-a1f7-dd4936fea9d4">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL2"/>
+		<queryString>
+			<![CDATA[select cf.id , cf.hrs_compact_performance_id , cf.RELATIVE_IMPORTANCE,
+    cF.HRS_COMPACT_BASEFLOORID,  cF.FLOORSID, cF.EVALUATION, cF.TARGET_OUTPUT
+    , f.CATERIE_FLOURID, catf.cat_name,
+f.id floorId, F.DESCRIPTION fDesc
+from 
+floors f, HRS_COMPACT_CAT_FLOOR catf,
+    (
+    select cf.id , bs.hrs_compact_performance_id , bs.RELATIVE_IMPORTANCE,
+    cF.HRS_COMPACT_BASEFLOORID,  cF.FLOORSID, cF.EVALUATION, cF.TARGET_OUTPUT
+        from hrs_compact_basefloor bs , hrs_compact_floors cf
+where  bs.hrs_compact_performance_id = 34
+and    bs.id = cf.HRS_COMPACT_BASEFLOORID
+and    bs.hrs_compact_performance_id = cf.hrs_compact_performanceid
+)cf
+where  f.CATERIE_FLOURID = catf.id
+and  f.id = cf.floorsid (+)
+order by f.CATERIE_FLOURID,f.id]]>
+		</queryString>
+		<field name="ID" class="java.math.BigDecimal"/>
+		<field name="CATERIE_FLOURID" class="java.math.BigDecimal"/>
+		<field name="FDESC" class="java.lang.String"/>
+		<field name="CAT_NAME" class="java.lang.String"/>
+		<group name="CATERIE_FLOURID">
+			<groupExpression><![CDATA[$F{CATERIE_FLOURID}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="performanceId" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./reports/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select cf.id , cf.hrs_compact_performance_id , cf.RELATIVE_IMPORTANCE,
+    cF.HRS_COMPACT_BASEFLOORID,  cF.FLOORSID, cF.EVALUATION, cF.TARGET_OUTPUT
+    , f.CATERIE_FLOURID, catf.cat_name,
+f.id floorId, F.DESCRIPTION fDesc
+from 
+floors f, HRS_COMPACT_CAT_FLOOR catf,
+    (
+    select cf.id , bs.hrs_compact_performance_id , bs.RELATIVE_IMPORTANCE,
+    cF.HRS_COMPACT_BASEFLOORID,  cF.FLOORSID, cF.EVALUATION, cF.TARGET_OUTPUT
+        from hrs_compact_basefloor bs , hrs_compact_floors cf
+where  bs.hrs_compact_performance_id = $P{performanceId}
+and    bs.id = cf.HRS_COMPACT_BASEFLOORID
+and    bs.hrs_compact_performance_id = cf.hrs_compact_performanceid
+)cf
+where  f.CATERIE_FLOURID = catf.id
+and  f.id = cf.floorsid (+)
+order by f.CATERIE_FLOURID,f.id]]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="HRS_COMPACT_PERFORMANCE_ID" class="java.math.BigDecimal"/>
+	<field name="RELATIVE_IMPORTANCE" class="java.math.BigDecimal"/>
+	<field name="HRS_COMPACT_BASEFLOORID" class="java.math.BigDecimal"/>
+	<field name="FLOORSID" class="java.math.BigDecimal"/>
+	<field name="EVALUATION" class="java.math.BigDecimal"/>
+	<field name="TARGET_OUTPUT" class="java.math.BigDecimal"/>
+	<field name="CATERIE_FLOURID" class="java.math.BigDecimal"/>
+	<field name="CAT_NAME" class="java.lang.String"/>
+	<field name="FLOORID" class="java.math.BigDecimal"/>
+	<field name="FDESC" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="0" y="20" width="50" height="20" uuid="809a1b2a-6796-455c-94ec-b173f6acee6e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التقدير"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="20" width="270" height="20" uuid="35d12978-3939-4749-b08b-6b92c0c88cec">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوصف السلوكي للجدارات"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="20" width="50" height="20" uuid="80db57d8-ebc5-4b8b-9209-cbe9381141b3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوزن النسبي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="20" width="130" height="20" uuid="bd6e4a0b-43ad-4472-ba4c-dcfd2970eca5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الجدارة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="500" height="20" backcolor="#EDEBEB" uuid="865d176f-896a-4e90-968e-e6f2cf1a4971">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ثانيا: الجدارات"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="50" height="20" uuid="d803112d-6481-4180-a5f4-d85b1774ba9a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EVALUATION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="270" height="20" uuid="38b1f104-622d-4c95-ab5f-f3f06ada67ae">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{FDESC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="50" height="20" uuid="678e831e-73e3-468c-9e04-645ddde1e4fe">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["% "+$F{RELATIVE_IMPORTANCE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="370" y="0" width="110" height="20" uuid="d148298e-0272-44b8-945a-12cd2f0738f0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  "+$F{CAT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="20" height="20" uuid="7e862418-e247-4a10-b5e1-2edbfe139f9d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</summary>
+</jasperReport>

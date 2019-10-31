@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+body {
+	margin: 0px;
+}
+</style>
+</h:head>
+<body>
+	<h:form id="NormalVacForm">
+		<div class="container-fluid" style="font-size: 22px !important;">
+			<div class="row" style="border-bottom: 2px solid #E9E9E9;">
+
+				<div class="col-md-7 col-sm-7">
+					<p:outputLabel value="اسم الموظف" />
+					&nbsp;&nbsp;
+					<p:outputLabel value="#{employeeServiceBean.currentUserName}"
+						style="color: #341B40;" />
+				</div>
+				<div class="col-md-5 col-sm-5">
+					<p:outputLabel value="الرقم الوظيفي" />
+					&nbsp;&nbsp;
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.empno}"
+						style="color: #341B40;" />
+				</div>
+			</div>
+			<div class="row"
+				style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+				<p:panelGrid columns="4" style="width: 100%;">
+					<p:outputLabel value="جهـة العمل" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.pdept}"
+						style="color: #341B40;" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="الوظيفة" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.pjob}"
+						style="color: #341B40;" />
+					<p:outputLabel value="المرتية" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.prank}"
+						style="color: #341B40;" />
+					<p:outputLabel value="تاريخ أول تعيين" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.pfappldat}"
+						style="color: #341B40;" />
+					<p:outputLabel value="الراتب الأساسي" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj.pbascal}"
+						style="color: #341B40;" />
+				</p:panelGrid>
+			</div>
+			<div class="row" style="border-bottom: 2px solid #E9E9E9;">
+				<p:panelGrid columns="4" style="width: 100%;">
+					<p:outputLabel value="رصيد الأجازات منذ بدأ التعيين" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.calc116}"
+						style="color: #341B40;" />
+					<p:outputLabel value="جملة الاجازات التاريخية" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.allvacprd}"
+						style="color: #341B40;" />
+					<p:outputLabel value="اجمال الرصيد" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.VACARESULT}"
+						style="color: #341B40;" />
+					<p:outputLabel value="اجمالي ما تمتع به خلال سنة" />
+					<p:outputLabel id="VACSUM360"
+						value="#{employeeServiceBean.empvacobj1.VACSUM360}"
+						style="color: #341B40;" />
+					<p:outputLabel value="أقصى أجازة مستحقة" />
+					<p:outputLabel id="MXVAC116"
+						value="#{employeeServiceBean.empvacobj1.mxvac116}"
+						style="color: #341B40;" />
+				</p:panelGrid>
+			</div>
+			<div class="row">
+				<p:panelGrid columns="6">
+					<p:outputLabel value="مدة الأجازة" />
+
+
+					<p:inputText id="counter" value="#{employeeServiceBean.vacprd}">
+
+
+						<p:ajax event="blur"
+							update="VACSUM360,MXVAC116,VACEND,valvac,VACWRKFROM,VACWRKTO,sal"
+							listener="#{employeeServiceBean.getdate}" />
+					</p:inputText>
+
+
+					<p:outputLabel value="تاريخ بدء الأجازة" />
+					<p:inputText value="#{employeeServiceBean.VACASTRT}"
+						style="width: 110px;">
+
+						<p:ajax event="blur" update="VACEND,VACWRKFROM,VACWRKTO"
+							listener="#{employeeServiceBean.getValidate}">
+						</p:ajax>
+
+					</p:inputText>
+
+
+
+					<p:outputLabel value="تاريخ نهاية الأجازة" />
+					<p:outputLabel id="VACEND"
+						value="#{employeeServiceBean.empvacobj3.VACAEND}"
+						style="color: #341B40;" />
+
+
+					<p:outputLabel value="صرف الراتب" />
+
+					<p:selectOneMenu id="sal" value="#{employeeServiceBean.salary}"
+						style="width: 150px;display: inline-table;">
+						<f:selectItem itemLabel="براتب" itemValue="1" />
+						<f:selectItem itemLabel="بدون راتب" itemValue="2" />
+
+
+					</p:selectOneMenu>
+
+					<p:outputLabel value="القيمة المادية للأجازة" />
+					<p:outputLabel id="valvac"
+						value="#{employeeServiceBean.empvacobj2.VACVAL}"
+						style="color: #341B40;" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="مدة آخر أجازة" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.LSTVACPRD}"
+						style="color: #341B40;" />
+					<p:outputLabel value="عن خدمته من تاريخ" />
+					<p:outputLabel id="VACWRKFROM"
+						value="#{employeeServiceBean.empvacobj2.VACWRKFROM}"
+						style="color: #341B40;" />
+					<p:outputLabel value="إلى تاريخ" />
+					<p:outputLabel id="VACWRKTO"
+						value="#{employeeServiceBean.empvacobj2.VACWRKto}"
+						style="color: #341B40;" />
+					<p:outputLabel value="تاريخ آخر أجازة" />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.LSTVACDT}"
+						style="color: #341B40;" />
+					<p:outputLabel value="عن الخدمة " />
+					<p:outputLabel value="#{employeeServiceBean.empvacobj1.LSTVACWRK}"
+						style="color: #341B40;" />
+
+
+					<p:outputLabel value="راى المدير"></p:outputLabel>
+					<p:inputText value=""></p:inputText>
+
+					<p:outputLabel value="راى صاحب الصلاحية"></p:outputLabel>
+					<p:inputText value=""></p:inputText>
+
+
+				</p:panelGrid>
+			</div>
+
+
+			<div style="text-align: center;">
+				<p:commandButton value="ارسال طلب الاجازة " icon="fa fa-paperclip"
+					class="btn btn-default" process="@this"
+					action="#{employeeServiceBean.sendVac116}" />
+				<p:spacer width="120" />
+				<p:commandButton value=" قبول الطلب " icon="fa fa-paperclip"
+					style="background-color:#000000;" class="btn btn-default"
+					process="@this" action="#{employeeServiceBean.aceeptVac}" />
+				<p:spacer width="120" />
+				<p:commandButton value="الرجوع " icon="fa fa-mail-reply"
+					process="@this" class="btn btn-default"
+					action="#{employeeServiceBean.goToHome}" />
+
+
+			</div>
+
+
+		</div>
+	</h:form>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+        <link href="../resources/css/purecss/pure-min.css" rel="stylesheet" type="text/css"></link>
+
+        <link  rel="stylesheet"  type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+        <link  rel="stylesheet"  type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+        <script type ="text/javascript">
+            window.onload = window.history.forward(0);
+        </script> 
+        <style >
+            body{
+                margin: 0px;
+            }
+        </style>
+    </h:head>
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+
+            <ui:define name="top">
+                رئيسية النظام 
+            </ui:define>
+
+            <ui:define name="content">
+
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                 
+                <p:dialog widgetVar="statusDialog" modal="true" 
+                          draggable="false" closable="false" resizable="false" showHeader="false">
+                    <img src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif" />
+                </p:dialog>
+
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4" style="margin-top: 2px;" >
+                            <p:commandButton value="البريد الألكتروني" ajax="false" action="#{homeBean.goInbox}"
+                                             class="btn btn-default" 
+                                             icon="fa fa-inbox"
+                                             style="width: 100%;border-radius: 0px;"
+                                             >
+
+                            </p:commandButton>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 2px;">
+                            <p:commandButton value=" خدمات الموظف" ajax="false" action="#{homeBean.goEmpServe}"
+                                             class="btn btn-default"  
+                                             icon="fa fa-list-ul"
+                                             style="width: 100%;border-radius: 0px;font-weight: bolder;"
+                                             >
+
+
+                            </p:commandButton>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 2px;" >
+                            <p:commandButton  value=" إعدادات الموظف" ajax="false" action="#{homeBean.goEmpSettings}"
+                                              class="btn btn-default" icon="fa fa-gears"
+                                              style="width: 100%;border-radius: 0px;"
+                                              >
+
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <iframe src="http://www.prayer-times.info/show_prayertimes.php?cid=41&amp;box_style=2" 
+                        frameborder="0" width="226" height="475" scrolling="off" style="float: left;" ></iframe>
+
+                -->
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

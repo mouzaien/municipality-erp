@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>تسجيل مخالفة</title>
+</h:head>
+<ui:composition template="../pages/menuBar.xhtml">
+	<ui:define name="content">
+		<div class="row" style="color: color: #428bca">
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">تسجيل
+				مخالفة</h3>
+		</div>
+		<div style="background-color: white; border-top: 5px solid #428BCA;"
+			class="container col-md-12">
+			<br />
+			<h:form id="includeform">
+				<div class="col-md-12">
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row ">
+									<div class="col-md-2">
+										<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{licPenaltyBean.trdMasterFile.licNo}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['commercial.name']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-6">
+										<h:outputLabel value="#{licPenaltyBean.trdMasterFile.trdName}" />
+									</div>
+								</div>
+								<div class="row ">
+									<div class="col-md-2">
+										<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+									</div>
+									<div class="col-md-4">
+										<h:outputLabel
+											value="#{licPenaltyBean.trdMasterFile.licOwnerName}" />
+									</div>
+
+								</div>
+								<div class="row ">
+									<div class="col-md-2">
+										<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+									</div>
+									<div class="col-md-10">
+										<h:outputLabel
+											value="#{licPenaltyBean.trdMasterFile.licAdress}" />
+									</div>
+								</div>
+								<div class="row ">
+									<div class="col-md-2">
+										<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel
+											value="#{licPenaltyBean.trdMasterFile.licBeginDate}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel
+											value="#{licPenaltyBean.trdMasterFile.licEndDate}" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="المراقب" />
+						</div>
+						<div class="col-md-3">
+							<p:selectOneMenu styleClass="form-control" id="visorId"
+								filter="true" filterMatchMode="contains" required="true"
+								value="#{licPenaltyBean.supervisorId}">
+								<f:ajax execute="@this"></f:ajax>
+								<f:selectItems value="#{licPenaltyBean.supervisors}" var="visor"
+									itemLabel="#{visor.name}" itemValue="#{visor.id}"></f:selectItems>
+							</p:selectOneMenu>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="نوع النشاط" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control" id="activId"
+								required="true" value="#{licPenaltyBean.activityType}">
+								<f:ajax execute="@this"></f:ajax>
+								<f:selectItems value="#{licPenaltyBean.activitiesTypes}"
+									var="activ" itemLabel="#{activ.name}" itemValue="#{activ.id}"></f:selectItems>
+							</h:selectOneMenu>
+						</div>
+					</div>
+					<br /> <br />
+				</div>
+			</h:form>
+			<br />
+			<div class="row">
+				<h:form id="fines">
+					<h:panelGroup id="table">
+						<div class="col-md-12 ">
+							<div class="table-responsive">
+								<table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th style="width: 5%"></th>
+											<th style="width: 30%">مسمى المخالفة</th>
+											<th style="width: 10%">الحد الأدنى</th>
+											<th style="width: 10%">الحد الأعلى</th>
+											<th style="width: 5%">العدد</th>
+											<th style="width: 10%">القيمة</th>
+											<th style="width: 10%">المجموع</th>
+											<th style="width: 5%"></th>
+											<th style="width: 5%"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat var="det" varStatus="x"
+											value="#{licPenaltyBean.codesFinesList}">
+											<tr>
+												<h:panelGroup id="fineData">
+													<td>#{x.index+1}</td>
+													<h:panelGroup id="fineValues">
+														<td><div>
+																<p:selectOneMenu styleClass="form-control" id="finerIdB"
+																	rendered="#{det.visible}" converter="fineConverter"
+																	filter="true" filterMatchMode="contains"
+																	required="true"
+																	value="#{licPenaltyBean.selectedCodeFiner}">
+																	<p:ajax process="@this" update="fines:table"
+																		listener="#{licPenaltyBean.updateFiner(det)}" />
+																	<f:selectItems value="#{licPenaltyBean.codesFines}"
+																		itemLabelEscaped="#{finer.fineDesc}"
+																		itemDescription="#{finer.fineDesc}" var="finer"
+																		itemLabel="#{finer.shortDesc}" itemValue="#{finer}"></f:selectItems>
+																</p:selectOneMenu>
+																<h:outputLabel value="#{det.fineDesc}"
+																	rendered="#{!det.visible}"
+																	style="width:100% !important;">
+																</h:outputLabel>
+															</div></td>
+														<td>#{det.fineMinimumValue}</td>
+														<td>#{det.fineSupermumValue}</td>
+													</h:panelGroup>
+													<td><h:inputText disabled="false"
+															value="#{det.fineNbr}" style="width:100% !important;">
+															<p:ajax event="blur" process="@this,fines:table"
+																update="sumId"
+																listener="#{licPenaltyBean.calcFineValSum(det)}" />
+														</h:inputText></td>
+													<td><h:inputText disabled="false"
+															value="#{det.fineValue}" style="width:100% !important;">
+															<p:ajax event="blur" process="@this,fines:table"
+																listener="#{licPenaltyBean.calcFineValSum(det)}"
+																update="sumId" />
+														</h:inputText></td>
+												</h:panelGroup>
+												<td><h:inputText disabled="true" id="sumId"
+														value="#{det.fineValSum}" style="width:100% !important;">
+													</h:inputText><a></a></td>
+												<td><p:commandButton id="xx" rendered="#{!det.visible}"
+														style="width: 13px; height: 24px;" icon="fa fa-times"
+														styleClass=" btn btn-danger">
+														<p:ajax listener="#{licPenaltyBean.deleteFiner(det)}"
+															process="fines:table" update="fines:table" />
+													</p:commandButton></td>
+												<td><h:commandButton id="addBtn" style="float:right"
+														value="اضافة" styleClass="btn btn-success">
+														<p:ajax listener="#{licPenaltyBean.addFiner(det)}"
+															process="fines:table" update="fines:table" />
+													</h:commandButton></td>
+											</tr>
+											<tr>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</h:panelGroup>
+				</h:form>
+			</div>
+			<h:form>
+				<div class="row">
+					<br></br>
+					<div class="col-md-10" />
+					<div class="col-md-1" style="padding-right: 0 !important">
+						<h:commandButton
+							style="float:left;font-family: kufi !important;width:100%;"
+							value="رجوع" immediate="true" styleClass="btn btn-primary"
+							action="#{licPenaltyBean.returnToLicence}">
+						</h:commandButton>
+					</div>
+					<div class="col-md-1" style="padding-right: 0 !important">
+						<h:commandButton value="حفظ" action="#{licPenaltyBean.save}"
+							style="float:left;font-family: kufi !important;width:100%;"
+							styleClass="btn btn-primary">
+						</h:commandButton>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExtractReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3323bf0f-bc60-4d7d-95d7-19f5834b1a61">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="Table Dataset 1" uuid="08d883d9-733a-4867-847f-470f858b4c8d"/>
+	<parameter name="e_No" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT projects.project_name, projects.project_number,
+       projects_contracts.contract_owner,
+       NVL(projects_contracts.contract_duration,0) contract_duration,
+       projects_contracts.contract_duration_unit,
+       projects_contracts.contract_site_recieve_date,
+       projects_extracts.extract_number,
+(select wrk_dept.DEPT_NAME from arc_users  ,wrk_dept  where arc_users.DEPT_ID = wrk_dept.Id and user_id = projects_extracts.EXTRACT_CREATED_BY) dept,
+       projects_extracts.extract_spent_time_percentage,
+       projects_extracts.extract_finish_percentage,
+       projects_extracts.extract_to, projects_contracts.contract_value extract_value ,
+'بيانات مستخلص لمشروع '||projects.project_name||'رقم المستخلص '||projects_extracts.extract_number label_head_text,
+'سعادة ' || PROJECTS_EXTRACTS.EXTRACT_TO ||' المحترم  ' extract_to_txt ,
+'نرفق لسعادتكم المستخلص ('||projects_extracts.extract_number
+||
+') للمشروع المذكور بياناته أعلاه بمبلغ مستحق للمقاول صرفه و قدره  ريــ  '
+ ||projects_extracts.extract_value ||
+ ' ــال ,بالاضافة الى مبلغ القيمة المضافة وقدره  فقط     '||
+ extract_value * .05
+
+ ||
+  NUM_AR(projects_extracts.extract_value) ||chr(10)||
+  'نأمل بعد الإطلاع الإيعاز لمن يلزم بتدقيق المستخلص و إكمال اللازم حسب الأنظمة و التعليمات مع التـأكد من وجود تنازل بنكي . '
+  long_txt ,
+(select HRS_SIGNS.SIGN_JOB_NAME
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 3 ) SIGN_JOB_NAME  ,
+(select GET_REAL_EMPNAME(SIGN_USER_ID)
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 3) sign_real_name ,
+(
+select WRK_PROFILE_SIGN.DDD
+from ARC_RECORDS,HRS_SIGNS ,wrk_profile_sign
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.SIGN_USER_ID  =  wrk_profile_sign.USER_ID
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 3) SIGN001 ,
+(select HRS_SIGNS.SIGN_JOB_NAME
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 2) mark_name ,
+(select WRK_PROFILE.SIGN2
+from ARC_RECORDS,HRS_SIGNS ,wrk_profile
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.SIGN_USER_ID  =  wrk_profile.USER_ID
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 2) mark001 ,
+(select ARC_RECORDS.INCOME_NO
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.DOC_id = $P{e_No}
+and HRS_SIGNS.sign_step_id = 2) income_no ,
+(select ARC_RECORDS.REC_H_DATE
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 236
+and ARC_RECORDS.id = HRS_SIGNS.arc_record_id
+and HRS_SIGNS.DOC_id =  $P{e_No}
+and HRS_SIGNS.sign_step_id = 2) h_date,
+PROJECTS_EXTRACTS.EXTRACT_VALUE as total
+  FROM projects_extracts, projects_contracts, projects
+ WHERE (    (projects_contracts.contract_id = projects_extracts.contract_id)
+        AND (projects.project_id = projects_contracts.project_id)
+       )
+       and EXTRACT_ID = $P{e_No}]]>
+	</queryString>
+	<field name="PROJECT_NAME" class="java.lang.String"/>
+	<field name="PROJECT_NUMBER" class="java.lang.String"/>
+	<field name="CONTRACT_OWNER" class="java.lang.String"/>
+	<field name="CONTRACT_DURATION" class="java.math.BigDecimal"/>
+	<field name="CONTRACT_DURATION_UNIT" class="java.math.BigDecimal"/>
+	<field name="CONTRACT_SITE_RECIEVE_DATE" class="java.lang.String"/>
+	<field name="EXTRACT_NUMBER" class="java.lang.String"/>
+	<field name="DEPT" class="java.lang.String"/>
+	<field name="EXTRACT_SPENT_TIME_PERCENTAGE" class="java.lang.String"/>
+	<field name="EXTRACT_FINISH_PERCENTAGE" class="java.lang.String"/>
+	<field name="EXTRACT_TO" class="java.lang.String"/>
+	<field name="EXTRACT_VALUE" class="java.math.BigDecimal"/>
+	<field name="LABEL_HEAD_TEXT" class="java.lang.String"/>
+	<field name="EXTRACT_TO_TXT" class="java.lang.String"/>
+	<field name="LONG_TXT" class="java.lang.String"/>
+	<field name="SIGN_JOB_NAME" class="java.lang.String"/>
+	<field name="SIGN_REAL_NAME" class="java.lang.String"/>
+	<field name="SIGN001" class="java.io.InputStream"/>
+	<field name="MARK_NAME" class="java.lang.String"/>
+	<field name="MARK001" class="java.io.InputStream"/>
+	<field name="INCOME_NO" class="java.lang.String"/>
+	<field name="H_DATE" class="java.lang.String"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="607" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image>
+				<reportElement positionType="Float" x="43" y="512" width="156" height="89" uuid="b3d95d28-6b03-4bd1-bf71-c7c5918d5bde"/>
+				<imageExpression><![CDATA[$F{SIGN001}]]></imageExpression>
+			</image>
+			<rectangle radius="10">
+				<reportElement positionType="Float" mode="Transparent" x="0" y="203" width="540" height="157" forecolor="#006600" uuid="eb231d32-173f-42ab-8109-37d91152b1a7"/>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="458" y="213" width="77" height="20" forecolor="#006600" uuid="d631a552-1f52-4756-b537-4dde51767034"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ اسم المشروع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="458" y="241" width="77" height="20" forecolor="#006600" uuid="3b3895c5-18df-4eca-983c-6897415767e3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ قيمة العقد]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="458" y="270" width="77" height="20" forecolor="#006600" uuid="affdf9e1-f27a-4c28-9c4c-5a7389a1580d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ تاريخ التسليم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="458" y="300" width="77" height="20" forecolor="#006600" uuid="63a50e09-cb06-40a6-b328-3dd79d99fd14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ نسبة الإنجاز]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="213" width="100" height="20" forecolor="#006600" uuid="4d1edebc-50be-461f-91bd-25869309ece9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ رقم المشروع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="300" width="100" height="20" forecolor="#006600" uuid="796ed1ea-8d39-4b27-b6b9-3b75267fec8e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ نسبة المدة المنقضية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="270" width="100" height="20" forecolor="#006600" uuid="584de1d7-19d8-49b3-b804-10f31d6fad33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ المقاول]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="241" width="100" height="20" forecolor="#006600" uuid="7c4d3280-1cd5-4917-a62a-94ef693c2797"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ مدة العقد]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="301" y="213" width="148" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="b14f9227-7990-43d1-be5c-df7c5d9f3c5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PROJECT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="8" y="213" width="177" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="0bf9dc1d-3d04-48d8-bbe5-6260b53c2c63"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PROJECT_NUMBER}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="301" y="241" width="148" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="f85bc7fa-3dfb-44a9-b01a-3ff51e383085"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{EXTRACT_VALUE}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="8" y="241" width="177" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="99d9b40e-ad92-4a21-b152-e2f7afe1bd8c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{CONTRACT_DURATION}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669") +" يوم "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="8" y="270" width="177" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="1045d3bd-d6bc-4246-ae4e-aeb22fbbd0d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CONTRACT_OWNER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="8" y="300" width="177" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="dafe8b28-b214-4e50-8676-be7cc83853df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EXTRACT_SPENT_TIME_PERCENTAGE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+"%"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="301" y="300" width="148" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="e87abd15-b804-4bad-873e-d2089f23d337"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EXTRACT_FINISH_PERCENTAGE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+"%"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="301" y="270" width="148" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="74a5a0bd-8375-4701-a945-9f0de849c43a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CONTRACT_SITE_RECIEVE_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+" هـ "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="8" y="381" width="532" height="20" uuid="6c71aa41-b0de-4ad4-9e7a-c8ff72354497"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EXTRACT_TO_TXT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="254" y="408" width="214" height="20" uuid="9a2a655e-36fc-4179-9cc4-e1f8bf0ce986"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[ السلام عليكم و رحمة الله و بركاته ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="12" y="465" width="528" height="20" uuid="c84e206f-9833-43ee-82b5-b92a4c15482a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[وفقكم الله ... والسلام عليكم و رحمة الله و بركاته ..,]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="12" y="435" width="528" height="20" uuid="66e17d77-9887-42e2-9204-27dc31e49f24"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LONG_TXT}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="12" y="498" width="242" height="20" uuid="27da1ebc-69a8-4c80-b735-d9ce1493f58f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_JOB_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="12" y="581" width="242" height="20" uuid="837bb12f-337a-40d7-8fbb-99f98eb652c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_REAL_NAME}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement positionType="Float" x="472" y="498" width="56" height="34" uuid="36183d54-5524-4543-b2fa-d39a32d3a3cb"/>
+				<imageExpression><![CDATA[$F{MARK001}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement positionType="Float" x="449" y="532" width="100" height="10" uuid="fa26de40-21fb-448a-a1bf-ee944ff6d759"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MARK_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="71" width="90" height="16" uuid="269e3a95-d9bc-4b5a-b44d-dc549d216922"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="87" width="90" height="16" uuid="be8d5dff-10ff-4cc9-8341-78452bf53791"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{H_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="59" y="126" width="422" height="20" uuid="3a163d8a-7f24-4662-bb00-48facb072efa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LABEL_HEAD_TEXT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="181" width="555" height="20" uuid="edea811e-cb4a-487e-b442-9179a08bba69"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[بيـــانـــات المـسـتـخـلـــص]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="401" y="87" width="100" height="20" uuid="69a8703f-55eb-4b41-adf4-78c5ad057809"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="458" y="331" width="77" height="20" forecolor="#006600" uuid="3c824f1e-af5d-4043-9e53-fc0ccaa0c973"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[القيمة المضافة]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="301" y="331" width="148" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="fafcaa93-bd5f-4a6f-8847-9fe15884aa1a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["5%".replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="331" width="100" height="20" forecolor="#006600" uuid="85623f94-6844-4566-a822-46daf7e72122"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[إجمالي القيمة المضافة]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<reportElement positionType="Float" mode="Opaque" x="8" y="331" width="177" height="20" isPrintWhenDetailOverflows="true" backcolor="#F7F7F7" uuid="81d70a2e-6383-4d55-b877-60bda8f3099c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{TOTAL}*0.05+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

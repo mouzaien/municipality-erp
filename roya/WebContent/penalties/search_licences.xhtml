@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{licencesListBean.loadLicences}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+							<br></br>
+						<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 -5px ! important; color: #428bca">#{msg['list.licences']}
+						</h3>
+					
+					</div>
+						<br></br>
+							<div class="row">
+								<p:dataTable var="licenceItem" id="inboxdt"
+									value="#{licencesListBean.licencesList}"
+									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+									paginatorPosition="bottom"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									filteredValue="#{licencesListBean.filteredLicences}"
+									paginator="true" rows="17">
+
+									<p:column style="text-align: center;" headerText="رقم الرخصة"
+										filterBy="#{licenceItem.licNo}" filterMatchMode="contains"
+										width="10%">
+                                    #{licenceItem.licNo}
+
+                                </p:column>
+									<p:column style="white-space: nowrap;"
+										headerText="#{msg['commercial.name']}" width="55%"
+										filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+										#{licenceItem.trdName} - #{licenceItem.activity} 									
+									</p:column>
+									<p:column style="white-space: nowrap;text-align: center;"
+										headerText="#{msg['licence.start.date']}" width="15%"
+										filterBy="#{licenceItem.licBeginDate}"
+										filterMatchMode="contains">										
+										#{licenceItem.licBeginDate}										
+									</p:column>
+									<p:column style="white-space: nowrap;text-align: center;"
+										headerText="#{msg['licence.end.date']}" width="15%"
+										filterBy="#{licenceItem.licEndDate}"
+										filterMatchMode="contains">										
+										#{licenceItem.licEndDate}										
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="#{msg['details']}">
+										<p:commandButton style="background-color: #3F729B;"
+											action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
+											icon="ui-icon-search">
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</div>
+									<br />
+									<div align="center" class="row">
+									<h:commandButton value="طباعة"
+										styleClass="btn btn-primary"
+										onclick="this.form.target='_blank'"
+										action="#{licencesListBean.printReportAction}">
+									</h:commandButton>
+									</div>
+					</div>
+
+
+
+					<p:dialog widgetVar="penality_dlg" id="penality_dlgId" width="70%"
+						style="margin-top: -127px;" hideEffect="fade" showEffect="explode"
+						dir="rtl" modal="true" resizable="false">
+						<h:panelGroup id="myDialog">
+							<div style="width: 100%">
+								<div style="float: right; width: 100%">
+									<div class="row">
+										<h4 class="page-header"
+											style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
+											المخالفة</h4>
+
+										<div class="col-md-12">
+											<div class="row " style="margin-right: 0px;">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="#{msg['penality.number']}"
+																styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fineNo}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="تاريخ الإشعار" styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fineDate}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="حالة السداد" styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? msg['paid'] : msg['not.paid']}" />
+														</div>
+
+													</div>
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="نوع النشاط" styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{(penalitiesListBean.reqFinesMaster.activityType == 1)? msg['commercial'] : msg['not.commercial']}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="رقم الشكوى" styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fLetterNo}" />
+														</div>
+
+													</div>
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="الإدارة المختصة" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.deptName}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="المراقب" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.supervisorName}" />
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<br /> <br />
+
+									<div class="row" style="margin-right: 0px;">
+										<h4 class="page-header"
+											style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
+											المخالف</h4>
+
+										<div class="col-md-12">
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fLicenceNo}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="#{msg['commercial.name']}"
+																styleClass="btxt" />
+														</div>
+														<div class="col-md-6">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fTradeMarkName}" />
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fName}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="الرقم المميز" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fKeycode}" />
+
+														</div>
+													</div>
+
+												</div>
+											</div>
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+														</div>
+														<div class="col-md-10">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fAddress}" />
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="رقم المخطط" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fMapNo}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="رقم القطعة" styleClass="btxt" />
+														</div>
+														<div class="col-md-4">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fBlockNo}" />
+														</div>
+
+													</div>
+												</div>
+											</div>
+
+
+
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<h:outputLabel value="تاريخ بداية الرخصة"
+																styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fLicStartDate}" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel value="تاريخ نهاية الرخصة"
+																styleClass="btxt" />
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{penalitiesListBean.reqFinesMaster.fLicEndDate}" />
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+
+										</div>
+
+									</div>
+									<br></br>
+
+									<div class="row">
+										<h4 class="page-header"
+											style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
+											المخالفات</h4>
+
+										<div class="col-md-12">
+											<div class="row ">
+												<div class="col-md-12 ">
+
+													<div class="table-responsive"
+														style="position: relative; overflow-y: auto; width: 98%; padding-right: 27px;">
+
+
+														<table class="table table-striped table-hover">
+															<thead>
+																<tr>
+
+																	<th>عنوان المخالفة</th>
+																	<th>التكرار</th>
+																	<th>الحد الادنى</th>
+																	<th>الحد الأعلى</th>
+																	<th>العدد</th>
+																	<th>القيمة</th>
+																	<th>الإجمالي</th>
+
+
+																</tr>
+															</thead>
+															<tbody>
+																<ui:repeat var="fdet" varStatus="x"
+																	value="#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList}">
+
+
+																	<tr>
+
+																		<td>#{fdet.reqFinesSetup.fineDesc}</td>
+																		<td>#{fdet.fineCount}</td>
+																		<td>#{fdet.reqFinesSetup.fineMinimumValue}</td>
+																		<td>#{fdet.reqFinesSetup.fineSupermumValue}</td>
+																		<td>#{fdet.fineCount}</td>
+																		<td>#{fdet.fineValue}</td>
+																		<td>#{fdet.fineTotalValue}</td>
+
+																	</tr>
+
+																</ui:repeat>
+															</tbody>
+														</table>
+													</div>
+
+
+												</div>
+											</div>
+											<br />
+
+										</div>
+
+										<br />
+									</div>
+
+									<div>
+
+										<button type="button" class="btn btn-primary"
+											onclick="PF('penality_dlg').hide();"
+											style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
+											data-dismiss="modal">رجوع</button>
+
+										<h:outputLink
+											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+											value="#{penalitiesListBean.urlBill}" target="_blank">
+											<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+											<span class="ui-button-text">طباعة الفاتورة</span>
+
+										</h:outputLink>
+
+										<h:outputLink
+											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+											value="#{penalitiesListBean.urlPenality}" target="_blank">
+											<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+											<span class="ui-button-text">طباعة المخالفة</span>
+											<f:ajax execute="@form"></f:ajax>
+										</h:outputLink>
+
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</h:panelGroup>
+						<div />
+					</p:dialog>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

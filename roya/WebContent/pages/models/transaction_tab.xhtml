@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<style>
+.boldTitle {
+	font-weight: bold;
+	font-size: 14px;
+}
+</style>
+
+
+
+<p:panel>
+	<f:facet name="header">
+		<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['transaction.data']}
+				                    </f:facet>
+	<p:panelGrid>
+		<p:selectOneMenu id="folderId" rendered="false"
+			style="float: left; width: 162px;  height: 36px;"
+			value="#{mailDefenationBean.folderId}">
+			<f:ajax listener="#{mailDefenationBean.addMailToFolder}"
+				execute="folderId"></f:ajax>
+			<f:selectItem itemLabel="#{msg['add.to.folder']}"
+				noSelectionOption="true" itemDisabled="true"></f:selectItem>
+			<f:selectItems value="#{mailDefenationBean.userfolders}" var="folder"
+				itemValue="#{folder.folderId}" itemLabel="#{folder.folderName}"></f:selectItems>
+		</p:selectOneMenu>
+	</p:panelGrid>
+	<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8"
+		layout="grid" styleClass="ui-panelgrid-blank">
+<!-- 		<p:outputLabel value="#{msg['num.transaction']}" /> -->
+
+<!-- 		<p:outputLabel value="#{mailDefenationBean.selectedInbox.wrkId}" -->
+<!-- 			class="boldTitle" /> -->
+
+		<p:outputLabel value="#{msg['income.nb']}" />
+
+		<p:outputLabel value="#{mailDefenationBean.selectedInbox.wrkIncomeNo}"
+			class="boldTitle" />
+
+
+		<p:outputLabel value="#{msg['subject']}" />
+
+		<p:outputLabel value="#{mailDefenationBean.selectedInbox.appTitle}"
+			style="white-space: nowrap;" class="boldTitle" />
+
+		<p:outputLabel value="#{msg['sender']}" />
+
+		<p:outputLabel value=" #{mailDefenationBean.selectedInbox.wrkSender}"
+			class="boldTitle" />
+
+		<p:outputLabel value="#{msg['creation.date']}" />
+
+		<p:outputLabel value="#{mailDefenationBean.selectedInbox.wrkHdate} "
+			class="boldTitle" />
+
+	</p:panelGrid>
+</p:panel>
+
+<p:panel>
+	<f:facet name="header">
+		<span class="fa fa-fw fa-comments-o"></span> &nbsp;&nbsp;#{msg['explanations']}
+				                    </f:facet>
+	<p:scrollPanel mode="native" style="height:600px;border: white;">
+		<p:panelGrid columns="2" columnClasses="ui-grid-col-12,ui-grid-col-12"
+			layout="grid" styleClass="ui-panelgrid-blank" style="float :left;">
+			<p:commandButton value="#{msg['print']} #{msg['explanations']}"
+				icon="fa fa-fw fa-comments-o" immediate="true" styleClass="cyan-btn"
+				onclick="this.form.target='_blank'" ajax="false"
+				action="#{mailDefenationBean.printExplanationReportAction}">
+			</p:commandButton>
+		</p:panelGrid>
+		<p:panelGrid>
+			<br></br>
+
+			<ui:repeat varStatus="x" value="#{mailDefenationBean.comments}"
+				var="comm">
+				<h2
+					style="margin: 0px 0 20px ! important; color: #7CB342; font-weight: bold;">
+					#{msg['step']} <span class="task-status"
+						style="background-color: #7CB342 !important;">#{x.index+1}</span>
+				</h2>
+				<p:outputLabel rendered="#{mailDefenationBean.comments eq Empty }"
+					value="#{msg['no.explanations']}"></p:outputLabel>
+				<ul>
+
+					<li><h4>#{msg['from']} #{comm.fromName} #{msg['to']}
+							#{comm.toName}</h4></li>
+
+					<li>#{msg['in.date']} #{comm.createdIn}</li>
+					<li>#{comm.purpose}</li>
+					<li>#{comm.comment}</li>
+				</ul>
+
+			</ui:repeat>
+		</p:panelGrid>
+	</p:scrollPanel>
+
+</p:panel>
+
+
+
+
+</html>

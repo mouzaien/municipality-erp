@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ec47a9ca-9330-42b7-a9d8-2b8cfef1a96f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     ARC_ATTACH."ID" AS ARC_ATTACH_ID,
+     ARC_ATTACH."ATT_NAME" AS ARC_ATTACH_ATT_NAME,
+     ARC_ATTACH."ATT_DATE" AS ARC_ATTACH_ATT_DATE,
+     ARC_ATTACH."ATT_OWNER" AS ARC_ATTACH_ATT_OWNER,
+     ARC_ATTACH."ATT_NODE" AS ARC_ATTACH_ATT_NODE,
+     ARC_ATTACH."ATT_SIZE" AS ARC_ATTACH_ATT_SIZE,
+     ARC_ATTACH."ATT_DESC" AS ARC_ATTACH_ATT_DESC,
+     ARC_ATTACH."ATT_TYPE" AS ARC_ATTACH_ATT_TYPE,
+     ARC_ATTACH."DESCRIPTION" AS ARC_ATTACH_DESCRIPTION,
+     ARC_ATTACH."TEXT_1" AS ARC_ATTACH_TEXT_1,
+     ARC_ATTACH."TEXT_2" AS ARC_ATTACH_TEXT_2,
+     ARC_ATTACH."TEXT_3" AS ARC_ATTACH_TEXT_3,
+     ARC_ATTACH."SIGNED_BY" AS ARC_ATTACH_SIGNED_BY,
+     ARC_ATTACH."TASHEER_BY" AS ARC_ATTACH_TASHEER_BY,
+     ARC_ATTACH."ATT_CATEGORY" AS ARC_ATTACH_ATT_CATEGORY
+FROM
+     "PROJECT"."ARC_ATTACH" ARC_ATTACH]]>
+	</queryString>
+	<field name="ARC_ATTACH_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_ATT_NAME" class="java.lang.String"/>
+	<field name="ARC_ATTACH_ATT_DATE" class="java.sql.Timestamp"/>
+	<field name="ARC_ATTACH_ATT_OWNER" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_ATT_NODE" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_ATT_SIZE" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_ATT_DESC" class="java.lang.String"/>
+	<field name="ARC_ATTACH_ATT_TYPE" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_DESCRIPTION" class="java.lang.String"/>
+	<field name="ARC_ATTACH_TEXT_1" class="java.lang.String"/>
+	<field name="ARC_ATTACH_TEXT_2" class="java.lang.String"/>
+	<field name="ARC_ATTACH_TEXT_3" class="java.lang.String"/>
+	<field name="ARC_ATTACH_SIGNED_BY" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_TASHEER_BY" class="java.math.BigDecimal"/>
+	<field name="ARC_ATTACH_ATT_CATEGORY" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="138" height="20" uuid="220ab545-d887-4504-868e-a8236b7b7140"/>
+				<text><![CDATA[ARC_ATTACH_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="0" width="138" height="20" uuid="cd2a87ed-cbc2-4e09-83b5-b6252fe11f81"/>
+				<text><![CDATA[ARC_ATTACH_ATT_NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="0" width="138" height="20" uuid="5085430a-8376-47f7-b450-398eb91bfac4"/>
+				<text><![CDATA[ARC_ATTACH_ATT_DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="138" height="20" uuid="498342e5-38c8-49ac-8f34-bc924b612d3e"/>
+				<text><![CDATA[ARC_ATTACH_ATT_TYPE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="138" height="20" uuid="1d379683-9ed2-48f8-bd8c-2c5b21050fcd"/>
+				<textFieldExpression><![CDATA[$F{ARC_ATTACH_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="0" width="138" height="20" uuid="2e6659af-a41d-4ddb-aa3c-ed90b3dc9fc7"/>
+				<textFieldExpression><![CDATA[$F{ARC_ATTACH_ATT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="0" width="138" height="20" uuid="ed8c2c68-83b9-4952-89b5-032945813bb0"/>
+				<textFieldExpression><![CDATA[$F{ARC_ATTACH_ATT_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="0" width="138" height="20" uuid="f60f7f28-c8ea-43f2-be54-b1580d72bef5"/>
+				<textFieldExpression><![CDATA[$F{ARC_ATTACH_ATT_TYPE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

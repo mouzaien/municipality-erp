@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+
+<p:panel>
+
+	<f:facet name="header">
+		<span class="fa fa-fw fa-paperclip"></span> &nbsp;&nbsp; #{msg['attachments']}
+							                    </f:facet>
+	<div class="image-box-footer" style="float: left">
+		<p:commandButton value="#{msg['confirm.upload']}" ajax="false"
+			styleClass="cyan-btn" icon="fa fa-fw fa-chain"
+			action="#{archiveBean.saveAttach}" />
+		<p:spacer width="2" height="2"></p:spacer>
+		<p:fileUpload skinSimple="true" mode="simple" style="padding-top: 7px"
+			value="#{archiveBean.file}" uploadLabel="ارفاق"
+			cancelLabel="إلغاء" label="تحديد المرفق" previewWidth="0"
+			sizeLimit="300000000">
+		</p:fileUpload>
+	</div>
+
+	<p:panelGrid rendered="#{archiveBean.attList eq null }">
+		<p:outputLabel value="#{msg['no.attachments']}"></p:outputLabel>
+		<br></br>
+		<br></br>
+		<br></br>
+	</p:panelGrid>
+	<h:panelGroup id="attachments">
+		<h:form>
+			<ui:repeat varStatus="x" value="#{archiveBean.attList}"
+				var="att">
+				<p:panelGrid columns="4" id="AttachmantTab"
+					columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h2 style="color: #7CB342; font-weight: bold;">
+						#{msg['file.number']} <span class="task-status"
+							style="background-color: #7CB342 !important;">#{x.index+1}</span>
+					</h2>
+					<p:outputLabel>#{msg['attached.by']} #{att.ownerName}</p:outputLabel>
+
+
+					<p:commandButton value="#{msg['download.file']}" ajax="false"
+						immediate="true" class="panel-footer"
+						icon="ui-icon-arrowthick-1-s">
+						<p:fileDownload value="#{archiveBean.getFile(att.attName)}" />
+					</p:commandButton>
+				</p:panelGrid>
+			</ui:repeat>
+		</h:form>
+	</h:panelGroup>
+
+<!-- 	<h:panelGroup rendered="#{archiveBean.copyOfComment}"> -->
+<!-- 		<div class="col-lg-12" -->
+<!-- 			style="background-color: white; border-top: 5px solid #428BCA"> -->
+<!-- 			<div style="color: color: #428bca"> -->
+<!-- 				<br></br> -->
+<!-- 				<h3 class="page-header" -->
+<!-- 					style="margin: 0px 0 20px ! important; color: #428bca"> -->
+<!-- 					#{msg['print.comment']}</h3> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="panel-body"> -->
+<!-- 				<p:commandButton style="float:left" value="#{msg['print']}" -->
+<!-- 					immediate="true" styleClass="btn btn-primary" -->
+<!-- 					onclick="this.form.target='_blank'" -->
+<!-- 					action="#{archiveBean.printAttachReportAction}"> -->
+<!-- 				</p:commandButton> -->
+<!-- 			</div> -->
+
+<!-- 		</div> -->
+<!-- 	</h:panelGroup> -->
+</p:panel>
+
+
+
+<!-- <div class="col-lg-12" -->
+<!-- 	style="background-color: white; border-top: 5px solid #428BCA"> -->
+
+<!-- 	<div class="col-md-2" style="color: color: #428bca"> -->
+<!-- 		<br></br> -->
+<!-- 		<h3 class="page-header" -->
+<!-- 			style="margin: 0px 0 20px ! important; color: #428bca">#{msg['attach']} #{msg['new']} -->
+<!-- 			</h3> -->
+<!-- 	</div> -->
+<!-- 	<div class="col-md-2 panel-body"> -->
+<!-- 		<p:fileUpload id="RecordsUploaderID" widgetVar="RecordsUploader" -->
+<!-- 			multiple="true" auto="true" -->
+<!-- 			fileUploadListener="#{mailDefenationBean.uploadRecordFiles}" -->
+<!-- 			uploadLabel="#{msg['attach']}" cancelLabel="#{msg['cancel']}" label="#{msg['select.attachment']}" -->
+<!-- 			previewWidth="0" process="@this" style="width: 100%;display: block;" -->
+<!-- 			sizeLimit="300000000" update="AttachmantTab" /> -->
+<!-- 	</div> -->
+<!-- 	<div class="col-md-4"> -->
+<!-- 		<div style="display: inline;"> -->
+<!-- 			<div class="col-md-2"> -->
+<!-- 				<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe" -->
+<!-- 					class="btn btn-primary icon-pencil " onclick="visibleDIv()"> <i -->
+<!-- 					class="material-icons">#{msg['scanner']}</i> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
+<!-- 			<div class="col-md-8" id="divError" style="display: none;"> -->
+<!-- 				<p:outputLabel value="#{msg['attach.after.scan']}" -->
+<!-- 					style="color:red"/> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<div class="col-md-2"> -->
+<!-- 		<a href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat" -->
+<!-- 			id="FileLoderID" class="btn btn-primary" -->
+<!-- 			style="display: none; float: left; margin-left: 84px;" -->
+<!-- 			onclick="notVisibleDIv()">#{msg['upload.attachment']}</a> -->
+<!-- 	</div> -->
+<!-- </div> -->
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-2"> -->
+<!-- 		<h:outputLabel value="#{msg['attachments']}" /> -->
+<!-- 	</div> -->
+<!-- 	<div class="col-md-7"> -->
+<!-- 		<ul> -->
+<!-- 			<h:panelGroup id="att-list"> -->
+<!-- 				<br></br> -->
+<!-- 				<ui:repeat var="attach" value="#{mailDefenationBean.attachList}"> -->
+<!-- 					<div class="row"> -->
+<!-- 						<div class="col-md-5"> -->
+<!-- 							<p:outputLabel value="#{attach.attachRealName}" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-md-1"> -->
+<!-- 							<p:commandButton styleClass="btn btn-danger" immediate="true" -->
+<!-- 								update="att-list" value="#{msg['cancel']}" -->
+<!-- 								actionListener="#{mailDefenationBean.deleteAttchFile(attach.attachRealName)}"> -->
+<!-- 							</p:commandButton> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-md-1"> -->
+<!-- 							<p:commandButton styleClass="btn btn-danger" immediate="true" -->
+<!-- 								update="att-list" value="#{msg['confirm']}" -->
+<!-- 								actionListener="#{mailDefenationBean.saveAttchs}"> -->
+<!-- 								<f:ajax execute="@form"></f:ajax> -->
+<!-- 							</p:commandButton> -->
+<!-- 						</div> -->
+<!-- 						<br /> -->
+<!-- 					</div> -->
+<!-- 				</ui:repeat> -->
+<!-- 			</h:panelGroup> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
+<!-- </div> -->
+
+
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c7685d8-3a52-4679-a7c9-4179503dceb8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from ARC_USERS]]>
+	</queryString>
+	<field name="USER_ID" class="java.math.BigDecimal"/>
+	<field name="LOGIN_NAME" class="java.lang.String"/>
+	<field name="PASSWORD" class="java.lang.String"/>
+	<field name="F_ACTIVE" class="java.math.BigDecimal"/>
+	<field name="FNAME" class="java.lang.String"/>
+	<field name="LNAME" class="java.lang.String"/>
+	<field name="TITLE_ID" class="java.math.BigDecimal"/>
+	<field name="U_DATE" class="java.sql.Timestamp"/>
+	<field name="JOB_ID" class="java.math.BigDecimal"/>
+	<field name="DEPT_ID" class="java.math.BigDecimal"/>
+	<field name="MGR_ID" class="java.math.BigDecimal"/>
+	<field name="WRK_ROLE_ID" class="java.math.BigDecimal"/>
+	<field name="SEC_ID" class="java.math.BigDecimal"/>
+	<field name="MOBILE" class="java.lang.String"/>
+	<field name="IS_MOBILE" class="java.math.BigDecimal"/>
+	<field name="EMPNO" class="java.math.BigDecimal"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<field name="STRUCT" class="java.math.BigDecimal"/>
+	<field name="FORM_NAME" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="EMP_ENAME" class="java.lang.String"/>
+	<field name="EXT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="183" y="2" width="100" height="20" uuid="fd24a7f0-c548-469a-94ec-389d56ed410c"/>
+				<text><![CDATA[LOGIN_NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="2" width="100" height="20" uuid="108dde94-58e0-467a-b7a9-a01fc459197b"/>
+				<text><![CDATA[PASSWORD]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="183" y="0" width="100" height="20" uuid="5cdc3edd-38cf-465d-83fe-01238e08dfe4"/>
+				<textFieldExpression><![CDATA[$F{LOGIN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="361" y="0" width="100" height="20" uuid="2a3f283a-7861-46cb-892d-067d762b446f"/>
+				<textFieldExpression><![CDATA[$F{PASSWORD}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="205" y="35" width="200" height="50" uuid="cec52996-cb00-4946-aa83-7c01d8e0c948"/>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$F{USER_ID}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

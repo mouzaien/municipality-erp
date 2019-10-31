@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+
+<h:head>
+	<!-- 	<link href="Css/style.css" rel="stylesheet" type="text/css"></link> -->
+	<!-- 	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet" -->
+	<!-- 		type="text/css"></link> -->
+
+	<!-- 	<link rel="stylesheet" type="text/css" -->
+	<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" /> -->
+	<!-- 	<link rel="stylesheet" type="text/css" -->
+	<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" /> -->
+	<!-- 	<link type="text/css" rel="stylesheet" -->
+	<!-- 		href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-south-street" /> -->
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+	<style>
+</style>
+</h:head>
+
+
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform">
+
+			<p:growl autoUpdate="true" showDetail="false" />
+
+
+
+
+			<div class="card card-w-title" dir="rtl">
+				<h:panelGroup columns="1" columnClasses="ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h1 class="page-header">
+						#{archiveBean.selectedArcRecord.recTitle}</h1>
+				</h:panelGroup>
+
+				<p:panelGrid columns="2"
+					columnClasses="ui-grid-col-12,ui-grid-col-8," layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h:panelGroup id="dtata" style="padding:0px">
+						<p:tabView id="trans_TV"
+							activeIndex="#{mailDefenationBean.tabActiveIndex}">
+
+							<p:tab title="#{msg['transaction.data']}">
+<!-- 								<h:panelGrid style="width:100%"> -->
+									<ui:include src="models/transaction_tab2.xhtml" />
+<!-- 								</h:panelGrid> -->
+							</p:tab>
+							<p:tab title="#{msg['attachments']}">
+<!-- 								<h:panelGrid style="width:100%"> -->
+									<ui:include src="models/attachment_tab2.xhtml" />
+<!-- 								</h:panelGrid> -->
+							</p:tab>
+						</p:tabView>
+					</h:panelGroup>
+				</p:panelGrid>
+				<!-- 				<p:tabView> -->
+				<!-- 					<p:tab title="بيانات المعاملة"> -->
+				<!-- 						<div class="ui-g"> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:outputLabel value="  رقم المعاملة" styleClass="btxt" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-6"> -->
+				<!-- 								<p:outputLabel value="#{archiveBean.selectedArcRecord.id}" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-3"></div> -->
+				<!-- 						</div> -->
+				<!-- 						<div class="ui-g"> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:outputLabel value="  رقم الوارد" styleClass="btxt" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-6"> -->
+				<!-- 								<p:outputLabel value="#{archiveBean.selectedArcRecord.incomeNo}" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-3"></div> -->
+				<!-- 						</div> -->
+				<!-- 						<div class="ui-g"> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:outputLabel value="  الموضوع" styleClass="btxt" /> -->
+
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-5"> -->
+				<!-- 								<p:outputLabel value="#{archiveBean.selectedArcRecord.recTitle}" -->
+				<!-- 									style="white-space: nowrap;" -->
+				<!-- 									rendered="#{!archiveBean.enableSubject}" /> -->
+				<!-- 								<h:inputText style="width:100%" id="newwrktopic" -->
+				<!-- 									styleClass="form-control" -->
+				<!-- 									rendered="#{archiveBean.enableSubject}" -->
+				<!-- 									value="#{archiveBean.selectedArcRecord.recTitle}" -->
+				<!-- 									required="true" requiredMessage="موضوع المعاملة مطلوب" /> -->
+
+
+
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-3"> -->
+				<!-- 								<p:commandLink class="btn btn-primary" -->
+				<!-- 									rendered="#{archiveBean.enableSubject}" -->
+				<!-- 									action="#{archiveBean.updateSubjectAction}"> -->
+				<!-- 									<div class="fa fa-save" style="font-size: larger !important;"></div> -->
+				<!-- 								</p:commandLink> -->
+				<!-- 							</div> -->
+				<!-- 						</div> -->
+				<!-- 						<div class="ui-g"> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:outputLabel value="المرسل " styleClass="btxt" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-6"> -->
+				<!-- 								<p:outputLabel -->
+				<!-- 									value=" #{archiveBean.selectedArcRecord.letterFrom}" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-3" /> -->
+				<!-- 						</div> -->
+				<!-- 						<div class="ui-g"> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:outputLabel value="أنشأت في " styleClass="btxt" /> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-6"> -->
+				<!-- 								<p:outputLabel -->
+				<!-- 									value="#{archiveBean.selectedArcRecord.recHDate} " /> -->
+				<!-- 							</div> -->
+
+				<!-- 						</div> -->
+				<!-- 						<br></br> -->
+				<!-- 						<h3>الشروحات</h3> -->
+				<!-- 						<ui:repeat varStatus="x" value="#{archiveBean.comments}" -->
+				<!-- 							var="comm"> -->
+				<!-- 							<h4 style="margin: 0px 0 20px ! important; color: #428bca">خطوة -->
+				<!-- 								(#{x.index+1})</h4> -->
+				<!-- 							<p:outputLabel rendered="#{archiveBean.comments eq Empty }" -->
+				<!-- 								value="عفوا لا يوجد شروحات لهذه المعاملة "></p:outputLabel> -->
+				<!-- 							<ul> -->
+
+				<!-- 								<li><h5>بواسطة #{comm.fromName} الي #{comm.toName}</h5></li> -->
+
+				<!-- 								<li>بتاريخ #{comm.createdIn}</li> -->
+				<!-- 								<li>#{comm.purpose}</li> -->
+				<!-- 								<li>#{comm.comment}</li> -->
+				<!-- 								<hr></hr> -->
+				<!-- 							</ul> -->
+
+				<!-- 						</ui:repeat> -->
+				<!-- 						<hr></hr> -->
+				<!-- 						<div class="ui-g" style="margin: 10px;"> -->
+				<!-- 							<div class="ui-g-3"> -->
+				<!-- 								<p:selectOneMenu filter="true" style="width:100%" id="input001" -->
+				<!-- 									required="true" value="#{archiveBean.selectedUserId}"> -->
+				<!-- 									<f:selectItems value="#{archiveBean.employeesList}" var="usr" -->
+				<!-- 										itemLabel="#{usr.firstName} #{usr.lastName}" -->
+				<!-- 										itemValue="#{usr.userId}" /> -->
+				<!-- 								</p:selectOneMenu> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:commandButton value="نقل المعاملة" process="@this,input001" -->
+				<!-- 									action="#{archiveBean.redirectRecord(ae)}"> -->
+				<!-- 									<p:confirm header="تأكيد" -->
+				<!-- 										message="هل انت متأكد من إتمام الإجراء " icon="ui-icon-alert" /> -->
+				<!-- 								</p:commandButton> -->
+				<!-- 								<p:confirmDialog global="true" showEffect="fade" -->
+				<!-- 									hideEffect="fade"> -->
+				<!-- 									<p:commandButton value="موافق " type="button" -->
+				<!-- 										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" /> -->
+				<!-- 									<p:commandButton value="تراجع" type="button" -->
+				<!-- 										styleClass="ui-confirmdialog-no" icon="ui-icon-close" /> -->
+				<!-- 								</p:confirmDialog> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-2"></div> -->
+				<!-- 							<div class="ui-g-5"> -->
+				<!-- 								<div class="image-box-footer" align="left"> -->
+				<!-- 									<p:commandButton value="طباعة الشروحات" immediate="true" -->
+				<!-- 										onclick="this.form.target='_blank'" -->
+				<!-- 										action="#{archiveBean.printExplanationReportAction}"> -->
+				<!-- 									</p:commandButton> -->
+				<!-- 								</div> -->
+				<!-- 							</div> -->
+
+				<!-- 						</div> -->
+				<!-- 					</p:tab> -->
+				<!-- 					<p:tab title="المرفقات"> -->
+				<!-- 						<h3>المرفقات</h3> -->
+				<!-- 						<div class="panel-body"> -->
+				<!-- 							<p:outputLabel rendered="#{archiveBean.attList eq null }" -->
+				<!-- 								value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel> -->
+				<!-- 							<ul> -->
+				<!-- 								<h:panelGroup id="AttachmantTab"> -->
+				<!-- 									<ui:repeat value="#{archiveBean.attList}" var="att"> -->
+
+				<!-- 										<div class="panel-body">قام بارفاقه #{att.ownerName}</div> -->
+				<!-- 										<div class="ui-g-5"> -->
+				<!-- 											<h:outputLink target="_blank" value="#{att.attLink}"> -->
+				<!-- 																أضغط هنا لتحميل الملف -->
+				<!-- 															</h:outputLink> -->
+				<!-- 										</div> -->
+				<!-- 										<div class="ui-g-2"> -->
+				<!-- 											<secc:authorize ifAnyGranted="ROLE_SUPPORT"> -->
+				<!-- 												<h:panelGroup> -->
+				<!-- 													<p:commandButton class="btn btn-danger" immediate="true" -->
+				<!-- 														render="AttachmantTab" value="حذف" -->
+				<!-- 														actionListener="#{archiveBean.deleteAttachment(att)}"> -->
+				<!-- 													</p:commandButton> -->
+				<!-- 												</h:panelGroup> -->
+				<!-- 											</secc:authorize> -->
+				<!-- 										</div> -->
+				<!-- 									</ui:repeat> -->
+				<!-- 									<div class="ui-g"> -->
+				<!-- 										<div class="ui-g-2"> -->
+				<!-- 											<p:outputLabel value="الارفاق " /> -->
+				<!-- 										</div> -->
+				<!-- 										<div class="ui-g-4"> -->
+				<!-- 											<p:fileUpload id="NewRecordUpload" mode="advanced" -->
+				<!-- 												widgetVar="NewIncomeUploader" -->
+				<!-- 												fileUploadListener="#{archiveBean.NewRecordupload}" -->
+				<!-- 												uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق" -->
+				<!-- 												previewWidth="0" process="@this" -->
+				<!-- 												update="attach-count-id ,att-list" -->
+				<!-- 												style="width: 100%;display: block;" -->
+				<!-- 												allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/" -->
+				<!-- 												sizeLimit="300000000"> -->
+				<!-- 											</p:fileUpload> -->
+				<!-- 											<p:outputLabel id="attach-count-id" -->
+				<!-- 												value="عدد المرفقات - #{archiveBean.attachList.size()}" /> -->
+				<!-- 										</div> -->
+				<!-- 										<div class="ui-g-4"> -->
+				<!-- 											<div style="display: inline;"> -->
+				<!-- 												<div class="col-md-2"> -->
+				<!-- 													<a -->
+				<!-- 														href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe" -->
+				<!-- 														class="btn btn-primary icon-pencil " -->
+				<!-- 														onclick="visibleDIv()"> <i class="material-icons">scanner</i> -->
+				<!-- 													</a> -->
+				<!-- 												</div> -->
+				<!-- 												<div class="col-md-8" id="divError" style="display: none;"> -->
+				<!-- 													<h:outputLabel value="يجب تحميل المرفقات بعد إنتهاء المسح" -->
+				<!-- 														style="color:red"></h:outputLabel> -->
+				<!-- 												</div> -->
+				<!-- 											</div> -->
+				<!-- 										</div> -->
+				<!-- 										<div class="ui-g-2"> -->
+				<!-- 											<a href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat" -->
+				<!-- 												id="FileLoderID" class="btn btn-primary" -->
+				<!-- 												style="display: none; float: left; margin-left: 84px;" -->
+				<!-- 												onclick="notVisibleDIv()">تحميل المرفق</a> -->
+				<!-- 										</div> -->
+				<!-- 										<p:commandButton id="btn_1" value="uploadFiles" -->
+				<!-- 											style="display: none"> -->
+				<!-- 											<f:ajax event="click" -->
+				<!-- 												listener="#{archiveBean.refreshFilesUploaded}" -->
+				<!-- 												render="att-list"> -->
+				<!-- 											</f:ajax> -->
+				<!-- 										</p:commandButton> -->
+				<!-- 									</div> -->
+				<!-- 									<br></br> -->
+				<!-- 									<br></br> -->
+				<!-- 									<div class="row"> -->
+				<!-- 										<ul> -->
+				<!-- 											<h:panelGroup id="att-list"> -->
+				<!-- 												<ui:repeat var="attach" value="#{archiveBean.attachList}"> -->
+				<!-- 													<div class="ui-g"> -->
+				<!-- 														<div class="ui-g-3"> -->
+				<!-- 															<h:outputLabel value="#{attach.attachRealName}" /> -->
+				<!-- 														</div> -->
+
+				<!-- 														<div class="ui-g-1"> -->
+
+				<!-- 															<p:commandButton class="btn btn-danger" immediate="true" -->
+				<!-- 																render="att-list" value="إلغاء" -->
+				<!-- 																actionListener="#{archiveBean.deleteAttchFile(attach.attachRealName)}"> -->
+				<!-- 															</p:commandButton> -->
+				<!-- 														</div> -->
+				<!-- 														<div class="ui-g-1"> -->
+				<!-- 															<p:commandButton -->
+				<!-- 																style="float:left;font-family: kufi !important;" -->
+				<!-- 																styleClass="btn btn-primary" immediate="true" -->
+				<!-- 																render="att-list AttachmantTab" value="حفظ" -->
+				<!-- 																actionListener="#{archiveBean.saveAttach}"> -->
+				<!-- 															</p:commandButton> -->
+				<!-- 														</div> -->
+				<!-- 													</div> -->
+				<!-- 												</ui:repeat> -->
+				<!-- 											</h:panelGroup> -->
+				<!-- 										</ul> -->
+				<!-- 									</div> -->
+				<!-- 								</h:panelGroup> -->
+				<!-- 							</ul> -->
+				<!-- 						</div> -->
+				<!-- 						<h:panelGroup rendered="#{archiveBean.recordHasComment}"> -->
+				<!-- 							<div class="ui-g-10" -->
+				<!-- 								style="background-color: white; border-top: 5px solid #428BCA"> -->
+				<!-- 								<div style="color: color: #428bca"> -->
+				<!-- 									<br></br> -->
+				<!-- 									<h3 class="page-header" -->
+				<!-- 										style="margin: 0px 0 20px ! important; color: #428bca">طباعة -->
+				<!-- 										الخطاب</h3> -->
+				<!-- 								</div> -->
+
+				<!-- 								<div class="panel-body"> -->
+				<!-- 									<p:commandButton style="float:left" value="طباعة" -->
+				<!-- 										immediate="true" styleClass="btn btn-primary" -->
+				<!-- 										onclick="this.form.target='_blank'" -->
+				<!-- 										action="#{archiveBean.printReportAction}"> -->
+				<!-- 									</p:commandButton> -->
+				<!-- 								</div> -->
+				<!-- 							</div> -->
+				<!-- 							<div class="ui-g-2"> -->
+				<!-- 								<p:commandButton style="float:left" value="حفظ الملف" -->
+				<!-- 									rendered="true" immediate="true" styleClass="btn btn-primary" -->
+				<!-- 									actionListener="#{archiveBean.savePdfComment}"> -->
+				<!-- 								</p:commandButton> -->
+				<!-- 							</div> -->
+				<!-- 						</h:panelGroup> -->
+
+				<!-- 					</p:tab> -->
+				<!-- 				</p:tabView> -->
+				<p:dialog widgetVar="confirm-sign-dlg" id="confirmSigndialog"
+					hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+					resizable="false" header="قم بتأكيد التوقيع">
+
+					<div style="width: 100%; margin: 8px;">
+						<div style="float: right; width: 75%">
+							<h:panelGrid columns="1" style="text-align: center;">
+
+
+
+								<span></span>
+
+								<span></span>
+
+							</h:panelGrid>
+						</div>
+						<div style="float: right; width: 19%"></div>
+					</div>
+
+				</p:dialog>
+			</div>
+			<script>
+				function visibleDIv() {
+					document.getElementById("FileLoderID").style.display = "block";
+					document.getElementById("divError").style.display = "block";
+				}
+				function notVisibleDIv() {
+
+					document.getElementById("divError").style.display = "none";
+					document.getElementById("FileLoderID").style.display = "none";
+					document.getElementById("includeform:btn_1").click();
+				}
+			</script>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+
+</html>

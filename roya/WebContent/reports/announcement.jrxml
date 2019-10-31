@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-03-22T11:00:48 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="announcement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
+	<property name="ireport.zoom" value="1.24184264611831"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="picture_footer" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\watan.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tender_day" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="open_day" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="announcement_id" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\sub_announcement.jasper"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select an.LAST_TENDER_TIME ,AN.H_LAST_TENDER_DATE,AN.OPEN_ENV_DATE, anews.ID_NEWS_PAPER,NP.PAPER_NAME,AN.TIME_FLAG,
+(SELECT PR.SIGN2 FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('PRESIDENT_ID')) PRSIGN,
+GET_REAL_EMPNAME(GET_SYS_PROP_VAL('PRESIDENT_ID')) PRNAME
+from Annoucement an, announcement_news anews ,INV_NEWS_PAPER np 
+
+where AN.ID = anews.ANNOUCEMENT_ID
+and anews.ID_NEWS_PAPER=NP.PAPER_CODE and AN.ID= $P{announcement_id}]]>
+	</queryString>
+	<field name="LAST_TENDER_TIME" class="java.lang.String"/>
+	<field name="H_LAST_TENDER_DATE" class="java.lang.String"/>
+	<field name="OPEN_ENV_DATE" class="java.lang.String"/>
+	<field name="ID_NEWS_PAPER" class="java.math.BigDecimal"/>
+	<field name="PAPER_NAME" class="java.lang.String"/>
+	<field name="TIME_FLAG" class="java.math.BigDecimal"/>
+	<field name="PRSIGN" class="java.io.InputStream"/>
+	<field name="PRNAME" class="java.lang.String"/>
+	<variable name="currentPage" class="java.lang.Integer" resetType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="324" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="114" y="177" width="357" height="24" uuid="01db089b-c1c7-4368-9575-b06ebec88784"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA["نشر إعلان"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="20" y="223" width="514" height="67" uuid="39db8b92-1306-434b-b05f-a9f0486e8527">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="14" isBold="false" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المكرم رئيس تحرير صحيفة "+$F{PAPER_NAME}+
+"\n			السلام عليكم و رحمة الله و بركاته "+
+"تجدون أدناه إعلان البلدية عن طرح عدد من المواقع الإستثمارية لديها في مزايدة عامة و بياناتها كالتالي: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="500" y="293" width="31" height="31" backcolor="#EDEDED" uuid="05763a10-2133-4dd0-992b-0e273ded27b8"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["م"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="151" y="293" width="349" height="31" backcolor="#EDEDED" uuid="10ee5a0c-1e2c-46e1-a387-49400e95a740"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["العقارات المطروحة للإستثمار"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="90" y="293" width="61" height="31" backcolor="#EDEDED" uuid="16b628ed-0dae-4019-a4f2-719a0fb6701c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المساحة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="20" y="293" width="70" height="31" backcolor="#EDEDED" uuid="4663a62d-fe04-4f06-b7c4-7129f03384a4"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["قيمة النسخة"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="217" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement positionType="Float" x="20" y="0" width="511" height="217" isPrintInFirstWholeBand="true" uuid="cf373ff4-473e-4efd-8135-359ede3565b2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="announcement_id">
+					<subreportParameterExpression><![CDATA[$P{announcement_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="newspaper_id">
+					<subreportParameterExpression><![CDATA[$F{ID_NEWS_PAPER}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tender_day">
+					<subreportParameterExpression><![CDATA[$P{tender_day}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="open_day">
+					<subreportParameterExpression><![CDATA[$P{open_day}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="195" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="220" y="164" width="324" height="21" forecolor="#FF0000" uuid="8bacb1de-cb43-4bcc-8154-8c5f04090d63"/>
+				<textElement textAlignment="Right">
+					<font fontName="Traditional Arabic" size="13" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# معا_ضد_الإرهاب_والفكر_الضال"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="10" y="10" width="230" height="29" uuid="4f088b46-38e2-4efe-bb5d-1d28d4cc952e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رئيس بلدية محافظة البكيرية"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" isUsingCache="true" onErrorType="Blank">
+				<reportElement positionType="Float" x="19" y="34" width="212" height="86" uuid="27dc39cd-964c-4553-b065-26422bdadeb0"/>
+				<imageExpression><![CDATA[$F{PRSIGN}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="108" width="230" height="29" uuid="9c80131d-6844-466b-a422-6b3357493920">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRNAME}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="2" y="135" width="200" height="50" uuid="2e3e7c79-9826-45cb-9b9f-1bcc0a1bed66"/>
+				<imageExpression><![CDATA[$P{picture_footer}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</summary>
+</jasperReport>

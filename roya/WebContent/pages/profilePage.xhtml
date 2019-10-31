@@ -1,0 +1,405 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<h:head>
+
+</h:head>
+
+
+<body>
+
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+
+
+			<h:form id="includeform">
+			<style>
+			   body .ui-dialog .ui-dialog-titlebar{
+				float: right;
+				width: 92%;
+				background-color: #472d985c;
+				
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon{
+				float: none;
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-title{
+				float: right;;
+		         }
+				  .dashboard .user-card .user-card-content .user-detail ul li{
+				     padding: 26px 24px !important;
+				  }
+		 </style>
+				<p:growl autoUpdate="true" showDetail="false" />
+				<div class="ui-g dashboard">
+					<div class="ui-g-12 ui-md-12 ui-lg-6">
+						<div class="user-card card">
+							<div class="user-card-header">
+								<p:graphicImage name="images/dashboard/usercard.png"
+									library="serenity-layout" width="100" />
+
+							</div>
+							<div class="user-card-content">
+<!-- 								<p:graphicImage name="images/avatar1.png" -->
+<!-- 									library="serenity-layout" /> -->
+								<!-- 						<p:graphicImage style="width:145px; height:145px" -->
+								<!-- 							value="#{profilePageBean.streamImage}"/> -->
+								<p:commandButton id="user-button" type="button"
+									icon="ui-icon ui-icon-settings" styleClass="secondary-btn" />
+
+								<p:menu overlay="true" trigger="user-button" my="left top" 
+									at="left bottom"  style="width:215px">
+									<p:menuitem  value="#{msg['change.passowrd']}"
+										immediate="true" onclick="PF('dlgEditPassword').show();" actionListener="#{profilePageBean.updateSystemPassword}" icon="ui-icon ui-icon-important-devices"  />
+									<p:menuitem value="#{msg['change.signature']}"
+										immediate="true"
+										actionListener="#{profilePageBean.updateSignPassword}" onclick="PF('dlgEditPasswordSignture').show();" icon="ui-icon ui-icon-verified-user" />
+									<p:menuitem value="#{msg['add.folders']}" immediate="true" rendered="false"
+										onclick="PF('dlgAddFolder').show();" icon="ui-icon ui-icon-folder"  />
+								</p:menu>
+
+								<div class="user-card-name">
+									<span>#{profilePageBean.user.employeeName}</span>
+								</div>
+
+								<div class="user-detail">
+									<ul>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-user fa-fw" style="float: right"></i> <span
+													class="project-title" style="float: right">#{msg['name']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.user.employeeName}&nbsp;&nbsp;</span>
+											</div>
+										</li>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-fw fa-suitcase" style="float: right"></i> <span
+													class="project-title" style="float: right">#{msg['job']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.empHistoricalInfo.govJob4.jobName}
+													- #{profilePageBean.user.userjob.jobName}&nbsp;&nbsp;</span>
+											</div>
+										</li>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-fw fa-building" style="float: right"></i> <span
+													class="project-title" style="float: right">#{msg['administration']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.user.wrkSection.sectionName}&nbsp;&nbsp;</span>
+											</div>
+										</li>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-fw fa-barcode" style="float: right"></i> <span
+													class="project-title" style="float: right">#{msg['national.id']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.hrsMasterFile.nationalNumber}&nbsp;&nbsp;</span>
+											</div>
+										</li>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-fw fa-phone-square" style="float: right"></i>
+												<span class="project-title" style="float: right">#{msg['phone.number']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.user.mobileNumber}&nbsp;&nbsp;</span>
+											</div>
+										</li>
+										<li class="clearfix">
+											<div style="float: right !important; width: 100%">
+												<i class="fa fa-fw fa-cc-visa" style="float: right"></i> <span
+													class="project-title" style="float: right">#{msg['iban.number']}</span>
+												<span class="project-detail"
+													style="float: right; text-align: right; width: 66%;">#{profilePageBean.hrsMasterFile.accountNumber}&nbsp;&nbsp;</span>
+											
+											</div>
+										</li>
+									<p:spacer height="100"></p:spacer>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ui-g-6 ui-md-12  ui-lg-6 ui-g-nopad">
+
+						<div class="ui-g-12 ui-md-12 ui-lg-12">
+							<div class="task-box task-box-1">
+								<div class="task-box-header">
+									<i class="fa fa-fw fa-book"></i>
+								</div>
+								<div class="task-box-content">
+									<h3>#{msg['job.info']}</h3>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:outputLabel value="#{msg['job']}"></h:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<h:outputLabel
+												value="#{profilePageBean.empHistoricalInfo.govJob4.jobName}"></h:outputLabel>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:outputLabel value="#{msg['job.description']}"></h:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<h:outputLabel
+												value="#{profilePageBean.user.userjob.jobName}"></h:outputLabel>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:outputLabel value="#{msg['rank']}"></h:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<h:outputLabel
+												value="#{profilePageBean.empHistoricalInfo.rankNumber eq null? ' -----':profilePageBean.empHistoricalInfo.rankNumber }"></h:outputLabel>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:outputLabel value="#{msg['administration']}"></h:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<h:outputLabel
+												value="#{profilePageBean.user.wrkSection.sectionName}"></h:outputLabel>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:outputLabel value="#{msg['direct.director']}"></h:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<!-- 										<p:outputLabel -->
+											<!-- 	value="#{profilePageBean.user.manager.employeeName}"></p:outputLabel> -->
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="#{msg['signature']}"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-4">
+											<!-- 						  <p:graphicImage value="#{profilePageBean.myImage}" /> -->
+										</div>
+									</div>
+
+								</div>
+								<div class="task-box-footer"></div>
+							</div>
+						</div>
+						<div class="ui-g-12 ui-md-12 ui-lg-12">
+							<div class="task-box task-box-1">
+								<div class="task-box-header">
+
+									<i class="fa fa-fw fa-bank"></i>
+								</div>
+								<div class="task-box-content">
+									<h3>#{msg['bank.info.account']}</h3>
+									<h:outputLabel style="color:red"
+										value="#{msg['data.bank.missed']}"
+										rendered="#{!profilePageBean.empFlag}">
+										<br></br>
+									</h:outputLabel>
+
+									<h:panelGroup rendered="#{profilePageBean.empFlag}">
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-2">
+												<h:outputLabel value="#{msg['principal.salary']}"></h:outputLabel>
+											</div>
+											<div class="ui-g-12 ui-md-6 ui-lg-4">
+												<p:outputLabel
+													value="#{profilePageBean.empHistoricalInfo.basicSalary}"></p:outputLabel>
+											</div>
+										</div>
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-2">
+												<h:outputLabel value="#{msg['allowances']}"></h:outputLabel>
+											</div>
+											<div class="ui-g-12 ui-md-6 ui-lg-4">
+												<p:outputLabel
+													value="#{profilePageBean.empHistoricalInfo.transferSalary}"></p:outputLabel>
+											</div>
+										</div>
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-2">
+												<h:outputLabel value="#{msg['bank.name']}"></h:outputLabel>
+											</div>
+											<div class="ui-g-12 ui-md-6 ui-lg-4">
+												<p:outputLabel
+													value="#{profilePageBean.hrsMasterFile.bank.name }"></p:outputLabel>
+											</div>
+										</div>
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-2">
+												<h:outputLabel value="#{msg['bank.account']}"></h:outputLabel>
+											</div>
+											<div class="ui-g-12 ui-md-6 ui-lg-4">
+												<h:outputLabel
+													value="#{fn:substring(profilePageBean.hrsMasterFile.accountNumber, 9,24)}" />
+											</div>
+										</div>
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-2">
+												<h:outputLabel value="#{msg['iban.number']}"></h:outputLabel>
+											</div>
+											<div class="ui-g-12 ui-md-6 ui-lg-4">
+												<p:outputLabel
+													value="#{profilePageBean.hrsMasterFile.accountNumber}"></p:outputLabel>
+											</div>
+										</div>
+									</h:panelGroup>
+								</div>
+								<div class="task-box-footer"></div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<br></br>
+
+					<div class="row">
+						<div class=" col-md-3">
+
+						
+
+							
+										<h:panelGroup id="folders">
+										<p:dialog header="#{msg['add.folders']}" widgetVar="dlgAddFolder"
+											height="200" width="500">
+											<h:panelGroup id="refPopup3">
+												<p:panelGrid columns="2"
+													columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+													styleClass="ui-panelgrid-blank form-group"
+													style="border:0px none; background-color:transparent; direction:rtl">
+
+													<h:outputLabel value="#{msg['folder.name']}" />
+													<p:inputText id="name"
+														value="#{profilePageBean.folderInfo.folderName}" style="width:100%"></p:inputText>
+
+												</p:panelGrid>
+												<br></br>
+												<br></br>
+												<div>
+													<p:commandButton
+														icon="ui-icon ui-icon-keyboard-arrow-left"
+														onclick="PF('dlgAddFolder').hide();" immediate="true"
+														styleClass=" orange-btn"
+														value="#{msg['back']}"></p:commandButton>
+													<p:commandButton value="#{msg['confirmation']}"
+														immediate="true" icon="ui-icon ui-icon-check"
+														actionListener="#{profilePageBean.addNewFolder}">
+														<f:ajax execute="name" render="name"></f:ajax>
+													</p:commandButton>
+
+												</div>
+											</h:panelGroup>
+										</p:dialog>
+									</h:panelGroup>
+							
+							
+						</div>
+
+						<!-- 					<h:panelGroup id="ccc"> -->
+						<p:dialog header="#{msg['change.passowrd']}" widgetVar="dlgEditPassword"
+							height="300" width="500">
+
+							<h:panelGroup id="refPopup">
+								<p:panelGrid columns="2"
+									columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+									styleClass="ui-panelgrid-blank form-group"
+									style="border:0px none; background-color:transparent; direction:rtl">
+
+									<h:outputLabel value="#{msg['exist.password']}" />
+									<p:password required="true"
+										requiredMessage="#{msg['enter.password']}"
+										value="#{profilePageBean.systemPassOld}" style="width:100%" />
+									<h:outputLabel value="#{msg['new.password']}" />
+									<p:password required="true"
+										requiredMessage="#{msg['enter.password']}"
+										value="#{profilePageBean.systemNewPassword}"
+										style="width:100%" />
+									<h:outputLabel value="#{msg['confirm.password']}" />
+									<p:password required="true"
+										requiredMessage="#{msg['confirm.password.required']}"
+										value="#{profilePageBean.confirmSystemPass}"
+										style="width:100%" />
+
+								</p:panelGrid>
+								<br></br>
+								<br></br>
+								<div>
+									<p:commandButton actionListener="#{profilePageBean.cancel}"
+										icon="ui-icon ui-icon-keyboard-arrow-left"
+										onclick="PF('dlgEditPassword').hide();"
+										styleClass=" orange-btn" process="@form" immediate="true"
+										value="#{msg['back']}"></p:commandButton>
+									<p:spacer width="4"></p:spacer>
+									<p:commandButton immediate="true"
+										actionListener="#{profilePageBean.saveNewSystemPass}"
+										value="#{msg['confirmation']}" icon="ui-icon ui-icon-check">
+										<f:ajax execute="refPopup" render="@form"></f:ajax>
+									</p:commandButton>
+
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<p:dialog header="#{msg['signature.password']}"
+							widgetVar="dlgEditPasswordSignture" height="300" width="500">
+
+							<h:panelGroup id="refPopupsin">
+								<p:panelGrid columns="2"
+									columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+									styleClass="ui-panelgrid-blank form-group"
+									style="border:0px none; background-color:transparent; direction:rtl">
+
+									<h:outputLabel value="#{msg['exist.password']} " />
+									<p:password required="true"
+										requiredMessage="#{msg['enter.password']}"
+										value="#{profilePageBean.signPassOld}" style="width:100%" />
+									<h:outputLabel value="#{msg['new.password']}" />
+									<p:password required="true"
+										requiredMessage="#{msg['enter.signature.password']}"
+										value="#{profilePageBean.signNewPassword}" style="width:100%" />
+									<h:outputLabel value="#{msg['confirm.password']}" />
+									<p:password required="true"
+										requiredMessage="#{msg['confirm.password.required']}"
+										value="#{profilePageBean.confirmSignPass}" style="width:100%" />
+
+								</p:panelGrid>
+								<br></br>
+								<br></br>
+								<div>
+									<p:commandButton actionListener="#{profilePageBean.cancel}"
+										icon="ui-icon ui-icon-keyboard-arrow-left"
+										onclick="PF('dlgEditPasswordSignture').hide();"
+										styleClass=" orange-btn" process="@form" immediate="true"
+										value="#{msg['back']}"></p:commandButton>
+									<p:spacer width="4"></p:spacer>
+									<p:commandButton immediate="true"
+										actionListener="#{profilePageBean.saveNewSignPass}"
+										value="#{msg['confirmation']}" icon="ui-icon ui-icon-check">
+										<f:ajax execute="refPopupsin" render="@form"></f:ajax>
+									</p:commandButton>
+
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</body>
+
+</html>

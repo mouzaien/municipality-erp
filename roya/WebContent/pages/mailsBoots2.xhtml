@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<h:head>
+	<style>
+.ui-datatable .ui-column-filter {
+	display: none;
+	width: 100px;
+	margin: auto;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #3F729B !important;
+	color: #ffffff !important;
+	border-color: #3F729B;
+	height: 40px;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form id="includeform">
+		<p:growl autoUpdate="true" id="growMsg" showDetail="false" />
+		<div class="panel-body" style="padding: 0px !important">
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="inbox">
+					<br></br>
+					<div class="col-md-5" style="padding-left: 0px; float: left;">
+						<p:commandButton style="background-color: #428BCA; float: left;"
+							icon=" fa fa-refresh">
+							<f:ajax render="@form" execute="@this"
+								listener="#{mailsBean.refreshMails}"></f:ajax>
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="نقل"
+							onclick="$('.modalPseudoClass').modal()"
+							style="background-color: #428BCA; float: left;">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton style="background-color: #428BCA; float: left;"
+							value="أرشفة">
+							<f:ajax render="@form" execute="@form"
+								listener="#{mailsBean.sendRecordListToArchive}"></f:ajax>
+						</p:commandButton>
+						<h:panelGroup id="mailStat">
+							<h:outputText value="عرض البريد"
+								style="float:right;padding-top:5px; color:#428BCA;"
+								rendered="#{mailsBean.comingFrom==0}" />
+							<b:selectOneMenu value="#{mailsBean.selectedTypeMail}"
+								style="padding-bottom:6px;padding-top:0px;"
+								rendered="#{mailsBean.comingFrom==0}" update="@form"
+								onchange="ajax:mailsBean.sHowMails()" colMd="5" required="true"
+								labelColMd="2">
+								<f:selectItem itemLabel="الكل" itemValue="1" />
+								<f:selectItem itemLabel="البريد الغير مقروء" itemValue="2" />
+								<f:selectItem itemLabel="البريد المقروء" itemValue="3" />
+								<f:selectItem itemLabel="بريد اليوم" itemValue="4" />
+								<f:selectItem itemLabel="البريد  العاجل" itemValue="5" />
+							</b:selectOneMenu>
+						</h:panelGroup>
+					</div>
+				</div>
+				<b:tabView id="mailBox" activeIndex="#{mailsBean.comingFrom}"
+					process="@this" update="includeform:mailStat"
+					onclick="ajax:mailsBean.facetListener()"
+					contentStyle="border-right: 0px solid #ddd;border-left: 1px solid #ddd;border-bottom: 1px solid #ddd;padding:10px">
+					<b:tab title="البريد الوارد">
+						<h:panelGroup id="inboxTable">
+							<div class="row">
+								<p:dataTable var="inboxitem" id="inboxdt" varStatus="x"
+									value="#{mailsBean.inboxMails}" emptyMessage="لايوجد بيانات"
+									widgetVar="fineset" rowIndexVar="rowIndex"
+									paginatorPosition="bottom"
+									filteredValue="#{mailsBean.filteredInboxList}"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									paginator="true" rows="10">
+									<f:facet name="header">
+										<p:outputPanel>
+											<h:outputText value="ابحث فى كل الحقول:" />
+											<p:inputText id="globalFilter"
+												onkeyup="PF('fineset').filter()" style="width:150px"
+												placeholder="كلمة البحث">
+											</p:inputText>
+										</p:outputPanel>
+										<br></br>
+									</f:facet>
+									<p:column style="text-align: center;" headerText="رقم "
+										width="3%">
+                                   #{rowIndex +1}
+
+                                </p:column>
+									<p:column style="white-space: nowrap;" headerText="المُرسل"
+										filterBy="#{inboxitem.wrkSender}" filterMatchMode="contains"
+										filterStyle="display:block;" width="21%">									
+										#{inboxitem.wrkSender} <br />
+												#{inboxitem.convWrkCreateTime} |#{inboxitem.convWrkHdate} |
+												<div class="fa fa-paperclip" style="color: #B9B9B9" />
+												#{inboxitem.convWrkAttachCount} |
+												<div class="fa fa-comment" style="color: #B9B9B9" />
+												#{inboxitem.convWrkTotalSteps}							
+									</p:column>
+									<p:column headerText="نوع" width="3%">
+										<h:panelGroup
+											rendered="#{inboxitem.wrkType==143?'true':'false'}">
+											<div id="kj" class="fa  fa-envelope"></div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{inboxitem.wrkType==242?'true':'false'}">
+											<div id="dd" class="fa  fa-calendar"></div>
+										</h:panelGroup>
+									</p:column>
+									<p:column style="display:none"
+										filterBy="#{inboxitem.appTypeName}" filterMatchMode="contains">
+												#{inboxitem.appTypeName}		
+									</p:column>
+									<p:column width="53%"
+										style="text-align:right;FONT-WEIGHT: #{inboxitem.isRead== 1? '':'bold'};"
+										headerText="الموضوع" filterBy="#{inboxitem.appTitle}"
+										filterMatchMode="contains">
+										<p:commandLink value="#{inboxitem.appTitle}"
+											style="color: #{inboxitem.isRead== 1? '':'#0078D7'};"
+											action="#{mailsBean.viewInboxRow(inboxitem)}" process="@this">
+										</p:commandLink>
+									</p:column>
+									<p:column visible="false"
+										style="white-space: nowrap;text-align: center;FONT-WEIGHT: BOLD;"
+										width="5%" filterBy="#{inboxitem.wrkIncomeNo}"
+										filterMatchMode="contains">										
+										#{inboxitem.wrkIncomeNo}									
+									</p:column>
+									<p:column width="5%"
+										style="text-align:center;FONT-WEIGHT: BOLD;"
+										headerText="الوارد" filterBy="#{inboxitem.convWrkIncomeNo}"
+										filterMatchMode="contains">
+										#{inboxitem.convWrkIncomeNo}
+									</p:column>
+									<p:column width="5%" style="text-align:center" headerText="عرض">
+										<p:commandButton action="#{mailsBean.viewInboxRow(inboxitem)}"
+											icon="ui-icon-search" process="@this">
+										</p:commandButton>
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="تحديد">
+										<h:selectBooleanCheckbox value="#{inboxitem.checked}">
+											<p:ajax listener="#{mailsBean.checkRecord(inboxitem)}"
+												process="@form" update="includeform:inboxTable"></p:ajax>
+										</h:selectBooleanCheckbox>
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="الحالة">
+										<h:outputLabel value="#{inboxitem.wrkColor==1?'عاجل' :'عادي'}"
+											style="color:#{inboxitem.wrkColor==1? 'red':'green'}"></h:outputLabel>
+									</p:column>
+								</p:dataTable>
+							</div>
+						</h:panelGroup>
+					</b:tab>
+					<b:tab title="البريد الصادر">
+						<h:panelGroup id="outboxTable">
+							<div class="row">
+								<p:dataTable var="outboxitem" id="outboxdt"
+									value="#{mailsBean.outBoxList}" emptyMessage="لايوجد بيانات"
+									rowIndexVar="rowOutIndex" paginatorPosition="bottom"
+									widgetVar="outfineset"
+									filteredValue="#{mailsBean.filteredOutBoxList}"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									paginator="true" rows="10">
+									<f:facet name="header">
+										<p:outputPanel>
+											<h:outputText value="ابحث فى كل الحقول:" />
+											<p:inputText id="globalFilter"
+												onkeyup="PF('outfineset').filter()" style="width:150px"
+												placeholder="كلمة البحث">
+											</p:inputText>
+											<div class="col-md-3">
+												<p:inputText id="year" requiredMessage="ادخل السنة   "
+													validatorMessage="ادخل السنة بطريقة صحيحة"
+													placeholder="ادخل السنة المراد عرض الصادر  فيها "
+													value="#{mailsBean.yearOfSearch}">
+													<f:validateRegex pattern="^\d{4}$"></f:validateRegex>
+												</p:inputText>
+											</div>
+											<div class="col-md-2">
+												<h:selectOneMenu id="xss" value="#{mailsBean.yearMonths}">
+													<f:selectItem itemValue="1"
+														itemLabel="الربع الاول من السنة" />
+													<f:selectItem itemValue="2"
+														itemLabel="الربع الثانى  من السنة" />
+													<f:selectItem itemValue="3"
+														itemLabel="الربع الثالث من السنة" />
+													<f:selectItem itemValue="4"
+														itemLabel="الربع الاخير من السنة" />
+												</h:selectOneMenu>
+											</div>
+											<div class="col-md-3">
+												<h:commandButton styleClass="btn btn-success btn-sm"
+													action="#{mailsBean.outBoxMailsSearch}" value="عرض">
+													<f:ajax execute="year xss" render="year xss globalFilter"></f:ajax>
+												</h:commandButton>
+											</div>
+										</p:outputPanel>
+										<br />
+									</f:facet>
+									<p:column style="text-align: center;" headerText="رقم "
+										width="3%">
+                                   #{rowOutIndex +1}
+                                </p:column>
+									<p:column style="white-space: nowrap;" headerText="المرسل إليه"
+										filterBy="#{outboxitem.wrkReciever}"
+										filterMatchMode="contains" width="21%">									
+										#{outboxitem.wrkReciever} <br />
+ 																			#{outboxitem.convWrkCreateTime} |#{outboxitem.convWrkHdate} 
+																			| 
+																		<div class="fa fa-paperclip" style="color: #B9B9B9" /> 
+																			#{outboxitem.convWrkAttachCount} |
+																			<div class="fa fa-comment" style="color: #B9B9B9" /> 
+																			#{outboxitem.convWrkTotalSteps}						
+									</p:column>
+
+									<p:column width="56%" style="text-align:right"
+										headerText="الموضوع" filterBy="#{outboxitem.appTitle}"
+										filterMatchMode="contains">
+										<div id="read-icon" class="fa  fa-check"
+											style="width: 100%; font-size: 14px;" />
+										<p:commandLink value="#{outboxitem.appTitle}"
+											style="color: #263238;"
+											action="#{mailsBean.viewOutBoxRow(outboxitem)}"
+											process="@this">
+										</p:commandLink>
+									</p:column>
+									<p:column visible="false"
+										style="white-space: nowrap;text-align: center;" width="10%"
+										filterBy="#{outboxitem.wrkIncomeNo}"
+										filterMatchMode="contains">										
+										#{outboxitem.wrkIncomeNo}									
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="الوارد" filterBy="#{inboxitem.convWrkIncomeNo}"
+										filterMatchMode="contains">
+										#{outboxitem.convWrkIncomeNo}
+									</p:column>
+									<p:column width="5%" style="text-align:center"
+										headerText="تحديد">
+										<p:commandButton icon="ui-icon-search" process="@this"
+											action="#{mailsBean.viewOutBoxRow(outboxitem)}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</h:panelGroup>
+					</b:tab>
+				</b:tabView>
+			</div>
+		</div>
+
+		<b:modal id="amodal" title="نقل المعاملات"
+			styleClass="modalPseudoClass">
+			<div class="row">
+				<b:selectOneMenu colMd="5" filter="true"
+					style="width:100%; float: left;padding-bottom:6px;padding-top:0px;"
+					id="input001" value="#{mailsBean.usertoId}">
+					<f:selectItems value="#{mailsBean.employeesList}" var="usr"
+						itemLabel="#{usr.firstName} #{usr.lastName}"
+						itemValue="#{usr.userId}" />
+				</b:selectOneMenu>
+			</div>
+			<f:facet name="footer">
+				<b:button value="Close" dismiss="modal" />
+				<b:commandButton value="Ok" look="primary"
+					oncomplete="$('.modalPseudoClass').modal('hide');">
+					<f:ajax render="inboxTable" execute="@form"
+						listener="#{mailsBean.sendRecordListTo}"></f:ajax>
+				</b:commandButton>
+			</f:facet>
+		</b:modal>
+	</h:form>
+</h:body>
+</html>

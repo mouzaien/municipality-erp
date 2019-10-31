@@ -1,0 +1,452 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+						<p:commandButton value="إظافة"
+							oncomplete=" PF('addLoanDialog').show()"
+							action="#{loanBean.addLoan}" process="@this"
+							update="includeform:addDialog">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="طباعة"
+							oncomplete=" PF('printLoanDialog').show()"
+							action="#{loanBean.printLoan}"
+							icon="ui-icon ui-icon-assignment-return" styleClass="orange-btn"
+							process="@this" update="includeform:printDialog">
+						</p:commandButton>
+					</div>
+					<br></br>
+					<div class="card card-w-title" dir="rtl">
+						<h1 style="color: #7CB342; text-align: center;">
+							القروض<span class="fa fa-fw fa-clock-o"></span>
+						</h1>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<h:outputLabel value="إسم الموظف"></h:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu id="empNBList" filter="true"
+									filterMatchMode="contains" value="#{loanBean.employerNB}">
+									<f:selectItem itemValue=""
+										itemLabel="#{msg['choose.employee']}" />
+									<f:selectItems value="#{loanBean.employersList}" var="emp"
+										itemValue="#{emp.employeNumber}"
+										itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+									<f:ajax render="includeform:details_data includeform:inboxdt"
+										execute="empNBList" event="change"
+										listener="#{loanBean.loadEmployerData}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
+
+						<h:panelGroup id="details_data">
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الوظيفة"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel value="#{loanBean.employer.job}" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="المرتبة"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel value="#{loanBean.employer.rankName}" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="تاريخ أول تعيين"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-5">
+									<h:outputLabel
+										value="#{loanBean.employer.firstApplicationDate}" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الراتب الأساسي"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel value="#{loanBean.employer.basicSalary}" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="جهة العمل"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel value="#{loanBean.employer.department}" />
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+
+					<p:dataTable var="loanItem" id="inboxdt" widgetVar="loanVar"
+						value="#{loanBean.loanList}" emptyMessage="لايوجد بيانات"
+						rowIndexVar="rowIndex" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{jobsBean.filteredJobs}" paginator="true"
+						rows="17">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="قيمة القرض" width="10%">										
+										#{loanItem.loanValue} 									
+									</p:column>
+						<p:column style="white-space: nowrap;" headerText="البنك"
+							width="60%">										
+										#{loanItem.bank.loanTypeName}										
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="التاريخ" width="10%">										
+										#{loanItem.loanStrtMonth} / #{loanItem.loanStrtYear}									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الحالة" width="10%">										
+										#{(loanItem.loanStsASE eq 'S')?'فعال':'موقوف'} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="التفاصيل" width="10%">
+							<p:commandButton oncomplete="PF('detailsDG').show();"
+								action="#{loanBean.loadLoanDetails}" process="@this"
+								icon="ui-icon-search" update="includeform:myDialog">
+								<f:setPropertyActionListener value="#{loanItem}"
+									target="#{loanBean.loan}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<p:dialog header="بيانات القرض" widgetVar="detailsDG"
+						id="detailsDGId" width="50%" hideEffect="fade"
+						showEffect="explode" dir="rtl" modal="true" resizable="false">
+						<h:panelGroup id="myDialog">
+							<div style="width: 100%">
+
+								<div class="col-md-12">
+									<div class="row ">
+
+										<p:dataTable var="loanDetItem" id="detailsdt"
+											widgetVar="loanVar" value="#{loanBean.loanDetailsList}"
+											emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+											paginatorPosition="bottom"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											filteredValue="#{loanBean.filteredloanDetails}"
+											paginator="true" rows="8">
+
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="الشهر" width="30%"
+												filterBy="#{loanDetItem.loanDetMonth}"
+												filterMatchMode="contains">										
+										#{loanDetItem.loanDetMonth} 									
+									</p:column>
+											<p:column style="white-space: nowrap;" headerText="السنة"
+												width="20%" filterBy="#{loanDetItem.loanDetYear}"
+												filterMatchMode="contains">									
+										#{loanDetItem.loanDetYear}									
+									</p:column>
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="القيمة" width="20%">										
+										#{loanDetItem.loanPaidMontly}
+									</p:column>
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="الحالة" width="30%">
+												<p:selectOneMenu value="#{loanDetItem.loanDetStsPU}"
+													disabled="#{loanBean.stoppedLoan}">
+													<f:selectItem itemValue="U" itemLabel="غير مدفوعة" />
+													<f:selectItem itemValue="P" itemLabel="مدفوعة" />
+													<f:selectItem itemValue="S" itemLabel="موقوفة" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+						<br />
+						<div align="center" class="image-box-footer">
+							<p:commandButton value="إيقاف القرض" styleClass="btn btn-primary"
+								action="#{loanBean.stopLoan}"
+								rendered="#{!loanBean.stoppedLoan}"
+								onsuccess="PF('detailsDG').hide();">
+							</p:commandButton>
+
+							<p:commandButton value="حفظ" styleClass="btn btn-primary"
+								action="#{loanBean.updateLoanDetails}"
+								rendered="#{!loanBean.stoppedLoan}"
+								onsuccess="PF('detailsDG').hide();">
+							</p:commandButton>
+
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onclick="PF('detailsDG').hide();" />
+						</div>
+					</p:dialog>
+
+					<p:dialog header="إظافة قرض" widgetVar="addLoanDialog" modal="true"
+						width="70%" dir="rtl">
+
+						<h:panelGroup id="addDialog">
+							<div class="row">
+								<h:panelGroup id="dataPG">
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu id="empList" filter="true"
+												filterMatchMode="contains" value="#{loanBean.employerNB}">
+												<f:selectItem itemValue=""
+													itemLabel="#{msg['choose.employee']}" />
+												<f:selectItems value="#{loanBean.employersList}" var="emp"
+													itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+												<f:ajax render="includeform:dataPG includeform:inboxdt"
+													execute="empList" event="change"
+													listener="#{loanBean.loadEmployer}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{loanBean.employer.job}" />
+										</div>
+
+										<div class="ui-g-1">
+											<h:outputLabel value="المرتبة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{loanBean.employer.rankName}" />
+										</div>
+
+
+									</div>
+									<br />
+									<br />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:outputLabel
+												value="#{loanBean.employer.firstApplicationDate}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{loanBean.employer.basicSalary}" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="جهة العمل" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{loanBean.employer.department}" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+							<br />
+							<hr />
+							<div>
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="نوع القرض" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu value="#{loanBean.loan.loanTypeId}">
+											<f:selectItems value="#{loadingDataBean.loanTypeslist}"
+												var="type" itemValue="#{type.loanTypeId}"
+												itemLabel="#{type.loanTypeName}" />
+										</p:selectOneMenu>
+									</div>
+
+									<div class="ui-g-2">
+										<h:outputLabel id="loan_number" value="رقم القرض"
+											styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanName}"
+											converterMessage="Please enter digits only."
+											class="form-control"></p:inputNumber>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel id="loan_amount" value="قيمة القرض"
+											styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanValue}"
+											converterMessage="Please enter digits only."
+											class="form-control">
+											<p:ajax event="blur" update="mthNB" process="@this"
+												listener="#{loanBean.calculateMonthNB}">
+											</p:ajax>
+										</p:inputNumber>
+										<p:message for="loan_amount" />
+										<h:outputText value="#{loanBean.loan.loanValue}" />
+									</div>
+								</div>
+
+								<!-- 									<div class="row "> -->
+								<br /> <br />
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<h:outputLabel value="شهر بداية الإستحقاق" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu value="#{loanBean.loan.loanStrtMonth}">
+											<f:selectItems value="#{loadingDataBean.monthsList}"
+												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameGr}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="سنة بداية الإستحقاق" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanStrtYear}"
+											class="form-control" maxValue="2025">
+
+										</p:inputNumber>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="قيمة القسط الأول" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanFirstPayment}"
+											class="form-control">
+											<p:ajax event="blur" update="mthNB" process="@this"
+												listener="#{loanBean.calculateMonthNB}">
+											</p:ajax>
+										</p:inputNumber>
+									</div>
+								</div>
+								<br /> <br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="قيمة القسط الأخير" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanLastPayment}"
+											class="form-control">
+											<p:ajax event="blur" update="mthNB" process="@this"
+												listener="#{loanBean.calculateMonthNB}">
+											</p:ajax>
+										</p:inputNumber>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="الإستحقاق الشهري" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputNumber value="#{loanBean.loan.loanMonthlyPayment}"
+											class="form-control">
+											<p:ajax event="blur" update="mthNB" process="@this"
+												listener="#{loanBean.calculateMonthNB}">
+											</p:ajax>
+										</p:inputNumber>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="عدد شهور القرض" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputText id="mthNB" value="#{loanBean.monthCount}" />
+									</div>
+								</div>
+							</div>
+
+						</h:panelGroup>
+						<br />
+						<br />
+						<div align="left" class="image-box-footer">
+							<p:commandButton value="موافق" styleClass="btn btn-primary"
+								action="#{loanBean.saveLoan}"
+								onsuccess="PF('addLoanDialog').hide();">
+							</p:commandButton>
+
+							<p:spacer width="10" height="10"></p:spacer>
+
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onclick="PF('addLoanDialog').hide();" />
+						</div>
+					</p:dialog>
+
+					<p:dialog header="طباعة" widgetVar="printLoanDialog" modal="true"
+						width="70%" dir="rtl">
+
+						<h:panelGroup id="printDialog">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-1">
+										<h:outputLabel value="الشهر" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{loanBean.month}">
+											<f:selectItems value="#{loadingDataBean.monthsList}"
+												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameAr}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-1">
+										<h:outputLabel value="السنة" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<p:inputText value="#{loanBean.year}" class="form-control" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="نوع القرض" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<p:selectOneMenu value="#{loanBean.bankId}">
+											<f:selectItems value="#{loadingDataBean.loanTypeslist}"
+												var="type" itemValue="#{type.loanTypeId}"
+												itemLabel="#{type.loanTypeName}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+						<br />
+						<div align="center" class="image-box-footer">
+							<p:commandButton value="طباعة" style=";margin-left:3px"
+								styleClass="btn btn-primary"
+								onsuccess="PF('printLoanDialog').hide();"
+								onclick="this.form.target='_blank'"
+								action="#{loanBean.printReportAction}" />
+							<p:spacer width="10" height="10"></p:spacer>
+
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onclick="PF('printLoanDialog').hide();" />
+
+
+						</div>
+					</p:dialog>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

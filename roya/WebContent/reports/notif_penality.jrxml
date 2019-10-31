@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-08-07T09:14:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notif_penality" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3323bf0f-bc60-4d7d-95d7-19f5834b1a61">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="Table Dataset 1" uuid="08d883d9-733a-4867-847f-470f858b4c8d"/>
+	<parameter name="visitDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="notif_id" class="java.lang.Integer"/>
+	<parameter name="now" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select TO_CHAR(SYSDATE, 'MM/DD/YYYY') my_date, TO_CHAR(SYSDATE, 'HH24:MI:SS') my_time, US.EMPNAME , TO_CHAR(M.NOTIF_DATE, 'MM/DD/YYYY') NOTIF_DATE ,M.OBSERVATION,LIC.AQR_OWNER_NAME,LIC.TRD_NAME,LIC.MHL_ADDRS,LIC.LIC_NO, ACT.ACTV_NM,
+(SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = US.USER_ID) SIGN2 
+from notif_fines_master m, lic_trd_master_file lic, lic_main_activity act, arc_users us
+where M.SUPERVISOR_EMPNO =US.EMPNO and M.LIC_NO=LIC.LIC_NO and LIC.MAIN_ACTV= ACT.ACTV_ID and LIC.IS_ACTIVE_Y_N='Y' and M.notif_ID = $P{notif_id}]]>
+	</queryString>
+	<field name="MY_DATE" class="java.lang.String"/>
+	<field name="MY_TIME" class="java.lang.String"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<field name="NOTIF_DATE" class="java.lang.String"/>
+	<field name="OBSERVATION" class="java.lang.String"/>
+	<field name="AQR_OWNER_NAME" class="java.lang.String"/>
+	<field name="TRD_NAME" class="java.lang.String"/>
+	<field name="MHL_ADDRS" class="java.lang.String"/>
+	<field name="LIC_NO" class="java.lang.String"/>
+	<field name="ACTV_NM" class="java.lang.String"/>
+	<field name="SIGN2" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="607" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement positionType="Float" x="508" y="213" width="34" height="20" forecolor="#000000" uuid="d631a552-1f52-4756-b537-4dde51767034"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[اليوم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="501" y="241" width="41" height="20" forecolor="#000000" uuid="3b3895c5-18df-4eca-983c-6897415767e3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الرخصة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="340" y="213" width="38" height="20" forecolor="#000000" uuid="4d1edebc-50be-461f-91bd-25869309ece9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الساعة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="240" y="269" width="34" height="20" forecolor="#000000" uuid="796ed1ea-8d39-4b27-b6b9-3b75267fec8e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الشارع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="195" y="213" width="34" height="20" forecolor="#000000" uuid="584de1d7-19d8-49b3-b804-10f31d6fad33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الموقع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="508" y="269" width="34" height="20" forecolor="#000000" uuid="7c4d3280-1cd5-4917-a62a-94ef693c2797">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[النشاط]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="390" y="213" width="111" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="b14f9227-7990-43d1-be5c-df7c5d9f3c5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MY_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="233" y="213" width="105" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="0bf9dc1d-3d04-48d8-bbe5-6260b53c2c63"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MY_TIME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="290" y="241" width="211" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="f85bc7fa-3dfb-44a9-b01a-3ff51e383085"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIC_NO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="10" y="213" width="180" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="99d9b40e-ad92-4a21-b152-e2f7afe1bd8c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["البكيرية"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="10" y="270" width="223" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="1045d3bd-d6bc-4246-ae4e-aeb22fbbd0d6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MHL_ADDRS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="290" y="269" width="211" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="74a5a0bd-8375-4701-a945-9f0de849c43a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ACTV_NM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="12" y="498" width="148" height="20" uuid="27da1ebc-69a8-4c80-b735-d9ce1493f58f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المراقب الصحي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="581" width="170" height="20" uuid="837bb12f-337a-40d7-8fbb-99f98eb652c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMPNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="87" width="90" height="16" uuid="be8d5dff-10ff-4cc9-8341-78452bf53791"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{now}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="181" width="555" height="20" uuid="edea811e-cb4a-487e-b442-9179a08bba69"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[إشعار بالمراجعة]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="401" y="87" width="100" height="20" uuid="69a8703f-55eb-4b41-adf4-78c5ad057809"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["قسم صحة البيئة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="300" width="530" height="160" uuid="a41b7c1e-8364-4005-a022-57052add9fe9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المكرم / "+$F{AQR_OWNER_NAME}+"\n\n\n"+
+"السلام عليكم و رحمة الله و بركاته\n"+
+"آمل مراجعة البلدية (قسم صحة البيئة / وحدة الرقابة الصحية) في موعد أقصاه يوم "+$P{visitDate}+" و ذلك للأسباب التالية:\n"
++$F{OBSERVATION}+
+"\n شاكرين لكم حسن تعاونكم لخدمة المصلحة العامة."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="240" y="240" width="34" height="20" forecolor="#000000" uuid="902194a8-9583-4a55-a7d5-f03d36ad6f8e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[المحل]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="10" y="241" width="223" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="bb06c1fe-460c-4863-8511-bda39049359e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TRD_NAME}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement positionType="Float" x="12" y="518" width="148" height="62" uuid="5ebd0c75-2f9c-47c1-bd9d-bc2ca3d81802"/>
+				<imageExpression><![CDATA[$F{SIGN2}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

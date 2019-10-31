@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<head>
+<style>
+.boldTitle {
+	font-weight: bold;
+	font-size: 14px;
+}
+</style>
+</head>
+<p:accordionPanel style="margin-top:20px">
+	<p:tab title="#{msg['transaction.data']}">
+		<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+			layout="grid" styleClass="ui-panelgrid-blank">
+<!-- 			<p:outputLabel value="#{msg['num.transaction']}" class="boldTitle" /> -->
+<!-- 			<p:outputLabel value="#{outBoxDefenationBean.selectedOutbox.wrkId}" /> -->
+			<p:outputLabel value="#{msg['outcome.nb']}" class="boldTitle" />
+			<p:outputLabel
+				value="#{outBoxDefenationBean.selectedOutbox.wrkOutcomeNo}" />
+			<p:outputLabel value="#{msg['income.nb']}" class="boldTitle" />
+			<p:outputLabel
+				value="#{outBoxDefenationBean.selectedOutbox.wrkIncomeNo}" />
+			<p:outputLabel value="#{msg['subject']}" class="boldTitle" />
+			<p:outputLabel
+				value="#{outBoxDefenationBean.selectedOutbox.appTitle}"
+				style="white-space: nowrap;" />
+			<p:outputLabel value="#{msg['sender']}" class="boldTitle" />
+			<p:outputLabel
+				value=" #{outBoxDefenationBean.selectedOutbox.wrkSender}" />
+			<p:outputLabel value="#{msg['creation.date']}" class="boldTitle" />
+			<p:outputLabel
+				value="#{outBoxDefenationBean.selectedOutbox.wrkHdate} " />
+		</p:panelGrid>
+	</p:tab>
+	<p:tab title="#{msg['explanations']}">
+		<p:panelGrid columns="3" 
+			layout="grid" styleClass="ui-panelgrid-blank" style="float :left;">
+			<p:commandButton value="#{msg['print.comment']}" rendered="#{outBoxDefenationBean.recordHasComment}"
+				icon="fa fa-fw fa-print" immediate="true" styleClass="purple-btn" onclick="this.form.target='_blank'"
+				ajax="false" action="#{outBoxDefenationBean.printReportAction}">
+			</p:commandButton>
+			<p:commandButton value="#{msg['print']} #{msg['explanations']}"
+				onclick="this.form.target='_blank'" ajax="false"
+				icon="fa fa-fw fa-comments-o" immediate="true" styleClass="cyan-btn"
+				action="#{outBoxDefenationBean.printExplanationReportAction}">
+			</p:commandButton>
+			<p:commandButton value="#{msg['recovery.transaction']}"
+				rendered="#{!outBoxDefenationBean.model}"
+				icon="fa fa-fw fa-mail-reply" immediate="true"
+				styleClass="orange-btn"
+				action="#{outBoxDefenationBean.returnRequestAction}">
+			</p:commandButton>
+		</p:panelGrid>
+		<p:panelGrid>
+			<br></br>
+			<ui:repeat varStatus="x"
+				value="#{outBoxDefenationBean.outboxComments}" var="comm">
+				<h2
+					style="margin: 0px 0 20px ! important; color: #7CB342; font-weight: bold;">
+					#{msg['step']} <span class="task-status"
+						style="background-color: #7CB342 !important;">#{x.index+1}</span>
+				</h2>
+				<p:outputLabel
+					rendered="#{outBoxDefenationBean.outboxComments eq Empty }"
+					value="#{msg['no.explanations']}"></p:outputLabel>
+				<ul>
+					<li><h4>#{msg['from']} #{comm.fromName} #{msg['to']}
+							#{comm.toName}</h4></li>
+					<li>#{msg['in.date']} #{comm.createdIn}</li>
+					<li>#{comm.purpose}</li>
+					<li>#{comm.comment}</li>
+				</ul>
+			</ui:repeat>
+		</p:panelGrid>
+	</p:tab>
+</p:accordionPanel>
+</html>

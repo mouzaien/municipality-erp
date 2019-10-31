@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inbarcode" language="groovy" pageWidth="250" pageHeight="130" columnWidth="200" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a7074ca-17a9-4b02-ae99-0c769d9a4014">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
+	<parameter name="p1" class="java.lang.String"/>
+	<parameter name="compName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+
+     ARC_RECORDS."ID" AS ARC_RECORDS_ID,
+     ARC_RECORDS."REC_ID" AS ARC_RECORDS_REC_ID,
+     ARC_RECORDS."REC_G_DATE" AS ARC_RECORDS_REC_G_DATE,
+     ARC_RECORDS."REC_H_DATE" AS ARC_RECORDS_REC_H_DATE,
+     ARC_RECORDS."REC_TITLE" AS ARC_RECORDS_REC_TITLE,
+     ARC_RECORDS."STRUCT_ID" AS ARC_RECORDS_STRUCT_ID,
+     ARC_RECORDS."CREATED_IN" AS ARC_RECORDS_CREATED_IN,
+     ARC_RECORDS."CREATED_BY" AS ARC_RECORDS_CREATED_BY,
+     ARC_RECORDS."APP_TYPE" AS ARC_RECORDS_APP_TYPE,
+     ARC_RECORDS."INCOME_NO" AS ARC_RECORDS_INCOME_NO,
+     ARC_RECORDS."INCOME_H_DATE" AS ARC_RECORDS_INCOME_H_DATE,
+    nvl( ARC_RECORDS."FILES_NO",0) AS ARC_RECORDS_FILES_NO,
+     ARC_RECORDS."LETTER_FROM" AS ARC_RECORDS_LETTER_FROM,
+     ARC_RECORDS."LETTER_TO" AS ARC_RECORDS_LETTER_TO,
+     ARC_RECORDS."LETTER_FROM_NO" AS ARC_RECORDS_LETTER_FROM_NO,
+     ARC_RECORDS."LETTER_FROM_DATE" AS ARC_RECORDS_LETTER_FROM_DATE,
+     ARC_RECORDS."PPL_ID" AS ARC_RECORDS_PPL_ID,
+     ARC_RECORDS."IS_IMPORTANT" AS ARC_RECORDS_IS_IMPORTANT,
+     ARC_RECORDS."INCOME_YEAR" AS ARC_RECORDS_INCOME_YEAR,
+     nvl(dt.name,' ') as attchTypeName
+FROM
+     "ARC_RECORDS" ARC_RECORDS , DOCUMENTS_TYPE dt
+where ARC_RECORDS."ID" = $P{p1}
+and ARC_RECORDS.ATTACHS_TYPE = dt.id(+)]]>
+	</queryString>
+	<field name="ARC_RECORDS_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_REC_ID" class="java.lang.String"/>
+	<field name="ARC_RECORDS_REC_G_DATE" class="java.sql.Timestamp"/>
+	<field name="ARC_RECORDS_REC_H_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_REC_TITLE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_STRUCT_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_CREATED_IN" class="java.sql.Timestamp"/>
+	<field name="ARC_RECORDS_CREATED_BY" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_APP_TYPE" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_INCOME_NO" class="java.lang.String"/>
+	<field name="ARC_RECORDS_INCOME_H_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_FILES_NO" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_FROM" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_TO" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_FROM_NO" class="java.lang.String"/>
+	<field name="ARC_RECORDS_LETTER_FROM_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_PPL_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_IS_IMPORTANT" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_INCOME_YEAR" class="java.math.BigDecimal"/>
+	<field name="attchTypeName" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="90" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement mode="Transparent" x="8" y="0" width="194" height="89" uuid="af240074-7864-4651-a3df-9d453297f4a2"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="99" y="18" width="99" height="22" backcolor="#F8F8F8" uuid="d79af5ea-69bf-4482-b4b6-9cfadfe61a44"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="17" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رقم الوارد   :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="23" y="18" width="84" height="22" backcolor="#F8F8F8" uuid="ae18bb27-3a23-4d1f-b594-b5a88e377651">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ARC_RECORDS_INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="23" y="41" width="84" height="26" backcolor="#F8F8F8" uuid="fdff54de-d545-4ece-b1fd-95c18e2e2d56"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ARC_RECORDS_INCOME_H_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669") +" هـ "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="107" y="41" width="91" height="24" backcolor="#F8F8F8" uuid="0c93ce4f-f318-4970-b097-cde2ac7d0a9e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="17" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ الوارد :]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="13" y="2" width="50" height="16" uuid="99599463-fe42-49df-8339-140330a0d4a0"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{ARC_RECORDS_INCOME_NO}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="52" y="1" width="144" height="17" uuid="2f5fafd5-53e8-487f-98eb-2f35c90fe144"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{compName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="24" y="66" width="106" height="22" isPrintWhenDetailOverflows="true" backcolor="#F8F8F8" uuid="a236753b-36ba-4ff7-a2ca-d6ed875a645f">
+					<printWhenExpression><![CDATA[$F{ARC_RECORDS_FILES_NO} >0 || !($F{attchTypeName}.isEmpty())]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{attchTypeName} + " - عدد " +$F{ARC_RECORDS_FILES_NO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="66" width="69" height="22" backcolor="#F8F8F8" uuid="6417b3a9-b92b-4263-8d9b-fea600ac7871"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="17" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المرفقات  :]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

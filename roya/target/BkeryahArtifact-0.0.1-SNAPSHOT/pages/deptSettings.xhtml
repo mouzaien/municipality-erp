@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+        <ui:composition template="./WebTemplate.xhtml">
+            <ui:define name="top">
+                إعدادت الإدارات و الأقسام
+            </ui:define>
+            <ui:define name="content">
+                <div style="direction: rtl;" >
+                    <p:growl id="g001" autoUpdate="true" />
+                    <h:form id="deptForm" style="direction: rtl;">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                         
+                        <p:dialog widgetVar="statusDialog" modal="true" 
+                                  draggable="false" closable="false" resizable="false" showHeader="false">
+                                <p:graphicImage value="../images/loadingT.gif" />
+                        </p:dialog>
+
+
+                        <p:toolbar>
+                            <f:facet name='left'>
+                                <p:commandButton value="اضافة إدارة جديدة" process="@this"
+                                                 action="#{deptSettingBean.addDepartmentBtnAction(actionEvent)}"
+                                                 />           
+                            </f:facet>
+                            <f:facet name='right'>
+                                <p:outputLabel value="إعدادات الإدارات و الأقسام"/>
+                            </f:facet>
+                        </p:toolbar>  
+                        <p:growl id="groll" autoUpdate="true" />
+                        <div style="width:30%; float: right;">
+                            <p:panel id="departmentPanel" header="أقسام البلدية" style="font-size: large;width: 100%;" >
+                                <p:selectOneListbox id="deptList"  value="#{deptSettingBean.selectedDept}" style="width: 100%;" filter="true" filterMatchMode="contains" >
+                                    <p:ajax event="change" update=":tempform:deptForm:selecttxt,:tempform:deptForm:sectiondt"  listener="#{deptSettingBean.chnageDeptListBox}" />
+                                    <f:selectItems value="#{deptSettingBean.deptMap}" />
+                                </p:selectOneListbox>
+                            </p:panel>
+                        </div>
+                        <div style="float: left;width: 69%">
+                            <div >
+                                <p:outputLabel id="selecttxt" value="#{deptSettingBean.selectedDeptTxt}" />
+                                <p:dataTable id="sectiondt" style="font-size: medium;font-weight: bold;"
+                                             value="#{deptSettingBean.deptSections}" var="section"
+                                             emptyMessage="لا يوجد اقسام داخل القسم المحدد"
+                                             >
+                                    <p:column headerText="المسلسل" width="25%">
+                                        #{section.wrkSectionId}
+                                    </p:column>
+                                    <p:column headerText="اسم القسم" width="45%" >
+                                        #{section.wrkSectionName}
+                                    </p:column>
+                                    <p:column width="11%" >
+                                        <p:commandButton icon="fa fa-times" value="حذف" />
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="إضافة قسم جديد" process="@this" action="#{deptSettingBean.addSectionBtnAction(actionEvent)}"  icon="fa fa-plus-square" />
+
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                    </h:form>
+
+                    <p:dialog header="إضافة قسم جديد" modal="true" widgetVar="addSectionDlg" width="400" >
+                        <h:form id="addSectionFrm" style="text-align: center;">
+                            <p:panelGrid columns="3">
+                                <p:outputLabel value="أدخل اسم القسم" />
+                                <p:inputText value="#{deptSettingBean.newSectionName}" id="sectionnametxtbx" required="true" requiredMessage="اسم القسم مطلوب" />
+
+                            </p:panelGrid>
+                            <p:commandButton value="حفظ" 
+                                             action="#{deptSettingBean.addNewSection(actionEvent)}"
+                                             style="float: left;" class="btn btn-default"
+                                             process="@this,:tempform:addSectionFrm:sectionnametxtbx"
+                                             update=":tempform:deptForm:sectiondt"
+                                             />
+
+                        </h:form>
+                    </p:dialog>
+                    <p:growl id="newgr" autoUpdate="true" />
+                    <p:dialog header="إضافة إدارة جديد" width="400" resizable="false"
+                              showEffect="fade" hideEffect="explode"
+                              modal="true" widgetVar="addDepartmentDlg" id="addDepartmentDlgid" >
+                        <h:form id="adddeptFrm">
+                            <p:panelGrid columns="2">
+
+
+                                <p:outputLabel value="اسم الادارة(عربي)"  />
+                                <p:inputText id="ardeptname" value="#{deptSettingBean.newDepartmentArabicName}" 
+
+                                             required="true" requiredMessage="الاسم مطلوب" />
+                                <p:outputLabel value="اسم الادارة(افرنجي)"  />
+                                <p:inputText id="endeptname"  value="#{deptSettingBean.newDepartmentEnglishName}" required="true" requiredMessage="الاسم مطلوب"  />
+
+                            </p:panelGrid>
+                            <p:commandButton value= "حفظ الادارة" style="float: left;" class="btn btn-default"
+                                             action="#{deptSettingBean.addNewDeptAction(actionEvent)}" 
+                                             process="@this,:tempform:adddeptFrm:ardeptname,:tempform:adddeptFrm:endeptname"
+                                             update=":tempform:deptForm:deptList"
+                                             />
+
+
+                        </h:form>
+
+                    </p:dialog>
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

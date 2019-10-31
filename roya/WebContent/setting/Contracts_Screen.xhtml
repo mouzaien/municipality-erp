@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<script type="application/javascript">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+       function handleMsg(msg){
+        alert(msg);
+    }
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<style type="text/css">
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right !important;
+	border-bottom: 1px solid #333;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.dashboard .user-card .user-card-content .user-detail ul li {
+	padding: 26px 24px !important;
+}
+</style>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<!-- 			 <p:growl id="msgs" showDetail="true" /> -->
+			<br />
+
+			<div class="image-box-footer">
+
+				<p:commandButton value="عقد جديد" icon="fa fa-plus"
+					action="#{contractsParamBean.addNewContract}" process="@this"
+					update="includeform:panelGroup" immediate="true">
+
+				</p:commandButton>
+
+
+			</div>
+
+			<br />
+			<br />
+
+			<div class="card card-w-title">
+
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					العقود <span class="ui-icon ui-icon-assignment-turned-in"></span>
+				</h1>
+
+				<br />
+
+				<p:dataTable id="emp" var="contractsDataTable"
+					style="direction:rtl;" value="#{contractsParamBean.contractsList}"
+					widgetVar="cellemp" rows="13" paginator="true"
+					paginatorPosition="bottom" emptyMessage="الجدول فارغ"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column headerText="المسلسل " width="10%"
+						filterBy="#{contractsDataTable.id}">
+						<h:outputText value="#{contractsDataTable.id}" />
+					</p:column>
+					<p:column headerText="المالك"
+						filterBy="#{contractsDataTable.owner}">
+						<h:outputText value="#{contractsDataTable.owner}"></h:outputText>
+
+					</p:column>
+					<p:column headerText="مدة العقد"
+						filterBy="#{contractsDataTable.duration}">
+						<h:outputText value="#{contractsDataTable.duration}"></h:outputText>
+
+					</p:column>
+
+					<p:column headerText="قيمة العقد" filterBy="#{contractsDataTable.value}">
+						<h:outputText value="#{contractsDataTable.value}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="تاريخ التسليم"
+						filterBy="#{contractsDataTable.siteRecieveDate}">
+						<h:outputText value="#{contractsDataTable.siteRecieveDate}"></h:outputText>
+
+					</p:column>
+					<p:column headerText="تفاصيل" style="width:50px;text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup"
+							action="#{contractsParamBean.loadSelectedProjectContract}"
+							icon="ui-icon-search" title="View" modal="true">
+							<f:setPropertyActionListener value="#{contractsDataTable}"
+								target="#{contractsParamBean.projectContract}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<p:dialog header="إضافة عقد جديد " position="center"
+					widgetVar="mydialog" responsive="true" id="inputData2"
+					closable="true" dir="rtl" resizable="true" modal="true">
+
+					<h:panelGroup id="panelGroup">
+
+						<div class="ui-g">
+
+							<br />
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="المالك" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="contractName" required="true"
+									requiredMessage="يرجي إختيار المالك"
+									value="#{contractsParamBean.projectContract.owner}"
+									style="width:100%">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+
+								<h:outputLabel for="basic" value="مدة العقد" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="projectNum" required="true"
+									requiredMessage="يرجي إختيار مدة العقد"
+									value="#{contractsParamBean.projectContract.duration}"
+									style="width:100%">
+								</p:inputText>
+
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel for="mTitles" value="المشروع" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:selectOneMenu
+									value="#{contractsParamBean.projectContract.id}"
+									style="width: 100%" requiredMessage="يرجي إختيار المشروع"
+									required="true" filter="true" id="mTitles">
+									<f:selectItem itemLabel="أختر مشروع" itemValue="" />
+									<f:selectItems var="tit" itemValue="#{tit.id}"
+										itemLabel="#{tit.name}"
+										value="#{contractsParamBean.projectsList}" />
+								</p:selectOneMenu>
+
+							</div>
+
+
+							<div class="ui-g-2">
+								<h:outputLabel for="projectTitle" value="وقت التسليم" />
+							</div>
+
+							<div class="ui-g-2">
+								<ui:include src="../shared/calender.xhtml" />
+							</div>
+
+							<br /> <br /> <br />
+						</div>
+					</h:panelGroup>
+					<div align="center">
+
+						<div class="iamge-box-footer" align="left">
+
+							<p:commandButton value="حفظ" icon="fa fa-save"
+								action="#{contractsParamBean.saveProjectContract}"
+								update="@form" onsuccess="PF('mydialog').hide(); ">
+
+
+							</p:commandButton>
+
+							<p:commandButton value="تعديل" icon="fa fa-edit"
+								action="#{contractsParamBean.updateProjectContract}"
+								update="@form" onsuccess="PF('mydialog').hide();">
+							</p:commandButton>
+
+
+							<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+								icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+								onsuccess="PF('mydialog').hide();" />
+						</div>
+					</div>
+				</p:dialog>
+
+
+
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,307 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/template.xhtml">
+
+	<ui:define name="content">
+	<style>
+  body{
+  background-color: white;
+  } 
+  </style>
+		<div class="ui-g dashboard">
+  
+
+			<div class="ui-g-12 ui-md-3">
+				<div class="overview-box overview-box-1">
+					<div class="overview-box-header"></div>
+					<div class="overview-box-content">
+						<div class="overview-box-icon">
+							<i class="material-icons">&#xe54c;</i>
+						</div>
+						<div class="overview-box-title">#{msg['not.read.mail']}</div>
+						<div class="overview-box-count">#{chartView.unreadMails}</div>
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3 ">
+				<div class="overview-box overview-box-2">
+					<div class="overview-box-header"></div>
+					<div class="overview-box-content">
+						<div class="overview-box-icon">
+							<i class="material-icons">&#xe149;</i>
+						</div>
+						<div class="overview-box-title">#{msg['archived.mail']}</div>
+						<div class="overview-box-count">#{chartView.archivedMails}</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<div class="overview-box overview-box-3">
+					<div class="overview-box-header"></div>
+					<div class="overview-box-content">
+						<div class="overview-box-icon">
+							<i class="material-icons">&#xe195;</i>
+						</div>
+						<div class="overview-box-title">#{msg['vacations']}</div>
+						<div class="overview-box-count">#{chartView.normalVacationCount}</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<div class="overview-box overview-box-4">
+					<div class="overview-box-header"></div>
+					<div class="overview-box-content">
+						<div class="overview-box-icon">
+							<i class="material-icons">&#xe01b;</i>
+						</div>
+						<div class="overview-box-title">#{msg['monthly.authorization']}</div>
+						<div class="overview-box-count">#{chartView.authorizationMonthCount}</div>
+					</div>
+				</div>
+			</div>
+
+          <div class="ui-g-12 ui-lg-4">
+                <div class="task-box task-box-1">
+                    <div class="task-box-header">
+                        <i class="material-icons">&#xe3a0;</i>
+                    </div>
+                    <div class="task-box-content">
+                        <h3>التعميم الخاص بإدارة شؤون الموظفين</h3>
+                        <p>وصف التعميم الخاص بإدارة شؤون الموظفين</p>
+                    </div>
+                    <div class="task-box-footer">
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-lg-4">
+                <div class="task-box task-box-2">
+                    <div class="task-box-header">
+                        <i class="material-icons">&#xe3a0;</i>
+                    </div>
+                    <div class="task-box-content">
+                        <h3>التعميم الخاص بإدارة المالية</h3>
+                        <p>وصف التعميم الخاص بإدارة شؤون الموظفين</p>
+                    </div>
+                    <div class="task-box-footer">
+                     
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-lg-4">
+                <div class="task-box task-box-3">
+                    <div class="task-box-header">
+                        <i class="material-icons">&#xe3a0;</i>
+                    </div>
+                    <div class="task-box-content">
+                        <h3>التعميم الخاص بإدارة التقنية</h3>
+                        <p>وصف التعميم الخاص بإدارة التقنية</p>
+                    </div>
+                    <div class="task-box-footer">
+                        
+                    </div>
+                </div>
+            </div>			
+
+			<div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
+				<p:panel header="#{msg['transactions.NB']}">
+					<p:chart type="bar" model="#{chartView.barChart}" responsive="true" />
+				</p:panel>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-6 ui-fluid contact-form">
+				<p:panel header="#{msg['transactions.percent']}">
+					<p:chart type="line" model="#{chartView.lineChart}" responsive="true" />
+				</p:panel>
+			</div>
+<!-- 			<div class="ui-g-12 ui-lg-4 messages"> -->
+<!-- 				<p:panel header="Messages"> -->
+<!-- 					<ul> -->
+<!-- 						<li><a href="#"> <p:graphicImage -->
+<!-- 									name="images/avatar1.png" library="serenity-layout" width="45" /> -->
+<!-- 								<div> -->
+<!-- 									<span class="name">Joshua Williams</span> <span class="message">Sales -->
+<!-- 										reports attached.</span> -->
+<!-- 								</div> <p:commandButton type="button" icon="ui-icon-close" -->
+<!-- 									title="Reply" styleClass="remove-btn" /> <p:commandButton -->
+<!-- 									type="button" icon="ui-icon-message" title="Reply" -->
+<!-- 									styleClass="message-btn secondary-btn" /> -->
+<!-- 						</a></li> -->
+<!-- 						<li><a href="#"> <p:graphicImage -->
+<!-- 									name="images/avatar2.png" library="serenity-layout" width="45" /> -->
+<!-- 								<div> -->
+<!-- 									<span class="name">Emily Watson</span> <span class="message">Meeting -->
+<!-- 										at 2pm tomorrow.</span> -->
+<!-- 								</div> <p:commandButton type="button" icon="ui-icon-close" -->
+<!-- 									title="Reply" styleClass="remove-btn" /> <p:commandButton -->
+<!-- 									type="button" icon="ui-icon-message" title="Reply" -->
+<!-- 									styleClass="message-btn secondary-btn" /> -->
+<!-- 						</a></li> -->
+<!-- 						<li><a href="#"> <p:graphicImage -->
+<!-- 									name="images/avatar3.png" library="serenity-layout" width="45" /> -->
+<!-- 								<div> -->
+<!-- 									<span class="name">James White</span> <span class="message">Status -->
+<!-- 										update required.</span> -->
+<!-- 								</div> <p:commandButton type="button" icon="ui-icon-close" -->
+<!-- 									title="Reply" styleClass="remove-btn" /> <p:commandButton -->
+<!-- 									type="button" icon="ui-icon-message" title="Reply" -->
+<!-- 									styleClass="message-btn secondary-btn" /> -->
+<!-- 						</a></li> -->
+<!-- 						<li><a href="#"> <p:graphicImage -->
+<!-- 									name="images/avatar4.png" library="serenity-layout" width="45" /> -->
+<!-- 								<div> -->
+<!-- 									<span class="name">David Hughes</span> <span class="message">Exchange -->
+<!-- 										rates estimates.</span> -->
+<!-- 								</div> <p:commandButton type="button" icon="ui-icon-close" -->
+<!-- 									title="Reply" styleClass="remove-btn" /> <p:commandButton -->
+<!-- 									type="button" icon="ui-icon-message" title="Reply" -->
+<!-- 									styleClass="message-btn secondary-btn" /> -->
+<!-- 						</a></li> -->
+<!-- 					</ul> -->
+<!-- 				</p:panel> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="ui-g-12 ui-lg-6 ui-g-nopad"> -->
+<!-- 				<div class="ui-g-12 chat"></div> -->
+
+<!-- 				<div class="ui-g-12 status-bars"> -->
+<!-- 					<div class="card"> -->
+<!-- 						<ul> -->
+<!-- 							<li> -->
+<!-- 								<div class="status-bar status-bar-1"> -->
+<!-- 									<div class="status-bar-value" style="width: 22%">22%</div> -->
+<!-- 								</div> <span>Users</span> <i class="material-icons">&#xE853;</i> -->
+<!-- 							</li> -->
+<!-- 							<li> -->
+<!-- 								<div class="status-bar status-bar-2"> -->
+<!-- 									<div class="status-bar-value" style="width: 78%">78%</div> -->
+<!-- 								</div> <span>Confirmed</span> <i class="material-icons">&#xE86C;</i> -->
+<!-- 							</li> -->
+<!-- 							<li> -->
+<!-- 								<div class="status-bar status-bar-3"> -->
+<!-- 									<div class="status-bar-value" style="width: 51%">51%</div> -->
+<!-- 								</div> <span>Defects</span> <i class="material-icons">&#xE868;</i> -->
+<!-- 							</li> -->
+<!-- 							<li> -->
+<!-- 								<div class="status-bar status-bar-4"> -->
+<!-- 									<div class="status-bar-value" style="width: 68%">68%</div> -->
+<!-- 								</div> <span>Issues</span> <i class="material-icons">&#xE8B2;</i> -->
+<!-- 							</li> -->
+<!-- 							<li> -->
+<!-- 								<div class="status-bar status-bar-5"> -->
+<!-- 									<div class="status-bar-value" style="width: 80%">80%</div> -->
+<!-- 								</div> <span>Searches</span> <i class="material-icons">&#xE8B6;</i> -->
+<!-- 							</li> -->
+<!-- 						</ul> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="ui-g-12 ui-lg-6 ui-g-nopad"> -->
+<!-- 				<div class="ui-g-12 global-sales"></div> -->
+
+<!-- 				<div class="ui-g-12 image-box"> -->
+<!-- 					<div class="card"> -->
+<!-- 						<p:graphicImage name="images/dashboard/gradient-waters.png" -->
+<!-- 							library="serenity-layout" /> -->
+
+<!-- 						<div class="image-box-content"> -->
+<!-- 							<h3>Gradient Waters</h3> -->
+<!-- 							<span class="image-box-tag">article</span> -->
+<!-- 							<p>Derive inexpedient reason law virtues superiority -->
+<!-- 								victorious. Overcome pious horror suicide revaluation. Holiest -->
+<!-- 								ocean society disgust passion value love. Faithful mountains -->
+<!-- 								morality hope disgust merciful moral will revaluation society -->
+<!-- 								fearful love.</p> -->
+<!-- 							<div class="image-box-footer"> -->
+<!-- 								<p:commandButton type="button" icon="ui-icon-close" -->
+<!-- 									title="Close" value="Close" styleClass="remove-btn orange-btn" -->
+<!-- 									style="margin-right:4px;" /> -->
+<!-- 								<p:commandButton type="button" icon="ui-icon-plus" title="New" -->
+<!-- 									value="New" styleClass="message-btn secondary-btn" /> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+<!-- 			</div> -->
+
+<!-- 			<div class="ui-g-12 ui-lg-8"></div> -->
+
+<!-- 			<div class="ui-g-12 ui-lg-4"> -->
+<!-- 				<div class="ui-g-12"> -->
+<!-- 					<div class="user-card card"> -->
+<!-- 						<div class="user-card-header"> -->
+<!-- 							<p:graphicImage name="images/dashboard/usercard.png" -->
+<!-- 								library="serenity-layout" width="100" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="user-card-content"> -->
+<!-- 							<p:graphicImage name="images/avatar.png" -->
+<!-- 								library="serenity-layout" /> -->
+<!-- 							<p:commandButton id="user-button" type="button" -->
+<!-- 								icon="ui-icon-plus" styleClass="secondary-btn" /> -->
+
+<!-- 							<p:menu overlay="true" trigger="user-button" my="left top" -->
+<!-- 								at="left bottom"> -->
+<!-- 								<p:menuitem value="Save" icon="ui-icon-check" url="#" /> -->
+<!-- 								<p:menuitem value="Update" icon="ui-icon-refresh" url="#" /> -->
+<!-- 								<p:menuitem value="Delete" icon="ui-icon-close" url="#" /> -->
+<!-- 							</p:menu> -->
+
+<!-- 							<div class="user-card-name"> -->
+<!-- 								<span>Wendy Lorina</span> -->
+<!-- 							</div> -->
+
+<!-- 							<div class="user-detail"> -->
+<!-- 								<ul> -->
+<!-- 									<li class="clearfix"><i class="fa fa-tasks fa-fw"></i> <span -->
+<!-- 										class="project-title">Tasks</span> <span -->
+<!-- 										class="project-detail">3 open</span> -->
+<!-- 										<div class="project-progressbar"> -->
+<!-- 											<div class="project-progressbar-value" style="width: 50%"></div> -->
+<!-- 										</div></li> -->
+<!-- 									<li class="clearfix"><i class="fa fa-usd fa-fw"></i> <span -->
+<!-- 										class="project-title">Revenue</span> <span -->
+<!-- 										class="project-detail">+20%</span> -->
+<!-- 										<div class="project-progressbar"> -->
+<!-- 											<div class="project-progressbar-value" style="width: 20%"></div> -->
+<!-- 										</div></li> -->
+<!-- 									<li class="clearfix"><i class="fa fa-credit-card fa-fw"></i> -->
+<!-- 										<span class="project-title">Payments</span> <span -->
+<!-- 										class="project-detail">24 new</span> -->
+<!-- 										<div class="project-progressbar"> -->
+<!-- 											<div class="project-progressbar-value" style="width: 65%"></div> -->
+<!-- 										</div></li> -->
+<!-- 									<li class="clearfix"><i class="fa fa-users fa-fw"></i> <span -->
+<!-- 										class="project-title">Clients</span> <span -->
+<!-- 										class="project-detail">+80%</span> -->
+<!-- 										<div class="project-progressbar"> -->
+<!-- 											<div class="project-progressbar-value" style="width: 80%"></div> -->
+<!-- 										</div></li> -->
+<!-- 									<li class="clearfix"><i class="fa fa-users fa-fw"></i> <span -->
+<!-- 										class="project-title">Turnover</span> <span -->
+<!-- 										class="project-detail">+40%</span> -->
+<!-- 										<div class="project-progressbar"> -->
+<!-- 											<div class="project-progressbar-value" style="width: 40%"></div> -->
+<!-- 										</div></li> -->
+<!-- 								</ul> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+<!-- 				<div class="ui-g-12 map"></div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="ui-g-12 schedule"></div> -->
+
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+

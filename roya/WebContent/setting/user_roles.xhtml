@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="col-lg-12"
+			style="background-color: white; border-top: 5px solid #428BCA">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">#{msg['roles']}
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="#{msg['section']}" />
+							</div>
+							<div class="col-md-3">
+								<h:selectOneMenu id="section" styleClass="form-control"
+									value="#{loadingDataBean.departmentId}">
+									<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
+									<f:selectItems value="#{loadingDataBean.depatmentList}"
+										var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" />
+									<f:ajax render="empList" execute="section" event="change"
+										listener="#{loadingDataBean.loadEmployersByDept}" />
+								</h:selectOneMenu>
+							</div>
+							<div class="col-md-1"/>
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value="#{msg['employee.name']}" />
+							</div>
+							<div class="col-md-3">
+								<h:selectOneMenu id="empList" styleClass="form-control"
+									value="#{userRoleBean.employerId}">
+									<f:selectItem itemLabel="#{msg['vacation.selectemp']}"
+										itemValue="" />
+									<f:selectItems value="#{loadingDataBean.employersListInDept}"
+										var="empr" itemLabel="#{empr.employeeName}"
+										itemValue="#{empr.userId}" />
+									<p:ajax process="@this" update="@form"
+										listener="#{userRoleBean.loadUserRoles}" />
+								</h:selectOneMenu>
+							</div>
+							<div class="col-md-1"/>
+						</div>
+						<br /> <br />
+						<p:separator/>
+						<br /> <br />
+						<div class="row">
+							<p:selectManyCheckbox id="responsive"
+								value="#{userRoleBean.selectedRoles}" layout="responsive"
+								columns="3">
+								<f:selectItems value="#{loadingDataBean.userRoleList}" var="role"
+									itemLabel="#{role.roleDesc}" itemValue="#{role.id}" />
+							</p:selectManyCheckbox>
+						</div>
+						<br /> <br />
+						<h:commandButton value="#{msg['save']}" class="btn btn-primary"
+								style="float:left;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							action="#{userRoleBean.saveAction}">
+							<f:ajax execute="@form"></f:ajax>
+						</h:commandButton>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	</ui:define>
+	</ui:composition>
+	</f:view>
+	</html>

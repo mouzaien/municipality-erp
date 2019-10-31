@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+
+	
+	<style>
+	body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 98%;
+	background-color: #472d985c;
+	}
+	
+	body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+		float: none;
+	}
+	
+	body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+		float: right;;
+	}
+	
+	.ui-selectonemenu .ui-selectonemenu-label {
+		text-align: right;
+	}
+	
+	.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+		text-align: right;
+	}
+	</style>
+</h:head>
+<h:body>
+<p style="text-align: center; color: #7CB342;">
+		<p:outputLabel 
+			style="font-weight:bold; font-size:30px;"
+			value="#{msg['autorization.model']}">
+			<span class="fa fa-fw fa-clock-o"></span>
+			
+		</p:outputLabel>
+	</p>
+
+	
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		
+			<div class="image-box-footer" style="float: left">
+				<p:commandButton value="#{msg['back']}" action="mails"
+					immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+					styleClass=" orange-btn">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+				
+				
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['accept']}"  immediate="true"
+					styleClass="indigo-btn flat ui-state-hover"
+					icon="fa fa-fw fa-thumbs-up"
+					rendered="#{(mainManagedBean.mailExecutor.signedAutorized)}"
+					action="#{mainManagedBean.mailExecutor.acceptAction}">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+
+				<p:commandButton
+					rendered="(mainManagedBean.mailExecutor.signedAutorized)}"
+					value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();" immediate="true"
+					styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+				</p:commandButton>
+
+			</div>
+			<br/><br/>
+		
+		<div class="card card-w-title">
+
+
+		<br/><br/>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p:outputPanel id="formPanel">
+								<div class="ui-g">
+								    <div class="ui-g-12 ui-md-6 ui-lg-1" >
+								   		 <p:outputLabel value="#{msg['date']}" style="font-weight: bold;" />
+								    </div>  
+								     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+								       <p:outputLabel
+										value="#{mainManagedBean.mailExecutor.autorizationDate}" />
+								    </div>  
+								     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+								    		 <p:outputLabel value="#{msg['autorization.nb']}" style="font-weight: bold;"/>
+								    </div>  
+								     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+										<p:outputLabel value="#{mainManagedBean.mailExecutor.autorizationNB}" />
+								    </div>
+								 </div>
+							<br />
+							<div class="ui-g">
+							    <div class="ui-g-12 ui-md-6 ui-lg-1" >
+							  		  <h:outputLabel value="#{msg['reason']}" style="font-weight: bold;"/>
+							    </div>  
+							     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+							       <h:outputLabel value="#{mainManagedBean.mailExecutor.reason}" />
+							    </div>  
+							  
+							 </div>
+
+							<br />
+							<div class="ui-g">
+							    <div class="ui-g-12 ui-md-6 ui-lg-1" >
+							  		 <p:outputLabel value="#{msg['leaving.date']}" style="font-weight: bold;"/>
+							    </div>  
+							     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+							      	<p:outputLabel
+										value="#{mainManagedBean.mailExecutor.leavingMinute}" />
+									<p:outputLabel value=" : " />
+									<p:outputLabel
+										value="#{mainManagedBean.mailExecutor.leavingHour}" />
+							    </div>  
+							  
+							 </div>
+							
+							<br />
+								<div class="ui-g">
+							    <div class="ui-g-12 ui-md-6 ui-lg-1" >
+							  		<p:outputLabel value="#{msg['return.date']}" style="font-weight: bold;"/>
+							    </div>  
+							     <div class="ui-g-12 ui-md-6 ui-lg-3" >
+							      <p:outputLabel
+										value="#{mainManagedBean.mailExecutor.returnMinute}" />
+									<p:outputLabel value=" : " />
+								 <p:outputLabel
+										value="#{mainManagedBean.mailExecutor.returnHour}" />
+							    </div>  
+							  
+							 </div>
+							
+							
+							
+		<p:dialog header="#{msg['add.explanation.confirmation']}"
+					widgetVar="dlgRefuse" height="300" width="500">
+
+					<h:panelGroup id="refPopup">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel value="#{msg['redirect.transaction']}" />
+							<p:selectOneMenu id="typ" styleClass="form-control"
+								value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+								var="d" style=" width:100%">
+
+								<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+									itemValue="#{pp.idStr} " value="#{mainManagedBean.wrkPurposes}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+							<p:inputTextarea cols="30" rows="5" style="width:100%"
+								value="#{mainManagedBean.mailExecutor.wrkAppComment}">
+							</p:inputTextarea>
+
+
+						</p:panelGrid>
+						<br></br>
+						<br></br>
+						<div style="direction: initial;">
+
+
+							<p:commandButton value="#{msg['back']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left" onclick="PF('dlgRefuse').hide();"
+								styleClass=" orange-btn">
+							</p:commandButton>
+							<p:spacer width="4"></p:spacer>
+							<!-- 												<button type="button" class="btn btn-green" -->
+							<!-- 													data-dismiss="modal">#{msg['back']}</button> -->
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check" immediate="true"
+								action="#{mainManagedBean.mailExecutor.refuseAction}">
+								<f:ajax execute="refPopup"></f:ajax>
+							</p:commandButton>
+
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+
+
+
+						</p:outputPanel>
+					</div>
+				</div>
+			</div>
+		</div>
+</h:body>
+</html>

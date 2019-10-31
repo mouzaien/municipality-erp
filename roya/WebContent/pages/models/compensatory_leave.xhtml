@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form prependId="false">
+				<p:messages id="msgs" closable="true" autoUpdate="true"></p:messages>
+				<div class="card card-w-title">
+					<br></br>
+					<p:accordionPanel
+						style="background-color: white;text-align: right !important;"
+						activeIndex="null">
+						<p:tab title="#{msg['owner.vacation.data']}">
+							<br></br>
+							<div style="color: color: #428bca"></div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-3">
+												<p:selectOneMenu id="userSelected"
+													value="#{compensatoryLeaveBean.selectedUserId}"
+													required="true" requiredMessage="إختر الموظف" filter="true"
+													filterMatchMode="contains">
+
+													<f:selectItem itemLabel="إختر الموظف" itemValue="" />
+
+													<f:selectItems value="#{compensatoryLeaveBean.employers}"
+														var="emp"
+														itemLabel="#{emp.employeNumber} - #{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName} "
+														itemValue="#{emp.employeNumber}" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+
+										<br />
+										<div class="row"></div>
+									</div>
+								</div>
+							</div>
+						</p:tab>
+					</p:accordionPanel>
+					<br></br>
+					<h1 style="color: #7CB342; text-align: center;">
+						#{msg['compensatory.leave.model']}<span
+							class="fa fa-fw fa-clock-o"></span>
+					</h1>
+					<br />
+					<p:panel id="formPanel">
+						<f:facet name="header">
+							<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['request.data']}
+                    </f:facet>
+
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="#{msg['compensatory.leave.type']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu id="leavingMinute1" class="form-control"
+									value="#{compensatoryLeaveBean.vacHolidayType}"
+									placeholder="إختر نوع الإجازة"
+									requiredMessage="يجب إختيار نوع الإجازة" style="width:100%">
+									<f:selectItem itemLabel="إختر نوع الإجازة" itemValue="" />
+									<f:selectItem itemLabel="الكل" itemValue="0" />
+									<f:selectItem itemLabel="#{msg['eid.alfitr.holiday']}"
+										itemValue="4" />
+									<f:selectItem itemLabel="#{msg['eid.alidha.holiday']}"
+										itemValue="5" />
+									<f:ajax
+										listener="#{compensatoryLeaveBean.loadUsersListCompensatoryVacStockByEmpNo}"
+										render=":msgs, :emVAcSctockGrid" execute="userSelected"></f:ajax>
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br></br>
+						<h:panelGroup id="emVAcSctockGrid">
+							<ui:include src="compensatory_content.xhtml"></ui:include>
+						</h:panelGroup>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="هجري  :  " />
+								<p:selectBooleanCheckbox
+									value="#{compensatoryLeaveBean.higriMode}">
+									<p:ajax update="pDates1" process="@this"></p:ajax>
+								</p:selectBooleanCheckbox>
+							</div>
+						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="التاريخ: " />
+							</div>
+							<div class="ui-g-2">
+								<h:panelGroup id="pDates1">
+
+									<p:inputText id="hiri1"
+										value="#{compensatoryLeaveBean.startGeorDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار تاريخ"
+										rendered="#{compensatoryLeaveBean.higriMode}"
+										styleClass="form-control form-controlCal">
+									</p:inputText>
+									<p:calendar id="gric1"
+										value="#{compensatoryLeaveBean.mstartDate}"
+										pattern="dd/MM/yyyy"
+										rendered="#{!compensatoryLeaveBean.higriMode}">
+									</p:calendar>
+								</h:panelGroup>
+							</div>
+						</div>
+						<br></br>
+					</p:panel>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,506 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+
+					<div class="image-box-footer">
+						<h:panelGroup id="buttons">
+							<p:commandButton value="إظافة"
+								oncomplete=" PF('addDialog').show()" icon="ui-icon ui-icon-add"
+								styleClass="cyan-btn"
+								action="#{leavingEmployerBean.addLeavingEmloyer}"
+								process="@this" update="includeform:addDialog">
+							</p:commandButton>
+						</h:panelGroup>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<div>
+							<h1 style="color: #7CB342; text-align: center;">
+								طي قيد موظف <span style="color: red" class="fa fa-fw fa-remove"></span>
+							</h1>
+
+						</div>
+
+
+						<div>
+							<p:dataTable var="empItem" id="inboxdt"
+								value="#{leavingEmployerBean.empTerminateList}"
+								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+								paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{leavingEmployerBean.filteredEmpTerminates}"
+								paginator="true" rows="17">
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									filterBy="#{empItem.employeNumber}" filterMatchMode="contains"
+									headerText="الرقم الوظيفي" width="10%">										
+										#{empItem.employeNumber}								
+									</p:column>
+								<p:column style="white-space: nowrap;" headerText="الموظف"
+									filterBy="#{empItem.employer.firstName} #{empItem.employer.secondName} #{empItem.employer.thirdName}"
+									filterMatchMode="contains" width="25%">										
+										#{empItem.employer.firstName} #{empItem.employer.secondName} #{empItem.employer.thirdName}										
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									filterBy="#{empItem.executedDate}" filterMatchMode="contains"
+									headerText="تاريخ الطي" width="10%">										
+										#{empItem.executedDate}									
+									</p:column>
+								<p:column style="white-space: nowrap;"
+									filterBy="#{empItem.terminateNote}" filterMatchMode="contains"
+									headerText="السبب" width="45%">										
+										#{empItem.terminateNote} 									
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="10%">
+									<p:commandButton oncomplete="PF('detailsDG').show();"
+										process="@this" icon="ui-icon-search"
+										update="includeform:myDialog">
+										<f:setPropertyActionListener value="#{empItem}"
+											target="#{leavingEmployerBean.empTerminate}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+
+
+
+
+
+						<!-- 									<div align="center" > -->
+						<!-- 									<h:commandButton value="طباعة" -->
+						<!-- 										styleClass="btn btn-primary" -->
+						<!-- 										onclick="this.form.target='_blank'" -->
+						<!-- 										action="#{licencesListBean.printReportAction}"> -->
+						<!-- 									</h:commandButton> -->
+						<!-- 									</div> -->
+
+
+
+
+						<p:dialog header="بيانات القرض" widgetVar="detailsDG"
+							id="detailsDGId" width="70%" style="margin-top: -127px;"
+							hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+							resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+
+									<div class="ui-g">
+										<div>
+
+											<p:dataTable var="loanDetItem" id="detailsdt"
+												widgetVar="empVar" value="#{loanBean.loanDetailsList}"
+												emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+												paginatorPosition="bottom"
+												paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+												filteredValue="#{loanBean.filteredloanDetails}"
+												paginator="true" rows="12">
+
+												<p:column style="white-space: nowrap;text-align: center;"
+													headerText="الشهر" width="30%"
+													filterBy="#{loanDetItem.loanDetMonth}"
+													filterMatchMode="contains">										
+										#{loanDetItem.loanDetMonth} 									
+									</p:column>
+												<p:column style="white-space: nowrap;" headerText="السنة"
+													width="20%" filterBy="#{loanDetItem.loanDetYear}"
+													filterMatchMode="contains">									
+										#{loanDetItem.loanDetYear}									
+									</p:column>
+												<p:column style="white-space: nowrap;text-align: center;"
+													headerText="القيمة" width="20%">										
+										#{loanDetItem.loanPaidMontly}
+									</p:column>
+												<p:column style="white-space: nowrap;text-align: center;"
+													headerText="الحالة" width="30%">
+													<p:selectOneMenu value="#{loanDetItem.loanDetStsPU}"
+														disabled="#{loanBean.stoppedLoan}">
+														<f:selectItem itemValue="U" itemLabel="غير مدفوعة" />
+														<f:selectItem itemValue="P" itemLabel="مدفوعة" />
+														<f:selectItem itemValue="S" itemLabel="موقوفة" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+							<br />
+							<div align="center" class="image-box-footer">
+								<p:commandButton value="إيقاف القرض"
+									styleClass="btn btn-primary" action="#{loanBean.stopLoan}"
+									rendered="#{!loanBean.stoppedLoan}"
+									onsuccess="PF('detailsDG').hide();">
+								</p:commandButton>
+
+								<p:commandButton value="حفظ" styleClass="btn btn-primary"
+									action="#{loanBean.updateLoanDetails}"
+									rendered="#{!loanBean.stoppedLoan}"
+									onsuccess="PF('detailsDG').hide();">
+								</p:commandButton>
+
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onclick="PF('detailsDG').hide();" />
+							</div>
+						</p:dialog>
+
+						<p:dialog header="إظافة طي قيد موظف" widgetVar="addDialog"
+							modal="true" width="70%" dir="rtl">
+
+							<h:panelGroup id="addDialog">
+								<div>
+									<h:panelGroup id="dataPG">
+
+										<div class="ui-g">
+											<div class="ui-g-12 ui-md-6 ui-lg-3">
+												<h:outputLabel value="هجري  :  " />
+												<p:selectBooleanCheckbox
+													value="#{leavingEmployerBean.higriMode}">
+													<p:ajax update="pDates1,pDates12" process="@this"></p:ajax>
+												</p:selectBooleanCheckbox>
+											</div>
+
+										</div>
+
+										<div class="ui-g">
+											<div class="ui-g-1">
+												<h:outputLabel value="الموظف" styleClass="btxt" />
+											</div>
+											<div class="ui-g-3">
+												<p:selectOneMenu id="empList" filter="true"
+													filterMatchMode="contains"
+													value="#{leavingEmployerBean.employerNB}">
+													<f:selectItem itemValue=""
+														itemLabel="#{msg['choose.employee']}" />
+													<f:selectItems
+														value="#{loadingDataBean.activeEmployersList}" var="emp"
+														itemValue="#{emp.employeNumber}"
+														itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName}" />
+													<f:ajax render="includeform:dataPG includeform:inboxdt"
+														execute="empList" event="change"
+														listener="#{leavingEmployerBean.loadEmployer}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="تاريخ التعيين" styleClass="btxt" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel
+													value="#{leavingEmployerBean.employer.firstApplicationDate}" />
+											</div>
+
+										</div>
+
+										<div class="ui-g">
+											<div class="ui-g-1">
+												<h:outputLabel value="مدة الخدمة" styleClass="btxt" />
+											</div>
+
+											<div class="ui-g-2">
+												<h:outputLabel value="#{leavingEmployerBean.workDays}" />
+											</div>
+
+											<div class="ui-g-1">
+												<h:outputLabel value="يوم" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="#{leavingEmployerBean.workMonths}" />
+											</div>
+
+											<div class="ui-g-1">
+												<h:outputLabel value="شهر" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="#{leavingEmployerBean.workYears}" />
+											</div>
+
+											<div class="ui-g-1">
+												<h:outputLabel value="سنة" />
+											</div>
+										</div>
+									</h:panelGroup>
+								</div>
+								<hr />
+								<div>
+
+									<div class="ui-g">
+
+										<div class="ui-g-1">
+											<h:outputLabel value="رقم الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText
+												value="#{leavingEmployerBean.empTerminate.incomeNumber}"
+												class="form-control" />
+										</div>
+
+										<div class="ui-g-1">
+											<h:outputLabel value="تاريخ الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:panelGroup id="pDates1">
+												<p:inputText id="hiri1"
+													value="#{leavingEmployerBean.incomeDate}"
+													onfocus="loadCalendar();" required="true"
+													requiredMessage="يرجى اختيار تاريخ"
+													rendered="#{leavingEmployerBean.higriMode}"
+													styleClass="form-control form-controlCal">
+												</p:inputText>
+
+												<p:calendar id="gric1"
+													value="#{leavingEmployerBean.incomeDate_G}"
+													pattern="dd/MM/yyyy"
+													rendered="#{!leavingEmployerBean.higriMode}">
+													<f:validator validatorId="utilities.UmmAlQUraValidator" />
+												</p:calendar>
+											</h:panelGroup>
+
+
+											<!-- 											<p:inputMask -->
+											<!-- 												value="#{leavingEmployerBean.empTerminate.incomeDateHijri}" -->
+											<!-- 												mask="99/99/9999" dir="ltr" size="5"> -->
+											<!-- 												<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+											<!-- 											</p:inputMask> -->
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="سنة الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText
+												value="#{leavingEmployerBean.empTerminate.incomeYear}"
+												class="form-control" />
+										</div>
+									</div>
+
+									<!-- 									<div class="row "> -->
+									<div class="ui-g">
+
+										<div class="ui-g-1">
+											<h:outputLabel value="رقم القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText
+												value="#{leavingEmployerBean.empTerminate.executedNumber}"
+												class="form-control" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="سنة القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText
+												value="#{leavingEmployerBean.empTerminate.executedYear}"
+												class="form-control" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="تاريخ طي القيد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+
+											<h:panelGroup id="pDates12">
+												<p:inputText id="hiri12"
+													value="#{leavingEmployerBean.executedDate}"
+													onfocus="loadCalendar();" required="true"
+													requiredMessage="يرجى اختيار تاريخ"
+													rendered="#{leavingEmployerBean.higriMode}"
+													styleClass="form-control form-controlCal">
+												</p:inputText>
+
+												<p:calendar id="gric12"
+													value="#{leavingEmployerBean.executedDate_G}"
+													pattern="dd/MM/yyyy"
+													rendered="#{!leavingEmployerBean.higriMode}">
+													<f:validator validatorId="utilities.UmmAlQUraValidator" />
+												</p:calendar>
+											</h:panelGroup>
+
+
+											<!-- 											<p:inputMask -->
+											<!-- 												value="#{leavingEmployerBean.empTerminate.executedDate}" -->
+											<!-- 												mask="99/99/9999" dir="ltr" size="5"> -->
+											<!-- 												<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+											<!-- 											</p:inputMask> -->
+										</div>
+									</div>
+									<div class="ui-g">
+
+										<div class="ui-g-1">
+											<h:outputLabel value="الشهر" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu value="#{loanBean.month}">
+												<f:selectItems value="#{loadingDataBean.monthsList}"
+													var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameAr}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="سبب طي القيد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu
+												value="#{leavingEmployerBean.empTerminate.terminateReason}">
+												<f:selectItems
+													value="#{loadingDataBean.reasonsTerminateList}" var="res"
+													itemValue="#{res.id}" itemLabel="#{res.name}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+
+
+
+
+
+									<div class="ui-g">
+
+										<div class="ui-g-1">
+											<h:outputLabel value="هل تصرف له مكافأة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectBooleanButton
+												value="#{leavingEmployerBean.hasReward}" onLabel="نعم"
+												offLabel="لا" onIcon="ui-icon-check" offIcon="ui-icon-close"
+												style="width:60px" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="قيمة المكافأة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{leavingEmployerBean.rewardValue}"
+												class="form-control">
+												<p:ajax event="blur" update="total" process="@this"
+													listener="#{leavingEmployerBean.calculateTotal}">
+												</p:ajax>
+											</p:inputText>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="طريقة الصرف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu
+												value="#{leavingEmployerBean.empTerminate.payType}">
+												<f:selectItems value="#{loadingDataBean.payTypesList}"
+													var="type" itemValue="#{type.id}" itemLabel="#{type.name}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="هل يصرف له راتب" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectBooleanButton
+												value="#{leavingEmployerBean.hasSalary}" onLabel="نعم"
+												offLabel="لا" onIcon="ui-icon-check" offIcon="ui-icon-close"
+												style="width:60px" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="حالة الصرف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu
+												value="#{leavingEmployerBean.empTerminate.payStatus}">
+												<f:selectItems value="#{loadingDataBean.payStatusList}"
+													var="type" itemValue="#{type.id}" itemLabel="#{type.name}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="هل يصرف له إجازة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectBooleanButton
+												value="#{leavingEmployerBean.hasVacation}" onLabel="نعم"
+												offLabel="لا" onIcon="ui-icon-check" offIcon="ui-icon-close"
+												style="width:60px" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="الإجازة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{leavingEmployerBean.vacation}"
+												class="form-control" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="قيمة الإجازة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{leavingEmployerBean.vacationValue}"
+												class="form-control">
+												<p:ajax event="blur" update="total" process="@this"
+													listener="#{leavingEmployerBean.calculateTotal}">
+												</p:ajax>
+											</p:inputText>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="الملاحظات" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText
+												value="#{leavingEmployerBean.empTerminate.terminateNote}"
+												class="form-control" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="الصافي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText id="total"
+												value="#{leavingEmployerBean.empTerminate.natevalue}"
+												class="form-control" />
+										</div>
+									</div>
+								</div>
+
+							</h:panelGroup>
+							<br />
+							<div align="left" class="image-box-footer">
+								<p:commandButton value="تسجيل" styleClass="btn btn-primary"
+									action="#{leavingEmployerBean.saveLeavingEmloyer}"
+									onsuccess="PF('addDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px" />
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onclick="PF('addDialog').hide();" />
+							</div>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

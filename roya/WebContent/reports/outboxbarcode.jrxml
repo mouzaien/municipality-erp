@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inboxbarcode" language="groovy" pageWidth="250" pageHeight="130" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a7074ca-17a9-4b02-ae99-0c769d9a4014">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     WRK_COMMENT."APP_ID" AS WRK_COMMENT_APP_ID,
+     WRK_COMMENT."APP_NO" AS WRK_COMMENT_APP_NO,
+     WRK_COMMENT."APP_DATE" AS WRK_COMMENT_APP_DATE,
+     WRK_COMMENT."APP_PAPERS" AS WRK_COMMENT_APP_PAPERS,
+     WRK_COMMENT."APP_SUBJECT" AS WRK_COMMENT_APP_SUBJECT
+FROM
+     "PROJECT"."WRK_COMMENT" WRK_COMMENT
+where WRK_COMMENT."APP_NO" = $P{p1}]]>
+	</queryString>
+	<field name="WRK_COMMENT_APP_ID" class="java.math.BigDecimal"/>
+	<field name="WRK_COMMENT_APP_NO" class="java.lang.String"/>
+	<field name="WRK_COMMENT_APP_DATE" class="java.lang.String"/>
+	<field name="WRK_COMMENT_APP_PAPERS" class="java.math.BigDecimal"/>
+	<field name="WRK_COMMENT_APP_SUBJECT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="88" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="1" width="182" height="10" forecolor="#868686" uuid="d740bebb-3fc7-4715-afe8-df597144d648"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="PDF417" drawText="true" checksumRequired="false" barHeight="40">
+					<jr:codeExpression><![CDATA[$P{p1}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="0" y="11" width="200" height="45" uuid="ab537398-dc42-4fd3-9635-614b1d4ef94f"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false" barHeight="0">
+					<jr:codeExpression><![CDATA[$P{p1}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="56" width="210" height="20" uuid="7cef265e-ea92-42d9-a1e2-47a944786751"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WRK_COMMENT_APP_DATE}+'>>>>>'+$F{WRK_COMMENT_APP_NO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="68" width="210" height="12" uuid="f8c8eced-9028-4b21-8c29-51ac24a69f1f"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الغرفة التجارية الصناعية بالبكيرية >>صادر>>OUTBOX]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{mailDefenationBean.init}"></f:viewAction>
+	</f:metadata>
+
+
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+
+	<style>
+#trans_TV li.ui-state-disabled {
+	display: none;
+}
+</style>
+</h:head>
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform" prependId="false">
+			<div class="image-box-footer">
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton styleClass="orange-btn ui-state-hover"
+					icon=" fa fa-archive" immediate="true"
+					action="#{mailDefenationBean.sendRecordToArchive}"
+					value="#{msg['archiving']}">
+					<p:ajax process="@this"></p:ajax>
+				</p:commandButton>
+			</div>
+			<br></br>
+
+			<h:inputHidden styleClass="inputHidden"
+				value="#{mailDefenationBean.inputHiddenValue}"></h:inputHidden>
+			<div class="card card-w-title">
+				<h:panelGroup 
+					columns="1" columnClasses="ui-grid-col-8" layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h1 class="page-header">
+						#{mailDefenationBean.selectedInbox.appTitle}</h1>
+				</h:panelGroup>
+				<p:panelGrid columns="2"
+					columnClasses="ui-grid-col-2,ui-grid-col-8," layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h:panelGroup rendered="#{mailDefenationBean.enableReturn}">
+						<div class="row">
+							<div class="col-md-3">
+								<p:outputLabel styleClass="btxt" value="#{msg['observations']}" />
+							</div>
+							<div class="col-md-5">
+								<p:inputTextarea styleClass="form-control"
+									placeholder="#{msg['observations']}" id="notes"
+									value="#{mailDefenationBean.notes}" />
+							</div>
+							<p:commandButton value="#{msg['return.transaction']}"
+								action="#{mailDefenationBean.returnRequestAction}"
+								style="float: left; margin-bottom: 19px; margin-left: 3px"
+								styleClass="btn btn-primary" />
+						</div>
+					</h:panelGroup>
+
+				</p:panelGrid>
+				<p:tabView id="trans_TV"
+					activeIndex="#{mailDefenationBean.tabActiveIndex}">
+					<p:tab title="#{msg['transaction.data']}">
+						<h:panelGrid style="width:100%">
+							<ui:include src="/pages/models/transaction_tab.xhtml" />
+						</h:panelGrid>
+					</p:tab>
+<!-- 					<p:tab title="#{msg['attachments']}"> -->
+<!-- 						<h:panelGrid style="width:100%"> -->
+<!-- 							<ui:include src="/pages/models/attachment_tab.xhtml" /> -->
+<!-- 						</h:panelGrid> -->
+<!-- 					</p:tab> -->
+					<p:tab title="#{msg['model']}">
+						<h:panelGrid style="width:100%">
+							<ui:include src="#{modelsBean.pageName}">
+							</ui:include>
+						</h:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+			<p:growl autoUpdate="true" showDetail="false" />
+			<h:inputHidden id="mylst" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

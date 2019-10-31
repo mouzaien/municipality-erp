@@ -1,0 +1,546 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+					rel="stylesheet"></link>
+
+	<style>
+body {
+	margin: 0px;
+}
+td {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+    max-width: 30px;
+}
+
+.ui-datatable-footer {
+	background: red !important;
+}
+.fixed
+{
+    table-layout: fixed;
+    width: 100px;
+}
+</style>
+</h:head>
+<h:body>
+
+	<ui:composition template="../pages/menuBar.xhtml">
+
+		<ui:define name="content">
+
+			<p class="text-center">
+				<h:outputLabel styleClass="btxt"
+					style="font-weight:bold; font-size:30px;"
+					value="#{msg['general.appre.title']}">
+				</h:outputLabel>
+
+
+			</p>
+
+
+			<h:form id="includeform">
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				
+				
+
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+		<div class="row">
+			<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">البيانات الرئيسية
+					</h4>
+					
+						<div class="col-md-12">
+						<div class="row ">
+							<div class="col-md-4">
+								<div class="row ">
+									<div class="col-md-4">
+										<label class="btxt">القسم / الإدارة</label>
+
+									</div>
+									<div class="col-md-8">
+										<h:outputLabel value="#{generalAppreciationBean.compactPerformance.employer.userDept.deptName}" />
+									</div>
+
+								</div>
+							</div>
+
+							<div class="col-md-8">
+								<div class="row ">
+									<div class="col-md-4">
+										<label class="btxt">إسم الموظف</label>
+
+									</div>
+									<div class="col-md-8">
+
+										<h:outputLabel	value="#{generalAppreciationBean.compactPerformance.employer.employeeName}" />
+
+									</div>
+
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+					<br /><br />
+						<br />
+					<div class="row">
+						<h:panelGroup id="details_data">
+							<div class="col-md-4">
+								<div class="row ">
+									<div class="col-md-5">
+										<label class="btxt">المسمى الوظيفي</label>
+
+									</div>
+									<div class="col-md-4">
+										<h:outputLabel
+											value="#{generalAppreciationBean.compactPerformance.jobDescription}" />
+									</div>
+
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row ">
+									<div class="col-md-5">
+										<label class="btxt">الرقم الوظيفي</label>
+
+									</div>
+									<div class="col-md-4">
+										<h:outputLabel
+											value="#{generalAppreciationBean.compactPerformance.jobNo}" />
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="col-md-4">
+								<div class="row ">
+									<div class="col-md-4">
+										<label class="btxt">المدير (المقيم)</label>
+
+									</div>
+									<div class="col-md-8">
+										<h:outputLabel
+											value="#{generalAppreciationBean.compactPerformance.mgrName}" />
+
+									</div>
+
+								</div>
+							</div>
+
+						</h:panelGroup>
+					</div>
+				
+			</div>
+			
+						<br />
+	
+			<br />
+			<div class="row">
+			
+						<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-5"><label class="btxt">بداية دورة الأداء</label>
+							
+							</div>
+								<div class="col-md-4">
+										<p:inputMask
+											value="#{generalAppreciationBean.generalAppreciation.dateStart}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+											<p:ajax event="blur"  process="@this" />
+										</p:inputMask>
+									</div>
+
+						</div>
+						</div>
+					
+						<div class="col-md-4">
+							<div class="row ">
+							<div class="col-md-5"><label class="btxt">نهاية دورة الأداء</label>
+							
+							</div>
+							<div class="col-md-4">
+										<p:inputMask
+											value="#{generalAppreciationBean.generalAppreciation.dateFinish}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+											<p:ajax event="blur"  process="@this" />
+										</p:inputMask>
+									</div>
+
+						</div>
+						</div>
+						<div class="col-md-4">
+						  <div class="row ">
+							<div class="col-md-4"><label class="btxt">تاريخ التقويم </label>
+							
+							</div>
+							<div class="col-md-8">
+
+								<h:inputText id="type66" styleClass="form-control"/>
+
+							</div>
+
+						</div>
+						</div>
+						
+				
+			</div>
+					
+					<br/>
+					<div style="color: color: #428bca">
+						
+						
+							<h4 class="page-header" onclick="openDiv();"
+					style="margin: 0px 58px 20px ! important; color: #FF5722; cursor:help" >تعليمات تعبئة النموذج
+					</h4>
+					</div>
+					<br/>
+					
+					<div id="divRegle" style="display: none;">
+					<ol>
+					  <li>#{msg['general.app.regle1']}</li>
+					  <li>#{msg['general.app.regle2']}</li>
+					  <li>#{msg['general.app.regle3']}</li>
+					  <li>#{msg['general.app.regle4']}</li>
+					</ol>
+					
+					</div>
+
+					<div class="panel-body">
+
+
+						<div class="row">
+						<div>
+<!-- 						 <h:selectOneRadio value="" class="container"> -->
+<!-- 						   	<f:selectItem itemValue="Red" itemLabel="Color1 - Red" /> -->
+<!-- 						   	<f:selectItem itemValue="Green" itemLabel="Color1 - Green" /> -->
+<!-- 						   	<f:selectItem itemValue="Blue" itemLabel="Color1 - Blue" /> -->
+<!-- 						</h:selectOneRadio> -->
+						<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">النتيجة = #{generalAppreciationBean.generalAppreciation.result} 
+					</h4> 
+					
+					
+						 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+					        <p:selectOneRadio  disabled="true" widgetVar="widgetSorType"  id="rating" value="#{generalAppreciationBean.generalAppreciation.hrsCompactRatingId}">
+					            <f:selectItem itemLabel="غير مرضي" itemValue="1" />
+					            <f:selectItem itemLabel="مرضي" itemValue="2" />
+					            <f:selectItem itemLabel="جيد" itemValue="3" />
+					             <f:selectItem itemLabel="  جيد جدا" itemValue="4" />
+					             <f:selectItem itemLabel="ممتاز" itemValue="5" />
+					        </p:selectOneRadio>
+    </h:panelGrid>
+					<h:panelGroup id="result" layout="block" rendered="#{generalAppreciationBean.visible}" >
+						<div id="attach">
+						<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">المبررات
+					</h4>
+					<h:inputTextarea style="height:110px;" styleClass="form-control" id="Justifications"
+										
+										value="#{generalAppreciationBean.generalAppreciation.justifications}">
+                                      <p:ajax event="blur"  process="@this" />
+									</h:inputTextarea >
+					<br/>
+					<br/>
+						<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">الواثائق الداعمة
+					</h4>
+					
+									<div class="row">
+
+					<div class="col-md-7">
+						<br></br>
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel styleClass="btxt" value=" الارفاق " />
+
+							</div>
+							<div class="col-md-10">
+								<p:fileUpload id="upload" widgetVar="newCommentFileUpload100"
+									multiple="true" update="att-list"
+									fileUploadListener="#{generalAppreciationBean.uploadFile}"
+									uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+									label="تحديد المرفق" sizeLimit="300000000" previewWidth="30" />
+							</div>
+							<h:commandButton id="btn_1" value="uploadFiles"
+								style="display: none">
+								<f:ajax event="click"
+									listener="#{generalAppreciationBean.refreshFilesUploaded}"
+									render="att-list">
+								</f:ajax>
+							</h:commandButton>
+						</div>
+						<br></br>
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="  " />
+
+							</div>
+							<div>
+								<ul>
+									<h:panelGroup id="att-list">
+										<br></br>
+										<ui:repeat var="attach" value="#{generalAppreciationBean.attachList}">
+											<div class="row">
+												<div class="col-md-5">
+													<h:outputLabel value="#{attach.attachRealName}" />
+												</div>
+												<div class="col-md-1">
+													<h:commandButton class="btn btn-danger" immediate="true"
+														render="att-list" value="إلغاء"
+														actionListener="#{generalAppreciationBean.deleteAttchFile(attach.attachRealName)}">
+													</h:commandButton>
+												</div>
+											</div>
+										</ui:repeat>
+									</h:panelGroup>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5">
+
+						<br></br> <a href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+							id="FileLoderID" class="btn btn-primary"
+							style="display: none; float: left; margin-left: 84px;"
+							onclick="notVisibleDIv()"> تحميل المرفقات </a>
+						<div style="display: inline;">
+							<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+								class="btn btn-primary icon-pencil" onclick="visibleDIv()">
+								<i class="material-icons">scanner</i>
+							</a>
+							<div class="col-md-6" id="divError"
+								style="display: none; float: left;">
+								<h:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح"
+									style="color:red"></h:outputLabel>
+							</div>
+
+						</div>
+						
+						
+
+					</div>
+
+				</div>
+					
+					
+					<br/>
+					<br/>
+						
+						</div>
+						 </h:panelGroup>
+						<br/>
+						</div>
+						<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">نقاط القوة /النقاط اللتي تحتاج إلى تطوير
+					</h4>
+					<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="نقاط القوة" />
+								</div>
+
+								<div class="col-md-7">
+
+									<h:inputTextarea row = "50" col = "50" styleClass="form-control" id="powerPoints"
+										
+										value="#{generalAppreciationBean.hrsCompactEmpCaracter.powerPoints}">
+
+									</h:inputTextarea>
+								</div>
+							</div>
+							<br/>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="نقاط للتطوير" />
+								</div>
+
+								<div class="col-md-7">
+
+									<h:inputTextarea row = "50" col = "50"  styleClass="form-control" id="devPoints"
+										
+										value="#{generalAppreciationBean.hrsCompactEmpCaracter.devPoints}">
+
+									</h:inputTextarea >
+								</div>
+								<br/><br/>
+								 <div class="col-md-2">
+									<h:commandButton id="addBtn" style="float:left"
+										styleClass="btn btn-success"
+										 value="اضافة">
+										<f:ajax listener="#{generalAppreciationBean.addCaracter}"
+											execute="powerPoints  devPoints"
+											render="table powerPoints devPoints addBtn"></f:ajax>
+									</h:commandButton>
+								</div>
+							</div>
+							
+					      
+							<h:panelGroup id="table" style="width:100px">
+								<div class="col-md-10 ">
+
+									
+
+										<table class="table table-striped table-hover" style="table-layout:fixed !important;" >
+											<thead>
+												<tr>
+
+													<th style="width:4%;">رقم</th>
+													<th style="width:41%;">نقاط القوة</th>
+													<th style="width:41%;">نقاط للتطوير</th>
+													
+													<th style="width:4%;">حذف</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<ui:repeat var="det" varStatus="x"
+													value="#{generalAppreciationBean.hrsCompactEmpCaracterLst}">
+
+
+													<tr>
+
+														<td  style="overflow:hidden;word-wrap:break-word;">#{x.index+1}</td>
+														<td  style="overflow:hidden;word-wrap:break-word;">#{det.powerPoints}</td>
+														<td  style="woverflow:hidden;word-wrap:break-word;">#{det.devPoints}</td>
+														
+														<td style="overflow:hidden;word-wrap:break-word;"><p:commandButton id="xx"
+																style="width: 13px; height: 24px;" icon="fa fa-times"
+																styleClass=" btn btn-danger">
+																<f:ajax
+																	listener="#{generalAppreciationBean.removeRecord(det)}"
+																	render="@form"></f:ajax>
+															</p:commandButton></td>
+
+
+													</tr>
+
+												</ui:repeat>
+											</tbody>
+										</table>
+									
+
+
+								</div>
+								 
+							</h:panelGroup>
+
+						</div>
+						<hr></hr>
+
+
+
+
+						<div class="row ">
+							<div class="col-md-3">
+								<h:outputLabel styleClass="btxt" value="الملاحظات" />
+							</div>
+
+							<div class="col-md-7">
+
+								<h:inputTextarea style="height: 100px;" styleClass="form-control"
+									id="note"
+									value="#{generalAppreciationBean.generalAppreciation.note}">
+                                    <p:ajax event="blur"  process="@this" />
+								</h:inputTextarea>
+							</div>
+						</div>
+					</div>
+
+					
+
+				
+
+					
+				</div>
+<div>
+			<h:commandButton value="حفظ"
+				style=" margin-bottom: 19px;
+						float:left"
+				styleClass="btn btn-primary" 
+				action = "#{generalAppreciationBean.savecharter}"> 
+					
+			</h:commandButton>
+							
+								
+							
+					</div>
+
+
+<script>
+
+function openDiv() {
+	
+	
+	
+	   
+	
+    var x = document.getElementById('divRegle');
+    var y = document.getElementById('btnRegle');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+        y.value = "إخفاء التعليمات";
+    } else {
+        x.style.display = 'none';
+        y.value = "تعليمات تعبئة النموذج";
+    }
+}
+
+function openRecuiredDiv()
+{
+	
+	 var inputs = PF('widgetSorType').inputs;
+	 var attach = document.getElementById('attach');
+	   
+     if (inputs[0].checked ||inputs[4].checked) {
+    	 attach.style.display = 'block'
+         }
+     else {
+    	 attach.style.display = 'none'
+     }
+    	 
+	
+}
+function visibleDIv() {
+	document.getElementById("FileLoderID").style.display = "block";
+	document.getElementById("divError").style.display = "block";
+}
+function notVisibleDIv() {
+
+	document.getElementById("divError").style.display = "none";
+	document.getElementById("FileLoderID").style.display = "none";
+	document.getElementById("includeform:btn_1").click();
+}
+
+</script>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

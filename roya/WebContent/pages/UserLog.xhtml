@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+        <link href="../resources/css/purecss/pure-min.css" rel="stylesheet" type="text/css"></link>
+
+        <link  rel="stylesheet"  type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+        <link  rel="stylesheet"  type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+        <script type ="text/javascript">
+            window.onload = window.history.forward(0);
+        </script> 
+        <style >
+            body{
+                margin: 0px;
+            }
+        </style>
+    </h:head>
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+
+            <ui:define name="top">
+                متابعة النظام 
+            </ui:define>
+
+            <ui:define name="content">
+
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                 
+                <p:dialog widgetVar="statusDialog" modal="true" 
+                          draggable="false" closable="false" resizable="false" showHeader="false">
+                    <img src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif" />
+                </p:dialog>
+
+                <div class="container-fluid">
+                <p:growl autoUpdate="true"> </p:growl>
+                    <div class="row">
+                    	<div class="col-md-2">أختر الموظف المطلوب</div>
+                    	<div class="col-md-6">
+						<p:selectOneMenu id="userlistId" style="width:100%" value="#{userLogBean.selectedUser}" 
+						required="true"
+						requiredMessage="يرجي اختيار المستخدم "
+						>
+							<f:selectItem itemLabel="أختر الموظف المطلوب" itemValue="" />
+							<f:selectItems value="#{userLogBean.userMap}"></f:selectItems>
+						</p:selectOneMenu>
+					</div>
+                    	<div class="col-md-4">
+                    	<p:commandButton icon="fa fa-search" process="@this,userlistId" 
+                    	update=":tempform:actionDt"
+                    	action="#{userLogBean.searchBtnAction(actionEvent)}"></p:commandButton>
+                    	</div>
+                    </div>
+                    <div class="row">
+                    	<p:dataTable  id="actionDt"
+                    	paginator="true" rows="15"
+                    	var="actionRec" value="#{userLogBean.useractionlist}"	>
+                    	<p:column headerText="تاريخ الحركة م">#{actionRec.actionGdate}</p:column>
+                    	<p:column headerText="عنوان الحركة ">#{actionRec.pcId}</p:column>
+                    	<p:column headerText="الحركة ">#{actionRec.action}</p:column>
+                    	<p:column headerText="التفاصيل ">#{actionRec.actionDetails}</p:column>
+                    	<p:column headerText="التاريخ هـ">#{actionRec.actionHdate}</p:column>
+                    	</p:dataTable>
+                    
+                    
+                    
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

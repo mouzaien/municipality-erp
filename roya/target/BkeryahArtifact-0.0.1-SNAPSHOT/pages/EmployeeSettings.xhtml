@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+ <ui:define name="top">إعدادات الموظف</ui:define>
+            <ui:define name="content">
+                <h:form>
+                    <p:accordionPanel id="tabview001">
+                        <p:tab title="كلمة المرور للنظام  ">
+                            <div class="container-fluid">
+                                <div class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                                    <div class="col-md-6">
+                                        <p:password style="width: 100%" 
+                                                    id="newPassword"
+                                                    value="#{employeesetting.newPassword}"
+                                                    inline="true"
+                                                    rendered="true"
+                                                    promptLabel="أدخل كلمة السر الجديده"
+                                                    placeholder="أدخل كلمة المرور الجديده"
+                                                    feedback="true" weakLabel="ضعيف" goodLabel="جيد" strongLabel="قوية"  />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p:commandButton value="تغيير كلمة المرور" 
+                                                         process="@this,newPassword"
+                                                         
+                                                         icon="fa fa-repeat" action="#{employeesetting.changeUserPassword(actionEvent)}" />
+                                    </div>
+                                </div>
+                                <p:messages autoUpdate="true"  />
+                            </div>
+                        </p:tab>
+
+                        <p:tab title="كلمة المرور للتوقيع">
+
+                            <div class="container-fluid">
+                                <div class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                                    <div class="col-md-6">
+                                        <p:password style="width: 100%" 
+                                                    id="newsignPassword"
+                                                    value="#{employeesetting.newSignPassword}"
+                                                    inline="true"
+                                                    rendered="true"
+                                                    promptLabel="أدخل كلمة سر التوقيع الجديده"
+                                                    placeholder="أدخل كلمة سر التوقيع الجديده"
+                                                    feedback="true" weakLabel="ضعيف" goodLabel="جيد" strongLabel="قوية"  />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p:commandButton value="تغيير كلمة المرور" 
+                                                         process="@this,newsignPassword"
+                                                         
+                                                         icon="fa fa-repeat" action="#{employeesetting.changeUserSignPassword(actionEvent)}" />
+                                    </div>
+                                </div>
+                                <p:messages autoUpdate="true"  />
+                            </div>
+                            
+                            
+                        </p:tab>
+
+                        <p:tab title="  المجلدات الشخصية" >
+                            <div class="container-fluid">
+                                <div class="row" style="margin: 5px;">
+                                    <div class="col-md-4"> </div>
+                                    <div class="col-md-4"> <p:commandButton
+                                            icon="fa fa-plus" class="btn btn-default"
+                                            value="انشاء مجلد جديد" style="width: 100%" onclick="PF('addfolderdlgf').show()"  /> </div>
+                                    <div class="col-md-4"> </div>
+                                    <p:dialog widgetVar="addfolderdlgf" header="مجلد جديد" id="addfolderdlgid" modal="true" width="450" showEffect="fade"  resizable="false">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-7"  style="margin-top: 15px;">
+
+                                                    <p:inputText type="text" 
+                                                                 style="width: 100%;"
+                                                                 placeholder="ادخل اسم المجلد" value="#{employeesetting.newFolderName}" id="folName"  />
+
+                                                </div>
+                                                <div class="col-md-5" style="margin-top: 15px;">
+                                                    <p:commandButton value=" حفظ المجلد " 
+                                                                     action="#{employeesetting.saveFolder(actionEvent)}" 
+                                                                     update="folderdatatable"
+                                                                     icon="fa fa-save"
+                                                                     style="width: 100%"
+                                                                     oncomplete="PF('addfolderdlgf').hide()"
+                                                                     process="@this,folName" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:dialog>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p:dataTable id="folderdatatable" 
+                                                     rowKey="#{fol.folderId}"
+                                                     value="#{employeesetting.userFolders}" var="fol">
+                                            <p:column style="font-weight: bold ;font-size: 18px;"  headerText="المسلسل" width="100">
+                                                #{fol.folderId}
+                                            </p:column>
+                                            <p:column style="font-weight: bold ;font-size: 18px;" headerText="اسم المجلد" >
+
+                                                #{fol.folderName}
+                                            </p:column>
+                                            <p:column width="110">
+                                                <p:commandButton value="حذف" icon="fa fa-trash" 
+                                                                 action="#{employeesetting.deleteFolderAction(actionEvent)}"
+                                                                 process="@this"
+                                                                 update="folderdatatable"
+
+                                                                 >
+
+                                                    <f:setPropertyActionListener value="#{fol}" target="#{employeesetting.selectedFolder}" />
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

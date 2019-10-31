@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<f:metadata>
+		<f:viewAction action="#{inboxBean.updateFlag}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	<link type="text/css" rel="stylesheet"
+		href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-south-street" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+
+	<ui:composition template="../menuBar.xhtml">
+
+		<ui:define name="content">
+
+			<div class="alert alert-info"
+				style="font-size: 19px; padding: 2px; margin: 3px;">
+				<div class="row">
+					<div class="col-md-10" style="white-space: nowrap">#{inboxBean.selectedInbox.appTitle}</div>
+					<div class="col-md-2">
+						<p:commandButton value="إضافة خطاب" style="float:left;"
+							update=":mainForm:includeform:record-tab-views"
+							rendered="#{ ! inboxBean.recordHasComment and !mainManagedBean.mailExecutor.isModel}"
+							action="#{inboxBean.showCommentTab(action)}"></p:commandButton>
+					</div>
+				</div>
+			</div>
+			<h:form id="includeform">
+				<p:tabView id="record-tab-views">
+					<p:tab title="بيانات المعاملة ">
+						<div style="margin-top: 5px;">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value=" بيانات المعاملة  " />
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="  رقم المعاملة" styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{inboxBean.selectedInbox.appId} &frasl; #{inboxBean.selectedInbox.wrkId} " />
+										</div>
+										<div class="col-md-3"></div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="الموضوع " styleClass="btxt" />
+
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel value="#{inboxBean.selectedInbox.appTitle}"
+												style="white-space: nowrap;" />
+										</div>
+										<div class="col-md-3" />
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="المرسل " styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel value=" #{inboxBean.selectedInbox.wrkSender}" />
+										</div>
+										<div class="col-md-3" />
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="أنشأت في " styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{inboxBean.selectedInbox.wrkHdate} #{inboxitem.wrkCreateTime}" />
+										</div>
+										<div class="col-md-3" />
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value=" عرض الشروحات  " />
+								</div>
+								<div class="panel-body">
+									<ul>
+										<ui:repeat varStatus="x" value="#{inboxBean.comments}"
+											var="comm">
+											<br></br>
+											<p:outputLabel rendered="#{inboxBean.comments eq Empty }"
+												value="عفوا لا يوجد شروحات لهذه المعاملة "></p:outputLabel>
+											<div class="panel panel-default">
+												<div class="panel-body">أرسلت بواسطة #{comm.fromName}
+													الي #{comm.toName} في #{comm.createdIn}</div>
+												<div class="panel-footer">
+													<div class="container-fluid">
+														<li><p:outputLabel> الغرض : #{comm.purpose}</p:outputLabel></li>
+														<li>#{comm.comment}</li>
+													</div>
+												</div>
+											</div>
+										</ui:repeat>
+									</ul>
+								</div>
+								<div class="panel-footer">
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel style=" margin-top: 5px;"
+												value=" اختر اسم المجلد لنقل المعاملة " />
+										</div>
+										<div class="col-md-2">
+											<p:selectOneMenu value="#{inboxBean.newRecordTargetFolder}"
+												style="width:100%">
+												<f:selectItem itemLabel=" اختر اسم المجلد " />
+												<f:selectItem itemLabel="المجلد الرئيسي للمعاملات"
+													itemValue="0" />
+												<f:selectItems value="#{inboxBean.userFolders}" />
+												<p:ajax event="change" process="@this"
+													listener="#{inboxBean.changetargetFolder(abe)}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="col-md-3">
+											<p:commandButton style="width:100%" value="نقل"
+												icon="fa fa-paper-plane">
+											</p:commandButton>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</p:tab>
+					<p:tab title="المرفقات">
+						<div style="margin: 7px;">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value="المرفقات " />
+								</div>
+								<div class="panel-body">
+									<p:outputLabel rendered="#{inboxBean.attList eq null }"
+										value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel>
+									<ul>
+										<h:panelGroup id="AttachmantTab">
+											<ui:repeat value="#{inboxBean.attList}" var="att">
+												<div class="panel panel-default">
+													<div class="panel-body">قام بارفاقه #{att.ownerName}</div>
+													<div class="panel-footer">
+														<div class="container-fluid">
+															<h:outputLink target="_blank" value="#{att.attLink}">
+																أضغط هنا لتحميل الملف
+															</h:outputLink>
+														</div>
+													</div>
+												</div>
+											</ui:repeat>
+										</h:panelGroup>
+									</ul>
+								</div>
+							</div>
+
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value="اضافة مرفق " />
+								</div>
+								<div class="panel-body">
+									<p:fileUpload id="RecordsUploaderID"
+										widgetVar="RecordsUploader" multiple="true" auto="true"
+										fileUploadListener="#{inboxBean.uploadRecordFiles}"
+										uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
+										previewWidth="0" process="@this"
+										style="width: 100%;display: block;"
+										allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+										sizeLimit="300000000" update="AttachmantTab" />
+								</div>
+							</div>
+						</div>
+					</p:tab>
+					<p:tab title="الاحــالة">
+						<div style="margin: 7px;">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value="  احالة المعاملة  " />
+								</div>
+								<div class="panel-body">
+									<h:form id="form001">
+										<div class="row">
+											<div class="col-md-1">
+												<p:outputLabel value="الشـــــــرح" />
+											</div>
+											<div class="col-md-9">
+												<p:inputTextarea style="  width:100%;"
+													styleClass="form-control" class="col-md-10"
+													value="#{inboxBean.wrkCommTxt}" id="wrkcomm" />
+											</div>
+										</div>
+										<br></br>
+										<div class="row">
+											<div class="col-md-1">
+												<p:outputLabel value="التوجيه " />
+											</div>
+											<div class="col-md-10">
+												<p:selectOneMenu id="wrkpurp00" value="#{inboxBean.wrkPurp}"
+													panelStyle="width:305px" effect="fade" var="d"
+													style="width:300px;direction: rtl;" filter="true"
+													filterMatchMode="contains">
+													<f:selectItem itemLabel="اختر   توجيه المعاملة "
+														itemValue="" />
+													<f:selectItems value="#{inboxBean.purpMap}" />
+
+												</p:selectOneMenu>
+											</div>
+										</div>
+										<br></br>
+										<div class="row" id="abc002">
+											<div class="col-md-1">
+												<p:outputLabel value="جهات الإرسال " />
+											</div>
+											<div class="col-md-10" id="abc001">
+												<p:accordionPanel
+													style="background-color: #3c763d !important;"
+													multiple="true" id="accord">
+													<p:tab title="جهة إرسال أصل المعاملة"
+														style="background-color:rgba(9, 62, 6, 0.78)  ! importan ;"
+														id="orgsendcontact">
+														<p:tabView id="copycontact">
+															<p:tab title="موظفي القسم" id="tab000">
+																<p:selectOneRadio id="empr"
+																	value="#{inboxBean.wrkReciever}" layout="grid"
+																	columns="3">
+																	<p:ajax update="mngr"
+																		listener="#{inboxBean.clearMngRadioList(valueChangeEvent)}" />
+																	<f:selectItems value="#{inboxBean.empMap}" />
+																</p:selectOneRadio>
+															</p:tab>
+															<p:tab title=" مديري الإدارات"
+																rendered="#{inboxBean.isManager}">
+																<p:selectOneRadio id="mngr" layout="grid" columns="3"
+																	value="#{inboxBean.wrkReciever1}">
+																	<p:ajax update="empr"
+																		listener="#{inboxBean.clearEmpRadioList(valueChangeEvent)}" />
+																	<f:selectItems value="#{inboxBean.mgrMap}" />
+																</p:selectOneRadio>
+															</p:tab>
+														</p:tabView>
+													</p:tab>
+
+													<p:tab title="جهات إرسال صور المعاملة" id="copyTab">
+														<p:tabView id="wrkcopy00">
+															<p:tab title="موظفي القسم" id="wrktab00">
+																<p:selectManyCheckbox id="wrkemplst"
+																	value="#{inboxBean.wrkCopyEmpRecievers}" layout="grid"
+																	columns="3">
+																	<f:selectItems value="#{inboxBean.empMap}" />
+																</p:selectManyCheckbox>
+															</p:tab>
+															<p:tab title=" مديري الإدارات"
+																rendered="#{inboxBean.isManager}">
+																<p:selectManyCheckbox id="wrkmnglst"
+																	value="#{inboxBean.wrkCopyMngRecievers}" layout="grid"
+																	columns="3">
+																	<f:selectItems value="#{inboxBean.mgrMap}" />
+																</p:selectManyCheckbox>
+															</p:tab>
+														</p:tabView>
+													</p:tab>
+												</p:accordionPanel>
+											</div>
+										</div>
+										<br></br>
+										<div class="row">
+											<div class="col-md-1">
+												<p:outputLabel value="ملحوظات" />
+											</div>
+											<div class="col-md-2">
+
+												<h:outputLabel value="المعاملة عاجلة" />
+												<p:selectBooleanCheckbox value="#{inboxBean.isImportant}"
+													id="isimport" />
+											</div>
+											<div class="col-md-2">
+												<p:outputLabel value=" الشرح سري" />
+												<p:selectBooleanCheckbox value="#{inboxBean.isSecret}"
+													id="issecret" />
+											</div>
+										</div>
+										<br></br>
+										<div class="row"></div>
+										<!-- End Of Row -->
+									</h:form>
+								</div>
+								<div class="panel-footer">
+									<div class="container-fluid">
+										<p:commandButton value="احالة المعاملة "
+											style="float:left;font-family: kufi !important;"
+											styleClass="btn btn-default"
+											process="@this,:mainForm:includeform:record-tab-views:form001:wrkcomm,:mainForm:includeform:record-tab-views:form001:wrkpurp00,
+													:mainForm:includeform:record-tab-views:form001:accord:wrkcopy00:wrkemplst,
+													:mainForm:includeform:record-tab-views:form001:accord:wrkcopy00:wrkmnglst,
+													:mainForm:includeform:record-tab-views:form001:isimport,
+													:mainForm:includeform:record-tab-views:form001:issecret "
+											action="#{inboxBean.wrkSendAction(actionEvent)}"
+											icon="fa fa-paper-plane">
+											<p:confirm header="تأكيد الإرسال "
+												message="هل تود إرسال الاحالة حقا ؟ " icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:confirmDialog global="true" showEffect="explode"
+											hideEffect="explode">
+											<p:commandButton value="موافق" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="تراجع" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</div>
+								</div>
+							</div>
+						</div>
+					</p:tab>
+					<p:tab title="بيانات الخطاب"
+						rendered="#{  inboxBean.recordHasComment}">
+						<div style="margin: 7px;">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value=" بيانات خطاب التغطية  " />
+								</div>
+								<div class="panel-body">
+
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="موجه إلي" />
+										</div>
+										<div class="col-md-10">
+											<p:inputText style="width: 190px;" id="commenttoid"
+												value="#{inboxBean.commentTo}" />
+										</div>
+									</div>
+									<br></br>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value=" نوع الخطاب" />
+										</div>
+										<div class="col-md-6">
+
+											<div class="row">
+												<div class="col-md-5">
+													<p:selectOneMenu id="commTyp"
+														value="#{inboxBean.commentTyp}" panelStyle="width:305px"
+														effect="fade" var="d" style="width: 100%;" filter="true"
+														filterMatchMode="contains">
+														<f:selectItem itemLabel="اختر   توجيه المعاملة "
+															itemValue="" />
+														<f:selectItems value="#{inboxBean.commentTypes}" />
+													</p:selectOneMenu>
+												</div>
+												<div class="col-md-5">
+
+													<div class="row">
+														<div class="col-md-2">
+															<p:outputLabel style="
+															 margin-top: 5px;"
+																value="المرفقات" />
+														</div>
+														<div class="col-md-8">
+															<p:inputText style=" margin-right: 12px;"
+																value="#{inboxBean.commentAppAttach}" />
+														</div>
+													</div>
+												</div>
+												<div class="col-md-4"></div>
+											</div>
+										</div>
+									</div>
+
+									<br></br>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="موضوع الخطاب" />
+										</div>
+										<div class="col-md-10">
+											<p:inputText id="commenttopicid" style="width: 100%;"
+												value="#{inboxBean.commentTopic}" />
+										</div>
+									</div>
+									<br></br>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="صورة الفئة الأعلي  " />
+										</div>
+										<div class="col-md-10">
+											<p:inputTextarea id="commentuppercopyid"
+												style="width: 100%;min-height: 30px;max-height: 60px;overflow: auto;"
+												value="#{inboxBean.upperCopy}" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value=" نص الخطاب " />
+										</div>
+										<div class="col-md-10">
+											<p:inputTextarea
+												disabled="#{inboxBean.isSelectedCommentSigned}"
+												id="commentconentid" style="width: 100%;overflow: auto;"
+												value="#{inboxBean.commentContent}" />
+										</div>
+									</div>
+									<br></br>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="صورة الفئة الادني " />
+										</div>
+										<div class="col-md-10">
+											<p:inputTextarea id="commentlowercopyid"
+												style="width: 100%;overflow: auto;max-height: 60px;"
+												value="#{inboxBean.lowerCopy}" />
+										</div>
+									</div>
+								</div>
+								<div class="panel-footer">
+									<div class="row">
+										<p:messages autoUpdate="true"></p:messages>
+									</div>
+									<div class="row ">
+
+										<h:panelGroup id="signBtn">
+											<h:panelGroup id="btnPanel">
+												<div class="col-md-12"
+													style="display: inline-table; float: right;">
+													<h:panelGroup>
+														<div class="row">
+														<div class="col-md-2"></div>
+															<div class="col-md-2">
+																<p:commandButton id="markbtn" value="تأشير الخطاب"
+																	styleClass="btn btn-default"
+																	style="width:100%;font-family: kufi !important;"
+																	rendered="#{inboxBean.canMark}"
+																	action="#{inboxBean.markCommentAction(actionEvent)}"
+																	process="@this" icon="fa fa-check">
+																	<p:confirm header="تأكيد الإرسال "
+																		message="هل تود التأشير علي الخطاب  ؟ "
+																		icon="ui-icon-alert" />
+																</p:commandButton>
+																<p:tooltip for="markbtn" value="" trackMouse="true">
+																	<p:outputLabel value="#{inboxBean.markingInfo}" />
+																</p:tooltip>
+																<p:confirmDialog widgetVar="confirmDlg" global="true"
+																	showEffect="explode" hideEffect="explode">
+																	<p:commandButton value="تراجع" type="button"
+																		styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+																	<p:commandButton value="موافق" type="button"
+																		styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+																</p:confirmDialog>
+															</div>
+
+															<div class="col-md-2">
+																<div class="dropdown">
+																	<a href="#" style="width: 100%; height: 44px;"
+																		class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+																		data-toggle="dropdown" role="button"
+																		aria-haspopup="true" aria-expanded="false">التوقيع
+																		علي الخطاب <span class="caret"></span>
+																	</a>
+																	<ul class="dropdown-menu">
+																		<li ><a href="#">
+																				<p:commandLink style="width: 100%"
+																					value=" التوقيع علي الخطاب"
+																					rendered="#{inboxBean.canSign}"
+																					action="#{inboxBean.signCommentActionBtn(actionEvent)}"
+																					process="@this " icon="fa fa-check-square" />
+																		</a></li>
+																		<li ><a href="#">
+																				<p:commandLink style="width: 100%;"
+																					value=" التوقيع باسم رئيس البلدية  "
+																					action="#{inboxBean.signCommentByNameActionBtn(actionEvent)}"
+																					process="@this" icon="fa fa-check-circle-o"
+																					rendered="#{inboxBean.isManager}" />
+																		</a></li>
+																		<li ><a href="#">
+																				<p:commandLink style="width: 100%;"
+																					value=" التوقيع نيابة عن الأمين  "
+																					action="#{inboxBean.signCommentAmeenActionBtn(actionEvent)}"
+																					process="@this" icon="fa fa-check-circle-o"
+																					rendered="#{inboxBean.president}" />
+																		</a></li>
+
+
+																	</ul>
+																</div>
+															</div>
+															<h:panelGroup id="ccc">
+																<h:panelGroup
+																	rendered="#{!inboxBean.isSelectedCommentSigned}">
+																	<div class="col-md-2">
+																		<p:commandButton
+																			style="width: 100%;font-family: kufi !important;"
+																			styleClass="btn btn-default" value="  حفظ الخطاب  "
+																			icon="fa fa-save"
+																			update=":mainForm:includeform:record-tab-views:commentconentid,:mainForm:includeform:record-tab-views:ccc
+																				:mainForm:includeform:record-tab-views:btnPanel,
+																				:mainForm:includeform:record-tab-views:commentSaveButton,:mainForm:includeform:record-tab-views:editBtn"
+																			action="#{inboxBean.commentSaveAction(actionEvent)}"
+																			id="commentSaveButton"
+																			process="@this, :mainForm:includeform:record-tab-views:commentconentid,
+																					:mainForm:includeform:record-tab-views:commenttoid,
+																					:mainForm:includeform:record-tab-views:commTyp,
+																					:mainForm:includeform:record-tab-views:commenttopicid,
+																					:mainForm:includeform:record-tab-views:commentuppercopyid,
+																					:mainForm:includeform:record-tab-views:commentconentid,
+																					:mainForm:includeform:record-tab-views:commentlowercopyid">
+																			<p:confirm header="تأكيد الإرسال "
+																				message="هل تود حفظ الخطاب   ؟ "
+																				icon="ui-icon-alert" />
+																		</p:commandButton>
+																		<p:confirmDialog global="true" showEffect="explode"
+																			hideEffect="explode">
+																			<p:commandButton value="موافق" type="button"
+																				styleClass="ui-confirmdialog-yes"
+																				icon="ui-icon-check" />
+																			<p:commandButton value="تراجع" type="button"
+																				styleClass="ui-confirmdialog-no"
+																				icon="ui-icon-close" />
+																		</p:confirmDialog>
+
+																	</div>
+																</h:panelGroup>
+															</h:panelGroup>
+															<h:panelGroup id="editBTN">
+																<h:panelGroup
+																	rendered="#{inboxBean.isSelectedCommentSigned}">
+																	<div class="col-md-2">
+
+																		<div>
+																			<p:commandButton style="width:100%;font-family: kufi !important;" value="تعديل "
+																				id="editBtn" styleClass="btn btn-default"
+																				update=":mainForm:includeform:record-tab-views:commentconentid,
+																		:mainForm:includeform:record-tab-views:editBtn,
+																				:mainForm:includeform:record-tab-views:btnPanel,
+																				:mainForm:includeform:record-tab-views:commentSaveButton"
+																				action="#{inboxBean.EditWrkCommentBtnAction(actionEvent)}"
+																				process="@this" icon="fa fa-edit">
+																				<p:confirm header="تأكيد التعديل  "
+																					message="في حالة التعديل سيتم إعادة تعيين التوقيعات ..؟ هل تود الاستمرار "
+																					icon="ui-icon-alert" />
+																			</p:commandButton>
+																			<p:confirmDialog global="true">
+																				<p:commandButton value="تراجع" type="button"
+																					icon="ui-icon-close" />
+																				<p:commandButton value="موافق" type="button"
+																					update=":mainForm:includeform:record-tab-views:commentconentid,
+																					:mainForm:includeform:record-tab-views:editBtn,
+																					:mainForm:includeform:record-tab-views:commentSaveButton"
+																					styleClass="ui-confirmdialog-yes"
+																					icon="ui-icon-check" />
+
+																			</p:confirmDialog>
+																		</div>
+
+																	</div>
+																</h:panelGroup>
+															</h:panelGroup>
+															
+															<div class="col-md-2">
+																<div>
+																	<h:outputLink style="width: 100%; height: 43px;"
+																		class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+																		value="#{inboxBean.reportsUrl}" target="_blank">
+																		<span class="ui-button-text">طباعة</span>
+																	</h:outputLink>
+																</div>
+															</div>
+															<div class="col-md-2"></div>
+
+
+														</div>
+
+
+
+
+													</h:panelGroup>
+													<!-- الخطاب  موقع ,,, -->
+													<h:panelGroup
+														rendered="#{inboxBean.isSelectedCommentSigned}">
+
+													</h:panelGroup>
+
+													<p:dialog widgetVar="confirm-sign-dlg"
+														id="confirmSigndialog" hideEffect="fade"
+														showEffect="explode" dir="rtl" modal="true"
+														resizable="false" header="قم بتأكيد التوقيع">
+														<h:form id="signfrndlg">
+
+															<div class="container-fluid">
+																<div class="row">
+																	<div class="col-md-8">
+																		<div class="container-fluid">
+																			<div class="row" style="margin-bottom: 3px;">
+																				<div class="col-md-12">
+																					<p:password id="confrmpass"
+																						placeholder="أدخل رمز التوقيع السري"
+																						style="width: 310px;"
+																						value="#{inboxBean.confirmPassword}" />
+																				</div>
+
+																			</div>
+																			<div class="row" style="margin-bottom: 3px;">
+																				<div class="col-md-12">
+																					<p:selectOneMenu id="signlist"
+																						value="#{inboxBean.selectedUserInSignComment}"
+																						panelStyle="width:320px" effect="fade" var="d"
+																						style="width:310px;direction: rtl;" filter="true"
+																						filterMatchMode="contains">
+																						<f:selectItem itemLabel="اختر  جهة الإرسال "
+																							itemValue="" />
+																						<f:selectItems
+																							value="#{inboxBean.commentSignEmployeesList}" />
+																					</p:selectOneMenu>
+																				</div>
+
+																			</div>
+																			<div class="row" style="margin-bottom: 3px;">
+																				<div class="col-md-12">
+																					<p:selectCheckboxMenu label=" صور الخطاب"
+																						id="commChkbx" filter="true"
+																						filterMatchMode="contains"
+																						style="width:310px;direction: rtl; "
+																						value="#{inboxBean.commentCopyReciever}">
+																						<f:selectItems value="#{inboxBean.mgrMap}" />
+																					</p:selectCheckboxMenu>
+																				</div>
+
+																			</div>
+																			<p:separator />
+																			<div class="row" style="margin-bottom: 3px;">
+																				<div class="col-md-12">
+																					<p:commandButton value="توقيع الخطاب"
+																						class="btn btn-default"
+																						process="@this,:mainForm:includeform:record-tab-views:signfrndlg:confrmpass,
+																								:mainForm:includeform:record-tab-views:signfrndlg:signlist,
+																								:mainForm:includeform:record-tab-views:signfrndlg:commChkbx"
+																						style="width: 100%;" type="submit"
+																						icon="fa fa-legal"
+																						action="#{inboxBean.commentSignAction(actionEvent)}" />
+																				</div>
+
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-4">
+																		<img
+																			src="#{facesContext.externalContext.requestContextPath}/resources/images/key-icon.png"
+																			width="120" height="120"></img>
+																	</div>
+																</div>
+
+															</div>
+
+
+															<div style="width: 100%; margin: 8px;">
+																<div style="float: right; width: 75%">
+																	<h:panelGrid columns="1" style="text-align: center;">
+
+
+
+																		<span></span>
+
+																		<span></span>
+
+																	</h:panelGrid>
+																</div>
+																<div style="float: right; width: 19%"></div>
+															</div>
+														</h:form>
+
+													</p:dialog>
+												</div>
+											</h:panelGroup>
+										</h:panelGroup>
+										<div class="col-md-2"></div>
+										<div class="col-md-2"></div>
+										<div class="col-md-2"></div>
+									</div>
+								</div>
+							</div>
+							<p:outputLabel value="* #{inboxBean.convMarkingInfo}"
+								style="color: #D80042;margin-right: 50px" />
+						</div>
+					</p:tab>
+					<p:tab title="نموذج" id="model" titleStyle="width:80px"
+						rendered="#{mainManagedBean.mailExecutor.isModel}">
+						<ui:include src="#{mainManagedBean.modelContent}" />
+					</p:tab>
+
+
+					<p:tab title="طباعة النموذج"
+						rendered="#{mainManagedBean.mailExecutor.canPrint}">
+						<div style="padding: 7px;">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value="   النمـــــوذج " />
+
+								</div>
+								<div class="panel-body">
+									<h:form id="form008">
+
+
+										<object type="application/pdf"
+											data="#{mainManagedBean.mailExecutor.urlFile}" height="500px"
+											width="100%"> </object>
+
+
+
+
+									</h:form>
+								</div>
+
+							</div>
+						</div>
+					</p:tab>
+				</p:tabView>
+
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3">
+							<h:outputLink
+								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+								style="width: 100%;"
+								value="http://#{inboxBean.reportServerIp}/reports/rwservlet?repsrv&amp;report=d:\\archiving\\reports\\r04.rdf&amp;P1=#{inboxBean.selectedInbox.wrkId}"
+								target="_blank">
+								<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+								<span class="ui-button-text">طباعة الشروحات</span>
+							</h:outputLink>
+						</div>
+
+						<div class="col-md-3">
+							<p:commandButton style="width: 100%;" process="@this"
+								value="أرشفة المعاملة" icon="fa fa-archive"
+								action="#{inboxBean.SendRecordToArchive(actionEvent)}">
+
+
+								<p:confirm header="تأكيد الأرشــفة  "
+									message=" هل تود الاستمرار وأرشفة المعاملة؟  "
+									icon="fa fa-archive" />
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="explode"
+								hideEffect="explode">
+								<p:commandButton value="موافق" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="تراجع" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+						</div>
+						<div class="col-md-3">
+							<p:commandButton value="إضافة المعاملة  للمفضلة" rendered="false"
+								icon="fa fa-star" style="width: 100%; " type="submit"
+								process="@this" action="#{inboxBean.addToFavourit(actionEvent)}" />
+						</div>
+						<div class="col-md-3">
+							<p:commandButton style="width: 100%;" value="رجوع إلي البريد  "
+								icon="fa fa-mail-reply"
+								action="#{mainManagedBean.returnTomails}" process="@this" />
+						</div>
+
+
+					</div>
+				</div>
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+					closable="false" resizable="false" showHeader="false">
+					<img
+						src="#{facesContext.externalContext.requestContextPath}/resources/images/load.gif" />
+				</p:dialog>
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

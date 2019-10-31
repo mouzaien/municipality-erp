@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vac116_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="177cf036-51e3-4814-ab14-20014672039e">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="seqid" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ALL HRS_EMP_VCTON.EMPNO, HRS_EMP_VCTON.VACATYP, HRS_EMP_VCTON.VACAPRD, HRS_EMP_VCTON.VACASTRT,
+HRS_EMP_VCTON.VACAEND, HRS_EMP_VCTON.EXCNO, HRS_EMP_VCTON.EXCDT,
+HRS_EMP_VCTON.EXCYEAR, HRS_EMP_VCTON.DRCTDT, HRS_EMP_VCTON.PROCTYP, HRS_EMP_VCTON.VCALC,
+HRS_EMP_VCTON.PAYTYP, HRS_EMP_VCTON.VACVAL, HRS_EMP_VCTON.PAYSTS,
+HRS_EMP_VCTON.VACWRKFROM, HRS_EMP_VCTON.VACWRKTO, HRS_EMP_VCTON.CBY,
+HRS_EMP_VCTON.CIN, HRS_EMP_VCTON.VAC_ACCPT_Y_N, HRS_EMP_VCTON.VACSEQ,
+fun_get_inf001_ar(HRS_EMP_VCTON.EMPNO) ENAME,
+hrs_get_rnk(HRS_EMP_VCTON.EMPNO) ERANK,
+fun_get_stp004(HS.JOBCOD) EJOBNAME,
+HS.JOBNO,sign_job_name TITLEPOS,
+HS.BSCSAL,MS.NATNO,sign_user_id signer,WRK_PROFILE.SIGN,  WRK_PROFILE.user_id ,WRK_PROFILE_sign.ddd,
+GET_REAL_EMPNAME(WRK_PROFILE.USER_ID) real_name
+FROM HRS_EMP_VCTON ,HRS_EMP_HISTORICAL HS,HRS_MASTER_FILE MS , hrs_signs,WRK_PROFILE,WRK_PROFILE_sign
+WHERE
+MS.EMPNO =  HRS_EMP_VCTON.EMPNO
+and HRS_SIGNS.DOC_ID = HRS_EMP_VCTON.VACSEQ
+--and HRS_EMP_VCTON.EMPNO =
+AND HS.EMPNO =  MS.EMPNO
+and FLG = 1
+and HRS_SIGNS.SIGN_IS_VISIBLE=1
+and WRK_PROFILE.USER_ID = HRS_SIGNS.SIGN_USER_ID
+and WRK_PROFILE.USER_ID  = WRK_PROFILE_sign.USER_ID
+AND HRS_EMP_VCTON.VACSEQ=$P{seqid}]]>
+	</queryString>
+	<field name="EMPNO" class="java.math.BigDecimal"/>
+	<field name="VACATYP" class="java.math.BigDecimal"/>
+	<field name="VACAPRD" class="java.math.BigDecimal"/>
+	<field name="VACASTRT" class="java.lang.String"/>
+	<field name="VACAEND" class="java.lang.String"/>
+	<field name="EXCNO" class="java.lang.String"/>
+	<field name="EXCDT" class="java.lang.String"/>
+	<field name="EXCYEAR" class="java.math.BigDecimal"/>
+	<field name="DRCTDT" class="java.lang.String"/>
+	<field name="PROCTYP" class="java.math.BigDecimal"/>
+	<field name="VCALC" class="java.math.BigDecimal"/>
+	<field name="PAYTYP" class="java.math.BigDecimal"/>
+	<field name="VACVAL" class="java.math.BigDecimal"/>
+	<field name="PAYSTS" class="java.math.BigDecimal"/>
+	<field name="VACWRKFROM" class="java.lang.String"/>
+	<field name="VACWRKTO" class="java.lang.String"/>
+	<field name="CBY" class="java.math.BigDecimal"/>
+	<field name="CIN" class="java.sql.Timestamp"/>
+	<field name="VAC_ACCPT_Y_N" class="java.lang.String"/>
+	<field name="VACSEQ" class="java.math.BigDecimal"/>
+	<field name="ENAME" class="java.lang.String"/>
+	<field name="ERANK" class="java.lang.String"/>
+	<field name="EJOBNAME" class="java.lang.String"/>
+	<field name="JOBNO" class="java.lang.String"/>
+	<field name="TITLEPOS" class="java.lang.String"/>
+	<field name="BSCSAL" class="java.math.BigDecimal"/>
+	<field name="NATNO" class="java.math.BigDecimal"/>
+	<field name="SIGNER" class="java.math.BigDecimal"/>
+	<field name="USER_ID" class="java.math.BigDecimal"/>
+	<field name="DDD" class="java.io.InputStream"/>
+	<field name="REAL_NAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="168" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="8bd1f5ee-1da7-4949-bcaf-c62abe8ac7c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EXCDT}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="100" height="20" uuid="f18e3660-67b3-47aa-9180-3ec5ebdbae3c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{EXCNO}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="319" y="111" width="236" height="20" uuid="7ff83032-eb5e-4f60-9f87-abfa286cbf68"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["قرار اجازة اعتيادية للموظف / "
+
++
+$F{ENAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="100" height="20" uuid="2ca676dd-ffd6-4bf5-bc5e-8a0629f52000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم السجل: 7000874847".replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="169" y="142" width="216" height="26" uuid="4780d0a3-a8eb-48f2-9068-1fdd4eab0cdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[قرار اجازة اعتيادية]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="378" y="50" width="175" height="43" uuid="f2ac1bb7-8794-41b3-a669-6b8aed07cf59"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("405/266 \nالموارد البشرية").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="0" width="175" height="50" uuid="c537d152-5fad-4be3-937c-6aba02c060b7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية\n"+
+"وزارة الشؤون البلدية القروية\n"+$P{compName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="484" y="41" width="71" height="20" uuid="fb4c8a72-eb0a-452d-9b96-00c7916702f6"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الهوية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="41" width="187" height="20" uuid="c075d35c-1768-4c3e-a94a-3730b3d83a7f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاسم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="41" width="97" height="20" uuid="14bce375-95ee-4968-b70a-b7a61635cdc5"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الوظيفة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="41" width="50" height="20" uuid="880a1222-6951-4353-8511-f0e75f85371a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المرتبة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="41" width="50" height="20" uuid="6f5362da-38aa-4df4-8e83-71a516f93d73"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الرقم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="41" width="60" height="20" uuid="2d03e8b0-5a9c-4def-be53-f25e5dbc9f6f"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الراتب]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="40" height="20" uuid="aa4a8c0f-078f-485f-803e-45c8f8395f7d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المدة]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="222" splitType="Stretch">
+			<textField>
+				<reportElement x="484" y="0" width="71" height="20" uuid="eb904de6-b42f-4a66-b7b7-d437a07872fe"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NATNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="297" y="0" width="187" height="20" uuid="a21a294e-4662-47e9-8101-62de8eeee0e1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ENAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="97" height="20" uuid="aaf15cb4-5ce4-49d1-b947-820944d09d5e"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EJOBNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="50" height="20" uuid="70a981f2-ac0e-4fc2-ab92-891d4a73f1db"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERANK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="50" height="20" uuid="3b5519ff-f979-4de1-86e5-843d12c20e38"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JOBNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="60" height="20" uuid="e0ffd935-fa61-4fe1-95a1-18c1dea2d293"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BSCSAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="20" uuid="ca8e1f7d-35a4-40cf-8861-88a10900d85f"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VACAPRD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" x="0" y="41" width="555" height="53" isPrintWhenDetailOverflows="true" uuid="a0f7abec-70a3-4dc1-b258-df2b23a339f6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="" pdfEncoding="" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ إن رئيس بلدية محافظة المذنب
+ بناء على الصلاحيات الممنوحة له, وإستناداً إلى المادة (28/1) من نظام الخدمة المدنية.
+وإشارة الى طلب الإجازة المقدم من المذكور بعالية واستحقاقه للإجازة نظاما ولموافقة رئيسه المباشر , واستنادا لمقتضيات لائحة الإجازات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="103" width="100" height="20" uuid="f2d6472e-dd2e-4ad7-80fb-c63cf54896f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[((يقرر مايلى))]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="138" width="555" height="64" uuid="7e08645e-c759-49fa-86a0-f3e0841949a7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PROCTYP}.intValue()==2 ?
+"-1 الموافقة على منح الموظف الموضحة هويته بعاليه إجازة اعتيادية لمدة ("
++
+$F{VACAPRD}
++ " ) "
++
+" يوم "
++
+"  اعتبارا من تاريخ  "
++
+$F{VACASTRT}
++
+" هــ "
++
+" وحتى نهاية "
++
+$F{VACAEND}
+
++
+"\n"
++
+"-2 يصرف راتب هذه الإجازة طبقا للنظام . "
++
+"\n"
++
+"-3 يبلغ قرارنا هذا لإدارة المواردالبشرية وانفاذ بموجيه نظاما . "
+:
+"-1 يمنح الموظف الموضحة هويته بعاليه إجازة اعتيادية لمدة ( "
++
+$F{VACAPRD}
++
+" ) "
++
+" يوم "
++
+"  اعتبارا من تاريخ  "
++
+$F{VACASTRT}
++
+" هــ "
++
+" وحتى نهاية "
++
+$F{VACAEND}
++
+" هــ "
+
++
+" حسم غياب من رصيد إجازته العادية "
++
+"\n"
++
+"-2 يصرف راتب هذه الإجازة طبقا للنظام . "
++
+"\n"
++
+"-3 يبلغ قرارنا هذا لإدارة الموارد البشرية   وانفاذ بموجيه نظاما . "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="158" y="202" width="239" height="20" uuid="fa398dbd-c915-4b00-a404-ae1f3b0e36ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[والسلام عليكم ورحمة الله وبركاته]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="152" splitType="Stretch">
+			<image>
+				<reportElement x="12" y="33" width="149" height="59" uuid="5bf66409-e8e6-4be6-9f28-5a511605099f"/>
+				<imageExpression><![CDATA[$F{DDD}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="11" y="92" width="150" height="20" uuid="183d72c7-269c-4e52-b117-70a52a4f843d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REAL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="10" width="151" height="23" uuid="2cc33e5a-5249-4200-9173-f8a26ff59c20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLEPOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:jsf="http://java.sun.com/jsf/html">
+<f:metadata>
+	<f:viewAction action="#{mainManagedBean.mailExecutor.init}"
+		phase="APPLY_REQUEST_VALUES" />
+</f:metadata>
+<h:head>
+	<link rel="stylesheet" type="text/css"
+				href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+		
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+		
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+			<script type="text/javascript"
+				src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+
+    	<style>
+				body .ui-dialog .ui-dialog-titlebar{
+						float: right;
+						width: 98%;
+						background-color: #472d985c;
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon{
+						float: none;
+				  }
+				body .ui-dialog .ui-dialog-titlebar .ui-dialog-title{
+						float: right;;
+		         }
+		         
+		          .ui-selectonemenu .ui-selectonemenu-label{
+				 	  text-align:right;
+				   }
+				   .ui-selectonemenu-panel .ui-selectonemenu-list-item{
+				   	text-align: right;
+				   }
+		</style>
+
+</h:head>
+<h:body>
+
+<div class="card card-w-title">
+
+
+		<h1 style="color: #7CB342; text-align: center;">
+			 #{msg['medical.report.menu']}<span class="fa fa-fw fa-medkit"></span>
+		</h1>
+		<br></br>
+	   <h:form prependId="false">
+	   <div class="image-box-footer" style="float: left">
+	   
+	     
+			<p:commandButton  value="#{msg['print']}" icon="fa fa-fw fa-print"
+				immediate="true" styleClass="purple-btn"
+				onclick="this.form.target='_blank'"
+				rendered="#{mainManagedBean.mailExecutor.canPrint}"
+				action="#{mainManagedBean.mailExecutor.printMedicalReportAction}">
+			</p:commandButton>
+			 <p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return" 
+						rendered="#{! mainManagedBean.mailExecutor.actionMode}"
+						action="#{mainManagedBean.saveAction}">
+						<f:ajax execute="@form"></f:ajax>
+					</p:commandButton>	
+					 <p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['accept']}" styleClass="indigo-btn flat ui-state-hover" icon="fa fa-fw fa-thumbs-up"
+						rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}"
+						action="#{mainManagedBean.mailExecutor.acceptAction}">
+						<f:ajax execute="@form"></f:ajax>
+					</p:commandButton>
+                            <p:spacer width="10" height="10"></p:spacer>
+
+						<p:commandButton  rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}" value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();" 
+						 styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+						 </p:commandButton>
+								
+		</div>
+		<br></br>
+		<br></br>
+	
+
+
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<p:panel>
+		<f:facet name="header" >
+                     <span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['request.data']}
+                    </f:facet>
+                    
+                    
+				       <div class="ui-g">
+					        <div class="ui-g-12 ui-md-6 ui-lg-3">
+							  <h:outputLabel value="#{msg['hospital.name']}" />
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-3" >
+						      <p:inputText id="name" required="true" style="width:100%" 
+									requiredMessage="#{msg['hospital.name.required']}"
+									rendered="#{! mainManagedBean.mailExecutor.actionMode}"
+									value="#{mainManagedBean.mailExecutor.medicalRequestInfo.hospitalName}" ></p:inputText>
+								<h:outputLabel
+									rendered="#{mainManagedBean.mailExecutor.actionMode}"
+									value="#{mainManagedBean.mailExecutor.medicalRequestInfo.hospitalName}" />
+								
+						    </div>
+						   
+					     </div>
+					     <div class="ui-g">
+					       <div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="#{msg['date']} "  />
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-3" >
+						      
+								 <h:panelGroup
+										rendered="#{!mainManagedBean.mailExecutor.actionMode}">
+											<p:inputText id="startDate" name="startDate" style="width: 70%;"
+												styleClass="form-control form-controlCal ">
+												
+											</p:inputText>
+									</h:panelGroup>
+								<h:outputText
+									value="#{mainManagedBean.mailExecutor.medicalRequestInfo.requestDate}"
+									rendered="#{mainManagedBean.mailExecutor.actionMode}">
+								</h:outputText>
+						    </div>
+					     </div>
+		</p:panel>
+		
+		<br></br>
+		<br></br>
+		<div>
+			
+
+	
+
+
+						
+
+
+					
+
+<!-- 						<h:panelGroup -->
+<!-- 							rendered="#{mainManagedBean.mailExecutor.actionMode and mainManagedBean.mailExecutor.authorized}"> -->
+<!-- 							<button type="button" class="btn btn-primary " -->
+<!-- 								style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;" -->
+<!-- 								data-toggle="modal" data-target="#gridSystemModal">#{msg['refuse']}</button> -->
+<!-- 						</h:panelGroup> -->
+
+					 <p:dialog header="#{msg['add.explanation.confirmation']}" widgetVar="dlgRefuse" height="300" width="500">
+							 
+							  	<h:panelGroup id="refPopup">
+							  	 <p:panelGrid columns="2"  columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent; direction:rtl">
+      
+                                 	<h:outputLabel value="#{msg['redirect.transaction']}" />
+                                 		<p:selectOneMenu id="typ" styleClass="form-control"
+															value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+															var="d" style=" width:100%">
+
+															<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+																itemValue="#{pp.idStr} "
+																value="#{mainManagedBean.wrkPurposes}" />
+														</p:selectOneMenu>
+														
+															<h:outputLabel styleClass="btxt"
+															value="#{msg['explanation']}" />
+                                 	                    <p:inputTextarea cols="30" rows="5" style="width:100%"
+															value="#{mainManagedBean.mailExecutor.wrkAppComment}">
+														</p:inputTextarea>
+      
+      
+	  							 </p:panelGrid>
+	  							 <br></br>
+	  							 <br></br>
+										<div style="direction: initial;">
+										
+										
+											<p:commandButton value="#{msg['back']}" 
+												immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+												styleClass=" orange-btn"  >
+												</p:commandButton>
+												<p:spacer width="4"></p:spacer>
+<!-- 												<button type="button" class="btn btn-green" -->
+<!-- 													data-dismiss="modal">#{msg['back']}</button> -->
+												<p:commandButton 
+													value="#{msg['confirmation']}" icon="ui-icon ui-icon-check"
+													action="#{mainManagedBean.mailExecutor.refuseAction}">
+													<f:ajax execute="refPopup"></f:ajax>
+												</p:commandButton>
+											
+										</div>
+									</h:panelGroup>
+							</p:dialog>
+
+
+					
+
+
+
+
+
+		</div>
+
+				<script type="text/javascript">
+					$(".form-controlCal").focus(function() {
+						$('.calendars-cmd-today ').html('اليوم');
+						$('.calendars-cmd-prev').html('السابق >');
+						$('.calendars-cmd-next').html(' > اللاحق ');
+						$('.calendars-ctrl').css('display', 'none');
+						$('.calendars-month').css('width', '244px');
+						$('.calendars-month').css('float', 'right');
+						$('.calendars').css('width', '245px');
+	
+					});
+	
+					$(".form-controlCal").calendarsPicker(
+							{
+								calendar : $.calendars.instance('ummalqura'),
+								language : 'ar'
+								
+							});
+			   </script>
+
+
+	</h:form>
+
+</div>
+
+</h:body>
+</html>

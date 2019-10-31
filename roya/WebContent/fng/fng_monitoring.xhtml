@@ -1,0 +1,593 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:BeginCalendarDate="http://java.sun.com/jsf/composite/BeginCalendarDate"
+	xmlns:EndCalendarDate="http://java.sun.com/jsf/composite/EndCalendarDate">
+<h:head>
+	<title>متابعة البصمة</title>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer" align="left">
+				<h:panelGroup id="autorisation"
+					rendered="#{fngMonitoringBean.fngDirMode}">
+
+					<p:commandButton id="correct" ajax="true" styleClass="amber-btn"
+						disabled="#{fngMonitoringBean.disabled}"
+						update="includeform:appGrid"
+						icon="ui-icon ui-icon-perm-data-setting" value="إعدادات البصمة"
+						actionListener="#{fngMonitoringBean.correctUserFngs}">
+					</p:commandButton>
+					<p:spacer width="10px" height="10px"></p:spacer>
+					<p:commandButton oncomplete=" PF('addAuthorizeDialog').show()"
+						id="special" styleClass="red-btn"
+						disabled="#{fngMonitoringBean.disabled}"
+						update="includeform:appGrid" icon="ui-icon ui-icon-ring-volume"
+						value="الإستثناءات"
+						action="#{fngMonitoringBean.showAutorizationNB}">
+					</p:commandButton>
+
+				</h:panelGroup>
+				<p:spacer width="10px" height="10px"></p:spacer>
+				<p:commandButton disabled="" ajax="true" update="@form"
+					value="عرض البصمة" icon="ui-icon ui-icon-find-in-page"
+					action="#{fngMonitoringBean.showFinger}">
+				</p:commandButton>
+
+			</div>
+			<br />
+			<br />
+			<div class="card card-w-title" dir="rtl">
+
+				<h1 style="color: #7CB342; text-align: center;">
+					متابعة البصمة<span class="ui-icon ui-icon-find-in-page"></span>
+				</h1>
+				<div>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<h:outputLabel value="هجري  :  " />
+							<p:selectBooleanCheckbox value="#{fngMonitoringBean.higriMode}">
+								<p:ajax update="pDates1,pDates12" process="@this"></p:ajax>
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
+
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="من " />
+						</div>
+
+						<div class="ui-g-2">
+							<h:panelGroup id="pDates1">
+
+								<p:inputText id="hiri1"
+									value="#{fngMonitoringBean.startGeorDate}"
+									onfocus="loadCalendar();" required="true"
+									requiredMessage="يرجى اختيار تاريخ"
+									rendered="#{fngMonitoringBean.higriMode}"
+									styleClass="form-control form-controlCal">
+								</p:inputText>
+
+								<p:calendar id="gric1" value="#{fngMonitoringBean.mstartDate}"
+									pattern="dd/MM/yyyy" rendered="#{!fngMonitoringBean.higriMode}">
+								</p:calendar>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="إلى " />
+						</div>
+						<div class="ui-g-2">
+							<h:panelGroup id="pDates12">
+								<p:inputText id="hiri12"
+									value="#{fngMonitoringBean.endGeorDate}"
+									onfocus="loadCalendar();" required="true"
+									requiredMessage="يرجى اختيار تاريخ"
+									rendered="#{fngMonitoringBean.higriMode}"
+									styleClass="form-control form-controlCal">
+								</p:inputText>
+
+								<p:calendar id="gric12" value="#{fngMonitoringBean.mEndDate}"
+									pattern="dd/MM/yyyy" rendered="#{!fngMonitoringBean.higriMode}">
+								</p:calendar>
+							</h:panelGroup>
+						</div>
+					</div>
+
+					<!-- 					<h:panelGroup id="pDates"> -->
+					<!-- 						<h:panelGroup id="p1" rendered="#{fngMonitoringBean.higriMode}"> -->
+					<!-- 												<div class="ui-g"> -->
+					<!-- 					<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+					<!-- 						<h:outputLabel value="من " /> -->
+					<!-- 					</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+
+					<!-- 									<ui:include src="../shared/calender.xhtml"></ui:include> -->
+					<!-- 								</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+					<!-- 									<h:outputLabel value="إلى " /> -->
+					<!-- 								</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+					<!-- 									<ui:include src="../shared/NotifDate.xhtml" /> -->
+					<!-- 								</div> -->
+					<!-- 							</div> -->
+					<!-- 						</h:panelGroup> -->
+					<!-- 						<h:panelGroup rendered="#{!fngMonitoringBean.higriMode}"> -->
+					<!-- 							<div class="ui-g"> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+					<!-- 									<h:outputLabel value="من " /> -->
+					<!-- 								</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+					<!-- 									<p:calendar id="arabicStartDate" -->
+					<!-- 										value="#{fngMonitoringBean.mstartDate}" pattern="dd/MM/yyyy"> -->
+					<!-- 										<f:ajax execute="@this" /> -->
+					<!-- 									</p:calendar> -->
+					<!-- 								</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+					<!-- 									<h:outputLabel value="إلى " /> -->
+					<!-- 								</div> -->
+					<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+					<!-- 									<p:calendar id="arabicEndDate" -->
+					<!-- 										value="#{fngMonitoringBean.mEndDate}" pattern="dd/MM/yyyy"> -->
+					<!-- 										<f:ajax execute="@this" /> -->
+					<!-- 									</p:calendar> -->
+					<!-- 								</div> -->
+					<!-- 							</div> -->
+					<!-- 						</h:panelGroup> -->
+					<!-- 					</h:panelGroup> -->
+					<div class="col-md-12">
+						<div class="row ">
+							<div class="col-md-1">
+								<label class="btxt"></label>
+
+							</div>
+
+							<h:panelGroup id="ManagerMode"
+								rendered="#{fngMonitoringBean.reporterMode}">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<p:selectManyMenu id="section" filter="true" showCheckbox="true"  
+											filterMatchMode="contains" style="width:100%" 
+											value="#{fngMonitoringBean.deptIds}" autoWidth="true">
+											<f:selectItems value="#{loadingDataBean.depatmentList}"
+												var="dept" itemValue="#{dept.id}"
+												itemLabel="#{dept.deptName}" />
+											<f:ajax render="emps" execute="section" event="change"
+												listener="#{fngMonitoringBean.loadEmployersByDept}" />
+										</p:selectManyMenu>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-4">
+										<p:selectCheckboxMenu id="emps" var="user" required="true"
+											style="width:100%" panelStyleClass="empClass"
+											requiredMessage="إختر الموظف"
+											value="#{fngMonitoringBean.usersSelected}" label="الموظفين"
+											multiple="false" filter="true" filterMatchMode="contains"
+											converter="userConverter">
+											<f:selectItems value="#{fngMonitoringBean.users}" />
+											<f:ajax execute="@this" render="special correct"
+												listener="#{fngMonitoringBean.onRowSelect}"></f:ajax>
+											<p:ajax event="toggleSelect" process="@this" />
+										</p:selectCheckboxMenu>
+
+									</div>
+								</div>
+
+							</h:panelGroup>
+
+
+						</div>
+
+					</div>
+					<br />
+					<div class="col-lg-12">
+						<br></br>
+
+						<div class="row">
+							<div class="col-md-4" style="color: color: #428bca">
+								<h:panelGroup
+									rendered="#{not empty fngMonitoringBean.tstFingersList}">
+									<h:outputLabel
+										value="تقرير البصمة من #{fngMonitoringBean.startDate} إلى #{fngMonitoringBean.endDate}"
+										style="with:100%; color: #428bca"></h:outputLabel>
+								</h:panelGroup>
+							</div>
+							<h:panelGroup id="pPrint"
+								rendered="#{not empty fngMonitoringBean.tstFingersList and fngMonitoringBean.reporterMode}">
+								<div style="float: left; margin-left: 3px;">
+									<h:outputLabel value="تفصيلي  :  " />
+									<p:selectBooleanCheckbox value="#{fngMonitoringBean.total}">
+
+									</p:selectBooleanCheckbox>
+								</div>
+								<p:commandButton style="float:left;margin-left:3px;"
+									ajax="false" id="printDetail" value="تقرير"
+									icon="ui-icon ui-icon-print"
+									rendered="#{not empty fngMonitoringBean.tstFingersList and fngMonitoringBean.reporterMode}"
+									styleClass="deep-orange-btn ui-state-hover"
+									onclick="this.form.target='_blank'"
+									action="#{fngMonitoringBean.printDetailsReport}">
+								</p:commandButton>
+
+
+								<p:commandButton style="float:left;margin-left:3px;"
+									ajax="false" value="إجمالي" icon="ui-icon ui-icon-print"
+									rendered="#{not empty fngMonitoringBean.tstFingersTotal and fngMonitoringBean.reporterMode}"
+									styleClass="purple-btn ui-state-hover"
+									onclick="this.form.target='_blank'"
+									action="#{fngMonitoringBean.printGeneralReport}">
+								</p:commandButton>
+
+								<p:commandButton style="float:left;margin-left:3px;"
+									value="نموذج" id="bt1" ajax="false"
+									rendered="#{not empty fngMonitoringBean.tstFingersList and fngMonitoringBean.reporterMode}"
+									styleClass="cyan-btn" icon="ui-icon ui-icon-print"
+									onclick="this.form.target='_blank'"
+									action="#{fngMonitoringBean.printModelReport}">
+								</p:commandButton>
+							</h:panelGroup>
+
+
+						</div>
+						<br />
+						<h:panelGroup id="fngData">
+							<h:panelGroup id="PlstEmp">
+								<p:selectOneRadio id="lstEmp"
+									value="#{fngMonitoringBean.radioNB}"
+									rendered="#{not empty fngMonitoringBean.tstFingersList and fngMonitoringBean.fngDirMode}">
+									<f:selectItem itemLabel="كل الموظفين" itemValue="1"
+										style="width:10px;" />
+									<f:selectItem itemLabel="المتأخرين فقط" itemValue="2" />
+									<f:selectItem itemLabel="الغائبين فقط" itemValue="3" />
+									<f:selectItem itemLabel="المتأخرين و الغائبين" itemValue="4" />
+									<f:selectItem itemLabel="المتأخرين أكثر من  7 ساعات"
+										itemValue="5" />
+									<p:ajax event="valueChange" update="includeform:bb"
+										listener="#{fngMonitoringBean.onRadioChange}" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<p:tabView dynamic="true" cache="true" id="bb" activeIndex="0">
+								<p:ajax event="tabChange"
+									listener="#{fngMonitoringBean.onTabChange}"
+									update="FingerDT FingerDTII FingerDTIII tabAbsnt" />
+								<p:tab title="تقرير تفصيلي" id="aa">
+									<h:panelGroup id="fingerSelect">
+										<p:dataTable id="FingerDT"
+											style="padding-top: 0.5px;padding-right: 2px;display: inline-block;"
+											var="finger" value="#{fngMonitoringBean.fingersListFiltred}"
+											rowIndexVar="index" paginatorPosition="bottom"
+											widgetVar="outfineset" sortOrder="descending"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											emptyMessage="لا يوجد بيانات" paginator="true" rows="20">
+
+											<f:facet name="header">
+												<p:outputPanel>
+													<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+														onkeyup="PF('outfineset').filter()"
+														style="width:150px;font-size: x-large;"
+														placeholder="كلمة البحث">
+													</p:inputText>
+												</p:outputPanel>
+												<br />
+											</f:facet>
+
+											<p:column headerText="الرقم" width="5%">
+												<h:outputText value="#{index+1}" />
+											</p:column>
+											<p:column headerText="إسم الموظف" width="10%">
+												<h:outputText value="#{finger.userName}" />
+											</p:column>
+											<p:column headerText="القسم" width="12%">
+												<h:outputText value="#{finger.deptName}" />
+											</p:column>
+											<p:column headerText="التاريخ" width="7%">
+												<h:outputText value="#{finger.fngDate}" />
+											</p:column>
+											<p:column headerText="اليوم" width="5%">
+												<h:outputText value="#{finger.day}" />
+											</p:column>
+											<p:column headerText="وقت الحضور الرسمي" width="5%">
+												<h:outputText value="#{finger.onduty}" />
+											</p:column>
+											<p:column headerText="وقت الانصراف الرسمي" width="5%">
+												<h:outputText value="#{finger.offduty}" />
+											</p:column>
+											<p:column headerText="وقت بصمة الحضور" width="5%">
+												<h:outputText value="#{finger.clockin}" />
+											</p:column>
+											<p:column headerText="وقت  بصمة الانصراف" width="5%">
+												<h:outputText value="#{finger.clockout}" />
+											</p:column>
+											<p:column headerText="التأخير" width="0%">
+												<h:outputText value="#{finger.delay}" />
+											</p:column>
+											<p:column headerText="الغياب" width="5%">
+												<h:outputText value="#{finger.absent}" />
+											</p:column>
+											<p:column headerText="الحالة" width="5%">
+												<h:outputText value="#{finger.absentStatus}" />
+											</p:column>
+											<p:column headerText="التاخير المحسوب" width="5%">
+												<h:outputText value="#{finger.delayCalc}" />
+											</p:column>
+											<p:column headerText="الإستئذان" width="5%">
+												<h:outputText value="#{finger.abstName}" />
+											</p:column>
+											<p:column headerText="بداية الاستئذان" width="5%">
+												<h:outputText value="#{finger.absFrom}" />
+											</p:column>
+											<p:column headerText="نهاية  الإستئذان" width="5%">
+												<h:outputText value="#{finger.absTo}" />
+											</p:column>
+											<p:column headerText="الإجازة" width="5%">
+												<h:outputText value="#{finger.vacName}" />
+											</p:column>
+										</p:dataTable>
+									</h:panelGroup>
+								</p:tab>
+								<p:tab title="تقرير اجمالي"
+									rendered="#{fngMonitoringBean.fngDirMode}">
+									<p:dataTable id="FingerDTII" var="finger"
+										style="padding-top: 0.5px;padding-right: 2px;display: inline-block;"
+										value="#{fngMonitoringBean.lstFingertochange}"
+										emptyMessage="لا يوجد بيانات" paginator="true" rows="20">
+										<p:column headerText="إسم الموظف" width="15%">
+											<h:outputText value="#{finger.userName}" />
+										</p:column>
+										<p:column headerText="التأخير" width="5%">
+											<h:outputText value="#{finger.totalAbstInDate}" />
+										</p:column>
+										<p:column headerText="الغياب" width="5%">
+											<h:outputText value="#{finger.notWorkingDays}" />
+										</p:column>
+									</p:dataTable>
+								</p:tab>
+								<p:tab title="إجمالي البصمات" style="background-color:red"
+									rendered="#{fngMonitoringBean.fngDirMode}">
+									<br />
+									<br />
+									<p:dataTable id="FingerDTIII" var="finger"
+										style="padding-top: 0.5px;padding-right: 2px;display: inline-block;"
+										value="#{fngMonitoringBean.tstFingersDetail}"
+										emptyMessage="لا يوجد بيانات" paginator="true" rows="20">
+										<p:column headerText="إسم الموظف" width="15%">
+											<h:outputText value="#{finger.userName}" />
+										</p:column>
+										<p:column headerText="اليوم" width="5%">
+
+											<h:outputText value="#{finger.day}" />
+										</p:column>
+										<p:column headerText="الوقت" width="7%">
+											<h:outputText value="#{finger.timeFinger}" />
+										</p:column>
+										<p:column headerText="التاريخ الميلادي" width="5%">
+											<h:outputText value="#{finger.pic1}" />
+										</p:column>
+										<p:column headerText="التاريخ الهجري" width="5%">
+											<h:outputText value="#{finger.dateFinger}" />
+										</p:column>
+										<p:column headerText="الملاحظات" width="15%">
+											<h:outputText value="#{finger.statusFinger}" />
+										</p:column>
+									</p:dataTable>
+								</p:tab>
+								<p:tab title="الإستئذانات"
+									rendered="#{fngMonitoringBean.fngDirMode}">
+									<p:dataTable var="absentItem"
+										style="padding-top: 0.5px;padding-right: 2px;display: inline-block;"
+										value="#{fngMonitoringBean.userAbsentsList}"
+										emptyMessage="لايوجد بيانات" id="tabAbsnt" paginator="true"
+										rows="20" editable="true">
+										<p:ajax event="rowEdit"
+											listener="#{fngMonitoringBean.onRowEdit}" />
+										<p:ajax event="rowEditCancel"
+											listener="#{fngMonitoringBean.onRowCancel}"
+											onstart="myFunction();" update="tabAbsnt" />
+										<p:column headerText="إسم الموظف" style="width:30%">
+											<h:outputText value="#{absentItem.userName}" />
+										</p:column>
+										<p:column headerText="تاريخ الاستئذان" style="width:20%">
+											<h:outputText value="#{absentItem.abseDate}" />
+										</p:column>
+										<p:column headerText="المغادرة" style="width:20%">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{absentItem.absForm}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputMask value="#{absentItem.absForm}" required="true"
+														maxlength="4" mask="99:99">
+														<f:validateRegex
+															pattern="([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]" />
+													</p:inputMask>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="العودة" style="width:20%">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{absentItem.absTo}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputMask value="#{absentItem.absTo}" required="true"
+														maxlength="4" mask="99:99">
+														<f:validateRegex
+															pattern="([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]" />
+
+													</p:inputMask>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:10%" headerText="التعديل"
+											rendered="#{fngMonitoringBean.fngDirMode}">
+											<p:rowEditor></p:rowEditor>
+										</p:column>
+										<p:column style="width:10%" headerText="الحذف"
+											rendered="#{!fngMonitoringBean.fngDirMode}">
+											<p:commandButton icon="ui-icon-close" title="حذف"
+												rendered="#{!fngMonitoringBean.fngDirMode}"
+												actionListener="#{fngMonitoringBean.onRowDelete(absentItem)}"
+												update="tabAbsnt">
+												<p:confirm header="حذف" message="تأكيد حذف الإستئذان"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:confirmDialog global="true" showEffect="fade"
+												hideEffect="fade">
+												<p:commandButton value="نعم" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="لا" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</p:confirmDialog>
+										</p:column>
+									</p:dataTable>
+								</p:tab>
+							</p:tabView>
+							<input type="text" name="confirm" id="confirm"
+								style="display: none;" />
+							<br />
+							<br />
+							<br />
+						</h:panelGroup>
+					</div>
+					<!-- Modal -->
+					<p:dialog header="الإستئذان الاستثنائي"
+						widgetVar="addAuthorizeDialog" modal="true" width="50%" dir="rtl">
+
+						<h:panelGroup id="appGrid">
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox
+										value="#{fngMonitoringBean.higriMode2}">
+										<p:ajax update="pDates21" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="الموظف" class="btxt"
+										style="font-size: larger;color: coral;" />
+								</div>
+								<div class="ui-g-4">
+									<h:outputLabel value="#{fngMonitoringBean.employe.firstName}"
+										class="btxt" style="font-size: larger;color: coral;" />
+								</div>
+								<div class="ui-g-3">
+									<h:outputLabel value="#{msg['autorization.nb']}" />
+								</div>
+								<div class="ui-g-3">
+									<h:outputLabel
+										value="#{fngMonitoringBean.authorizationsNumber}" />
+								</div>
+
+							</div>
+
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="اليوم: " />
+								</div>
+								<!-- 								<div class="ui-g-3"> -->
+								<!-- 									<p:calendar id="date" pattern="dd/MM/yyyy" -->
+								<!-- 										value="#{fngMonitoringBean.absDate}"> -->
+								<!-- 									</p:calendar> -->
+
+								<!-- 									<p:inputMask id="dateAuto" -->
+								<!-- 										value="#{fngMonitoringBean.autorizationDate}" -->
+								<!-- 										mask="99/99/9999" -->
+								<!-- 										style="font-size: large !important; width: 160px !important;" /> -->
+								<!-- 								</div> -->
+
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates21">
+										<p:inputText id="hiri21" value="#{fngMonitoringBean.absDate}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ "
+											rendered="#{fngMonitoringBean.higriMode2}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric21" value="#{fngMonitoringBean.absDate_G}"
+											pattern="dd/MM/yyyy"
+											rendered="#{!fngMonitoringBean.higriMode2}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel value="النوع: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<p:selectOneMenu id="typeAuth"
+										value="#{fngMonitoringBean.typeAuth}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="مهمة عمل" itemValue="T" />
+										<f:selectItem itemLabel="أستئذان" itemValue="E" />
+										<f:selectItem itemLabel="حضور بياني" itemValue="P" />
+									</p:selectOneMenu>
+								</div>
+
+							</div>
+						</h:panelGroup>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value=" وقت المغادرة : " />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:calendar id="ABS_From" value="#{fngMonitoringBean.absFrom}"
+									pattern="HH:mm" timeOnly="true" />
+								<!-- 								<p:inputText name="time2" id="time2" class="center" -->
+								<!-- 									style="float: right;" /> -->
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="وقت العودة : " />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+
+								<p:calendar id="ABS_To" value="#{fngMonitoringBean.absTo}"
+									pattern="HH:mm" timeOnly="true" />
+								<!-- 								<p:inputText name="time3" id="time3" class="center" -->
+								<!-- 									style="float: right;" /> -->
+							</div>
+
+
+
+						</div>
+
+
+						<br />
+						<div class="image-box-footer" align="left">
+
+							<p:commandButton value="#{msg['confirmation']}" immediate="true"
+								icon="ui-icon ui-icon-check"
+								onsuccess="PF('addAuthorizeDialog').hide();">
+								<f:ajax listener="#{fngMonitoringBean.savespecialAutorisation}"
+									execute="includeform:appGrid"></f:ajax>
+							</p:commandButton>
+							<!-- 							<p:commandButton value="#{msg['confirmation']}"  -->
+							<!-- 								icon="ui-icon ui-icon-check" -->
+							<!-- 								onsuccess="PF('addAuthorizeDialog').hide();" -->
+							<!-- 								action="#{fngMonitoringBean.savespecialAutorisation}" -->
+							<!-- 								immediate="true"> -->
+							<!-- 							</p:commandButton> -->
+							<p:spacer width="10px" height="10px"></p:spacer>
+							<p:commandButton styleClass="orange-btn" value="#{msg['back']}"
+								icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+								onsuccess="PF('addAuthorizeDialog').hide();" />
+						</div>
+					</p:dialog>
+
+
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

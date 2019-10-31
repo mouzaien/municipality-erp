@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+
+
+
+	<style>
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 98%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right;
+}
+</style>
+</h:head>
+<h:body>
+
+	<p style="text-align: center; color: #7CB342;">
+		<p:outputLabel style="font-weight:bold; font-size:30px;"
+			value="#{msg['normal.vacation.score']}">
+			<span class="fa fa-fw fa-clock-o"></span>
+
+		</p:outputLabel>
+	</p>
+
+	<div class="image-box-footer" style="float: left">
+		<br />
+		<p:commandButton value="#{msg['back']}" action="mails"
+			immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+			styleClass="orange-btn">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+
+
+		<p:spacer width="10" height="10"></p:spacer>
+		<p:commandButton value="#{msg['accept']}"
+			styleClass="indigo-btn flat ui-state-hover" immediate="true"
+			icon="fa fa-fw fa-thumbs-up"
+			rendered="#{(mainManagedBean.mailExecutor.acceptRendered) and (mainManagedBean.mailExecutor.signedAutorized)}"
+			action="#{mainManagedBean.mailExecutor.acceptAction}">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+		<p:spacer width="10" height="10"></p:spacer>
+
+		<p:commandButton
+			rendered="(mainManagedBean.mailExecutor.signedAutorized)}"
+			value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();"
+			immediate="true" styleClass="deep-orange-btn"
+			icon="ui-icon ui-icon-cancel">
+		</p:commandButton>
+		<p:spacer width="10" height="10"></p:spacer>
+
+
+		<p:commandButton value="طباعة" icon="ui-icon ui-icon-print"
+			rendered="#{mainManagedBean.mailExecutor.canPrint}" immediate="true"
+			styleClass="purple-btn" onclick="this.form.target='_blank'"
+			ajax="false" action="#{mainManagedBean.mailExecutor.printReport}">
+		</p:commandButton>
+
+	</div>
+	<br />
+	<br />
+	<br />
+	<div class="card card-w-title">
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<p:panel>
+			<f:facet name="header">
+				<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;رصيد الأجازات
+                    </f:facet>
+			<div>
+
+
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:outputLabel value="رصيد الاجازات منذ بدء التعين"
+										style="font-weight: bold;"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<p:outputLabel
+										value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"></p:outputLabel>
+								</div>
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+								<!-- 									<p:outputLabel value="جمله الاجازت التاريخيه" -->
+								<!-- 										style="font-weight: bold;"></p:outputLabel> -->
+								<!-- 								</div> -->
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+								<!-- 									<p:outputLabel -->
+								<!-- 										value="#{mainManagedBean.mailExecutor.employeeVacation.usedTotalVacationPeriod}"></p:outputLabel> -->
+								<!-- 								</div> -->
+
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:outputLabel value="اجمالى ماتمتع به خلال  العام"
+										style="font-weight: bold;"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1" style="font-weight: bold;">
+									<p:outputLabel id="VACSUM360"
+										value="#{mainManagedBean.mailExecutor.employeeVacation.usedNormalYearlyPeriod}"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:outputLabel value="اجمالى الرصيد المتاح"
+										style="font-weight: bold;"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<p:outputLabel
+										value="#{mainManagedBean.mailExecutor.employeeVacation.remainTotalVacationPeriod}"></p:outputLabel>
+								</div>
+							</div>
+
+							<br />
+
+							<div class="ui-g">
+
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:outputLabel value="اقصى اجازة مستحقه"
+										style="font-weight: bold;"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<p:outputLabel id="MXVAC116"
+										value="#{mainManagedBean.mailExecutor.employeeVacation.remainNormalYearlyPeriod}"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:outputLabel value="رصيد الإجازات أقل من 5  أيام"
+										style="font-weight: bold;"></p:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<p:outputLabel
+										value="#{5-mainManagedBean.mailExecutor.employeeVacation.periodLessFive}"></p:outputLabel>
+								</div>
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+								<!-- 									<p:outputLabel value="مدة اخر اجازة" style="font-weight: bold;"></p:outputLabel> -->
+								<!-- 								</div> -->
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+								<!-- 									<p:outputLabel -->
+								<!-- 										value="#{mainManagedBean.mailExecutor.employeeVacation.lastVacationPeriod}"></p:outputLabel> -->
+								<!-- 								</div> -->
+							</div>
+							<br />
+
+							<!-- 							<div class="ui-g"> -->
+							<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+							<!-- 									<p:outputLabel value="تاريخ اخر اجازة" -->
+							<!-- 										style="font-weight: bold;"></p:outputLabel> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+							<!-- 									<p:outputLabel -->
+							<!-- 										value="#{mainManagedBean.mailExecutor.lastVacationDate}"></p:outputLabel> -->
+							<!-- 								</div> -->
+
+							<!-- 							</div> -->
+
+
+							<!-- 						<div class="col-md-2"> -->
+							<!-- 							<p:outputLabel value="عن الخدمة" styleClass="btxt"></p:outputLabel> -->
+							<!-- 						</div> -->
+							<!-- 						<div class="col-md-2"> -->
+							<!-- 							<p:outputLabel -->
+							<!-- 								value="#{mainManagedBean.mailExecutor.lastVacationService}"></p:outputLabel> -->
+							<!-- 						</div> -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</p:panel>
+
+		<h:form prependId="false">
+			<p:panel>
+				<f:facet name="header">
+					<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['vacation.data']}
+                    </f:facet>
+				<div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+
+								<p:outputPanel id="formPanel">
+
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="مدة الاجازة" style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel
+												value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}" />
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="تاريخ بدء الاجازة"
+												style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel
+												value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}" />
+										</div>
+
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="تاريخ نهاية الاجازة"
+												style="font-weight: bold;" />
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<h:panelGroup id="VACEND">
+												<p:outputLabel
+													value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationEnd}"></p:outputLabel>
+											</h:panelGroup>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="القيمة المادية للاجازة"
+												style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel id="valvac"
+												value="#{mainManagedBean.mailExecutor.employeeVacation.costVacation}"></p:outputLabel>
+										</div>
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="صرف الراتب" style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel id="sal"
+												value="#{mainManagedBean.mailExecutor.employeeVacation.vactionCalcLabel}" />
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="ملاحظات" style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:inputTextarea
+												value="#{mainManagedBean.mailExecutor.employeeVacation.note}"
+												cols="30" rows="2"></p:inputTextarea>
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="عن خدمته من تاريخ"
+												style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel id="VACWRKFROM"
+												value="#{mainManagedBean.mailExecutor.employeeVacation.HDatevacationFrom}"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel value="الى تاريخ" style="font-weight: bold;"></p:outputLabel>
+										</div>
+										<div class="ui-g-12 ui-md-6 ui-lg-2">
+											<p:outputLabel id="VACWRKto"
+												value="#{mainManagedBean.mailExecutor.employeeVacation.HDateVacationTo}" />
+										</div>
+									</div>
+
+
+
+
+
+
+									<p:dialog header="#{msg['add.explanation.confirmation']}"
+										widgetVar="dlgRefuse" height="300" width="500">
+
+										<h:panelGroup id="refPopup">
+											<p:panelGrid columns="2"
+												columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+												styleClass="ui-panelgrid-blank form-group"
+												style="border:0px none; background-color:transparent; direction:rtl">
+
+												<h:outputLabel value="#{msg['redirect.transaction']}" />
+												<p:selectOneMenu id="typ" styleClass="form-control"
+													value="#{mainManagedBean.mailExecutor.applicationPurpose}"
+													var="d" style=" width:100%">
+
+													<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+														itemValue="#{pp.idStr} "
+														value="#{mainManagedBean.wrkPurposes}" />
+												</p:selectOneMenu>
+
+												<h:outputLabel styleClass="btxt"
+													value="#{msg['explanation']}" />
+												<p:inputTextarea cols="30" rows="5" style="width:100%"
+													value="#{mainManagedBean.mailExecutor.wrkAppComment}">
+												</p:inputTextarea>
+
+
+											</p:panelGrid>
+											<br></br>
+											<br></br>
+											<div style="direction: initial;">
+
+
+												<p:commandButton value="#{msg['back']}" immediate="true"
+													icon="ui-icon ui-icon-keyboard-arrow-left"
+													onclick="PF('dlgRefuse').hide();" styleClass=" orange-btn">
+												</p:commandButton>
+												<p:spacer width="4"></p:spacer>
+												<!-- 												<button type="button" class="btn btn-green" -->
+												<!-- 													data-dismiss="modal">#{msg['back']}</button> -->
+												<p:commandButton value="#{msg['confirmation']}"
+													icon="ui-icon ui-icon-check" immediate="true"
+													action="#{mainManagedBean.mailExecutor.refuseAction}">
+													<f:ajax execute="refPopup"></f:ajax>
+												</p:commandButton>
+
+											</div>
+										</h:panelGroup>
+									</p:dialog>
+
+
+								</p:outputPanel>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</p:panel>
+		</h:form>
+	</div>
+</h:body>
+
+</html>

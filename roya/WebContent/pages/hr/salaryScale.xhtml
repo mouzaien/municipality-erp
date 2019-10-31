@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:body>
+	<!-- <f:metadata>
+	</f:metadata>
+	<style>
+</style>
+	<h:head>
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+	</h:head> -->
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="card card-w-title" dir="rtl">
+
+					<div>
+						<h1 style="color: #7CB342; text-align: center;">
+							السلم الوظيفي <span class="fa fa-fw fa-align-justify"></span>
+						</h1>
+					</div>
+					<h4 class="page-header"
+						style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
+						القرار</h4>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<label class="btxt">رقم القرار</label>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="orderList" styleClass="form-control"
+								value="#{hrsSalaryScaleBean.orderId}">
+								<f:selectItem itemValue="" itemLabel="من فضلك اختر رقم القرار" />
+								<f:selectItems
+									value="#{hrsSalaryScaleBean.salaryScaleOrderList}" var="order"
+									itemValue="#{order.id}" itemLabel="#{order.desno}" />
+								<f:ajax render="details salary_scales" execute="orderList"
+									event="change" listener="#{hrsSalaryScaleBean.updateOrder}" />
+							</p:selectOneMenu>
+							<h:outputLabel value="" />
+						</div>
+					</div>
+					<div class="ui-g">
+
+						<div class="ui-g-1">
+							<label class="btxt">تاريخ القرار</label>
+						</div>
+						<div class="ui-g-3">
+							<h:outputLabel value="#{hrsSalaryScaleBean.orderDate}" />
+						</div>
+						<div class="ui-g-1">
+							<label class="btxt">المصدر</label>
+
+						</div>
+						<div class="ui-g-3">
+							<h:outputLabel value="#{hrsSalaryScaleBean.orderSrc}" />
+						</div>
+						<div class="ui-g-1">
+							<label class="btxt">المباشرة</label>
+
+						</div>
+						<div class="ui-g-3">
+							<h:outputLabel value="#{hrsSalaryScaleBean.orderStrtdate}" />
+						</div>
+
+					</div>
+
+					<br></br>
+					<div class="ui-g ">
+						<p:dataTable var="scaleItem" id="salary_scales"
+							value="#{hrsSalaryScaleBean.salaryScaleList}" rowIndexVar="x"
+							emptyMessage="لايوجد بيانات" paginatorPosition="bottom"
+							filteredValue="#{hrsSalaryScaleBean.filtredSalaryScaleList}"
+							widgetVar="vtWidget" paginator="true" rows="15" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							<p:ajax event="rowEdit"
+								listener="#{hrsSalaryScaleBean.onRowEdit}"
+								update="salary_scales" />
+							<p:ajax event="rowEditCancel"
+								listener="#{hrsSalaryScaleBean.onRowCancel}" />
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column headerText="رقم" style="width:5%">
+								<h:outputText value="#{x+1}" />
+							</p:column>
+							<p:column headerText="المرتبة" style="width:10%">
+								<h:outputText value="#{scaleItem.rankName}" />
+							</p:column>
+							<p:column headerText="عدد الدرجات" style="width:20%">
+								<h:outputText value="#{scaleItem.classCount}" />
+							</p:column>
+							<p:column headerText="اول المربوط" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.basicSalary}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.basicSalary}"
+											style="width:100%" label="transfer" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="اجر الساعة" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.hourlyPrice}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.hourlyPrice}"
+											style="width:100%" label="andatorOut" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="بدل نقل" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.transfer}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.transfer}" style="width:100%"
+											label="transfer" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="داخلي" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.mandatorIn}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.mandatorIn}"
+											style="width:100%" label="mandatorIn" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="خارجي" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.mandatorOut}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.mandatorOut}"
+											style="width:100%" label="andatorOut" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="السنوية" style="width:20%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{scaleItem.yearlyInc}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{scaleItem.yearlyInc}" style="width:100%"
+											label="yearlyInc" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="width:10%">
+								<p:rowEditor />
+							</p:column>
+							<p:column style="width:7%">
+								<p:commandButton onclick="PF('detailsDGId').show()"
+									icon="ui-icon-search" process="@this" update="includeform:dgrs">
+									<f:setPropertyActionListener value="#{scaleItem}"
+										target="#{hrsSalaryScaleBean.hrsSalaryScaleSelected}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+
+						<p:dialog widgetVar="detailsDGId" width="70%" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="dgrs">
+								<div class="ui-g">
+									<p:dataTable id="viewDetiles" var="scaleItem"
+										value="#{hrsSalaryScaleBean.salaryScaleDgrsList}"
+										rowIndexVar="rowIndex" paginator="true" rows="7"
+										emptyMessage="لايوجد بيانات" paginatorPosition="bottom"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+										<f:facet name="header">
+											<p:outputPanel>
+												<h:outputText value="ابحث فى كل الحقول:" />
+												<p:inputText id="globalFilter"
+													onkeyup="PF('cellemp').filter()" style="width:150px"
+													placeholder="كلمة البحث">
+												</p:inputText>
+											</p:outputPanel>
+										</f:facet>
+
+										<p:column headerText="الرقم">#{rowIndex+1}</p:column>
+										<p:column headerText="الدرجة" width="33%"> #{scaleItem.classTitle} </p:column>
+										<p:column headerText="المربوط" width="34%"> #{scaleItem.firstSalary} </p:column>
+									</p:dataTable>
+								</div>
+							</h:panelGroup>
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="إلغاء" immediate="true"
+									onsuccess="PF('detailsDGId').hide();">
+								</p:commandButton>
+							</div>
+
+						</p:dialog>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

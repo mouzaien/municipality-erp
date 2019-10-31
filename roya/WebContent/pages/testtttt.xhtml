@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<h:inputText value="#{sessionbean.name}"></h:inputText>
+		<h:commandButton action="#{sessionbean.xx}" value="test"></h:commandButton>
+
+	</h:form>
+	<h:form>
+		<h:commandButton action="#{sessionbean.out}" value="out"></h:commandButton>
+	</h:form>
+</h:body>
+</html>

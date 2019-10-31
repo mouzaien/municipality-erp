@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:BeginCalendarDate="http://java.sun.com/jsf/composite/BeginCalendarDate"
+	xmlns:EndCalendarDate="http://java.sun.com/jsf/composite/EndCalendarDate">
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				جدولة الموظفين <span class="ui-icon ui-icon-developer-board"></span>
+			</h1>
+			<br />
+			<h:form id="includeform">
+				<p:messages id="msgs" closable="true" autoUpdate="true"></p:messages>
+				<div class="col-md-12">
+					<div class="row">
+						<p:selectBooleanCheckbox
+							value="#{empPlanificationBean.allchecked}">
+							<f:ajax render="emp allEmp" execute="@this" event="change"
+								listener="#{empPlanificationBean.reLoadEmployers}" />
+						</p:selectBooleanCheckbox>
+						<span style="font-size: 16px;">&nbsp;&nbsp;&nbsp; كل
+							الموظفين </span>
+					</div>
+					<br /> <br />
+					<h:panelGroup id="emp">
+						<div class="ui-g">
+							<h:panelGroup rendered="#{!empPlanificationBean.allchecked}">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الإدارة" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<!-- 									<p:selectOneMenu id="section" style="width:100%" filter="true" -->
+									<!-- 										filterMatchMode="contains" -->
+									<!-- 										value="#{empPlanificationBean.deptId}"> -->
+									<!-- 										<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" /> -->
+									<!-- 										<f:selectItems value="#{loadingDataBean.depatmentList}" -->
+									<!-- 											var="dept" itemValue="#{dept.id}" -->
+									<!-- 											itemLabel="#{dept.deptName}" /> -->
+									<!-- 										<f:ajax render="empList" execute="section" event="change" -->
+									<!-- 											listener="#{empPlanificationBean.loadEmployersByDept}" /> -->
+									<!-- 									</p:selectOneMenu> -->
+									<p:selectManyMenu id="section" style="width:100%" filter="true"
+										filterMatchMode="contains" showCheckbox="true"
+										value="#{empPlanificationBean.deptIds}">
+										<f:selectItems value="#{loadingDataBean.depatmentList}"
+											var="dept" itemValue="#{dept.id}"
+											itemLabel="#{dept.deptName}" />
+										<f:ajax render="empList" execute="section" event="change"
+											listener="#{empPlanificationBean.loadEmployersByDept}" />
+									</p:selectManyMenu>
+
+									<p:selectCheckboxMenu id="section2" var="dept" required="true"
+										style="width:100%" panelStyleClass="empClass"
+										requiredMessage="إختر الإدارة"
+										value="#{empPlanificationBean.deptIds}" label="إختر الإدارة"
+										multiple="false" filter="true" filterMatchMode="contains"
+										converter="departmentConverter">
+										<f:selectItems value="#{loadingDataBean.depatmentList}" />
+										<p:ajax event="toggleSelect" process="@this"
+											listener="#{empPlanificationBean.loadEmployersByDept}" />
+									</p:selectCheckboxMenu>
+									<h:outputLabel value="#{EmpPlanificationBean.deptName}" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الموظفين" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<p:selectCheckboxMenu id="empList" var="user" required="true"
+										style="width:100%" panelStyleClass="empClass"
+										requiredMessage="إختر الموظف"
+										value="#{empPlanificationBean.employersListSelected}"
+										label="إختر الموظفين" multiple="false" filter="true"
+										filterMatchMode="contains">
+										<f:selectItems value="#{empPlanificationBean.employersList}" />
+										<p:ajax event="toggleSelect" process="@this" />
+									</p:selectCheckboxMenu>
+								</div>
+							</h:panelGroup>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup id="allEmp">
+						<div class="ui-g">
+							<h:panelGroup rendered="#{empPlanificationBean.allchecked}">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الموظفين" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<p:selectCheckboxMenu id="allEmpList" var="user"
+										required="true" style="width:100%" panelStyleClass="empClass"
+										requiredMessage="إختر الموظف"
+										value="#{empPlanificationBean.employersListSelected}"
+										label="الموظفين" multiple="false" filter="true"
+										filterMatchMode="contains" converter="userConverter">
+										<f:selectItems value="#{empPlanificationBean.employersList}" />
+										<p:ajax event="toggleSelect" process="@this" />
+									</p:selectCheckboxMenu>
+								</div>
+							</h:panelGroup>
+						</div>
+					</h:panelGroup>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="هجري  :  " />
+							<p:selectBooleanCheckbox
+								value="#{empPlanificationBean.higriMode}">
+								<p:ajax update="pDates11,pDates12" process="@this"></p:ajax>
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="من" />
+						</div>
+						<!-- 						<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+						<!-- 							 <ui:include src="/shared/calender.xhtml"></ui:include> -->
+						<!-- 							<p:calendar value="#{empPlanificationBean.selecteDateFrom}" -->
+						<!-- 								pattern="dd/MM/yyyy"></p:calendar> -->
+						<!-- 						</div> -->
+						<div class="ui-g-2">
+							<h:panelGroup id="pDates11">
+								<p:inputText id="hiri11"
+									value="#{empPlanificationBean.selecteDateFrom}"
+									onfocus="loadCalendar();" required="true"
+									requiredMessage="يرجى اختيار تاريخ وارد القرار"
+									rendered="#{empPlanificationBean.higriMode}"
+									styleClass="form-control form-controlCal">
+								</p:inputText>
+								<p:calendar id="gric11"
+									value="#{empPlanificationBean.selecteDateFrom_G}"
+									pattern="dd/MM/yyyy"
+									rendered="#{!empPlanificationBean.higriMode}">
+								</p:calendar>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="إلى" />
+						</div>
+						<!-- 						<div class="ui-g-12 ui-md-6 ui-lg-4"> -->
+						<!-- 							 <ui:include src="/shared/NotifDate.xhtml"></ui:include> -->
+
+						<!-- 							<p:calendar value="#{empPlanificationBean.selecteDateTo}" -->
+						<!-- 								pattern="dd/MM/yyyy"></p:calendar> -->
+
+						<!-- 						</div> -->
+						<div class="ui-g-2">
+							<h:panelGroup id="pDates12">
+								<p:inputText id="hiri12"
+									value="#{empPlanificationBean.selecteDateTo}"
+									onfocus="loadCalendar();" required="true"
+									requiredMessage="يرجى اختيار تاريخ وارد القرار"
+									rendered="#{empPlanificationBean.higriMode}"
+									styleClass="form-control form-controlCal">
+								</p:inputText>
+								<p:calendar id="gric12"
+									value="#{empPlanificationBean.selecteDateTo_G}"
+									pattern="dd/MM/yyyy"
+									rendered="#{!empPlanificationBean.higriMode}">
+								</p:calendar>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2"></div>
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="إظهار دوام الموظف"
+									icon="ui-icon ui-icon-developer-board" styleClass="green-btn"
+									onclick="PF('timetable').show();">
+									<p:ajax oncomplete="PF('timetable').hide();"
+										listener="#{empPlanificationBean.loadUserPeriodShift}"
+										update="outTable"></p:ajax>
+								</p:commandButton>
+								<p:spacer height="10"></p:spacer>
+								<p:commandButton value="إعطاء الدوامات"
+									icon="ui-icon ui-icon-snooze" styleClass="teal-btn"
+									onclick="PF('timetable').show();">
+								</p:commandButton>
+								<p:spacer height="10"></p:spacer>
+								<p:commandButton value="حفظ" icon="ui-icon-save"
+									styleClass="cyan-btn"
+									actionListener="#{empPlanificationBean.save}"
+									style="float:left;">
+									<f:ajax render="@all" execute="msgs"></f:ajax>
+								</p:commandButton>
+							</div>
+						</div>
+					</div>
+					<br />
+				</div>
+				<p:dialog header="إختيار الدوام" widgetVar="timetable" modal="true"
+					dir="rtl" width="70%">
+					<p:dataTable id="shift1" var="tim" value="#{fngTimes.timeTable}"
+						selectionMode="single" rowKey="#{tim.timeShiftId}"
+						selection="#{empPlanificationBean.shift}"
+						sortBy="#{tim.timeShiftId}" sortOrder="descending" rows="10"
+						paginator="true" paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10">
+						<p:ajax event="rowSelect"
+							listener="#{empPlanificationBean.onRowSelect}"></p:ajax>
+						<p:column headerText="الدوام" width="60%">
+				         #{tim.timeName}
+					</p:column>
+						<p:column headerText="وقت الدخول الرسمى">
+						#{tim.startWork}
+					</p:column>
+						<p:column headerText="وقت الخروج الرسمى">
+						#{tim.endWork}
+					</p:column>
+					</p:dataTable>
+					<br></br>
+					<div class="image-box-footer" align="left">
+						<p:commandButton value="موافق" styleClass="btn btn-primary">
+							<p:ajax oncomplete="PF('timetable').hide();"
+								listener="#{empPlanificationBean.loadUserPeriodShift}"
+								update="outTable"></p:ajax>
+						</p:commandButton>
+						<p:spacer width="10px" height="10px"></p:spacer>
+						<p:commandButton value="رجوع" styleClass="btn btn-primary"
+							onclick="PF('timetable').hide();"></p:commandButton>
+					</div>
+					<br></br>
+				</p:dialog>
+				<br />
+				<p:dataTable id="outTable" var="det"
+					value="#{empPlanificationBean.fngUserTempShiftLst}"
+					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" editable="true"
+					paginatorPosition="bottom" widgetVar="outfineset"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true" rows="10">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+								onkeyup="PF('outfineset').filter()"
+								style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+						<br />
+					</f:facet>
+					<p:column style="text-align: center;" headerText="رقم" width="10%">
+                                   #{rowIndex +1}
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="التاريخ"
+						width="10%">
+                                  #{det.id.workdate}
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="الدوام"
+						width="20%">
+                                   #{det.timeName}
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="الموظف"
+						width="30%">
+                                   #{det.userName}
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="القسم"
+						width="30%">
+                                   #{det.userDeptName}
+                     </p:column>
+
+				</p:dataTable>
+				<!-- 				<div class="col-lg-12" -->
+				<!-- 					style="background-color: white; border-top: 5px solid #428BCA"> -->
+				<!-- 					<br></br> -->
+				<!-- 					<div style="color: color: #428bca"> -->
+				<!-- 						<h1 -->
+				<!-- 							style="color: #7CB342; float: unset; text-align: center; direction: ltr;"> -->
+				<!-- 							الدوامات &nbsp;&nbsp;<span -->
+				<!-- 								class="ui-icon ui-icon-format-line-spacing"></span> -->
+				<!-- 						</h1> -->
+				<!-- 					</div> -->
+				<!-- 					<div class="row"> -->
+				<!-- 											<p:messages autoUpdate="true" closable="true"></p:messages> -->
+				<!-- 						<h:panelGroup id="table"> -->
+				<!-- 							<div class="ui-g"></div> -->
+
+
+				<!-- 							<div class="col-md-12 " style="overflow: scroll; height: 300px;"> -->
+				<!-- 								<div> -->
+				<!-- 									<table style="width: 100%"> -->
+				<!-- 										<thead> -->
+				<!-- 											<tr> -->
+				<!-- 												<th style="width: 10%; text-align: right;">رقم</th> -->
+				<!-- 												<th style="width: 10%; text-align: right;">التاريخ</th> -->
+				<!-- 												<th style="width: 20%; text-align: right;">الدوام</th> -->
+				<!-- 												<th style="width: 30%; text-align: right;">الموظف</th> -->
+				<!-- 												<th style="width: 30%; text-align: right;">القسم</th> -->
+				<!-- 											</tr> -->
+				<!-- 										</thead> -->
+				<!-- 										<tbody> -->
+				<!-- 											<p:repeat var="det" varStatus="x" -->
+				<!-- 												value="#{empPlanificationBean.fngUserTempShiftLst}"> -->
+				<!-- 												<tr> -->
+				<!-- 													<td>#{x.index+1}</td> -->
+				<!-- 													<td>#{det.id.workdate}</td> -->
+				<!-- 													<td>#{det.timeName}</td> -->
+				<!-- 													<td>#{det.userName}</td> -->
+				<!-- 													<td>#{det.userDeptName}</td> -->
+				<!-- 												</tr> -->
+				<!-- 											</p:repeat> -->
+				<!-- 										</tbody> -->
+				<!-- 									</table> -->
+				<!-- 								</div> -->
+				<!-- 							</div> -->
+				<!-- 						</h:panelGroup> -->
+				<!-- 					</div> -->
+				<!-- 					<h:form> -->
+				<!-- 						<div class="row"> -->
+				<!-- 							<br></br> -->
+				<!-- 							<div class="col-md-11" /> -->
+				<!-- 							<div class="ui-g-12 ui-md-6 ui-lg-1"> -->
+				<!-- 												<p:commandButton value="حفظ" -->
+				<!-- 													actionListener="#{empPlanificationBean.save}" -->
+				<!-- 													style="float:left;" styleClass="green-btn flat"> -->
+				<!-- 													<f:ajax render="@all"></f:ajax> -->
+				<!-- 												</p:commandButton> -->
+				<!-- 							</div> -->
+				<!-- 						</div> -->
+				<!-- 					</h:form> -->
+				<!-- 				</div> -->
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

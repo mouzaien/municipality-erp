@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<ui:composition template="/pages/menuBar.xhtml">
+
+
+	<ui:define name="content">
+
+		<div>
+
+			<!-- 			<p class="text-center"> -->
+			<!-- 				<h:outputLabel styleClass="btxt" -->
+			<!-- 					style="font-weight:bold; font-size:30px;" -->
+			<!-- 					value="#{msg['rebound.model']}"> -->
+			<!-- 				</h:outputLabel> -->
+
+			<!-- 			</p> -->
+
+			<h:form id="includeform">
+
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br />
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px ! important; color: #428bca">#{msg['rebound.model']}
+						</h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['contrary.to.identity']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineAplOwnerId}"
+											styleClass="form-control" maxlength="10">
+											<f:validator validatorId="nationalIdValidator" />
+										</h:inputText>
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['contrary.to.name']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineAplOwnerName}"
+											styleClass="form-control">
+										</h:inputText>
+									</div>
+
+								</div>
+
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['cheque.Number']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineInstrumentNo}"
+											styleClass="form-control">
+										</h:inputText>
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['cheque.Date']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+
+										<p:inputMask
+											value="#{fineReboundBean.fineReboundMaster.fineInstrumentDate}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+									</div>
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['cheque.Source']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineInstrumentSource}"
+											styleClass="form-control">
+										</h:inputText>
+									</div>
+
+
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['rebound.Description']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-8">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineReboundDesc}"
+											styleClass="form-control">
+										</h:inputText>
+									</div>
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['num.Meters.Groundfloor']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineGroundMeter}"
+											styleClass="form-control">
+											<p:ajax event="blur" process="@form"
+												update="includeform:tablePG"
+												listener="#{fineReboundBean.fillTable}" />
+										</h:inputText>
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['num.Meters.Upperfloor']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineFloorMeter}"
+											styleClass="form-control">
+											<p:ajax event="blur" process="@form"
+												update="includeform:tablePG"
+												listener="#{fineReboundBean.fillTable}" />
+										</h:inputText>
+									</div>
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['min.Limit']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineMinTax}"
+											styleClass="form-control">
+											<p:ajax event="blur" process="@form"
+												update="includeform:tablePG"
+												listener="#{fineReboundBean.fillTable}" />
+										</h:inputText>
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['max.Limit']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineMaxTax}"
+											styleClass="form-control">
+											<p:ajax event="blur" process="@form"
+												update="includeform:tablePG"
+												listener="#{fineReboundBean.fillTable}" />
+										</h:inputText>
+									</div>
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['construction.Cost.Per']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-3">
+										<h:inputText
+											value="#{fineReboundBean.fineReboundMaster.fineMeterCost}"
+											styleClass="form-control">
+											<p:ajax event="blur" process="@form"
+												update="includeform:tablePG"
+												listener="#{fineReboundBean.fillTable}" />
+										</h:inputText>
+									</div>
+
+								</div>
+
+								<div class="row" align="center">
+									<div class="col-md-2"></div>
+									<div class="col-md-8">
+										<div class="table-responsive">
+											<h:panelGroup id="tablePG">
+												<table id="itemsTB"
+													class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<th width="30%" style="text-align: center;">#{msg['item.description']}</th>
+															<th width="20%" style="text-align: center;">#{msg['item.value']}</th>
+															<th width="40%" style="text-align: center;">#{msg['item.description']}</th>
+															<th width="10%" style="text-align: center;">#{msg['item.value']}</th>
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td><h:outputText value="#{msg['item.somme.meter']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.sommeMeter}</td>
+
+
+															<td><h:outputText
+																	value="#{msg['item.half.meter.cost']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.halfMeterCost}</td>
+
+														</tr>
+														<tr>
+															<td><h:outputText
+																	value="#{msg['item.quarter.meter.cost']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.quarterMeterCost}</td>
+
+
+															<td><h:outputText
+																	value="#{msg['fine.quarter.cost']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.fineQuarterCost}</td>
+
+														</tr>
+														<tr>
+															<td><h:outputText value="#{msg['fine.half.cost']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.fineHalfCost}</td>
+
+
+															<td><h:outputText
+																	value="#{msg['fine.quarter.cost.with.min']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.fineQuarterCostWithMin}</td>
+
+														</tr>
+														<tr>
+															<td><h:outputText
+																	value="#{msg['fine.half.cost.with.max']}">
+																	<f:convertNumber pattern="#0.00" />
+																</h:outputText></td>
+															<td style="text-align: center;">#{fineReboundBean.fineHalfCostWithMax}</td>
+
+														</tr>
+
+													</tbody>
+												</table>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-8">
+										<p:fileUpload id="NewRecordUpload"
+											widgetVar="NewRecordUploader" multiple="true" update="att-list"
+											fileUploadListener="#{fineReboundBean.uploadFile}"
+											uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
+											previewWidth="0" process="@this"
+											allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+											sizeLimit="300000000">
+										</p:fileUpload>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="  " />
+
+									</div>
+									<div>
+										<ul>
+
+
+											<h:panelGroup id="att-list">
+												<br></br>
+												<ui:repeat var="attach" value="#{fineReboundBean.attachList}">
+													<li style="color: #428bca">#{attach.attachRealName}</li>
+												</ui:repeat>
+											</h:panelGroup>
+
+										</ul>
+									</div>
+
+
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+
+										<h:commandButton value="#{msg['back']}" action="mails"
+											immediate="true"
+											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+											class="btn btn-primary">
+											<f:ajax execute="@form" />
+										</h:commandButton>
+
+										<h:commandButton value="#{msg['send']}"
+											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+											styleClass="btn btn-primary"
+											actionListener="#{fineReboundBean.saveAction}">
+											<f:ajax execute="@form" render="@form"></f:ajax>
+										</h:commandButton>
+									</div>
+
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{mailDefenationBean.init}"></f:viewAction>
+	</f:metadata>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link type="text/css" rel="stylesheet"
+		href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-south-street" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<script type="text/javascript">
+		function onLoadFunction() {
+			var x = document.getElementsByClassName("inputHidden");
+
+			if (x[0].value == 'show') {
+				var z = document.getElementsByClassName("outboxx");
+				z[0].click();
+			} else {
+				var v = document.getElementsByClassName("moamla");
+				v[0].click();
+			}
+		}
+		window.document.onload = onLoadFunction;
+	</script>
+
+	<style>
+</style>
+</h:head>
+<ui:composition template="../menuBar.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform">
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+				rel="stylesheet"></link>
+			<h:inputHidden styleClass="inputHidden"
+				value="#{mailDefenationBean.inputHiddenValue}"></h:inputHidden>
+				<p:commandButton id="btn_1" value="uploadFiles"
+					style="display: none">
+					<f:ajax event="click"
+						listener="#{mailDefenationBean.refreshFilesUploaded}"
+						render="att-list">
+					</f:ajax>
+				</p:commandButton>
+			<div class="text-center">
+				<p:dialog widgetVar="confirm-sign-dlg" id="confirmSigndialog"
+					hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+					resizable="false" header="#{msg['confirm.signature']}">
+					<h:panelGroup id="signfrndlg">
+
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-8">
+									<div class="container-fluid">
+										<div class="row" style="margin-bottom: 3px;">
+											<div class="col-md-12">
+												<p:password id="confrmpass"
+													placeholder="#{msg['enter.signature.code']}" style="width: 310px;"
+													value="#{mailDefenationBean.confirmPassword}" />
+											</div>
+										</div>
+										<div class="row" style="margin-bottom: 3px;">
+											<div class="col-md-12">
+												<p:selectOneMenu id="signlist"
+													value="#{mailDefenationBean.selectedUserInSignComment}"
+													panelStyle="width:320px" effect="fade" var="d"
+													style="width:310px;direction: rtl;" filter="true"
+													filterMatchMode="contains">
+													<f:selectItem itemLabel="#{msg['select.receiver']}" itemValue="" />
+													<f:selectItems
+														value="#{mailDefenationBean.commentSignEmployeesList}" />
+												</p:selectOneMenu>
+											</div>
+
+										</div>
+										<div class="row" style="margin-bottom: 3px;">
+											<div class="col-md-12">
+												<p:selectCheckboxMenu label="#{msg['comment.copy']}" id="commChkbx"
+													filter="true" filterMatchMode="contains"
+													style="width:310px;direction: rtl; "
+													value="#{mailDefenationBean.commentCopyReciever}">
+													<f:selectItems value="#{mailDefenationBean.mgrMap}" />
+												</p:selectCheckboxMenu>
+											</div>
+
+										</div>
+										<p:separator />
+										<div class="row" style="margin-bottom: 3px;">
+											<div class="col-md-12">
+												<p:commandButton value="#{msg['sign.comment']}"
+													class="btn btn-default" process="signfrndlg"
+													style="width: 100%;" type="submit" icon="fa fa-legal"
+													action="#{mailDefenationBean.commentSignAction(actionEvent)}" />
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<img
+										src="#{facesContext.externalContext.requestContextPath}/resources/images/key-icon.png"
+										width="120" height="120"></img>
+								</div>
+							</div>
+
+						</div>
+
+					</h:panelGroup>
+
+				</p:dialog>
+			</div>
+			<p:growl autoUpdate="true" showDetail="false" />
+			<div class="row" style="margin-bottom: 19px">
+				<div class="col-md-10">
+					<h:panelGroup rendered="#{mailDefenationBean.enableReturn}">
+						<div class="row">
+							<div class="col-md-3">
+								<p:outputLabel styleClass="btxt" value="#{msg['observations']}"/>
+							</div>
+							<div class="col-md-5">
+								<p:inputTextarea styleClass="form-control"
+									placeholder="#{msg['observations']}" id="notes"
+									value="#{mailDefenationBean.notes}"/>
+							</div>
+							<p:commandButton value="#{msg['return.transaction']}"
+								action="#{mailDefenationBean.returnRequestAction}"
+								style="float: left; margin-bottom: 19px; margin-left: 3px"
+								styleClass="btn btn-primary"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{!mailDefenationBean.enableReturn}">
+						<h3 class="page-header"
+							style="margin: 0px 0 0px ! important; color: #428bca">
+							#{mailDefenationBean.selectedInbox.appTitle}</h3>
+					</h:panelGroup>
+				</div>
+				<div class="col-md-2">
+					<p:commandButton value="#{msg['add.comment']}" style="float:left;"
+						styleClass="btn btn-primary letter"
+						rendered="#{!mailDefenationBean.recordHasComment and !mainManagedBean.mailExecutor.isModel}">
+						<p:ajax update="addComment" onsuccess="myFunc()"
+							listener="#{mailDefenationBean.showCommentTab}"></p:ajax>
+						<script>
+							function myFunc() {
+								var z = document
+										.getElementsByClassName("outboxx");
+								z[0].click();
+
+							}
+						</script>
+					</p:commandButton>
+				</div>
+			</div>
+			<div class="panel-body">
+				<h:panelGroup id="addComment">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs">
+						<li class="#{!mailDefenationBean.activeTabRemove ?'':'active'}"><a
+							class="moamla" href="#mo3amla" data-toggle="tab">#{msg['transaction.data']}
+								</a></li>
+						<li><a href="#att" data-toggle="tab">#{msg['attachments']}</a></li>
+
+						<h:panelGroup rendered="#{!mainManagedBean.mailExecutor.isModel}">
+
+							<li><a href="#transfer" data-toggle="tab">#{msg['transfer']}</a></li>
+						</h:panelGroup>
+						<h:panelGroup>
+							<li
+								class="#{mailDefenationBean.commentActive or mailDefenationBean.recordHasComment?'active':''}"
+								style="display: #{mailDefenationBean.recordHasComment?'flex':'none'}"><a
+								href="#letter" class="outboxx" data-toggle="tab">#{msg['comment.data']}
+									 </a></li>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{mainManagedBean.mailExecutor.isModel}">
+							<li class="#{mainManagedBean.mailExecutor.isModel?'active':''}"><a
+								href="#temp" data-toggle="tab">#{msg['model']}</a></li>
+						</h:panelGroup>
+					</ul>
+				</h:panelGroup>
+				<!-- Tab panes -->
+
+				<br></br>
+				<div class="tab-content">
+					<script type="text/javascript">
+						$(document).ready(function() {
+
+							closeDiv();
+
+						});
+					</script>
+					<div
+						class="#{mainManagedBean.mailExecutor.isModel or  mailDefenationBean.recordHasComment?' tab-pane fade':'tab-pane fade in active'}"
+						id="mo3amla">
+						<div style="overflow: auto; overflow-x: hidden; height: 400px;">
+							<div class="col-lg-12 row"
+								style="background-color: white; border-top: 5px solid #428BCA">
+								<br></br>
+								<div style="color: color: #428bca">
+									<h3 class="page-header"
+										style="margin: 0px 0 20px ! important; color: #428bca">
+										بيانات المعاملة
+										<h:selectOneMenu id="folderId" styleClass=" form-control"
+											style="   float: left; width: 162px;height: 36px;margin-top: 22px;"
+											value="#{mailDefenationBean.folderId}">
+											<f:ajax listener="#{mailDefenationBean.addMailToFolder}"
+												execute="folderId"></f:ajax>
+											<f:selectItem itemLabel="اضافة  الى   مجلد ..."
+												noSelectionOption="true" itemDisabled="true"></f:selectItem>
+											<f:selectItems value="#{mailDefenationBean.userfolders}"
+												var="folder" itemValue="#{folder.folderId}"
+												itemLabel="#{folder.folderName}"></f:selectItems>
+										</h:selectOneMenu>
+									</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="  رقم المعاملة" styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{mailDefenationBean.selectedInbox.wrkId}" />
+										</div>
+										<div class="col-md-3"></div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="  رقم الوارد" styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{mailDefenationBean.selectedInbox.wrkIncomeNo}" />
+										</div>
+										<div class="col-md-3"></div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="  الموضوع" styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{mailDefenationBean.selectedInbox.appTitle}"
+												style="white-space: nowrap;" />
+										</div>
+										<div class="col-md-3" />
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="المرسل " styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value=" #{mailDefenationBean.selectedInbox.wrkSender}" />
+										</div>
+										<div class="col-md-3" />
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<p:outputLabel value="أنشأت في " styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<p:outputLabel
+												value="#{mailDefenationBean.selectedInbox.wrkHdate} " />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12"
+								style="background-color: white; border-top: 5px solid #428BCA">
+								<div style="color: color: #428bca">
+									<br></br>
+									<h3 class="page-header"
+										style="margin: 0px 0 20px ! important; color: #428bca">الشروحات
+									</h3>
+								</div>
+								<ui:repeat varStatus="x" value="#{mailDefenationBean.comments}"
+									var="comm">
+									<h4 style="margin: 0px 0 20px ! important; color: #428bca">خطوة
+										(#{x.index+1})</h4>
+									<p:outputLabel
+										rendered="#{mailDefenationBean.comments eq Empty }"
+										value="عفوا لا يوجد شروحات لهذه المعاملة "></p:outputLabel>
+									<ul>
+
+										<li><h5>بواسطة #{comm.fromName} الي #{comm.toName}</h5></li>
+
+										<li>بتاريخ #{comm.createdIn}</li>
+										<li>#{comm.purpose}</li>
+										<li>#{comm.comment}</li>
+									</ul>
+
+								</ui:repeat>
+								<hr></hr>
+							</div>
+						</div>
+						<br></br>
+						<div>
+							<h:commandButton style="float:left;margin-left:3px;"
+								value="طباعة الشروحات" immediate="true"
+								styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+								action="#{mailDefenationBean.printExplanationReportAction}">
+							</h:commandButton>
+							<h:panelGroup rendered="true">
+								<h:commandButton styleClass="btn btn-primary"
+									action="#{mailDefenationBean.sendRecordToArchive}"
+									style="float:left;margin-bottom: 8px;margin-left:3px"
+									value="أرشفة المعاملة">
+									<p:ajax process="@this"></p:ajax>
+								</h:commandButton>
+							</h:panelGroup>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="att">
+
+						<div class="col-md-12" style="text-align: left; margin: 5px;">
+							<p:commandButton value="ربط المعاملة بمعاملة سابقة"
+								process="@this"
+								action="#{mailDefenationBean.openLinkingDlg(ae)}"
+								immediate="true">
+							</p:commandButton>
+						</div>
+						<div class="col-lg-12"
+							style="background-color: white; border-top: 5px solid #428BCA">
+							<br></br>
+							<div style="color: color: #428bca">
+								<h3 class="page-header"
+									style="margin: 0px 0 20px ! important; color: #428bca">
+									المرفقات</h3>
+							</div>
+							<div class="panel-body">
+								<p:outputLabel rendered="#{mailDefenationBean.attList eq null }"
+									value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel>
+								<ul>
+									<h:panelGroup id="AttachmantTab">
+										<ui:repeat value="#{mailDefenationBean.attList}" var="att">
+											<div class="panel panel-default">
+												<div class="panel-body">قام بارفاقه #{att.ownerName}</div>
+												<div class="panel-footer">
+													<div class="container-fluid">
+														<div class="row">
+															<div class="col-md-5">
+																<h:outputLink target="_blank" value="#{att.attLink}"
+																	rendered="#{!att.ireportFile}">
+																أضغط هنا لتحميل الملف
+															</h:outputLink>
+																<h:commandLink target="_blank"
+																	value="أضغط هنا لتحميل الملف" immediate="true"
+																	rendered="#{att.ireportFile}"
+																	action="#{mailDefenationBean.printIreportFileAction(att.attLink)}"
+																	icon="fa fa-check-square" />
+															</div>
+															<div class="col-md-2"></div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+										</ui:repeat>
+									</h:panelGroup>
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-12"
+							style="background-color: white; border-top: 5px solid #428BCA">
+
+							<div class="col-md-2" style="color: color: #428bca">
+								<br></br>
+								<h3 class="page-header"
+									style="margin: 0px 0 20px ! important; color: #428bca">ارفاق
+									جديد</h3>
+							</div>
+							<div class="col-md-2 panel-body">
+								<p:fileUpload id="RecordsUploaderID" widgetVar="RecordsUploader"
+									multiple="true" auto="true"
+									fileUploadListener="#{mailDefenationBean.uploadRecordFiles}"
+									uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
+									previewWidth="0" process="@this"
+									style="width: 100%;display: block;" sizeLimit="300000000"
+									update="AttachmantTab" />
+							</div>
+							<div class="col-md-4">
+								<div style="display: inline;">
+									<div class="col-md-2">
+										<a
+											href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+											class="btn btn-primary icon-pencil " onclick="visibleDIv()">
+											<i class="material-icons">scanner</i>
+										</a>
+									</div>
+									<div class="col-md-8" id="divError" style="display: none;">
+										<h:outputLabel value="يجب تحميل المرفقات بعد إنتهاء المسح"
+											style="color:red"></h:outputLabel>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<a href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+									id="FileLoderID" class="btn btn-primary"
+									style="display: none; float: left; margin-left: 84px;"
+									onclick="notVisibleDIv()">تحميل المرفق</a>
+							</div>
+						</div>
+						<div class="row">
+					<div class="col-md-2">
+						<h:outputLabel value="المرفقات" />
+					</div>
+					<div class="col-md-7">
+						<ul>
+							<h:panelGroup id="att-list">
+								<br></br>
+								<ui:repeat var="attach" value="#{mailDefenationBean.attachList}">
+									<div class="row">
+										<div class="col-md-5">
+											<h:outputLabel value="#{attach.attachRealName}" />
+										</div>
+										<div class="col-md-1">
+											<h:commandButton class="btn btn-danger" immediate="true"
+												render="att-list" value="إلغاء"
+												actionListener="#{mailDefenationBean.deleteAttchFile(attach.attachRealName)}">
+											</h:commandButton>
+										</div>
+										<div class="col-md-1">
+											<h:commandButton class="btn btn-danger" immediate="true"
+												render="att-list" value="موافق" 
+												actionListener="#{mailDefenationBean.saveAttchs}">
+														<f:ajax execute="@form"></f:ajax>
+													</h:commandButton>
+										</div>
+										<br />
+									</div>
+								</ui:repeat>
+							</h:panelGroup>
+						</ul>
+					</div></div>
+						<h:panelGroup rendered="#{mailDefenationBean.copyOfComment}">
+							<div class="col-lg-12"
+								style="background-color: white; border-top: 5px solid #428BCA">
+								<div style="color: color: #428bca">
+									<br></br>
+									<h3 class="page-header"
+										style="margin: 0px 0 20px ! important; color: #428bca">طباعة
+										الخطاب</h3>
+								</div>
+
+								<div class="panel-body">
+									<h:commandButton style="float:left" value="طباعة"
+										immediate="true" styleClass="btn btn-primary"
+										onclick="this.form.target='_blank'"
+										action="#{mailDefenationBean.printAttachReportAction}">
+									</h:commandButton>
+								</div>
+
+							</div>
+						</h:panelGroup>
+
+
+
+
+					</div>
+					<div class="tab-pane fade" id="transfer">
+						<h:panelGroup id="hh">
+							<p:messages id="Msg" autoUpdate="true" closable="true" />
+							<div class="col-lg-12"
+								style="background-color: white; border-top: 5px solid #428BCA">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-5">
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel value="الشـــــــرح " />
+												</div>
+												<div class="col-md-10">
+													<h:inputTextarea styleClass="form-control" cols="10"
+														rows="10" requiredMessage="الشرح مطلوب"
+														value="#{mailDefenationBean.application.applicationUsercomment}"
+														id="wrkcomm" />
+												</div>
+											</div>
+
+											<br></br>
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel value="التوجيه*" />
+												</div>
+												<div class="col-md-10">
+													<p:selectOneMenu required="false" filter="true"
+														filterMatchMode="contains"
+														requiredMessage="التوجيه  مطلوب" id="wrkpurp00"
+														value="#{mailDefenationBean.application.applicationPurpose}"
+														styleClass="form-control" style="direction: rtl;">
+														<f:selectItem itemLabel="اختر   توجيه المعاملة "
+															itemValue="" />
+														<f:selectItems value="#{mailDefenationBean.purposeMap}" />
+													</p:selectOneMenu>
+												</div>
+											</div>
+											<br></br>
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel value="ملحوظات" />
+												</div>
+												<div class="col-md-3">
+													<h:outputLabel value="المعاملة عاجلة" />
+													<h:selectBooleanCheckbox
+														value="#{mailDefenationBean.importantFlag}" id="isimport" />
+												</div>
+												<div class="col-md-3">
+													<h:outputLabel value=" الشرح سري" />
+													<h:selectBooleanCheckbox
+														value="#{mailDefenationBean.secretFlag}" id="issecret" />
+												</div>
+												<div class="col-md-3">
+													<h:outputLabel value=" تكوين رقم معاملة"
+														rendered="#{mailDefenationBean.renderincomflag}" />
+													<h:selectBooleanCheckbox id="createIncomeItem"
+														rendered="#{mailDefenationBean.renderincomflag}"
+														value="#{mailDefenationBean.incomeNumFlag}" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-7">
+											<div class="container-fluid bd-example-row">
+												<ul class="nav nav-tabs">
+													<li class="active"><a href="#original"
+														data-toggle="tab"> جهات ارسال الاصل </a></li>
+
+													<li><a href="#copy" data-toggle="tab">جهات ارسال
+															الصورة </a></li>
+
+												</ul>
+
+												<br></br>
+												<div class="tab-content">
+													<div class="tab-pane fade  in active" id="original">
+														<ul class="nav nav-pills nav-justified">
+															<h:panelGroup
+																rendered="#{mailDefenationBean.currentUser.wrkRoleId != 1 ?'true':'false' }">
+
+																<li class="active"><a href="#deptEmps"
+																	data-toggle="tab">موظفى لقسم </a></li>
+															</h:panelGroup>
+
+															<h:panelGroup
+																rendered="#{mailDefenationBean.currentUser.wrkRoleId != 4 ?'true':'false' }">
+																<li><a href="#managers"
+																	style="height: 42px; width: 127px; border-radius: 44%;"
+																	data-toggle="tab">مديرى الادارات</a></li>
+															</h:panelGroup>
+														</ul>
+														<div class="tab-content">
+															<div
+																class="#{mailDefenationBean.currentUser.wrkRoleId ==1 ? 'tab-pane fade':'tab-pane fade  in active'}"
+																id="deptEmps">
+																<br></br>
+																<div>
+																	<p:selectOneRadio id="empr" widgetVar="emp"
+																		value="#{mailDefenationBean.wrkReciever}"
+																		layout="grid" columns="3">
+																		<p:ajax update="mngr" process="empr"
+																			listener="#{mailDefenationBean.clearMngRadioList(valueChangeEvent)}" />
+
+																		<f:selectItems
+																			value="#{mailDefenationBean.empsMapInDept}" />
+
+																	</p:selectOneRadio>
+																</div>
+															</div>
+															<div
+																class="#{mailDefenationBean.currentUser.wrkRoleId ==1 ? 'tab-pane fade in active':'tab-pane fade'}"
+																id="managers">
+																<br></br>
+																<div>
+																	<p:selectOneRadio id="mngr"
+																		value="#{mailDefenationBean.wrkReciever}"
+																		layout="grid" columns="3">
+																		<p:ajax update="empr" process="mngr"
+																			listener="#{mailDefenationBean.clearEmpRadioList(valueChangeEvent)}" />
+																		<f:selectItems value="#{mailDefenationBean.mgrMap}" />
+																	</p:selectOneRadio>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="tab-pane fade  " id="copy">
+														<ul class="nav nav-pills  nav-justified">
+															<h:panelGroup
+																rendered="#{mailDefenationBean.currentUser.wrkRoleId  != 1 ?'true':'false' }">
+																<li class="active"><a href="#deptEmps2"
+																	data-toggle="tab">موظفى القسم </a></li>
+															</h:panelGroup>
+															<h:panelGroup
+																rendered="#{mailDefenationBean.currentUser.wrkRoleId  != 4 ?'true':'false' }">
+																<li><a
+																	style="height: 42px; width: 127px; border-radius: 44%;"
+																	href="#managers2" data-toggle="tab">مديرى الادارات</a></li>
+															</h:panelGroup>
+														</ul>
+														<div class="tab-content">
+															<div
+																class="#{mailDefenationBean.currentUser.wrkRoleId ==1 ? 'tab-pane fade':'tab-pane fade  in active'}"
+																id="deptEmps2">
+																<br></br>
+																<div style="max-height: 22em">
+																	<p:selectBooleanCheckbox id="checkAllFlagBTN2"
+																		value="#{mailDefenationBean.checkAllDeptEmpsFlag}">
+																		<f:ajax
+																			listener="#{mailDefenationBean.checkAllListner}"
+																			execute="checkAllFlagBTN"
+																			render="wrkCopyEmpRecievers checkbox" event="change"></f:ajax>
+																	</p:selectBooleanCheckbox>
+																	<h:outputText
+																		style=" font-weight: bold;font-size: 12px; color:#428bca"
+																		value="اختيار الكل"></h:outputText>
+																	<br></br>
+																	<p:selectManyCheckbox layout="grid" columns="3"
+																		id="checkbox"
+																		value="#{mailDefenationBean.wrkCopyEmpRecievers}">
+																		<f:ajax event="change" render="checkbox"
+																			execute="checkbox"
+																			listener="#{mailDefenationBean.onChangeEventCheckBox}"></f:ajax>
+																		<f:selectItems
+																			value="#{mailDefenationBean.empsMapInDept}" />
+																	</p:selectManyCheckbox>
+																</div>
+															</div>
+															<div
+																class="#{mailDefenationBean.currentUser.wrkRoleId ==1 ? 'tab-pane fade in active':'tab-pane fade'}"
+																id="managers2">
+																<br></br>
+																<p:selectBooleanCheckbox layout="grid" columns="3"
+																	id="checkAllFlagBTNForMngr"
+																	value="#{mailDefenationBean.checkAllDeptEmpsFlagMngr}">
+
+																	<f:ajax
+																		listener="#{mailDefenationBean.checkAllListnerForManagers}"
+																		execute="checkAllFlagBTN22"
+																		render="wrkCopyMngrRecievers checkbox2 "
+																		event="change"></f:ajax>
+																</p:selectBooleanCheckbox>
+																<h:outputText
+																	style=" font-weight: bold;font-size: 12px;color:#428bca"
+																	value="اختيار الكل"></h:outputText>
+																<br></br>
+																<div style="max-height: 22em">
+																	<p:selectManyCheckbox id="checkbox2"
+																		value="#{mailDefenationBean.wrkCopyMngRecievers}"
+																		layout="grid" columns="3">
+																		<f:ajax event="change" render="checkbox2"
+																			execute="checkbox2"
+																			listener="#{mailDefenationBean.onChangeEventCheckBoxAllMngr}"></f:ajax>
+																		<f:selectItems value="#{mailDefenationBean.mgrMap}" />
+																	</p:selectManyCheckbox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div>
+											<h:commandButton value="احالة المعاملة "
+												action="#{mailDefenationBean.wrkSendAction}"
+												style="float:left;font-family: kufi !important;"
+												styleClass="btn btn-primary">
+												<f:ajax execute="hh"></f:ajax>
+											</h:commandButton>
+										</div>
+									</div>
+									<br></br>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div
+						class="#{!mailDefenationBean.recordHasComment?' tab-pane fade':'tab-pane fade in active'}"
+						id="letter">
+						<p:messages id="cmntMsg" autoUpdate="true" closable="true" />
+						<h:panelGroup id="letterForm">
+							<h:panelGroup id="letterInfo">
+								<br></br>
+								<div class="col-lg-12"
+									style="background-color: white; border-top: 5px solid #428BCA">
+									<br></br>
+									<div style="color: color: #428bca">
+										<h3 class="page-header"
+											style="margin: 0px 0 20px ! important; color: #428bca">
+											بيانات خطاب التغطية
+											<h:outputLabel value="*#{mailDefenationBean.signInfo} "
+												style="margin-right: 50px;font-size:small" />
+											<h:commandButton style="float:left" value="طباعة"
+												styleClass="btn btn-primary"
+												onclick="this.form.target='_blank'"
+												rendered="#{mailDefenationBean.selectedCommentSigned}"
+												action="#{mailDefenationBean.printReportAction}">
+											</h:commandButton>
+											<h:outputLabel
+												rendered="#{mailDefenationBean.selectedCommentSigned}"
+												style="float:left;font-weight: bold;font-size: 12px; color:#428bca;margin-left: 50px;margin-top: 10px;"
+												value="طباعة صورة" />
+											<p:selectBooleanCheckbox
+												style="float:left;margin-left: 10px;margin-top: 10px;"
+												rendered="#{mailDefenationBean.selectedCommentSigned}"
+												value="#{mailDefenationBean.copyLetter}">
+											</p:selectBooleanCheckbox>
+											<h:commandButton style="float:left" value="معاينة"
+												styleClass="btn btn-primary"
+												onclick="this.form.target='_blank'"
+												rendered="#{!mailDefenationBean.selectedCommentSigned}"
+												action="#{mailDefenationBean.viewReportAction}">
+											</h:commandButton>
+										</h3>
+									</div>
+									<div class="row">
+
+										<div class="col-md-6">
+											<div class="row ">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value="موجه إلي" />
+												</div>
+												<div class="col-md-10">
+													<h:inputTextarea id="newwrkdtoo" styleClass="form-control"
+														disabled="#{mailDefenationBean.selectedCommentSigned}"
+														value="#{mailDefenationBean.comment.appTo}"
+														required="true" requiredMessage=" يجب إدخال جهة التوجيه " />
+												</div>
+											</div>
+											<br></br>
+											<div class="row ">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value=" المرفقات" />
+												</div>
+												<div class="col-md-10">
+													<h:inputText id="attachNB" styleClass="form-control"
+														value="#{mailDefenationBean.comment.appPapers}"
+														required="true" requiredMessage=" يجب إدخال عدد المرفقات " />
+												</div>
+											</div>
+											<br></br>
+
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value="صورة  أعلي" />
+												</div>
+												<div class="col-md-10">
+													<h:inputText style="width:100%" id="newwrkhighcopy"
+														disabled="#{mailDefenationBean.selectedCommentSigned}"
+														value="#{mailDefenationBean.comment.firstCopy}"
+														styleClass="form-control" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value="الموضــوع" />
+												</div>
+												<div class="col-md-10">
+													<h:inputText style="width:100%" id="newwrktoppic"
+														disabled="#{mailDefenationBean.selectedCommentSigned}"
+														styleClass="form-control"
+														value="#{mailDefenationBean.comment.appSubject}"
+														required="true" requiredMessage="موضوع المعاملة مطلوب" />
+												</div>
+											</div>
+											<br></br>
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value="صورة  أدنى" />
+												</div>
+												<div class="col-md-10">
+													<h:inputText
+														disabled="#{mailDefenationBean.selectedCommentSigned}"
+														id="newwrklowcopy" style="width:100%"
+														value="#{mailDefenationBean.comment.secondCopy}"
+														styleClass="form-control" />
+												</div>
+											</div>
+											<br></br>
+											<div class="row">
+												<div class="col-md-2">
+													<h:outputLabel styleClass="btxt" value=" نوع الخطاب " />
+												</div>
+												<div class="col-md-10">
+													<h:selectOneMenu id="d"
+														disabled="#{mailDefenationBean.selectedCommentSigned}"
+														value="#{mailDefenationBean.comment.commentType}"
+														styleClass="form-control" var="d" required="true"
+														requiredMessage="يجب أختيار نوع الخطاب ">
+														<f:selectItem itemLabel="اختر  نوع الخطاب " itemValue=""
+															noSelectionOption="true" />
+														<f:selectItems var="type"
+															itemLabel="#{type.commentTypeName}"
+															itemValue="#{type.id} "
+															value="#{mailDefenationBean.commentTypes}" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br></br>
+									<div class="row">
+
+										<div class="col-md-1">
+											<h:outputLabel styleClass="btxt" value="نص الخطاب" />
+										</div>
+										<div class="col-md-11">
+											<h:inputTextarea styleClass="form-control" cols="30"
+												rows="10"
+												disabled="#{mailDefenationBean.selectedCommentSigned}"
+												id="commentconentid"
+												value="#{mailDefenationBean.comment.longCommentArabStr}">
+												<f:ajax render="commentconentid" execute="commentconentid"></f:ajax>
+											</h:inputTextarea>
+
+										</div>
+									</div>
+									<br></br>
+									<h:outputLabel value=" *#{mailDefenationBean.convMarkingInfo} "
+										style="font-size:small ;color: #428bca" />
+
+									<div class="col-md-4">
+										<br></br>
+										<div class="row">
+											<div class="col-md-3">
+												<h:outputLabel styleClass="btxt" value="حجم النص" />
+											</div>
+											<div class="col-md-1">
+												<h:selectOneMenu id="fontSizeText"
+													value="#{mailDefenationBean.comment.fontSize}"
+													required="true" requiredMessage=" إختر حجم النص ">
+													<f:selectItems value="#{loadingDataBean.fontSizeList}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+
+									</div>
+									<br></br> <br></br>
+									<h:panelGroup id="signBtn">
+										<div class="col-md-8 "
+											style="margin-right: 260px; margin-bottom: 20px">
+											<h:panelGroup>
+												<div class="row">
+													<h:panelGroup id="ccc10"
+														rendered="#{!mailDefenationBean.selectedCommentSigned}">
+														<div class="col-md-3">
+															<p:commandButton id="markbtn" value="تأشير  الخطاب"
+																styleClass="btn btn-default"
+																style="width:100%;height: 34px;font-family: kufi !important;"
+																rendered="#{mailDefenationBean.canMark}"
+																action="#{mailDefenationBean.markCommentAction}"
+																process="@this">
+																<p:confirm header="تأكيد الإرسال "
+																	message="هل تود التأشير علي الخطاب  ؟ "
+																	icon="ui-icon-alert" />
+															</p:commandButton>
+															<p:tooltip for="markbtn" value="" trackMouse="true">
+																<p:outputLabel value="#{mailDefenationBean.markingInfo}" />
+															</p:tooltip>
+															<p:confirmDialog widgetVar="confirmDlg" global="true"
+																showEffect="explode" hideEffect="explode">
+																<p:commandButton value="تراجع" type="button"
+																	styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+																<p:commandButton value="موافق" type="button"
+																	styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+															</p:confirmDialog>
+														</div>
+													</h:panelGroup>
+													<h:panelGroup id="ccc8"
+														rendered="#{!mailDefenationBean.selectedCommentSigned}">
+														<div class="col-md-3">
+															<div class="dropdown">
+																<a href="#" style="width: 100%; height: 34px"
+																	class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+																	data-toggle="dropdown" role="button"
+																	aria-haspopup="true" aria-expanded="false">التوقيع
+																	على الخطاب <span class="caret"></span>
+																</a>
+																<ul class="dropdown-menu">
+																	<li><a href="#"> <p:commandLink
+																				style="width: 100%" value=" التوقيع علي الخطاب"
+																				rendered="#{mailDefenationBean.canSign}"
+																				action="#{mailDefenationBean.signCommentActionBtn(actionEvent)}"
+																				process="@this " icon="fa fa-check-square" />
+																	</a></li>
+																	<li><a href="#"> <p:commandLink
+																				style="width: 100%;"
+																				value=" التوقيع باسم رئيس البلدية  "
+																				action="#{mailDefenationBean.signCommentByNameActionBtn(actionEvent)}"
+																				process="@this" icon="fa fa-check-circle-o"
+																				rendered="#{mailDefenationBean.managerFlag}" />
+																	</a></li>
+
+																</ul>
+															</div>
+														</div>
+													</h:panelGroup>
+
+													<h:panelGroup id="ccc">
+														<!-- 																	rendered="#{!mailDefenationBean.selectedCommentSigned}"> -->
+														<div class="col-md-3">
+															<p:commandButton
+																style="width: 100%;font-family: kufi !important;height: 34px;"
+																styleClass="btn btn-default" value="  حفظ الخطاب   "
+																update="letterInfo"
+																actionListener="#{mailDefenationBean.commentSaveAction}"
+																id="commentSaveButton" process="letterForm">
+															</p:commandButton>
+
+														</div>
+													</h:panelGroup>
+													<h:panelGroup id="editBtnP"
+														rendered="#{mailDefenationBean.selectedCommentSigned}">
+														<div class="col-md-3">
+															<div>
+																<p:commandButton
+																	style="float :left;width: 100%;font-family: kufi !important;height: 34px;"
+																	styleClass="btn btn-default" value="تعديل "
+																	id="editBtn" update="letterInfo,ccc"
+																	actionListener="#{mailDefenationBean.editWrkCommentBtnAction}"
+																	process="@this,letterForm" icon="fa fa-edit">
+
+																</p:commandButton>
+
+															</div>
+
+														</div>
+													</h:panelGroup>
+												</div>
+											</h:panelGroup>
+										</div>
+									</h:panelGroup>
+									<div class="row "></div>
+								</div>
+							</h:panelGroup>
+						</h:panelGroup>
+					</div>
+					<div
+						class="#{mainManagedBean.mailExecutor.isModel ?' tab-pane fade  in active':' tab-pane fade '}"
+						id="temp">
+
+						<br></br>
+						<ui:include src="#{mainManagedBean.modelContent}" />
+
+
+					</div>
+					<div class="tab-pane fade" id="printTemp">
+						<div>
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h:outputLabel value="   النمـــــوذج " />
+								</div>
+								<div class="panel-body">
+									<h:panelGroup id="form008">
+										<object type="application/pdf"
+											data="#{mainManagedBean.mailExecutor.urlFile}" height="500px"
+											width="100%"> </object>
+									</h:panelGroup>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<p:dialog header="بيانات ربط المعاملة " id="link-dlg-id"
+			widgetVar="link-dlg" modal="true">
+			<h:form>
+				<div class="container-fluid">
+					<div class="row" style="font-size: large !important;">
+						<div class="col-md-4">أدخل رقم الوارد</div>
+						<div class="col-md-5 ">
+							<p:inputText id="old-income" style="width:100%"
+								value="#{mailDefenationBean.newIncomeNoRefered}" />
+						</div>
+						<div class="col-md-1">
+							<p:commandLink update="p-att-id"
+								action="#{mailDefenationBean.loadprvAttachament(ae)}"
+								process="@this,old-income">
+
+								<div class="fa fa-refresh" style="font-size: large;"></div>
+							</p:commandLink>
+						</div>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-5 ">
+							<p:dataTable id="p-att-id" var="atta"
+								emptyMessage="لا يوجد مرفقات"
+								value="#{mailDefenationBean.previousAttachList}">
+								<p:column>
+									<div class="row" style="padding: 2px;">
+										<div class="fa fa-fa-paperclip"></div>
+										<h:outputLink target="_blank" value="#{atta.attachLink}">
+																 أضغط هنا لتحميل الملف 
+															</h:outputLink>
+									</div>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 ">
+							<p:commandButton value="ربط المعاملة" process="@this,old-income"
+								action="#{mailDefenationBean.linkRecord(ae)}"
+								update=":includeform:AttachmantTab" style="width:100%"></p:commandButton>
+						</div>
+					</div>
+				</div>
+				<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+					<f:facet name="start">جاري التحميل 
+					<img
+							src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif"></img>
+					</f:facet>
+				</p:ajaxStatus>
+				<script>
+				function visibleDIv() {
+					document.getElementById("FileLoderID").style.display = "block";
+					document.getElementById("divError").style.display = "block";
+				}
+				function notVisibleDIv() {
+
+					document.getElementById("divError").style.display = "none";
+					document.getElementById("FileLoderID").style.display = "none";
+					document.getElementById("includeform:btn_1").click();
+				}
+			</script>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,425 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+
+
+	<style>
+body {
+	margin: 0px;
+}
+
+.ui-datatable-footer {
+	background: red !important;
+}
+</style>
+</h:head>
+<h:body>
+	<p class="text-center">
+		<h:outputLabel styleClass="btxt"
+			style="font-weight:bold; font-size:30px;"
+			value="#{msg['general.appre.title']}">
+		</h:outputLabel>
+
+
+	</p>
+
+
+	<h:form id="includeform">
+
+		<div class="row">
+		<h:panelGroup rendered="#{generalAppreciationBean.compactPerformance.status==7}">
+		<div class="col-md-8" style="float: left;">
+				<h:outputLabel value="تم رفض التقييم الرجاء مراجعة الجهة المسؤولة" style="color: #FF5722; font-size:20px"/>
+		</div>
+		</h:panelGroup>
+			<h4 class="page-header"
+				style="margin: 0px 58px 20px ! important; color: #FF5722">البيانات
+				الرئيسية</h4>
+				<div class="row " style="margin: 0px 68px 20px ! important">
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">القسم / الإدارة</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel value="#{generalAppreciationBean.compactPerformance.employer.userDept.deptName}" />
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-md-8">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">إسم الموظف</label>
+
+							</div>
+							<div class="col-md-8">
+
+									<h:outputLabel	value="#{generalAppreciationBean.compactPerformance.employer.employeeName}" />
+
+							</div>
+
+						</div>
+					</div>
+
+
+				</div>
+			<br />
+			<div class="row" style="margin: 0px 68px 20px ! important">
+				<h:panelGroup id="details_data">
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">المسمى الوظيفي</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.compactPerformance.jobDescription}" />
+							</div>
+
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">الرقم الوظيفي</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.compactPerformance.jobNo}" />
+							</div>
+
+						</div>
+					</div>
+
+
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">المدير (المقيم)</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.compactPerformance.mgrName}" />
+
+							</div>
+
+						</div>
+					</div>
+
+				</h:panelGroup>
+			</div>
+			<br />
+			<div class="row" style="margin: 0px 68px 20px ! important">
+				<h:panelGroup id="details_data3">
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">بداية دورة الأداء</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.generalAppreciation.dateStart}" />
+							</div>
+
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">نهاية دورة الأداء</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.generalAppreciation.dateFinish}" />
+							</div>
+
+						</div>
+					</div>
+
+
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">تاريخ التقويم</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{generalAppreciationBean.generalAppreciation.dateFinish}" />
+
+							</div>
+
+						</div>
+					</div>
+
+				</h:panelGroup>
+			</div>
+
+			
+
+            <div>
+            <br/>
+            <br/>
+            <h3
+					style="margin: 0px 58px 20px ! important; color: #FF5722">النتيجة = #{generalAppreciationBean.generalAppreciation.result}     &nbsp; &nbsp; &nbsp;- #{generalAppreciationBean.rating} 
+					</h3>
+            </div>
+            				<div class="panel-body">
+			
+					<h:panelGroup id="result" layout="block" rendered="#{generalAppreciationBean.visible}" >
+					<div class="row " style="margin: 0px 68px 20px ! important">
+							<div class="col-md-3">
+								<h:outputLabel styleClass="btxt" value="المبررات" />
+							</div>
+
+							<div class="col-md-7">
+
+								<h:outputLabel 
+									value="#{generalAppreciationBean.generalAppreciation.justifications}">
+                                  
+								</h:outputLabel>
+							</div>
+						</div>
+					<br/>
+						</h:panelGroup>			
+					
+						<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">نقاط القوة /النقاط اللتي تحتاج إلى تطوير
+					</h4>
+					
+							<div class="row">
+						<h:panelGroup id="table" >
+							<div class="col-md-8 ">
+								<div class="table-responsive">
+									<table class="table table-striped table-hover" style="margin: 0px 68px 20px ! important">
+										<thead>
+											<tr>
+												<th>رقم</th>
+												<th>نقاط القوة</th>
+												<th>نقاط الضعف</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="det" varStatus="x"
+												value="#{generalAppreciationBean.compactEmpCaractersList}">
+												<tr>
+													<td>#{x.index+1}</td>
+													<td>#{det.powerPoints}</td>
+													<td>#{det.devPoints}</td>
+												</tr>
+
+											</ui:repeat>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					
+					<br/>
+					<div class="row " style="margin: 0px 68px 20px ! important">
+							<div class="col-md-3">
+								<h:outputLabel styleClass="btxt" value="الملاحظات" />
+							</div>
+
+							<div class="col-md-7">
+
+								<h:outputLabel id="note"
+									value="#{generalAppreciationBean.generalAppreciation.note}">
+                                  
+								</h:outputLabel>
+							</div>
+						</div>
+					<hr></hr>
+				</div>
+			<div class="row">
+				<div class="col-md-10"></div>
+				<div class="col-md-2">
+				<h:panelGroup
+					rendered="#{!generalAppreciationBean.visiblePrint and generalAppreciationBean.compactPerformance.status!=7}">
+					<button type="button" class="btn btn-primary "
+					
+						style="float: left; margin-bottom: 19px; margin-left: 3px"
+						data-toggle="modal" data-target="#gridSystemAcceptModalff">موافقة</button>
+					</h:panelGroup>
+					
+					<h:panelGroup
+					rendered="#{!generalAppreciationBean.visiblePrint and generalAppreciationBean.compactPerformance.status!=7}">
+					<button type="button" class="btn btn-primary "
+					rendered="#{!generalAppreciationBean.visiblePrint}"
+						style="float: left; margin-bottom: 19px; margin-left: 3px"
+						data-toggle="modal" data-target="#gridSystemRefuseModal">رفض
+						</button>
+						</h:panelGroup>
+						<h:commandButton
+					rendered="#{generalAppreciationBean.visiblePrint}"
+					style="float:left;margin-left:3px;" id="gg" value="طباعة"
+					styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+					action="#{generalAppreciationBean.printAppreciation}">
+				</h:commandButton>
+				</div>
+
+			</div>
+			<!-- Modal -->
+			
+			
+			
+				<br /> <br />
+			<div id="gridSystemAcceptModalff" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="gridModalLabelff" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="gridModalLabelff">اضافة شرح و
+								تاكيد</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid bd-example-row">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+									</div>
+									<div class="col-md-7">
+
+										<h:selectOneMenu id="typ" styleClass="form-control" var="d"
+											value="#{generalAppreciationBean.applicationPurpose}"
+											style=" margin-left: 1px;">
+
+											<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+												itemValue="#{pp.idStr} "
+												value="#{generalAppreciationBean.wrkPurposes}" />
+										</h:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br></br>
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" الشرح  " />
+									</div>
+
+
+									<div class="col-md-7">
+										<h:inputTextarea id="abcd"
+											value="#{generalAppreciationBean.wrkAppComment}"
+											styleClass="form-control">
+										</h:inputTextarea>
+									</div>
+
+								</div>
+
+								<br></br>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-green" data-dismiss="modal">رجوع</button>
+								<h:commandButton value="تاكيد"
+									action="#{generalAppreciationBean.accept}"
+									styleClass="btn btn-primary">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br></br>
+			<div id="gridSystemRefuseModal" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="gridModalLabelss" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="gridModalLabelss">اضافة شرح و
+								تاكيد</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid bd-example-row">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+									</div>
+									<div class="col-md-7">
+
+										<h:selectOneMenu id="typ2" styleClass="form-control"
+											value="#{generalAppreciationBean.applicationPurposeRefuse}"
+											var="d2" style=" margin-left: 1px;">
+
+											<f:selectItems var="pp2" itemLabel="#{pp2.purposeName}"
+												itemValue="#{pp2.idStr} "
+												value="#{generalAppreciationBean.wrkPurposes}" />
+										</h:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br></br>
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" الشرح  " />
+									</div>
+
+
+									<div class="col-md-7">
+										<h:inputTextarea
+											value="#{generalAppreciationBean.wrkAppCommentRefuse}"
+											styleClass="form-control">
+										</h:inputTextarea>
+									</div>
+
+								</div>
+
+								<br></br>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-green" data-dismiss="modal">رجوع</button>
+								<h:commandButton value="تاكيد"
+									action="#{generalAppreciationBean.refuse}"
+									styleClass="btn btn-primary">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="loan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cfcb9d96-acb4-420b-a4f9-65485f7afb0e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="289"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="700"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="loanTypeId" class="java.lang.Integer"/>
+	<parameter name="month" class="java.lang.Integer"/>
+	<parameter name="year" class="java.lang.Integer"/>
+	<parameter name="bankName" class="java.lang.String"/>
+	<parameter name="monthName" class="java.lang.String"/>
+	<parameter name="compName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select l.loan_empno,L.LOAN_NAME , D.LOAN_PAID_MONTLY,
+F.FST_NAME_AR ||' '||F.SND_NAME_AR||' '||F.TRD_NAME_AR||' '||F.FTH_NAME_AR  as name,
+F.NATNO
+from hrs_loan l,hrs_loan_details d, hrs_master_file f,hrs_emp_historical his
+where L.LOAN_ID=D.LOAN_ID and L.LOAN_EMPNO=F.EMPNO
+and D.LOAN_DET_MONTH= $P{month}  and D.LOAN_DET_YEAR= $P{year}
+and L.LOAN_TYPE_ID =  $P{loanTypeId}
+and HIS.EMPNO = F.EMPNO
+and empsts=1
+and sal_stp=0
+and loan_sts_a_s_e='A'
+and serial=HRS_GET_MAX_SERIAL(his.empno)
+order by his.catcod asc , RANKCOD desc]]>
+	</queryString>
+	<field name="LOAN_EMPNO" class="java.math.BigDecimal"/>
+	<field name="LOAN_NAME" class="java.lang.String"/>
+	<field name="LOAN_PAID_MONTLY" class="java.math.BigDecimal"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="NATNO" class="java.math.BigDecimal"/>
+	<variable name="sumloanpayment" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{LOAN_PAID_MONTLY}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="59" splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="111" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="450" y="91" width="70" height="20" uuid="618b5140-43a9-4892-8116-fea6d47db455">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الموظف"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="91" width="160" height="20" uuid="57ed2c78-ac83-4299-b7f1-8c7b80a1c496"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الإسم"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="91" width="80" height="20" uuid="dcb97ed9-103f-424a-b6f3-437b140d2e99"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم العقد"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="46" width="554" height="41" uuid="558679d8-ca7c-4395-8767-f7d2a5421fa3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بيان بحسميات أقساط منسوبي البلدية المقترضين من "+$P{bankName}+" لشهر "+$P{monthName}+" لعام "+$P{year}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="246" y="2" width="64" height="41" uuid="eee5482d-d39f-4c03-bb52-31ce92ef1da8"/>
+				<imageExpression><![CDATA["C:\\Users\\wasalam.BKERYAH\\Desktop\\bkeryah.gif"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="109" y="91" width="101" height="20" uuid="a66ec389-7dae-4a87-8f78-ac990bf0313e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المبلغ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="91" width="101" height="20" uuid="61de31f9-6d6d-4433-8003-0ac7f55ac566"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السجل المدني"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="520" y="91" width="27" height="20" uuid="da7c8332-685a-41a4-a636-61ae400500c9"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["م"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="3" width="111" height="43" uuid="0e592df0-a0bf-45d8-81cd-399a14c12f80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية\n"+
+$P{compName}+"\n"+
+"إدارة الموارد البشرية"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="0" width="70" height="20" uuid="6768049d-3727-4498-98fd-01977f1182d1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LOAN_EMPNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="160" height="20" uuid="97908d3d-ce43-4b65-9caa-a0d936409cd2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="80" height="20" uuid="164fbf45-0709-41c1-bbd5-20fa1669a38b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LOAN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="0" width="101" height="20" uuid="0bfe2fd4-6b1a-4e41-bae2-5228638ca49a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LOAN_PAID_MONTLY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="0" width="101" height="20" uuid="b02dcb66-8ef6-45d4-a789-b893921955a3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NATNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="520" y="0" width="27" height="20" uuid="6d70939a-4d2c-43b1-9111-758fa73723d6"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="435" y="0" width="100" height="20" uuid="d654fa07-b192-486e-87db-6486a75430ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المختص]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="100" height="20" uuid="ae410689-a4ce-4b9d-8ffd-f1f54ec9b3aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مدير ادارة الموارد البشرية]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="109" y="0" width="101" height="20" uuid="f07b29f3-e129-4ec1-84b9-4ea66613ea7d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumloanpayment}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

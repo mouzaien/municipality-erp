@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrs_salary_all" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a1b101d-b7e8-4455-921c-ca3c7f82bc31">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="month" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 1,
+'رواتب الموظفيين' name
+, nvl(SUM(SAL.SAL_DESERVED),0) DESERVED,0 deserverd1,0 deserverd2 ,nvl(SUM(SAL.SAL_TRANS),0) TRANS,
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) natural,
+nvl(sum(SAL.SAL_DARAR),0) darar,nvl(sum(SAL.SAL_OTHER_IN),0) other_in,
+( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0) + nvl(sum(SAL.LIFE),0) ) sum_isthk,
+nvl(sum(SAL.SAL_RETIRE),0) retire,nvl(sum(SAL.SAL_INSURANCE),0) insurance,
+nvl(sum(SAL.SAL_BANK_1),0) akar,nvl(sum(SAL.SAL_BANK_2),0) taslef,nvl(sum(SAL.SAL_BANK_3),0) zera3e,
+nvl(sum(SAL.SAL_BANK_4),0),nvl(sum(SAL.SAL_BANK_5),0),nvl(sum(SAL_JAZA_days),0) jaza ,
+nvl(sum(SAL.SAL_OTHER_out),0) other_out,0 sand,
+(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0)) sum_hasm,
+
+(( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0)+nvl(sum(LIFE),0) )-(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0))) total
+,max(SAL.SAL_YEAR) yearr,max(sys012.NAME_GR) monthhij
+,nvl(sum(SAL.life),0) life
+ FROM HRS_SALARY SAL,sys012
+WHERE SAL.SAL_MONTH =$P{month}
+AND SAL.SAL_YEAR=$P{year}
+and SYS012.ID = SAL.SAL_MONTH
+and  CATCOD=1
+union
+SELECT 2,
+'رواتب المستخدمين'
+ ,0,nvl(SUM(SAL.SAL_DESERVED),0) DESERVED,0,nvl(SUM(SAL.SAL_TRANS),0) TRANS,
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) natural,
+nvl(sum(SAL.SAL_DARAR),0) darar,nvl(sum(SAL.SAL_OTHER_IN),0) other_in,
+( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0)  + nvl(sum(SAL.LIFE),0)) sum_isthk,
+nvl(sum(SAL.SAL_RETIRE),0) retire,nvl(sum(SAL.SAL_INSURANCE),0) insurance,
+nvl(sum(SAL.SAL_BANK_1),0) akar,nvl(sum(SAL.SAL_BANK_2),0) taslef,nvl(sum(SAL.SAL_BANK_3),0) zera3e,
+nvl(sum(SAL.SAL_BANK_4),0),nvl(sum(SAL.SAL_BANK_5),0),
+nvl(sum(SAL_JAZA_days),0) jaza ,nvl(sum(SAL.SAL_OTHER_out),0) other_out,0 sand,
+(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0)) sum_hasm,
+(( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0)+nvl(sum(LIFE),0) )-(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0))) TOTAL
+,max(SAL.SAL_YEAR) yearr,max(sys012.NAME_GR) monthhij
+,nvl(sum(SAL.life),0) life
+ FROM HRS_SALARY SAL,sys012
+WHERE SAL.SAL_MONTH =$P{month}
+AND SAL.SAL_YEAR=$P{year}
+and SYS012.ID = SAL.SAL_MONTH
+and  CATCOD=2
+union
+SELECT 4 ,
+'العمال السعوديين'
+, 0,0,nvl(SUM(SAL.SAL_DESERVED),0) DESERVED,nvl(SUM(SAL.SAL_TRANS),0) TRANS,
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) natural,
+nvl(sum(SAL.SAL_DARAR),0) darar,nvl(sum(SAL.SAL_OTHER_IN),0) other_in,
+( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0) + nvl(sum(SAL.LIFE),0) ) sum_isthk,
+nvl(sum(SAL.SAL_RETIRE),0) retire,nvl(sum(SAL.SAL_INSURANCE),0) insurance,
+nvl(sum(SAL.SAL_BANK_1),0) akar,nvl(sum(SAL.SAL_BANK_2),0) taslef,nvl(sum(SAL.SAL_BANK_3),0) zera3e,
+nvl(sum(SAL.SAL_BANK_4),0),nvl(sum(SAL.SAL_BANK_5),0),nvl(sum(SAL_JAZA_days),0) jaza
+,nvl(sum(SAL.SAL_OTHER_out),0) other_out,nvl(sum(SAL.SAL_SANED),0) sand,
+(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0)+nvl(sum(SAL.SAL_SANED),0)) sum_hasm,
+(( nvl(SUM(SAL.SAL_DESERVED),0) + nvl(SUM(SAL.SAL_TRANS),0) +
+nvl(sum(SAL.SAL_NATURAL),0) + nvl(sum(SAL.SAL_NATURE_BASIC),0) +
+nvl(sum(SAL.SAL_DARAR),0) + nvl(sum(SAL.SAL_OTHER_IN),0)+nvl(sum(LIFE),0) )-
+(nvl(sum(SAL.SAL_RETIRE),0)+nvl(sum(SAL.SAL_INSURANCE),0) +nvl(sum(SAL.SAL_BANK_1),0) +
+nvl(sum(SAL.SAL_BANK_2),0) + nvl(sum(SAL.SAL_BANK_3),0) + nvl(sum(SAL.SAL_BANK_4),0)
++nvl(sum(SAL.SAL_BANK_5),0)+nvl(sum(SAL.SAL_OTHER_out),0)+nvl(sum(SAL_JAZA_days),0)+nvl(sum(SAL.SAL_SANED),0))) TOTAL
+,max(SAL.SAL_YEAR) yearr,max(sys012.NAME_GR) monthhij
+,nvl(sum(SAL.life),0) life
+ FROM HRS_SALARY SAL,sys012
+WHERE SAL.SAL_MONTH =$P{month}
+AND SAL.SAL_YEAR=$P{year}
+and SYS012.ID = SAL.SAL_MONTH
+and  CATCOD=4]]>
+	</queryString>
+	<field name="1" class="java.math.BigDecimal"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="DESERVED" class="java.math.BigDecimal"/>
+	<field name="DESERVERD1" class="java.math.BigDecimal"/>
+	<field name="DESERVERD2" class="java.math.BigDecimal"/>
+	<field name="TRANS" class="java.math.BigDecimal"/>
+	<field name="NATURAL" class="java.math.BigDecimal"/>
+	<field name="DARAR" class="java.math.BigDecimal"/>
+	<field name="OTHER_IN" class="java.math.BigDecimal"/>
+	<field name="SUM_ISTHK" class="java.math.BigDecimal"/>
+	<field name="RETIRE" class="java.math.BigDecimal"/>
+	<field name="INSURANCE" class="java.math.BigDecimal"/>
+	<field name="AKAR" class="java.math.BigDecimal"/>
+	<field name="TASLEF" class="java.math.BigDecimal"/>
+	<field name="ZERA3E" class="java.math.BigDecimal"/>
+	<field name="NVL(SUM(SAL.SAL_BANK_4),0)" class="java.math.BigDecimal"/>
+	<field name="NVL(SUM(SAL.SAL_BANK_5),0)" class="java.math.BigDecimal"/>
+	<field name="JAZA" class="java.math.BigDecimal"/>
+	<field name="OTHER_OUT" class="java.math.BigDecimal"/>
+	<field name="SAND" class="java.math.BigDecimal"/>
+	<field name="SUM_HASM" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="YEARR" class="java.math.BigDecimal"/>
+	<field name="MONTHHIJ" class="java.lang.String"/>
+	<field name="LIFE" class="java.math.BigDecimal"/>
+	<variable name="sumdeserv1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DESERVED}]]></variableExpression>
+	</variable>
+	<variable name="sumdeserv2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DESERVERD1}]]></variableExpression>
+	</variable>
+	<variable name="sumdeserv4" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DESERVERD2}]]></variableExpression>
+	</variable>
+	<variable name="sumtrans" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TRANS}]]></variableExpression>
+	</variable>
+	<variable name="sumnatural" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{NATURAL}]]></variableExpression>
+	</variable>
+	<variable name="sumdarar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DARAR}]]></variableExpression>
+	</variable>
+	<variable name="sumisthikak" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUM_ISTHK}]]></variableExpression>
+	</variable>
+	<variable name="sumretir" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{RETIRE}]]></variableExpression>
+	</variable>
+	<variable name="suminsurance" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{INSURANCE}]]></variableExpression>
+	</variable>
+	<variable name="sumakar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{AKAR}]]></variableExpression>
+	</variable>
+	<variable name="sumtasllef" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TASLEF}]]></variableExpression>
+	</variable>
+	<variable name="sumzer3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ZERA3E}]]></variableExpression>
+	</variable>
+	<variable name="sumjaza" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JAZA}]]></variableExpression>
+	</variable>
+	<variable name="sumsand" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SAND}]]></variableExpression>
+	</variable>
+	<variable name="sumhasm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUM_HASM}]]></variableExpression>
+	</variable>
+	<variable name="sumtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
+	</variable>
+	<variable name="sumLife" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{LIFE}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="555" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="555" uuid="5a74f1fd-806f-4dec-b086-3199e1ae9dde"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</frame>
+		</band>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="689" y="3" width="111" height="43" uuid="aa3274ff-50e6-4afd-9c42-1500cbe90261"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية\n"+
+$P{compName}+"\n"+
+"إدارة الموارد البشرية"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="17" y="0" width="194" height="35" uuid="5a91942a-964a-474b-b070-93e53c3a17ab"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" لشهر"
++ $F{MONTHHIJ} + "/"
++ $F{YEARR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="455" height="35" uuid="f4118ab5-4cd0-4042-8617-ac13307f865f"/>
+				<textElement>
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["خلاصة رواتب وأجور منسوبي "+$P{compName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="349" y="24" width="47" height="20" uuid="2d293852-7a57-4416-8299-fbd4c0d3b61f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تقاعد]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="645" y="24" width="45" height="20" uuid="c3c7d7dc-5606-4f25-b927-d31e36823d5b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مستخدمين]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="481" y="24" width="33" height="20" uuid="e20f3d38-fab2-4196-bee8-37a648bd2212"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ضرر واخري]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="211" y="24" width="47" height="20" uuid="71c90b60-41d0-4d4f-bfb6-38f57e81fd4f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[التسليف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="4" width="47" height="40" uuid="8cebd5d8-716f-4524-828b-e90d1dd15c4c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاجمالي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="258" y="24" width="47" height="20" uuid="96ed4dc8-e8b5-4ad0-8188-b01b045d6dab"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الصندوق العقاري]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="24" width="47" height="20" uuid="77934d34-c110-4edb-81fd-8264d9fc848c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[موظفين]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="24" width="43" height="20" uuid="120127be-7f71-4aab-884f-b956dfe984aa"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[طبيعة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="737" y="4" width="65" height="40" uuid="d264e05f-7d61-4853-bc51-e8f7e6ea6719">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[البيان]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="24" width="44" height="20" uuid="91bc4bd7-556d-4f74-97da-cebfc48607d0"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[عقاري واخري]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="24" width="45" height="20" uuid="5bfb7fcd-6d8b-48ab-a49e-822a66fb3a04"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[العمال السعوديين]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="557" y="24" width="43" height="20" uuid="86060e21-fe0d-4709-8f00-e240b9c0f6da">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[نقل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="24" width="44" height="20" uuid="8499a9f6-4594-4d58-95b7-cc507f9ecd4b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تأمينات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="24" width="36" height="20" uuid="0f1eaf53-378f-42c7-9d97-acb818988886"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[جزاءات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="94" y="24" width="37" height="20" uuid="6101315c-2652-440d-82db-f109bb6f2afe"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ساند 1%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="4" width="47" height="40" uuid="ab4ef264-05b5-4798-bf79-37096db46bdb"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[اجمالي الحسميات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="4" width="47" height="40" uuid="09137731-88b9-419a-a785-c01977676f1c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الصافي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="645" y="4" width="92" height="20" uuid="8ebdb068-4181-4179-9179-9551546f605f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[رواتب المدنيين]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="4" width="45" height="20" uuid="9dd3435b-e81e-4504-8c87-7258306ccc5e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[اجور العمال]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="4" width="157" height="20" uuid="5413b576-32fb-490e-b8f8-849d9174fd4c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[اجور العمال]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="94" y="4" width="302" height="20" uuid="d1b78053-9cfe-4592-8126-10b70f3fb87d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[الحســـــــميات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="24" width="38" height="20" uuid="cc06c15c-6702-462a-bb32-154a674edd60">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[غلاء معيشة]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="###0.##">
+				<reportElement x="349" y="0" width="47" height="20" uuid="a9c47258-b003-49e9-aed8-e503325aa3cf"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RETIRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="645" y="0" width="45" height="20" uuid="d91e4c8f-90e5-40f1-86b9-85e880b8108b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESERVERD1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="481" y="0" width="33" height="20" uuid="75517828-1c51-4163-b35c-5fa7ed5a5ec8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DARAR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="211" y="0" width="47" height="20" uuid="fccb1ba9-be28-4175-8529-c69847f6671e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TASLEF}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="396" y="0" width="47" height="20" uuid="157221a3-e7d6-4a12-af41-451056c12ea4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_ISTHK}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="258" y="0" width="47" height="20" uuid="8604787f-4298-4b5a-bc9a-0e365f2c8ac5"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AKAR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="690" y="0" width="47" height="20" uuid="8efde763-7cea-4155-ae4b-855b4f22cb1b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESERVED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="514" y="0" width="43" height="20" uuid="1ef3da58-d47a-4426-8aa9-fcbb34ebec3a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NATURAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="737" y="0" width="65" height="20" uuid="d84e6795-e32d-49bb-9071-3ece2166e61b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="167" y="0" width="44" height="20" uuid="9c31b83c-3b7b-4474-8339-251ff93224f7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ZERA3E}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="600" y="0" width="45" height="20" uuid="219fac85-daf6-481c-b8ee-606c4df18866"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESERVERD2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="305" y="0" width="44" height="20" uuid="a981effd-e725-4d33-a0a3-5ebd63d072c2"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INSURANCE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="557" y="0" width="43" height="20" uuid="92767b64-1dcf-42ee-8a4f-560298207675"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TRANS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="131" y="0" width="36" height="20" uuid="37ca045c-cbab-4e3e-ac96-d8e4c587a7ce"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JAZA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="94" y="0" width="37" height="20" uuid="23bec7dd-2706-49f0-a686-70a73ae8bcf1"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SAND}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="47" y="0" width="47" height="20" uuid="c1ea7ba7-486a-4ae2-8beb-c427e3d469a9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_HASM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="0" y="0" width="47" height="20" uuid="60f71295-f99d-43d5-994f-aa8f2453d8ca"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="443" y="0" width="38" height="20" uuid="3e4b92d4-6ed5-434c-b87f-ef622d7f6afb"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIFE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="379" y="16" width="32" height="20" uuid="06b2fe21-77a3-4e90-8594-225369b6b40f"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="83" splitType="Stretch">
+			<textField pattern="###0.##">
+				<reportElement x="690" y="0" width="47" height="20" uuid="6f0b1b55-a28b-4cbe-a0df-6db785f1df7e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumdeserv1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="645" y="0" width="45" height="20" uuid="3ff325bf-0d92-4a49-b243-9554f786f13b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumdeserv2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="600" y="0" width="45" height="20" uuid="34fbad59-adb7-4227-ba89-2ee0a8182824"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumdeserv4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="557" y="0" width="43" height="20" uuid="9ee4b03a-e7bf-4ec3-84ac-2c008664818f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumtrans}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="514" y="0" width="43" height="20" uuid="b9c467b1-0aac-4f21-80de-4146fedca61c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumnatural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="481" y="0" width="33" height="20" uuid="0a000305-5ca5-4b46-b88c-67e65b8f5b17"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumdarar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="396" y="0" width="47" height="20" uuid="78f8d860-f1f8-40df-888b-263d1e083016"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumisthikak}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="349" y="0" width="47" height="20" uuid="2505d5d3-c4f3-4054-bed9-5cc1ca171c6e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumretir}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="305" y="0" width="44" height="20" uuid="ec8d2652-fd40-4c9e-8763-baf88c26a7b8">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{suminsurance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="258" y="0" width="47" height="20" uuid="e95e7f3d-4e76-48e7-93d9-4b36da45e366"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumakar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="211" y="0" width="47" height="20" uuid="857a6068-d408-4014-a33f-c53215dc0468"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumtasllef}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="167" y="0" width="44" height="20" uuid="720332cd-ac74-4502-b78e-28ab43aa4738"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumzer3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="131" y="0" width="36" height="20" uuid="fac43f0b-f462-45dd-bb69-1de2fca10125"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumjaza}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="94" y="0" width="37" height="20" uuid="b1bcda6e-ad42-4597-ba72-35ee793f2ec8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumsand}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="47" y="0" width="47" height="20" uuid="c2bd1179-7955-4a59-96f8-a1cd2aa6a6fb"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumhasm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.##">
+				<reportElement x="0" y="0" width="47" height="20" uuid="52998923-36c9-4aa8-98d9-4907484f5f98"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="197" y="51" width="100" height="20" uuid="f7292b83-2a0a-42c6-82df-541a138f7895"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مدير ادارة الشؤون المالية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="50" width="100" height="20" uuid="47f12b29-b3d2-49e3-a99f-6c29060664a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رئيس بلدية محافظة البكيرية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="532" y="50" width="100" height="20" uuid="0a45be72-ecc2-42c7-b6d7-0a07cd8ba6d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المدقق]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="50" width="100" height="20" uuid="b6e5d61a-3ded-4ed9-8396-3e48617f7608"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مدير ادارة الموارد البشرية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="737" y="0" width="65" height="20" uuid="f3a483e0-51a6-4db9-a454-449a3142f3bb"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاجمالي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="679" y="50" width="100" height="20" uuid="0de104c8-1ad4-484f-a4f2-c6087c9acdfa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المختص]]></text>
+			</staticText>
+			<textField pattern="###0.##">
+				<reportElement x="443" y="0" width="38" height="20" uuid="edf9d46a-97c1-4369-bd43-d8bffe3b454c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumLife}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

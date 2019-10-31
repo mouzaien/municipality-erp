@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<body>
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<br />
+				<div class="image-box-footer">
+					<p:commandButton value="#{msg['add']}"
+						action="#{fngTimes.addShift}"
+						oncomplete=" PF('addShiftDialog').show()"
+						icon="ui-icon ui-icon-alarm-add" process="@this"
+						update="includeform:addDialog">
+					</p:commandButton>
+				</div>
+				<br />
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						أوقات الدوام<span class="ui-icon ui-icon-alarm"></span>
+					</h1>
+					<p:dialog header="إضافة دوام" widgetVar="addShiftDialog"
+						id="inputData" modal="true" width="66%" dir="rtl">
+
+						<h:panelGroup id="addDialog">
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="اسم الدوام: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="shift" value="#{fngTimes.shift.timeName}"
+										style="width:100%">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="الوقت المسموح به للتاخير" />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="lateTimAllow"
+										value="#{fngTimes.shift.lateTimeAllowed}" style="width:100%">
+									</p:inputText>
+								</div>
+
+							</div>
+
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value=" الدخول الرسمى: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="stwork" style="width:100%"
+										value="#{fngTimes.shift.startWork}">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="فتح بصمه الحضور: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="fingSatrtOpen"
+										value="#{fngTimes.shift.fingerSatrtOpen}" style="width:100%">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="قفل بصمه الحضور: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="fingStartClosed" style="width:100%"
+										value="#{fngTimes.shift.fingerStartClosed}">
+									</p:inputText>
+								</div>
+
+
+							</div>
+
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value=" الخروج الرسمى : " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="enwork" value="#{fngTimes.shift.endWork}"
+										style="width:100%">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="فتح بصمه الخروج : " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="fingEndOpen"
+										value="#{fngTimes.shift.fingerEndOpen}" style="width:100%">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<h:outputLabel for="basic" value="قفل بصمه الخروج: " />
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText id="fingEndClosed" style="width:100%"
+										value="#{fngTimes.shift.fingerEndClosed}">
+									</p:inputText>
+								</div>
+							</div>
+						</h:panelGroup>
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check"
+								action="#{fngTimes.saveFngTimeTable}" update="@form"
+								onsuccess="PF('addShiftDialog').hide();">
+							</p:commandButton>
+							<p:spacer width="10px" height="10px"></p:spacer>
+							<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+								icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+								onsuccess="PF('addShiftDialog').hide();" />
+						</div>
+					</p:dialog>
+
+					<br /> <br />
+
+					<p:dataTable id="timetable" var="tim" style="direction: rtl;"
+						value="#{fngTimes.timeTable}" editable="true" widgetVar="celltime"
+						filteredValue="#{fngTimes.filterTimeTable}"
+						sortBy="#{tim.timeShiftId}" sortOrder="descending" rows="10"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('celltime').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:ajax event="rowEdit" update="timetable"
+							listener="#{fngTimes.onRowEdit}" />
+						<p:ajax event="rowEditCancel" update="timetable"
+							listener="#{fngTimes.onRowCancel}" />
+
+						<p:column headerText="الدوام" filterBy="#{tim.timeName}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.timeName}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="period" value="#{tim.timeName}"
+										style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت الدخول الرسمى "
+							filterBy="#{tim.startWork}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.startWork}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="Startwork" value="#{tim.startWork}"
+										style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت الخروج الرسمى" filterBy="#{tim.endWork}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.endWork}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="endwork" value="#{tim.endWork}"
+										style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت فتح بصمه الحضور"
+							filterBy="#{tim.fingerSatrtOpen}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.fingerSatrtOpen}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="fingerSatrtOpen"
+										value="#{tim.fingerSatrtOpen}" style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت قفل بصمه الحضور"
+							filterBy="#{tim.fingerStartClosed}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.fingerStartClosed}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="fingerStartClosed"
+										value="#{tim.fingerStartClosed}" style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت فتح بصمه الخروج"
+							filterBy="#{tim.fingerEndOpen}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.fingerEndOpen}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="fingerEndOpen" value="#{tim.fingerEndOpen}"
+										style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="وقت غلق بصمه الخروج"
+							filterBy="#{tim.fingerEndClosed}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.fingerEndClosed}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="fingerEndClosed"
+										value="#{tim.fingerEndClosed}" style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="الوقت المسموح به للتاخير"
+							filterBy="#{tim.lateTimeAllowed}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{tim.lateTimeAllowed}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="lateTimeAllowed"
+										value="#{tim.lateTimeAllowed}" style="width:96%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:100px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</h:form>
+		</body>
+	</ui:define>
+</ui:composition>
+</html>

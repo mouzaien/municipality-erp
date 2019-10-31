@@ -1,0 +1,118 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+/*
+  Bootstrap's documentation styles
+  Special styles for presenting Bootstrap's documentation and examples
+*/
+
+@import url('library/jquery-ui-1.10.3.css');
+@import url('library/chosen.css');
+@import url('library/jqvmap.css');
+@import url('library/jquery.dataTables.css');
+@import url('library/jquery.mCustomScrollbar.css');
+@import url('library/fullcalendar.css');
+@import url('library/datetimepicker.css');
+@import url('library/datepicker.css');
+@import url('library/bootstrap-timepicker.css');
+@import url('library/bootstrap-fileupload.css');
+@import url('library/jquery.minicolors.css');
+@import url('library/footable/footable-0.1.css');
+@import url('library/footable/footable.paginate.css');
+@import url('library/jquery.fileupload-ui.css');
+@import url('library/bootstrapSwitch.css');
+@import url('library/bootstrap-select.css');
+@import url('library/bootstrap-wysihtml5.css');
+@import url('library/bootstrap-modal.css');
+
+#main_navigation .mCSB_container {
+    margin-right: 0px;
+}
+/****************************************************************************************************/
+/*****************************************Datatables********************************************************/
+table.dataTable thead th, table.dataTable thead td {
+    border-bottom: none !important;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    float: right;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+    float: left;
+}
+
+
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid #dedede !important;
+}
+
+.table th {
+    font-size: 12px;
+}
+
+div.dataTables_length select {
+    margin: 0;
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dataTables_paginate {
+}
+
+th {
+    height: 20px;
+}
+
+.chzn-container-single .chzn-single div {
+    left: 0;
+    right: auto;
+}
+
+    .chzn-container-single .chzn-single div > b:after {
+        border-color: rgba(0, 114, 198, 0);
+        border-left-color: #0072c6;
+        border-width: -5px;
+        top: 50%;
+        right: -10px;
+        margin-top: -5px;
+    }
+
+.chzn-container-single .chzn-single {
+    background: #f0f0f0;
+}
+
+.dataTables_length {
+    margin-bottom: 0.755em;
+}
+
+    .dataTables_length .chzn-container {
+        margin: 0px 0px;
+    }
+
+    .dataTables_length .chzn-container-single .chzn-single span {
+        margin-right: 14px;
+    }
+
+    .dataTables_length .chzn-container {
+        margin-right: 0.755em;
+        width: 80px !important;
+    }
+
+    .dataTables_length .chzn-container-single .chzn-drop {
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+
+.ellipsis {
+    border-left: 1px solid #dddddd;
+    padding: 1px 11px 3px 11px !important;
+    font-weight: bold;
+    font-size: 15px;
+    color: #999999;
+}
+
+
+

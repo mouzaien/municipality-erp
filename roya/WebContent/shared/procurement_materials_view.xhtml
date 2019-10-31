@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+	<div class="container col-md-12 "
+		style="background-color: white; border-top: 5px solid #428BCA;">
+
+
+
+		<br></br>
+		<div>
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">#{msg['procurement.materials.request']}</h3>
+		</div>
+
+
+
+
+		<h:form id="includeform">
+			<div class="row ">
+				<div class="col-md-2">
+					<h:outputLabel styleClass="btxt" value="#{msg['description']}" />
+				</div>
+
+
+				<div class="col-md-5">
+					<h:outputLabel value="#{procurementBean.procurement.notes}" />
+				</div>
+
+			</div>
+			<hr /><hr />
+			<div class="row">
+
+				<div class="col-md-12 ">
+
+					<div class="table-responsive">
+
+
+
+
+
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>#{msg['number']}</th>
+									<th>#{msg['category.name']}</th>
+									<th>#{msg['quantity']}</th>
+									<th>#{msg['unity']}</th>
+									<th>#{msg['specifications']}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat var="det" varStatus="x"
+									value="#{procurementBean.procurement.procurementDetailsList}">
+
+
+									<tr>
+
+										<td>#{x.index+1}</td>
+										<td>#{det.tenderItem.name}</td>
+										<td>#{det.quantity}</td>
+										<td>#{det.tenderItem.unite.name}</td>
+										<td>#{det.notes}</td>
+
+
+
+									</tr>
+
+								</ui:repeat>
+							</tbody>
+						</table>
+
+					</div>
+
+
+				</div>
+
+
+			</div>
+			<hr></hr>
+			<div>
+				<h:panelGroup rendered="#{procurementBean.acceptFlag}">
+					<button type="button" class="btn btn-primary "
+						style="float: left; margin-bottom: 19px" data-toggle="modal"
+						data-target="#gridSystemModal">#{msg['accept']}</button>
+				</h:panelGroup>
+			</div>
+				<div id="gridSystemModal" class="modal fade" tabindex="-1"
+					role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="gridModalLabel">#{msg['add.explanation.confirmation']}</h4>
+							</div>
+							<div class="modal-body">
+								<div class="container-fluid bd-example-row">
+									<br></br>
+
+									<div class="row">
+										<div class="col-md-3">
+											<h:outputLabel styleClass="btxt" value="#{msg['redirect.transaction']}" />
+										</div>
+										<div class="col-md-7">
+
+											<h:selectOneMenu id="typ" styleClass="form-control"
+												value="#{procurementBean.applicationPurpose}" var="d"
+												style=" margin-left: 1px;">
+
+												<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+													itemValue="#{pp.idStr} "
+													value="#{procurementBean.wrkPurposes}" />
+											</h:selectOneMenu>
+
+
+										</div>
+
+									</div>
+									<br></br>
+									<div class="row ">
+										<div class="col-md-3">
+											<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+										</div>
+
+
+										<div class="col-md-7">
+											<h:inputTextarea value="#{procurementBean.wrkAppComment}"
+												styleClass="form-control">
+											</h:inputTextarea>
+										</div>
+
+									</div>
+
+									<br></br>
+
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-green"
+										data-dismiss="modal">#{msg['back']}</button>
+									<h:commandButton style="float:left" value="#{msg['confirmation']}"
+										rendered="#{procurementBean.acceptFlag}"
+										styleClass="btn btn-primary"
+										action="#{procurementBean.acceptAction}">
+										<f:ajax execute="@form"></f:ajax>
+									</h:commandButton>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+					
+					
+		</h:form>
+
+	</div>
+
+
+
+
+
+</h:body>
+</html>

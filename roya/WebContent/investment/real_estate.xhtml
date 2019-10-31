@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<!-- <link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link> -->
+	</h:head>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true" showDetail="false"></p:messages>
+
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="إضافة" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-add" process="@this"
+						action="#{realEstateBean.addRealEstate}"
+						oncomplete="PF('realEstate_dlg').show()"
+						update="includeform:addPG">
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center;">
+						العقارات <span class="fa fa-fw fa-building"></span>
+					</h1>
+
+					<br />
+
+					<div class="ui-g">
+						<p:dataTable var="realEstateItem" id="realEstateTable"
+							value="#{realEstateBean.realEstatesList}"
+							paginatorPosition="bottom" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{realEstateBean.filteredRealEstatesList}"
+							paginator="true" rows="12">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column headerText="رقم المخطط"
+								filterBy="#{realEstateItem.numPlan}" filterMatchMode="contains"
+								style="width:10%;text-align:center;">
+								<h:outputText value="#{realEstateItem.numPlan}" />
+							</p:column>
+							<p:column headerText="رقم العقار"
+								filterBy="#{realEstateItem.numRealEstate}"
+								filterMatchMode="contains" style="width:10%;text-align:center;">
+								<h:outputText value="#{realEstateItem.numRealEstate}" />
+							</p:column>
+							<p:column headerText="نوع النشاط" style="width:26%">
+								<h:outputText value="#{realEstateItem.activityType.name}" />
+							</p:column>
+							<p:column headerText="الشارع" style="width:40%">
+								<h:outputText value="#{realEstateItem.street}" />
+							</p:column>
+							<p:column width="7%" style="text-align:center"
+								headerText="#{msg['details']}">
+								<p:commandButton oncomplete="PF('realEstate_dlg').show();"
+									action="#{realEstateBean.loadSelectedRealEstate}"
+									process="@this" icon="ui-icon-search"
+									update="includeform:addPG">
+									<f:setPropertyActionListener value="#{realEstateItem}"
+										target="#{realEstateBean.realEstate}" />
+								</p:commandButton>
+							</p:column>
+							<!--  <p:column width="7%" style="text-align:center" -->
+							<!--  headerText="#{msg['delete']}"> -->
+							<!--  <p:commandButton id="delete" immediate="true" -->
+							<!--  icon="ui-icon-trash" update="@form" -->
+							<!--  action="#{realEstateBean.deleteRealEstate}"> -->
+							<!--  <f:setPropertyActionListener value="#{realEstateItem}" -->
+							<!--  target="#{realEstateBean.realEstate}" /> -->
+							<!--  </p:commandButton> -->
+							<!--  </p:column> -->
+						</p:dataTable>
+
+					</div>
+
+
+					<p:dialog widgetVar="realEstate_dlg" id="realEstate_dlgId"
+						header="" width="70%" hideEffect="fade" showEffect="explode"
+						dir="rtl" modal="true" resizable="false">
+						<h:panelGroup id="addPG">
+							<h1 style="color: #7CB342; text-align: center;">أضف العقار</h1>
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="نوع النشاط" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu
+										value="#{realEstateBean.realEstate.activityTypeId}"
+										style="width: 100%" required="true" filter="true"
+										filterMatchMode="contains"
+										rendered="#{realEstateBean.addMode}"
+										requiredMessage="يرجي إختيار نوع النشاط" id="newTitle">
+										<f:selectItem itemLabel="أختر نوع النشاط" itemValue="" />
+										<f:selectItems var="cont" itemValue="#{cont.code}"
+											itemLabel="#{cont.name}"
+											value="#{loadingDataBean.contractTypesList}" />
+									</p:selectOneMenu>
+									<p:outputLabel
+										value="#{realEstateBean.realEstate.activityType.name}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+
+								<div class="ui-g-1">
+									<p:outputLabel value="مكونات النشاط" styleClass="btxt" />
+								</div>
+								<div class="ui-g-6">
+									<p:inputTextarea
+										value="#{realEstateBean.realEstate.components}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%"
+										required="true" requiredMessage="مكونات النشاط مطلوبة" />
+									<p:inputText value="#{realEstateBean.realEstate.components}"
+										style="width: 100%" rendered="#{!realEstateBean.addMode}" />
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="نوع البناء" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="building_type" required="true"
+										value="#{realEstateBean.realEstate.buildTypeId}"
+										requiredMessage="نوع البناء مطلوب">
+										<f:selectItem itemLabel="إختر نوع البناء" itemValue=""></f:selectItem>
+										<f:selectItems value="#{realEstateBean.buildingTypeList}"
+											var="building" itemLabel="#{building.name}"
+											itemValue="#{building.id}"></f:selectItems>
+									</p:selectOneMenu>
+
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="المدينة" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="محافظة المذنب" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="الشارع" styleClass="btxt" />
+								</div>
+								<div class="ui-g-5">
+									<p:inputText value="#{realEstateBean.realEstate.street}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%"
+										required="true" requiredMessage="الشارع مطلوب"
+										id="newloginname" />
+									<p:inputText value="#{realEstateBean.realEstate.street}"
+										style="width: 100%" rendered="#{!realEstateBean.addMode}" />
+								</div>
+
+							</div>
+
+							<br />
+
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="رقم المخطط" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{realEstateBean.realEstate.numPlan}"
+										style="width: 100%" />
+									<!-- 									<p:outputLabel value="#{realEstateBean.realEstate.numPlan}" -->
+									<!-- 										rendered="#{!realEstateBean.addMode}" /> -->
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="رقم العقار" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText required="true"
+										value="#{realEstateBean.realEstate.numRealEstate}"
+										requiredMessage="رقم العقار مطلوب" style="width: 100%" />
+									<!-- 									<p:outputLabel -->
+									<!-- 										value="#{realEstateBean.realEstate.numRealEstate}" -->
+									<!-- 										rendered="#{!realEstateBean.addMode}" /> -->
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="نوع العقار" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<!-- rendered="#{realEstateBean.addMode}" -->
+									<p:selectOneMenu
+										value="#{realEstateBean.realEstate.siteTypeId}"
+										required="true" filter="true" filterMatchMode="contains"
+										requiredMessage="نوع العقار مطلوب" style="width: 100%">
+										<f:selectItem itemLabel="أختر نوع العقار" itemValue="" />
+										<f:selectItems var="site" itemValue="#{site.code}"
+											itemLabel="#{site.name}"
+											value="#{loadingDataBean.siteTypesList}" />
+									</p:selectOneMenu>
+
+									<p:outputLabel
+										value="#{realEstateBean.realEstate.siteType.name}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="عدده" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{realEstateBean.realEstate.siteTypeNB}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.siteTypeNB}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+
+							</div>
+
+
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="مساحة الأرض" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{realEstateBean.realEstate.landArea}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.landArea}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="مساحة المباني" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{realEstateBean.realEstate.buildingArea}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel
+										value="#{realEstateBean.realEstate.buildingArea}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="نوع البناء التصميم القديم "
+										styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu
+										value="#{realEstateBean.realEstate.buildTypeId}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%">
+										<f:selectItem itemLabel="#{msg['armed']}" itemValue="1" />
+										<f:selectItem itemLabel="#{msg['hanger']}" itemValue="2" />
+									</p:selectOneMenu>
+									<p:outputLabel
+										value="#{(realEstateBean.realEstate.buildTypeId == 1)?msg['armed']:msg['hanger']}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="عدد الأدوار" styleClass="btxt" />
+								</div>
+								<div class="ui-g-1">
+									<p:inputText value="#{realEstateBean.realEstate.numFloors}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.numFloors}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+
+							</div>
+
+							<p:separator />
+							<!-- 	<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="حدود العقار" styleClass="btxt" />
+								</div>
+							</div> -->
+							<h3 style="color: #7CB342; text-align: center;">حدود العقار</h3>
+
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="شمالا" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText value="#{realEstateBean.realEstate.northLimit}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.northLimit}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="بطول" styleClass="btxt" />
+								</div>
+								<div class="ui-g-1">
+									<p:inputText value="#{realEstateBean.realEstate.northLength}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.northLength}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="جنوبا" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText value="#{realEstateBean.realEstate.southLimit}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.southLimit}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="بطول" styleClass="btxt" />
+								</div>
+								<div class="ui-g-1">
+									<p:inputText value="#{realEstateBean.realEstate.southLength}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.southLength}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+							</div>
+
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="شرقا" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText value="#{realEstateBean.realEstate.eastLimit}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.eastLimit}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="بطول" styleClass="btxt" />
+								</div>
+								<div class="ui-g-1">
+									<p:inputText value="#{realEstateBean.realEstate.eastLength}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.eastLength}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="غربا" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText value="#{realEstateBean.realEstate.westLimit}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.westLimit}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="بطول" styleClass="btxt" />
+								</div>
+								<div class="ui-g-1">
+									<p:inputText value="#{realEstateBean.realEstate.westLength}"
+										rendered="#{realEstateBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{realEstateBean.realEstate.westLength}"
+										rendered="#{!realEstateBean.addMode}" />
+								</div>
+							</div>
+
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" styleClass="btn btn-primary"
+									update="@form" rendered="#{realEstateBean.addMode}"
+									action="#{realEstateBean.save}" style="margin-left:3px;"
+									onsuccess="PF('realEstate_dlg').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="تعديل" styleClass="btn btn-primary"
+									update="@form" rendered="#{!realEstateBean.addMode}"
+									action="#{realEstateBean.update}" style="margin-left:3px;"
+									onsuccess="PF('realEstate_dlg').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('realEstate_dlg').hide();" />
+							</div>
+
+						</h:panelGroup>
+
+
+					</p:dialog>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-09-27T13:06:22 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inventory" pageWidth="933" pageHeight="612" orientation="Landscape" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
+	<property name="ireport.zoom" value="0.8689931392100638"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL2"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="gardId" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\sub_inventory.jasper"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  G.SPECIAL_NO,G.GARD_START_DATE,G.GARD_END_DATE
+ from whs_gard_master g where G.GARDID = 1]]>
+	</queryString>
+	<field name="SPECIAL_NO" class="java.lang.String"/>
+	<field name="GARD_START_DATE" class="java.lang.String"/>
+	<field name="GARD_END_DATE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="166" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+			<staticText>
+				<reportElement x="678" y="48" width="128" height="18" uuid="157a02b9-dd09-41f4-9863-6e6edf1962ee">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية و القروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="673" y="65" width="128" height="18" uuid="8734f0d1-629e-4945-8b25-88d9eb638168">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[بلدية محافظة البكيرية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="676" y="82" width="128" height="18" uuid="76f1aafa-91c5-402a-afec-fb6eab843c70">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[المشتريات   ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="99" width="128" height="18" uuid="a6f6d8e2-a294-419d-b717-13aa580acc4d">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[       المستودع الرئيسي]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="7" y="50" width="128" height="14" uuid="29169817-31be-4a14-a647-69c6e45f1c02">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SPECIAL_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="7" y="64" width="128" height="14" uuid="88d64d5d-c5aa-407a-a975-1f27e6afb678">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GARD_START_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="7" y="78" width="128" height="14" uuid="de90692f-1cea-41ca-a334-10461225f432">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GARD_END_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="7" y="92" width="128" height="14" uuid="992c5b76-3e14-483a-b14e-bcb81b747bcb">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="cm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="865" height="22" isPrintInFirstWholeBand="true" uuid="246c5a19-eb39-4b66-8a2e-2c31e2b75edd"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="gardId">
+					<subreportParameterExpression><![CDATA[$P{gardId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="175"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

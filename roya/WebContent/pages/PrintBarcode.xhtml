@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+	<style>
+</style>
+
+
+
+
+</h:head>
+
+
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:body>
+			<h:form id="includeform">
+
+				<p:messages id="msg001"></p:messages>
+				<div class="image-box-footer">
+					<p:commandButton value="#{msg['print']}" ajax="false"
+						styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+						action="#{printBarcode.printBarcodeReport}"
+						process="checkOutComing checkInComing">
+					</p:commandButton>
+					<br /> <br />
+				</div>
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						طباعة الباركود<span class="fa fa-fw fa-clock-o"></span>
+					</h1>
+
+					<div class="ui-g" dir="rtl">
+						<div class="ui-g-12 ui-md-1">
+							<h:panelGroup styleClass="md-inputfield" id="checkInComingP">
+								<p:inputText dir="rtl" required="true" id="checkInComing"
+									rendered="#{!printBarcode.checkOutComing}"
+									requiredMessage="رقم الوارد مطلوب "
+									value="#{printBarcode.incomeNumber}" minValue="1"
+									style="width:100%">
+									<f:convertNumber type="number"></f:convertNumber>
+								</p:inputText>
+								<label style="display:#{printBarcode.checkOutComing ? 'none' : 'block'} ">رقم الوارد</label>
+							</h:panelGroup>
+							<h:panelGroup styleClass="md-inputfield" id="checkOutComingP">
+								<p:inputText dir="rtl" required="true" id="checkOutComing"
+									rendered="#{printBarcode.checkOutComing}"
+									requiredMessage="رقم الصادر مطلوب "
+									value="#{printBarcode.incomeNumber}" minValue="1"
+									style="width:100%">
+									<f:convertNumber type="number"></f:convertNumber>
+								</p:inputText>
+								<label style="display:#{printBarcode.checkOutComing ? 'block' : 'none'} ">رقم الصادر</label>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-12 ui-md-2">
+							<p:selectBooleanCheckbox label="grid" columns="2"
+								 title="صادر"
+								value="#{printBarcode.checkOutComing}">
+								<p:ajax process="@this" update="checkOutComingP checkInComingP"
+									listener="#{printBarcode.checkAllListnerForManagers}"
+									event="change" />
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,701 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<!--<h:head> 
+ 		 <link 
+ 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" 
+		rel="stylesheet" type="text/css"></link> 
+ 	</h:head>
+ 	 -->
+<!-- 	<script type="text/javascript"> 
+ 	window.onload = window.history.forward(0);
+  	</script> -->
+
+<h:body>
+
+	<ui:composition template="/template.xhtml">
+		<p:growl autoUpdate="true" showDetail="false" />
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="إظافة" oncomplete=" PF('addDialog').show()"
+						styleClass="cyan-btn" icon="ui-icon ui-icon-add"
+						action="#{contractsBean.addContract}" process="@this"
+						update="includeform:addPG">
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+
+					<h1 style="color: #7CB342; text-align: center;">
+						العقود <span class="fa fa-fw fa-file-text-o"></span>
+					</h1>
+
+
+					<br />
+
+
+					<p:dataTable var="userItem" id="allusersettingdt"
+						widgetVar="ContractsTable" value="#{contractsBean.contractsList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{contractsBean.filteredContractsList}"
+						paginator="true" rows="17">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:column id="idcol" headerText="رقم العقد" sortable="true"
+							sortBy="#{userItem.contractNum}"
+							filterBy="#{userItem.contractNum}" filterMatchMode="contains"
+							width="8%" style="text-align: center;">
+                            #{userItem.contractNum}
+                        </p:column>
+						<p:column headerText="تاريخ بداية العقد"
+							style="text-align: center;" filterBy="#{userItem.startDate}"
+							filterMatchMode="contains" width="13%">
+                            #{userItem.startDate}
+                        </p:column>
+						<p:column headerText="تاريخ نهاية العقد"
+							style="text-align: center;" filterBy="#{userItem.endDate}"
+							filterMatchMode="contains" width="13%">
+                            #{userItem.endDate}
+                        </p:column>
+						<p:column headerText="المستثمر" width="30%"
+							filterBy="#{userItem.tender.investor.name}"
+							filterMatchMode="contains">
+                            #{userItem.tender.investor.name}
+                        </p:column>
+						<p:column headerText="الحالة" width="9%"
+							filterBy="#{userItem.status}" filterMatchMode="exact">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('ContractsTable').filter()">
+									<f:selectItem itemLabel="إختر الحالة" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItem itemLabel="جديد" itemValue="1" />
+									<f:selectItem itemLabel="تجديد" itemValue="2" />
+									<f:selectItem itemLabel="ملغى" itemValue="3" />
+								</p:selectOneMenu>
+							</f:facet>
+                            #{userItem.statusName}
+                        </p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="التفاصيل" width="7%">
+							<p:commandButton oncomplete="PF('addDialog').show();"
+								action="#{contractsBean.loadContract}" process="@this"
+								icon="ui-icon-search" update="includeform:addPG">
+								<f:setPropertyActionListener value="#{userItem}"
+									target="#{contractsBean.contract}" />
+							</p:commandButton>
+						</p:column>
+						<!-- 								<p:column width="7%" style="text-align:center" -->
+						<!-- 									headerText="#{msg['delete']}"> -->
+						<!-- 									<p:commandButton id="delete" immediate="true" -->
+						<!-- 										icon="ui-icon-trash" update="@form" -->
+						<!-- 										action="#{contractsBean.deleteContract}"> -->
+						<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
+						<!-- 											target="#{contractsBean.contract}" /> -->
+						<!-- 									</p:commandButton> -->
+
+						<!-- 								</p:column> -->
+						<p:column width="15%" style="text-align:center"
+							headerText="العملية">
+							<p:selectOneMenu style="width:50%"
+								value="#{userItem.operationId}">
+								<f:selectItem itemLabel="اختر العملية" itemValue="0" />
+								<f:selectItems value="#{userItem.actionsList}" var="x"
+									itemLabel="#{x.name}" itemValue="#{x.action}" />
+							</p:selectOneMenu>
+							<p:spacer width="5" />
+							<p:commandButton icon="fa fa-mail-reply" update="@form"
+								action="#{contractsBean.doAction}">
+								<f:setPropertyActionListener value="#{userItem}"
+									target="#{contractsBean.contract}" />
+							</p:commandButton>
+
+						</p:column>
+						<p:column width="5%" style="text-align:center" headerText="طباعة">
+							<p:commandButton ajax="false" icon="ui-icon-print"
+								onclick="this.form.target='_blank'"
+								action="#{contractsBean.printContractReport}">
+								<f:setPropertyActionListener value="#{userItem}"
+									target="#{contractsBean.contract}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+					<br />
+
+
+
+					<p:dialog widgetVar="addDialog" width="70%" header="" modal="true"
+						dir="rtl" closable="true">
+						<h:panelGroup id="addPG">
+							<h3 style="color: #7CB342; text-align: center;">إضافة عقد</h3>
+							<br></br>
+
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox value="#{contractsBean.higriMode}">
+										<p:ajax update="pDates1,pDates12" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+							</div>
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="رقم العقد" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{contractsBean.contract.contractNum}"
+										rendered="#{contractsBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{contractsBean.contract.contractNum}"
+										rendered="#{!contractsBean.addMode}" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="تاريخ بداية العقد" styleClass="btxt" />
+								</div>
+								<!-- 								<div class="ui-g-2"> -->
+								<!-- 									<h:panelGroup id="stratContr" -->
+								<!-- 										rendered="#{contractsBean.addMode}"> -->
+								<!-- 										<ui:include src="../shared/calender.xhtml" /> -->
+								<!-- 									</h:panelGroup> -->
+								<!-- 									<p:outputLabel value="#{contractsBean.contract.startDate}" -->
+								<!-- 										rendered="#{!contractsBean.addMode}" /> -->
+
+								<!-- 									<p:calendar id="start_date" pattern="dd/MM/yyyy" locale="ar" -->
+								<!-- 										required="true" requiredMessage="تاريخ بداية العقد مطلوب" -->
+								<!-- 										value="#{contractsBean.selecteStartDate}"> -->
+								<!-- 									</p:calendar> -->
+
+								<!-- 								</div> -->
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates1">
+										<p:inputText id="hiri1"
+											value="#{contractsBean.selecteStartDate}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ الميلاد"
+											rendered="#{contractsBean.higriMode}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric1"
+											value="#{contractsBean.selecteStartDate}"
+											pattern="dd/MM/yyyy" rendered="#{!contractsBean.higriMode}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="تاريخ نهاية العقد" styleClass="btxt" />
+								</div>
+								<!-- 								<div class="ui-g-2"> -->
+								<!-- 										<h:panelGroup id="endContr" -->
+								<!-- 											rendered="#{contractsBean.addMode}"> -->
+								<!-- 											<ui:include src="../shared/NotifDate.xhtml" /> -->
+								<!-- 										</h:panelGroup> -->
+								<!-- 										<p:outputLabel value="#{contractsBean.contract.endDate}" -->
+								<!-- 											rendered="#{!contractsBean.addMode}" /> -->
+
+								<!-- 									<p:calendar id="End_date" pattern="dd/MM/yyyy" locale="ar" -->
+								<!-- 										required="true" requiredMessage="تاريخ نهاية العقد مطلوب" -->
+								<!-- 										value="#{contractsBean.selecteEndDate}"> -->
+								<!-- 									</p:calendar> -->
+								<!-- 								</div> -->
+
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates12">
+										<p:inputText id="hiri12"
+											value="#{contractsBean.selecteEndDate}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ الميلاد"
+											rendered="#{contractsBean.higriMode}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric12"
+											value="#{contractsBean.selecteEndDate_G}"
+											pattern="dd/MM/yyyy" rendered="#{!contractsBean.higriMode}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+
+							</div>
+
+							<div class="ui-g">
+
+								<div class="ui-g-2">
+									<p:outputLabel value="التصنيف الرئيسي" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="contract_maincatg_id" required="true"
+										requiredMessage="التصنيف الرئيسي مطلوب"
+										value="#{contractsBean.contract.contractMaincatgId}">
+										<f:selectItem itemLabel="إختر التصنيف الرئيسي" itemValue="" />
+										<f:selectItems
+											value="#{contractsBean.contractMainCategoryList}"
+											var="maincatg" itemLabel="#{maincatg.name}"
+											itemValue="#{maincatg.id}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="التصنيف الفرعي" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="contract_subcatg_id" required="true"
+										requiredMessage="التصنيف الفرعي مطلوب"
+										value="#{contractsBean.contract.contractSubcatgId}">
+										<f:selectItem itemLabel="إختر التصنيف الفرعي" itemValue="" />
+										<f:selectItems
+											value="#{contractsBean.contractSubcategoryList}"
+											var="subcatg" itemLabel="#{subcatg.name}"
+											itemValue="#{subcatg.id}" />
+									</p:selectOneMenu>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="حالة العقد" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="contract_stat_id" required="true"
+										requiredMessage="حالة العقد مطلوب"
+										value="#{contractsBean.contract.contractStatId}">
+										<f:selectItem itemLabel="إختر حالة العقد" itemValue="" />
+										<f:selectItems value="#{contractsBean.contractStatusList}"
+											var="stat" itemLabel="#{stat.name}" itemValue="#{stat.id}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="العقار" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu filterMatchMode="contains" filter="true"
+										style="width:100%"
+										value="#{contractsBean.annoucementDetailsId}">
+										<!--  rendered="#{contractsBean.addMode}" -->
+										<f:selectItem itemLabel="اختر العقار" />
+										<f:selectItems value="#{contractsBean.annoucementDetailsList}"
+											var="x" itemLabel="#{x.name}" itemValue="#{x.id}" />
+										<p:ajax event="change"
+											update="investors_list,annualRent,inv_panel" process="@this"
+											listener="#{contractsBean.loadAssignedTender}" />
+									</p:selectOneMenu>
+									<!-- 									<p:outputLabel -->
+									<!-- 										value="#{contractsBean.contract.tender.annoucementDetails.name}" -->
+									<!-- 										rendered="#{!contractsBean.addMode}" /> -->
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="المستثمر" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<!-- 										<p:selectOneMenu id="investors_list" value="#{contractsBean.contract.tenderId}" -->
+									<!-- 											style="width: 100%" required="true" -->
+									<!-- 											rendered="#{contractsBean.addMode}" -->
+									<!-- 											requiredMessage="يرجي إختيار المستثمر"> -->
+									<!-- 											<f:selectItem itemLabel="أختر المستثمر" itemValue="" /> -->
+									<!-- 											<f:selectItems var="tit" itemValue="#{tit.id}" -->
+									<!-- 												itemLabel="#{tit.investor.name}" -->
+									<!-- 												value="#{contractsBean.tendersList}" /> -->
+									<!-- 											<p:ajax event="change" update="annualRent" process="@this" -->
+									<!-- 												listener="#{contractsBean.loadTender}" /> -->
+									<!-- 										</p:selectOneMenu> -->
+									<p:outputLabel id="investors_list"
+										value="#{contractsBean.contract.tender.investor.name}" />
+								</div>
+							</div>
+
+
+							<h:panelGroup id="inv_panel">
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<p:outputLabel value="يمثله" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText
+											value="#{contractsBean.contract.invRepresentName}"
+											rendered="#{contractsBean.addMode}" style="width: 100%" />
+										<p:outputLabel
+											value="#{contractsBean.contract.invRepresentName}"
+											rendered="#{!contractsBean.addMode}" />
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="صفته" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText
+											value="#{contractsBean.contract.invRepresentFunct}"
+											rendered="#{contractsBean.addMode}" style="width: 100%" />
+										<p:outputLabel
+											value="#{contractsBean.contract.invRepresentFunct}"
+											rendered="#{!contractsBean.addMode}" />
+									</div>
+								</div>
+
+
+
+								<div class="ui-g">
+
+									<div class="ui-g-2">
+										<p:outputLabel value="رقم الهوية" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText
+											value="#{contractsBean.contract.invRepresentNatId}"
+											rendered="#{contractsBean.addMode}" style="width: 100%" />
+										<p:outputLabel
+											value="#{contractsBean.contract.invRepresentNatId}"
+											rendered="#{!contractsBean.addMode}" />
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="صادرة من" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText
+											value="#{contractsBean.contract.invRepresentIdPlace}"
+											rendered="#{contractsBean.addMode}" style="width: 100%" />
+										<p:outputLabel
+											value="#{contractsBean.contract.invRepresentIdPlace}"
+											rendered="#{!contractsBean.addMode}" />
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="بتاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText rendered="#{contractsBean.addMode}"
+											value="#{contractsBean.contract.invRepresentIdDate}" />
+										<p:outputLabel
+											value="#{contractsBean.contract.invRepresentIdDate}"
+											rendered="#{!contractsBean.addMode}" />
+									</div>
+								</div>
+							</h:panelGroup>
+
+
+							<!-- 							<div class="row"> -->
+							<!-- 								<div class="ui-g"> -->
+							<!-- 									<div class="ui-g-2"> -->
+							<!-- 										<p:outputLabel value="البنود" styleClass="btxt" /> -->
+							<!-- 									</div> -->
+							<!-- 									<div class="ui-g-10"> -->
+							<!-- 										<p:selectCheckboxMenu id="emps" var="user" style="width:50%" -->
+							<!-- 											panelStyleClass="empClass" requiredMessage="إختر البنود" -->
+							<!-- 											value="#{contractsBean.contract.clausesList}" label="البنود" -->
+							<!-- 											multiple="false" filter="true" filterMatchMode="contains" -->
+							<!-- 											converter="clauseConverter"> -->
+							<!-- 											<f:selectItems itemDisabled="#{!contractsBean.addMode}" -->
+							<!-- 												value="#{loadingDataBean.clausesList}" /> -->
+							<!-- 											<p:ajax event="toggleSelect" process="@this" /> -->
+							<!-- 										</p:selectCheckboxMenu> -->
+							<!-- 									</div> -->
+							<!-- 								</div> -->
+							<!-- 							</div> -->
+							<!-- 							<br /> -->
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="الإيجار السنوي (ريال)" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="annualRent"
+										value="#{contractsBean.contract.annualRent}"
+										rendered="#{contractsBean.addMode}" style="width: 90%">
+										<p:ajax event="blur" update="proc_period" process="@this"
+											listener="#{contractsBean.calculateProcessPeriod}" />
+										<!-- 											process="@this,stratContr,endContr" -->
+										<f:convertNumber pattern="00.##" />
+									</p:inputText>
+									<p:outputLabel value="#{contractsBean.contract.annualRent}"
+										rendered="#{!contractsBean.addMode}" />
+									<p:outputLabel value="" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="مدة التجهيز و الإنشاء (يوم)"
+										styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="proc_period"
+										value="#{contractsBean.contract.processPeriod}"
+										rendered="#{contractsBean.addMode}" style="width: 100%" />
+									<p:outputLabel value="#{contractsBean.contract.processPeriod}"
+										rendered="#{!contractsBean.addMode}" />
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="مقدمة العقد" styleClass="btxt"
+										rendered="#{contractsBean.addMode}" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu filterMatchMode="contains" filter="true"
+										style="width:50%" rendered="#{contractsBean.addMode}"
+										value="#{contractsBean.introductionId}">
+										<f:selectItem itemLabel="اختر المقدمة" />
+										<f:selectItems value="#{loadingDataBean.introContractList}"
+											var="x" itemLabel="#{x.name}" itemValue="#{x.id}" />
+										<p:ajax event="change" update="intro_contract" process="@this"
+											listener="#{contractsBean.loadIntroduction}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="مقدمة العقد" styleClass="btxt"
+										rendered="#{!contractsBean.addMode}" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputTextarea id="intro_contract" rows="6" cols="150"
+										value="#{contractsBean.contract.introduction}" />
+								</div>
+							</div>
+
+							<p:messages id="messages" autoUpdate="true" />
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" update="@form"
+									rendered="#{contractsBean.addMode}"
+									action="#{contractsBean.save}"
+									onsuccess="PF('addDialog').hide();">
+								</p:commandButton>
+
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="حفظ التعديل" update="@form"
+									rendered="#{!contractsBean.addMode}"
+									action="#{contractsBean.update}"
+									onsuccess="PF('addDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<!-- 								<h:commandButton styleClass="btn btn-primary" -->
+								<!-- 									action="#{contractsBean.printContractReport}" -->
+								<!-- 									rendered="#{!contractsBean.addMode}" -->
+								<!-- 									onclick="this.form.target='_blank'" value="طباعة"> -->
+								<!-- 								</h:commandButton> -->
+
+								<p:commandButton value="رجوع" immediate="true"
+									onsuccess="PF('addDialog').hide();" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+
+					<p:dialog widgetVar="cancelDialog" width="70%"
+						header="إلغاء عقد مباشر" modal="true" dir="rtl" closable="true">
+						<h:panelGroup id="addPG1">
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="رقم العقد" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="#{contractsBean.contract.contractNum}" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="تاريخ بداية العقد" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="#{contractsBean.contract.startDate}" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="تاريخ نهاية العقد" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="#{contractsBean.contract.endDate}" />
+								</div>
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="العقار" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel
+										value="#{contractsBean.contract.tender.annoucementDetails.name}" />
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="المستثمر" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel
+										value="#{contractsBean.contract.tender.investor.name}" />
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="الإيجار السنوي (ريال)" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="#{contractsBean.contract.annualRent}" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="مدة التجهيز و الإنشاء (يوم)"
+										styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="#{contractsBean.contract.processPeriod}" />
+								</div>
+							</div>
+
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="سبب الإلغاء" styleClass="btxt"
+										rendered="#{!contractsBean.addBill}" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu filterMatchMode="contains" filter="true"
+										style="width:50%" rendered="#{!contractsBean.addBill}"
+										value="#{contractsBean.contract.cancelReasonId}">
+										<f:selectItem itemLabel="اختر السبب" />
+										<f:selectItems value="#{loadingDataBean.reasonsList}" var="x"
+											itemLabel="#{x.name}" itemValue="#{x.id}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="ملاحظات" styleClass="btxt"
+										rendered="#{!contractsBean.addBill}" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputTextarea rows="6" cols="60"
+										value="#{contractsBean.contract.observation}"
+										rendered="#{!contractsBean.addBill}" />
+								</div>
+							</div>
+
+							<h:panelGroup id="bill_PG" rendered="#{contractsBean.addBill}">
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<p:outputLabel value="الفواتير السابقة" styleClass="btxt" />
+									</div>
+
+									<p:dataTable var="billItem" widgetVar="billsTable"
+										value="#{contractsBean.contractBillsList}"
+										emptyMessage="لايوجد بيانات" rowIndexVar="rowBIndex"
+										paginatorPosition="bottom"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+										paginator="true" rows="5">
+
+										<p:column headerText="المبلغ" width="8%"
+											style="text-align: center;">
+						                            #{billItem.payAmount}
+						                        </p:column>
+										<p:column headerText="تاريخ بداية الفترة"
+											style="text-align: center;" width="13%">
+						                            #{billItem.payDateFrom}
+						                        </p:column>
+										<p:column headerText="تاريخ نهاية الفترة"
+											style="text-align: center;" width="13%">
+						                            #{billItem.payDateTo}
+						                        </p:column>
+										<p:column headerText="الحالة" style="text-align: center;"
+											width="13%">
+						                            #{billItem.sadadStatus}
+						                        </p:column>
+									</p:dataTable>
+
+								</div>
+
+
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<p:outputLabel value="رقم الفاتورة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{contractsBean.numBill}">
+											<p:ajax event="blur" update="bill_PG" process="@this"
+												listener="#{contractsBean.loadBill}">
+											</p:ajax>
+										</p:inputText>
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="المبلغ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="#{contractsBean.bill.payAmount}" />
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<p:outputLabel value="تاريخ بداية الفترة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{contractsBean.bill.payDateFrom}" />
+									</div>
+									<div class="ui-g-2">
+										<p:outputLabel value="تاريخ نهاية الفترة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{contractsBean.bill.payDateTo}" />
+									</div>
+								</div>
+
+							</h:panelGroup>
+
+							<p:messages id="messages1" autoUpdate="true" />
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" update="@form"
+									action="#{contractsBean.update}"
+									rendered="#{!contractsBean.addBill}"
+									onsuccess="PF('cancelDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="ربط الفاتورة" update="@form"
+									action="#{contractsBean.updateBill}"
+									rendered="#{contractsBean.addBill}"
+									onsuccess="PF('cancelDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('cancelDialog').hide();" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

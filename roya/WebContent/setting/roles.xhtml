@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+
+		<h:form>
+			<p:growl autoUpdate="true" />
+
+			<p:messages closable="true" autoUpdate="true"></p:messages>
+
+			<div class="image-box-footer">
+				<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+					styleClass="cyan-btn" action="#{userRoleBean.saveAction}">
+
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">
+					الصلاحيات <span class="fa fa-fw fa-clock-o"></span>
+				</h1>
+
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-1">
+
+						<p:outputLabel styleClass="btxt" value="القسم" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<p:selectOneMenu id="section" styleClass="form-control"
+							value="#{loadingDataBean.departmentId}">
+							<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
+							<f:selectItems value="#{loadingDataBean.depatmentList}"
+								var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" />
+							<f:ajax render="empList" execute="section" event="change"
+								listener="#{loadingDataBean.loadEmployersByDept}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12 ui-md-1">
+
+						<p:outputLabel styleClass="btxt" value="إسم الموظف" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:selectOneMenu id="empList" styleClass="form-control"
+							value="#{userRoleBean.employerId}">
+							<f:selectItem itemLabel="#{msg['vacation.selectemp']}"
+								itemValue="" />
+							<f:selectItems value="#{loadingDataBean.employersListInDept}"
+								var="empr" itemLabel="#{empr.employeeName}"
+								itemValue="#{empr.userId}" />
+							<p:ajax process="@this" update="@form"
+								listener="#{userRoleBean.loadUserRoles}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<br /> <br /> <br />
+				<hr />
+				<br /> <br /> <br />
+				<div class="ui-g">
+					<p:selectManyCheckbox id="choose_roles"
+						value="#{userRoleBean.selectedRoles}">
+						<div class="ui-g-2">
+
+							<f:selectItems value="#{loadingDataBean.userRoleList}" var="role"
+								itemLabel="#{role.roleDesc}" itemValue="#{role.id}" />
+
+						</div>
+					</p:selectManyCheckbox>
+
+
+					<br />
+
+
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>
+
+
+
+
+

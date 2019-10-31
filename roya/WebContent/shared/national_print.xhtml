@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+		<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+			type="text/css"></link>
+
+		<link rel="stylesheet" type="text/css"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+		<script type="text/javascript">
+			window.onload = window.history.forward(0);
+		</script>
+		<style>
+body {
+	margin: 0px;
+}
+</style>
+	</h:head>
+	<h:body>
+
+		<ui:composition template="../pages/menuBar.xhtml">
+
+			<ui:define name="content">
+
+				<p class="text-center">
+					<h:outputLabel styleClass="btxt"
+						style="font-weight:bold; font-size:30px;"
+						value="#{msg['print.national.id']}">
+					</h:outputLabel>
+
+
+				</p>
+
+
+				<h:form id="includeform">
+
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">#{msg['request.data']}
+							</h3>
+						</div>
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="row">
+										<div class="col-md-3">
+											<h:outputLabel value="#{msg['national.id']}"
+												styleClass="btxt" />
+										</div>
+										<div class="col-md-3">
+											<h:inputText id="nationalId" required="true"
+												styleClass="form-control"
+												requiredMessage="#{msg['required.fields']}"
+												validatorMessage="#{msg['error.NationalId']}"
+												value="#{nationalIdBean.nationalId}">
+												<f:validator validatorId="nationalIdValidator"/>
+												<p:ajax event="blur" update="name,requestType"
+													process="@this" listener="#{nationalIdBean.loadName}" />
+											</h:inputText>
+
+										</div>
+									</div>
+									<br></br>
+
+
+									<div class="row">
+										<div class="col-md-3">
+											<h:outputLabel value="#{msg['name']}" styleClass="btxt" />
+										</div>
+										<div class="col-md-3">
+											<h:inputText id="name" required="true" readonly="true"
+												styleClass="form-control"
+												requiredMessage="#{msg['required.fields']}"
+												value="#{nationalIdBean.name}">
+												<p:ajax event="blur" update="requestType" process="@this" />
+											</h:inputText>
+
+										</div>
+									</div>
+									<br></br>
+									<div class="row">
+										<div class="col-md-3">
+											<h:outputLabel value="#{msg['request.type']}"
+												styleClass="btxt" />
+										</div>
+										<div class="col-md-3">
+											<h:selectOneMenu id="requestType"
+												value="#{nationalIdBean.requestType}"
+												style="width:100%; dir:rtl;">
+												<f:selectItem itemLabel="#{msg['new']}" itemValue="1" />
+												<f:selectItem itemLabel="#{msg['renew']}" itemValue="2" />
+												<p:ajax event="change" update="requestType" process="@this" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+									<h:commandButton style="float:left" value="#{msg['print']}"
+										styleClass="btn btn-primary"
+										onclick="this.form.target='_blank'"
+										action="#{nationalIdBean.printReportAction}">
+									</h:commandButton>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+
+
+	</h:body>
+</f:view>
+</html>

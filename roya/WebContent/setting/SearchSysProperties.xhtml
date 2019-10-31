@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:view>
+	<f:metadata>
+		<f:viewAction action="#{sysPropertiesBean.getAllSysProperties}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+
+	<h:head>
+
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="container col-md-12 "
+					style="background-color: white; border-top: 5px solid #428BCA;">
+
+
+
+					<br></br>
+					<div>
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">المعرفات الوظيفية
+							</h3>
+					</div>
+
+					<div class="col-md-12 ">
+
+
+						<p:dataTable var="SysProp" id="SysPropTable"
+							value="#{sysPropertiesBean.sysPropertiesList}"
+							emptyMessage="لايوجد بيانات"
+							filteredValue="#{sysPropertiesBean.filteredSysPropertiesList}"
+							widgetVar="vtWidget" paginator="true" rows="12" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+
+							<p:ajax event="rowEdit" listener="#{sysPropertiesBean.onRowEdit}" />
+							<p:ajax event="rowEditCancel"
+								listener="#{sysPropertiesBean.onRowCancel}" />
+
+							<p:column headerText="معرف الموظف" filterBy="#{SysProp.id}"
+								filterMatchMode="contains" style="width:20%">
+								<h:outputText value="#{SysProp.id}" />
+							</p:column>
+							<p:column headerText="الوصف" filterBy="#{SysProp.description}"
+								filterMatchMode="contains" style="width:30%">
+								<h:outputText value="#{SysProp.description}" />
+							</p:column>
+							<p:column headerText="المعرف الوظيفي" style="width:30%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{SysProp.value}" />
+									</f:facet>
+									<!--                <f:facet name="input"> -->
+									<!-- 					 <h:selectOneMenu value="#{SysProp.value}" style="width:100%"> -->
+									<!-- 						  <f:selectItems value="#{sysPropertiesBean.listArcUsers}" /> -->
+									<!-- 					 </h:selectOneMenu> -->
+									<!-- 				</f:facet> -->
+									<f:facet name="input">
+										<p:inputText value="#{SysProp.value}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column style="width:20%" headerText="تغيير المعرف الوظيفي">
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+
+
+						<br></br> <br></br>
+
+
+
+
+
+					</div>
+				</div>
+				<hr></hr>
+
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/ js/vendor/jquery-2.1.4.min.js"></script>
+
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/tabcomplete.min.js"></script>
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/livefilter.min.js"></script>
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/src/bootstrap-select.js"></script>
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/filterlist.min.js"></script>
+				<script
+					src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/plugins.js"></script>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>
+

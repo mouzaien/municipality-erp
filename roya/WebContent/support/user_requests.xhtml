@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+
+</head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="top">
+	</ui:define>
+	<ui:define name="content">
+		<style>
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right;
+}
+
+body .ui-panel .ui-panel-content {
+	height: 100%;
+	box-sizing: border-box;
+	padding: 8px 14px;
+	padding: 0px;
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+	text-align: center;
+	padding: 4px 10px;
+	background: transparent;
+	height: 30px;
+	color: black;
+}
+
+body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-datatable-footer .ui-inputfield
+	{
+	color: #7e7676;;
+}
+</style>
+		<p:messages id="Msg" autoUpdate="true" closable="true" />
+		<div style="with: 100% ! important;">
+			<h:form id="includeform" style="padding: 0px;">
+
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						طلبات الدعم<span class="fa fa-fw fa-clock-o"></span>
+					</h1>
+					<h:panelGroup rendered="#{requestBean.roleIsTecSupport}">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="إحالة إلى" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu class="form-control" id="userId"
+									filterMatchMode="contains" filter="true" required="true"
+									requiredMessage="من فضلك ادخل الموظف"
+									value="#{requestBean.toUserId}">
+									<f:selectItem itemValue="" itemLabel="من فضلك ادخل الموظف" />
+									<f:selectItem itemLabel="المبرمجين" itemValue="-1" />
+									<f:selectItem itemLabel="الشبكات" itemValue="-2" />
+									<f:selectItem itemLabel="مدير التقنية" itemValue="-3" />
+									<f:selectItems value="#{requestBean.usersDeptMap}" var="user"
+										itemLabel="#{user.fullName}" itemValue="#{user.userId}"></f:selectItems>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="الشرح" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-6">
+								<h:panelGroup styleClass="md-inputfield">
+									<p:inputTextarea id="desc" styleClass="form-control" rows="3"
+										cols="8" value="#{requestBean.description}" required="true"
+										requiredMessage="الشرح مطلوب" style="width:100%" />
+									<label>الشرح</label>
+								</h:panelGroup>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:commandButton icon="ui-icon ui-icon-assignment-return"
+									value="#{msg['send']}" update="@form"
+									rendered="#{requestBean.roleIsTecSupport}">
+									<f:ajax execute="desc userId" render="@form"
+										listener="#{requestBean.save}"></f:ajax>
+								</p:commandButton>
+							</div>
+						</div>
+
+					</h:panelGroup>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<p:outputLabel value="الحالة" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:selectOneMenu class="form-control" id="stat3" required="true"
+								filterMatchMode="contains" filter="true"
+								requiredMessage="اختر الحالة  "
+								value="#{requestBean.searchStatus}">
+								<f:ajax render="@form" execute="@this, reqs"
+									listener="#{requestBean.reloadReqs}"></f:ajax>
+								<f:selectItem itemLabel="الكل" itemValue="0" />
+								<f:selectItems value="#{loadingDataBean.statusMapList}"
+									var="stat" itemLabel="#{stat.description}"
+									itemValue="#{stat.id}"></f:selectItems>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<!-- 							<p:commandButton value="تحديث" style="float:left;" -->
+							<!-- 								icon="ui-icon ui-icon-assignment-return"> -->
+							<!-- 								<f:ajax render="@form" listener="#{requestBean.reloadReqs}"></f:ajax> -->
+							<!-- 							</p:commandButton> -->
+						</div>
+					</div>
+
+
+
+
+					<p:panel id="formPanel" style="padding-right:0px;">
+						<f:facet name="header">
+							<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; الطلبات
+                    </f:facet>
+						<p:dataTable var="reqItem" id="reqs" widgetVar="overVar"
+							value="#{requestBean.userRequests}" rowKey="#{reqItem.id}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							selection="#{requestBean.selectedUserRequest}"
+							paginatorPosition="bottom" selectionMode="single"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{requestBean.filtredUserRequests}"
+							paginator="true" rows="10">
+							<p:ajax event="rowSelect" process="reqs"
+								update="includeform:reqSteps"
+								listener="#{requestBean.onRowSelect}" />
+							<p:ajax event="rowUnselect" process="reqs"
+								listener="#{requestBean.onRowUnselect}" />
+							<p:column headerText="الموضوع" width="15%"
+								filterBy="#{reqItem.subject}" filterMatchMode="contains">										
+										#{reqItem.subject}										
+									</p:column>
+							<p:column style="text-align: center;" headerText="الشرح" 
+								width="21%" filterBy="#{reqItem.description}"
+								filterMatchMode="contains">										
+										#{reqItem.description} 									
+									</p:column>
+							<p:column headerText="ملاحظة" width="13%"
+								filterBy="#{reqItem.note}" filterMatchMode="contains">										
+										#{reqItem.note}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="التاريخ"
+								width="11%" filterBy="#{reqItem.createDate}"
+								filterMatchMode="contains">										
+										#{reqItem.createDate}										
+									</p:column>
+
+							<p:column headerText="المرسل" width="10%"
+								filterBy="#{reqItem.userName}" filterMatchMode="contains">#{reqItem.userName}
+						</p:column>
+							<p:column headerText="الادارة" width="10%"
+								filterBy="#{reqItem.fromDeptName}" filterMatchMode="contains">#{reqItem.fromDeptName}
+						</p:column>
+							<p:column headerText="الحالي" width="10%"
+								filterBy="#{reqItem.currUserName}" filterMatchMode="contains">#{reqItem.currUserName}
+						</p:column>
+							<p:column headerText="الحالة" width="10%">
+								<p:selectOneMenu class="form-control" id="stat2" required="true"
+									disabled="#{!requestBean.roleIsTecSupport}"
+									filterMatchMode="contains" filter="true"
+									requiredMessage="اختر الحالة  " value="#{reqItem.status}">
+									<f:ajax render="@form" execute="reqs"
+										listener="#{requestBean.save}"></f:ajax>
+									<f:selectItems value="#{loadingDataBean.statusMapList}"
+										var="stat" itemLabel="#{stat.description}"
+										itemValue="#{stat.id}"></f:selectItems>
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column headerText="الشروحات" width="7%">
+								<p:commandButton value="شرح" rendered="#{requestBean.roleIsTecSupport}"
+									style="float:left;font-family: kufi !important;"
+									onclick="PF('steps').show();">
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</div>
+				<p:dialog header="خطوات المعاملة" widgetVar="steps" modal="true"
+					closable="false" resizable="false" width="50%" dir="rtl">
+					<div class="row">
+						<p:dataTable id="reqSteps" var="reqStep"
+							sortBy="#{reqStep.stepId}"
+							value="#{requestBean.selectedUserRequest.requestSteps}" rows="15"
+							paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column headerText="الخطوة" width="7%">
+				         #{reqStep.stepId}
+					</p:column>
+							<p:column headerText="التاريخ" width="12%">
+						#{reqStep.createDate}
+					</p:column>
+							<p:column headerText="الموظف" width="10%">
+						#{reqStep.userName}
+					</p:column>
+							<p:column headerText="الحالة" width="5%" visible="false">
+						#{reqStep.status}
+					</p:column>
+							<p:column headerText="الحالة" width="10%">
+						#{reqStep.stepStatus}
+					</p:column>
+							<p:column headerText="الشرح" width="40%">
+						#{reqStep.description}
+					</p:column>
+						</p:dataTable>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-9" />
+						<div class="col-md-3">
+							<p:commandButton onclick="PF('steps').hide();" value="رجوع" style="float:left;"></p:commandButton>
+						</div>
+					</div>
+					<br></br>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

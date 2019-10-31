@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+            <ui:define name="top">
+التخزين السحابي
+            </ui:define>
+            <ui:define  name="content">
+
+
+                <h:form id="usergile-upload-form" style="direction: rtl; " >
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                     
+                    <p:dialog widgetVar="statusDialog" modal="true" 
+                              draggable="false" closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage value="../images/loadingT.gif" />
+                    </p:dialog>
+                    <p:toolbar id="upload-toolbar">
+                        <f:facet name="right">
+                            <p:commandButton value="رفع ملفات جديدة" icon="fa fa-upload"  onclick="PF('uploadDlg').show()" />
+                        </f:facet>
+                        <f:facet name="left">
+                            <p:commandButton value="عرض الملفات المشتركة" icon="fa fa-users"   style="width: 200px;" onclick="PF('uploadDlg').show()" />
+                            <p:commandButton value="  بحث خلال الملفات" icon="fa fa-search"  style="width: 190px;" onclick="PF('search-file-dlg').show()" />
+                        </f:facet>
+
+                    </p:toolbar>
+                    <p:dataTable id="file-datatable" value="#{userFilesBean.files}" 
+                                 scrollable="true" style="font-family: FontAwesome;"
+                                 var="file" dir="rtl">
+
+                        <p:column width="6">
+                            <img src="../resources/images/types/#{file.attachmentFiletype}.png" width="33" height="33" />
+                        </p:column>
+                        <p:column headerText="اسم الملف" width="300" style="text-wrap: none;">
+                            #{file.attachmentFileRealName}
+                        </p:column>
+                        <p:column headerText="حجم الملف" width="50" style="text-wrap: none">
+                            #{file.attachmentFileSize}
+                        </p:column>
+                        <p:column headerText="أضيف بواسطة" width="100" >
+                            #{file.attachmentFileAddedByName}
+                        </p:column>
+                        <p:column headerText="تاريخ الإضافة"  width="70" style="font-size:16px; text-wrap: none">
+                            #{file.attachmentFileAddedIn}
+                        </p:column>
+
+
+                        <p:column width="11">
+                            <h:outputLink value="sss" >
+                                <img src="../resources/images/types/download.png" width="25" height="25" />
+
+                            </h:outputLink>
+                        </p:column>
+                        <p:column width="11">
+                            <p:commandLink process="@this"  
+                                           update=":tempform:usergile-upload-form:file-datatable" 
+                                           action="#{userFilesBean.saveBtnAction(actionEvent)}">
+                                <img src="../resources/images/types/del.png" width="25" height="25" />
+                                <f:setPropertyActionListener value="#{file}" target="#{userFilesBean.selectedFile}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <p:dialog id="upload-form" closable="false" 
+                              widgetVar="uploadDlg" showEffect="fade" hideEffect="fade"
+                              width="900"  resizable="false"
+                              height="500" modal="true">
+                        <f:facet name="footer">
+                            <p:commandButton value="  رجوع إلي الملفات" 
+                                             icon=" fa fa-mail-reply"
+                                             onclick="PF('uploadDlg').hide()" update=":tempform:usergile-upload-form:file-datatable" />
+                        </f:facet>
+                        <h:form enctype="multipart/form-data">
+                            <p:fileUpload id="user-file-uploador"
+                                          multiple="true"
+                                          fileUploadListener="#{userFilesBean.uploadFiles}"
+                                          uploadLabel="ارفاق" 
+                                          cancelLabel="إلغاء" 
+                                          label="تحديد المرفق"
+
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png|txt|pdf|doc|docx|exe|mp3|zip|ppt|pptx|xls|xlsx|bmp|rar)$/" 
+                                          sizeLimit="15000000"/> 
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="search-dlg" widgetVar="search-file-dlg" resizable="false" hideEffect="explode" showEffect="fade" >
+                        <h:form id="search-file-frm">
+                            <p:inputText value="#{userFilesBean.searchKey}" placeholder="أدخل كلمة البحث" id="srchkey" 
+                                         onkeypress="if (event.keyCode == 13) {
+                                                     test();
+                                                     return false;
+                                                 }" />
+                            <p:remoteCommand name="test" 
+                                             process="@this,:tempform:usergile-upload-form:search-file-frm:srchkey"
+                                             action="#{userFilesBean.SearchFiles(actionEvent)}"
+                                             update=":tempform:usergile-upload-form:file-datatable" 
+                                             />
+
+                        </h:form>
+                        <f:facet name="footer">
+                            <p:commandButton value="  رجوع إلي الملفات" icon="fa fa-mail-reply" onclick="PF('search-file-dlg').hide()"  />
+                            <p:commandButton value="  بحث خلال الملفات" icon="fa fa-search"
+                                             process="@this,:tempform:usergile-upload-form:search-file-frm:srchkey"
+                                             action="#{userFilesBean.SearchFiles(actionEvent)}"
+                                             update=":tempform:usergile-upload-form:file-datatable" />
+
+                        </f:facet>
+                    </p:dialog>
+                </h:form>  
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

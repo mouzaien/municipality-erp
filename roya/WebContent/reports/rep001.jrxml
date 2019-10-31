@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-11-07T13:44:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep001" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a4337bc-387b-4ad7-82a5-e227206a2377">
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl002.xml"/>
+	<parameter name="p1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="wrkDate" class="java.lang.String"/>
+	<parameter name="title" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select step_id,app_id,
+wrk_get_confidential(convert_comm(id,step_id),id,step_id) as comm
+,get_purpose(app_purp) purp,
+h_date, to_char(create_date,'AM') ||' '||substr(create_time,1,2) ||':'||substr(create_time,4,2)||':'||substr(create_time,-2)||' '||h_date
+as create_time,
+h_date || '     '   ||  replace(replace(to_char(create_date,'AM'),'AM','AM'),'PM','PM') as ctime ,
+
+
+get_name(from_id) ||' - ' ||  get_real_empname(from_id)   fr,
+get_name(TO_ID) || ' - ' ||  get_real_empname(to_id)   tt
+,
+(SELECT REC_TITLE FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_NAME ,
+(SELECT REC_H_DATE FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_DATE,
+(SELECT income_no FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_income_no
+from wrk_application ,
+(
+select ar.arc_record_id_child from ARC_RECORD_LINK ar, wrk_application w
+   where
+    ar.arc_record_id_paernt = w.app_id
+   and   w.id =$P{p1} 
+   )arclink
+ where  wrk_application.app_id = arclink.arc_record_id_child
+
+      union
+
+select step_id,app_id,
+wrk_get_confidential(convert_comm(id,step_id),id,step_id) as comm
+,get_purpose(app_purp) purp,
+h_date, to_char(create_date,'AM') ||' '||substr(create_time,1,2) ||':'||substr(create_time,4,2)||':'||substr(create_time,-2)||' '||h_date
+as create_time,
+h_date || '     '   ||  replace(replace(to_char(create_date,'AM'),'AM','AM'),'PM','PM') as ctime ,
+
+
+get_name(from_id) ||' - ' ||  get_real_empname(from_id)   fr,
+get_name(TO_ID) || ' - ' ||  get_real_empname(to_id)   tt
+,
+(SELECT REC_TITLE FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_NAME ,
+(SELECT REC_H_DATE FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_DATE,
+(SELECT income_no FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE ID = $P{p1}  ) ) APP_income_no
+from wrk_application
+
+where id = $P{p1} 
+order by app_id,step_id]]>
+	</queryString>
+	<field name="STEP_ID" class="java.math.BigDecimal"/>
+	<field name="COMM" class="java.lang.String"/>
+	<field name="PURP" class="java.lang.String"/>
+	<field name="CREATE_TIME" class="java.lang.String"/>
+	<field name="CTIME" class="java.lang.String"/>
+	<field name="FR" class="java.lang.String"/>
+	<field name="TT" class="java.lang.String"/>
+	<field name="APP_NAME" class="java.lang.String"/>
+	<field name="APP_DATE" class="java.lang.String"/>
+	<field name="APP_INCOME_NO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="87" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="0" y="62" width="555" height="25" forecolor="#CC0000" backcolor="#F5F5F5" uuid="4d675034-b0aa-4f5c-95f8-4e39bf35f71e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{APP_NAME}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="86" width="555" height="1" forecolor="#0E5F14" uuid="b53b9680-d483-4392-b8f3-5c0426223d60"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="160" y="0" width="60" height="13" forecolor="#006600" backcolor="#F5F5F5" uuid="0b0264a8-9757-4a00-9781-0c667e976a95"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[وارد المعاملة :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="160" y="16" width="60" height="13" forecolor="#006600" backcolor="#F5F5F5" uuid="8167f4b3-ce47-422b-b83c-6dd8cf2bf605"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ المعاملة :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="160" y="32" width="60" height="13" forecolor="#006600" backcolor="#F5F5F5" uuid="fa4e7e91-521a-458b-bfde-1589ac942174"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[كود المعاملة :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="82" y="0" width="70" height="13" uuid="8a2dee85-395e-45f4-94b8-bdf900c14193"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{APP_INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="82" y="16" width="70" height="13" uuid="05e75277-0603-48df-9868-424c96b47b6b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{APP_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="82" y="32" width="70" height="13" uuid="c976bd01-d197-4a5f-bb35-2dc532a170f9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{p1}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="111" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="89" width="100" height="20" forecolor="#0E5F14" backcolor="#FCFCFC" uuid="06ff3c84-2104-4865-9a18-75030972a6fb"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الشـــــــــــرح :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="2" y="89" width="442" height="20" backcolor="#F4F4F4" uuid="74e8da86-8d8b-4728-9a08-bad27970def5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COMM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="68" width="100" height="20" forecolor="#0E5F14" backcolor="#FCFCFC" uuid="a936e4d4-61b6-4f3a-a138-8cf14887450b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[غـرض الإحــالة :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="2" y="68" width="442" height="20" backcolor="#F4F4F4" uuid="337646b8-054f-4346-a7f8-8fee549aaaf0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PURP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="47" width="100" height="20" forecolor="#0E5F14" backcolor="#FCFCFC" uuid="5a2a55e8-e85b-4183-94bc-2246e5e78f58"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الوقت و التاريخ :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="2" y="47" width="442" height="20" backcolor="#F4F4F4" uuid="bc960408-4242-46ef-b7a4-1d59ee6d872d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{CREATE_TIME}.substring( 11)+" "+$F{CREATE_TIME}.substring( 2, 11 )+" "+$F{CREATE_TIME}.substring( 0, 1 )).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="26" width="100" height="20" forecolor="#0E5F14" backcolor="#FCFCFC" uuid="bf199f3d-2cda-419d-8193-dcf69bbc9723"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[المرســــل اليه :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="2" y="26" width="442" height="20" backcolor="#F4F4F4" uuid="c8431028-eb84-4bfb-a313-f8f5acaf09a9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="5" width="100" height="20" forecolor="#0E5F14" backcolor="#FCFCFC" uuid="0524ad9e-0e9f-4634-97fe-1850b1bf4936"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[المرســــــــــل :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="2" y="5" width="442" height="20" backcolor="#F4F4F4" uuid="71b4c5d1-cdd6-4924-b163-7bb437edbbf3"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FR}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="110" width="555" height="1" forecolor="#0E5F14" uuid="0539b8e1-9c9f-4c0e-96b7-b528dac58474"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="-1" width="1" height="112" forecolor="#0E5F14" uuid="969c6ce2-6b18-478e-a675-2291428b3fdd"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="554" y="-1" width="1" height="112" forecolor="#0E5F14" uuid="e1245896-ed5a-4b8c-b519-7475c4930471"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="20"/>
+	</noData>
+</jasperReport>

@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+	<!-- 	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet" -->
+	<!-- 		type="text/css"></link> -->
+
+	<!-- 	<link rel="stylesheet" type="text/css" -->
+	<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" /> -->
+	<style>
+body {
+	margin: 0px;
+}
+
+.ui-datatable-footer {
+	background: red !important;
+}
+</style>
+</h:head>
+<h:body>
+
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer" align="left">
+					<p:commandButton id="printBtn" value="طباعة"
+						disabled="#{!fngAbsenceBean.visible}" ajax="false"
+						styleClass="orange-btn" onclick="this.form.target='_blank'"
+						action="#{fngAbsenceBean.printReport}" />
+					<p:spacer width="10px" height="10px"></p:spacer>
+					<p:commandButton value="إضافة" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-add" oncomplete=" PF('addDialog').show()"
+						action="#{fngAbsenceBean.addFngEmpAbsent}" process="@this"
+						update="includeform:addDialog" />
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						التأخير و الغياب<span class="fa fa-fw fa-clock-o"></span>
+					</h1>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<h:outputLabel value="شهر الحسم"></h:outputLabel>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:selectOneMenu styleClass="form-control"
+								value="#{fngAbsenceBean.printedMonths}">
+								<f:selectItems value="#{loadingDataBean.monthsList}" var="mon"
+									itemValue="#{mon.id}" itemLabel="#{mon.nameGr}" />
+								<p:ajax event="blur" process="@this"></p:ajax>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<h:outputLabel value="السنة"></h:outputLabel>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:inputNumber value="#{fngAbsenceBean.printedYears}" size="4"
+								thousandSeparator="" minValue="0" maxValue="9999">
+								<p:ajax event="blur" update="printBtn" process="@this"
+									listener="#{fngAbsenceBean.showPrint}" />
+							</p:inputNumber>
+						</div>
+
+					</div>
+
+					<br />
+					<p:separator />
+					<br />
+					<p:dataTable id="absTable"
+						value="#{fngAbsenceBean.fngEmpAbsentList}" var="item"
+						widgetVar="cellemp" paginatorPosition="bottom"
+						rowIndexVar="rowIndex"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{fngAbsenceBean.fngEmpAbsentFilter}"
+						paginator="true" emptyMessage="لايوجد بيانات" rows="12">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:column headerText="م" width="5%">#{rowIndex+1}</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							width="10%" headerText="رقم الموظف" filterBy="#{item.empno}"
+							filterMatchMode="contains">#{item.empno}</p:column>
+
+						<p:column width="10%" headerText="شهر الحسم"
+							filterBy="#{item.absmonth}" filterMatchMode="contains">#{item.absmonth}</p:column>
+						<p:column width="10%" headerText="السنة"
+							filterBy="#{item.absyear}" filterMatchMode="contains">#{item.absyear}</p:column>
+						<p:column width="10%" headerText="تاريخ الغياب"
+							filterBy="#{item.absComment}" filterMatchMode="contains">#{item.absComment}</p:column>
+						<p:column width="10%" headerText="نوع الغياب"
+							filterBy="#{item.abstype}" filterMatchMode="contains">#{item.abstype}</p:column>
+						<p:column width="10%" headerText="الحالة"
+							filterBy="#{item.statusAbs}" filterMatchMode="contains">#{item.statusAbs}</p:column>
+						<p:column width="5%" headerText="الأيام" filterBy="#{item.days}"
+							filterMatchMode="contains">#{item.days}</p:column>
+						<p:column width="5%" headerText="الساعات" filterBy="#{item.hours}"
+							filterMatchMode="contains">#{item.hours}</p:column>
+						<p:column width="5%" headerText="الدقائق" filterBy="#{item.mins}"
+							filterMatchMode="contains">#{item.mins}</p:column>
+					</p:dataTable>
+
+					<p:dialog header="إظافة تأخير او غياب" widgetVar="addDialog"
+						modal="true" width="70%" dir="rtl">
+						<h:panelGroup id="addDialog">
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox value="#{fngAbsenceBean.higriMode}">
+										<p:ajax update="pDates1" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="إسم الموظف"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<p:selectOneMenu id="employee-list" filter="true"
+										filterMatchMode="contains"
+										value="#{fngAbsenceBean.fngEmpAbsent.empno}">
+										<!-- 									required="true" requiredMessage="الرجاء اختيار الموظف" -->
+										<f:selectItem itemValue="-1"
+											itemLabel="#{msg['choose.employee']}" />
+										<f:selectItems value="#{fngAbsenceBean.employers}" var="empr"
+											itemLabel="#{empr.firstName} #{empr.secondName} #{empr.thirdName} #{empr.forthName}"
+											itemValue="#{empr.employeNumber}" />
+										<p:ajax process="@this" update="details_data"
+											listener="#{fngAbsenceBean.loadEmployerData}" />
+									</p:selectOneMenu>
+								</div>
+
+							</div>
+							<br />
+							<h:panelGroup id="details_data">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-2">
+										<h:outputLabel value="المسمى الوظيفي"></h:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-2">
+										<h:outputLabel value="#{fngAbsenceBean.employer.job}" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-2">
+										<h:outputLabel value="الراتب الأساسي"></h:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-2">
+										<h:outputLabel value="#{fngAbsenceBean.employer.basicSalary}" />
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-1">
+										<h:outputLabel value="جهة العمل"></h:outputLabel>
+									</div>
+									<div class="ui-g-12 ui-md-6 ui-lg-2">
+										<h:outputLabel value="#{fngAbsenceBean.employer.department}" />
+									</div>
+								</div>
+							</h:panelGroup>
+							<br />
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="شهر الحسم"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:selectOneMenu styleClass="form-control"
+										value="#{fngAbsenceBean.fngEmpAbsent.absmonth}">
+										<f:selectItems value="#{loadingDataBean.monthsList}" var="mon"
+											itemValue="#{mon.id}" itemLabel="#{mon.nameGr}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="السنة"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputNumber value="#{fngAbsenceBean.fngEmpAbsent.absyear}"
+										size="4" thousandSeparator="" minValue="0" maxValue="9999">
+										<p:ajax event="blur" update="printBtn" process="@this"
+											listener="#{fngAbsenceBean.showPrint}" />
+									</p:inputNumber>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="تاريخ الغياب"></h:outputLabel>
+								</div>
+								<!-- 								<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+								<!-- 																	<p:calendar styleClass="form-control" id="absenceDate" -->
+								<!-- 																		pattern="dd/MM/yyyy" -->
+								<!-- 																		value="#{fngAbsenceBean.fngEmpAbsent.absCommentGrig}"> -->
+
+								<!-- 																	</p:calendar> -->
+								<!-- 								</div> -->
+
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates1">
+										<p:inputText id="hiri1" value="#{fngAbsenceBean.absComment}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار  بداية الخدمة بالدولة"
+											rendered="#{fngAbsenceBean.higriMode}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric1" value="#{fngAbsenceBean.absComment_G}"
+											pattern="dd/MM/yyyy" rendered="#{!fngAbsenceBean.higriMode}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="نوع الغياب"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:selectOneMenu styleClass="form-control"
+										value="#{fngAbsenceBean.fngEmpAbsent.abstype}">
+										<f:selectItems value="#{fngAbsenceBean.typeAbsencesList}"
+											var="type" itemValue="#{type.id}" itemLabel="#{type.name}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الحالة"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:selectOneMenu styleClass="form-control"
+										value="#{fngAbsenceBean.fngEmpAbsent.statusAbs}">
+										<f:selectItems value="#{fngAbsenceBean.statusAbsencesList}"
+											var="status" itemValue="#{status.id}"
+											itemLabel="#{status.name}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الأيام"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText styleClass="form-control" id="absenceDays"
+										value="#{fngAbsenceBean.fngEmpAbsent.days}"
+										converterMessage="عدد الأيام  المدخلة غير صحيحة">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الساعات"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText styleClass="form-control" id="absenceHours"
+										value="#{fngAbsenceBean.fngEmpAbsent.hours}"
+										converterMessage="عدد الساعات  المدخلة غير صحيحة">
+									</p:inputText>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="الدقائق"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputText styleClass="form-control" id="absenceMinutes"
+										value="#{fngAbsenceBean.fngEmpAbsent.mins}"
+										converterMessage="عدد الدقائق  المدخلة غير صحيحة">
+									</p:inputText>
+								</div>
+							</div>
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ"
+									icon="ui-icon ui-icon-assignment-return"
+									action="#{fngAbsenceBean.saveAbsence}"
+									onsuccess="PF('addDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px" />
+								<p:commandButton value="رجوع" icon="ui-icon ui-icon-arrow-back"
+									immediate="true" onclick="PF('addDialog').hide();">
+								</p:commandButton>
+
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+
+</h:body>
+
+</html>

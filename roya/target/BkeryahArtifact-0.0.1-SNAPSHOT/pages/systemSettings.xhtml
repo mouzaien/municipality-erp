@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link href="../resources/css/style.css" rel="stylesheet" type="text/css"></link>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+
+            <ui:define name="top">
+إعدادت النظام الرئيسية
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="setting-main-form" style="direction: rtl;">
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                     
+                    <p:dialog widgetVar="statusDialog" modal="true" 
+                              draggable="false" closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage value="../images/loadingT.gif" />
+                    </p:dialog>
+                    <p:growl id="gro" autoUpdate="true" />
+                    <p:accordionPanel id="setting-accoud-panel" dir="rtl" style="margin-bottom: 20px;">
+                        <p:tab id="depts-setting-tab" title="     إعدادات الإدارات و الأقسام"  rendered="false">
+                            <p:tabView>
+                                <p:tab title= "تعريف الأقســام">
+                                    <p:commandLink value=" تعريف الأقســام" onclick="PF('createDeptDlg').show();" type="button" />
+                                    <p:dialog  widgetVar="createDeptDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف الأقســام"
+                                               width="800" height="450" resizable="false" >
+
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('createDeptDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                                <p:tab title=" تعريف الإدارات" >
+                                    <p:commandLink value=" تعريف الإدارات" onclick="PF('createSubDeptDlg').show();" type="button" />
+                                    <p:dialog  widgetVar="createSubDeptDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف الإدارات"
+                                               width="800" height="450" resizable="false" >
+
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('createSubDeptDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                            </p:tabView>
+                        </p:tab>
+                        <p:tab id="mail-setting-tab" title="إعدادات بريد المعاملات" >
+
+                            <p:tabView id="tab009" >
+                                <p:tab title="جهـــات الورود">
+                                    <h:form id="from_form001">
+                                        <p:dataTable value="#{systemsettingbean.letterFromList}" var="from"
+                                                     scrollable="true" scrollRows="10" scrollHeight="300" scrollWidth="500"
+                                                     style="margin-bottom: 5px;width:400px;"
+                                                     >
+                                            <p:column headerText="المسلسل">
+                                                #{systemsettingbean.da.convertTextWithArNumric(from.wrkLetterfromId)}
+                                            </p:column>
+                                            <p:column headerText="مسمى الجهة" >
+                                                #{from.wrkLetterFromName}
+
+                                            </p:column>
+                                        </p:dataTable>
+
+                                        <p:commandButton value=" تعريف  جهـــات الورود" process="@this"
+                                                         class="btn btn-default" icon="fa fa-ellipsis-h"
+                                                         action="#{systemsettingbean.NewLetterFromBtnAction(actionEvent)}"
+                                                         update=":tempform:setting-main-form:setting-accoud-panel:tab009:from_form:nlfrom"
+                                                         />
+                                    </h:form>
+
+                                    <p:dialog  widgetVar="incomeContactDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف  جهـــات الورود"
+                                               resizable="false" id="fromdlg" >
+                                        <h:form id="from_form">
+                                            <p:growl autoUpdate="true" />
+                                            <p:panelGrid columns="4">
+                                                <p:outputLabel value= ""/>
+                                                <p:inputText class="form-control" id="nlfrom"
+                                                             required="true"
+                                                             requiredMessage="جهة الورود مطلوبة"
+                                                             value="#{systemsettingbean.newletterFrom}"
+                                                             placeholder="أدخل اسم جهة الورود" />
+                                                <p:commandButton value="حفظ جهة الورود" 
+                                                                 style="float: left;"
+                                                                 process="@this,nlfrom"
+                                                                 action="#{systemsettingbean.addNewLetterFromAction(actionEvent)}"
+                                                                 update=":tempform:setting-main-form:setting-accoud-panel:tab009:from_form:nlfrom"
+                                                                 icon="fa fa-save" />
+                                            </p:panelGrid>
+
+                                        </h:form>
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت" icon="fa fa-eject"
+                                                             onclick="PF('incomeContactDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                                <p:tab title="أنواع المعاملات " id="typtab001">
+                                    <h:form id="appTypDtForm">
+                                        <p:dataTable value="#{systemsettingbean.arcAppTypeList}" var="typ" style="margin-bottom: 5px;"
+                                                     paginator="true" paginatorPosition="top" rows="10"
+                                                     id= "appTypdt">
+                                            <p:column>
+                                                #{systemsettingbean.da.convertTextWithArNumric(typ.arcAppliactionTypeId)}
+                                            </p:column>
+                                            <p:column>
+                                                #{typ.arcApplicationType}
+                                            </p:column>
+
+                                        </p:dataTable>
+                                        <p:commandLink value=" تعريف أنواع المعاملات " process="@this"
+                                                       class="btn btn-primary" style="color: white;"
+                                                       update=":tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+                                                       action="#{systemsettingbean.NewAppTypBtnAction(actionEvent)}"  />
+                                    </h:form>
+                                    <p:dialog  widgetVar="recordsTypeDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف أنواع المعاملات "
+                                               resizable="false" >
+                                        <h:form id="typform001">
+                                            <p:panelGrid columns="3">
+                                                <p:outputLabel value="أدخل نوع المعاملة" />
+                                                <p:inputText id="arctypid" value="#{systemsettingbean.newArcTyp}"
+                                                             required="true"
+                                                             requiredMessage="نوع المعاملة مطلوب"
+                                                             />
+                                                <p:commandButton value="حفظ  " 
+                                                                 style="float: left;"
+                                                                 process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:appTypDtForm:appTypdt,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+                                                                 update=":tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+                                                                 action="#{systemsettingbean.addNewarcTypAction(actionEvent)}"
+                                                                 icon="fa fa-save" />
+                                            </p:panelGrid>
+
+                                        </h:form>
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('recordsTypeDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+
+                                </p:tab>
+                                <p:tab title="أنواع التوجيه" id="purpTab001">
+                                    <h:form id="purpForm001">
+                                        <p:dataTable value="#{systemsettingbean.wrkPurposeList}" var="purp" style="margin-bottom: 5px;"
+                                                     paginator="true" paginatorPosition="top" rows="10"
+                                                     id="purpdt001"
+                                                     >
+                                            <p:column headerText="المسلسل">
+                                                #{systemsettingbean.da.convertTextWithArNumric(purp.purpId)}
+                                            </p:column>
+                                            <p:column headerText="مسمي التوجيه">
+                                                #{purp.purpName}
+                                            </p:column>
+                                        </p:dataTable>
+                                        <p:commandLink value=" تعريف أنواع التوجيه" 
+                                                       class="btn btn-primary" style="color: white;"
+                                                       action="#{systemsettingbean.NewPurpBtnAction(actionEvent)}" process="@this" />
+                                    </h:form>
+
+                                    <p:dialog  widgetVar="redirectionTypeDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف أنواع التوجيه"
+                                               resizable="false" >
+                                        <h:form id="purpDlgForm001">
+                                            <p:panelGrid columns="3">
+                                                <p:outputLabel value="أدخل مسمي التوجيه" />
+                                                <p:inputText id="purpDlgit001" 
+                                                             required="true"
+                                                             requiredMessage="مسمي التوجيه مطلوب"
+                                                             value="#{systemsettingbean.newwrkPurpose}" />
+                                                <p:commandButton value="حفظ جهة الورود" 
+                                                                 process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:purpDlgForm001:purpDlgit001"
+                                                                 action="#{systemsettingbean.addNewWrkPurposeBtnAction(actionEvent)}"
+                                                                 update=":tempform:setting-main-form:setting-accoud-panel:tab009:purpForm001:purpdt001, 
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:purpDlgForm001:purpDlgit001"
+                                                                 style="float: left;"
+                                                                 icon="fa fa-save" />
+                                            </p:panelGrid>
+
+                                        </h:form>
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject" 
+                                                             onclick="PF('redirectionTypeDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+
+                                </p:tab>
+                                <p:tab title="قائمة المفضلة " >
+                                    <div class="container-fluid">
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div class="col-md-2">
+                                                أختر الموظف
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p:selectOneMenu id="alluser-list" 
+                                                                 value="#{systemsettingbean.selectedUserId}"
+                                                                 style="width: 100%;"
+                                                                 var="userItem" filter="true" 
+                                                                 filterMatchMode="contains">
+                                                    <f:selectItem itemLabel="أختر الموظــــف" itemValue="" />
+                                                    <f:selectItems value="#{systemsettingbean.allUsers}" />
+                                                </p:selectOneMenu>
+
+                                            </div>
+                                            <p:commandButton  value="عرض المفضلة"
+                                                              icon="fa fa-search"
+                                                              process="@this,alluser-list"
+                                                              update="favdt"
+                                                              action="#{systemsettingbean.showUserFavourits(actionEvent)}"
+                                                              /> 
+                                        </div>
+
+                                        <div class="row" style="alignment-baseline: middle;">
+
+
+                                            <p:dataTable id="favdt" style="width: 80%"
+                                                         emptyMessage="لا يوجد سجلات في القائمة"
+                                                         var="rec" value="#{systemsettingbean.selectedUserFavouritList}">
+                                                <p:column headerText="م" width="20%" style="font-size: 22px;font-weight: bold;">
+                                                    #{systemsettingbean.da.convertTextWithArNumric(rec.specialAddressId)}
+                                                </p:column>
+                                                <p:column headerText="الاسم" style="font-size: 22px;font-weight: bold;">
+                                                    #{rec.specialAddressName}
+                                                </p:column>
+
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <p:commandButton value="  إضافة جهة مفضلة جديدة " onclick="PF('editFavDlg').show();" 
+                                                     class="btn btn-default" icon="fa fa-pencil"
+
+                                                     />
+                                    <p:dialog  widgetVar="editFavDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header="  تخصيص قائمة المفضلة "
+                                               width="800" height="50" resizable="false" >
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <p:selectOneMenu id="newalluser-list" 
+                                                                     value="#{systemsettingbean.selectedNewSpecialaddress}"
+                                                                     style="width: 100%;"
+                                                                     var="userItem" filter="true" 
+                                                                     filterMatchMode="contains">
+                                                        <f:selectItem itemLabel="أختر الموظــــف" itemValue="" />
+                                                        <f:selectItems value="#{systemsettingbean.allUsers}" />
+                                                    </p:selectOneMenu>
+
+                                                </div>
+                                                <p:commandButton  value="إضافة المفضلة"
+                                                                  icon="fa fa-plus"
+                                                                  process="@this,newalluser-list"
+                                                                  update="favdt"
+                                                                  action="#{systemsettingbean.addNewSpecialAddress(actionEvent)}"
+                                                                  />
+                                            </div>
+                                        </div>
+
+
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('editFavDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                                <p:tab title="إستقبال المعاملات" id="letterToTab001">
+
+                                    <p:dataTable value="#{systemsettingbean.letterToList}" var="to" style="margin-bottom: 5px;"
+                                                 paginator="true" paginatorPosition="top" rows="10"
+                                                 id="lettToDt001"
+                                                 >
+                                        <p:column  headerText="المسلسل" >
+                                            #{systemsettingbean.da.convertTextWithArNumric(to.wrkLetterToId)}
+                                        </p:column>
+                                        <p:column headerText="مسمى الجهة">
+                                            #{to.wrkLetterToName}
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:commandLink value=" تعريف جهات إستقبال المعاملات"
+                                                   class="btn btn-primary" style="color: white;margin-bottom: 5px;"
+                                                   onclick="PF('recieverContactDlg').show();" type="button" />
+
+                                    <p:dialog  widgetVar="recieverContactDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف جهات إستقبال المعاملات"
+                                               width="600" height="50" resizable="false" >
+
+                                        <h:form id="addLettToForm001">
+                                            <p:panelGrid columns="3">
+                                                <p:outputLabel value="أدخل مسمي جهة الاستقبال" />
+                                                <p:inputText id="lettToItid" required="true" requiredMessage="أدخل مسمي جهة الاستقبال"
+                                                             value="#{systemsettingbean.newletterTo}"
+                                                             />
+                                                <p:commandButton value="حفظ جهة الاستقبال"
+                                                                 process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:addLettToForm001:lettToItid"
+                                                                  icon="fa fa-save" 
+                                                                  update=":tempform:setting-main-form:setting-accoud-panel:tab009:addLettToForm001:lettToItid,
+                                                                  :tempform:setting-main-form:setting-accoud-panel:tab009:lettToDt001"
+                                                                  action="#{systemsettingbean.addNewlettertoBtnAction(actionEvent)}"
+                                                                 />
+                                            </p:panelGrid>
+                                        </h:form>
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('recieverContactDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                                <p:tab title= "جهات الإحالة ">
+                                    <p:dataTable value="#{systemsettingbean.referralManagerList}" var="reftyp" style="margin-bottom: 5px;"
+                                                 paginator="true" paginatorPosition="top" rows="10"
+                                                 id="refsettingDt"
+                                                 >
+                                        <p:column headerText="رقم الموظف">
+                                            #{systemsettingbean.da.convertTextWithArNumric(reftyp.referralManagerId)}
+                                        </p:column>
+                                        <p:column headerText="المسمي">
+                                            #{reftyp.referralName}
+                                        </p:column>
+                                        <p:column headerText="اسم الموظف">
+                                            #{reftyp.referralRealName}
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:commandLink value=" تعريف جهات الإحالة "
+                                                   class="btn btn-primary" style="color: white;"
+                                                   onclick="PF('senderContactDlg').show();" type="button" />
+
+                                    <p:dialog  widgetVar="senderContactDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header=" تعريف جهات الإحالة "
+                                               width="600" height="140" resizable="false" >
+                                        <h:form id="refForm001">
+                                            <p:panelGrid columns="2">
+                                                <p:outputLabel value="مسمي الموظف " />
+                                                <p:selectOneMenu style="width: 300px;"
+                                                                 required="true"
+                                                                 requiredMessage="يرجي تحديدد الموظف"
+                                                                 filter="true"
+                                                                 filterMatchMode="contains"
+                                                                 id="refSlsectMenuId"
+                                                                 value="#{systemsettingbean.selectRefUserId}"
+                                                                 >
+                                                    <f:selectItem itemLabel="أختر الموظف المطلوب" itemValue="" />
+                                                    <f:selectItems value="#{systemsettingbean.allUsers}" />
+                                                    <p:ajax event="change" update="selectedrefnameId" listener="#{systemsettingbean.refUsersListChanged}" />
+                                                </p:selectOneMenu>
+                                                <p:outputLabel value="اسم الموظف " />
+                                                <p:outputLabel 
+                                                             id="selectedrefnameId" value="#{systemsettingbean.selectRefUserName}" style="width: 300px;" />
+                                                <p:spacer />
+                                                <p:commandButton value="حفظ جهة الاحالة"
+                                                                 icon="fa fa-save" 
+                                                                 process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:selectedrefnameId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:refSlsectMenuId"
+                                                                 action="#{systemsettingbean.addNewRefSettingActionBtn(actionEvent)}"
+                                                                 update=":tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:refSlsectMenuId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:selectedrefnameId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refsettingDt"
+                                                                 />
+                                            </p:panelGrid>
+                                            <div style="color: red;text-align: right;font-size: 13px;font-family: sans-serif;" >
+                                                *في حالة اختلاف الاسم عن المسجل يرجي تعديل الاسم أولا
+                                            </div>
+                                        </h:form>
+                                        
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('senderContactDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>
+                                <p:tab title="  نقل المعاملات">
+                                    <p:commandLink value="  نقل المعاملات" onclick="PF('moveRecordsDlg').show();" type="button" />
+
+                                    <p:dialog  widgetVar="moveRecordsDlg" style="direction: rtl;" modal="true"
+                                               showEffect="fade" hideEffect="fade" header="  نقل المعاملات"
+                                               width="800" height="450" resizable="false" >
+
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="رجوع الي الإعدادت"  icon="fa fa-eject"
+                                                             onclick="PF('moveRecordsDlg').hide();" />
+                                        </f:facet>
+                                    </p:dialog>
+                                </p:tab>                               
+                            </p:tabView>
+                        </p:tab>
+                        <p:tab id="menu-setting-tab" title="إعدادات شاشات النظام و  القائمة الرئيسية " >
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

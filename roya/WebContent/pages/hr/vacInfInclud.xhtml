@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+<!-- 	<link rel="stylesheet" type="text/css" -->
+<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css" /> -->
+</h:head>
+<body>
+	<h:form id="vcs">
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				#{msg['vacation.inf']}<span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+			<div class="image-box-footer">
+				<p:commandButton style="float: left !important;"
+					action="#{vacationInf.printIreportFileActionFull}" ajax="false"
+					onclick="this.form.target='_blank'" value="طباعة بيان الاجازات">
+				</p:commandButton>
+			</div>
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:selectOneMenu id="employee-list" filter="true"
+						filterMatchMode="contains" value="#{vacationInf.employerId}">
+						<f:selectItem itemLabel="#{msg['vacation.selectemp']}"
+							itemValue="" />
+						<f:selectItems value="#{vacationInf.employers}" var="empr"
+							itemLabel="#{empr.firstName} #{empr.secondName} #{empr.thirdName} #{empr.forthName}"
+							itemValue="#{empr.employeNumber}" />
+						<p:ajax process="@this" update="vac"
+							listener="#{vacationInf.loadVacationInfo}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:selectOneMenu id="list_vac_type" filter="true"
+						filterMatchMode="contains" value="#{vacationInf.vacationstypeid}">
+						<f:selectItem itemLabel="#{msg['vacation.selectvactype']}"
+							itemValue="" />
+						<f:selectItems value="#{vacationInf.vacationtype}" var="vactype"
+							itemLabel="#{vactype.vacation_Name}" itemValue="#{vactype.id}" />
+						<p:ajax process="@this" update="vac"
+							listener="#{vacationInf.loadVacationInfo}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3"></div>
+			</div>
+			<br /> <br /> <br />
+			<p:dataTable id="vac" var="vacationemps"
+				value="#{vacationInf.vacations}" editable="true"
+				widgetVar="cellvacation"
+				filteredValue="#{vacationInf.filteredVacations}"
+				sortBy="#{vacationemps.id}" sortOrder="descending" rows="10"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter"
+							onkeyup="PF('cellvacation').filter()" style="width:150px"
+							placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
+				<p:ajax event="rowEdit" update="vac"
+					listener="#{vacationInf.onRowEdit}" />
+				<p:ajax event="rowEditCancel" update="vac"
+					listener="#{vacationInf.onRowCancel}" />
+
+				<p:column headerText="#{msg['vacation.period']}"
+					filterBy="#{vacationemps.vacationPeriod}" filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.vacationPeriod}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="period" value="#{vacationemps.vacationPeriod}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="#{msg['vacation.start']}" filterMatchMode="contains"
+					filterBy="#{vacationemps.higriVacationStart}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.higriVacationStart}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="start"
+								value="#{vacationemps.higriVacationStart}" style="width:96%"
+								mask="99/99/9999" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column> 
+				<p:column headerText="#{msg['vacation.end']}" filterMatchMode="contains"
+					filterBy="#{vacationemps.higriVacationEnd}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.higriVacationEnd}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="end" value="#{vacationemps.higriVacationEnd}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+<!-- 				<p:column headerText="#{msg['vacation.fromservic']}" filterMatchMode="contains" -->
+<!-- 					filterBy="#{vacationemps.HDatevacationFrom}"> -->
+<!-- 					<p:cellEditor> -->
+<!-- 						<f:facet name="output"> -->
+<!-- 							<h:outputText value="#{vacationemps.HDatevacationFrom}" /> -->
+<!-- 						</f:facet> -->
+<!-- 						<f:facet name="input"> -->
+<!-- 							<p:inputText id="fromserv" -->
+<!-- 								value="#{vacationemps.HDatevacationFrom}" style="width:96%" /> -->
+<!-- 						</f:facet> -->
+<!-- 					</p:cellEditor> -->
+<!-- 				</p:column> -->
+<!-- 				<p:column headerText="#{msg['vacation.toservic']}" filterMatchMode="contains" -->
+<!-- 					filterBy="#{vacationemps.HDateVacationTo}"> -->
+<!-- 					<p:cellEditor> -->
+<!-- 						<f:facet name="output"> -->
+<!-- 							<h:outputText value="#{vacationemps.HDateVacationTo}" /> -->
+<!-- 						</f:facet> -->
+<!-- 						<f:facet name="input"> -->
+<!-- 							<p:inputText id="toserv" value="#{vacationemps.HDateVacationTo}" -->
+<!-- 								style="width:96%" /> -->
+<!-- 						</f:facet> -->
+<!-- 					</p:cellEditor> -->
+<!-- 				</p:column> -->
+
+				<p:column headerText="#{msg['vacation.exno']}" filterMatchMode="contains"
+					filterBy="#{vacationemps.excuseNumber}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.excuseNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="excuseNum" value="#{vacationemps.excuseNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="#{msg['vacation.exdate']}" filterMatchMode="contains"
+					filterBy="#{vacationemps.excuseDateHigri}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.excuseDateHigri}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="excusedate"
+								value="#{vacationemps.excuseDateHigri}" style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="#{msg['vacation.vacsequenc']}" filterMatchMode="contains"
+					filterBy="#{vacationemps.id}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{vacationemps.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:outputText id="vacseq" value="#{vacationemps.id}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:100px">
+					<p:rowEditor />
+				</p:column>
+				<p:column style="width:65px;text-align: center">
+					<p:commandButton action="#{vacationInf.printIreportFileAction}"
+						onclick="this.form.target='_blank'" value="طباعة"
+						styleClass="btn btn-success" ajax="false">
+						<f:setPropertyActionListener value="#{vacationemps}"
+							target="#{vacationInf.selectVacation}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</div>
+	</h:form>
+</body>
+</html>

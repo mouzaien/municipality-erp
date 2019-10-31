@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<!-- 			 <p:growl id="msgs" showDetail="true" /> -->
+			<br />
+
+			<div class="image-box-footer">
+
+				<p:commandButton widgetVar="cB" id="cB" value="مستخدم جديد"
+					oncomplete=" PF('mydialog').show()" icon="fa fa-plus"
+					action="#{usersParamBean.addNewUser}" process="@this"
+					update="includeform:panelGroup">
+				</p:commandButton>
+			</div>
+			<br />
+			<br />
+
+			<div class="card card-w-title">
+
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					المستخدمين <span class="ui-icon ui-icon-people"></span>
+				</h1>
+
+				<br />
+
+				<p:dataTable id="emp" var="usersDataTable" style="direction:rtl;"
+					value="#{usersParamBean.usersList}" widgetVar="cellemp" rows="13"
+					paginator="true" paginatorPosition="bottom"
+					emptyMessage="الجدول فارغ"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+					<p:column headerText="المسلسل " width="5%"
+						filterBy="#{usersDataTable.userId}">
+						<h:outputText value="#{usersDataTable.userId	}" />
+					</p:column>
+					<p:column headerText="الإسم الأول"
+						filterBy="#{usersDataTable.firstName}" filterMatchMode="contains">
+						<h:outputText value="#{usersDataTable.firstName}"></h:outputText>
+
+					</p:column>			
+					<p:column headerText="الدائرة الوظيفية" width="10%">
+						<h:outputText value="#{usersDataTable.deptName}"></h:outputText>
+
+					</p:column>
+
+					<p:column headerText=" الدرجة الوظيفية " width="10%">
+						<h:outputText value="#{usersDataTable.jobName}"></h:outputText>
+
+					</p:column>
+
+					<p:column headerText=" رقم الجوال  " width="10%">
+						<h:outputText value="#{usersDataTable.mobileNumber}"></h:outputText>
+
+					</p:column>
+					<p:column headerText="رقم الموظف" width="10%" filterBy="#{usersDataTable.employeeNumber}" filterMatchMode="contains">
+						<h:outputText value="#{usersDataTable.employeeNumber}"></h:outputText>
+
+					</p:column>
+					<p:column headerText=" رقم الموظف الجديد  " width="10%" filterBy="#{usersDataTable.empnoTmp}" filterMatchMode="contains">
+						<h:outputText value="#{usersDataTable.empnoTmp}"></h:outputText>
+
+					</p:column>
+
+					<p:column headerText="تفاصيل" style="width:50px;text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup"
+							oncomplete=" PF('mydialog').show()"
+							action="#{usersParamBean.loadSelectedUser}" icon="ui-icon-search"
+							title="View" modal="true">
+							<f:setPropertyActionListener value="#{usersDataTable}"
+								target="#{usersParamBean.currUser}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:dialog header="إضافة مستخدم جديد   " position="center"
+					widgetVar="mydialog" responsive="true" id="inputData2"
+					closable="true" dir="rtl" resizable="true" modal="true">
+
+					<h:panelGroup id="panelGroup">
+
+						<div class="ui-g">
+
+							<br />
+
+							<div class="ui-g-2">
+								<h:outputLabel for="mTitles" value="اللقب" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{usersParamBean.currUser.titleId}"
+									style="width: 100%" requiredMessage="يرجي إختيار اللقب"
+									filter="true" id="mTitles">
+									<f:selectItem itemLabel="أختر اللقب" itemValue="" />
+									<f:selectItems var="tit" itemValue="#{tit.titleId}"
+										itemLabel="#{tit.title}" value="#{usersParamBean.titlesList}" />
+
+
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="الاسم الأول " />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="lateTimAllow2" required="true"
+									requiredMessage="أدخل الاسم الأول "
+									value="#{usersParamBean.currUser.firstName}" style="width:100%">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+
+								<h:outputLabel for="basic" value="الأسم الأخير " />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="lateTimAllow"
+									value="#{usersParamBean.currUser.lastName}" style="width:100%">
+								</p:inputText>
+
+							</div>
+
+
+						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="معرف الدخول " />
+
+							</div>
+							<div class="ui-g-2">
+
+								<p:inputText id="enterence_id" required="true"
+									value="#{usersParamBean.currUser.username}" style="width:100%"
+									requiredMessage="أدخل معرف الدخول">
+								</p:inputText>
+
+
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="كلمة المرور" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{usersParamBean.currUser.password}"
+									feedback="true" style="width: 100%" required="true"
+									requiredMessage="كلمة المرور مطلوبة" id="newpass"/>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="  المدير المباشر" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{usersParamBean.currUser.mgrId}"
+									style="width: 100%" filter="true" required="true"
+									requiredMessage="اختر المدير المباشر" id="newmgr">
+									<f:selectItem itemLabel="أختر المدير المباشر" itemValue="" />
+									<f:selectItems var="mgr" itemValue="#{mgr.userId}"
+										itemLabel="#{mgr.employeeName}"
+										value="#{usersParamBean.usersList}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="ui-g" title="القسم الأول">
+
+							<div class="ui-g-2">
+								<p:outputLabel value="نظام سير العمل" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{usersParamBean.currUser.wrkRoleId}"
+									style="width: 100%" required="true">
+									<f:selectItem itemLabel="أختر نظام سير العمل" itemValue="" />
+									<f:selectItems var="role" itemValue="#{role.id}"
+										itemLabel="#{role.roleName}"
+										value="#{loadingDataBean.wrkRolesList}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="الدائرة الوظيفية" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{usersParamBean.currUser.deptId}"
+									id="newdepartment" required="true"
+									requiredMessage="الدائرة الوظيفية مطلوبة" style="width: 100%"
+									filter="true">
+									<p:ajax process="@this" event="change"
+										update="sectionlist,jobList"
+										listener="#{usersParamBean.loadSectionListChangeEvent}" />
+
+									<f:selectItem itemLabel="أختر الإدارة" itemValue="" />
+									<f:selectItems var="dept" itemValue="#{dept.id}"
+										itemLabel="#{dept.deptName}"
+										value="#{loadingDataBean.depatmentList}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="القسم" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu requiredMessage="يرجي أختيار القسم"
+									required="true" value="#{usersParamBean.currUser.wrkSectionId}"
+									id="sectionlist" style="width: 100%" filter="true">
+									<p:ajax process="@this" event="change"
+										update="sectionlist,jobList"
+										listener="#{usersParamBean.loadJobsListChangeEvent}" />
+
+									<f:selectItem itemLabel="أختر القسم" itemValue="" />
+									<f:selectItems var="sect" itemValue="#{sect.id}"
+										itemLabel="#{sect.sectionName}"
+										value="#{usersParamBean.sectionsList}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="الدرجة الوظيفية" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{usersParamBean.currUser.jobId}"
+									requiredMessage="أدخل الدرجة الوظيفية أولا" id="jobList"
+									style="width: 100%">
+									<!-- 									<p:ajax process="@this" update="sectionlist,jobList" event="change"></p:ajax> -->
+
+									<f:selectItem itemLabel="أختر الوظيفة" itemValue="" />
+									<f:selectItems var="job" itemValue="#{job.id}"
+										itemLabel="#{job.jobName}" value="#{usersParamBean.jobsList}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="رقم الجوال" />
+
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{usersParamBean.currUser.mobileNumber}"
+									style="width: 100%" requiredMessage="رقم الجوال مطلوب"
+									id="newMobileNumber">
+								</p:inputText>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="رقم الموظف" />
+
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{usersParamBean.currUser.empnoTmp}"
+									style="width: 100%" 
+									>
+								</p:inputText>
+							</div>
+						</div>
+						<div align="center">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="حفظ" icon="fa fa-save"
+									rendered="#{usersParamBean.addMode}"
+									action="#{usersParamBean.saveUser}" update="@form"
+									onsuccess="PF('mydialog').hide(); ">
+								</p:commandButton>
+								<p:commandButton value="تعديل" icon="fa fa-edit"
+									rendered="#{!usersParamBean.addMode}"
+									action="#{usersParamBean.updateUser}" update="@form"
+									onsuccess="PF('mydialog').hide();">
+								</p:commandButton>
+								<p:spacer height="4"></p:spacer>
+								<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+									icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+									onsuccess="PF('mydialog').hide();" />
+							</div>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				<p:dialog header="حذف المستخدم" widgetVar="confirmDialog"
+					responsive="true" id="inputData3" modal="true" width="70%"
+					closable="true" dir="rtl">
+					<h:panelGroup id="confirmDialog">
+						<div class="ui-g">
+							<div class="ui-g">
+								<div class="ui-g-12">
+									<h:outputLabel value="هل   أنت متأكد من حذف المستخدم؟"
+										styleClass="btxt" />
+								</div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+							</div>
+						</div>
+					</h:panelGroup>
+					<br />
+					<div align="center">
+						<p:commandButton value="نعم" styleClass="btn btn-primary"
+							action="#{usersParamBean.deleteUser}" update="@form"
+							onsuccess="PF('confirmDialog').hide();" process="@this">
+						</p:commandButton>
+
+						<p:commandButton value="تراجع" styleClass=" orange-btn"
+							immediate="true" onclick="PF('confirmDialog').hide();" />
+
+					</div>
+				</p:dialog>
+
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep001" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a4337bc-387b-4ad7-82a5-e227206a2377">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select step_id,
+wrk_get_confidential(convert_comm(id,step_id),id,step_id) as comm
+,get_purpose(app_purp) purp,
+
+reverse_hdate(h_date) || '     '   ||  substr(create_time,-2) ||':' ||substr(create_time,4,2)||':' ||substr(create_time,1,2) || '  ' ||
+replace(replace(to_char(create_date,'AM'),'AM','صباحا'),'PM','مساءا')
+as create_time,
+reverse_hdate(h_date) || '     '   ||  replace(replace(to_char(create_date,'AM'),'AM','AM'),'PM','PM') as ctime ,
+
+
+get_name(from_id) ||' - ' ||  get_real_empname(from_id)   fr,
+get_name(TO_ID) || ' - ' ||  get_real_empname(to_id)   tt
+
+from wrk_application
+where id = $P{p1}
+  order by step_id]]>
+	</queryString>
+	<field name="STEP_ID" class="java.math.BigDecimal"/>
+	<field name="COMM" class="java.lang.String"/>
+	<field name="PURP" class="java.lang.String"/>
+	<field name="CREATE_TIME" class="java.lang.String"/>
+	<field name="CTIME" class="java.lang.String"/>
+	<field name="FR" class="java.lang.String"/>
+	<field name="TT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="64" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="107" splitType="Stretch">
+			<staticText>
+				<reportElement x="452" y="80" width="100" height="20" forecolor="#0F005F" uuid="06ff3c84-2104-4865-9a18-75030972a6fb"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الشرح :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="80" width="452" height="20" uuid="74e8da86-8d8b-4728-9a08-bad27970def5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COMM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="60" width="100" height="20" forecolor="#0F005F" uuid="a936e4d4-61b6-4f3a-a138-8cf14887450b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[غرض الإحالة :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="60" width="452" height="20" uuid="337646b8-054f-4346-a7f8-8fee549aaaf0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PURP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="40" width="100" height="20" forecolor="#0F005F" uuid="5a2a55e8-e85b-4183-94bc-2246e5e78f58"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[الوقت :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="40" width="452" height="20" uuid="bc960408-4242-46ef-b7a4-1d59ee6d872d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CREATE_TIME}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="20" width="100" height="20" forecolor="#0F005F" uuid="bf199f3d-2cda-419d-8193-dcf69bbc9723"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[المرسل اليه :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="452" height="20" uuid="c8431028-eb84-4bfb-a313-f8f5acaf09a9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="0" width="100" height="20" forecolor="#0F005F" uuid="0524ad9e-0e9f-4634-97fe-1850b1bf4936"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[المرسل :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="452" height="20" uuid="71b4c5d1-cdd6-4924-b163-7bb437edbbf3"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FR}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="103" width="552" height="1" uuid="0539b8e1-9c9f-4c0e-96b7-b528dac58474"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50"/>
+	</noData>
+</jasperReport>

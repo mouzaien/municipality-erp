@@ -1,0 +1,654 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+	<div class="container col-md-12 "
+		style="background-color: white; border-top: 5px solid #428BCA;">
+		<br />
+		<div>
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">متابعة
+				رخص بناء ملحق جديد</h3>
+		</div>
+
+
+
+
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="row" style="margin: 10px;">
+
+				<div class="row">
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['identity']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-6">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttAplOwner}" />
+						-
+						<h:outputLabel value="#{attachBuildingBean.owner.completeName}" />
+					</div>
+
+					<div class="col-md-2">
+						<h:outputLabel value="رقم الهاتف" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel id="name"
+							value="#{attachBuildingBean.attachBld.licAttAplMobile}" />
+					</div>
+
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['licesnse.number']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttBldLicNo}" />
+					</div>
+
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['licesnse.date']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttBldLicDate}" />
+					</div>
+
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['licesnse.source']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttBldLicSource}" />
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['cheque.Number']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel value="#{attachBuildingBean.attachBld.licAttSakNo}" />
+					</div>
+
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['cheque.Date']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttSakDate}" />
+					</div>
+
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['Cheque.source']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttSakSource}" />
+					</div>
+				</div>
+				<br />
+
+				<div class="row">
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['plan']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel value="#{attachBuildingBean.attachBld.licAttPln}" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['pieces']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.piecesNumbers}" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel value="#{msg['bill.number']}" styleClass="btxt" />
+					</div>
+					<div class="col-md-2">
+						<h:outputLabel
+							value="#{attachBuildingBean.attachBld.licAttBillNumber}" />
+					</div>
+				</div>
+				<br />
+				<h:panelGroup
+					rendered="#{(attachBuildingBean.engineeringOffice) || (!attachBuildingBean.planningManager)}">
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['attch.type']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu disabled="true"
+								value="#{attachBuildingBean.attachBld.licAttTyp}"
+								style="width:100%; dir:rtl;" styleClass="form-control">
+								<f:selectItem itemLabel="#{msg['attch.type1']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['attch.type2']}" itemValue="2" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['engineering.desc']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control"
+								disabled="#{!attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttEngneeringOfficeId}">
+								<f:selectItems value="#{loadingDataBean.engineeringOfficeList}"
+									var="off" itemValue="#{off.id}" itemLabel="#{off.title}" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="الحي" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttAddress}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttAddress}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="مساحة الأرض" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttLandArea}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttLandArea}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="مساحة البناء الأصلي" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttOrginialBldArea}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttOrginialBldArea}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="المساحة مع الملحق" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttTotalAreaWAtt}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttTotalAreaWAtt}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="إرتفاع الملحق" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttHeight}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttHeight}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="مساحة الملحق" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText value="#{attachBuildingBean.attachBld.licAttArea}"
+								styleClass="form-control"
+								rendered="#{attachBuildingBean.engineeringOffice}" />
+							<h:outputLabel value="#{attachBuildingBean.attachBld.licAttArea}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="نوع بناء  الملحق" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control"
+								disabled="#{!attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttBldTyp}"
+								style="width:100%; dir:rtl;">
+								<f:selectItem itemLabel="#{msg['armed']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['hanger']}" itemValue="2" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="إستخدام  الملحق" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control"
+								disabled="#{!attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttBldUse}">
+								<!-- 								<f:selectItems value="#{loadingDataBean.buildingUsageList}" -->
+								<!-- 									var="use" itemValue="#{use.id}" itemLabel="#{use.name}" /> -->
+								<f:selectItem itemLabel="بناء سكني" itemValue="1" />
+								<f:selectItem itemLabel="بناء تجاري" itemValue="2" />
+								<f:selectItem itemLabel="بناء سكني تجاري" itemValue="11" />
+								<f:selectItem itemLabel="برج جوال" itemValue="15" />
+								<f:selectItem itemLabel="صراف آلي" itemValue="14" />
+								<f:selectItem itemLabel="بناء حكومي" itemValue="12" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="col-md-2">
+							<h:outputLabel value="التشطيب الخارجي" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttOuterFinish}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttOuterFinish}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+						<!-- 					<div class="col-md-2"> -->
+						<!-- 						<h:outputLabel value="رقم المخطط" styleClass="btxt" /> -->
+						<!-- 					</div> -->
+						<!-- 					<div class="col-md-2"> -->
+						<!-- 						<h:inputText value="#{attachBuildingBean.attachBld.licAttPln}" -->
+						<!-- 							styleClass="form-control" /> -->
+						<!-- 					</div> -->
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="المراقب-المساح" styleClass="btxt" />
+						</div>
+						<div class="col-md-6">
+							<h:selectOneMenu styleClass="form-control"
+								disabled="#{!attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttWatcher}">
+								<f:selectItem itemValue="" itemLabel="#{msg['choose.employee']}" />
+								<f:selectItems value="#{attachBuildingBean.usersList}" var="emp"
+									itemValue="#{emp.userId}" itemLabel="#{emp.employeeName}" />
+							</h:selectOneMenu>
+						</div>
+
+
+
+						<!-- 					<div class="col-md-2"> -->
+						<!-- 							<h:outputLabel value="#{msg['pieces']}" styleClass="btxt" /> -->
+						<!-- 						</div> -->
+						<!-- 						<div class="col-md-2"> -->
+						<!-- 							<h:outputLabel -->
+						<!-- 								value="#{attachBuildingBean.attachBld.piecesNumbers}" /> -->
+						<!-- 						</div> -->
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="الإرتداد شمالا" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttNorthRebound}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttNorthRebound}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="الإرتداد جنوبا" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttSouthRebound}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttSouthRebound}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+
+						<div class="col-md-2">
+							<h:outputLabel value="" styleClass="btxt" />
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="الإرتداد شرقا" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttEastRebound}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttEastRebound}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="الإرتداد غربا" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText rendered="#{attachBuildingBean.engineeringOffice}"
+								value="#{attachBuildingBean.attachBld.licAttWestRebound}"
+								styleClass="form-control" />
+							<h:outputLabel
+								value="#{attachBuildingBean.attachBld.licAttWestRebound}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+
+
+						<div class="col-md-2">
+							<h:outputLabel value="" styleClass="btxt" />
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="الملاحظات الفنية" styleClass="btxt" />
+						</div>
+						<div class="col-md-6">
+							<h:inputTextarea
+								value="#{attachBuildingBean.attachBld.licAttNote}"
+								styleClass="form-control"
+								rendered="#{attachBuildingBean.engineeringOffice}" />
+							<h:outputLabel value="#{attachBuildingBean.attachBld.licAttNote}"
+								rendered="#{!attachBuildingBean.engineeringOffice}" />
+						</div>
+					</div>
+					<br />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{attachBuildingBean.planningManager}">
+
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="يجب إرفاق الكروكي التنظيمي"
+								style="color: red;font-size: larger;" styleClass="btxt" />
+						</div>
+					</div>
+
+
+				</h:panelGroup>
+				<!-- 				<div class="row"> -->
+				<!-- 					<div class="col-md-2"> -->
+				<!-- 						<h:outputLabel value="رقم الفاتورة" styleClass="btxt" /> -->
+				<!-- 					</div> -->
+				<!-- 					<div class="col-md-6"> -->
+				<!-- 						<h:inputText value="" styleClass="form-control" /> -->
+				<!-- 					</div> -->
+				<!-- 				</div> -->
+				<!-- 				<br /> -->
+
+				<br />
+				<h:panelGroup rendered="#{!attachBuildingBean.activatePrint}">
+					<div class="row">
+						<div class="col-md-7">
+							<br></br>
+
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" value=" الارفاق " />
+
+								</div>
+								<div class="col-md-10">
+									<p:fileUpload id="upload" widgetVar="newCommentFileUpload100"
+										multiple="true" update="att-list"
+										fileUploadListener="#{attachBuildingBean.uploadFile}"
+										uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+										label="تحديد المرفق" sizeLimit="300000000" previewWidth="30" />
+								</div>
+								<h:commandButton id="btn_1" value="uploadFiles"
+									style="display: none">
+									<f:ajax event="click"
+										listener="#{attachBuildingBean.refreshFilesUploaded}"
+										render="att-list">
+									</f:ajax>
+								</h:commandButton>
+							</div>
+							<br></br>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputLabel value="  " />
+
+								</div>
+								<div>
+									<ul>
+										<h:panelGroup id="att-list">
+											<br></br>
+											<ui:repeat var="attach"
+												value="#{attachBuildingBean.attachList}">
+												<div class="row">
+													<div class="col-md-5">
+														<h:outputLabel value="#{attach.attachRealName}" />
+													</div>
+													<div class="col-md-1">
+														<h:commandButton class="btn btn-danger" immediate="true"
+															render="att-list" value="إلغاء"
+															actionListener="#{attachBuildingBean.deleteAttchFile(attach.attachRealName)}">
+														</h:commandButton>
+													</div>
+												</div>
+											</ui:repeat>
+										</h:panelGroup>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-5">
+
+							<br></br> <a
+								href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+								id="FileLoderID" class="btn btn-primary"
+								style="display: none; float: left; margin-left: 84px;"
+								onclick="notVisibleDIv()"> تحميل المرفقات </a>
+							<div style="display: inline;">
+								<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+									class="btn btn-primary icon-pencil" onclick="visibleDIv()"
+									style="padding-top: 1px; padding-bottom: 1px;"> <img
+									src="#{facesContext.externalContext.requestContextPath}/resources/images/scanner-200.png"
+									width="40" height="40" border="0"></img>
+
+								</a>
+								<div class="col-md-6" id="divError"
+									style="display: none; float: left;">
+									<h:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح"
+										style="color:red"></h:outputLabel>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+				<div class="row">
+					<div class="col-md-12">
+
+						<h:commandButton value="#{msg['back']}" action="mails"
+							immediate="true"
+							style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							class="btn btn-primary">
+
+						</h:commandButton>
+
+						<h:panelGroup rendered="#{!attachBuildingBean.activatePrint}">
+							<button type="button" class="btn btn-primary "
+								style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
+								data-toggle="modal" data-target="#refuseModal">#{msg['refuse']}</button>
+						</h:panelGroup>
+
+						<h:commandButton value="#{msg['accept']}"
+							style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="btn btn-primary"
+							rendered="#{!attachBuildingBean.activatePrint}"
+							action="#{attachBuildingBean.acceptAction}">
+
+						</h:commandButton>
+
+						<h:outputLink id="gg"
+							rendered="#{attachBuildingBean.activatePrint}"
+							style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+							value="#{attachBuildingBean.url}" target="_blank">
+							<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+							<span class="ui-button-text">#{msg['print']}</span>
+							<f:ajax execute="@form"></f:ajax>
+						</h:outputLink>
+
+						<div id="refuseModal" class="modal fade" tabindex="-1"
+							role="dialog" aria-labelledby="gridModalLabel123"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<h4 class="modal-title" id="gridModalLabel123">#{msg['add.explanation.confirmation']}</h4>
+									</div>
+									<h:panelGroup id="refPopup">
+										<div class="modal-body">
+											<div class="container-fluid bd-example-row">
+												<br></br>
+
+												<div class="row">
+													<div class="col-md-3">
+														<h:outputLabel styleClass="btxt"
+															value="#{msg['redirect.transaction']}" />
+													</div>
+													<div class="col-md-7">
+
+														<h:selectOneMenu id="typ" styleClass="form-control"
+															value="#{attachBuildingBean.applicationPurpose}" var="d"
+															style=" margin-left: 1px;">
+
+															<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+																itemValue="#{pp.idStr} "
+																value="#{attachBuildingBean.wrkPurposes}" />
+														</h:selectOneMenu>
+
+
+													</div>
+
+												</div>
+												<br></br>
+												<div class="row ">
+													<div class="col-md-3">
+														<h:outputLabel styleClass="btxt"
+															value="#{msg['explanation']}" />
+													</div>
+
+
+													<div class="col-md-7">
+														<h:inputTextarea
+															value="#{attachBuildingBean.wrkAppComment}"
+															styleClass="form-control">
+														</h:inputTextarea>
+													</div>
+
+												</div>
+
+												<br></br>
+
+
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-green"
+													data-dismiss="modal">#{msg['back']}</button>
+												<h:commandButton style="float:left"
+													value="#{msg['confirmation']}" styleClass="btn btn-primary"
+													action="#{attachBuildingBean.refuseAction}">
+													<f:ajax execute="refPopup"></f:ajax>
+												</h:commandButton>
+											</div>
+										</div>
+									</h:panelGroup>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+			<p:dialog widgetVar="PrintBillDlgVar" id="PrintBillDlg" modal="true"
+				showEffect="explode" width="50%" resizable="false" responsive="true">
+				<h:form>
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="alert alert-success" style="font-size: x-large;">
+								تمت إضافة الفاتورة رقم : #{attachBuildingBean.newBillNmber}</div>
+
+						</div>
+						<div class="row" style="text-align: center;">
+
+							<h:commandButton style="float:left;margin-left:3px;"
+								value="طباعة الفاتورة" immediate="true"
+								styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+								action="#{attachBuildingBean.printBarcodeReport}">
+
+
+							</h:commandButton>
+
+
+
+
+						</div>
+
+					</div>
+				</h:form>
+			</p:dialog>
+		</h:form>
+		<script>
+			function visibleDIv() {
+				document.getElementById("FileLoderID").style.display = "block";
+				document.getElementById("divError").style.display = "block";
+			}
+			function notVisibleDIv() {
+
+				document.getElementById("divError").style.display = "none";
+				document.getElementById("FileLoderID").style.display = "none";
+				document.getElementById("includeform:btn_1").click();
+			}
+		</script>
+	</div>
+</h:body>
+</html>

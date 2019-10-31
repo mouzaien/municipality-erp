@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-02-28T13:44:08 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bill_detail" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="46343c2d-d7fd-411a-ac24-a9fda0c1eedb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER4.xml"/>
+	<parameter name="p1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select PAY_BILL_DETAILS.ID, PAY_BILL_DETAILS.BILL_NO, PAY_BILL_DETAILS.PAY_MASTER, PAY_BILL_DETAILS.PAY_DETAILS
+, PAY_BILL_DETAILS.AMOUNT, PAY_BILL_DETAILS.CREATED_IN, PAY_BILL_DETAILS.CREATED_BY,
+ PAY_BILL_DETAILS.BILL_J_YEAR, PAY_BILL_DETAILS.BILL_H_YEAR  ,
+ (select name from PAY_MASTER where ACCOUNT_NO = PAY_BILL_DETAILS.PAY_DETAILS ) detail ,
+ (select name from PAY_MASTER where  ACCOUNT_NO= PAY_BILL_DETAILS.PAY_MASTER ) master
+from PAY_BILL_DETAILS
+where   bill_no = $P{p1}]]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="BILL_NO" class="java.lang.String"/>
+	<field name="PAY_MASTER" class="java.math.BigDecimal"/>
+	<field name="PAY_DETAILS" class="java.math.BigDecimal"/>
+	<field name="AMOUNT" class="java.math.BigDecimal"/>
+	<field name="CREATED_IN" class="java.sql.Timestamp"/>
+	<field name="CREATED_BY" class="java.math.BigDecimal"/>
+	<field name="BILL_J_YEAR" class="java.math.BigDecimal"/>
+	<field name="BILL_H_YEAR" class="java.math.BigDecimal"/>
+	<field name="DETAIL" class="java.lang.String"/>
+	<field name="MASTER" class="java.lang.String"/>
+	<variable name="AMOUNT_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{AMOUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="553" height="20" forecolor="#FFFFFF" backcolor="#182C3B" uuid="9e122337-0eeb-4c9d-ac75-3f6cf8a934d9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="484" y="2" width="68" height="17" forecolor="#FFFFFF" uuid="78c84938-c904-464e-b477-496f4fc5ff7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[البند الرئيسي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="2" width="145" height="17" forecolor="#FFFFFF" uuid="fa48ca26-b0dc-4dad-a6a8-7f6e502456fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المسمي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="2" width="182" height="17" forecolor="#FFFFFF" uuid="f8e58715-cbf1-43a2-bf3b-527fe48f8d1f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المسمي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="2" width="90" height="17" forecolor="#FFFFFF" uuid="dae5fce9-915e-485d-8249-a020dbf7d2c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[البند الفرعي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="2" width="67" height="17" forecolor="#FFFFFF" uuid="dfd58bd3-7783-4798-8e79-389553088614"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المبلغ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="484" y="-1" width="68" height="16" uuid="45943a5a-c48a-406d-aa70-13cd90dd966b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PAY_MASTER}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="-1" width="90" height="16" uuid="fd3755f6-4e7c-467c-b33f-67ca402bcb9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PAY_DETAILS}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="-1" width="68" height="16" uuid="505df987-88b3-4084-8716-8d760e97b638"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{AMOUNT}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="-1" width="146" height="16" uuid="49b9770a-4a4a-446d-822e-429da8c2dd70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MASTER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="-1" width="182" height="16" uuid="a89671c2-40c3-435c-a99d-534ac7ca50fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DETAIL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="552" height="1" forecolor="#182C3B" backcolor="#182C3B" uuid="4e506d35-0f4a-4d8f-845a-c9a40c997129"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-19" width="1" height="33" forecolor="#182C3B" backcolor="#182C3B" uuid="39be8ac2-7c56-4e85-9fa5-d33115586bc3"/>
+			</line>
+			<line>
+				<reportElement x="67" y="-1" width="1" height="15" forecolor="#182C3B" backcolor="#182C3B" uuid="8bf87764-f8f1-4530-8fb6-1f6fc905267b"/>
+			</line>
+			<line>
+				<reportElement x="249" y="-1" width="1" height="16" forecolor="#182C3B" backcolor="#182C3B" uuid="1a7cbac9-00ef-4191-bd88-27f8447676a0"/>
+			</line>
+			<line>
+				<reportElement x="339" y="-1" width="1" height="15" forecolor="#182C3B" backcolor="#182C3B" uuid="bbeda6e6-bb3f-4dd8-a533-0accfa2b8691"/>
+			</line>
+			<line>
+				<reportElement x="484" y="-1" width="1" height="16" forecolor="#182C3B" backcolor="#182C3B" uuid="3e5f82d7-4fcb-4a65-ab0e-b65294cef370"/>
+			</line>
+			<line>
+				<reportElement x="552" y="-19" width="1" height="34" forecolor="#182C3B" backcolor="#182C3B" uuid="32ab2f49-0d26-477c-b214-c039fcbb4b45"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="0" width="67" height="20" forecolor="#990000" uuid="f1d67214-667f-4610-8dec-0fa55c8c62ac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{AMOUNT_1}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="0" width="100" height="20" uuid="7d43f291-3d87-4aaf-8bd7-05a8642b19ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مجموع المبلغ :]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

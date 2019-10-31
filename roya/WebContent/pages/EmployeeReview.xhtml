@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<h:head>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.jqplot.min.js" />
+	<h:outputScript library="jqplot-plugins"
+		name="jqplot.pointLabels.min.js" />
+</h:head>
+<h:body>
+	<ui:composition template="./WebTemplate.xhtml">
+		<ui:define name="top">
+                الاحصائيات  
+            </ui:define>
+		<ui:define name="content">
+			<h:form id="showdataForm">
+			<p:growl autoUpdate="true"></p:growl>
+				<div class="container-fluid">
+					<div class="row" style="margin: 4px;">
+						<div class="col-md-2">
+							<p:outputLabel value="بداية الفترة"></p:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<p:inputText id="startdateId" style="width:100%"  required="true" requiredMessage="بداية الفترة مطلوبة "
+								value="#{employeeReview.startDate}" />
+						</div>
+						<div class="col-md-2">
+							<p:outputLabel value="نهاية الفترة"></p:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<p:inputText id="enddateId" style="width:100%" required="true" requiredMessage="نهاية الفترة مطلوبة "
+								value="#{employeeReview.endDate}" />
+						</div>
+					</div>
+					<div class="row" style="margin: 4px;">
+						<div class="col-md-2">
+							<p:outputLabel value="أختر الموظف : "></p:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<p:selectCheckboxMenu id="selectedUserId" label="حدد مستخدم واحد أو اكتر"
+								value="#{employeeReview.selectedUsers}" required="true" requiredMessage="حدد مستخدم أو أكثر "
+								style="width:100%">
+								<f:selectItems value="#{employeeReview.allUsers}"></f:selectItems>
+								<f:selectItem itemLabel="أختر موظف من القائمة" itemValue="0"></f:selectItem>
+								
+							</p:selectCheckboxMenu>
+						</div>
+						<div class="col-md-3">
+							<p:commandButton value="عرض" icon="fa fa-search"
+								action="#{employeeReview.findStatistics(actionevent)}"
+								process="@this,:tempform:showdataForm:startdateId,:tempform:showdataForm:enddateId,:tempform:showdataForm:selectedUserId"
+								update=":tempform:showdataForm:userstatDt"
+								style="height:100%;"></p:commandButton>
+						</div>
+						<div class="col-md-3"></div>
+					</div>
+
+					<div class="row" style="margin: 4px;">
+						<p:dataTable id="userstatDt" value="#{employeeReview.userStatisticsList}"  
+						
+						var="userstat" emptyMessage="لا يوجد بيانات لعرضها ">
+						
+							<p:column headerText="اسم المستخدم"> #{userstat.getUserName()} </p:column>
+							
+							<p:column headerText=" الشروحات الوارده"> #{userstat.getRecievedCommentsCount()} </p:column>
+							<p:column headerText="الشروحات الصادرة"> #{userstat.getSentCommentsCount()} </p:column>
+							<p:column headerText="المعاملات المنشأه"> #{userstat.getCreatedRecordsCount()} </p:column>
+							<p:column headerText="الخطابات المنشأة"> #{userstat.getCreatedLettersCount()} </p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

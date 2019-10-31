@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{postsClassBean.loadData}"></f:viewAction>
+	</f:metadata>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:body>
+			<h:form id="includeform">
+				<div class="card card-w-title" dir="rtl">
+
+					<div style="color: color: #428bca">
+						<h1 style="color: #7CB342; text-align: center;">
+							تصنيف الوظائف <span class="fa fa-fw fa-briefcase"></span>
+						</h1>
+					</div>
+					<div class="ui-g">
+
+						<div class="ui-g-4">
+							<p:tree value="#{postsClassBean.root}" var="node" dynamic="true"
+								selectionMode="single"
+								selection="#{postsClassBean.selectedNode}" dir="rtl">
+								<p:ajax event="select"
+									update="includeform:details includeform:detailsNew"
+									listener="#{postsClassBean.onNodeSelect}" />
+								<p:treeNode>
+									<h:outputLabel value="#{node}" style="border:none;" />
+								</p:treeNode>
+							</p:tree>
+
+						</div>
+					</div>
+
+					<h:panelGrid id="details" columns="1" style="width:100%">
+						<h:panelGroup
+							rendered="#{postsClassBean.selectedNode.data.type==1 ? 'true':'false'}">
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="رمز الفئة" styleClass="btxt" />
+								</div>
+								<div class="ui-g-4">
+									<h:inputText
+										value="#{postsClassBean.selectedNode.data.serieId}" />
+								</div>
+								<div class="ui-g-2">
+									<h:commandButton value="حفظ" style="float:left;"
+										actionListener="#{postsClassBean.save}"
+										class="btn btn-primary">
+										<f:ajax execute="details" render="@form"></f:ajax>
+									</h:commandButton>
+								</div>
+							</div>
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="مسمى الفئة" styleClass="btxt" />
+								</div>
+								<div class="ui-g-4">
+									<h:inputText value="#{postsClassBean.selectedNode.data.title}" />
+								</div>
+							</div>
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="نوع الفئة" styleClass="btxt" />
+								</div>
+								<div class="ui-g-4">
+									<h:selectOneMenu styleClass="form-control" required="true"
+										value="#{postsClassBean.selectedNode.data.jobType.id}">
+										<f:ajax execute="@this"></f:ajax>
+										<f:selectItems value="#{postsClassBean.hrsgovjobTypes}"
+											var="job" itemLabel="#{job.description}"
+											itemValue="#{job.id}"></f:selectItems>
+									</h:selectOneMenu>
+								</div>
+							</div>
+
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid id="detailsNew" columns="1" style="width:100%">
+						<div class="ui-g-8">
+							<h:panelGroup
+								rendered="#{postsClassBean.selectedNode.data.type==2 ? 'true':'false'}">
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="رمز الفئة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-4">
+										<h:inputText value="#{postsClassBean.serieId}" />
+									</div>
+									<div class="ui-g-2">
+										<h:commandButton value="إظافة" style="float:left;"
+											actionListener="#{postsClassBean.addJob}"
+											class="btn btn-primary">
+											<f:ajax execute="detailsNew" render="@form"></f:ajax>
+										</h:commandButton>
+									</div>
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="مسمى الفئة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-4">
+										<h:inputText value="#{postsClassBean.title}" />
+									</div>
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="نوع الفئة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-4">
+										<h:selectOneMenu styleClass="form-control" required="true"
+											value="#{postsClassBean.jobTypeId}">
+											<f:ajax execute="@this"></f:ajax>
+											<f:selectItems value="#{postsClassBean.hrsgovjobTypes}"
+												var="job" itemLabel="#{job.description}"
+												itemValue="#{job.id}"></f:selectItems>
+										</h:selectOneMenu>
+									</div>
+								</div>
+							</h:panelGroup>
+						</div>
+					</h:panelGrid>
+
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

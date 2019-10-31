@@ -1,0 +1,1600 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+     <f:view>
+     <f:metadata>
+    	<f:viewAction action="#{inboxBean.loadMails}" phase="APPLY_REQUEST_VALUES"/>
+    </f:metadata>
+    
+    <h:head>
+
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css"></link>
+    </h:head>
+    
+    <h:body >
+    
+        <ui:composition template="./WebTemplate.xhtml">
+            <ui:define name="top">
+                البريد الألكتروني 
+            </ui:define>
+            <ui:define name="content">
+     
+                <p:toolbar id="inboxtoolbar" style="margin-bottom: 2px">
+                    <f:facet name="left" >
+                        <p:commandButton value=" بحـث" style="width: 100px;"
+                                         onclick="PF('srchDlg').show()" icon="fa fa-search"
+                                         />
+
+                        <p:commandButton id="dynaButton" value="عـرض البريد" type="button" icon="fa fa-search"  />
+                        <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+
+                            <p:menuitem value=" مفضلة البريد "  icon="fa fa-star" 
+                                        update=":tempform:inbox-out-tab:inboxdtform:inboxdt" action="#{inboxBean.showFavouritinbox(actionEvent)}"/>
+                            <p:menuitem value="عرض بواسطة المرسل" icon="fa fa-users" onclick="PF('sendersDlg').show()" />
+
+                            <p:menuitem value="بواسطة المجلدات" icon="fa fa-folder" onclick="PF('userfoldersDlg').show()" />
+
+
+
+
+
+
+                            <p:submenu label="بواسطة الحالة" icon="fa fa-check-square-o">
+                                <p:menuitem value= "البريد الغير مقروء " 
+                                            icon="fa fa-star-o"
+
+                                            update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                            action="#{inboxBean.showUnreadInbox(actionEvent)}"
+                                            />
+                                <p:menuitem value="البريد المقروء  " 
+                                            icon="fa fa-star-half-o"
+                                            update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                            action="#{inboxBean.showReadInbox(actionEvent)}"
+                                            />
+                            </p:submenu>
+
+                            <p:submenu label="بواسطة التوقيت" icon="fa fa-clock-o">
+                                <p:menuitem icon="fa fa-calendar" value="عرض بريد اليوم "
+                                            update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                            action="#{inboxBean.ShowDailyInbox(actionEvent)}"
+
+                                            />
+
+                            </p:submenu>
+
+
+                        </p:tieredMenu>
+
+
+                    </f:facet>
+
+                    <f:facet name="right">
+                        <p:commandButton value="تحديث البريد الألكتروني" icon="fa fa-refresh"
+                                         action="#{inboxBean.refreshInbox(actionEvent)}"
+                                         update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                        
+                                         id="refreshbtn"/>
+                                         
+                          
+                        <p:menuButton value="إنشــــاء" rendered="false" style="width: 100px;" id="createInboxSelection" >
+                            <p:menuitem value="إنشاء خطاب" 
+                                        onclick="PF('NewCommentDlg').show()" style="float: right;"  />
+                            <p:menuitem value="إنشاء تعميم" rendered="false"  ></p:menuitem>
+                            <p:menuitem value="إنشاء مذكرة داخلية" 
+                                        onclick="PF('NewRecordDlg').show()"  />
+                        </p:menuButton> 
+
+
+
+					<p:commandButton id="dynaButton001" value="إنشاء" type="button"
+						icon="fa fa-plus" />
+					<p:tieredMenu overlay="true" trigger="dynaButton001" my="left top"
+						at="left bottom" style="width:200px">
+						<p:menuitem value="إنشاء خطاب" icon="fa fa-edit"
+							onclick="PF('NewCommentDlg').show()" style="float: right;" />
+						<p:menuitem value="إنشاء تعميم" rendered="false"></p:menuitem>
+						<p:menuitem value="إنشاء مذكرة داخلية" style="float: right;" icon="fa fa-user"
+							onclick="PF('NewRecordDlg').show()" />
+					</p:tieredMenu>
+					
+
+
+
+                    </f:facet>
+
+                </p:toolbar>
+
+                <p:tabView style="direction: rtl;font-size: medium;font-weight: bold;padding: 0px;" 
+                           id="inbox-out-tab"  >
+                    <p:tab title="البريد الوارد" id="inboxtab"  >
+                        <h:form id="inboxdtform" target="_blank"> 
+
+                            <style type="text/css">
+
+                                .IMPORTANT-READ{
+                                    background-color: #FFEDED !important;
+                                }
+                                .IMPORTANT-UNREAD{
+                                    background-color: #FFC2C2 !important;
+
+                                }
+                                .REQUIRED-READ{
+                                    background-color: #EBFFE0 !important;
+                                }
+                                .REQUIRED-UNREAD{
+                                    background-color: #99FF66 !important;
+
+                                }
+
+                            </style>
+                           
+                            <p:dataTable value="#{inboxBean.mails}" var="inboxitem" id="inboxdt"
+                                         rowKey="#{inboxitem.wrkId}" widgetVar="inbox_dt"
+                                         selection="#{inboxBean.selectedInbox}" 
+                                         selectionMode="single"
+                                         lazy="true"
+                                         rowStyleClass="#{inboxitem.wrkColor}"
+                                         paginator="true" rows="12"
+                                         emptyMessage="لا يوجد معاملات "
+                                         rowIndexVar="rowIndex"
+                                         styleClass="myTable"
+                                         filteredValue="#{inboxBean.filteredInbox}"
+                                         style="margin-bottom: 20px;font-size: medium;"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         >
+                                <f:facet name="header" >
+                                    <h:form id="inboxHeaderForm">
+                                        <p:outputPanel id="inboxheaderpanel">
+                                            <div class="container-fluid" style="direction: rtl;">
+                                                <div class="row">
+                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                        <p:commandLink value="مفضلة البريد  " process="@this" 
+                                                                       update=":tempform:inbox-out-tab:inboxdtform:inboxdt" 
+                                                                       action="#{inboxBean.showFavouritinbox(actionEvent)}" 
+                                                                        style="padding:0px;padding-right:9px;padding-left:9px;"/>                                           
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                        <p:commandLink value="البريد اليومي" process="@this" 
+                                                                       update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                                       action="#{inboxBean.ShowDailyInbox(actionEvent)}"  style="padding:0px;padding-right:9px;padding-left:9px;width:100% !important"
+                                                                       />                                           
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-3 col-xs-2">
+                                                        <p:commandLink value="الغير مقروء" process="@this" 
+                                                                       update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                                       action="#{inboxBean.showUnreadInbox(actionEvent)}"
+                                                                       style="padding:0px;padding-right:9px;padding-left:9px;"
+                                                                       />
+                                                        <span style="font-size: smaller;" class="badge" id="unread_inbox_lbl">#{inboxBean.unreadInboxCount}</span>    
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-3 col-xs-2">
+                                                        <p:commandLink value="المقروء" process="@this" 
+                                                                       update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                                       action="#{inboxBean.showReadInbox(actionEvent)}"  style=";padding:0px;padding-right:9px;padding-left:9px;"
+                                                                       />
+                                                        <span style="font-size: smaller;" class="badge" id="read_inbox_lbl" >#{inboxBean.readInboxCount}</span>                                                
+                                                    </div>
+
+                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                        <p:commandLink value="البريد الوارد" process="@this" 
+                                                                       actionListener="#{inboxBean.refreshInbox}"  
+                                                                       style="padding:0px; padding-right:9px;padding-left:9px;	"
+                                                                       update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                                       />
+                                                        <span style="font-size: smaller;" class="badge" id="inbox_lbl">#{inboxBean.inboxCount}</span>    
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </p:outputPanel>
+                                    </h:form>
+                                </f:facet>
+                                <p:ajax event="rowSelect"
+                                        listener="#{inboxBean.onRowSelect}"
+                                        update=":tempform:inbox-out-tab:inboxdtform ,:tempform:inbox-out-tab,
+                                        :tempform:inbox-out-tab:inboxdtform:inboxdt,
+                                        :tempform:inbox-out-tab:inboxdtform:wrktab:commentSaveButton,
+                                        :tempform:inbox-out-tab:inboxdtform:inboxdt:inboxHeaderForm:inboxheaderpanel" 
+                                        oncomplete="PF('multiCarDialog').show()">
+                                </p:ajax>
+                                <p:column headerText="شـ " width="3%" >
+                                    #{inboxitem.convWrkTotalSteps}
+
+                                </p:column>
+                                <p:column headerText="مـ" width="3%" >
+                                    #{inboxitem.convWrkAttachCount}
+                                </p:column>
+                                <p:column id="senderCol" style="white-space: nowrap;" headerText="المُرسل  " width="18%" filterBy="#{inboxitem.wrkSender}">
+                                    #{inboxitem.wrkSender}
+                                </p:column>
+                                <p:column headerText="التاريخ " width="8%">
+                                    <div style="font-size: 15px;direction: ltr;"> #{inboxitem.convWrkHdate}</div>
+                                </p:column>
+                                <p:column headerText="التوقيت " width="7%">
+
+                                    <div style="font-size: 16px;"> #{inboxitem.convWrkCreateTime}</div> 
+                                </p:column>
+                                <p:column id="topicCol" style="white-space: nowrap;" width="47%"   headerText="الموضوع "  filterBy="#{inboxitem.appTitle}" >
+
+                                    <div id="read-icon" class="fa  fa-check" style="font-size: 14px; display:#{inboxitem.isRead == 1 ? '':'none'};"/> #{inboxitem.appTitle} 
+
+                                    <p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" trackMouse="true" hideEffect="fade"
+                                               value="This is row number #{rowIndex}" style="font-size: medium;direction: rtl;max-width: 500px;" >
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel value="الموضوع" style="color: #045491"/>
+                                            <p:outputLabel value="#{inboxitem.appTitle}" />
+                                            <p:outputLabel value="التوجية" style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.purpose}" />
+                                            <p:outputLabel value="عدد المرفقات " style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.convWrkAttachCount}" />
+                                            <p:outputLabel value=" الخطاب ؟"  style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+                                        </h:panelGrid>
+                                        <p:outputLabel value="#{inboxitem.firstComment}" />
+                                    </p:tooltip> 
+                                </p:column>
+                                <p:column style="white-space: nowrap;text-align: center;" headerText="الوارد " width="9%" >
+
+                                    <div style="font-size: 18px;">
+                                        <div class="fa    fa-pencil" style="font-size: 14px; display:#{inboxitem.hasComment == 1 ? '':'none'};"/> 
+                                        #{inboxitem.convWrkIncomeNo}</div>
+                                </p:column>
+                                <p:column width="4%" rendered="false">
+
+                                    <p:commandLink  style="width: 10px;height: 10px;" 
+                                                    process="inboxdt"  
+                                                    actionListener ="#{inboxBean.archiveInboxRecord(actionEvent)}" >
+
+                                        <div id="arch-icon" class="fa fa-archive" style="font-size: 15px;" />
+                                        <f:setPropertyActionListener value="#{inboxitem}" target="#{inboxBean.selectedInbox}" />
+                                    </p:commandLink>
+                                </p:column>
+
+                            </p:dataTable>
+                            <p:dialog widgetVar="srchDlg" closeOnEscape="true" resizable="false" header=" بحث في البريد الوارد" 
+                                      minimizable="true"
+                                      style="direction: rtl;" showEffect="explode"  hideEffect="explode" >
+
+                                <h:form id="inboxSearchForm">
+                                    <h:panelGrid columns="3" style="direction: rtl;">
+                                        <p:inputText 
+                                            value="#{inboxBean.searchKey}" 
+                                            style="font-size: 20px;width: 300px;"
+                                            placeholder="  ..أدخل كلمة البحث" 
+                                            id="srchkey" 
+
+                                            onkeypress="if (event.keyCode == 13) {
+                                                        test();
+                                                        return false;
+                                                    }" />
+                                        <p:remoteCommand name="test" 
+                                                         process="@this,:tempform:inbox-out-tab:inboxdtform:inboxSearchForm:srchkey,:tempform:inbox-out-tab:inboxdtform:inboxSearchForm:includeCommentSearchCbx"
+                                                         actionListener="#{inboxBean.searchInbox(actionEvent)}"
+                                                         update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                         />
+                                        <p:commandButton value="بحث" icon="fa fa-search" class="btn btn-default"
+                                                         process="@this,:tempform:inbox-out-tab:inboxdtform:inboxSearchForm:srchkey,:tempform:inbox-out-tab:inboxdtform:inboxSearchForm:includeCommentSearchCbx"
+                                                         action="#{inboxBean.searchInbox(actionEvent)}"
+                                                         update=":tempform:inbox-out-tab:inboxdtform:inboxdt"/>
+                                        <p:row >
+                                            <p:selectBooleanCheckbox id="includeCommentSearchCbx" style="padding: 7px;" value="#{inboxBean.includeCommentSearch}" />
+                                            <p:outputLabel value="تضمين الشروحات  *قد يستهلك وقت أكبر " />
+                                        </p:row>
+                                    </h:panelGrid>
+                                </h:form>
+
+
+
+
+                            </p:dialog>
+                            <p:dialog widgetVar="multiCarDialog"  closeOnEscape="true" closable="false" style="direction: rtl;"
+
+                                      showEffect="fade" header="بيانات المعاملة  : #{inboxBean.selectedInbox.appTitle}"
+                                      hideEffect="fade" id="WrkTransferDlg"
+                                      resizable="false" modal="true"
+                                      width="920" height="470" >
+                                <p:tabView dynamic="true" id="wrktab" activeIndex="#{inboxBean.inboxDtActiveIndex}"
+                                           style="border: none;">
+                                    <p:tab title="بيانات المعاملة ">
+                                        <p:outputPanel style="height: 430px;">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <p:outputLabel value="  رقم المعاملة" style="color: #D80042;" /> 
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <p:outputLabel value=" : #{inboxBean.selectedInbox.appId} &frasl; #{inboxBean.selectedInbox.wrkId} "/>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <p:outputLabel value="الموضوع " style="color: #D80042;" />
+
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <p:outputLabel value=" : #{inboxBean.selectedInbox.appTitle}" style="white-space: nowrap;"/>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <p:outputLabel value="المرسل " style="color: #D80042;" />
+
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <p:outputLabel value=" : #{inboxBean.selectedInbox.wrkSender}" />
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <p:outputLabel value="أنشأت في " style="color: #D80042;" />
+
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <p:outputLabel value=" : #{inboxBean.selectedInbox.wrkHdate} #{inboxitem.wrkCreateTime}" />                
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <p:selectOneMenu value="#{inboxBean.newRecordTargetFolder}" style="width:100%" >
+                                                                        <f:selectItem itemLabel="نقل المعاملة " />
+                                                                        <f:selectItem itemLabel="المجلد الرئيسي للمعاملات" itemValue="0" />
+                                                                        <f:selectItems value="#{inboxBean.userFolders}" />
+                                                                        <p:ajax event="change" process="@this" listener="#{inboxBean.changetargetFolder(abe)}" />
+                                                                    </p:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <p:dataList  
+                                                id ="explaindatatable"
+                                                value="#{inboxBean.comments}" var="comm"
+                                                type="definition"   style="height: 500px;"
+                                                emptyMessage="لا يوجد شروحات">
+                                                <f:facet name="header">الشروحات</f:facet>
+                                                <div  class="EX_BOX" style="float:left;word-wrap: break-word;">
+                                                    <div class="EX_BOX_header" >
+                                                        <h:panelGrid columns="1">
+                                                            <p:outputLabel>
+                                                                أرسلت بواسطة #{comm.fromName}  الي    #{comm.toName}  في #{comm.createdIn} 
+                                                            </p:outputLabel>
+                                                            <p:outputLabel> الغرض : #{comm.purpose}</p:outputLabel>
+                                                        </h:panelGrid>
+                                                    </div>
+                                                    <div  class="EX_BOX_content" style="float:left;">
+                                                        #{comm.comment}
+                                                    </div>
+                                                    <!--
+                                                                                                    <p:fieldset collapsed="true" legend="الرد علي #{comm.fromName} " toggleable="true" toggleSpeed="500">
+                                                                                                        <div>
+                                                                                                            <div style="float: right">
+                                                                                                                <h:panelGrid columns="2">
+                                                                                                                    <p:outputLabel value="الشرح" />
+                                                                                                                    <p:inputTextarea style="width: 370px;height: 150px;" />
+                                                                                                                </h:panelGrid>
+                                                                                                            </div>
+                                                                                                            <div style="float: left">
+                                                                                                                <h:panelGrid columns="1">
+                                                                                                                    <p:row>
+                                                                                                                        <p:outputLabel value="المعاملة عاجلة  : " />
+                                                                                                                        <p:selectBooleanCheckbox value="#{inboxBean.isImportant}" id="isimport" />
+                                                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                                                        <p:outputLabel value=" الشرح سري : " />
+                                                                                                                        <p:selectBooleanCheckbox value="#{inboxBean.isSecret}" id="issecret" />
+                                                                                                                    </p:row>
+                                                                                                                    <p:row>
+                                                                                                                        <p:outputLabel value=" التوجيه   :  " />
+                                                                                                                        <p:selectOneMenu  id="wrkpurp00" value="#{inboxBean.wrkPurp}"
+                                                                                                                                          panelStyle="width:300px" 
+                                                                                                                                          effect="fade" var="d" 
+                                                                                                                                          style="width:300px;direction: ltr;"  
+                                                                                                                                          filter="true" filterMatchMode="contains">
+                                                                                                                            <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                                                                                                            <f:selectItems value="#{inboxBean.purpMap}" />
+                                                    
+                                                                                                                        </p:selectOneMenu>
+                                                                                                                    </p:row> 
+                                                    
+                                                                                                                </h:panelGrid>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                    
+                                                                                                    </p:fieldset>
+                                                    -->
+
+                                                </div>
+                                            </p:dataList>
+                                        </p:outputPanel>
+
+                                    </p:tab>
+                                    <p:tab title="المرفقات" >
+                                        <p:tabView value="#{inboxBean.attList}" var="att" id="AttachmantTab" >
+                                            <p:tab title="مرفق - #{att.attId}">
+                                                <h:form target="_blank">
+                                                    <p:row>
+                                                        قام بارفاقه    #{att.ownerName}  <a href="#{att.attLink}" target="_blank">أضغط هنا </a> لتحميل الملف .
+                                                    </p:row>
+                                                    <p:outputPanel rendered="#{att.isPdf}">
+                                                        <object type="application/pdf" data="#{att.attLink}" height="300px" 
+
+                                                                width="100%">
+                                                            ميزة الأستعراض غير مدعمة للمتصفح  <a href="#{att.attLink}" >أضغط هنا </a> لتحميل الملف .
+                                                        </object> 
+                                                    </p:outputPanel>
+                                                    <p:outputPanel rendered="#{!att.isPdf}">
+                                                        <h:outputLink target="_blank" value="#{att.attLink}">
+                                                            <img  src="#{att.attLink}" style="height: 300px;"  />
+                                                        </h:outputLink>
+                                                    </p:outputPanel>
+                                                </h:form>                                             
+                                            </p:tab>
+                                        </p:tabView>
+                                        <p:fileUpload  
+                                            id="RecordsUploaderID"
+                                            widgetVar="RecordsUploader"
+                                            multiple="true"
+                                            auto="true"
+                                            fileUploadListener="#{inboxBean.uploadRecordFiles}"
+                                            uploadLabel="ارفاق" 
+                                            cancelLabel="إلغاء" 
+                                            label="تحديد المرفق" 
+                                            previewWidth="0"
+                                            process="@this"
+                                            style="width: 100%;display: block;"
+                                            allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/" 
+                                            sizeLimit="300000000"
+                                            update="AttachmantTab"
+                                            />
+                                    </p:tab>
+                                    <p:tab title="الإحالة ">
+                                        <div>
+                                            <div id="r001" style=" float: right;width: 100%;margin-left: 1%;border-left: 1px;">
+                                                <h:form id="form001">
+                                                    <p:outputPanel>
+
+                                                    </p:outputPanel>
+                                                    <div class="container-fluid">
+                                                        <div class="row" style="margin-top: 4px;">
+                                                            <div class="col-md-2">
+                                                                <p:outputLabel value="الشـــــــرح" />
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <p:inputTextarea 
+                                                                    value="#{inboxBean.wrkCommTxt}" id="wrkcomm"
+                                                                    style="height: 150px;width: 100%; overflow: auto;"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top: 4px;">
+                                                            <div class="col-md-2">
+
+                                                            </div>
+                                                            <div class="col-md-7 col-sm-7">
+                                                                <p:row>
+                                                                    <p:outputLabel value="المعاملة عاجلة  : " />
+                                                                    <p:selectBooleanCheckbox value="#{inboxBean.isImportant}" id="isimport" />
+                                                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <p:outputLabel value=" الشرح سري : " />
+                                                                    <p:selectBooleanCheckbox value="#{inboxBean.isSecret}" id="issecret" />
+
+                                                                </p:row>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-top: 4px;">
+                                                            <div class="col-md-2">
+                                                                <p:outputLabel value=" التوجيه   :  " />
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <p:selectOneMenu  id="wrkpurp00" value="#{inboxBean.wrkPurp}"
+                                                                                  panelStyle="width:305px" 
+                                                                                  effect="fade" var="d" 
+                                                                                  style="width:300px;direction: rtl;"  
+                                                                                  filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                                                    <f:selectItems value="#{inboxBean.purpMap}" />
+
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top: 4px;" id="abc002">
+                                                            <div class="col-md-2">
+                                                                <p:outputLabel value="   جهات الإرسال: " />
+                                                            </div>
+                                                            <div class="col-md-10" id="abc001">
+                                                                <p:accordionPanel multiple="true" id="accord"  >
+                                                                    <p:tab title="جهة إرسال أصل المعاملة" id="orgsendcontact">
+                                                                        <p:tabView id="copycontact">
+                                                                            <p:tab title="موظفي القسم" id="tab000">
+                                                                                <p:selectOneRadio id="empr" value="#{inboxBean.wrkReciever}"  layout="grid" columns="3">
+                                                                                    <p:ajax update="mngr" listener="#{inboxBean.clearMngRadioList(valueChangeEvent)}" />
+                                                                                    <f:selectItems value="#{inboxBean.empMap}" />
+                                                                                </p:selectOneRadio>
+                                                                            </p:tab>
+                                                                            <p:tab title=" مديري الإدارات" rendered="#{inboxBean.isManager}" >
+                                                                                <p:selectOneRadio id="mngr" layout="grid" columns="3" value="#{inboxBean.wrkReciever1}">
+                                                                                    <p:ajax update="empr" listener="#{inboxBean.clearEmpRadioList(valueChangeEvent)}" />
+                                                                                    <f:selectItems value="#{inboxBean.mgrMap}" />
+                                                                                </p:selectOneRadio>
+                                                                            </p:tab>
+                                                                        </p:tabView>
+                                                                    </p:tab>
+                                                                    <p:tab title="جهات إرسال صور المعاملة" id="copyTab">
+                                                                        <p:tabView id="wrkcopy00">
+                                                                            <p:tab title="موظفي القسم" id="wrktab00">
+                                                                                <p:selectManyCheckbox id="wrkemplst"
+                                                                                                      value="#{inboxBean.wrkCopyEmpRecievers}"
+                                                                                                      layout="grid" columns="3">
+                                                                                    <f:selectItems value="#{inboxBean.empMap}"  />
+                                                                                </p:selectManyCheckbox>
+                                                                            </p:tab>
+                                                                            <p:tab title=" مديري الإدارات" rendered="#{inboxBean.isManager}">
+                                                                                <p:selectManyCheckbox id="wrkmnglst"
+                                                                                                      value="#{inboxBean.wrkCopyMngRecievers}"
+                                                                                                      layout="grid" columns="3">
+                                                                                    <f:selectItems value="#{inboxBean.mgrMap}" />
+                                                                                </p:selectManyCheckbox>
+                                                                            </p:tab>
+                                                                        </p:tabView>
+                                                                    </p:tab>
+                                                                </p:accordionPanel>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top: 4px;">
+                                                            <div class="col-md-2">
+
+                                                            </div>
+                                                            <div class="col-md-10" >
+                                                                <p:messages autoUpdate="true" />
+                                                                <p:commandButton value="احالة المعاملة " icon="fa fa-paper-plane" 
+                                                                                 class=" ui-priority-primary"
+                                                                                 process="@this,:tempform:inbox-out-tab:inboxdtform:wrktab:form001:wrkpurp00,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:form001:wrkcomm,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:form001:isimport,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:form001:issecret,
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:form001:accord:wrkcopy00:wrkemplst
+
+                                                                                 "
+                                                                                 action="#{inboxBean.wrkSendAction(actionEvent)}"
+                                                                                 update=":tempform:inbox-out-tab:inboxdtform:inboxdt,:tempform:inbox-out-tab:outboxdt,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:inboxdt:inboxHeaderForm:inboxheaderpanel"
+                                                                                 style="width: 100%;height: 40px;" >
+                                                                    <p:confirm header="تأكيد الإرسال " message="هل تود إرسال الاحالة حقا ؟ " icon="ui-icon-alert" /> 
+                                                                </p:commandButton>
+
+                                                                <p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+                                                                    <p:commandButton value="موافق" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                                    <p:commandButton value="تراجع" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                                </p:confirmDialog>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- End Of Row -->
+                                                    </div>
+                                                </h:form>
+
+                                            </div>
+
+                                        </div>
+                                    </p:tab>
+                                    <p:tab title="خطاب التغطية" id="commenttab">
+                                        <div class="container-fluid">
+                                            <div class="row" style="margin-top: 3px;">
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value="موجه إلي : " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p:inputText id="commenttoid" style="width: 100%;" value="#{inboxBean.commentTo}"/>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 3px;">
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value=" نوع الخطاب : " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-md-4" style="padding-right:0px !important;">
+                                                                <p:selectOneMenu  id="commTyp" value="#{inboxBean.commentTyp}"
+                                                                                  panelStyle="width:305px"
+                                                                                  effect="fade" var="d" 
+                                                                                  style="width: 100%;"  
+                                                                                  filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                                                    <f:selectItems value="#{inboxBean.commentTypes}" />
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="container-fluid">
+                                                                    <div class="row" >
+                                                                        <div class="col-md-3">
+                                                                            <p:outputLabel value=" المرفقات" />
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            <p:inputText value="#{inboxBean.commentAppAttach}" style="width: 100%;margin-right: 0px;" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4" style="margin-top: 3px;">
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px;">
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value="موضوع الخطاب:  " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p:inputText id="commenttopicid" style="width: 100%;" value="#{inboxBean.commentTopic}" />
+
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px;">
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value="صورة الفئة الأعلي : " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p:inputTextarea id="commentuppercopyid" style="width: 100%;min-height: 30px;max-height: 60px;overflow: auto;" value="#{inboxBean.upperCopy}" />
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px;">
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value=" نص الخطاب " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p:inputTextarea disabled="#{inboxBean.isSelectedCommentSigned}"  id="commentconentid" style="width: 100%;overflow: auto;" value="#{inboxBean.commentContent}" />
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px;" >
+                                                <div class="col-md-2">
+                                                    <p:outputLabel value="صورة الفئة الادني : " /> 
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p:inputTextarea id="commentlowercopyid" style="width: 100%;overflow: auto;max-height: 60px;" value="#{inboxBean.lowerCopy}" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-10">
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+
+                                                                <p:commandButton value="  تأشير الخطاب"  id="markbtn" class="btn btn-default" 
+                                                                                 action="#{inboxBean.markCommentAction(actionEvent)}"
+                                                                                 style="height: 40px;width: 100%;" 
+                                                                                 update=":tempform:inbox-out-tab:inboxdtform:inboxdt,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:inboxdt:inboxHeaderForm:inboxheaderpanel
+                                                                                 ,:tempform:inbox-out-tab:outboxdt"
+                                                                                 type="submit" process="@this" icon="fa fa-check"
+                                                                                 rendered="#{inboxBean.canMark}">
+
+                                                                    <p:confirm  header="تأكيد الإرسال " message="هل تود التأشير علي الخطاب  ؟ " icon="ui-icon-alert" /> 
+                                                                </p:commandButton> 
+                                                                <p:tooltip for="markbtn" value="kokowawa" trackMouse="true" >
+
+                                                                    <p:outputLabel value="#{inboxBean.markingInfo}" />
+
+                                                                </p:tooltip>
+                                                                <p:confirmDialog widgetVar="confirmDlg" global="true" showEffect="explode" hideEffect="explode">
+                                                                    <p:commandButton value="تراجع" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                                    <p:commandButton value="موافق" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                                </p:confirmDialog>
+
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <p:menuButton  value="توقيع  الخطاب" rendered="#{inboxBean.canSign}" id="signBtn">
+                                                                    <p:menuitem  value="التوقيع علي الخطاب" style="height: 25px;direction: rtl;width: 100%;" 
+                                                                                 rendered="#{inboxBean.canSign}" 
+                                                                                 action="#{inboxBean.signCommentActionBtn(actionEvent)}"
+                                                                                 process="@this "
+                                                                                 icon="fa fa-check-square"
+                                                                                 />
+                                                                    <p:menuitem  value="التوقيع باسم  أمين الغرفة"  style="height: 25px;" 
+                                                                                 action="#{inboxBean.signCommentByNameActionBtn(actionEvent)}"
+                                                                                 process="@this" icon="fa fa-check-circle-o"
+                                                                                 rendered="#{inboxBean.isManager}" /> 
+                                                                    <p:menuitem value="التوقيع باسم الأمين"  style="height: 25px;" 
+                                                                                action="#{inboxBean.signCommentAmeenActionBtn(actionEvent)}"
+                                                                                process="@this" icon="fa fa-check-circle-o"
+                                                                                rendered="false" />   
+
+                                                                </p:menuButton>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+                                                                <p:commandButton value=" حفظ" style="height: 40px; float: right;width: 100%;" icon="fa fa-save"
+                                                                                 action="#{inboxBean.commentSaveAction(actionEvent)}"
+                                                                                 rendered="#{! inboxBean.isSelectedCommentSigned}"
+                                                                                 id="commentSaveButton"
+                                                                                 process="@this
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commenttoid
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commTyp
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commenttopicid
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commentuppercopyid
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commentconentid 
+                                                                                 ,:tempform:inbox-out-tab:inboxdtform:wrktab:commentlowercopyid
+                                                                                 "
+                                                                                 >
+                                                                    <p:confirm header="تأكيد الإرسال " message="هل تود حفظ الخطاب   ؟ " icon="ui-icon-alert" /> 
+                                                                </p:commandButton>
+
+                                                                <p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+                                                                    <p:commandButton value="موافق" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                                    <p:commandButton value="تراجع" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                                </p:confirmDialog>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <h:outputLink value="http://#{inboxBean.reportServerIp}/reports/rwservlet?report&amp;report=d:\\archiving\\reports\\COMMENT2.rdf&amp;P_1=#{inboxBean.selectedInbox.wrkId}" target="_blank"
+                                                                              class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default" 
+                                                                              style="height:  40px;width: 100%;"
+                                                                              >
+                                                                    <span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+                                                                    <span class="ui-button-text" >طباعة</span>
+                                                                </h:outputLink>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <p:commandButton value="تعديل " style="height: 40px;width: 100%;"
+                                                                                 action="#{inboxBean.EditWrkCommentBtnAction(actionEvent)}"
+                                                                                 update=":tempform:inbox-out-tab:inboxdtform:wrktab:commentconentid,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:commentSaveButton,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:commenttab
+                                                                                 "
+                                                                                 process="@this,:tempform:inbox-out-tab:inboxdtform:wrktab:commentconentid,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:commentSaveButton"
+                                                                                 icon="fa fa-edit">
+                                                                    <p:confirm header="تأكيد التعديل  " message="في حالة التعديل سيتم إعادة تعيين التوقيعات ..؟ هل تود الاستمرار " icon="ui-icon-alert" /> 
+                                                                </p:commandButton>
+
+                                                                <p:confirmDialog global="true">
+                                                                    <p:commandButton value="تراجع" type="button"  icon="ui-icon-close" />
+                                                                    <p:commandButton value="موافق" type="button"
+                                                                                     process=":tempform:inbox-out-tab:inboxdtform:wrktab:commentconentid"
+                                                                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+
+                                                                </p:confirmDialog>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p:messages autoUpdate="true" />
+
+                                            <!-- END OF ROW -->
+                                        </div>
+                                        <h:panelGroup  >
+
+                                            <p:dialog widgetVar="confirm-sign-dlg" id="confirmSigndialog" hideEffect="clip"
+                                                      showEffect="fade" dir="rtl" modal="false" appendTo="@(body)"
+                                                      style="background-color: #ccffcc" resizable="false" 
+                                                      width="500" height="150" header="قم بتأكيد التوقيع"  >
+                                                <h:form id="signfrndlg">
+                                                    <div style="width: 100%">
+                                                        <div style="float: right;width: 75%">
+                                                            <h:panelGrid columns="1" style="text-align: center;">
+
+                                                                <p:password id="confrmpass" placeholder="أدخل رمز التوقيع السري" style="width: 310px;" value="#{inboxBean.confirmPassword}" />
+
+
+                                                                <p:selectOneMenu  id="signlist" value="#{inboxBean.selectedUserInSignComment}"
+                                                                                  panelStyle="width:320px"
+                                                                                  effect="fade" var="d" 
+                                                                                  style="width:310px;direction: rtl;"  
+                                                                                  filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="اختر  جهة الإرسال " itemValue="" />
+                                                                    <f:selectItems value="#{inboxBean.commentSignEmployeesList}" />
+                                                                </p:selectOneMenu>
+                                                                <p:selectCheckboxMenu label=" صور الخطاب" id="commChkbx" 
+                                                                                      filter="true" filterMatchMode="contains"
+                                                                                      style="width: 100%;direction: rtl; "  
+                                                                                      value="#{inboxBean.commentCopyReciever}" >
+                                                                    <f:selectItems value="#{inboxBean.mgrMap}" />
+                                                                </p:selectCheckboxMenu >
+                                                                <span></span>
+                                                                <p:separator />
+                                                                <span></span>
+                                                                <p:commandButton value="توقيع الخطاب" class="btn btn-default"
+                                                                                 process="@this,:tempform:inbox-out-tab:inboxdtform:wrktab:signfrndlg:signlist,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:signfrndlg:confrmpass ,
+                                                                                 :tempform:inbox-out-tab:inboxdtform:wrktab:signfrndlg:commChkbx"
+                                                                                 style="width: 250px;"
+                                                                                 type="submit"
+                                                                                 icon="fa fa-legal"
+                                                                                 update=":tempform:inbox-out-tab:inboxdtform:inboxdt,:tempform:inbox-out-tab:outboxdt"
+                                                                                 action="#{inboxBean.commentSignAction(actionEvent)}"
+                                                                                 />
+                                                            </h:panelGrid>
+
+                                                        </div>
+                                                        <div style="float: right;width: 19%">
+                                                            <img src="../resources/images/lock.png" width="120" height="120" ></img>
+                                                        </div>
+                                                    </div>
+                                                </h:form>
+
+                                            </p:dialog>
+
+                                        </h:panelGroup>
+                                        <p:outputLabel value="* #{inboxBean.convMarkingInfo}" style="color: #D80042;margin-right: 50px;font-family: monospace !important" />
+
+                                    </p:tab>
+                                </p:tabView>
+
+                                <f:facet name="footer"  >
+                                    <div class="container-fluid">
+                                        <div class="row"  >
+                                            <div class="col-md-3 col-xs-6" >
+                                                <h:outputLink value="http://#{inboxBean.reportServerIp}/reports/rwservlet?report&amp;report=d:\\archiving\\reports\\r04.rdf&amp;P1=#{inboxBean.selectedInbox.wrkId}" target="_blank"
+                                                              class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" 
+                                                              style="height:  100%;width: 100%"
+                                                              >
+                                                    <span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+                                                    <span class="ui-button-text" >طباعة  الشروحات</span>
+                                                </h:outputLink>
+                                            </div>
+                                            <div class="col-md-3 col-xs-6" >
+                                                <p:commandButton value="إضافةالمعاملة  للمفضلة" icon="fa fa-star"
+                                                                  style="width: 100%;"
+                                                                 type="submit" process="@this"
+                                                                 update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                                 action="#{inboxBean.addToFavourit(actionEvent)}" />
+                                            </div>
+
+                                            <div class="col-md-3 col-xs-6" >
+                                                <p:commandButton
+                                                    style="width: 100%;"
+                                                    process="@this"
+                            
+                                                    value="أرشفة المعاملة" icon="fa fa-archive"
+                                                    action="#{inboxBean.SendRecordToArchive(actionEvent)}"
+
+                                                    update=":tempform:inbox-out-tab:inboxdtform:inboxdt,
+                                                    :tempform:inbox-out-tab:outboxdt" >
+
+
+                                                    <p:confirm header="تأكيد الأرشــفة  " message=" هل تود الاستمرار وأرشفة المعاملة؟  " icon="fa fa-archive" /> 
+                                                </p:commandButton>
+
+                                                <p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+                                                    <p:commandButton value="موافق" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                    <p:commandButton value="تراجع" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                </p:confirmDialog>
+                                            </div>
+                                            <div class="col-md-3 col-xs-6 "  >
+                                                <p:commandButton
+                                                    process="@this"
+                                                    style="width: 100%;"
+                                                    
+                                                    value="رجوع إلي البريد  "  icon="fa fa-mail-reply"
+                                                    action="#{inboxBean.returnBtnAction(actionEvent)}"
+                                                    update=":tempform:inbox-out-tab:inboxdtform:inboxdt, :tempform:inbox-out-tab:inboxdtform:inboxdt:inboxHeaderForm:inboxheaderpanel"
+                                                    />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="البريد الصادر" >
+                        <p:dataTable value="#{inboxBean.outmails}" 
+                                     var="outboxitem"
+                                     selectionMode="single" 
+                                     paginator="true" rows="12"
+                                     emptyMessage="لا يوجد معاملات "
+                                     rowKey="#{outboxitem.wrkId}"
+                                     rowIndexVar="outboxrowIndex"
+                                     lazy="true"
+                                     id="outboxdt"
+                                     selection="#{inboxBean.selectedOutbox}" 
+                                     style="font-size: medium;"
+                                     >
+                            <p:ajax event="rowSelect"
+                                    listener="#{inboxBean.outboxSelectRow}"
+                                    process="@this,outboxdt"
+                                    update=":tempform:inbox-out-tab:outboxpopup:outboxtabview:explaindatatable001,
+                                    :tempform:inbox-out-tab:outboxdialog
+
+                                    "
+                                    oncomplete="PF('outboxDlg').show()">
+                            </p:ajax>
+                            <!--
+                            <p:column width="15" styleClass="#{outboxitem.wrkColor}" toggleable="true" >
+                                <img src="../resources/images/#{outboxitem.wrkColor}.png" />
+                            </p:column>
+                            -->
+                            <f:facet name="header">
+                                <div class="container-fluid" >
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p:commandLink value=" البحث في الصادر "  
+                                                           onclick="PF('outboxsrchDlg').show()"
+                                                           />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p:commandLink id="arcComm" value="البريد المؤرشف "  
+                                                           update=":tempform:inbox-out-tab:outboxdt"
+                                                           action="#{inboxBean.showArchivedOutBox(actionEvent)}" 
+                                                           />
+                                            <p:tooltip for="arcComm" value="قد يأخذ العرض وقت أطول" />
+                                            <span class="badge" id="Archived_outbox_lbl" >#{inboxBean.archivedOutboxCount}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p:commandLink value="البريد الصادر"   
+                                                           update=":tempform:inbox-out-tab:outboxdt"
+                                                           action="#{inboxBean.showOutBox(actionEvent)}" 
+                                                           />
+                                            <span class="badge" id="outbox_lbl" >#{inboxBean.outboxCount}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:facet>
+                            <p:column style="white-space: nowrap;" headerText="شـ " width="3%" >
+
+                                #{outboxitem.convWrkTotalSteps}
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="مـ" width="3%" >
+                                #{outboxitem.convWrkAttachCount}
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="المرسل اليه" width="18%">
+                                #{outboxitem.wrkReciever}
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="التاريخ " width="8%">
+                                <div style="font-size: 15px;"> #{outboxitem.convWrkHdate}</div>
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="التوقيت " width="7%">
+                                <div style="font-size: 16px;">#{outboxitem.convWrkCreateTime}</div>
+                            </p:column>
+                            <p:column  width="47%"   style="white-space: nowrap;" headerText="الموضوع ">
+                                #{outboxitem.appTitle}
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="التوجيه " width="100">
+                                <div style="font-size: 14px;">#{outboxitem.purpose}</div>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dialog widgetVar="outboxsrchDlg" closeOnEscape="true" resizable="false" header=" بحث في البريد الصادر" 
+                                  minimizable="true"
+                                  style="direction: rtl;" showEffect="explode"  hideEffect="explode" >
+
+                            <h:form id="outbxsearchForm">
+                                <h:panelGrid columns="3" style="direction: rtl;">
+                                    <p:inputText 
+                                        value="#{inboxBean.outboxSearchKey}" 
+                                        style="font-size: 20px;width: 300px;"
+                                        placeholder="  ..أدخل كلمة البحث" 
+                                        id="OutboxSearchKey" 
+
+                                        onkeypress="if (event.keyCode == 13) {
+                                                    test();
+                                                    return false;
+                                                }" />
+                                    <p:remoteCommand name="test" 
+                                                     process="@this,
+                                                     :tempform:inbox-out-tab:outbxsearchForm:OutboxSearchKey,
+                                                     :tempform:inbox-out-tab:outbxsearchForm:outboxIncludeArchive"
+                                                     actionListener="#{inboxBean.SearchOutboxMail(actionEvent)}"
+                                                     update=":tempform:inbox-out-tab:outboxdt"
+                                                     />
+                                    <p:commandButton value="بحث" icon="fa fa-search" class="btn btn-default"
+                                                     process="@this,:tempform:inbox-out-tab:outbxsearchForm:OutboxSearchKey,
+                                                     :tempform:inbox-out-tab:outbxsearchForm:outboxIncludeArchive"
+                                                     action="#{inboxBean.SearchOutboxMail(actionEvent)}"
+                                                     update=":tempform:inbox-out-tab:outboxdt"
+                                                     />
+                                    <p:row >
+                                        <p:selectBooleanCheckbox id="outboxIncludeArchive" style="padding: 7px;" value="#{inboxBean.outboxSearchIncludearchive}" />
+                                        <p:outputLabel value="تضمين البحث داخل المعاملات المؤرشفة" />
+                                    </p:row>
+                                </h:panelGrid>
+                            </h:form>
+                        </p:dialog>
+                        <p:dialog style="direction: rtl;" resizable="false" hideEffect="clip" showEffect="fade"
+                                  closable="false"  modal="true" width="900" height="500" 
+                                  header="المعاملة :#{inboxBean.selectedOutbox.appTitle}"   
+                                  widgetVar="outboxDlg" id="outboxdialog">
+                            <h:form id="outboxpopup">
+
+                                <p:tabView id="outboxtabview">
+                                    <p:tab title="الشروحات ">
+                                        <p:dataList  
+                                            id ="explaindatatable001"
+                                            value="#{inboxBean.outboxComments}" var="outboxcomm"
+                                            type="definition"   style="height: 500px;border: none;"
+                                            emptyMessage="لا يوجد شروحات">
+                                            <f:facet name="header">الشروحات</f:facet>
+                                            <div  class="EX_BOX" style="float:left;word-wrap: break-word;">
+                                                <div class="EX_BOX_header" >
+                                                    <h:panelGrid columns="1">
+                                                        <p:outputLabel>
+                                                            أرسلت بواسطة #{outboxcomm.fromName}  الي    #{outboxcomm.toName}  في #{outboxcomm.createdIn} 
+                                                        </p:outputLabel>
+                                                        <p:outputLabel> الغرض : #{outboxcomm.purpose}</p:outputLabel>
+                                                    </h:panelGrid>
+                                                </div>
+                                                <div  class="EX_BOX_content" style="float:left;">
+                                                    #{outboxcomm.comment}
+                                                </div>
+                                            </div>
+                                        </p:dataList>
+                                    </p:tab>
+                                    <p:tab title="المرفقات" >
+                                        <p:tabView value="#{inboxBean.outattList}" var="att"  >
+                                            <p:tab title="مرفق - #{att.attId}">
+                                                <p:row>
+                                                    قام بارفاقه  #{att.ownerName} <p:commandButton value="تحميل" />
+                                                </p:row>
+                                                <object type="application/pdf" data="#{att.attLink}" height="300px" 
+                                                        width="100%">
+                                                    Your browser can't display pdf, <a href="/resources/demo/media/guide.pdf">click</a> to download pdf instead.
+                                                </object>                                              
+                                            </p:tab>
+                                        </p:tabView>
+                                    </p:tab>
+                                </p:tabView>
+                            </h:form>
+                            <f:facet name="footer">
+                                <h:form>
+                                    <p:commandButton value="استرجاع المعاملة " process="@this"
+                                                     action="#{inboxBean.retrieveRecordBtnAction(actionEvent)}"
+                                                     style="float: right;"
+                                                     class="btn btn-default"
+                                                     icon="fa fa-share-square-o"
+                                                     update=":tempform:inbox-out-tab:inboxdtform:inboxdt,
+                                                     :tempform:inbox-out-tab:outboxdt"
+                                                     />
+                                    <p:commandButton value=" رجوع الي البريد الصادر " icon="fa fa-mail-reply"
+                                                     class="btn btn-default"
+                                                     onclick="PF('outboxDlg').hide()"
+                                                     />
+                                </h:form>
+
+                            </f:facet>
+                        </p:dialog>
+                    </p:tab>
+
+                    <p:tab title="اختيار متعدد" id="multiSelecttab">
+                        <p:dataTable value="#{inboxBean.mails}" var="inboxitem" id="inboxdtMS"
+                                     rowKey="#{inboxitem.wrkId}" widgetVar="inbox_dtMS"
+                                     selection="#{inboxBean.selectedInboxs}" 
+                                     paginatorPosition="top"
+                                     lazy="true"
+
+                                     paginator="true" rows="12"
+                                     emptyMessage="لا يوجد معاملات "
+                                     rowIndexVar="rowIndex"
+
+                                     style="margin-bottom: 20px;font-size: medium;"
+                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     >
+                            <f:facet name="footer">
+                                <p:commandButton value="تحديد الاجراء المطلوب" id="btn00111"
+                                                 update=":tempform:inbox-out-tab:msform:msop,:tempform:inbox-out-tab:mselectdlgId"
+                                                 action="#{inboxBean.MultipleSelectInboxAction(actionEvent)}" process="@this,inboxdtMS" />
+
+                            </f:facet>
+
+                            <p:column headerText="شـ " width="3%" >
+                                #{inboxitem.convWrkTotalSteps}
+
+                            </p:column>
+                            <p:column headerText="مـ" width="3%" >
+                                #{inboxitem.convWrkAttachCount}
+                            </p:column>
+                            <p:column style="white-space: nowrap;" headerText="المُرسل  " width="15%">
+                                #{inboxitem.wrkSender}
+                            </p:column>
+                            <p:column headerText="التاريخ " width="8%">
+                                <div style="font-size: 15px;direction: ltr;"> #{inboxitem.convWrkHdate}</div>
+                            </p:column>
+                            <p:column headerText="التوقيت " width="7%">
+
+                                <div style="font-size: 16px;"> #{inboxitem.wrkCreateTime}</div> 
+                            </p:column>
+                            <p:column style="white-space: nowrap;" width="40%"   headerText="الموضوع "  >
+
+                                <div id="read-icon" class="fa  fa-check" style="font-size: 14px; display:#{inboxitem.isRead == 1 ? '':'none'};"/> #{inboxitem.appTitle} 
+
+                                <p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" trackMouse="true" hideEffect="fade"
+                                           value="This is row number #{rowIndex}" style="font-size: medium;direction: rtl;max-width: 500px;" >
+                                    <h:panelGrid columns="2">
+                                        <p:outputLabel value="الموضوع" style="color: #045491"/>
+                                        <p:outputLabel value="#{inboxitem.appTitle}" />
+                                        <p:outputLabel value="التوجية" style="color: #045491" />
+                                        <p:outputLabel value="#{inboxitem.purpose}" />
+                                        <p:outputLabel value="عدد المرفقات " style="color: #045491" />
+                                        <p:outputLabel value="#{inboxitem.convWrkAttachCount}" />
+                                        <p:outputLabel value=" الخطاب ؟"  style="color: #045491" />
+                                        <p:outputLabel value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+                                    </h:panelGrid>
+                                    <p:outputLabel value="#{inboxitem.firstComment}" />
+                                </p:tooltip> 
+                            </p:column>
+                            <p:column style="white-space: nowrap;text-align: center;" headerText="الوارد " width="9%" >
+
+                                <div style="font-size: 18px;">
+                                    <div class="fa    fa-pencil" style="font-size: 14px; display:#{inboxitem.hasComment == 1 ? '':'none'};"/> 
+                                    #{inboxitem.convWrkIncomeNo}</div>
+                            </p:column>
+                            <p:column width="4%" rendered="false">
+
+                                <p:commandLink  style="width: 10px;height: 10px;" 
+                                                process="inboxdt"  
+                                                actionListener ="#{inboxBean.archiveInboxRecord(actionEvent)}" >
+
+                                    <div id="arch-icon" class="fa fa-archive" style="font-size: 15px;" />
+                                    <f:setPropertyActionListener value="#{inboxitem}" target="#{inboxBean.selectedInbox}" />
+                                </p:commandLink>
+                            </p:column>
+                            <p:column selectionMode="multiple" width="5%" style="text-align:center"/>
+                        </p:dataTable>
+                        <p:dialog id="mselectdlgId" widgetVar="mselectdlg" modal="true" resizable="false"
+                                  header="تحديد الاجراء المطلوب  لعدد  #{inboxBean.selectedInboxsSize} من المعاملات" 
+                                  height="160" width="500">
+                            <h:form id="msform">
+
+                                <p:outputPanel id="msop">
+                                    <div class="container-fluid">
+
+                                        <div class="row">
+                                            <p:selectOneRadio value="#{inboxBean.selectSummAction}" layout="grid" columns="1" id="summselected">
+                                                <f:selectItem itemLabel="أرشفة المعاملات المحددة " itemValue="A" />
+                                                <f:selectItem itemLabel="إرسال المعاملات المحدده إلي شخص محدد    " itemValue="B" />
+                                                <p:ajax event="change" listener="#{inboxBean.changeSummaryAction(abe)}" process="@this,summselected" update=":tempform:inbox-out-tab:msform" />
+                                            </p:selectOneRadio>
+
+                                        </div>
+                                        <div class="row">
+                                            <p:selectOneMenu id="employeesForMs" style="width: 100%" 
+                                                             value="#{inboxBean.selectEmployeeForSummaryAction}"
+                                                             rendered="#{inboxBean.showDeptEmployees}"
+                                                             >
+                                                <f:selectItem itemLabel="أختر موظف من الموظفين" />
+                                                <f:selectItems value="#{inboxBean.empMap}" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p:commandButton value="تنفيذ"
+                                                                 process="@this,employeesForMs,summselected"
+                                                                 class="label ui-priority-primary "
+                                                                 action="#{inboxBean.MultiselectBtnAction(actionEvent)}"
+                                                                 update=":tempform:inbox-out-tab:inboxdtform:inboxdt,
+                                                                 :tempform:inbox-out-tab:outboxdt,
+                                                                 :tempform:inbox-out-tab:inboxdtMS"
+                                                                 style="width: 100%" />
+                                            </div>
+                                            <div class="col-md-2">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </p:outputPanel>
+                            </h:form>
+                        </p:dialog>
+                        <p:messages autoUpdate="true" />
+
+                    </p:tab>
+                </p:tabView>
+                <p:dialog header="إنشاء خطاب جديد" closable="false" 
+                          widgetVar="NewCommentDlg" 
+                          resizable="false" 
+                          modal="true" id="CreatrNewCommentDlg"
+                          hideEffect="clip" 
+                          width="80%" height="450">
+                    <h:form id="tempform001">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-8" style="margin: 0px !important;">
+                                    <div class="container-fluid">
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value="موجه إلي" />
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:autoComplete id="newwrkdto"  size="100" 
+                                                                minQueryLength="5" maxResults="100"
+                                                                completeMethod="#{inboxBean.complete}"
+                                                                value="#{inboxBean.newWrkCommDirectedTo}" required="true" 
+                                                                requiredMessage=" يجب إدخال جهة التوجيه " >
+
+                                                </p:autoComplete>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value="الموضــوع" />
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:inputText id="newwrktopic" style="width:100%"
+                                                             value="#{inboxBean.newWrkCommTopic}" 
+                                                             required="true" requiredMessage="موضوع المعاملة مطلوب" />
+
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value="صورة لفئة أعلي" />
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:inputTextarea  id="newwrkhighcopy" style="width: 100%;height: 35px;overflow: auto;" value="#{inboxBean.newWrkCommHiegherCopy}" />
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value="نص الخطاب" />
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:inputTextarea
+                                                    required="true" requiredMessage=" نص الخطاب مطلوب "
+                                                    id="newwrkcontent" style="width: 100%;height: 150px;overflow: auto;"  value="#{inboxBean.newWrkCommMainContent}" />
+
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value="صورة لفئة أدنى" />
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:inputTextarea id="newwrklowcopy"  value="#{inboxBean.newWrkCommLowerCopy}" style="width: 100%;height: 35px;overflow: auto;"  />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value=" نوع الخطاب : " /> 
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:selectOneMenu  id="newwrktyp"  value="#{inboxBean.newWrkCommTyp}"
+                                                                  panelStyle="width:305px"
+                                                                  effect="fade" var="d"  required="true" requiredMessage="يجب أختيار نوع الخطاب "
+                                                                  style="width: 100%;direction: rtl;"  
+                                                                  filter="true" filterMatchMode="contains">
+                                                    <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                                    <f:selectItems value="#{inboxBean.commentTypes}" />
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 3px;">
+                                            <div class="col-md-3">
+                                                <p:outputLabel value=" التوجيه   :  " />
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <p:selectOneMenu  id="newwrkpurp"  value="#{inboxBean.newWrkCommPurpose}"
+                                                                  panelStyle="width:305px"
+                                                                  effect="fade" var="d" 
+                                                                  style="width:100%;direction: rtl;"  
+                                                                  filter="true" filterMatchMode="contains">
+                                                    <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                                    <f:selectItems value="#{inboxBean.purpMap}" />
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <!-- END of Right MD -->
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 3px;">
+                                    <p:scrollPanel style=" margin-right:  2px;width:  100%;max-height: 400px;padding: 0px;margin: 0px;
+                                                   border-right: #AFAFAF 1px;" mode="native"  >
+
+                                        <p:fileUpload
+                                            style="font-size: 14px;"
+                                            id="newCommentFileUpload"
+                                            widgetVar="newCommentFileUpload100"
+                                            multiple="true"
+                                            fileUploadListener="#{inboxBean.uploadNewWrkCommentFiles}"
+                                            uploadLabel="ارفاق" 
+                                            mode="advanced"
+                                            cancelLabel="إلغاء" 
+                                            label="تحديد المرفق" 
+                                            allowTypes="#{inboxBean.fileTypesList}" 
+                                            sizeLimit="300000000"
+                                            previewWidth="30"
+                                            ></p:fileUpload>
+                                    </p:scrollPanel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6" style="margin-top: 3px;">
+                                                <p:commandButton value="معاينة الخطاب " 
+                                                                 type="submit" icon="fa fa-eye" 
+                                                                 class="btn btn-default" 
+                                                                 style="width: 100%" />
+
+                                            </div>
+                                            <div class="col-md-6" style="margin-top: 3px;">
+                                                <p:commandButton value="إرسال الخطاب " type="submit" icon="fa fa-paper-plane" style="width: 100%" 
+                                                                 action="#{inboxBean.sendNewWrkComment(actionEvent)}" class="btn btn-default"
+                                                                 update=":tempform:inbox-out-tab:outboxdt"
+                                                                 process="@this ,:tempform:tempform001:newwrkpurp
+                                                                 :tempform:tempform001:newwrkdto,:tempform:tempform001:newwrktopic
+                                                                 ,:tempform:tempform001:newwrkhighcopy,:tempform:tempform001:newwrkcontent
+                                                                 ,:tempform:tempform001:newwrklowcopy,:tempform:tempform001:newwrktyp">
+                                                    <p:confirm header="تأكيد الإرسال " message="هل تود إرســــــــال الخطاب  ؟ " icon="ui-icon-alert" /> 
+                                                </p:commandButton> 
+
+                                                <p:confirmDialog widgetVar="confirmDlg" global="true" showEffect="explode" hideEffect="explode">
+                                                    <p:commandButton value="تراجع" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                    <p:commandButton value="موافق" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                </p:confirmDialog>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                            <p:messages autoUpdate="true" />
+                        </div>
+
+
+
+
+
+                    </h:form>
+                    <f:facet name="footer">
+                        <p:commandButton value="رجوع إلي البريد الألكتروني" icon="fa fa-mail-reply" 
+                                         style="width: 250px;float: left;margin: 5px;"
+                                         class="btn btn-default"
+                                         onclick="PF('NewCommentDlg').hide()"/> 
+                    </f:facet>
+                </p:dialog>
+
+
+                <p:dialog widgetVar="NewRecordDlg" resizable="false" id="newRecordDialog" 
+                          header=" إنشاء مذكرة داخلية جديدة" 
+                          modal="true" hideEffect="clip" width="80%" height="450">
+                    <f:facet name="footer">
+
+                        <p:commandButton value="رجوع إلي البريد"  style="width: 200px;"
+                                         action="#{inboxBean.refreshInbox(actionEvent)}"   
+                                         update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                         icon="fa fa-mail-reply"
+                                         class="btn btn-default"
+                                         oncomplete="PF('NewRecordDlg').hide()" >
+                        </p:commandButton>
+                    </f:facet>
+
+                    <h:form id="newrecordform" style="font-size: medium;">
+                        <div class="container-fluid">
+
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+                                    <p:outputLabel value="موضوع المعاملة" />
+                                </div>
+                                <div class="col-md-10">
+                                    <p:inputText id="arcTitleInputText" value="#{inboxBean.newRecordTitle}"
+                                                 placeholder="أدخل موضوع المعاملة" required="true" requiredMessage=" موضوع المعاملة مطلوب"
+                                                 style="width:100%" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+                                    <p:outputLabel value="نص  الخطاب : " />
+                                </div>
+                                <div class="col-md-10">
+                                    <p:inputTextarea value="#{inboxBean.newRecordComm}" required="true" requiredMessage=" نص الشروحات مطلوب "
+                                                     id="arclongtxt" placeholder="أدخل شروحات المعاملة "
+                                                     style="width: 100%;overflow: auto ; height: 150px;" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+                                    <p:outputLabel value=" التوجيه   :  " />
+                                </div>
+                                <div class="col-md-10">
+                                    <h:panelGrid columns="8" >
+                                        <p:selectOneMenu  id="newRecordPurplist" required="true" requiredMessage="توجيه المعاملة مطلوب "
+                                                          panelStyle="width:300px"
+                                                          effect="fade" var="d"  value="#{inboxBean.newRecordPurp}"
+                                                          style="width:200px;direction: rtl; margin-left: 1px;"  
+                                                          filter="true" filterMatchMode="contains">
+                                            <f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+                                            <f:selectItems value="#{inboxBean.purpMap}" />
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="الشـــرح ســري" />
+                                        <p:inputSwitch id="SecretCommItem" offLabel="لا" onLabel="نعم"  value="#{inboxBean.newRecordIsSecret}" />
+                                        <p:outputLabel value="المعاملة عاجلة" />
+                                        <p:inputSwitch id="imprtantCommItem" offLabel="لا" onLabel="نعم"  value="#{inboxBean.newRecordIsImportant}" />
+                                        <p:outputLabel value=" تكوين رقم معاملة" />
+                                        <p:inputSwitch id="createIncomeItem" offLabel="لا" onLabel="نعم"  value="#{inboxBean.newRecordCreateInocmeYN}" />
+                                    </h:panelGrid>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+                                    <p:outputLabel value="جهات الارســــــال" />
+                                </div>
+                                <div class="col-md-10">
+                                    <p:accordionPanel id="NewRecordOccordion" multiple="true" >
+                                        <p:tab title="جهة إرسال أصل المعاملة" id="NewRecordOrgTab">
+                                            <p:tabView id="OrignalTabview">
+                                                <p:tab id="empOrignalTabview" title="موظفي القسم">
+                                                    <p:selectOneRadio id="newRecordEmpRecieverlist"  value="#{inboxBean.newRecordEmpReciever}"  layout="grid" columns="3">
+                                                        <p:ajax update="newRecordMgrRecieverlist,allUserInternalList" listener="#{inboxBean.newRecordEmpRecieverlistChange(valueChangeEvent)}" />
+                                                        <f:selectItems value="#{inboxBean.empMap}" />
+                                                    </p:selectOneRadio>
+                                                </p:tab>
+                                                <p:tab id="MgrOrignalTabview" title=" مديري الإدارات" rendered="#{inboxBean.isManager}">
+                                                    <p:selectOneRadio id="newRecordMgrRecieverlist" value="#{inboxBean.newRecordMgrReciever}" layout="grid" columns="3">
+                                                        <p:ajax update="newRecordEmpRecieverlist,allUserInternalList" listener="#{inboxBean.newRecordMgrRecieverlistChange(valueChangeEvent)}" />
+                                                        <f:selectItems value="#{inboxBean.mgrMap}" />
+                                                    </p:selectOneRadio>
+                                                </p:tab>
+                                                <p:tab id="AllEmployeesAvaliableTab" title="جميع الموظفين">
+                                                    <p:panelGrid columns="2">
+                                                        <p:outputLabel value="أختر من الموظفين " />
+                                                        <p:selectOneMenu id="allUserInternalList"
+                                                                         filter="true" filterMatchMode="contains"
+                                                                         value="#{inboxBean.selectedEmpfromAllUser}">
+                                                            <p:ajax update="newRecordEmpRecieverlist,newRecordMgrRecieverlist"  event="change" process="@this"
+                                                                    listener="#{inboxBean.AllUserInternalList}" />
+                                                            <f:selectItem itemLabel="أختر من الموظفين" itemValue="" />
+                                                            <f:selectItems value="#{inboxBean.allUsersMap}" />
+                                                        </p:selectOneMenu>
+
+                                                    </p:panelGrid>
+                                                </p:tab>
+
+
+                                            </p:tabView>
+                                        </p:tab>
+                                        <p:tab title="جهات إرسال صور المعاملة" id="NewRecordcopTab">
+                                            <p:tabView id="CopyRecieverTabView">
+                                                <p:tab id="empCopyRecieverTabView" title="موظفي القسم">
+                                                    <p:selectManyCheckbox id="newRecordEmpCopyRecieverlist" value="#{inboxBean.newRecordEmpCopyReciever}"  layout="grid" columns="3">
+                                                        <f:selectItems value="#{inboxBean.empMap}" />
+                                                    </p:selectManyCheckbox>
+                                                </p:tab>
+                                                <p:tab id="mgrCopyRecieverTabView" title=" مديري الإدارات" rendered="#{inboxBean.isManager}">
+                                                    <p:selectManyCheckbox id="newRecordMngCopyRecieverlist" value="#{inboxBean.newRecordMngCopyReciever}" layout="grid" columns="3">
+                                                        <f:selectItems value="#{inboxBean.mgrMap}" />
+                                                    </p:selectManyCheckbox>
+                                                </p:tab>
+                                            </p:tabView>
+                                        </p:tab>
+                                    </p:accordionPanel>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+
+                                    <h:form id="NewRecordUploadForm" enctype="multipart/form-data">
+                                        <p:fileUpload  
+
+                                            id="NewRecordUpload"
+                                            widgetVar="NewRecordUploader"
+                                            multiple="true"
+                                            fileUploadListener="#{inboxBean.NewRecordupload}"
+                                            uploadLabel="ارفاق" 
+                                            cancelLabel="إلغاء" 
+                                            label="تحديد المرفق" 
+                                            previewWidth="0"
+                                            process="@this"
+                                            allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/" 
+                                            sizeLimit="300000000">
+                                        </p:fileUpload>
+
+
+                                    </h:form> 
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3px;">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <p:commandButton type="submit" process="@this,arcTitleInputText,arclongtxt,newRecordPurplist,SecretCommItem,imprtantCommItem,createIncomeItem
+                                                     ,:tempform:newrecordform:NewRecordOccordion:OrignalTabview:newRecordEmpRecieverlist
+                                                     ,:tempform:newrecordform:NewRecordOccordion:OrignalTabview:newRecordMgrRecieverlist
+                                                     ,:tempform:newrecordform:NewRecordOccordion:OrignalTabview:allUserInternalList
+                                                     ,:tempform:newrecordform:NewRecordOccordion:CopyRecieverTabView:newRecordEmpCopyRecieverlist
+                                                     ,:tempform:newrecordform:NewRecordOccordion:CopyRecieverTabView:newRecordMngCopyRecieverlist" 
+                                                     style="width: 100%;height: 40px;"
+                                                     update=":tempform:inbox-out-tab:outboxdt,
+                                                     :tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                                     class="ui-priority-primary"
+                                                     value="إرسال المذكرة الداخلية" action="#{inboxBean.SendInternalRecordBtnAction(actionEvent)}" 
+
+                                                     />
+                                </div>
+
+                            </div>
+                        </div>
+                    </h:form>
+                    <p:messages autoUpdate="true"></p:messages>
+
+                </p:dialog>
+
+                <p:dialog style="direction: rtl;left: 1px;" showEffect="fade" hideEffect="fade" widgetVar="sendersDlg" 
+                          resizable="false" header="حدد جهة الإرسال">
+                    <h:form id="sendersform">
+                        <h:panelGrid columns="2" style="font-size: medium;">
+                            <p:selectOneListbox value="#{inboxBean.selectedSender}" style="width: 300px;"  id="senderListbox"
+                                                filter="true" filterMatchMode="contains"  >
+
+                                <f:selectItems value="#{inboxBean.inboxSenderList}" />
+                                <p:ajax event="change" update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                        process="@this,senderListbox"
+                                        listener="#{inboxBean.chnageSenderListBox}"  />
+                            </p:selectOneListbox>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog style="direction: rtl;left: 1px;" showEffect="fade" hideEffect="fade"
+                          widgetVar="userfoldersDlg" 
+                          resizable="false" header="حدد المجلد">
+                    <h:form id="userfolders">
+                        <h:panelGrid columns="2" style="font-size: medium;">
+                            <p:selectOneListbox value="#{inboxBean.selectedUserFolder}"
+                                                style="width: 300px;"  id="userFolderListbox"
+                                                filter="true" filterMatchMode="contains"  >
+
+                                <f:selectItems value="#{inboxBean.userFolders}" />
+                                <p:ajax event="change" update=":tempform:inbox-out-tab:inboxdtform:inboxdt"
+                                        process="@this,userFolderListbox"
+                                        listener="#{inboxBean.chnageUserFolderListBox}"  />
+                            </p:selectOneListbox>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+           <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                 
+                <p:dialog widgetVar="statusDialog" modal="true" 
+                          draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="../resources/images/loadingT.gif" />
+                </p:dialog>
+                <p:growl id="gr" autoUpdate="true"  showDetail="false"/>
+                <p:idleMonitor timeout="10000000">
+                    <p:ajax event="idle" listener="#{inboxBean.onIdle1}" update="gr" />
+                </p:idleMonitor>
+                
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+    </f:view>
+</html>

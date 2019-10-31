@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{charterPerformanceBean.loadPerformances}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">الأداء
+								الوظيفي</h3>
+
+						</div>
+						<br></br>
+
+
+						<div class="row">
+							<p:dataTable var="perfItem" id="inboxdt"
+								value="#{charterPerformanceBean.compactPerformanceList}" emptyMessage="لايوجد بيانات"
+								rowIndexVar="rowIndex" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								filteredValue="#{charterPerformanceBean.filteredPerformanceList}" paginator="true"
+								rows="17">
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الرقم الوظيفي" width="20%" filterBy="#{perfItem.employer.employeeNumber}"
+									filterMatchMode="contains">								
+										#{perfItem.employer.employeeNumber} 									
+									</p:column>
+									<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الموظف" width="30%" filterBy="#{perfItem.employer.employeeName}"
+									filterMatchMode="contains">								
+										#{perfItem.employer.employeeName} 									
+									</p:column>
+									
+								
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الوظيفة" width="40%"
+									filterBy="#{perfItem.jobDescription}" filterMatchMode="contains">										
+										#{perfItem.jobDescription} 									
+									</p:column>
+								<p:column width="5%" style="text-align:center"
+									headerText="#{msg['details']}">
+									<p:commandButton action="#{charterPerformanceBean.loadSelectedPerformance(perfItem)}"
+											icon="ui-icon-search" process="@this" disabled="#{perfItem.status==5}">
+										</p:commandButton>
+								</p:column>
+								<p:column width="5%" style="text-align:center"
+									headerText="التقدير العام">
+									<p:commandButton action="#{charterPerformanceBean.loadSelectedPerformancForGeneralAppreciation(perfItem)}"
+											icon="ui-icon-search" process="@this" disabled="#{perfItem.status==3}">
+										</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<br />
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

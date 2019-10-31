@@ -1,0 +1,755 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+
+
+	<style>
+body {
+	margin: 0px;
+}
+
+.ui-datatable-footer {
+	background: red !important;
+}
+</style>
+</h:head>
+<h:body>
+	<p class="text-center">
+		<h:outputLabel styleClass="btxt"  id="titleId"
+			style="font-weight:bold; font-size:30px;"
+			value="#{charterPerformanceBean.title}">
+		</h:outputLabel>
+	</p>
+	<h:form id="includeform">
+
+		<div class="row">
+			<h4 class="page-header"
+				style="margin: 0px 58px 20px ! important; color: #FF5722">البيانات
+				الرئيسية</h4>
+			<div class="col-md-12">
+				<div class="row ">
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">القسم / الإدارة</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:selectOneMenu id="section" styleClass="form-control"
+									rendered="#{!charterPerformanceBean.updateMode and charterPerformanceBean.status==0 }"
+									value="#{charterPerformanceBean.compactPerformance.deptid}">
+									<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
+									<f:selectItems value="#{loadingDataBean.depatmentList}"
+										var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" />
+									<f:ajax render="empList" execute="section" event="change"
+										listener="#{charterPerformanceBean.loadEmployersByDept}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel
+									rendered="#{charterPerformanceBean.updateMode or charterPerformanceBean.status==3 or charterPerformanceBean.status==4}"
+									value="#{charterPerformanceBean.compactPerformance.employer.userDept.deptName}" />
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-md-8">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">إسم الموظف</label>
+
+							</div>
+							<div class="col-md-8">
+
+								<h:selectOneMenu id="empList" styleClass="form-control"
+									rendered="#{!charterPerformanceBean.updateMode  and charterPerformanceBean.status==0 }"
+									value="#{charterPerformanceBean.compactPerformance.empid}">
+									<f:selectItem itemValue=""
+										itemLabel="#{msg['choose.employee']}" />
+									<f:selectItems value="#{charterPerformanceBean.employersList}"
+										var="emp" itemValue="#{emp.userId}"
+										itemLabel="#{emp.employeeName}" />
+									<f:ajax render="includeform:details_data" execute="empList"
+										event="change"
+										listener="#{charterPerformanceBean.loadEmployerData}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel
+									rendered="#{charterPerformanceBean.updateMode or charterPerformanceBean.status==4 or charterPerformanceBean.status==3}"
+									value="#{charterPerformanceBean.compactPerformance.employer.employeeName}" />
+							</div>
+
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+			<br /> <br /> <br />
+			<div class="row">
+				<h:panelGroup id="details_data">
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">المسمى الوظيفي</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{charterPerformanceBean.compactPerformance.jobDescription}" />
+							</div>
+
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">الرقم الوظيفي</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{charterPerformanceBean.compactPerformance.jobNo}" />
+							</div>
+
+						</div>
+					</div>
+
+
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4">
+								<label class="btxt">المدير (المقيم)</label>
+
+							</div>
+							<div class="col-md-8">
+								<h:outputLabel
+									value="#{charterPerformanceBean.compactPerformance.mgrName}" />
+
+							</div>
+
+						</div>
+					</div>
+
+				</h:panelGroup>
+			</div>
+
+
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="col-lg-12"
+				style="background-color: white; border-top: 5px solid #428BCA">
+				<br></br>
+				<div style="color: color: #428bca">
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">#{msg['charter.performance.objectives']}
+					</h3>
+					<button type="button" style="float: left;"
+						class=" btn btn-info btn-lg" data-toggle="modal"
+						data-target="#myModal">شروط ميثاق الاداء</button>
+				</div>
+
+				<div class="panel-body">
+					<h:panelGroup
+						rendered="#{!charterPerformanceBean.updateMode and charterPerformanceBean.status==0}">
+						<div class="col-md-7">
+
+
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="بيانات الهدف" />
+								</div>
+
+								<div class="col-md-7">
+
+									<h:inputText styleClass="form-control" id="objectiveName"
+										required="true"
+										requiredMessage="من فضلك ادخل  بيانات الهدف  المطلوب"
+										value="#{charterPerformanceBean.goal.description}">
+
+									</h:inputText>
+								</div>
+							</div>
+
+							<br></br>
+
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="معيار القياس"></h:outputLabel>
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control" id="count"
+										required="true" requiredMessage="من فضلك ادخل المعيار المطلوب"
+										value="#{charterPerformanceBean.goal.calcUnit}">
+
+									</h:inputText>
+								</div>
+
+							</div>
+
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="الوزن النسبي"></h:outputLabel>
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control" id="relativeImpor"
+										required="true" requiredMessage="من فضلك ادخل الوزن المطلوب"
+										value="#{charterPerformanceBean.goal.relativeImportance}"
+										validatorMessage="من فضلك ادخل  ارقام فقط  فى الخانة  ">
+
+									</h:inputText>
+								</div>
+
+							</div>
+
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="الناتج المستهدف"></h:outputLabel>
+								</div>
+								<div class="col-md-7">
+									<h:inputText id="targetOutput" styleClass="form-control"
+										value="#{charterPerformanceBean.goal.targetOutput}"
+										validatorMessage="من فضلك ادخل  ارقام فقط  فى الخانة  "></h:inputText>
+								</div>
+
+								<div class="col-md-2">
+									<h:commandButton id="addBtn" style="float:right"
+										styleClass="btn btn-success"
+										disabled="#{!charterPerformanceBean.allowAdd}" value="اضافة">
+										<f:ajax listener="#{charterPerformanceBean.addGoal}"
+											execute="objectiveName  count relativeImpor targetOutput"
+											render="table objectiveName desc relativeImpor count targetOutput addBtn"></f:ajax>
+									</h:commandButton>
+								</div>
+
+							</div>
+							<br></br>
+
+
+						</div>
+					</h:panelGroup>
+					<div class="row">
+						<h:panelGroup id="table"
+							rendered="#{(charterPerformanceBean.updateMode and charterPerformanceBean.status==0)or(charterPerformanceBean.updateMode and charterPerformanceBean.status==3)}">
+							<div class="col-md-8 ">
+
+								<div class="table-responsive">
+
+
+
+
+
+									<table class="table table-striped table-hover">
+										<thead>
+											<tr>
+
+												<th>رقم</th>
+												<th>الهدف</th>
+												<th>معيار القياس</th>
+												<th>الوزن النسبي</th>
+												<th>الناتج المستهدف</th>
+												<th>حذف</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="det" varStatus="x"
+												value="#{charterPerformanceBean.lstGoals}">
+
+
+												<tr>
+
+													<td>#{x.index+1}</td>
+													<td><h:inputText styleClass="form-control"
+															rendered="#{charterPerformanceBean.updateTable}"
+															value="#{det.description}"></h:inputText> <h:outputText
+															rendered="#{!charterPerformanceBean.updateTable}"
+															value="#{det.description}" /></td>
+
+													<td><h:inputText styleClass="form-control"
+															rendered="#{charterPerformanceBean.updateTable}"
+															value="#{det.calcUnit}"></h:inputText> <h:outputText
+															rendered="#{!charterPerformanceBean.updateTable}"
+															value="#{det.calcUnit}" /></td>
+													<td><h:inputText styleClass="form-control"
+															rendered="#{charterPerformanceBean.updateTable}"
+															value="#{det.relativeImportance}"></h:inputText> <h:outputText
+															rendered="#{!charterPerformanceBean.updateTable}"
+															value="#{det.relativeImportance}" /></td>
+													<td><h:inputText styleClass="form-control"
+															rendered="#{charterPerformanceBean.updateTable}"
+															value="#{det.targetOutput}"></h:inputText> <h:outputText
+															rendered="#{!charterPerformanceBean.updateTable}"
+															value="#{det.targetOutput}" /></td>
+
+													<td><p:commandButton id="xx"
+															disabled="#{charterPerformanceBean.updateMode}"
+															style="width: 13px; height: 24px;" icon="fa fa-times"
+															styleClass=" btn btn-danger">
+															<f:ajax
+																listener="#{charterPerformanceBean.removeRecord(det)}"
+																render="@form"></f:ajax>
+														</p:commandButton></td>
+
+
+												</tr>
+
+											</ui:repeat>
+											<tr>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td><div style="color: green;">مجموع الوزن النسبي
+														: #{charterPerformanceBean.sumGoals}</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</h:panelGroup>
+						<h:panelGroup id="table2"
+							rendered="#{(!charterPerformanceBean.updateMode and charterPerformanceBean.status==3) or (charterPerformanceBean.status==4)or(charterPerformanceBean.status==5)or(charterPerformanceBean.status==6)}">
+							<div class="col-md-8 ">
+								<div class="table-responsive">
+									<table class="table table-striped table-hover">
+										<thead>
+											<tr>
+												<th>رقم</th>
+												<th>الهدف</th>
+												<th>معيار القياس</th>
+												<th>الوزن النسبي</th>
+												<th>الناتج المستهدف</th>
+												<th>الناتج الفعلي</th>
+												<th>الفرق بينهما</th>
+												<th>التقدير</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="det" varStatus="x"
+												value="#{charterPerformanceBean.lstGoals}">
+												<tr>
+													<td>#{x.index+1}</td>
+													<td>#{det.description}</td>
+													<td>#{det.calcUnit}</td>
+													<td>#{det.relativeImportance}</td>
+													<td>#{det.targetOutput}</td>
+													<td><h:inputText value="#{det.realResult}"
+															disabled="#{(!charterPerformanceBean.updateMode and charterPerformanceBean.status==3)or charterPerformanceBean.status==4 or charterPerformanceBean.status==5}"
+															title="الوزن النسبي" style="width:40%"
+															placeholder="fill me">
+															<p:ajax event="blur"
+																listener="#{charterPerformanceBean.calculateEvaluation(det)}"
+																process="@this" update="diff consol" />
+														</h:inputText></td>
+													<td>
+														<!-- 															<h:inputText disabled="true" id="diff" -->
+														<!-- 																	value="#{det.realResult - det.targetOutput }" -->
+														<!-- 																	style="width:40% !important;"> --> <!-- 																</h:inputText> -->
+
+														<h:outputLabel id="diff"
+															value="#{det.realResult - det.targetOutput }" />
+													</td>
+													<td><h:selectOneMenu id="consol"
+															disabled="#{(!charterPerformanceBean.updateMode and charterPerformanceBean.status==3)or charterPerformanceBean.status==4 or charterPerformanceBean.status==5}"
+															value="#{det.evaluation}" style="width:80px">
+															<f:selectItem itemLabel="(1--5)" itemValue="" />
+															<f:selectItem itemLabel="1" itemValue="1" />
+															<f:selectItem itemLabel="2" itemValue="2" />
+															<f:selectItem itemLabel="3" itemValue="3" />
+															<f:selectItem itemLabel="4" itemValue="4" />
+															<f:selectItem itemLabel="5" itemValue="5" />
+															<f:ajax execute="consol" event="change" />
+														</h:selectOneMenu></td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+						</h:panelGroup>
+
+					</div>
+					<hr></hr>
+
+
+
+
+
+				</div>
+
+				<br />
+
+				<div style="color: color: #428bca">
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">#{msg['charter.performance.floors']}
+					</h3>
+				</div>
+
+				<div class="panel-body">
+
+					<div class="row">
+
+						<p:dataTable var="floorModel" editable="true" editMode="cell"
+							value="#{charterPerformanceBean.hrsCommpactFloors}" id="perfDT"
+							emptyMessage="لايوجد بيانات" sortBy="#{floorModel.catFloorId}"
+							rowIndexVar="rowIndex">
+
+
+							<p:column style="text-align: center;"
+								headerText="الجدارة &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;الوزن النسبي&nbsp;&nbsp;%   "
+								groupRow="true" width="20%">
+								<p:panelGrid columns="2" layout="grid"
+									style="text-align: right;">
+
+									<h:outputText value="#{floorModel.catFloorDesc}"
+										style="width:50%" />
+
+									<h:inputText value="#{floorModel.relativeImportance}"
+										disabled="#{charterPerformanceBean.updateMode  and !charterPerformanceBean.updateTable}"
+										title="الوزن النسبي" style="width:60%" placeholder="fill me">
+										<p:ajax event="change"
+											listener="#{charterPerformanceBean.calculateSumFloors}"
+											update="perfDT" process="@this" />
+									</h:inputText>
+								</p:panelGrid>
+
+								<f:facet name="footer">
+									<h:outputLabel value="مجموع الوزن النسبي:" styleClass="btxt" />
+									<h:outputLabel value="#{charterPerformanceBean.sumFloors}" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="text-align: center;"
+								headerText="الوصف السلوكي للجدارات " width="40%">
+								<div style="padding: 10px; text-align: right;">
+									#{floorModel.floorDescription}</div>
+
+							</p:column>
+							<p:column style="text-align: center;"
+								headerText="المستوى  المطلوب" width="5%">5
+                                    </p:column>
+							<p:column style="text-align: center;" headerText="التقدير "
+								rendered="#{(!charterPerformanceBean.updateMode and charterPerformanceBean.status==3) or charterPerformanceBean.status==4 or charterPerformanceBean.status==5 or charterPerformanceBean.status==6}"
+								width="10%">
+								<div class="col-md-6" style="width: 100%">
+									<h:selectOneMenu id="console" value="#{floorModel.evaluation}"
+										disabled="#{(!charterPerformanceBean.updateMode and charterPerformanceBean.status==3)or charterPerformanceBean.status==4 or charterPerformanceBean.status==5 or charterPerformanceBean.status==6}"
+										style="width:100%">
+										<f:selectItem itemLabel="(1--5)" itemValue="" />
+										<f:selectItem itemLabel="1" itemValue="1" />
+										<f:selectItem itemLabel="2" itemValue="2" />
+										<f:selectItem itemLabel="3" itemValue="3" />
+										<f:selectItem itemLabel="4" itemValue="4" />
+										<f:selectItem itemLabel="5" itemValue="5" />
+										<f:ajax execute="console" event="change" />
+									</h:selectOneMenu>
+								</div>
+							</p:column>
+						</p:dataTable>
+
+					</div>
+
+
+
+
+
+
+
+				</div>
+
+
+			</div>
+			<div>
+				<h:panelGroup rendered="#{charterPerformanceBean.signedAutorized}">
+					<button type="button" class="btn btn-primary "
+						style="float: left; margin-bottom: 19px; margin-left: 3px"
+						data-toggle="modal" data-target="#gridSystemAcceptModalff">موافقة</button>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{charterPerformanceBean.refuseAutorized}">
+					<button type="button" class="btn btn-primary "
+						style="float: left; margin-bottom: 19px; margin-left: 3px"
+						data-toggle="modal" data-target="#refuseModal">رفض</button>
+				</h:panelGroup>
+				<h:panelGroup
+					rendered="#{charterPerformanceBean.updateMode and charterPerformanceBean.status==0 and charterPerformanceBean.countSigned==2}">
+
+					<button type="button" class="btn btn-primary "
+						style="float: left; margin-bottom: 19px; margin-left: 3px"
+						data-toggle="modal" data-target="#gridSystemRefuseModal">رد
+						المعاملة</button>
+				</h:panelGroup>
+				<h:commandButton
+					rendered="#{!charterPerformanceBean.returnAutorized}"
+					style="float:left;margin-left:3px;" id="gg" value="طباعة"
+					styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+					action="#{charterPerformanceBean.printCharter}">
+				</h:commandButton>
+			</div>
+			<div>
+				<h:commandButton style="float:left" value="تسجيل الميثاق"
+					rendered="#{!charterPerformanceBean.updateMode and charterPerformanceBean.status==0}"
+					styleClass="btn btn-primary" immediate="true"
+					action="#{charterPerformanceBean.savecharter}">
+
+				</h:commandButton>
+
+				<h:commandButton style="float:left" value="تسجيل التقييم"
+					rendered="#{!charterPerformanceBean.updateMode and charterPerformanceBean.status==3}"
+					styleClass="btn btn-primary" immediate="true"
+					action="#{charterPerformanceBean.savecharterEvaluation}">
+
+				</h:commandButton>
+			</div>
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">شروط الاداء الوظيفي</h4>
+						</div>
+						<div class="modal-body">
+							<ol>
+								<li>لا تقل الاهداف على اربعة و لا تزيد على ستة</li>
+								<li>الوزن النسبي للهدف لايقل على 15 بالمئة</li>
+								<li>حاصل الاوزان النسبية لا يتعدي 100 بالمئة للاهداف و
+									كذالك للجدارات</li>
+							</ol>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-info" data-dismiss="modal">اغلاق</button>
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+			</div>
+
+			<br /> <br />
+			<div id="gridSystemAcceptModalff" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="gridModalLabelff" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="gridModalLabelff">اضافة شرح و
+								تاكيد</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid bd-example-row">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+									</div>
+									<div class="col-md-7">
+
+										<h:selectOneMenu id="typ" styleClass="form-control" var="d"
+											value="#{charterPerformanceBean.applicationPurpose}"
+											style=" margin-left: 1px;">
+
+											<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+												itemValue="#{pp.idStr} "
+												value="#{charterPerformanceBean.wrkPurposes}" />
+										</h:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br></br>
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" الشرح  " />
+									</div>
+
+
+									<div class="col-md-7">
+										<h:inputTextarea id="abcd"
+											value="#{charterPerformanceBean.wrkAppComment}"
+											styleClass="form-control">
+										</h:inputTextarea>
+									</div>
+
+								</div>
+
+								<br></br>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-green" data-dismiss="modal">رجوع</button>
+								<h:commandButton value="تاكيد"
+									action="#{charterPerformanceBean.accept}"
+									styleClass="btn btn-primary">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br></br>
+			<div id="gridSystemRefuseModal" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="gridModalLabelss" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="gridModalLabelss">اضافة شرح و
+								تاكيد</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid bd-example-row">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+									</div>
+									<div class="col-md-7">
+
+										<h:selectOneMenu id="typ2" styleClass="form-control"
+											value="#{charterPerformanceBean.applicationPurposeRefuse}"
+											var="d2" style=" margin-left: 1px;">
+
+											<f:selectItems var="pp2" itemLabel="#{pp2.purposeName}"
+												itemValue="#{pp2.idStr} "
+												value="#{charterPerformanceBean.wrkPurposes}" />
+										</h:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br></br>
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" الشرح  " />
+									</div>
+
+
+									<div class="col-md-7">
+										<h:inputTextarea
+											value="#{charterPerformanceBean.wrkAppCommentRefuse}"
+											styleClass="form-control">
+										</h:inputTextarea>
+									</div>
+
+								</div>
+
+								<br></br>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-green" data-dismiss="modal">رجوع</button>
+								<h:commandButton value="تاكيد"
+									action="#{charterPerformanceBean.sentToSender}"
+									styleClass="btn btn-primary">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="refuseModal" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="refuseModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="refuseModalLabel">اضافة شرح و
+								تاكيد</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid bd-example-row">
+								<br></br>
+
+								<div class="row">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+									</div>
+									<div class="col-md-7">
+
+										<h:selectOneMenu styleClass="form-control"
+											value="#{charterPerformanceBean.applicationPurposeRef}"
+											style=" margin-left: 1px;">
+
+											<f:selectItems var="ppRef" itemLabel="#{ppRef.purposeName}"
+												itemValue="#{ppRef.idStr} "
+												value="#{charterPerformanceBean.wrkPurposes}" />
+										</h:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br></br>
+								<div class="row ">
+									<div class="col-md-3">
+										<h:outputLabel styleClass="btxt" value=" الشرح  " />
+									</div>
+
+
+									<div class="col-md-7">
+										<h:inputTextarea
+											value="#{charterPerformanceBean.wrkAppCommentRef}"
+											styleClass="form-control">
+										</h:inputTextarea>
+									</div>
+
+								</div>
+
+								<br></br>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-green" data-dismiss="modal">رجوع</button>
+								<h:commandButton value="تاكيد"
+									action="#{charterPerformanceBean.refuse}"
+									styleClass="btn btn-primary">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

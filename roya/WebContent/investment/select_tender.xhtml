@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{tendersBean.loadAnnouncementDetailsHavingTenders}"></f:viewAction>
+		</f:metadata>
+		<!-- <link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link> -->
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<!-- 	<style>
+.ui-datatable th.ui-state-default {
+	background: #3F729B !important;
+	color: #ffffff !important;
+	border-color: #3F729B;
+	height: 40px;
+}
+</style> -->
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							#{msg['tenders.list']} <span class="fa fa-fw fa-cubes"></span>
+						</h1>
+
+
+
+
+						<div class="ui-g">
+
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value="العقار" />
+							</div>
+							<div class="ui-g-4">
+								<p:selectOneMenu filterMatchMode="contains" filter="true"
+									style="width:100%" value="#{tendersBean.annoucementDetailsId}">
+									<f:selectItem itemLabel="اختر العقار" />
+									<f:selectItems value="#{tendersBean.annoucementDetailsList}"
+										var="x" itemLabel="#{x.name}" itemValue="#{x.id}" />
+									<f:ajax render="@form" execute="@this" event="change"
+										listener="#{tendersBean.loadAssignedTenders}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-4"></div>
+							<div class="ui-g-2" align="left">
+								<p:commandButton value="تسجيل"
+									style="float:left;font-family: kufi !important;"
+									action="#{tendersBean.selectTender}"
+									rendered="#{tendersBean.checked}" update="@form">
+								</p:commandButton>
+							</div>
+						</div>
+
+						<br />
+
+						<div class="ui-g">
+
+							<p:dataTable value="#{tendersBean.tendersList}" var="invItem"
+								id="inboxdt" paginator="true" rows="12" emptyMessage="لا يوجد"
+								rowIndexVar="rowIndex" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+								<p:column headerText="الشركة" width="55%">
+									<h:outputText value="#{invItem.investor.name}" />
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="السجل التجاري" width="15%">
+									<h:outputText value="#{invItem.investor.tradeRecord}" />
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="تاريخ تقديم العطاء" width="10%">
+									<h:outputText value="#{invItem.tenderDate}" />
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="المبلغ" width="15%">
+									<h:outputText value="#{invItem.tenderPrice}">
+										<f:convertNumber pattern="00.##" />
+									</h:outputText>
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="تحديد" width="5%">
+									<h:selectBooleanCheckbox value="#{invItem.checked}">
+										<p:ajax listener="#{tendersBean.checkTenders(invItem)}"
+											process="@form" update="@form"></p:ajax>
+									</h:selectBooleanCheckbox>
+								</p:column>
+							</p:dataTable>
+						</div>
+
+
+
+
+
+
+
+						<p:dialog widgetVar="investor_dlg" id="investor_dlgId" width="70%"
+							header="بيانات العطاء" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:form id="myDialog">
+								<div style="width: 100%">
+									<div style="float: right; width: 100%">
+
+										<div class="ui-g">
+											<div class="ui-g-3">
+												<h:outputLabel styleClass="btxt" value="العقار" />
+											</div>
+											<div class="ui-g-5">
+												<p:selectOneMenu id="realList" filterMatchMode="contains"
+													filter="true" style="width:100%"
+													value="#{tendersBean.tender.announcementDetailsId}">
+													<f:selectItem itemLabel="اختر العقار" />
+													<f:selectItems
+														value="#{tendersBean.annoucementDetailsList}" var="x"
+														itemLabel="#{x.name}" itemValue="#{x.id}" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+										<br />
+										<div class="ui-g">
+											<div class="ui-g-3">
+												<h:outputLabel styleClass="btxt" value="المستثمر"></h:outputLabel>
+											</div>
+											<div class="ui-g-5">
+												<p:selectOneMenu filterMatchMode="contains" filter="true"
+													value="#{tendersBean.tender.investorId}">
+													<f:selectItem itemLabel="اختر المستثمر" />
+													<f:selectItems value="#{loadingDataBean.investorsList}"
+														var="x" itemLabel="#{x.tradeRecord} - #{x.name}"
+														itemValue="#{x.id}" />
+												</p:selectOneMenu>
+											</div>
+
+										</div>
+										<br />
+										<div class="ui-g">
+											<div class="ui-g-3">
+												<h:outputLabel styleClass="btxt" value="تاريخ تقديم العطاء"></h:outputLabel>
+											</div>
+											<div class="ui-g-2">
+												<ui:include src="../shared/calender.xhtml" />
+											</div>
+
+										</div>
+										<br />
+										<div class="ui-g">
+											<div class="ui-g-3">
+												<h:outputLabel styleClass="btxt" value="المبلغ"></h:outputLabel>
+											</div>
+											<div class="ui-g-2">
+												<p:inputText id="proc_period"
+													value="#{tendersBean.tender.tenderPrice}"
+													style="width: 100%" />
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+								<br />
+								<div class="image-box-footer" align="left">
+									<p:commandButton value="#{msg['save']}"
+										actionListener="#{tendersBean.save}"
+										update=":includeform:inboxdt"
+										onsuccess="PF('investor_dlg').hide()">
+									</p:commandButton>
+
+									<p:spacer width="01px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('investor_dlg').hide()" />
+								</div>
+							</h:form>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+
+	<style>
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right;
+}
+</style>
+</h:head>
+
+
+<h:body>
+
+
+
+	<h:form prependId="false">
+
+		<div class="card card-w-title">
+
+			<p:accordionPanel
+				style="background-color: white;text-align: right !important;"
+				rendered="#{mainManagedBean.mailExecutor.manager}"
+				activeIndex="null">
+				<p:tab title="#{msg['owner.mission.data']}">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<p:selectOneMenu id="empList" filterMatchMode="contains"
+											filter="true"
+											value="#{mainManagedBean.mailExecutor.employerId}">
+											<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+											<f:selectItems value="#{mainManagedBean.mailExecutor.users}"
+												var="emp" itemLabel="#{emp.employeeName}"
+												itemValue="#{emp.userId}" />
+											<f:ajax render="@all" execute="@this" event="change"
+												listener="#{mainManagedBean.mailExecutor.loadEmployerData}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+								<!--   -->
+
+								<br />
+								<div class="row"></div>
+							</div>
+						</div>
+					</div>
+				</p:tab>
+			</p:accordionPanel>
+
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<h1 style="color: #7CB342; text-align: center;">
+				#{msg['mission.model']}<span class="fa fa-fw fa-cubes"></span>
+			</h1>
+
+
+			<div class="image-box-footer">
+
+				<p:commandButton value="#{msg['back']}" action="mails"
+					immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+					styleClass=" orange-btn">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+				<p:spacer width="10" height="10"></p:spacer>
+				<p:commandButton value="#{msg['send']}"
+					icon="ui-icon ui-icon-assignment-return"
+					rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+					action="#{mainManagedBean.saveAction}" update="formPanel">
+					<f:ajax execute="@form"></f:ajax>
+				</p:commandButton>
+			</div>
+
+			<br></br> <br></br>
+
+			<p:panel id="formPanel">
+				<f:facet name="header">
+					<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['request.data']}
+                    </f:facet>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="هجري  :  " />
+						<p:selectBooleanCheckbox
+							value="#{mainManagedBean.mailExecutor.higriMode}">
+							<p:ajax update="VACASTRT" process="@this"></p:ajax>
+						</p:selectBooleanCheckbox>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['date']}" style="width:100%" />
+					</div>
+					<div class="ui-g-2">
+						<h:panelGroup id="VACASTRT">
+							<p:inputText id="hiri1"
+								value="#{mainManagedBean.mailExecutor.higriDate}"
+								onfocus="loadCalendar();" required="true"
+								requiredMessage="يرجى اختيار تاريخ"
+								rendered="#{mainManagedBean.mailExecutor.higriMode}"
+								styleClass="form-control form-controlCal">
+							</p:inputText>
+
+							<p:calendar id="gric1"
+								value="#{mainManagedBean.mailExecutor.grigDate}"
+								pattern="dd/MM/yyyy"
+								rendered="#{!mainManagedBean.mailExecutor.higriMode}">
+							</p:calendar>
+						</h:panelGroup>
+					</div>
+					<!-- 					<div class="ui-g-12 ui-md-6 ui-lg-4"> -->
+					<!-- 						<p:inputText id="VACASTRT" name="VACASTRT" style="width: 60%;" -->
+					<!-- 							styleClass="form-control form-controlCal "> -->
+					<!-- 						</p:inputText> -->
+					<!-- 					</div> -->
+
+				</div>
+				<br></br>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="#{msg['reason']}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-4">
+						<p:inputText id="reason"
+							value="#{mainManagedBean.mailExecutor.reason}" size="48"
+							style="width:100%"></p:inputText>
+					</div>
+
+				</div>
+				<br></br>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-4 ui-lg-3">
+						<h:outputLabel value="#{msg['leaving.date']}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:selectOneMenu id="leavingHour"
+							value="#{mainManagedBean.mailExecutor.leavingHour}"
+							style="width:100%">
+							<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+								itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+
+						</p:selectOneMenu>
+
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:selectOneMenu id="leavingMinute" class="form-control"
+							value="#{mainManagedBean.mailExecutor.leavingMinute}"
+							style="width:100%">
+							<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+							<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+							<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+							<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+							<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+							<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+						</p:selectOneMenu>
+					</div>
+
+				</div>
+				<br></br>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-4 ui-lg-3">
+						<h:outputLabel value="#{msg['return.date']}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:selectOneMenu id="returnHour"
+							value="#{mainManagedBean.mailExecutor.returnHour}"
+							style="width:100%">
+							<f:selectItem itemLabel="#{msg['hour']}" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems var="hrs" value="#{loadingDataBean.hoursList}"
+								itemLabel="#{hrs.label}" itemValue="#{hrs.code}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:selectOneMenu id="returnMinute" class="form-control"
+							value="#{mainManagedBean.mailExecutor.returnMinute}"
+							style="width:100%">
+							<f:selectItem itemLabel="#{msg['minutes']}" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="0 #{msg['minute']}" itemValue="00" />
+							<f:selectItem itemLabel="10 #{msg['minute']}" itemValue="10" />
+							<f:selectItem itemLabel="20 #{msg['minute']}" itemValue="20" />
+							<f:selectItem itemLabel="30 #{msg['minute']}" itemValue="30" />
+							<f:selectItem itemLabel="40 #{msg['minute']}" itemValue="40" />
+							<f:selectItem itemLabel="50 #{msg['minute']}" itemValue="50" />
+						</p:selectOneMenu>
+
+					</div>
+
+				</div>
+				<br></br>
+			</p:panel>
+			<script type="text/javascript">
+				$(".form-controlCal").focus(function() {
+					$('.calendars-cmd-today ').html('اليوم');
+					$('.calendars-cmd-prev').html('السابق >');
+					$('.calendars-cmd-next').html(' > اللاحق ');
+					$('.calendars-ctrl').css('display', 'none');
+					$('.calendars-month').css('width', '244px');
+					$('.calendars-month').css('float', 'right');
+					$('.calendars').css('width', '245px');
+
+				});
+
+				$(".form-controlCal").calendarsPicker({
+					calendar : $.calendars.instance('ummalqura'),
+					language : 'ar'
+
+				});
+			</script>
+		</div>
+	</h:form>
+</h:body>
+</html>

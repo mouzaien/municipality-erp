@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<f:view>
+	<f:metadata>
+		<f:viewAction action="#{inventoryMasterBean.loadAllArticles}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+
+	<h:head>
+
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="container col-md-12 "
+					style="background-color: white; border-top: 5px solid #428BCA;">
+
+
+
+					<br></br>
+					<div>
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">جرد
+							المستودعات</h3>
+					</div>
+					<div class="row">
+						<h4 class="page-header"
+							style="margin: 0px 58px 20px ! important; color: #FF5722">البيانات
+							الرئيسية</h4>
+
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">رقم الجرد</label>
+
+								</div>
+								<div class="col-md-8">
+
+									<h:inputText id="type1" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.inventoryId}"
+										disabled="true" />
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">تاريخ الجرد</label>
+
+								</div>
+								<div class="col-md-8">
+									<h:inputText id="type" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.createddate}"
+										disabled="true" />
+
+
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">نوع الجرد</label>
+
+								</div>
+								<div class="col-md-8">
+
+									<h:inputText id="type3" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.inventoryType}"
+										disabled="true" />
+								</div>
+
+							</div>
+						</div>
+
+
+					</div>
+
+					<br /> <br />
+					<div class="row">
+
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">الرقم الألي</label>
+
+								</div>
+								<div class="col-md-8">
+
+									<h:inputText id="type4" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.specialNo}"
+										disabled="true" />
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">تاريخ بداية الجرد</label>
+
+								</div>
+								<div class="col-md-8">
+									<h:inputText id="type5" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.inventoryStartDate}"
+										disabled="true" />
+
+
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row ">
+								<div class="col-md-4">
+									<label class="btxt">تاريخ نهاية الجرد</label>
+								</div>
+								<div class="col-md-8">
+									<h:inputText id="type6" styleClass="form-control"
+										value="#{inventoryMasterBean.inventoryMaster.inventoryEndDate}"
+										disabled="true" />
+
+								</div>
+
+							</div>
+						</div>
+
+
+					</div>
+					<h4 class="page-header"
+						style="margin: 0px 58px 20px ! important; color: #FF5722">عرض
+						المواد المدخلة</h4>
+					<div class="col-md-10"></div>
+					<br></br>
+					<div class="col-md-12 ">
+						<p:dataTable var="inventoryItem"
+							value="#{inventoryMasterBean.inventoryModelList}"
+							emptyMessage="لايوجد بيانات"
+							filteredValue="#{inventoryMasterBean.inventoryModelFiltredList}"
+							widgetVar="vtWidget" paginator="true" rows="12" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+
+							<p:ajax event="rowEdit"
+								listener="#{inventoryMasterBean.onRowEdit}" />
+							<p:ajax event="rowEditCancel"
+								listener="#{inventoryMasterBean.onRowCancel}" />
+
+							<p:column headerText="#{msg['article.id']}"
+								filterBy="#{inventoryItem.articleId}" style="width:10%">
+								<h:outputText value="#{inventoryItem.articleId}" />
+							</p:column>
+							<p:column headerText="#{msg['article.name']}"
+								filterBy="#{inventoryItem.articleName}" style="width:40%">
+								<h:outputText value="#{inventoryItem.articleName}" />
+							</p:column>
+							<p:column headerText="الرمز" style="width:30%">
+								<h:outputText value="#{inventoryItem.articleCode}" />
+							</p:column><secc:authorize ifAnyGranted="ROLE_STORE">
+							<p:column headerText="الكمية" style="width:30%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{inventoryItem.qteActuel}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{inventoryItem.qteActuel}"
+											style="width:100%" label="code" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+								<p:column style="width:20%" headerText="تغيير الكمية">
+									<p:rowEditor />
+								</p:column>
+							</secc:authorize>
+						</p:dataTable>
+						<br></br> <br></br>
+					</div>
+				</div>
+				<hr></hr>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>

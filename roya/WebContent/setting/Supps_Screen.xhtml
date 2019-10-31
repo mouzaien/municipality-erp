@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<style type="text/css">
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right !important;
+	border-bottom: 1px solid #333;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.dashboard .user-card .user-card-content .user-detail ul li {
+	padding: 26px 24px !important;
+}
+</style>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<!-- 			 <p:growl id="msgs" showDetail="true" /> -->
+			<br />
+
+			<div class="image-box-footer">
+
+				<p:commandButton value="مورد جديد"
+					action="#{suppsParamBean.addNewSupp}" icon="fa fa-plus"
+					oncomplete=" PF('mydialog').show()" process="@this"
+					update="includeform:panelGroup">
+				</p:commandButton>
+			</div>
+			<br />
+			<br />
+			<div class="card card-w-title">
+
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					الموردين <span class="ui-icon ui-icon-local-shipping"></span>
+				</h1>
+				<br />
+
+				<p:dataTable id="emp" var="suppsDataTable" style="direction:rtl;"
+					value="#{suppsParamBean.suppsList}" widgetVar="cellemp" rows="13"
+					paginator="true" paginatorPosition="bottom"
+					emptyMessage="الجدول فارغ"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column headerText="المسلسل " width="5%"
+						filterBy="#{suppsDataTable.finEntityId}"
+						sortBy="#{uppsDataTable.finEntityId}">
+						<h:outputText value="#{suppsDataTable.finEntityId}" />
+
+
+					</p:column>}
+						<p:column headerText=" إسم المورد " width="50%"
+						filterBy="#{suppsDataTable.finEntityName}">
+
+						<h:outputText value="#{suppsDataTable.finEntityName}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="الجهة " width="50%"
+						filterBy="#{suppsDataTable.finEntityTypeUser}">
+						<h:outputText value="#{suppsDataTable.finEntityTypeUser}"></h:outputText>
+
+					</p:column>
+					<p:column headerText="تفاصيل" style="width:50px;text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup"
+							action="#{suppsParamBean.loadSelectedfinEntity}"
+							oncomplete=" PF('mydialog').show()" icon="ui-icon-search"
+							title="View" modal="true">
+							<f:setPropertyActionListener value="#{suppsDataTable}"
+								target="#{suppsParamBean.finEntity}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:dialog header="إضافة مورد جديد" position="center"
+					widgetVar="mydialog" responsive="true" id="inputData2"
+					closable="true" dir="rtl" resizable="true" modal="true">
+					<h:panelGroup id="panelGroup">
+						<div class="ui-g">
+							<br />
+							<div class="ui-g-2">
+								<h:outputLabel for="mTitles" value="المورد" />
+							</div>
+							<div class="ui-g-10">
+								<p:inputText id="suppName"
+									value="#{suppsParamBean.finEntity.finEntityName}"
+									style="width:100%">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="الجهة " />
+							</div>
+							<div class="ui-g-10">
+								<p:inputText id="suppType"
+									value="#{suppsParamBean.finEntity.finEntityTypeUser}"
+									style="width:100%">
+								</p:inputText>
+							</div>
+						</div>
+						<br />
+						<div align="center">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="حفظ" icon="fa fa-save"
+									rendered="#{suppsParamBean.addMode}"
+									action="#{suppsParamBean.savefinEntity}" update="@form"
+									onsuccess="PF('mydialog').hide(); ">
+								</p:commandButton>
+								<p:spacer height="4"></p:spacer>
+								<p:commandButton value="تعديل" icon="fa fa-edit"
+									rendered="#{!suppsParamBean.addMode}"
+									action="#{suppsParamBean.updatefinEntity}" update="@form"
+									onsuccess="PF('mydialog').hide();">
+								</p:commandButton>
+								<p:spacer height="4"></p:spacer>
+								<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+									icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+									onsuccess="PF('mydialog').hide();" />
+							</div>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				<p:dialog header="حذف المورد" widgetVar="confirmDialog"
+					responsive="true" id="inputData3" modal="true" width="70%"
+					closable="true" dir="rtl">
+					<h:panelGroup id="confirmDialog">
+						<div class="ui-g">
+							<div class="ui-g">
+								<div class="ui-g-12">
+									<h:outputLabel value="هل   أنت متأكد من حذف المورد؟"
+										styleClass="btxt" />
+								</div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+								<div class="ui-g-2"></div>
+							</div>
+						</div>
+					</h:panelGroup>
+					<br />
+					<div align="center">
+						<p:commandButton value="نعم" styleClass="btn btn-primary"
+							action="#{suppsParamBean.deleteUser}" update="@form"
+							onsuccess="PF('confirmDialog').hide();" process="@this">
+						</p:commandButton>
+
+						<p:commandButton value="تراجع" styleClass=" orange-btn"
+							immediate="true" onclick="PF('confirmDialog').hide();" />
+
+					</div>
+				</p:dialog>
+
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

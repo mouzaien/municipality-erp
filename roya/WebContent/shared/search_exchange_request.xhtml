@@ -1,0 +1,288 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+
+<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="#{msg['search']}" icon="ui-icon-search"
+						styleClass="purple-btn">
+						<f:ajax execute="@form" render="includeform:exchangeTable"
+							listener="#{exchangeRequestBean.searchExchangeRequests(e)}"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center;">
+						طلبات صرف مواد <span class="fa fa-fw fa-bitbucket"></span>
+					</h1>
+					<div class="ui-g" dir="rtl">
+						<div class="ui-g-12 ui-md-2">
+							<h:outputLabel value="المستودع" />
+						</div>
+						<div class="ui-g-12 ui-md-4">
+							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								placeholder="إختر المستودع" value="#{exchangeRequestBean.strNo}"
+								style="direction: rtl;height: 39px;">
+								<f:selectItem  itemLabel="إختر مستودع"></f:selectItem>
+								<f:selectItems value="#{exchangeRequestBean.allWareHouses}"
+									var="c" itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+								<p:ajax process="@this" update="exchangeTable"
+									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br />
+
+					<div class="ui-g">
+
+						<div class="ui-g-1">
+							<label class="btxt">من</label>
+
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hiri1" value="#{exchangeRequestBean.beginDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+							<!-- 							<p:inputMask value="#{exchangeRequestBean.beginDate}" -->
+							<!-- 								mask="99/99/9999"> -->
+							<!-- 								<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+							<!-- 							</p:inputMask> -->
+
+						</div>
+
+						<div class="ui-g-1">
+							<label class="btxt">إلى</label>
+
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hiri2" value="#{exchangeRequestBean.finishDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+							</p:inputText>
+							<!-- 							<p:inputMask value="#{exchangeRequestBean.finishDate}" -->
+							<!-- 								mask="99/99/9999" /> -->
+
+						</div>
+
+
+					</div>
+
+					<br />
+					<p:dataTable var="exchangeItem" id="exchangeTable"
+						value="#{exchangeRequestBean.exchangeRequestList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom" widgetVar="vtWidget"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{exchangeRequestBean.filteredExchangeRequestList}"
+						paginator="true" rows="12">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('vtWidget').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+
+
+
+						<p:column headerText="رقم الطلب"
+							filterBy="#{exchangeItem.serialNumber}"
+							filterMatchMode="contains" style="width:20%">
+							<h:outputText value="#{exchangeItem.serialNumber}" />
+						</p:column>
+						<p:column headerText="تاريخ الطلب"
+							filterBy="#{exchangeItem.generalrequestDate}"
+							filterMatchMode="contains" style="width:20%">
+							<h:outputText value="#{exchangeItem.generalrequestDate}" />
+						</p:column>
+						<p:column headerText="صاحب الطلب"
+							filterBy="#{exchangeItem.empName}" filterMatchMode="contains"
+							style="width:25%">
+							<h:outputText value="#{exchangeItem.empName}" />
+						</p:column>
+						<p:column headerText="الملاحظات" style="width:30%">
+							<h:outputText value="#{exchangeItem.notes}" />
+						</p:column>
+						<p:column width="5%" style="text-align:center"
+							headerText="#{msg['details']}">
+							<p:commandButton
+								action="#{exchangeRequestBean.loadSelectedExchangeRequest(exchangeItem)}"
+								icon="ui-icon-search" oncomplete="PF('exchange_dlg').show()"
+								update="includeform:exchange_dlgId">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+
+
+					<p:dialog widgetVar="exchange_dlg" id="exchange_dlgId" width="70%"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value=" الاسم " />
+							</div>
+
+
+							<div class="ui-g-2">
+								<h:outputLabel value=" #{exchangeRequestBean.request.empName}"></h:outputLabel>
+							</div>
+
+						</div>
+
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value="الادارة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel
+									value="#{exchangeRequestBean.request.arcUser.wrkSection.sectionName}"></h:outputLabel>
+							</div>
+
+						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value="التاريخ "></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel
+									value="#{exchangeRequestBean.request.generalrequestDate}"></h:outputLabel>
+							</div>
+
+						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-3">
+								<h:outputLabel styleClass="btxt" value="الملاحظات "></h:outputLabel>
+							</div>
+							<div class="ui-g-5">
+								<h:outputLabel value="#{exchangeRequestBean.request.notes}"></h:outputLabel>
+							</div>
+
+
+						</div>
+
+						<!-- 						<p:dataTable var="det" id="detilsTable" -->
+						<!-- 							value="#{exchangeRequestBean.request.exchangeRequestDetailsList}" -->
+						<!-- 							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" -->
+						<!-- 							paginatorPosition="bottom" -->
+						<!-- 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" -->
+						<!-- 							paginator="true"> -->
+						<!-- 							<f:facet name="header"> -->
+						<!-- 								<p:outputPanel> -->
+						<!-- 									<h:outputText value="ابحث فى كل الحقول:" /> -->
+						<!-- 									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()" -->
+						<!-- 										style="width:150px" placeholder="كلمة البحث"> -->
+						<!-- 									</p:inputText> -->
+						<!-- 								</p:outputPanel> -->
+						<!-- 							</f:facet> -->
+
+						<!-- 							<p:column headerText="الرقم" style="width: 5%"> -->
+						<!-- 								<h:outputText value="#{rowIndex+1}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="اسم الصنف" style="width:25 %"> -->
+						<!-- 								<h:outputText value="#{det.article.name}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="العدد" style="width:8%"> -->
+						<!-- 								<h:outputText value="#{det.count}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="الوحدة" style="width: 8%"> -->
+						<!-- 								<h:outputText value="#{det.article.itemUnite.name}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="المواصفات" style="width: 25%"> -->
+						<!-- 								<h:outputText value="#{det.notes}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="المتوفر" style="width: 8%"> -->
+						<!-- 								<h:outputText value="#{det.qtyAvailable}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="المحجوز" style="width: 8%"> -->
+						<!-- 								<h:outputText value="#{det.qtyReserved}" /> -->
+						<!-- 							</p:column> -->
+						<!-- 							<p:column headerText="العدد النهائى للصرف" style="width: 8%"> -->
+						<!-- 								<h:outputText value="#{det.exchangeAtcualyCount}" /> -->
+						<!-- 							</p:column> -->
+
+						<!-- 						</p:dataTable> -->
+
+						<p:separator></p:separator>
+
+						<table id="tabStore" class="table table-striped table-hover">
+							<thead>
+								<tr>
+
+									<th style="width: 5%; text-align: center">رقم</th>
+									<th style="width: 25%; text-align: center">اسم الصنف</th>
+									<th style="width: 8%; text-align: center">العدد</th>
+									<th style="width: 8%; text-align: center">الوحدة</th>
+									<th style="width: 25%; text-align: center">المواصفات</th>
+									<th style="width: 8%; text-align: center">المتوفر</th>
+									<th style="width: 8%; text-align: center">المحجوز</th>
+									<th style="width: 8%; text-align: center">العدد النهائى
+										للصرف</th>
+									<!--	<th style="width: 8%;">العدد النهائى للتامين</th> -->
+
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat var="det" varStatus="x"
+									value="#{exchangeRequestBean.request.exchangeRequestDetailsList}">
+									<tr>
+										<td style="width: 5%; text-align: center">#{x.index+1}</td>
+										<td style="width: 25%; text-align: center">#{det.article.name}</td>
+										<td style="width: 8%; text-align: center">#{det.count}</td>
+										<td style="width: 8%; text-align: center">#{det.article.itemUnite.name}</td>
+										<td style="width: 25%; text-align: center">#{det.notes}</td>
+										<td style="width: 8%; text-align: center">#{det.qtyAvailable}</td>
+										<td style="width: 8%; text-align: center">#{det.qtyReserved}</td>
+										<td style="width: 8%; text-align: center">#{det.exchangeAtcualyCount}</td>
+									</tr>
+								</ui:repeat>
+							</tbody>
+						</table>
+
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="طباعة" ajax="false"
+								onclick="this.form.target='_blank'" styleClass="purple-btn"
+								icon="ui-icon ui-icon-print"
+								action="#{exchangeRequestBean.printExchangeReport_A4_Action}" />
+							<!-- immediate="true" styleClass="btn btn-primary" -->
+							<!-- 								onclick="this.form.target='_blank'" -->
+							<p:spacer height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								styleClass="btn btn-primary" onclick="PF('exchange_dlg').hide()" />
+
+						</div>
+
+					</p:dialog>
+
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>

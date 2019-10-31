@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+<f:metadata>
+	<f:viewAction action="#{generalizationBean.loadAllEmployers}"
+		phase="APPLY_REQUEST_VALUES" />
+</f:metadata>
+
+<body>
+	<script src="http://www.java.com/js/deployJava.js" />
+
+	<ui:composition template="./WebTemplate.xhtml">
+		<ui:define name="top">
+                #{msg['generalization']}
+            </ui:define>
+		<ui:define name="content">
+			<h:form id="eportFormId">
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+                     
+                    <p:dialog widgetVar="statusDialog" modal="true"
+					draggable="false" closable="false" resizable="false"
+					showHeader="false">
+                            <p:graphicImage
+						value="../resources/images/loadingT.gif" />
+				</p:dialog>
+
+				<div class="col-md-12">
+					<br /> <br />
+					<div>
+						<p:outputLabel value="#{msg['sender']}" style="color: #036fab" />
+						<p:spacer width="50" />
+						<p:outputLabel value="#{msg['municipality.headmaster']}" />
+						<br />
+
+						<p:outputLabel value="#{msg['receivers']}" style="color: #036fab" />
+					</div>
+
+
+
+
+					<div class="col-md-6" style="margin-top: 10px;">
+						<p:treeTable id="empTR" value="#{generalizationBean.root}"
+							var="employer" selectionMode="checkbox" scrollable="true"
+							scrollHeight="300"
+							selection="#{generalizationBean.selectedNodes}">
+							<p:column headerText="#{msg['employees']}">
+								<h:outputText value="#{employer.name}" />
+							</p:column>
+						</p:treeTable>
+					</div>
+					<div class="col-md-6" style="margin-top: 10px;">
+						<p:dataTable id="empDT" var="emp"
+							selection="#{generalizationBean.checkedEmployersList}"
+							rowKey="#{emp.id}" scrollable="true" scrollHeight="300"
+							value="#{generalizationBean.selectedEmployersList}">
+							<p:column selectionMode="multiple"
+								style="width:20%;text-align:center" />
+							<p:column headerText="#{msg['selected.employers']}">
+								<h:outputText value="#{emp.name}" />
+							</p:column>
+						</p:dataTable>
+
+					</div>
+					<br />
+					<div class="col-md-6" style="margin-top: 10px;">
+						<h:panelGroup>
+							<p:commandButton value="#{msg['add.employer']}" process="@this"
+								update=":tempform:eportFormId:empDT, :tempform:eportFormId:empTR, :tempform:eportFormId:deleteBTN, :tempform:eportFormId:sendBTN"
+								actionListener="#{generalizationBean.addEmployersAction}"
+								icon="fa fa-plus-circle" />
+							<p:commandButton value="#{msg['add.headmaster.employers']}"
+								process="@this"
+								update=":tempform:eportFormId:empDT, :tempform:eportFormId:empTR, :tempform:eportFormId:deleteBTN, :tempform:eportFormId:sendBTN"
+								actionListener="#{generalizationBean.addHeadmasterEmployersAction}"
+								rendered="false" icon="fa fa-plus-circle" />
+							<p:commandButton value="#{msg['add.all.employers']}"
+								process="@this"
+								update=":tempform:eportFormId:empDT, :tempform:eportFormId:empTR, :tempform:eportFormId:deleteBTN, :tempform:eportFormId:sendBTN"
+								actionListener="#{generalizationBean.addAllEmployersAction}"
+								icon="fa fa-plus-circle" />
+						</h:panelGroup>
+					</div>
+					<div class="col-md-6" style="margin-top: 10px;">
+						<p:commandButton id="deleteBTN" value="#{msg['delete']}"
+							process="@this, :tempform:eportFormId:empDT"
+							update=":tempform:eportFormId:empDT, deleteBTN, :tempform:eportFormId:sendBTN"
+							disabled="#{generalizationBean.disabled}"
+							actionListener="#{generalizationBean.deleteEmployersAction}"
+							icon="fa fa-remove" />
+					</div>
+					<br />
+					<div class="col-md-12" style="margin-top: 10px;">
+						<p:outputLabel value="#{msg['direction']}" style="color: #036fab" />
+
+						<p:selectOneMenu id="directionSOM" filter="true"
+							filterMatchMode="contains" required="true"
+							requiredMessage="#{msg['required']}"
+							style="align-items: inherit;vertical-align:middle;margin-right: 10px;direction: rtl!important;text-align:right;width:20%;"
+							value="#{generalizationBean.directionId}">
+							<f:selectItem itemLabel="#{msg['choose.direction']}" itemValue="" />
+							<f:selectItems value="#{generalizationBean.directionsMap}" />
+						</p:selectOneMenu>
+						<p:message id="directionSOMMsg" for="directionSOM" display="icon" />
+
+					</div>
+
+					<div class="col-md-6" style="margin-top: 10px;">
+						<p:outputLabel value="#{msg['subject']}" style="color: #036fab" />
+
+						<p:inputText id="subject" style="margin-right: 10px;"
+							value="#{generalizationBean.subject}" size="50" required="true"
+							requiredMessage="#{msg['required']}" />
+						<p:message id="subjectMsg" for="subject" display="icon" />
+
+						<p:inputTextarea id="details" style="margin-top: 10px;"
+							required="true" requiredMessage="#{msg['required']}"
+							value="#{generalizationBean.details}" rows="6" cols="54" />
+						<p:message id="detailsMsg" for="details" display="icon" />
+					</div>
+					<div class="col-md-6" style="margin-top: 10px;">
+						<script>
+							function runApplet() {
+								alert('scan');
+								var attributes = {
+									code : 'ScannerApplet.class',
+									width : 1,
+									height : 1
+								};
+								var parameters = {};
+								var version = '1.7';
+								deployJava.runApplet(attributes, parameters,
+										version);
+							}
+						</script>
+						<p:commandButton value="#{msg['scanner']}" onclick="runApplet()"
+							icon="fa fa-plus-circle" />
+						<br /> <br />
+						<!-- 						<p:commandButton value="#{msg['add.file']}" icon="fa fa-upload" -->
+						<!-- 							onclick="PF('uploadDlg').show()" /> -->
+						<!-- 						<p:fileUpload value="#{generalizationBean.uploadedFile}" -->
+						<!-- 							label="#{msg['add.file']}" skinSimple="true" mode="simple" -->
+						<!-- 							auto="true" sizeLimit="15000000" /> -->
+						<p:fileUpload id="user-file-uploador" multiple="true"
+							update="file-datatable"
+							fileUploadListener="#{generalizationBean.uploadFiles}"
+							uploadLabel="#{msg['attach']}" cancelLabel="#{msg['cancel']}"
+							label="#{msg['select.attachment']}"
+							allowTypes="/(\.|\/)(gif|jpe?g|png|txt|pdf|doc|docx|exe|mp3|zip|ppt|pptx|xls|xlsx|bmp|rar)$/"
+							sizeLimit="15000000" />
+
+						<p:dataTable id="file-datatable"
+							value="#{generalizationBean.attachmentsList}" var="file"
+							dir="rtl">
+
+
+							<p:column headerText="اسم الملف" width="50%"
+								style="text-wrap: none;">
+                            #{file.fileName}
+                        </p:column>
+							<p:column headerText="حجم الملف" width="10%"
+								style="text-wrap: none">
+                            #{file.size}
+                        </p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+				<div align="center" class="col-md-12" style="margin-top: 10px;">
+					<br /> <br />
+					<p:growl autoUpdate="true" />
+
+					<p:commandButton id="sendBTN" value="#{msg['send']}"
+						disabled="#{generalizationBean.disabled}"
+						actionListener="#{generalizationBean.sendGeneralization}"
+						icon="fa fa-send" process="@this,:tempform:eportFormId"
+						update=":tempform:eportFormId:subjectMsg, :tempform:eportFormId:detailsMsg, :tempform:eportFormId:directionSOMMsg" />
+
+
+				</div>
+
+
+			</h:form>
+
+			<p:dialog id="upload-form" closable="true" widgetVar="uploadDlg"
+				showEffect="fade" hideEffect="fade" width="800" resizable="false"
+				height="500" modal="true">
+				<h:form enctype="multipart/form-data">
+					<p:fileUpload id="user-file-uploador" multiple="true"
+						update="file-datatable"
+						fileUploadListener="#{generalizationBean.uploadFiles}"
+						uploadLabel="#{msg['attach']}" cancelLabel="#{msg['cancel']}"
+						label="#{msg['select.attachment']}"
+						allowTypes="/(\.|\/)(gif|jpe?g|png|txt|pdf|doc|docx|exe|mp3|zip|ppt|pptx|xls|xlsx|bmp|rar)$/"
+						sizeLimit="15000000" />
+
+					<p:dataTable id="file-datatable" style="width:100%;"
+						value="#{generalizationBean.attachmentsList}" var="file" dir="rtl">
+
+
+						<p:column headerText="اسم الملف" width="50%"
+							style="text-wrap: none;">
+                            #{file.fileName}
+                        </p:column>
+						<p:column headerText="حجم الملف" width="10%"
+							style="text-wrap: none">
+                            #{file.size}
+                        </p:column>
+
+
+						<!-- 						<p:column width="11"> -->
+						<!-- 							<h:outputLink value="sss"> -->
+						<!-- 								<img src="../resources/images/types/download.png" width="25" -->
+						<!-- 									height="25" /> -->
+
+						<!-- 							</h:outputLink> -->
+						<!-- 						</p:column> -->
+
+					</p:dataTable>
+				</h:form>
+			</p:dialog>
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

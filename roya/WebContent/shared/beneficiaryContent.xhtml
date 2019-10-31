@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+</h:head>
+
+
+<h:body>
+
+	
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+
+		<div class="container col-md-12"
+			style="background-color: white; border-top: 5px solid #428BCA;">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">بيانات
+					المستفيد</h3>
+			</div>
+
+			<h:form id="insideForm">
+<h:panelGroup id="vv">
+				<div>
+
+					<div class="row">
+						<div class="col-md-5">
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" * الاسم الاول " />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.firstName}"
+										required="true" requiredMessage=" يجب إدخال الاسم  الاول ">
+
+									</h:inputText>
+
+
+								</div>
+
+							</div>
+							<br></br>
+
+
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" *سجل مدنى" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.nationalId}"
+										required="true"
+										requiredMessage=" يجب إدخال رقم السجل  المدنى  "
+										validatorMessage=" يجب إدخال رقم السجل  المدنى بشكل صحيح">
+										<f:validator validatorId="nationalIdValidator"></f:validator>
+									</h:inputText>
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="*مصدر الهوية" />
+								</div>
+								<div class="col-md-7">
+									<h:selectOneMenu id="places" styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.idSource}"
+										required="true" requiredMessage=" يجب إدخال مصدر الهوية  "
+										style=" margin-left: 1px;" filter="true">
+										<f:selectItem itemLabel="    مصدر الهوية " itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="pp" itemLabel="#{pp.placeName}"
+											itemValue="#{pp.placeName}"
+											value="#{loadingDataBean.nationalIdPlacesList}" />
+									</h:selectOneMenu>
+
+
+
+								</div>
+
+							</div>
+							<br></br>
+
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="*نوع الهوية" />
+								</div>
+								<div class="col-md-7">
+									<h:selectOneMenu id="types" styleClass="form-control"
+										value="#{beneficiaryDataBean.paperTypId}" required="true"
+										requiredMessage=" يجب إدخال نوع الهوية  "
+										style=" margin-left: 1px;" filter="true">
+										<f:selectItem itemLabel="    نوع  الهوية " itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="cc" itemLabel="#{cc.typeName}"
+											itemValue="#{cc.typeId} "
+											value="#{loadingDataBean.nationalityTypeList}" />
+									</h:selectOneMenu>
+
+
+
+								</div>
+
+							</div>
+							<br></br>
+
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="*تاريخ الهوية" />
+								</div>
+								<div class="col-md-7">
+
+									<ui:include src="calender.xhtml" />
+								</div>
+
+							</div>
+
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="*الجنسية" />
+								</div>
+								<div class="col-md-7">
+									<h:selectOneMenu id="nationality" styleClass="form-control"
+										value="#{beneficiaryDataBean.nationalityId}" required="true"
+										requiredMessage=" يجب اختيار الجنسية  "
+										style=" margin-left: 1px;" filter="true">
+										<f:selectItem itemLabel="    الجنسية " itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems var="dd" itemLabel="#{dd.nationalityName}"
+											itemValue="#{dd.nationalityId} "
+											value="#{loadingDataBean.nationalityList}" />
+									</h:selectOneMenu>
+
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="*تاريخ  الميلاد " />
+								</div>
+								<div class="col-md-7">
+
+									<input type="text" class="form-control" name="dateOfBirth"
+										id="dateOfBirth"></input>
+									<script type="text/javascript">
+										$("#dateOfBirth").focus(
+												function() {
+
+													$('.calendars-cmd-today ')
+															.html('اليوم');
+													$('.calendars-cmd-prev')
+															.html('السابق >');
+													$('.calendars-cmd-next')
+															.html(' اللاحق');
+													$('.calendars-ctrl').css(
+															'display', 'none');
+													$('.calendars-month').css(
+															'width', '244px');
+													$('.calendars-month').css(
+															'float', 'right');
+													$('.calendars').css(
+															'width', '245px');
+
+												});
+
+										$("#dateOfBirth")
+												.calendarsPicker(
+														{
+															calendar : $.calendars
+																	.instance('ummalqura'),
+															language : 'ar'
+														});
+									</script>
+								</div>
+
+							</div>
+
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="  الرمز  البريدى" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.postalCode}" />
+
+
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-5">
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" * الاسم الاخير " />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.seconedName}"
+										required="true"
+										requiredMessage=" يجب إدخال الاسم  الاخير     ">
+
+									</h:inputText>
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" العنوان" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.address}" />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" *رقم الجوال" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.mobileNumber}"
+										required="true" requiredMessage=" يجب إدخال رقم الجوال  " />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" رقم المنزل" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.homeNumber}" />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" رقم العمل" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.workNumber}" />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" الجنس" />
+								</div>
+								<div class="col-md-7">
+									<h:selectOneMenu styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.gender}"
+										style=" margin-left: 1px;" filter="true">
+										<f:selectItem itemLabel="  ذكر " itemValue="M" />
+										<f:selectItem itemLabel="    انثى " itemValue="F" />
+									</h:selectOneMenu>
+
+
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value=" البريد الالكترونى" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.email}" />
+
+
+								</div>
+
+							</div>
+							<br></br>
+							<div class="row ">
+								<div class="col-md-3">
+									<h:outputLabel styleClass="btxt" value="  صندوق البريد" />
+								</div>
+								<div class="col-md-7">
+									<h:inputText styleClass="form-control"
+										value="#{beneficiaryDataBean.peopleInfo.postalBox}" />
+
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				</h:panelGroup>
+				<hr></hr>
+				<div class="col-md-12 " style="margin-bottom: 4px">
+
+					<h:commandButton value="حفظ" styleClass="btn  btn-primary" style="float:left">
+						<f:ajax execute="insideForm" render="vv"
+							listener="#{beneficiaryDataBean.save}"></f:ajax>
+
+					</h:commandButton>
+				</div>
+			</h:form>
+		</div>
+</h:body>
+
+
+</html>

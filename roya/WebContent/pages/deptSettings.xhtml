@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+        <ui:composition template="./WebTemplate.xhtml">
+            <ui:define name="top">
+               #{msg['param.administration']}
+            </ui:define>
+            <ui:define name="content">
+                <div style="direction: rtl;" >
+                    <p:growl id="g001" autoUpdate="true" />
+                    <h:form id="deptForm" style="direction: rtl;">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                         
+                        <p:dialog widgetVar="statusDialog" modal="true" 
+                                  draggable="false" closable="false" resizable="false" showHeader="false">
+                                <p:graphicImage value="../resources/images/loadingT.gif" />
+                        </p:dialog>
+
+
+                        <p:toolbar>
+                            <f:facet name='left'>
+                                <p:commandButton value="#{msg['add.administration']}" process="@this"
+                                                 action="#{deptSettingBean.addDepartmentBtnAction(actionEvent)}"
+                                                 />           
+                            </f:facet>
+                            <f:facet name='right'>
+                                <p:outputLabel value="#{msg['param.administration']}"/>
+                            </f:facet>
+                        </p:toolbar>  
+                        <p:growl id="groll" autoUpdate="true" />
+                        <div style="width:30%; float: right;">
+                            <p:panel id="departmentPanel" header="#{msg['municipality.section']}" style="font-size: large;width: 100%;" >
+                                <p:selectOneListbox id="deptList"  value="#{deptSettingBean.selectedDept}" style="width: 100%;" filter="true" filterMatchMode="contains" >
+                                    <p:ajax event="change" update=":tempform:deptForm:selecttxt,:tempform:deptForm:sectiondt"  listener="#{deptSettingBean.chnageDeptListBox}" />
+                                    <f:selectItems value="#{deptSettingBean.deptMap}" />
+                                </p:selectOneListbox>
+                            </p:panel>
+                        </div>
+                        <div style="float: left;width: 69%">
+                            <div >
+                                <p:outputLabel id="selecttxt" value="#{deptSettingBean.selectedDeptTxt}" />
+                                <p:dataTable id="sectiondt" style="font-size: medium;font-weight: bold;"
+                                             value="#{deptSettingBean.deptSections}" var="section"
+                                             emptyMessage="#{msg['empty.section']}"
+                                             >
+                                    <p:column headerText="#{msg['sequence']}" width="25%">
+                                        #{section.wrkSectionId}
+                                    </p:column>
+                                    <p:column headerText="#{msg['sequence.name']}" width="45%" >
+                                        #{section.wrkSectionName}
+                                    </p:column>
+                                    <p:column width="11%" >
+                                        <p:commandButton icon="fa fa-times" value="#{msg['delete']}" />
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="#{msg['add.section']}" process="@this" action="#{deptSettingBean.addSectionBtnAction(actionEvent)}"  icon="fa fa-plus-square" />
+
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                    </h:form>
+
+                    <p:dialog header="#{msg['add.section']}" modal="true" widgetVar="addSectionDlg" width="400" >
+                        <h:form id="addSectionFrm" style="text-align: center;">
+                            <p:panelGrid columns="3">
+                                <p:outputLabel value="#{msg['add.section.name']}" />
+                                <p:inputText value="#{deptSettingBean.newSectionName}" id="sectionnametxtbx" required="true" requiredMessage="#{msg['required.section.name']}" />
+
+                            </p:panelGrid>
+                            <p:commandButton value="#{msg['save']}" 
+                                             action="#{deptSettingBean.addNewSection(actionEvent)}"
+                                             style="float: left;" class="btn btn-default"
+                                             process="@this,:tempform:addSectionFrm:sectionnametxtbx"
+                                             update=":tempform:deptForm:sectiondt"
+                                             />
+
+                        </h:form>
+                    </p:dialog>
+                    <p:growl id="newgr" autoUpdate="true" />
+                    <p:dialog header="#{msg['add.administration']}" width="400" resizable="false"
+                              showEffect="fade" hideEffect="explode"
+                              modal="true" widgetVar="addDepartmentDlg" id="addDepartmentDlgid" >
+                        <h:form id="adddeptFrm">
+                            <p:panelGrid columns="2">
+
+
+                                <p:outputLabel value="#{msg['administration.name.arabic']}"  />
+                                <p:inputText id="ardeptname" value="#{deptSettingBean.newDepartmentArabicName}" 
+
+                                             required="true" requiredMessage="#{msg['required.name']}" />
+                                <p:outputLabel value="#{msg['administration.name.english']}"  />
+                                <p:inputText id="endeptname"  value="#{deptSettingBean.newDepartmentEnglishName}" required="true" requiredMessage="#{msg['required.name']}"  />
+
+                            </p:panelGrid>
+                            <p:commandButton value= "#{msg['save']}" style="float: left;" class="btn btn-default"
+                                             action="#{deptSettingBean.addNewDeptAction(actionEvent)}" 
+                                             process="@this,:tempform:adddeptFrm:ardeptname,:tempform:adddeptFrm:endeptname"
+                                             update=":tempform:deptForm:deptList"
+                                             />
+
+
+                        </h:form>
+
+                    </p:dialog>
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,298 @@
+<?xml version="1.0"  ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+
+	<div class="col-lg-12"
+		style="background-color: white; border-top: 5px solid #428BCA">
+		<br></br>
+		<div style="color: color: #428bca">
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">بيانات
+				الطلب</h3>
+		</div>
+		<div class="row">
+			<br></br>
+			<div class="col-md-5">
+				<div class="row ">
+					<div class="col-md-3">
+						<h:outputLabel styleClass="btxt" value="    المشروع " />
+					</div>
+
+					<div class="col-md-6">
+						<h:outputLabel
+							value="#{extractProjectBean.projectExtract.contract.project.name}" />
+
+
+
+
+					</div>
+
+				</div>
+				<br></br>
+
+
+				<div class="row ">
+					<div class="col-md-3">
+						<h:outputLabel styleClass="btxt" value=" نسبة  الانجاز" />
+					</div>
+					<div class="col-md-5">
+						<h:outputLabel
+							value="#{extractProjectBean.projectExtract.finishPercentage}  %" />
+
+
+
+
+					</div>
+
+
+
+				</div>
+				<br></br>
+				<div class="row ">
+					<div class="col-md-3">
+						<h:outputLabel styleClass="btxt" value=" رقم المستخلص   " />
+					</div>
+
+					<div class="col-md-6">
+						<h:outputLabel value="#{extractProjectBean.projectExtract.number}" />
+
+
+
+
+					</div>
+				</div>
+				<br></br>
+				<div class="row ">
+					<div class="col-md-3">
+						<h:outputLabel styleClass="btxt" value="موجه الى   " />
+					</div>
+
+					<div class="col-md-6">
+						<h:outputLabel value="#{extractProjectBean.projectExtract.to}" />
+
+
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-5">
+
+				<div class="row ">
+					<div class="col-md-4">
+						<h:outputLabel styleClass="btxt" value="  المقاول" />
+					</div>
+
+					<div class="col-md-6">
+						<h:outputLabel
+							value="#{extractProjectBean.projectExtract.contract.owner}" />
+
+
+
+
+					</div>
+
+				</div>
+
+				<br></br>
+				<div class="row ">
+					<div class="col-md-4">
+						<h:outputLabel styleClass="btxt" value="  المدة المنقضية" />
+					</div>
+
+					<div class="col-md-6">
+						<h:outputLabel
+							value="#{extractProjectBean.projectExtract.spentTimePercentage} %" />
+
+
+
+
+					</div>
+
+
+				</div>
+				<br></br>
+				<div class="row ">
+					<div class="col-md-4">
+						<h:outputLabel styleClass="btxt" value=" المبلغ المستحق " />
+					</div>
+
+					<div class="col-md-5">
+						<h:outputLabel
+							value="#{extractProjectBean.projectExtract.value} ريال سعودى" />
+
+
+
+
+					</div>
+
+				</div>
+				<br></br>
+
+			</div>
+
+
+
+
+		</div>
+
+
+		<br></br>
+		<hr></hr>
+		<div class="col-md-6  "></div>
+		<div class="col-md-6  " style="margin-bottom: 8px;">
+
+			<div class="col-md-2 " style="float: left">
+
+
+				<div>
+					<!-- Small modal -->
+					<h:panelGroup
+							rendered="#{extractProjectBean.showAcceptFlag}">
+						<button type="button" class="btn btn-primary "
+							style="float: left; margin-bottom: 19px" data-toggle="modal" id="btnAccept"
+							data-target="#gridSystemModal">موافق</button>
+							
+					</h:panelGroup>
+					<h:panelGroup
+							rendered="#{!extractProjectBean.showAcceptFlag}">
+					
+<!-- 								<h:outputLink id="gg" -->
+<!-- 										styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" -->
+<!-- 										style="float:left;" value="#{extractProjectBean.url}" -->
+<!-- 										target="_blank"> -->
+<!-- 										<span class="ui-button-icon-left ui-icon ui-c fa fa-print" /> -->
+<!-- 										<span class="ui-button-text">#{msg['print']}</span> -->
+<!-- 										<f:ajax execute="@form"></f:ajax> -->
+<!-- 									</h:outputLink> -->
+									
+									
+									<h:commandButton style="float:left;margin-left:3px;" value="طباعة "
+								immediate="true" styleClass="btn btn-primary"
+								onclick="this.form.target='_blank'"
+								action="#{extractProjectBean.printExtractReportAction}">
+							</h:commandButton>
+							
+							
+							
+					</h:panelGroup>
+
+
+
+					<div id="gridSystemModal" class="modal fade" tabindex="-1"
+						role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true"></span>
+									</button>
+									<h4 class="modal-title" id="gridModalLabel">اضافة شرح و
+										تاكيد</h4>
+								</div>
+								<div class="modal-body">
+									<div class="container-fluid bd-example-row">
+										<br></br>
+
+										<div class="row">
+											<div class="col-md-3">
+												<h:outputLabel styleClass="btxt" value="توجيه المعاملة" />
+											</div>
+											<div class="col-md-7">
+
+												<h:selectOneMenu id="typ" styleClass="form-control"
+													value="#{extractProjectBean.applicationPurpose}" var="d"
+													style=" margin-left: 1px;">
+
+													<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+														itemValue="#{pp.idStr} "
+														value="#{extractProjectBean.wrkPurposes}" />
+												</h:selectOneMenu>
+
+
+											</div>
+
+										</div>
+										<br></br>
+										<div class="row ">
+											<div class="col-md-3">
+												<h:outputLabel styleClass="btxt" value=" الشرح  " />
+											</div>
+
+
+											<div class="col-md-7">
+												<h:inputTextarea
+													value="#{extractProjectBean.wrkAppComment}"
+													styleClass="form-control">
+												</h:inputTextarea>
+											</div>
+
+										</div>
+
+										<br></br>
+
+
+									</div>
+									<div class="modal-footer">
+										<h:commandButton value="موافق" styleClass="btn  btn-primary"
+											action="#{extractProjectBean.accept}" 
+											id="btnAcceptPopup"
+											onclick="test();"
+											
+										>
+
+											<p:ajax process="@form"></p:ajax>
+
+										</h:commandButton>
+										<button type="button" class="btn btn-green"
+											data-dismiss="modal">رجوع</button>
+
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<br></br>
+
+
+
+				</div>
+
+
+
+
+
+
+
+
+			</div>
+			<div class="col-md-2" style="float: left">
+				<h:commandButton value="رفض" rendered="false"
+					styleClass="btn  btn-primary">
+					<p:ajax process="@form" update="@form"
+						listener="#{extractProjectBean.refuse}"></p:ajax>
+
+				</h:commandButton>
+			</div>
+		</div>
+	</div>
+<script>
+  function test(){
+	 // alert("test");
+	// console.log("sdhdgfd")
+	  document.getElementById("btnAccept").style.display = "none";
+	  document.getElementById("includeform:btnAcceptPopup").disabled = true;
+  }
+</script>
+</h:body>
+</html>

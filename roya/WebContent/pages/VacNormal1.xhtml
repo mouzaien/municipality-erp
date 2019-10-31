@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+
+
+<ui:composition template="./WebTemplate.xhtml">
+
+
+
+	<ui:define name="content">
+
+
+
+		<p class="text-center">
+
+			<h:outputLabel
+				style="colour:rgba(9, 62, 6, 0.78); font-weight:bold; font-size:30px;"
+				value="اجازة اعتيادية">
+			</h:outputLabel>
+		</p>
+
+
+		<br> </br>
+		<div class="col-lg-12">
+
+
+			<div class="panel panel-primary"
+				style="border-color: rgb(150, 202, 66);">
+				<div class="panel-heading"
+					style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+					<h:outputLabel value="البيانات الشخصية"></h:outputLabel>
+				</div>
+
+
+
+				<div class="panel-body"
+					style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+
+					<div class="row">
+						<div class="col-md-6">
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="الاسم"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.currentUserName}"></h:outputLabel>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="جهة العمل"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.empvacobj.pdept}"></h:outputLabel>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="المرتبة"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.empvacobj.prank}"></h:outputLabel>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="الراتب الاساسى"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.empvacobj.pbascal}"></h:outputLabel>
+								</div>
+							</div>
+
+						</div>
+
+
+						<div class="col-md-6">
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value=" الرقم الوظيفى"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.empvacobj.empno}"></h:outputLabel>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value=" الوظيفة"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel value="#{employeeServiceBean.empvacobj.pjob}"></h:outputLabel>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value=" تاريخ اول تعيين"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel
+										value="#{employeeServiceBean.empvacobj.pfappldat}"></h:outputLabel>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="col-lg-12">
+
+			<div class="panel panel-primary"
+				style="border-color: rgb(150, 202, 66);">
+				<div class="panel-heading"
+					style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+					<h:outputLabel value="رصيد الاجازات"></h:outputLabel>
+				</div>
+
+				<div class="panel-body"
+					style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+					<div class="row">
+						<div class="col-md-6">
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="رصيد الاجازات منذ بدء التعين"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel
+										value="#{employeeServiceBean.empvacobj1.calc116}"></h:outputLabel>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="اجمالى الرصيد"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel
+										value="#{employeeServiceBean.empvacobj1.VACARESULT}"></h:outputLabel>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="اقصى اجازة مستحقه"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel id="MXVAC116"
+										value="#{employeeServiceBean.empvacobj1.mxvac116}"></h:outputLabel>
+								</div>
+							</div>
+
+
+
+						</div>
+
+
+						<div class="col-md-6">
+
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="جمله الاجازت التاريخيه"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel
+										value="#{employeeServiceBean.empvacobj1.allvacprd}"></h:outputLabel>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<h:outputLabel value="اجاملى ماتمتع به خلال  سنه"></h:outputLabel>
+								</div>
+
+								<div class="colmd-4">
+									<h:outputLabel id="VACSUM360"
+										value="#{employeeServiceBean.empvacobj1.VACSUM360}"></h:outputLabel>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h:form id="formvac">
+			<div class="col-lg-12">
+
+				<div class="panel panel-primary"
+					style="border-color: rgb(150, 202, 66);">
+					<div class="panel-heading"
+						style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+						<h:outputLabel value="بيانات  الاجازة"></h:outputLabel>
+					</div>
+
+					<div class="panel-body"
+						style="colour: rgba(9, 62, 6, 0.78); font-weight: bold; font-size: 13px;">
+						<div class="row">
+							<div class="col-md-6">
+
+								<div class="row">
+									<div class="col-md-5">
+										<h:outputLabel value="مدة الاجازة"></h:outputLabel>
+									</div>
+
+									<div class="colmd-4">
+										<h:inputText id="vacprd" value="#{employeeServiceBean.vacprd}">
+
+											<p:ajax event="blur"
+												update=":tempform:VACSUM360,:tempform:MXVAC116,VACEND,valvac,VACWRKFROM,VACWRKto,sal"
+												listener="#{employeeServiceBean.getdate}" />
+
+
+										</h:inputText>
+									</div>
+								</div>
+
+
+								<div class="row">
+
+									<div class="col-md-5">
+
+										<h:outputLabel value="تاريخ نهاية الاجازة"></h:outputLabel>
+									</div>
+
+
+									<div class="col-md-4">
+
+										<h:outputLabel id="VACEND"
+											value="#{employeeServiceBean.empvacobj3.VACAEND}"></h:outputLabel>
+									</div>
+
+
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<h:outputLabel value="صرف الراتب"></h:outputLabel>
+									</div>
+
+									<div class="colmd-4">
+										<h:outputLabel id="sal" value="#{employeeServiceBean.salary}"></h:outputLabel>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<h:outputLabel value="الى تاريخ"></h:outputLabel>
+									</div>
+
+									<div class="colmd-4">
+										<h:outputLabel id="VACWRKto"
+											value="#{employeeServiceBean.empvacobj2.VACWRKto}"></h:outputLabel>
+									</div>
+								</div>
+
+
+								<div class="row">
+									<div class="col-md-5">
+										<h:outputLabel value="تاريخ اخر اجازة"></h:outputLabel>
+									</div>
+
+									<div class="colmd-4">
+										<h:outputLabel
+											value="#{employeeServiceBean.empvacobj1.LSTVACDT}"></h:outputLabel>
+									</div>
+								</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							</div>
+
+							<div class="col-md-6">
+								<div class="row">
+
+									<div class="col-md-5">
+
+										<h:outputLabel value="تاريخ بدء الاجازة"></h:outputLabel>
+									</div>
+
+
+									<div class="col-md-4">
+
+										<h:inputText id="vacstrt"
+											value="#{employeeServiceBean.VACASTRT}">
+
+											<p:ajax event="blur" update="VACEND,VACWRKFROM,VACWRKto"
+												listener="#{employeeServiceBean.getValidate}">
+											</p:ajax>
+
+										</h:inputText>
+									</div>
+
+
+								</div>
+
+								<div class="row">
+
+									<div class="col-md-6">
+
+										<h:outputLabel value="القيمة المادية للاجازة"></h:outputLabel>
+									</div>
+
+
+									<div class="col-md-4">
+
+										<h:outputLabel id="valvac"
+											value="#{employeeServiceBean.empvacobj2.VACVAL}"></h:outputLabel>
+									</div>
+
+
+								</div>
+
+
+								<div class="row">
+
+									<div class="col-md-6">
+
+										<h:outputLabel value="عن خدمتة من تاريخ"></h:outputLabel>
+									</div>
+
+
+									<div class="col-md-4">
+
+										<h:outputLabel id="VACWRKFROM"
+											value="#{employeeServiceBean.empvacobj2.VACWRKFROM}"></h:outputLabel>
+									</div>
+
+
+								</div>
+
+
+								<div class="row">
+									<div class="col-md-5">
+										<h:outputLabel value="مدة اخر اجازة"></h:outputLabel>
+									</div>
+
+									<div class="colmd-4">
+										<h:outputLabel
+											value="#{employeeServiceBean.empvacobj1.LSTVACPRD}"></h:outputLabel>
+									</div>
+								</div>
+
+								<div class="row">
+
+									<div class="col-md-5">
+
+										<h:outputLabel value="عن الخدمة"></h:outputLabel>
+									</div>
+
+
+									<div class="col-md-4">
+
+										<h:outputLabel
+											value="#{employeeServiceBean.empvacobj1.LSTVACWRK}"></h:outputLabel>
+									</div>
+
+
+								</div>
+
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br></br>
+			<br></br>
+
+
+			<div class="text-right">
+				<p:commandButton value="ارسال  " icon="fa fa-paperclip" process="@this"
+					class="btn btn-default" action="#{employeeServiceBean.sendVac116}"  />
+
+
+				<p:commandButton value=" قبول  " style=" " icon="fa fa-paperclip" process="@this"
+					class="btn btn-default" action="#{employeeServiceBean.aceeptVac}" />
+
+
+				<p:commandButton value="الرجوع " icon="fa fa-mail-reply" process="@this"
+					class="btn btn-default" action="#{employeeServiceBean.goToHome}"/>
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

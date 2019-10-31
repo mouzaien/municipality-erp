@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+ <ui:define name="top">نقل معاملات المستخدمين</ui:define>
+            <ui:define name="content">
+                <h:form id="transferRecordsFormId">
+                    <p:growl autoUpdate="true" />
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                     
+                    <p:dialog widgetVar="statusDialog" modal="true" 
+                              draggable="false" closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage value="../images/loadingT.gif" />
+                    </p:dialog>
+                    <!--         SOURCE              -->
+                    <div class="container-fluid" style="border-bottom:1px solid #2a6496; ">
+                        <div class="row" style="padding: 6px;">
+                            <div class="col-md-2">
+                                <p:outputLabel value="أختر مصدر المعاملة" />
+                            </div>
+                            <div class="col-md-3">
+                                <p:selectOneMenu style="width: 100%" 
+                                                 filter="true" filterMatchMode="contains"
+                                                 required="true" requiredMessage="مصدر المعاملة مطلوب"
+                                                 value="#{transferRecordsBean.sourceSelectedUser}" id="sourceUser">
+                                    <f:selectItem itemLabel="أختر مصدر المعاملة" />
+                                    <f:selectItems value="#{transferRecordsBean.allUserMap}" />
+                                    <p:ajax event="change" process="@this" 
+                                            update=":tempform:transferRecordsFormId:Source_inbox_dt"
+                                            listener="#{transferRecordsBean.SourceUserListChangeEvent}" />
+
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="col-md-2">
+                                <p:outputLabel value="أختر مستقبل المعاملة" />
+                            </div>
+                            <div class="col-md-3">
+                                <p:selectOneMenu style="width: 100%" 
+                                                 required="true" requiredMessage="مستقبل المعاملة مطلوب"
+                                                 filter="true" filterMatchMode="contains"
+                                                 value="#{transferRecordsBean.targetSelectedUser}" id="TargetUser">
+                                    <f:selectItem itemLabel="أختر مستقبل المعاملة" />
+                                    <f:selectItems value="#{transferRecordsBean.allUserMap}" />
+                                    <p:ajax event="change" process="@this"  update=":tempform:transferRecordsFormId:Target_inbox_dt" listener="#{transferRecordsBean.TargetUserListChangeEvent}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+
+                            <p:dataTable value="#{transferRecordsBean.sourcemails}" var="inboxitem" id="Source_inbox_dt"
+                                         rowKey="#{inboxitem.wrkId}" widgetVar="Source_inbox_dt"
+                                         selection="#{transferRecordsBean.selectedInboxs}" 
+                                         paginatorPosition="top"
+                                         lazy="true"
+
+                                         paginator="true" rows="12"
+                                         emptyMessage="لا يوجد معاملات "
+                                         rowIndexVar="rowIndex"
+
+                                         style="margin-bottom: 20px;font-size: medium;"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         >
+
+                                <p:column headerText="شـ " width="3%" >
+                                    #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkTotalSteps)}
+
+                                </p:column>
+                                <p:column headerText="مـ" width="3%" >
+                                    #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkAttachCount)}
+                                </p:column>
+                                <p:column style="white-space: nowrap;" headerText="المُرسل  " width="15%">
+                                    #{inboxitem.wrkSender}
+                                </p:column>
+                                <p:column headerText="التاريخ " width="8%">
+                                    <div style="font-size: 15px;direction: ltr;"> #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkHdate)}</div>
+                                </p:column>
+                                <p:column headerText="التوقيت " width="7%">
+
+                                    <div style="font-size: 16px;"> #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkCreateTime)}</div> 
+                                </p:column>
+                                <p:column style="white-space: nowrap;" width="40%"   headerText="الموضوع "  >
+
+                                    <div id="read-icon" class="fa  fa-check" style="font-size: 14px; display:#{inboxitem.isRead == 1 ? '':'none'};"/> #{inboxitem.appTitle} 
+
+                                    <p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" trackMouse="true" hideEffect="fade"
+                                               value="This is row number #{rowIndex}" style="font-size: medium;direction: rtl;max-width: 500px;" >
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel value="الموضوع" style="color: #045491"/>
+                                            <p:outputLabel value="#{inboxitem.appTitle}" />
+                                            <p:outputLabel value="التوجية" style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.purpose}" />
+                                            <p:outputLabel value="عدد المرفقات " style="color: #045491" />
+                                            <p:outputLabel value="#{InboxBean.da.convertTextWithArNumric(inboxitem.wrkAttachCount)}" />
+                                            <p:outputLabel value=" الخطاب ؟"  style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+                                        </h:panelGrid>
+                                        <p:outputLabel value="#{inboxitem.firstComment}" />
+                                    </p:tooltip> 
+                                </p:column>
+                                <p:column style="white-space: nowrap;text-align: center;" headerText="الوارد " width="9%" >
+
+                                    <div style="font-size: 18px;">
+                                        <div class="fa    fa-pencil" style="font-size: 14px; display:#{inboxitem.hasComment == 1 ? '':'none'};"/> 
+                                        #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkIncomeNo)}</div>
+                                </p:column>
+                                <p:column selectionMode="multiple" width="5%" style="text-align:center"/>
+                            </p:dataTable>
+
+
+
+                        </div>
+                    </div>
+
+
+                    <!--         TARGET              -->
+                    <div class="container-fluid">
+                        <div class="row" style="padding: 6px; ">
+                            <div class="col-md-6">
+                                <p:inputText id="reasonIT" value="#{transferRecordsBean.actionReason}" required="true"
+                                             requiredMessage="سبب الحركة مطلوب" placeholder="أدخل سبب الحركة "
+                                             style="width: 100%" 
+                                             />
+                            </div>
+                            <div class="col-md-3" >
+                                <p:commandButton value="نقل المعاملات المحدده" style="width: 100%"
+                                                 icon="fa fa-exchange" 
+                                                 action="#{transferRecordsBean.transferBtnAction(actionEvent)}"
+                                                 process="@this,:tempform:transferRecordsFormId:Source_inbox_dt,
+                                                 :tempform:transferRecordsFormId:sourceUser,
+                                                 :tempform:transferRecordsFormId:TargetUser,
+                                                 :tempform:transferRecordsFormId:reasonIT
+                                                 "
+                                                 update=":tempform:transferRecordsFormId:Target_inbox_dt"
+                                                 />
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <p:dataTable value="#{transferRecordsBean.targetmails}" var="inboxitem" id="Target_inbox_dt"
+                                         rowKey="#{inboxitem.wrkId}" widgetVar="Source_inbox_dt"
+
+                                         paginatorPosition="top"
+                                         lazy="true"
+
+                                         paginator="true" rows="12"
+                                         emptyMessage="لا يوجد معاملات "
+                                         rowIndexVar="rowIndex"
+
+                                         style="margin-bottom: 20px;font-size: medium;"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         >
+
+                                <p:column headerText="شـ " width="3%" >
+                                    #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkTotalSteps)}
+
+                                </p:column>
+                                <p:column headerText="مـ" width="3%" >
+                                    #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkAttachCount)}
+                                </p:column>
+                                <p:column style="white-space: nowrap;" headerText="المُرسل  " width="15%">
+                                    #{inboxitem.wrkSender}
+                                </p:column>
+                                <p:column headerText="التاريخ " width="8%">
+                                    <div style="font-size: 15px;direction: ltr;"> #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkHdate)}</div>
+                                </p:column>
+                                <p:column headerText="التوقيت " width="7%">
+
+                                    <div style="font-size: 16px;"> #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkCreateTime)}</div> 
+                                </p:column>
+                                <p:column style="white-space: nowrap;" width="40%"   headerText="الموضوع "  >
+
+                                    <div id="read-icon" class="fa  fa-check" style="font-size: 14px; display:#{inboxitem.isRead == 1 ? '':'none'};"/> #{inboxitem.appTitle} 
+
+                                    <p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])" trackMouse="true" hideEffect="fade"
+                                               value="This is row number #{rowIndex}" style="font-size: medium;direction: rtl;max-width: 500px;" >
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel value="الموضوع" style="color: #045491"/>
+                                            <p:outputLabel value="#{inboxitem.appTitle}" />
+                                            <p:outputLabel value="التوجية" style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.purpose}" />
+                                            <p:outputLabel value="عدد المرفقات " style="color: #045491" />
+                                            <p:outputLabel value="#{InboxBean.da.convertTextWithArNumric(inboxitem.wrkAttachCount)}" />
+                                            <p:outputLabel value=" الخطاب ؟"  style="color: #045491" />
+                                            <p:outputLabel value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+                                        </h:panelGrid>
+                                        <p:outputLabel value="#{inboxitem.firstComment}" />
+                                    </p:tooltip> 
+                                </p:column>
+                                <p:column style="white-space: nowrap;text-align: center;" headerText="الوارد " width="9%" >
+
+                                    <div style="font-size: 18px;">
+                                        <div class="fa    fa-pencil" style="font-size: 14px; display:#{inboxitem.hasComment == 1 ? '':'none'};"/> 
+                                        #{InboxBean.da.convertTextWithArNumric(inboxitem.wrkIncomeNo)}</div>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                                    
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:body>
+			<h:form id="overtime">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer">
+					<h:panelGroup id="buttons">
+
+						<p:commandButton id="btnPrint" icon="ui-icon-print"
+							styleClass="purple-btn" action="#{hrsOverTime.printReportAction}"
+							value="طباعة">
+							<!-- rendered="#{hrsOverTime.cantPrint}" -->
+						</p:commandButton>
+
+						<p:spacer width="10px" height="10px"></p:spacer>
+
+						<p:commandButton value="تنفيذ" id="save" styleClass="cyan-btn"
+							update="overtime,btnPrint" icon="ui-icon-check"
+							process="@this,frommonths,tomonths,empssort,pyear"
+							actionListener="#{hrsOverTime.retriveOverTime}">
+						</p:commandButton>
+
+					</h:panelGroup>
+				</div>
+				<br />
+
+				<div class="card card-w-title" dir="rtl">
+
+					<div>
+						<h1 style="color: #7CB342; text-align: center;">
+							#{msg['over.time.search']}<span class="fa fa-fw fa-clock-o"></span>
+
+						</h1>
+						<div>
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="من شهر"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:selectOneMenu id="frommonths"
+										value="#{hrsOverTime.frommonth}">
+										<f:selectItem itemLabel="اختر الشهر" itemValue="" />
+										<f:selectItems value="#{hrsSalaryBean.listMonth}" var="months"
+											itemLabel="#{months.nameGr} #{months.id}"
+											itemValue="#{months.id}" />
+										<f:selectItem itemLabel="اجازه عيد الفطر" itemValue="13"></f:selectItem>
+										<f:selectItem itemLabel="اجازه عيد الاضحى" itemValue="14"></f:selectItem>
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="إلى شهر"></h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:selectOneMenu id="tomonths" value="#{hrsOverTime.tomonth}">
+										<f:selectItem itemLabel="اختر الشهر" itemValue="" />
+										<f:selectItems value="#{hrsSalaryBean.listMonth}" var="months"
+											itemLabel="#{months.nameGr} #{months.id}"
+											itemValue="#{months.id}" />
+										<f:selectItem itemLabel="اجازه عيد الفطر" itemValue="13"></f:selectItem>
+										<f:selectItem itemLabel="اجازه عيد الاضحى" itemValue="14"></f:selectItem>
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-1">
+									<h:outputLabel value="السنه">
+									</h:outputLabel>
+								</div>
+								<div class="ui-g-12 ui-md-6 ui-lg-2">
+									<p:inputNumber id="pyear" maxlength="4" decimalPlaces="0"
+										maxValue="3000" style="width:75px"
+										value="#{hrsOverTime.pyear}"></p:inputNumber>
+								</div>
+
+							</div>
+							<!-- 							<div class="ui-g"> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:outputLabel value="من شهر"></p:outputLabel> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:selectOneMenu id="frommonths" -->
+							<!-- 										value="#{hrsOverTime.frommonth}"> -->
+							<!-- 										<f:selectItem itemLabel="من شهر" itemValue="" /> -->
+							<!-- 										<f:selectItems value="#{hrsOverTime.listMonth}" var="fmonth" -->
+							<!-- 											itemLabel="#{fmonth.nameAr} #{fmonth.id}" -->
+							<!-- 											itemValue="#{fmonth.id}" /> -->
+							<!-- 										<f:selectItem itemLabel="اجازه عيد الفطر" itemValue="13"></f:selectItem> -->
+							<!-- 										<f:selectItem itemLabel="اجازه عيد الاضحى" itemValue="14"></f:selectItem> -->
+							<!-- 									</p:selectOneMenu> -->
+							<!-- 								</div> -->
+
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:outputLabel value="إلى شهر"></p:outputLabel> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:selectOneMenu id="tomonths" value="#{hrsOverTime.tomonth}"> -->
+							<!-- 										<f:selectItem itemLabel="إلى شهر" itemValue="" /> -->
+							<!-- 										<f:selectItems value="#{hrsOverTime.listMonth}" var="tmonth" -->
+							<!-- 											itemLabel="#{tmonth.nameAr} #{tmonth.id}" -->
+							<!-- 											itemValue="#{tmonth.id}" /> -->
+							<!-- 										<f:selectItem itemLabel="اجازه عيد الفطر" itemValue="13"></f:selectItem> -->
+							<!-- 										<f:selectItem itemLabel="اجازه عيد الاضحى" itemValue="14"></f:selectItem> -->
+							<!-- 									</p:selectOneMenu> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:outputLabel value="السنه"> -->
+							<!-- 									</p:outputLabel> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:inputText id="pyear" style="width:75px;align:center;" -->
+							<!-- 										value="#{hrsOverTime.pyear}"></p:inputText> -->
+							<!-- 								</div> -->
+							<!-- 							</div> -->
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="تصنيف الموظف"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="empssort" value="#{hrsOverTime.catid}">
+										<f:selectItem itemLabel="اختر التصنيف" itemValue="" />
+										<f:selectItems value="#{hrsOverTime.listCategory}"
+											var="category" itemLabel="#{category.categoryName}"
+											itemValue="#{category.id}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="نوع الطباعة"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu value="#{hrsOverTime.numReport}">
+										<!-- rendered="#{hrsOverTime.cantPrint}" -->
+										<f:selectItem itemLabel="طباعة المسير" itemValue="1" />
+										<f:selectItem itemLabel="طباعة البيان" itemValue="2" />
+									</p:selectOneMenu>
+
+								</div>
+							</div>
+
+
+
+							<br />
+
+
+							<p:dataTable value="#{hrsOverTime.listovertime}" var="car"
+								excel="true" csv="true" pdf="true" columnVisibility="true"
+								copy="true" print="true" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								paginator="true" emptyMessage="لايوجد بيانات">
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.transMoney}" headerText="بدل التنقل"
+									filterBy="#{car.transMoney}" filterMatchMode="contains" />
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.employeeNumber}" headerText="رقم الموظف"
+									filterBy="#{car.employeeNumber}" filterMatchMode="contains" />
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.normalHours}" headerText="ساعات عاديةس"
+									filterBy="#{car.normalHours}" filterMatchMode="contains" />
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.normalDays}" headerText="ايام عادية"
+									filterBy="#{car.normalDays}" filterMatchMode="contains" />
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.basicSalry}" headerText="الراتب الاساسي"
+									filterBy="#{car.basicSalry}" filterMatchMode="contains" />
+								<p:column style="white-space: nowrap;text-align: center;"
+									value="#{car.salary}" headerText="الراتب" />
+							</p:dataTable>
+
+
+
+
+
+							<!-- 							<div class="row"> -->
+							<!-- 								<div class="col-md-12"> -->
+							<!-- 									<p:dataTable id="ovtime" var="overTimSearch" dir="rtl" -->
+							<!-- 										value="#{hrsOverTime.listovertime}" editable="true" -->
+							<!-- 										widgetVar="cellovtim" -->
+							<!-- 										filteredValue="#{hrsOverTime.filterovtime}" rows="50" -->
+							<!-- 										paginator="true" paginatorPosition="bottom" -->
+							<!-- 										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"> -->
+							<!-- 										<f:facet name="header"> -->
+							<!-- 											<p:outputPanel> -->
+							<!-- 												<h:outputText value="ابحث فى كل الحقول:" /> -->
+							<!-- 												<p:inputText id="globalFilter" -->
+							<!-- 													onkeyup="PF('cellovtim').filter()" style="width:150px" -->
+							<!-- 													placeholder="كلمة البحث"> -->
+							<!-- 												</p:inputText> -->
+							<!-- 											</p:outputPanel> -->
+							<!-- 											<br /> -->
+							<!-- 										</f:facet> -->
+							<!-- 										<p:ajax event="rowEdit" update="ovtime" -->
+							<!-- 											listener="#{hrsOverTime.onRowEdit}" /> -->
+							<!-- 										<p:ajax event="rowEditCancel" update="ovtime" -->
+							<!-- 											listener="#{hrsOverTime.onRowCancel}" /> -->
+							<!-- 										<p:column headerText="الموظف" width="20%" -->
+							<!-- 											filterBy="#{overTimSearch.empName}" -->
+							<!-- 											filterMatchMode="contains"> -->
+							<!-- 											<h:outputText id="empn" value="#{overTimSearch.empName}" -->
+							<!-- 												style="width:96%" /> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الموظف" width="10%" -->
+							<!-- 											filterBy="#{overTimSearch.jobDesc}" -->
+							<!-- 											filterMatchMode="contains"> -->
+							<!-- 											<h:outputText value="#{overTimSearch.jobDesc}" -->
+							<!-- 												style="width:96%" /> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="رقم الموظف" width="7%" -->
+							<!-- 											filterBy="#{overTimSearch.employeeNumber}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.employeeNumber}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="emps" -->
+							<!-- 														value="#{overTimSearch.employeeNumber}" style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الايام العادية " -->
+							<!-- 											filterBy="#{overTimSearch.normalDays}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.normalDays}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="ndays" value="#{overTimSearch.normalDays}" -->
+							<!-- 														style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الخميس والجمعه " -->
+							<!-- 											filterBy="#{overTimSearch.holidays}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.holidays}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="hday" value="#{overTimSearch.holidays}" -->
+							<!-- 														style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الاعياد" -->
+							<!-- 											filterBy="#{overTimSearch.feastDays}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.feastDays}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="fday" value="#{overTimSearch.feastDays}" -->
+							<!-- 														style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="ساعات العادى" -->
+							<!-- 											filterBy="#{overTimSearch.normalHours}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.normalHours}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="nhour" -->
+							<!-- 														value="#{overTimSearch.normalHours}" style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="ساعات الخميس والجمعه" -->
+							<!-- 											filterBy="#{overTimSearch.holidaysHours}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.holidaysHours}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="hhour" -->
+							<!-- 														value="#{overTimSearch.holidaysHours}" style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="ساعات الاعياد" -->
+							<!-- 											filterBy="#{overTimSearch.feastHours}"> -->
+							<!-- 											<p:cellEditor> -->
+							<!-- 												<f:facet name="output"> -->
+							<!-- 													<h:outputText value="#{overTimSearch.feastHours}" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 												<f:facet name="input"> -->
+							<!-- 													<p:inputText id="fhour" value="#{overTimSearch.feastHours}" -->
+							<!-- 														style="width:96%" /> -->
+							<!-- 												</f:facet> -->
+							<!-- 											</p:cellEditor> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الراتب الاساسي" width="6%" -->
+							<!-- 											filterBy="#{overTimSearch.basicSalry}" -->
+							<!-- 											filterMatchMode="contains"> -->
+							<!-- 											<h:outputText value="#{overTimSearch.basicSalry}" -->
+							<!-- 												style="width:96%" /> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="الاستحقاق" width="7%" -->
+							<!-- 											filterBy="#{overTimSearch.salary}" filterMatchMode="contains"> -->
+							<!-- 											<h:outputText value="#{overTimSearch.salary}"> -->
+							<!-- 											</h:outputText> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="بدل النقل" width="7%" -->
+							<!-- 											filterBy="#{overTimSearch.transMoney}" -->
+							<!-- 											filterMatchMode="contains"> -->
+							<!-- 											<h:outputText value="#{overTimSearch.transMoney}"> -->
+							<!-- 											</h:outputText> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column headerText="المجموع " width="7%" -->
+							<!-- 											filterBy="#{overTimSearch.total}"> -->
+							<!-- 											<h:outputText value="#{overTimSearch.total}"> -->
+							<!-- 											</h:outputText> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:column style="width:50px"> -->
+							<!-- 											<p:rowEditor /> -->
+							<!-- 										</p:column> -->
+							<!-- 										<p:columnGroup type="footer"> -->
+							<!-- 											<p:row> -->
+							<!-- 												<p:column colspan="10" style="text-align:left" -->
+							<!-- 													footerText="المجموع :" /> -->
+							<!-- 												<p:column footerText="#{hrsOverTime.strSumSalary}"> -->
+							<!-- 												</p:column> -->
+							<!-- 												<p:column footerText="#{hrsOverTime.strSummTrans}"> -->
+							<!-- 												</p:column> -->
+							<!-- 												<p:column footerText="#{hrsOverTime.strSummTotal}"> -->
+							<!-- 												</p:column> -->
+							<!-- 											</p:row> -->
+							<!-- 										</p:columnGroup> -->
+							<!-- 										<p:column width="5%" style="text-align:center" -->
+							<!-- 											headerText="#{msg['delete']}"> -->
+							<!-- 											<b:commandButton id="delete" immediate="true" -->
+							<!-- 												icon="glyphicon glyphicon-remove" look="danger" -->
+							<!-- 												update="@form" ajax="true" -->
+							<!-- 												actionListener="#{hrsOverTime.deleteUserOverTime(overTimSearch)}"> -->
+							<!-- 											</b:commandButton> -->
+							<!-- 										</p:column> -->
+							<!-- 									</p:dataTable> -->
+
+
+
+
+
+							<!-- 								</div> -->
+						</div>
+					</div>
+					<!-- 					</div> -->
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

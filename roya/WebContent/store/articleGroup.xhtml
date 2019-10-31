@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+<h:head>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/datatableCss4/js/jquery.dataTables.min.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/datatableCss4/js/dataTables.bootstrap.min.js"></script>
+	<!-- 	<link rel="apple-touch-icon" href="apple-touch-icon.png"></link> -->
+
+
+</h:head>
+<h:body>
+
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:growl id="msgs" showDetail="true" />
+
+
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="حفظ" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-save"
+						rendered="#{! articleGroupBean.newFlag}">
+
+						<f:ajax execute="@form" render="@form"
+							listener="#{articleGroupBean.addArticleGroup}"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+
+					<h1 style="color: #7CB342; text-align: center;">المجموعات
+						الرئيسية للمواد</h1>
+
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الاسم" />
+						</div>
+						<div class="ui-g-10">
+
+							<p:inputText id="name" required="true" class="form-control"
+								requiredMessage="ادخل الاسم"
+								value="#{articleGroupBean.articleGroup.name}"></p:inputText>
+
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الرمز" />
+						</div>
+
+						<div class="ui-g-10">
+
+							<p:inputText required="true" id="code" class="form-control"
+								requiredMessage="ادخل الرمز"
+								value="#{articleGroupBean.articleGroup.code}" />
+
+						</div>
+
+					</div>
+
+
+					<br />
+
+
+					<p:dataTable id="myTable" var="item"
+						value="#{articleGroupBean.articleGroups}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						widgetVar="cellemp" paginatorPosition="bottom" editable="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{articleGroupBean.filterArticleGroups}"
+						paginator="true" rows="12">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+
+						<p:ajax event="rowEdit" listener="#{articleGroupBean.onRowEdit}"
+							update=":includeform:msgs" />
+						<p:ajax event="rowEditCancel"
+							listener="#{articleGroupBean.onRowCancel}"
+							update=":includeform:msgs" />
+
+						<p:column headerText="الرقم" style="width: 5%">
+							<h:outputText value="#{rowIndex+1}" />
+						</p:column>
+						<p:column headerText="الأسم" style="width: 60%"
+							filterBy="#{item.name}" filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="nameInput" value="#{item.name}"
+										style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="الرمز" filterBy="#{item.code}"
+							filterMatchMode="contains" style="width: 10%">
+
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.code}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="codeInput" value="#{item.code}"
+										style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+
+
+						</p:column>
+						<p:column headerText="تعديل" style="width:5%">
+							<p:rowEditor />
+						</p:column>
+
+
+
+
+					</p:dataTable>
+
+
+
+				</div>
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

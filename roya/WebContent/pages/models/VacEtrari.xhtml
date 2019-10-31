@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+
+<h:body>
+
+	<p class="text-center">
+		<h:outputLabel styleClass="btxt"
+			style="font-weight:bold; font-size:30px;"
+			value="#{msg['forced.vacation.model']}">
+		</h:outputLabel>
+
+
+	</p>
+
+
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="col-lg-12"
+			style="background-color: white; border-top: 5px solid #428BCA">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">#{msg['request.data']}
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+
+
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="اجمالى ماتمتع به خلال سنه"
+									styleClass="btxt" />
+							</div>
+							<div class="col-md-3">
+								<h:outputLabel
+									value="#{mainManagedBean.mailExecutor.employeeVacation.usedForcedPeriod}"></h:outputLabel>
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="اقصى اجازة مستحقة" styleClass="btxt"></h:outputLabel>
+							</div>
+							<div class="col-md-3">
+								<h:outputLabel
+									value="#{mainManagedBean.mailExecutor.employeeVacation.remainForcedPeriod}"></h:outputLabel>
+							</div>
+						</div>
+						<br /> <br />
+						<div class="row">
+							<br></br>
+							<div class="col-md-2">
+								<p:outputLabel value="مدة الاجازة" styleClass="btxt"></p:outputLabel>
+							</div>
+							<div class="col-md-3">
+								<h:inputText id="vacprd" styleClass="form-control" converterMessage="#{msg['error.number']}"
+									value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}">
+									<p:ajax event="blur" update="vacendd" process="@this"
+										listener="#{mainManagedBean.mailExecutor.checkdate}">
+									</p:ajax>
+								</h:inputText>
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="تاريخ الاجازة" styleClass="btxt"></h:outputLabel>
+							</div>
+							<div class="col-md-3">
+
+								<h:panelGroup
+									rendered="#{!mainManagedBean.mailExecutor.readOnly}">
+									<h:inputText id="VACASTRT"
+										styleClass="form-control form-controlCal"
+										value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}">
+
+									</h:inputText>
+
+								</h:panelGroup>
+							</div>
+
+
+							<div class="col-md-2">
+								<h:commandButton id="calcDate"
+									value="#{msg['calcul.return.date']}" class="btn btn-primary"
+									style="font-size: 10px !important;margin-left: 5px;margin-right: 5px;display:none !important">
+									<f:ajax render="vacendd" execute="@form"
+										listener="#{mainManagedBean.mailExecutor.checkdate}">
+									</f:ajax>
+								</h:commandButton>
+							</div>
+
+						</div>
+						<br /> <br />
+						<div class="row">
+							<h:panelGroup id="vacendd">
+								<h:panelGroup
+									rendered="#{mainManagedBean.mailExecutor.vacanyEndDateFlag}">
+									<div class="col-md-2">
+										<p:outputLabel value="تاريخ الانتهاء" styleClass="btxt"></p:outputLabel>
+									</div>
+									<div class="col-md-3">
+										<h:outputLabel id="vacenddd"
+											value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationEnd}">
+										</h:outputLabel>
+									</div>
+
+								</h:panelGroup>
+							</h:panelGroup>
+						</div>
+
+						<h:commandButton value="#{msg['back']}" action="mails"
+							immediate="true"
+							style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							class="btn btn-primary">
+							<f:ajax execute="@this" />
+						</h:commandButton>
+						<h:commandButton value="#{msg['send']}" class="btn btn-primary"
+							style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+							action="#{mainManagedBean.saveAction}">
+							<f:ajax execute="@form" />
+						</h:commandButton>
+
+						<script type="text/javascript">
+							$(".form-controlCal").focus(function() {
+
+								$('.calendars-cmd-today ').html('اليوم');
+								$('.calendars-cmd-prev').html('السابق >');
+								$('.calendars-cmd-next').html(' > اللاحق ');
+								$('.calendars-ctrl').css('display', 'none');
+								$('.calendars-month').css('width', '244px');
+								$('.calendars-month').css('float', 'right');
+								$('.calendars').css('width', '245px');
+
+							});
+
+							$(".form-controlCal").calendarsPicker(
+									{
+										calendar : $.calendars
+												.instance('ummalqura'),
+										language : 'ar',
+										onSelect : function(date) {
+											document.getElementById(
+													'includeform:calcDate')
+													.click();
+										}
+									});
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+</h:body>
+</html>

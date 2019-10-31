@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+body {
+	margin: 0px;
+}
+</style>
+</h:head>
+<body>
+	<h:form id="etrarifrom">
+
+		<div class="container-fluid" style="font-size: 22px; !important;">
+
+
+			<div class="row" style="border-bottom: 2px solid #E9E9E9;">
+				<div class="row"
+					style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+					<div class="col-md-7 col-sm-7">
+						<p:outputLabel value="الاسم"></p:outputLabel>
+						&nbsp;&nbsp;
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.naame}"></p:outputLabel>
+					</div>
+
+					<div class="col-md-5 col-sm-5">
+						<p:outputLabel value="الرقم الوظيفي"></p:outputLabel>
+						&nbsp;&nbsp;
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.empno}"></p:outputLabel>
+					</div>
+
+				</div>
+
+				<div class="row"
+					style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+					<p:panelGrid columns="4" style=" width: 100%;">
+
+						<p:outputLabel value="الوظيفة">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.pjob}">
+						</p:outputLabel>
+						<p:outputLabel value="تاريخ اول تعين">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.pfappldat}">
+						</p:outputLabel>
+						<p:outputLabel value="القسم">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.pdept}">
+						</p:outputLabel>
+
+					</p:panelGrid>
+
+				</div>
+
+				<div class="row"
+					style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+					<p:panelGrid columns="4" style=" width: 100%;">
+						<p:outputLabel value="المرتبة">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.prank}">
+						</p:outputLabel>
+						<p:outputLabel value="الراتب الاساسى">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empvacobj.pbascal}">
+						</p:outputLabel>
+
+					</p:panelGrid>
+				</div>
+
+
+				<div class="row"
+					style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+					<p:panelGrid columns="4" style=" width: 100%;">
+						<p:outputLabel value="اجنالى ماتمتع به خلال السنه المالية">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empVacobj5.vac122}">
+						</p:outputLabel>
+						<p:outputLabel value="اقصى اجازه مستحقة">
+						</p:outputLabel>
+						<p:outputLabel value="#{employeeServiceBean.empVacobj5.vacmx122}">
+						</p:outputLabel>
+
+					</p:panelGrid>
+				</div>
+
+
+				<div class="row"
+					style="border-bottom: 2px solid #E9E9E9; font-size: 18px !important;">
+					<p:panelGrid columns="4" style=" width: 100%;">
+						<p:outputLabel value="مدة الاجازةة">
+						</p:outputLabel>
+						<p:inputText id="vacprdd" value="#{employeeServiceBean.vacprd}">
+							<p:ajax event="blur" listener="#{employeeServiceBean.vacprd}">
+							</p:ajax>
+						</p:inputText>
+
+						<p:outputLabel value="تاريخ الاجازة">
+						</p:outputLabel>
+						<p:inputText value="#{employeeServiceBean.VACASTRT}">
+
+							<p:ajax event="blur" update="vacendd" process="@this"
+								listener="#{employeeServiceBean.checkdate}">
+							</p:ajax>
+						</p:inputText>
+
+						<p:outputLabel value="تاريخ الانتهاء">
+						</p:outputLabel>
+						<p:outputLabel id="vacendd"
+							value="#{employeeServiceBean.empVacobj6.VACAEND}">
+						</p:outputLabel>
+
+					</p:panelGrid>
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<p:toolbar>
+
+			<f:facet name="left">
+				<p:commandButton value="رجوع" process="@this"
+					action="#{employeeServiceBean.goToHome}"
+					style="float: left;margin-bottom: 2px;" icon="fa fa-mail-reply"
+					class="btn btn-default">
+				</p:commandButton>
+			</f:facet>
+
+
+			<f:facet name="right">
+				<p:commandButton value="ارسال الاجازة" process="@this"
+					action="#{employeeServiceBean.sendvacEtrari()}"
+					style="float: right;margin-bottom: 2px;" icon="fa fa-paperclip"
+					class="btn btn-default"></p:commandButton>
+			</f:facet>
+			<f:facet name="right">
+				<p:commandButton value=" قبول الطلب "
+					style="float: right;margin-bottom: 2px;" icon="fa fa-paperclip"
+					class="btn btn-default" process="@this"
+					action="#{employeeServiceBean.aceeptVacEtrari()}">
+				</p:commandButton>
+
+			</f:facet>
+
+
+
+
+
+		</p:toolbar>
+
+
+	</h:form>
+
+
+</body>
+</html>

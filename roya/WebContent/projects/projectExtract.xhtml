@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
+
+<h:head>
+
+
+	<title>مستخلص</title>
+</h:head>
+
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="includeform">
+			<p:messages id="Msg" autoUpdate="true" closable="true" />
+			<div class="image-box-footer" align="left">
+				<p:commandButton value="حفظ"
+					rendered="#{!extractProjectBean.viewModeFlag}"
+					styleClass="btn  btn-primary">
+					<p:ajax process="@form" update="@form"
+						listener="#{extractProjectBean.save}"></p:ajax>
+				</p:commandButton>
+				<p:commandButton value="موافقة"
+					rendered="#{extractProjectBean.viewModeFlag}"
+					styleClass="btn  btn-primary">
+					<p:ajax process="@form" update="@form"
+						listener="#{extractProjectBean.accept}"></p:ajax>
+				</p:commandButton>
+				<p:commandButton value="رفض"
+					rendered="#{extractProjectBean.viewModeFlag}"
+					styleClass="btn  btn-primary">
+					<p:ajax process="@form" update="@form"
+						listener="#{extractProjectBean.refuse}"></p:ajax>
+				</p:commandButton>
+			</div>
+			<br></br>
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">إنشاء مستخلص</h1>
+				<div class="ui-g ">
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="    المشروع " />
+					</div>
+					<div class="ui-g-2">
+						<p:selectOneMenu rendered="#{!extractProjectBean.viewModeFlag}"
+							styleClass="form-control" id="num" required="true"
+							requiredMessage=" اختر المشروع"
+							validatorMessage=" بشكل صحيح  اختر المشروع"
+							value="#{extractProjectBean.projectNumber}">
+							<f:ajax render="mokawl" execute="num"
+								listener="#{extractProjectBean.updateContractOwners}"></f:ajax>
+							<f:selectItem itemLabel=" اختر المشروع" noSelectionOption="true"></f:selectItem>
+							<f:selectItems value="#{extractProjectBean.projects}" var="proj"
+								itemLabel="#{proj.name}" itemValue="#{proj.id}"></f:selectItems>
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.contract.project.name}" />
+					</div>
+
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value=" نسبة  الانجاز" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText styleClass="form-control"
+							rendered="#{! extractProjectBean.viewModeFlag}" required="true"
+							validatorMessage="ادخل ارقام فقط فى نسبة الانجاز."
+							value="#{extractProjectBean.projectExtract.finishPercentage}"
+							pt:placeholder="نسبة من المئة %"
+							requiredMessage="يجب إدخال نسبة الانجاز">
+							<f:validateRegex pattern="\d*(.\d+)?" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.finishPercentage}" />
+					</div>
+					<div class="ui-g-1" style="margin-right: -17px;">
+						<h:outputLabel rendered="false" style="font-size:xx-large"
+							value=" %" />
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="رقم المستخلص" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText rendered="#{!extractProjectBean.viewModeFlag}"
+							styleClass="form-control" required="true"
+							value="#{extractProjectBean.projectExtract.number}"
+							requiredMessage=" يجب إدخال  رقم المستخلص      ">
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.number}" />
+					</div>
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="موجه الى" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText styleClass="form-control"
+							rendered="#{!extractProjectBean.viewModeFlag}" required="true"
+							value="#{extractProjectBean.projectExtract.to}"
+							requiredMessage="يجب إدخال  موجه الى">
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.to}" />
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="اختر المقاول" />
+					</div>
+					<div class="ui-g-2">
+						<p:selectOneMenu rendered="#{!extractProjectBean.viewModeFlag}"
+							id="mokawl" required="false" requiredMessage=" اختر المقاول"
+							styleClass="form-control"
+							value="#{extractProjectBean.contractId}">
+							<f:selectItem itemLabel=" اختر المقاول" noSelectionOption="true"></f:selectItem>
+							<f:selectItems value="#{extractProjectBean.projectContracts}"
+								var="proj" itemLabel="#{proj.owner}" itemValue="#{proj.id}"></f:selectItems>
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.contract.owner}" />
+					</div>
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="  المدة المنقضية" />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText styleClass="form-control" required="true"
+							rendered="#{!extractProjectBean.viewModeFlag}"
+							pt:placeholder="نسبة من المئة %"
+							validatorMessage=" يجب إدخال      ارقام  فقط فى   نسبة المدة المنقضية "
+							value="#{extractProjectBean.projectExtract.spentTimePercentage}"
+							requiredMessage="        يجب إدخال       نسبة المدة المنقضية ">
+							<f:validateRegex pattern="\d*(.\d+)?" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.spentTimePercentage} %" />
+					</div>
+					<div class="ui-g-1" style="margin-right: -17px;">
+						<h:outputLabel style="font-size:xx-large" rendered="false"
+							value=" %" />
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value=" المبلغ المستحق " />
+					</div>
+					<div class="ui-g-2">
+						<p:inputText styleClass="form-control"
+							validatorMessage="يجب إدخال   فقط ارقام  فى  المبلغ المستحق    "
+							rendered="#{!extractProjectBean.viewModeFlag}" required="true"
+							pt:placeholder="ريال سعودى"
+							value="#{extractProjectBean.projectExtract.value}"
+							requiredMessage=" يجب إدخال  المبلغ المستحق    "
+							converterMessage="يجب إدخال   فقط ارقام  فى  المبلغ المستحق ">
+							<f:validateRegex pattern="\d*(.\d+)?" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<h:outputLabel rendered="#{extractProjectBean.viewModeFlag}"
+							value="#{extractProjectBean.projectExtract.value} ريال سعودى" />
+					</div>
+					<div class="ui-g-2" style="margin-right: -17px;">
+						<h:outputLabel style="font-size:large" rendered="false"
+							value="ريال سعودى" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

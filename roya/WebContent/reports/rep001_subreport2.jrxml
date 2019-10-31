@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep001_subreport2" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e4050fe9-b52b-4890-998c-4e912c752d07">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="sub_p1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from arc_records where id in
+(
+select min(app_id) from wrk_application where id = $P{sub_p1}
+)]]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="REC_ID" class="java.lang.String"/>
+	<field name="REC_G_DATE" class="java.sql.Timestamp"/>
+	<field name="REC_H_DATE" class="java.lang.String"/>
+	<field name="REC_TITLE" class="java.lang.String"/>
+	<field name="STRUCT_ID" class="java.math.BigDecimal"/>
+	<field name="CREATED_IN" class="java.sql.Timestamp"/>
+	<field name="CREATED_BY" class="java.math.BigDecimal"/>
+	<field name="APP_TYPE" class="java.math.BigDecimal"/>
+	<field name="INCOME_NO" class="java.lang.String"/>
+	<field name="INCOME_H_DATE" class="java.lang.String"/>
+	<field name="FILES_NO" class="java.math.BigDecimal"/>
+	<field name="LETTER_FROM" class="java.math.BigDecimal"/>
+	<field name="LETTER_TO" class="java.math.BigDecimal"/>
+	<field name="LETTER_FROM_NO" class="java.lang.String"/>
+	<field name="LETTER_FROM_DATE" class="java.lang.String"/>
+	<field name="PPL_ID" class="java.math.BigDecimal"/>
+	<field name="IS_IMPORTANT" class="java.math.BigDecimal"/>
+	<field name="INCOME_YEAR" class="java.math.BigDecimal"/>
+	<field name="NATIONAL_ID" class="java.lang.String"/>
+	<field name="LETTER_FROM_TYP" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="68" width="531" height="40" forecolor="#6A0202" uuid="877a47fe-1a90-47dc-abcc-4a616e944697"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REC_TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="44" width="137" height="20" uuid="e5b49990-5013-4478-919e-99f2567039d8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REC_H_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="24" width="137" height="20" uuid="1da9375a-473a-4aef-b22c-e4e0108cd887"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

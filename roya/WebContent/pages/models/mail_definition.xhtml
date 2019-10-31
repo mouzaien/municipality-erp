@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{mailDefenationBean.init}"></f:viewAction>
+	</f:metadata>
+
+
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:form id="includeform" enctype="multipart/form-data">
+			<div class="image-box-footer">
+				<h:panelGroup id="buttons">
+					<p:commandButton value="#{msg['add.comment']}" id="btn_comment"
+						icon="fa fa-folder-open" immediate="true"
+						rendered="#{!mailDefenationBean.recordHasComment and !mainManagedBean.mailExecutor.isModel}">
+						<p:ajax listener="#{mailDefenationBean.showCommentTab}"
+							update="buttons, dtata"></p:ajax>
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton styleClass="orange-btn ui-state-hover"
+						immediate="true" icon=" fa fa-archive"
+						action="#{mailDefenationBean.sendRecordToArchive}"
+						value="#{msg['archiving']}">
+						<p:ajax process="@this"></p:ajax>
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton value="#{msg['attach.transaction']}"
+						rendered="false" styleClass="cyan-btn" process="@this"
+						icon="fa fa-fw fa-chain"
+						action="#{mailDefenationBean.openLinkingDlg(ae)}" immediate="true">
+					</p:commandButton>
+				</h:panelGroup>
+				<ui:include src="/DWT_Scan_Upload_Demo.xhtml" />
+			</div>
+			<br></br>
+			<h:inputHidden styleClass="inputHidden"
+				value="#{mailDefenationBean.inputHiddenValue}"></h:inputHidden>
+			<div class="card card-w-title">
+
+				<h:panelGroup rendered="#{!mailDefenationBean.enableReturn}"
+					columns="1" columnClasses="ui-grid-col-8" layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+					<h1 class="page-header">
+						#{mailDefenationBean.selectedInbox.appTitle}</h1>
+				</h:panelGroup>
+
+				<p:panelGrid columns="2"
+					columnClasses="ui-grid-col-2,ui-grid-col-8," layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+
+
+					<h:panelGroup rendered="#{mailDefenationBean.enableReturn}">
+						<div class="row">
+							<div class="col-md-3">
+								<p:outputLabel styleClass="btxt" value="#{msg['observations']}" />
+							</div>
+							<div class="col-md-5">
+								<p:inputTextarea styleClass="form-control"
+									placeholder="#{msg['observations']}" id="notes"
+									value="#{mailDefenationBean.notes}" />
+							</div>
+							<p:commandButton value="#{msg['return.transaction']}"
+								action="#{mailDefenationBean.returnRequestAction}"
+								style="float: left; margin-bottom: 19px; margin-left: 3px"
+								styleClass="btn btn-primary" />
+						</div>
+					</h:panelGroup>
+
+				</p:panelGrid>
+				<h:panelGroup id="dtata" style="padding:0px">
+					<p:tabView id="trans_TV"
+						activeIndex="#{mailDefenationBean.tabActiveIndex}">
+
+						<p:tab title="#{msg['transaction.data']}">
+							<h:panelGrid style="width:100%">
+								<ui:include src="transaction_tab.xhtml" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{msg['attachments']}">
+							<h:panelGrid style="width:100%">
+								<ui:include src="attachment_tab.xhtml" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{msg['transfer']}"
+							rendered="#{!mainManagedBean.mailExecutor.isModel}">
+							<h:panelGrid style="width:100%">
+								<ui:include src="transfer_tab.xhtml" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab id="letter_tab" title="#{msg['comment.data']}"
+							rendered="#{(mailDefenationBean.recordHasComment and !mainManagedBean.mailExecutor.isModel) or mailDefenationBean.commRendred}">
+							<h:panelGrid id="letterPG" style="width:100%">
+								<ui:include src="letter_tab.xhtml" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{msg['model']}"
+							rendered="#{mainManagedBean.mailExecutor.isModel}">
+							<h:panelGrid style="width:100%">
+								<ui:include src="#{mainManagedBean.modelContent}" />
+							</h:panelGrid>
+						</p:tab>
+					</p:tabView>
+				</h:panelGroup>
+			</div>
+
+			<p:growl autoUpdate="true" showDetail="false" />
+			<h:inputHidden id="mylst" />
+		</h:form>
+		<p:dialog header="#{msg['attach.transaction']}" id="link-dlg-id"
+			widgetVar="link-dlg" modal="true">
+			<h:form>
+				<div class="container-fluid">
+					<div class="row" style="font-size: large !important;">
+						<div class="col-md-4">#{msg['outcome.number']}</div>
+						<div class="col-md-5 ">
+							<p:inputText id="old-income" style="width:100%"
+								value="#{mailDefenationBean.newIncomeNoRefered}" />
+						</div>
+						<div class="col-md-1">
+							<p:commandLink update="p-att-id"
+								action="#{mailDefenationBean.loadprvAttachament(ae)}"
+								process="@this,old-income">
+
+								<div class="fa fa-refresh" style="font-size: large;"></div>
+							</p:commandLink>
+						</div>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-5 ">
+							<p:dataTable id="p-att-id" var="atta"
+								emptyMessage="#{msg['no.attachments']}"
+								value="#{mailDefenationBean.previousAttachList}">
+								<p:column>
+									<div class="row" style="padding: 2px;">
+										<div class="fa fa-fa-paperclip"></div>
+										<h:outputLink target="_blank" value="#{atta.attachLink}">
+																#{msg['download.file']} 
+															</h:outputLink>
+									</div>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 "></div>
+						<div class="col-md-3 ">
+							<p:commandButton value="#{msg['attach.transaction']}"
+								process="@this,old-income"
+								action="#{mailDefenationBean.linkRecord(ae)}" style="width:100%"></p:commandButton>
+						</div>
+					</div>
+				</div>
+				<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+					<f:facet name="start">#{msg['downloading']} 
+					<img
+							src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif"></img>
+					</f:facet>
+				</p:ajaxStatus>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>

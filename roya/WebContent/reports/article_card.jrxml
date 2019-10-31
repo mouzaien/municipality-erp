@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="300" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="752dc002-b410-4732-a584-4d1b8d13417d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebContent\reports\DataAdapter.xml"/>
+	<parameter name="item_Id" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.tr, A.NAME , art.id,art.code, art.name ART_NAME,nvl(A.qty,0) qty,SPECIAL_NO,a.datetransaction,unit.ITEMUNITNAME
+from
+article art,TDR_ITEMUNIT unit,
+(
+  
+    --input
+    select 2 tr, FIN_ENTITY.RELATEDENTITYNAME NAME, indetails.ARTICLE_ID artId ,
+    nvl(inMaster.STOCK_FIN_ENTRY_NO,-1)SPECIAL_NO,nvl(indetails.QTY,0)qty,
+    to_char(inMaster.STOCK_FIN_ENTRY_GDATE,'dd/mm/yyyy','nls_calendar=''arabic hijrah''')datetransaction
+  
+    FROM WHS_STOCK_ENTRY_MASTER inMaster,WHS_STOCK_IN_DETAILS indetails ,FIN_ENTITY
+    where inMaster.ID= indetails.STOCKMASTER_IN 
+    AND  FIN_ENTITY.RELATEDENTITYID = inMaster.STOCK_SUPPLIER_ID
+    and  indetails.ARTICLE_ID = $P{item_Id} and inMASTER.STOCKENTRYSTATUS = 'Y'
+    --group by indetails.ARTICLE_ID
+
+union
+--ensemble des output
+   select 3 tr,  FNAME NAME ,exdetails.itemId artID ,nvl(exMaster.SERIALNUMBER,-1)SPECIAL_NO,nvl(exdetails.INIT_COUNT,0) qty, exMaster.INV_G_R_DATE datetransaction
+    FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails, ARC_USERS US,
+      (select distinct s.doc_id id from arc_records r, hrs_signs s,
+    tdr_inv_gnrl_req rq where  rq.INV_G_R_NO = doc_id
+    and r.id = s.arc_record_id 
+    and r.app_type = 237 -- app_type (sarf,....)
+    and s.sign_step_id = 1
+    )ids
+    where exMaster.INV_G_R_NO= exdetails.INV_G_R_NO
+    AND exMaster.USERID= US.USER_ID
+    and ids.id = exdetails.INV_G_R_NO     
+    and exdetails.itemId = $P{item_Id} and EXMASTER.ACCEPT_Y_N = 'Y'
+   -- group by exdetails.itemId
+
+)A
+where
+  art.id  = A.artId AND art.ITEM_UNITE_ID = unit.ITEMUNITID
+  ORDER BY a.datetransaction]]>
+	</queryString>
+	<field name="NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="A.NAME"/>
+	</field>
+	<field name="tr" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tr"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+	</field>
+	<field name="code" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+	</field>
+	<field name="art_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="art.name"/>
+	</field>
+	<field name="qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="qty"/>
+	</field>
+	<field name="SPECIAL_NO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="SPECIAL_NO"/>
+	</field>
+	<field name="datetransaction" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="datetransaction"/>
+	</field>
+	<field name="ITEMUNITNAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ITEMUNITNAME"/>
+	</field>
+	<variable name="QTY_IN" class="java.lang.String">
+		<variableExpression><![CDATA[IF($F{tr}.equals( 2 ),""+$F{qty},"ـــــ")]]></variableExpression>
+	</variable>
+	<variable name="QTY_OUT" class="java.lang.String">
+		<variableExpression><![CDATA[IF($F{tr}.equals( 3 ),""+$F{qty},"ـــــ" )]]></variableExpression>
+	</variable>
+	<variable name="NAME_FROM" class="java.lang.String">
+		<variableExpression><![CDATA[IF($F{tr}.equals( 2 ),$F{NAME},"ـــــ")]]></variableExpression>
+	</variable>
+	<variable name="NAME_TO" class="java.lang.String">
+		<variableExpression><![CDATA[IF($F{tr}.equals( 3 ),$F{NAME},"ـــــ")]]></variableExpression>
+	</variable>
+	<pageHeader>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement x="500" y="82" width="300" height="20" uuid="7bbafb21-a9a5-4d3d-ad0f-ced3237b6270"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[رقم الصنف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="82" width="110" height="20" uuid="9dad1304-c0ce-4832-abaa-6896dfb1a2cf"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[رقم القطعة ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="82" width="260" height="20" uuid="7217a34d-8332-44ec-91c9-ed83807b6abc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[اسم الصنف ووصفه]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="82" width="130" height="20" uuid="dada4294-a530-4312-8a34-d62f449ecdce"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[الوحدة]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="500" y="102" width="300" height="30" uuid="005f89c2-3be1-4c54-9a19-9cb2731f02f7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="390" y="102" width="110" height="30" uuid="69edb49d-37b7-49b4-b2f4-d689432af7d2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			</textField>
+			<textField>
+				<reportElement x="130" y="102" width="260" height="30" uuid="74413444-ba71-4e00-b8b2-f8c9c68ff9e6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{art_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="102" width="130" height="30" uuid="2f174b0c-acce-42c5-9bc4-6399f2b3f646"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ITEMUNITNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="680" y="4" width="120" height="15" uuid="465e56eb-a149-437f-89f0-d831c2ca1e49"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[المملكة العربية السعودية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="19" width="120" height="15" uuid="a140d0df-7150-47f9-9afb-dd268d3b4257"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="34" width="120" height="15" uuid="6752872a-cca9-4e99-865b-e4142127fbc4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[ادارة المستودعات بلدية المذنب]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="49" width="50" height="15" uuid="51b8ae9b-7271-4a55-b054-30acdc9d8662"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[مستودع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="64" width="50" height="15" uuid="36f76358-7be3-4a4c-9832-811124ae8866"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[موقع الصنف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="27" width="140" height="30" uuid="beaf231f-f34e-4e67-8f15-4191a16f90e3"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[بطاقة صنف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="120" height="20" uuid="5856477d-df60-4efc-a1bd-d90e9cdc3b0c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[الحد الأعلى :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="120" height="20" uuid="82143f4a-2b1a-479c-a44d-f4c6e24a2fe2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[حد الطـــلب :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="120" height="20" uuid="75a58301-c5cd-4f63-8bf6-f4d99b8a06c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[الحد الأدنـى :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="3" width="82" height="15" uuid="527a4b93-26ab-4313-b9a2-c0c829536555">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("نموذج رقم ( "+4+" ) ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="730" y="0" width="70" height="20" uuid="91c70d88-b7fe-4cd7-ae7b-112c674644c2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[التاريخ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="0" width="100" height="20" uuid="ed0e6249-2894-40dd-babb-52d9d0470a2f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[رقم المستند]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="130" height="20" uuid="9af572bf-517e-4e62-8421-9b9656978e7d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[المصدر]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="110" height="20" uuid="ec3c324b-cacf-4c0c-892d-3c218fb036bc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[الوارد]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="130" height="20" uuid="25c1fbc5-e55b-4136-8a93-d7dde9e14311"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[المنصرف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="130" height="20" uuid="6247e2c7-59af-423d-8783-cb10acb90dd6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[الرصيد]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" uuid="3c3e4197-2ac0-46b8-ae19-67e959892faa"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[الجهة المنصرف لها]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="260" y="0" width="130" height="20" uuid="5f2f9f3e-73f7-47bc-9b8c-cc4630b2d074"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{QTY_OUT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="130" height="20" uuid="137c50b3-13f3-4d7f-bed0-ab61c957ca4b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="110" height="20" uuid="72ea1fb8-2507-40bc-892c-fdd42285e113"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{QTY_IN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="130" height="20" uuid="790b472c-5fc7-4a6b-98d7-5dcb5ce5acc6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{NAME_FROM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="630" y="0" width="100" height="20" uuid="27f189e0-550a-4c4f-ac97-2968dedcd23c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SPECIAL_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="130" height="20" uuid="5b7b56e3-d85d-44a1-8a8d-610aad253cf3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{NAME_TO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="730" y="0" width="70" height="20" uuid="36f5314b-452d-4f9b-bf71-e231f5987346"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datetransaction}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="270" y="0" width="69" height="20" uuid="3d7a470a-496e-45dc-8d29-2a498715128c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[اسم الصنف ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="710" y="0" width="90" height="20" uuid="e14f5090-5307-4faa-837a-aa37918d153c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[رقم الصنف ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="29" height="20" uuid="1e40f731-9b3e-4ece-9ec8-362d86b59f17"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[(بعده)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="560" y="0" width="150" height="20" uuid="d8860d2d-474d-452c-824f-54e3c27f52b6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="0" width="240" height="20" uuid="1580a35a-7c99-40e5-8852-96d9007eb688"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{art_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

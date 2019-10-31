@@ -1,0 +1,724 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+<h:head>
+
+
+	<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css">
+	</link>
+	<!-- <script type="text/javascript" -->
+	<!-- 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+</h:head>
+<h:body>
+	<h:form id="includeform">
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+
+
+		<div class="image-box-footer">
+			<p:commandButton styleClass="btn btn-danger" value="انهاء ">
+				<f:ajax execute="@form" listener="#{chargingBean2.finishCharging}"
+					render="@form"></f:ajax>
+			</p:commandButton>
+			<p:spacer width="10" height="10"></p:spacer>
+			<p:commandButton styleClass="btn btn-danger" value="تفعيل ">
+
+				<f:ajax execute="@form" listener="#{chargingBean2.finishCharging}"
+					render="@form"></f:ajax>
+			</p:commandButton>
+			<p:spacer width="10" height="10"></p:spacer>
+<!-- 			<p:commandButton value="جديد" -->
+<!-- 				styleClass="btn btn-primary"> -->
+
+<!-- 				<f:ajax execute="@form" render="@form" immediate="true" -->
+<!-- 					listener="#{chargingBean2.newCharging}"></f:ajax> -->
+<!-- 			</p:commandButton> -->
+			<p:spacer width="10" height="10"></p:spacer>
+			<p:commandButton value="حفظ" styleClass="btn btn-primary"
+				rendered="#{! chargingBean2.newFlag}">
+
+				<f:ajax execute="@form" render="@form"
+					listener="#{chargingBean2.addCharging}"></f:ajax>
+			</p:commandButton>
+		</div>
+		<br></br>
+
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				تكليف موظف <span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+
+
+			<div class="ui-g" dir="rtl">
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel styleClass="btxt" value="الموظف  الغير متواجد" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:selectOneMenu id="list1" filter="true" required="true"
+						requiredMessage="يرجى اختيار الموظف الغير متواجد"
+						styleClass="form-control" filterMatchMode="contains"
+						value="#{chargingBean2.charging.employeeOutChargingId}">
+						<!-- 						<f:ajax render="userNameDuring priv" execute="list" -->
+						<!-- 							partialSubmit="list" event="blur" -->
+						<!-- 							listener="#{chargingBean2.updateNameAfterChoiseEmp}" /> -->
+						<f:selectItem itemLabel="اختر الموظف الغير متواجد" itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{chargingBean2.employeeMap}" />
+					</p:selectOneMenu>
+
+				</div>
+
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel styleClass="btxt" value="الموظف  المراد تكليفه" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:selectOneMenu id="list2" filter="true" required="true"
+						requiredMessage="يرجى اختيار الموظف المراد تكليفه "
+						styleClass="form-control" filterMatchMode="contains"
+						value="#{chargingBean2.charging.employeInChargingId}">
+
+						<f:selectItem itemLabel="اختر الموظف المراد تكليفه" itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{chargingBean2.employeeMap}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-12 ui-md-1">
+
+					<p:outputLabel styleClass="btxt" value="المسمى  اثناء تكليفه" />
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:inputText id="userNameDuring" required="true"
+						requiredMessage="يرجى ادخال  المسمى اثناء  التكليف"
+						disabled="#{chargingBean2.newFlag}"
+						value="#{chargingBean2.charging.employeInChargingNameAfter}"
+						styleClass="form-control" />
+
+				</div>
+			</div>
+			<div class="ui-g" dir="rtl">
+				<!-- 				<div class="ui-g-12 ui-md-2"> -->
+				<!-- 					<p:outputLabel styleClass="btxt" value="الصلاحية اثناء تكليفه" /> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="ui-g-12 ui-md-2"> -->
+				<!-- 					<p:selectOneMenu filter="true" id="priv" required="true" -->
+				<!-- 						requiredMessage="يرجى ادخال  الصلاحية اثناء  التكليف" -->
+				<!-- 						styleClass="form-control" filterMatchMode="contains" -->
+				<!-- 						disabled="#{chargingBean2.newFlag}" -->
+				<!-- 						value="#{chargingBean2.charging.chargingEmpPrivilegeAfter}"> -->
+
+
+				<!-- 						<f:selectItems value="#{chargingBean2.roles}" var="role" -->
+				<!-- 							itemLabel="#{role.roleName}" itemValue="#{role.id}" /> -->
+				<!-- 					</p:selectOneMenu> -->
+
+
+				<!-- 				</div> -->
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel styleClass="btxt" value="  حالة التكليف" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:selectOneMenu styleClass="form-control" disabled="true"
+						value="#{chargingBean2.charging.chargingStatus}">
+						<f:selectItem itemDisabled="true" noSelectionOption="true"
+							itemLabel="سيتم تحديد الحالة اوتوماتيكيا  " />
+						<f:selectItem itemValue="1" itemLabel="فعال" />
+						<f:selectItem itemValue="0" itemLabel="غير مفعل" />
+						<f:selectItem itemValue="2" itemLabel="لم يفعل بعد" />
+					</p:selectOneMenu>
+
+				</div>
+			</div>
+
+
+
+			<div class="ui-g" dir="rtl">
+				<div class="ui-g-12 ui-md-2">
+					<h:outputLabel styleClass="btxt" value="تاريخ بداية التكليف" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<ui:include src="/shared/calender.xhtml"></ui:include>
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<h:outputLabel styleClass="btxt" value="تاريخ نهاية التكليف" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<!-- 					<p:inputText name="endDate" id="endDate"></p:inputText> -->
+					<input type="text" class="inputCal" name="endDate" id="endDate" />
+					<script type="text/javascript">
+						$("#endDate").focus(function() {
+
+							$('.calendars-cmd-today ').html('اليوم');
+							$('.calendars-cmd-prev').html('السابق >');
+							$('.calendars-cmd-next').html(' اللاحق');
+							$('.calendars-ctrl').css('display', 'none');
+							$('.calendars-month').css('width', '244px');
+							$('.calendars-month').css('float', 'right');
+							$('.calendars').css('width', '245px');
+
+						});
+
+						$("#endDate").calendarsPicker({
+							calendar : $.calendars.instance('ummalqura'),
+							language : 'ar'
+						});
+					</script>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: right:;">
+				عرض التكاليف <span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+			<p:dataTable var="charg" id="outboxdt"
+				value="#{chargingBean2.charges}" emptyMessage="لايوجد بيانات"
+				rowIndexVar="rowOutIndex" paginatorPosition="bottom"
+				widgetVar="outfineset"
+				filteredValue="#{hargingBean2.filtredCharges}"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				paginator="true" rows="10">
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+							onkeyup="PF('outfineset').filter()"
+							style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+					<br />
+				</f:facet>
+
+				<p:column style="text-align: center;" headerText="رقم " width="3%">
+                                   #{rowOutIndex +1}
+                                </p:column>
+				<p:column style="white-space: nowrap;" headerText="الموظف المكلف"
+					filterBy="#{charg.employeInChargingNameBefore}"
+					filterMatchMode="contains" width="20%">									
+										#{charg.employeInChargingNameBefore}
+									</p:column>
+				<p:column width="58%" style="text-align:right"
+					headerText="المسمى أثناء التكليف"
+					filterBy="#{charg.employeInChargingNameAfter}"
+					filterMatchMode="contains">
+					<h:outputText value="#{charg.employeInChargingNameAfter}" />
+				</p:column>
+				<p:column headerText="الحالة"
+					style="white-space: nowrap;text-align: center;color: #{charg.chargingStatus eq 2 ?'':'red'}"
+					width="10%;" filterBy="#{charg.chargingStatus}"
+					filterMatchMode="contains">										
+										#{charg.chargingStatus eq 2 ?' لم يفعل بعد':' فعال'}							
+									</p:column>
+				<p:column headerText="عرض"
+					style="white-space: nowrap;text-align: center;" width="5%"
+					filterBy="#{comLeaveitem.taken}" filterMatchMode="contains">
+					<p:commandButton id="xx" styleClass="btn btn-success" value="عرض">
+						<f:setPropertyActionListener value="#{charg}"
+							target="#{chargingBean2.charging}" />
+						<f:ajax execute="xx" listener="#{chargingBean2.showRecord}"
+							render="@form"></f:ajax>
+					</p:commandButton>
+
+				</p:column>
+			</p:dataTable>
+		</div>
+
+
+
+	</h:form>
+
+
+
+
+
+
+
+
+	<h:panelGroup rendered="false">
+
+
+		<div class="container col-md-12"
+			style="background-color: white; border-top: 5px solid #428BCA;">
+			<h:form id="includeform1">
+
+
+				<br></br>
+				<div>
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">تكليف
+						موظف</h3>
+				</div>
+
+
+
+
+				<div class="row">
+
+					<div class="col-md-5">
+						<div class="row ">
+							<div class="col-md-4">
+								<h:outputLabel styleClass="btxt" value="الموظف  الغير متواجد" />
+							</div>
+							<div class="col-md-8">
+
+								<h:selectOneMenu id="list" filter="true" required="true"
+									requiredMessage="يرجى اختيار الموظف الغير متواجد"
+									rendered="#{chargingBean2.newFlag}" disabled="true"
+									styleClass="form-control" filterMatchMode="contains"
+									value="#{chargingBean2.charging.employeeOutChargingId}">
+									<f:ajax render="userNameDuring priv" execute="list"
+										partialSubmit="list" event="blur"
+										listener="#{chargingBean2.updateNameAfterChoiseEmp}" />
+									<f:selectItem itemLabel="اختر الموظف الغير متواجد" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{chargingBean2.employeeMap}" />
+								</h:selectOneMenu>
+
+							</div>
+
+							<h:panelGroup rendered="#{!chargingBean2.newFlag}">
+								<div class="col-md-8">
+									<div id="bts-ex-5" class="selectpicker " data-live="true">
+										<button data-id="prov" type="button"
+											class="btn  btn-block btn-default dropdown-toggle">
+											<span class="placeholder"> اختر الموظف الغير متواجد</span> <span
+												class="caret" style="margin-right: 86px"></span>
+										</button>
+										<div class="dropdown-menu"
+											style="position: inherit !important;">
+											<div class="live-filtering" data-clear="true"
+												data-autocomplete="true" data-keys="true">
+												<label class="sr-only" for="input-bts-ex-5">...ابحث...</label>
+												<div class="search-box col-md-12 ">
+
+													<div class="input-group" style="margin-top: 5px">
+														<span class="input-group-addon" id="search-icon3">
+															<span class="fa fa-search"></span> <a href="#"
+															class="fa fa-times hide filter-clear"><span
+																class="sr-only">Clear filter</span></a>
+														</span> <input type="text" placeholder="ابحث ..."
+															id="input-bts-ex-5" class="form-control live-search"
+															aria-describedby="search-icon3" tabindex="1" />
+													</div>
+												</div>
+												<div class="list-to-filter  col-md-11 form-control"
+													style="margin-top: 13px; overflow-y: scroll; height: 300px;">
+
+													<ul class="list-unstyled" id="out">
+														<li class="filter-item items" data-filter="" value=" "
+															style="color: #428bca">اختر الموظف الغير متواجد</li>
+														<ui:repeat var="y" value="#{testBean4.employeesList}">
+															<li class="filter-item items" id="#{y.id}"
+																data-filter="#{y.name}" value="#{y.id}">#{y.name}</li>
+														</ui:repeat>
+													</ul>
+													<div class="no-search-results">
+														<div class="alert alert-warning" role="alert">
+															<i class="fa fa-warning margin-right-sm"></i>لا يوجد
+															اختيار لمدخلكم <strong>'<span></span>'
+															</strong>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<input type="text" style="display: none" name="bts-ex-5"
+											id="Out" />
+
+									</div>
+								</div>
+
+								<h:commandButton value="Ok" styleClass=" btn-info"
+									style="display:none" id="updateOut">
+									<f:ajax render="userNameDuring priv" execute="Out"
+										listener="#{chargingBean2.updateNameAfterChoiseEmp}"></f:ajax>
+								</h:commandButton>
+							</h:panelGroup>
+						</div>
+
+						<br></br>
+
+
+						<!-- 						<div class="row "> -->
+						<!-- 							<div class="col-md-4"> -->
+						<!-- 								<h:outputLabel styleClass="btxt " value="الموظف الغير متواجد" /> -->
+						<!-- 							</div> -->
+
+
+						<!-- 						</div> -->
+
+						<div class="row ">
+							<div class="col-md-4">
+								<h:outputLabel styleClass="btxt" value="الموظف المراد تكليفه" />
+							</div>
+							<h:panelGroup rendered="#{!chargingBean2.newFlag}">
+								<div class="row">
+									<div class="col-sm-7">
+										<div id="bts-ex-5" class="selectpicker " style="width: 108%"
+											data-live="true">
+											<button data-id="prov" type="button"
+												class="btn  btn-block btn-default dropdown-toggle">
+												<span class="placeholder"> اختر الموظف المراد تكليفه</span>
+												<span class="caret" style="margin-right: 85px"></span>
+											</button>
+											<div class="dropdown-menu"
+												style="position: inherit !important;">
+												<div class="live-filtering" data-clear="true"
+													data-autocomplete="true" data-keys="true">
+													<label class="sr-only" for="input-bts-ex-4">...ابحث...</label>
+													<div class="search-box col-md-12 ">
+
+														<div class="input-group" style="margin-top: 5px">
+															<span class="input-group-addon" id="search-icon3">
+																<span class="fa fa-search"></span> <a href="#"
+																class="fa fa-times hide filter-clear"><span
+																	class="sr-only">Clear filter</span></a>
+															</span> <input type="text" placeholder="ابحث ..."
+																id="input-bts-ex-4" class="form-control live-search"
+																aria-describedby="search-icon3" tabindex="1" />
+														</div>
+													</div>
+													<div class="list-to-filter  col-md-11 form-control"
+														style="margin-top: 13px; overflow-y: scroll; height: 300px;">
+
+														<ul class="list-unstyled" id="big">
+															<li class="filter-item items" data-filter="" value=" "
+																style="color: #428bca">الموظف المراد تكليفه</li>
+															<ui:repeat var="y" value="#{testBean4.employeesList}">
+																<li class="filter-item items" id="#{y.id}"
+																	data-filter="#{y.name}" value="#{y.id}">#{y.name}</li>
+															</ui:repeat>
+														</ul>
+														<div class="no-search-results">
+															<div class="alert alert-warning" role="alert">
+																<i class="fa fa-warning margin-right-sm"></i>لا يوجد
+																اختيار لمدخلكم <strong>'<span></span>'
+																</strong>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<input type="text" style="display: none" name="bts-ex-4"
+												id="xxxx" />
+
+										</div>
+									</div>
+								</div>
+
+							</h:panelGroup>
+							<div class="col-md-8">
+
+								<h:selectOneMenu id="list2" filter="true" required="true"
+									requiredMessage="يرجى اختيار الموظف المراد تكليفه "
+									rendered="#{chargingBean2.newFlag}" disabled="true"
+									styleClass="form-control" filterMatchMode="contains"
+									value="#{chargingBean2.charging.employeInChargingId}">
+
+									<f:selectItem itemLabel="اختر الموظف المراد تكليفه"
+										itemValue="" noSelectionOption="true" />
+									<f:selectItems value="#{chargingBean2.employeeMap}" />
+								</h:selectOneMenu>
+
+							</div>
+
+						</div>
+						<br></br>
+
+						<div class="row ">
+							<h:panelGroup id="nameAfter">
+								<div class="col-md-4">
+
+									<h:outputLabel styleClass="btxt" value="المسمى  اثناء تكليفه" />
+								</div>
+								<div class="col-md-8">
+
+									<h:inputText id="userNameDuring" required="true"
+										requiredMessage="يرجى ادخال  المسمى اثناء  التكليف"
+										disabled="#{chargingBean2.newFlag}"
+										value="#{chargingBean2.charging.employeInChargingNameAfter}"
+										styleClass="form-control" />
+
+								</div>
+							</h:panelGroup>
+
+						</div>
+						<br></br>
+						<h:panelGroup id="list3">
+							<div class="row ">
+								<div class="col-md-4">
+									<h:outputLabel styleClass="btxt" value="الصلاحية اثناء تكليفه" />
+								</div>
+								<div class="col-md-8">
+									<h:selectOneMenu filter="true" id="priv" required="true"
+										requiredMessage="يرجى ادخال  الصلاحية اثناء  التكليف"
+										styleClass="form-control" filterMatchMode="contains"
+										disabled="#{chargingBean2.newFlag}"
+										value="#{chargingBean2.charging.chargingEmpPrivilegeAfter}">
+
+
+										<f:selectItems value="#{chargingBean2.roles}" var="role"
+											itemLabel="#{role.roleName}" itemValue="#{role.id}" />
+									</h:selectOneMenu>
+
+
+								</div>
+
+							</div>
+						</h:panelGroup>
+
+						<br></br>
+
+						<div class="row ">
+
+
+							<div class="col-md-4">
+								<h:outputLabel styleClass="btxt" value="  حالة التكليف" />
+							</div>
+							<div class="col-md-8">
+
+								<h:selectOneMenu styleClass="form-control" disabled="true"
+									value="#{chargingBean2.charging.chargingStatus}">
+									<f:selectItem itemDisabled="true" noSelectionOption="true"
+										itemLabel="سيتم تحديد الحالة اوتوماتيكيا  " />
+									<f:selectItem itemValue="1" itemLabel="فعال" />
+									<f:selectItem itemValue="0" itemLabel="غير مفعل" />
+									<f:selectItem itemValue="2" itemLabel="لم يفعل بعد" />
+								</h:selectOneMenu>
+
+							</div>
+
+						</div>
+
+						<br></br>
+						<div class="row ">
+							<div class="col-md-4">
+								<h:outputLabel styleClass="btxt" value="تاريخ بداية التكليف" />
+							</div>
+							<div class="col-md-8">
+								<h:inputText class="form-control"
+									disabled="#{chargingBean2.newFlag}"
+									value="#{chargingBean2.charging.chargingStratDate}"
+									rendered="#{chargingBean2.newFlag}" />
+								<h:panelGroup rendered="#{!chargingBean2.newFlag}">
+									<input type="text" class="form-control" name="startDate"
+										id="startDate"></input>
+								</h:panelGroup>
+								<script type="text/javascript">
+									$("#startDate").focus(
+											function() {
+
+												$('.calendars-cmd-today ')
+														.html('اليوم');
+												$('.calendars-cmd-prev').html(
+														'السابق >');
+												$('.calendars-cmd-next').html(
+														' اللاحق');
+												$('.calendars-ctrl').css(
+														'display', 'none');
+												$('.calendars-month').css(
+														'width', '244px');
+												$('.calendars-month').css(
+														'float', 'right');
+												$('.calendars').css('width',
+														'245px');
+
+											});
+
+									$("#startDate").calendarsPicker(
+											{
+												calendar : $.calendars
+														.instance('ummalqura'),
+												language : 'ar'
+											});
+								</script>
+
+							</div>
+
+						</div>
+						<br></br>
+						<div class="row ">
+							<div class="col-md-4">
+								<h:outputLabel styleClass="btxt" value=" تاريخ  نهاية التكليف" />
+							</div>
+							<div class="col-md-8">
+								<h:panelGroup rendered="#{!chargingBean2.newFlag}">
+									<input type="text" class="form-control" name="endDate"
+										id="endDate"></input>
+								</h:panelGroup>
+								<h:inputText class="form-control"
+									disabled="#{chargingBean2.newFlag}"
+									value="#{chargingBean2.charging.chargingEndDate}"
+									rendered="#{chargingBean2.newFlag}" />
+
+
+								<script type="text/javascript">
+									$("#endDate").focus(
+											function() {
+
+												$('.calendars-cmd-today ')
+														.html('اليوم');
+												$('.calendars-cmd-prev').html(
+														'السابق >');
+												$('.calendars-cmd-next').html(
+														' اللاحق');
+												$('.calendars-ctrl').css(
+														'display', 'none');
+												$('.calendars-month').css(
+														'width', '244px');
+												$('.calendars-month').css(
+														'float', 'right');
+												$('.calendars').css('width',
+														'245px');
+
+											});
+
+									$("#endDate").calendarsPicker(
+											{
+												calendar : $.calendars
+														.instance('ummalqura'),
+												language : 'ar'
+											});
+								</script>
+
+							</div>
+
+
+
+
+							<hr></hr>
+							<br></br>
+							<div class="row">
+
+								<div>
+
+
+									<div class="col-md-2" style="float: left; margin-left: 21px;">
+										<h:commandButton styleClass="btn btn-danger" value="انهاء "
+											rendered="#{chargingBean2.newFlag}">
+
+											<f:ajax execute="@form"
+												listener="#{chargingBean2.finishCharging}" render="@form"></f:ajax>
+										</h:commandButton>
+									</div>
+									<div class="col-md-2" style="float: left">
+										<h:commandButton rendered="#{chargingBean2.newFlag}"
+											value="جديد" styleClass="btn btn-primary">
+
+											<f:ajax execute="@form" render="@form" immediate="true"
+												listener="#{chargingBean2.newCharging}"></f:ajax>
+										</h:commandButton>
+									</div>
+									<div class="col-md-2" style="float: left">
+										<h:commandButton value="حفظ" styleClass="btn btn-primary"
+											rendered="#{! chargingBean2.newFlag}">
+
+											<f:ajax execute="@form" render="@form"
+												listener="#{chargingBean2.addCharging}"></f:ajax>
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+
+
+
+
+					<div class="col-md-7"
+						style="border-right: medium #428bca solid; height: 500px;">
+
+						<div class="table-responsive">
+
+
+
+
+
+							<table class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+
+										<th>رقم</th>
+										<th>الموظف المكلف</th>
+										<th>المسمى اثناء التكليف</th>
+										<th>الحالة</th>
+										<th>عرض</th>
+
+
+									</tr>
+								</thead>
+								<tbody>
+									<!-- 								<ui:repeat var="charg" varStatus="x" -->
+									<!-- 									value="#{chargingBean2.charges}"> -->
+
+
+									<!-- 									<tr> -->
+
+									<!-- 										<td>#{x.index+1}</td> -->
+									<!-- 										<td>#{charg.employeInChargingNameBefore}</td> -->
+									<!-- 										<td>#{charg.employeInChargingNameAfter}</td> -->
+									<!-- 										<td style="color: #{charg.chargingStatus eq 2?'':'red'"> -->
+									<!-- 											#{charg.chargingStatus eq 2 ?' لم يفعل بعد':' فعال'}</td> -->
+									<!-- 										<td><h:commandButton id="xx" styleClass="btn btn-success" -->
+									<!-- 												value="عرض"> -->
+									<!-- 												<f:setPropertyActionListener value="#{charg}" -->
+									<!-- 													target="#{chargingBean2.charging}" /> -->
+									<!-- 												<f:ajax execute="xx" listener="#{chargingBean2.showRecord}" -->
+									<!-- 													render="@form"></f:ajax> -->
+									<!-- 											</h:commandButton></td> -->
+
+
+									<!-- 									</tr> -->
+
+									<!-- 								</ui:repeat> -->
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+
+
+				</div>
+
+			</h:form>
+		</div>
+
+	</h:panelGroup>
+</h:body>
+
+</html>

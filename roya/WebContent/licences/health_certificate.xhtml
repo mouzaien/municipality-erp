@@ -1,0 +1,268 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+
+	</h:head>
+	<h:body>
+
+		<div class="col-lg-12"
+			style="background-color: white; border-top: 5px solid #428BCA">
+			<br></br>
+			<div style="color: color: #428bca">
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">#{msg['record.data']}
+				</h3>
+			</div>
+
+			<div class="row">
+				<div class="col-md-10">
+
+					<div class="row"  style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['record.number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.id}" />
+
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['income.date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4" >
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.incomeHDate}"  />
+
+						</div>
+					</div>
+					
+
+
+					<div class="row"  style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['proof.type']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.arcPeople.arcPeoplePapers.name}" />
+
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['proof.number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}"  />
+
+						</div>
+					</div>
+					
+					<div class="row"  style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['name']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.arcPeople.completeName}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['her.date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.arcPeople.idDate}" />
+						</div>
+					</div>
+					<div class="row"  style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['work']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.job.name}" />
+
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['nationality']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.arcPeople.nationality.nationalityName}" />
+
+						</div>
+					</div>
+					<div class="row"  style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['licence.number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-1">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.licenceId}" />
+						</div>
+						<div class="col-md-9">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.trdLicenceName}" />
+
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['address']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-10">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.trdLicenceAddress}" />
+
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['guarantor']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-10">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.kafeelName}" />
+
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['health.center']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.healthCenter.name}" />
+
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['consultation.result']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+						<p:outputLabel value="#{healthCertificateBean.healthCertificate.checkResult eq '1' ? msg['worthy'] :  msg['not.worthy']}"/>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['typhoid.date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.tefodDate}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['meningitis.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.hommaDate}" />
+						</div>
+					</div>
+					<div class="row" style="margin-bottom: 3px;">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['authorization.start.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.resultStartDate}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['authorization.end.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<p:outputLabel value="#{healthCertificateBean.healthCertificate.resultEndDate}" />
+						</div>
+					</div>
+					
+					<!-- 					<h:commandButton value="#{msg['print']}" -->
+					<!-- 						style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
+					<!-- 						styleClass="btn btn-primary" action="#{healthCertificateBean.}"> -->
+					<!-- 						<f:ajax execute="@form"></f:ajax> -->
+					<!-- 					</h:commandButton> -->
+
+
+				</div>
+
+
+
+				<div class="col-md-2">
+
+					<div class="row">
+						<div class="col-md-12">
+							<h:outputLabel value="#{msg['owner.picture']}" styleClass="btxt" />
+						</div>
+						</div>
+						<br/><br/><br/>
+						<div class="row">
+						<div class="col-md-12">
+							<h:form>
+
+<!-- 								<p:graphicImage style="width:50% ;height:50%;" -->
+<!-- 									value="#{healthCertificateBean.streamedcontent}"> -->
+<!-- 									<f:param name="nationalId" -->
+<!-- 										value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}" /> -->
+<!-- 								</p:graphicImage> -->
+<!-- 																<p:graphicImage value="#{imagesBean.image}"> -->
+<!-- 																	<f:param name="id" -->
+<!-- 																		value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}" /> -->
+<!-- 																</p:graphicImage> -->
+
+																<h:graphicImage id="showphoto"
+								                                    styleClass="thumbnail"
+								                                    style="float: left; padding-right: 10px"
+								                                    value="/ImageServlet/?id=#{healthCertificateBean.healthCertificate.arcPeople.nationalId}">
+								                                    
+								                                    </h:graphicImage>
+
+							</h:form>
+						</div>
+					</div>
+					<br></br>
+				</div>
+			</div>
+
+			<h:commandButton value="#{msg['back']}" action="mails"
+				immediate="true"
+				style="float:left;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+				styleClass="btn btn-primary">
+				<f:ajax execute="@form"></f:ajax>
+			</h:commandButton>
+
+			<h:commandButton value="#{msg['accept']}"
+				style="float:left;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+				styleClass="btn btn-primary"
+				rendered="#{!healthCertificateBean.hideAccept}"
+				action="#{healthCertificateBean.acceptHealthLicenceAction}">
+				<f:ajax execute="@form"></f:ajax>
+			</h:commandButton>
+
+<!-- 			<h:commandButton value="#{msg['consult']}" -->
+<!-- 				style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
+<!-- 				styleClass="btn btn-primary" -->
+<!-- 				action="#{healthCertificateBean.printDocumentAction}"> -->
+<!-- 				<f:ajax execute="@form"></f:ajax> -->
+<!-- 			</h:commandButton> -->
+			
+			
+			<h:commandButton style="float:left;margin-left:3px;" id="gg"
+												
+												value="طباعة"  styleClass="btn btn-primary"
+												onclick="this.form.target='_blank'" 
+												action="#{healthCertificateBean.printCertificateReport}">
+											</h:commandButton>
+											
+											
+											
+											
+<!-- 			<h:outputLink id="gg" style="float:left;" -->
+<!-- 							styleClass="btn btn-primary" -->
+<!-- 							value="#{healthCertificateBean.url}" target="_blank"> -->
+<!-- 							<span class="ui-button-icon-left ui-icon ui-c fa fa-print" /> -->
+<!-- 							<span class="ui-button-text">#{msg['consult']}</span> -->
+<!-- 							<f:ajax execute="@form"></f:ajax> -->
+<!-- 						</h:outputLink> -->
+
+
+		</div>
+
+	</h:body>
+</f:view>
+</html>

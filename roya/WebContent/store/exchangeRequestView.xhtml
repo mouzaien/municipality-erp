@@ -1,0 +1,648 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
+
+
+
+<h:body>
+	<style>
+#tabStore td {
+	background: #0d83e321 !important;
+	height: 29px;
+	color: #0f0e0e !important;
+	border-color: #3F729B;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+	margin-top: -4px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	font-size: small !important;
+	text-align: right;
+	border-bottom: 1px solid black;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	font-weight: bolder !important;
+	font-size: small !important;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+	margin-right: 2pc;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+	{
+	margin: 0px 20px 0 1px;
+	direction: rtl;
+	float: right;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close
+	{
+	margin-right: -46px;
+}
+
+body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label
+	{
+	padding-right: 29px;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-inputfield
+	{
+	text-align: right;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+</style>
+	<!-- 	<script language="javascript"> -->
+<![CDATA[
+
+// 		function openPopup() {
+
+// 			var IsFalse = false;
+// 			var position;
+// 			var oTable = document.getElementById('tabStore');
+
+// 			var rowLength = oTable.rows.length;
+
+// 			//loops through rows    
+// 			for (i = 1; i < rowLength; i++) {
+
+// 				//gets cells of current row  
+// 				var oCells = oTable.rows.item(i).cells;
+
+// 				//gets amount of cells of current row
+// 				var cellLength = oCells.length;
+// 				var cellValInit = oCells.item(2).innerHTML;
+// 				var cellavailble = oCells.item(5).innerHTML;
+// 				var cellReserved = oCells.item(6).innerHTML;
+// 				var cellfinish = parseInt(cellavailble)
+// 						- parseInt(cellReserved)
+// 				//alert(cellfinish);
+// 				var ValChange = oCells.item(7).children[0].value
+
+// 				// var n = cellValInit.localeCompare(ValChange);
+// 				//alert(n);
+// 				if (ValChange == ""
+// 						|| (parseInt(ValChange) > parseInt(cellValInit))) {
+// 					oCells.item(7).children[0].style.borderColor = "red"
+// 					//alert("oumourek mouch wadh7a ya si mahamed")
+// 					//alert(i);
+// 					PF('growlWV').renderMessage(
+// 							{
+// 								"detail" : "  العدد الذي ادخلته في السطر " + i
+// 										+ "خاطئ ",
+// 								"severity" : "error"
+// 							})
+// 					IsFalse = true;
+// 					break;
+// 				}
+// 				// 				   if  (parseInt( ValChange)> parseInt(cellfinish)) {
+// 				// 					   oCells.item(7).children[0].style.borderColor = "red"
+// 				// 					   //alert("oumourek mouch wadh7a ya si mahamed")
+// 				// 					   //alert(i);
+// 				// 					   PF('growlWV').renderMessage({
+// 				// 				                             "detail":"  السطر"+i+" الكمية لا يمكن ان تتجاوز "+cellfinish+" كحد اقصى ",
+// 				// 				                             "severity":"error"})
+// 				// 					   IsFalse=true; 
+// 				// 					   break; 
+// 				// 					   }
+// 				oCells.item(7).children[0].style.borderColor = "gray"
+
+// 			}
+// 			if (IsFalse === false) {
+// 				//alert("oumourek wadh7a ya si mahamed")
+// 				$('#gridSystemModal').modal('show');
+// 			}
+
+// 		}
+
+// 		//]]>
+	<!-- 	</script> -->
+	<p:messages autoUpdate="true" closable="true"></p:messages>
+
+	<div class="image-box-footer" style="float: left">
+		<!-- Small modal -->
+		<h:panelGroup rendered="#{(exchangeRequestBean.enableRefuse)}">
+
+			<p:commandButton value="#{msg['refuse']}"
+				onclick="PF('dlgRefuse').show();" immediate="true"
+				styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+			</p:commandButton>
+
+		</h:panelGroup>
+		<h:panelGroup rendered="#{(exchangeRequestBean.enableAccept)}">
+			<p:commandButton value="#{msg['accept']}"
+				onclick="PF('dlgAccept').show();" immediate="true"
+				icon="ui-icon ui-icon-check">
+				<!-- 				<p:ajax listener="#{exchangeRequestBean.loadQtyDetailsOfRequst}"></p:ajax> -->
+			</p:commandButton>
+		</h:panelGroup>
+
+		<!-- 		        <p:commandButton value="إعادة المعاملة" immediate="true" -->
+		<!-- 					icon="ui-icon ui-icon-autorenew" -->
+		<!-- 					action="#{exchangeRequestBean.returnRequestAction}" -->
+		<!-- 					style="float: left; margin-bottom: 19px; margin-left: 3px" -->
+		<!-- 					styleClass="cyan-btn"> -->
+		<!-- 				</p:commandButton> -->
+
+		<p:commandButton value="حجز الطلب" immediate="true"
+			icon="ui-icon ui-icon-block"
+			rendered="#{exchangeRequestBean.enableReservation}"
+			action="#{exchangeRequestBean.reserveRequestAction}"
+			style="float: left; margin-bottom: 19px; margin-left: 3px"
+			styleClass="Deep-Orange-btn">
+		</p:commandButton>
+		<p:commandButton value="طباعة  الطلب" immediate="true" ajax="false"
+			icon="ui-icon ui-icon-print "
+			rendered="#{exchangeRequestBean.request.status=='Y'}"
+			action="#{exchangeRequestBean.printExchangeReportAction}"
+			onclick="this.form.target='_blank'"
+			style="float: left; margin-bottom: 19px; margin-left: 3px"
+			styleClass="purple-btn">
+		</p:commandButton>
+		<p:commandButton value="تسليم" immediate="true"
+			icon="ui-icon ui-icon-airport-shuttle"
+			rendered="#{exchangeRequestBean.enableRecive}"
+			action="#{exchangeRequestBean.deliverRequestAction}"
+			style="float: left; margin-bottom: 19px; margin-left: 3px"
+			styleClass="teal-btn">
+			<f:ajax execute="trans_TV:serialNumId"></f:ajax>
+
+		</p:commandButton>
+
+
+
+
+		<p:commandButton value="صرف  فعلى المواد" immediate="true"
+			style=" margin-bottom: 19px;
+						float:left"
+			rendered="#{exchangeRequestBean.acceptFlag}"
+			action="#{exchangeRequestBean.actualyExchangeNavi}"
+			styleClass="btn btn-primary">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+
+
+		<p:commandButton value=" تامين المواد  " immediate="true"
+			style=" margin-bottom: 19px;
+						float:left"
+			rendered="#{exchangeRequestBean.acceptFlag}"
+			action="#{exchangeRequestBean.guranteeNavi}"
+			styleClass="btn btn-primary">
+			<f:ajax execute="@form"></f:ajax>
+		</p:commandButton>
+
+
+	</div>
+	<br />
+	<br />
+	<div class="card card-w-title" style="direction: rtl;">
+		<div>
+			<h1 style="color: #7CB342; text-align: center; direction: ltr;">
+				طلب صرف مواد<span class="ui-icon ui-icon-phone-in-talk"></span>
+			</h1>
+		</div>
+		<br /> <br /> <br />
+
+
+
+		<!-- 		<h:form id="includeform"> -->
+
+		<p:growl widgetVar="growlWV" />
+
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:outputLabel value=" الاسم " />
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel
+					value=" #{exchangeRequestBean.request.arcUser.firstName}"></p:outputLabel>
+			</div>
+
+		</div>
+
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:outputLabel styleClass="btxt" value="الادارة"></p:outputLabel>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel
+					value="#{exchangeRequestBean.request.arcUser.wrkSection.sectionName}"></p:outputLabel>
+			</div>
+		</div>
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:outputLabel styleClass="btxt" value="التاريخ "></p:outputLabel>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel
+					value="#{exchangeRequestBean.request.generalrequestDate}"></p:outputLabel>
+			</div>
+		</div>
+
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:outputLabel styleClass="btxt" value="الملاحظات "></p:outputLabel>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:outputLabel value="#{exchangeRequestBean.request.notes}"></p:outputLabel>
+			</div>
+		</div>
+
+
+
+
+		<div class="ui-g" style="display: none;">
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:outputLabel rendered="#{exchangeRequestBean.enableTransfert}"
+					value="العضو الفني" style="font-weight: bold;"></p:outputLabel>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
+				<p:selectOneMenu rendered="#{exchangeRequestBean.enableTransfert}"
+					styleClass="form-control" id="num"
+					value="#{exchangeRequestBean.wrkReceiver}">
+					<f:ajax execute="@this"></f:ajax>
+					<f:selectItem itemLabel=" العضو الفني" noSelectionOption="true"></f:selectItem>
+					<f:selectItems var="tecUser" itemValue="#{tecUser.technicalId}"
+						value="#{exchangeRequestBean.technicalList}"
+						itemLabel="#{tecUser.description}">
+					</f:selectItems>
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6 ui-lg-3"></div>
+			<div class="ui-g-12 ui-md-6 ui-lg-1">
+				<p:commandButton value="إحالة" icon="ui-icon ui-icon-compare-arrows"
+					immediate="true" rendered="#{exchangeRequestBean.enableTransfert}"
+					action="#{exchangeRequestBean.redirectAction}"
+					style="float: left; margin-bottom: 19px; margin-left: 3px"
+					styleClass="green-btn">
+				</p:commandButton>
+			</div>
+
+		</div>
+
+
+
+
+
+		<div class="row">
+			<div class="col-md-12 ">
+				<div class="col-md-2"></div>
+				<div class="col-md-6">
+					<h:outputLabel rendered="#{exchangeRequestBean.enableTransfert}"
+						style="align-content: center;color: #4CAF50;font-size: 19px;"
+						value="#{exchangeRequestBean.responseText}"></h:outputLabel>
+				</div>
+			</div>
+		</div>
+		<h:panelGroup
+			rendered="#{(exchangeRequestBean.enableRecive or exchangeRequestBean.request.status=='Y')}">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-2">
+					<p:outputLabel value="الرقم التسلسلي "></p:outputLabel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<p:inputText id="serialNumId"
+						value="#{exchangeRequestBean.serialNum}" class="form-control">
+						<p:ajax process="@this" onstart="PF('dlgditSerial').show();" />
+					</p:inputText>
+				</div>
+
+			</div>
+		</h:panelGroup>
+		<div class="row">
+
+			<h:panelGroup id="table">
+				<div class="col-md-12 ">
+
+					<div class="table-responsive">
+
+						<hr></hr>
+
+
+
+						<table id="tabStore" class="table table-striped table-hover">
+							<thead>
+								<tr>
+
+									<th style="width: 5%">رقم</th>
+									<th style="width: 25%">اسم الصنف</th>
+									<th style="width: 8%">العدد</th>
+									<th style="width: 8%">الوحدة</th>
+									<th style="width: 25%">المواصفات</th>
+									<th style="width: 8%">المتوفر</th>
+									<th style="width: 8%">المحجوز</th>
+									<th style="width: 8%">العدد النهائى للصرف</th>
+									<th style="width: 5%">حذف</th>
+									<!-- 										<th style="width: 8%;">العدد النهائى للتامين</th> -->
+
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat var="det" varStatus="x"
+									value="#{exchangeRequestBean.request.exchangeRequestDetailsList}">
+
+
+									<tr>
+
+										<td>#{x.index+1}</td>
+										<td>#{det.article.name}</td>
+										<td>#{det.count}</td>
+										<td>#{det.article.itemUnite.name}</td>
+										<td>#{det.notes}</td>
+										<td>#{det.qtyAvailable}</td>
+										<td>#{det.qtyReserved}</td>
+										<td><h:inputText id="actualCount"
+												disabled="#{!exchangeRequestBean.enableAccept}"
+												value="#{det.exchangeAtcualyCount}"
+												style="width:60px !important;">
+												<f:ajax execute="actualCount"></f:ajax>
+											</h:inputText></td>
+										<td><p:commandButton id="xx"
+												disabled="#{!exchangeRequestBean.enableAccept}"
+												icon="fa fa-times" styleClass="red-btn">
+												<!-- 												<f:setPropertyActionListener value="#{charg}" -->
+												<!-- 													target="#{chargingBean2.charging}" /> -->
+												<f:ajax
+													listener="#{exchangeRequestBean.removeRequestDetails(det)}"
+													render="@form" execute="@form"></f:ajax>
+											</p:commandButton></td>
+									</tr>
+
+								</ui:repeat>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+			</h:panelGroup>
+
+		</div>
+		<h:panelGroup
+			rendered="#{(exchangeRequestBean.warehouseManager) or (exchangeRequestBean.technicalUser)}">
+			<hr></hr>
+			<div class="col-md-7">
+				<div class=" row ">
+					<div class="col-md-3">
+						<h:outputLabel styleClass="btxt" value="ملاحظات"></h:outputLabel>
+					</div>
+					<div class="col-md-5">
+						<h:inputTextarea styleClass="form-control"
+							pt:placeholder="ملاحظات.........."
+							value="#{exchangeRequestBean.notes}"></h:inputTextarea>
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+		<div class="col-md-12 ">
+			<hr></hr>
+
+
+			<div class="col-md-4">
+
+				<h:commandButton value="صرف  فعلى المواد" immediate="true"
+					style=" margin-bottom: 19px;
+						float:left"
+					rendered="#{exchangeRequestBean.acceptFlag}"
+					action="#{exchangeRequestBean.actualyExchangeNavi}"
+					styleClass="btn btn-primary">
+					<f:ajax execute="@form"></f:ajax>
+				</h:commandButton>
+
+			</div>
+			<div class="col-md-4">
+				<h:commandButton value=" تامين المواد  " immediate="true"
+					style=" margin-bottom: 19px;
+						float:left"
+					rendered="#{exchangeRequestBean.acceptFlag}"
+					action="#{exchangeRequestBean.guranteeNavi}"
+					styleClass="btn btn-primary">
+					<f:ajax execute="@form"></f:ajax>
+				</h:commandButton>
+
+			</div>
+			<div class="col-md-4">
+
+
+
+
+
+
+
+				<!-- Dialog Accept -->
+				<p:dialog header="#{msg['add.explanation.confirmation']}"
+					widgetVar="dlgAccept" height="300" width="500">
+
+					<h:panelGroup id="refPopupAccept">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel value="#{msg['redirect.transaction']}" />
+							<p:selectOneMenu id="typPurpose"
+								value="#{exchangeRequestBean.applicationPurpose}" var="d"
+								style=" width:100%">
+
+								<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+									itemValue="#{pp.idStr} "
+									value="#{exchangeRequestBean.wrkPurposes}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+							<p:inputTextarea cols="30" rows="5" style="width:100%"
+								value="#{exchangeRequestBean.wrkAppComment}">
+							</p:inputTextarea>
+
+
+						</p:panelGrid>
+						<br></br>
+						<br></br>
+						<div style="direction: initial;">
+
+
+							<p:commandButton value="#{msg['back']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								onclick="PF('dlgAccept').hide();" styleClass=" orange-btn">
+							</p:commandButton>
+							<p:spacer width="4"></p:spacer>
+							<!-- 	<button type="button" class="btn btn-green" -->
+							<!-- 	data-dismiss="modal">#{msg['back']}</button> -->
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check" immediate="true"
+								action="#{exchangeRequestBean.accept}" ajax="false">
+								<f:ajax execute="refPopupAccept"></f:ajax>
+							</p:commandButton>
+
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+
+
+
+				<!-- Dialog Refuse -->
+
+				<p:dialog header="#{msg['add.explanation.confirmation']}"
+					widgetVar="dlgRefuse" height="300" width="500">
+
+					<h:panelGroup id="refPopup">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel value="#{msg['redirect.transaction']}" />
+							<p:selectOneMenu id="typ"
+								value="#{exchangeRequestBean.applicationPurpose}" var="d"
+								style=" width:100%">
+
+								<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+									itemValue="#{pp.idStr} "
+									value="#{exchangeRequestBean.wrkPurposes}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+							<p:inputTextarea cols="30" rows="5" style="width:100%"
+								value="#{exchangeRequestBean.wrkAppComment}">
+							</p:inputTextarea>
+
+
+						</p:panelGrid>
+						<br></br>
+						<br></br>
+						<div style="direction: initial;">
+
+
+							<p:commandButton value="#{msg['back']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								onclick="PF('dlgRefuse').hide();" styleClass=" orange-btn">
+							</p:commandButton>
+							<p:spacer width="4"></p:spacer>
+							<!-- 	<button type="button" class="btn btn-green" -->
+							<!-- 	data-dismiss="modal">#{msg['back']}</button> -->
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check" immediate="true"
+								action="#{exchangeRequestBean.refuseAction}">
+								<f:ajax execute="refPopup"></f:ajax>
+							</p:commandButton>
+
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				<p:dialog header="تعديل الرقم التسلسلي" widgetVar="dlgditSerial"
+					width="30%" dir="rtl">
+
+					<h:panelGroup id="editSerialPopup">
+
+						<h:outputLabel value="هل تريد حفظ الرقم التسلسلي الجديد ؟"></h:outputLabel>
+
+						<br />
+						<br />
+						<div align="center">
+							<p:commandButton id="yesBtn" value="نعم "
+								process="serialNumId" styleClass="cyan-btn" immediate="true"
+								onclick="PF('dlgditSerial').hide();">
+								<p:ajax listener="#{exchangeRequestBean.updateSerialNum}"
+									update="serialNumId" process="@this" />
+							</p:commandButton>
+
+							<p:spacer height="10px"></p:spacer>
+
+							<p:commandButton id="noBtn" value="لا "
+								styleClass="red-btn" onclick="PF('dlgditSerial').hide();">
+								<p:ajax listener="#{exchangeRequestBean.cancleUpdateSerialNum}"
+									process="@this" update="serialNumId" />
+							</p:commandButton>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+
+				<br></br>
+			</div>
+		</div>
+		<!-- 		</h:form> -->
+
+	</div>
+</h:body>
+</html>

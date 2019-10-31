@@ -1,0 +1,623 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<f:metadata>
+		<f:viewAction action="#{inboxBean.loadMails}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+
+	<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+	<h:body>
+
+		<ui:composition template="./menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+					<p:messages id="Msg" autoUpdate="true" closable="true" />
+
+			<ui:define name="content">
+
+				<h:form id="includeform">
+
+					<p:tabView style="direction: rtl;" id="inbox-out-tab">
+					
+					    <p:ajax event="tabChange" listener="#{inboxBean.onTabChange}" update=":mainForm:includeform:inbox-out-tab" />
+					
+						<p:tab title="البريد الوارد" id="inboxtab">
+							<h:form id="inboxdtform" target="_blank">
+								<p:outputPanel id="ninboxheaderpanel">
+									<div class="row" style="margin: 5px;">
+										<div class="col-md-3">
+											<span class="glyphicon glyphicon-refresh"></span>
+											<p:commandLink value="البريد الوارد" process="@this"
+												actionListener="#{inboxBean.refreshInbox}"
+												style="padding:0px; padding-right:9px;padding-left:9px;	"
+												update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt,:mainForm:includeform:inbox-out-tab" />
+											<span style="font-size: smaller;" class="badge"
+												id="inbox_lbl">#{inboxBean.inboxCount}</span>
+										</div>
+										<div class="col-md-3">
+											<p:commandLink onclick="PF('srchDlg').show()">
+												<span class="glyphicon glyphicon-filter"></span>  بحث</p:commandLink>
+										</div>
+										<div class="col-md-3" style="font-family: kufi !important;">
+											<div class="dropdown ">
+												<button class=" dropdown-toggle"
+													style="border: none !important; font-family: kufi !important; background-color: transparent !important;"
+													id="dropdownMenu1" data-toggle="dropdown"
+													aria-haspopup="true" aria-expanded="true">
+													عرض البريد <span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><p:commandLink
+															update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+															action="#{inboxBean.showFavouritinbox(actionEvent)}">
+															<span class="glyphicon glyphicon-file"></span>
+									عرض مفضلة البريد </p:commandLink></li>
+													<li><p:commandLink onclick="PF('sendersDlg').show()">
+															<span class="glyphicon glyphicon-user"></span>
+									عرض  بواسطة المرسل </p:commandLink></li>
+													<li><p:commandLink
+															onclick="PF('userfoldersDlg').show()">
+															<span class="glyphicon glyphicon-file"></span>
+									عرض  بواسطة المجلدات </p:commandLink></li>
+
+													<li><p:commandLink process="@this"
+															update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+															action="#{inboxBean.ShowDailyInbox(actionEvent)}">
+															<span class="glyphicon glyphicon-file"></span>
+									عرض   بريد اليوم </p:commandLink></li>
+													<li><p:commandLink value="الغير مقروء" process="@this"
+															update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+															action="#{inboxBean.showUnreadInbox(actionEvent)}"
+															style="padding:0px;padding-right:9px;padding-left:9px;">
+															<span class="glyphicon glyphicon-file"></span>
+									عرض   البريد الغير مقروء  </p:commandLink></li>
+
+													<li><p:commandLink value="المقروء" process="@this"
+															update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+															action="#{inboxBean.showReadInbox(actionEvent)}"
+															style=";padding:0px;padding-right:9px;padding-left:9px;">
+															<span class="glyphicon glyphicon-file"></span>
+									عرض   البريد المقروء  </p:commandLink></li>
+												</ul>
+											</div>
+										</div>
+										<div class="col-md-3"></div>
+									</div>
+
+								</p:outputPanel>
+
+
+
+
+								<style type="text/css">
+									.IMPORTANT-READ {
+										background-color: #FFEDED !important;
+									}
+									
+									.IMPORTANT-UNREAD {
+										background-color: #FFC2C2 !important;
+									}
+									
+									.REQUIRED-READ {
+										background-color: #EBFFE0 !important;
+									}
+									
+									.REQUIRED-UNREAD {
+										background-color: #99FF66 !important;
+									}
+								</style>
+								<p:dataTable value="#{inboxBean.mails}" var="inboxitem"
+									id="inboxdt" rowKey="#{inboxitem.wrkId}" widgetVar="inbox_dt"
+									selection="#{inboxBean.selectedInboxs}" 
+									lazy="true" rowStyleClass="#{inboxitem.wrkColor}"
+									paginator="true" rows="12" emptyMessage="لا يوجد 
+ "
+									rowIndexVar="rowIndex"
+									filteredValue="#{inboxBean.filteredInbox}"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+
+
+								<f:facet name="footer">
+									<p:commandButton value="تحديد الاجراء المطلوب" id="btn00111" 
+										action="#{inboxBean.MultipleSelectInboxAction(actionEvent)}"
+										process="@this,:mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt" />
+
+								</f:facet>
+								
+								
+									
+									<p:column priority="7" headerText="ن" width="2%">
+                                    #{inboxitem.wrkType}
+
+                                </p:column>
+
+
+									<p:column id="senderCol"  style="white-space: nowrap;"
+										headerText="المُرسل  " width="13%"
+										filterBy="#{inboxitem.wrkSender}">
+										
+										#{inboxitem.wrkSender} <br />
+										#{inboxitem.convWrkCreateTime} |#{inboxitem.convWrkHdate} |
+										 <div class="fa fa-paperclip" style="color: #B9B9B9" /> #{inboxitem.convWrkAttachCount} |
+										<div class="fa fa-comment" style="color: #B9B9B9" /> #{inboxitem.convWrkTotalSteps} 
+										
+									</p:column>
+
+									<p:column id="topicCol"  priority="3" style="white-space: nowrap;"
+										width="30%" headerText="الموضوع "
+										filterBy="#{inboxitem.appTitle}">
+
+										<div id="read-icon" class="fa  fa-check"
+											style="font-size: 14px; color: #B9B9B9; display: #{inboxitem.isRead== 1? '':'none'}" /> #{inboxitem.appTitle} 
+
+                                    <p:tooltip
+											for="@(.myTable tr[role=row][data-ri=#{rowIndex}])"
+											trackMouse="true" hideEffect="fade"
+											value="This is row number #{rowIndex}"
+											style="font-size: medium;direction: rtl;max-width: 500px;">
+											<h:panelGrid columns="2">
+												<p:outputLabel value="الموضوع" style="color: #045491" />
+												<p:outputLabel value="#{inboxitem.appTitle}" />
+												<p:outputLabel value="التوجية" style="color: #045491" />
+												<p:outputLabel value="#{inboxitem.purpose}" />
+												<p:outputLabel value="عدد المرفقات " style="color: #045491" />
+												<p:outputLabel value="#{inboxitem.convWrkAttachCount}" />
+												<p:outputLabel value=" الخطاب ؟" style="color: #045491" />
+												<p:outputLabel
+													value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+											</h:panelGrid>
+											<p:outputLabel value="#{inboxitem.firstComment}" />
+										</p:tooltip>
+									</p:column>
+									<p:column id="income-col" priority="5"
+										style="white-space: nowrap;text-align: center;"
+										
+										 headerText="الوارد "
+										width="5%">
+
+										<div style="font-size: 18px;">
+											<div class="fa    fa-pencil"
+												style="font-size: 14px; color: #B9B9B9; display: #{inboxitem.hasComment== 1? '':'none'}" />
+											#{inboxitem.convWrkIncomeNo}
+										</div>
+									</p:column>
+
+									<p:column style="width:26px;text-align:center" headerText="عرض" >
+										<p:commandButton action="#{inboxBean.viewInboxRow(action)}"
+											icon="ui-icon-sea   rch" process="@this" title="عرض">
+											
+										
+											<f:setPropertyActionListener value="#{inboxitem}"
+												target="#{inboxBean.selectedInbox}" />
+										</p:commandButton>
+									</p:column>
+
+									<p:column selectionMode="multiple" priority="5"
+										style="width:16px;text-align:center" />
+									<p:column rendered="false">
+
+										<p:commandLink style="width: 10px;height: 10px;"
+											process="inboxdt"
+											actionListener="#{inboxBean.archiveInboxRecord(actionEvent)}">
+
+											<div id="arch-icon" class="fa fa-archive"
+												style="font-size: 15px;" />
+											<f:setPropertyActionListener value="#{inboxitem}"
+												target="#{inboxBean.selectedInbox}" />
+										</p:commandLink>
+									</p:column>
+
+
+
+								</p:dataTable>
+
+								<p:ajaxStatus
+									style="display:block;margin-bottom:2em;height:24px;">
+									<f:facet name="start">
+										<i class="fa fa-refresh fa-spin-custom"></i>
+									</f:facet>
+								</p:ajaxStatus>
+								<p:dialog widgetVar="srchDlg" closeOnEscape="true"
+									resizable="false" header=" بحث في البريد الوارد"
+									minimizable="true" style="direction: rtl;" showEffect="explode"
+									hideEffect="explode">
+
+									<h:form id="inboxSearchForm">
+										<h:panelGrid columns="3" style="direction: rtl;">
+											<p:inputText value="#{inboxBean.searchKey}"
+												style="font-size: 20px;width: 300px;"
+												placeholder="  ..أدخل كلمة البحث" id="srchkey"
+												onkeypress="if (event.keyCode == 13) {
+                                                        test();
+                                                        return false;
+                                                    }" />
+											<p:remoteCommand name="test"
+												process="@this,:mainForm:includeform:inbox-out-tab:inboxdtform:inboxSearchForm:srchkey,:mainForm:includeform:inbox-out-tab:inboxdtform:inboxSearchForm:includeCommentSearchCbx"
+												actionListener="#{inboxBean.searchInbox(actionEvent)}"
+												update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt" />
+											<p:commandButton value="بحث" icon="fa fa-search"
+												class="btn btn-default"
+												process="@this,:mainForm:includeform:inbox-out-tab:inboxdtform:inboxSearchForm:srchkey,:mainForm:includeform:inbox-out-tab:inboxdtform:inboxSearchForm:includeCommentSearchCbx"
+												action="#{inboxBean.searchInbox(actionEvent)}"
+												update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt" />
+											<p:row>
+												<p:selectBooleanCheckbox id="includeCommentSearchCbx"
+													style="padding: 7px;"
+													value="#{inboxBean.includeCommentSearch}" />
+												<p:outputLabel value="تضمين الشروحات  *قد يستهلك وقت أكبر " />
+											</p:row>
+										</h:panelGrid>
+									</h:form>
+								</p:dialog>
+								<p:dialog id="mselectdlgId" widgetVar="mselectdlg" modal="true"
+								resizable="false"
+								header="تحديد الاجراء المطلوب  لعدد  #{inboxBean.selectedInboxsSize} من المعاملات"
+								height="160" width="500">
+								<h:form id="msform">
+
+									<p:outputPanel id="msop">
+										<div class="container-fluid">
+
+											<div class="row">
+												<p:selectOneRadio value="#{inboxBean.selectSummAction}"
+													layout="grid" columns="1" id="summselected">
+													<f:selectItem itemLabel="أرشفة المعاملات المحددة "
+														itemValue="A" />
+													<f:selectItem
+														itemLabel="إرسال المعاملات المحدده إلي شخص محدد    "
+														itemValue="B" />
+													<p:ajax event="change"
+														listener="#{inboxBean.changeSummaryAction(abe)}"
+														process="@this,summselected"
+														 />
+												</p:selectOneRadio>
+
+											</div>
+											<div class="row">
+												<p:selectOneMenu id="employeesForMs" style="width: 100%"
+													value="#{inboxBean.selectEmployeeForSummaryAction}"
+													rendered="#{inboxBean.showDeptEmployees}">
+													<f:selectItem itemLabel="أختر موظف من الموظفين" />
+													<f:selectItems value="#{inboxBean.empMap}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="row">
+												<div class="col-md-2"></div>
+												<div class="col-md-8">
+													<p:commandButton value="تنفيذ"
+														process="@this,employeesForMs,summselected"
+														class="label ui-priority-primary "
+														action="#{inboxBean.MultiselectBtnAction(actionEvent)}"
+														update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt,
+                                                                 :mainForm:includeform:inbox-out-tab:outboxdt,
+                                                                 :mainForm:includeform:inbox-out-tab:inboxdtMS"
+														style="width: 100%" />
+												</div>
+												<div class="col-md-2"></div>
+											</div>
+										</div>
+
+
+
+									</p:outputPanel>
+								</h:form>
+							</p:dialog>
+							</h:form>
+						</p:tab>
+						<p:tab title="البريد الصادر" id="outMailsTab">
+							<p:dataTable value="#{inboxBean.outmails}" var="outboxitem"
+								selectionMode="single" paginator="true" rows="12"
+								emptyMessage="لا يوجد معاملات " rowKey="#{outboxitem.wrkId}"
+								rowIndexVar="outboxrowIndex" lazy="true" id="outboxdt"
+								selection="#{inboxBean.selectedOutbox}"
+								style="font-size: medium;">
+								<p:ajax event="rowSelect"
+									listener="#{inboxBean.outboxSelectRow}"
+									process="@this,outboxdt"
+									update=":mainForm:includeform:inbox-out-tab:outboxpopup:outboxtabview:explaindatatable001,
+                                    :mainForm:includeform:inbox-out-tab:outboxdialog
+
+                                    "
+									oncomplete="PF('outboxDlg').show()">
+								</p:ajax>
+								<!--
+                            <p:column width="15" styleClass="#{outboxitem.wrkColor}" toggleable="true" >
+                                <img src="../resources/images/#{outboxitem.wrkColor}.png" />
+                            </p:column>
+                            -->
+								<f:facet name="header">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-4">
+												<p:commandLink value=" البحث في الصادر "
+													onclick="PF('outboxsrchDlg').show()" />
+											</div>
+											<div class="col-md-4">
+												<p:commandLink id="arcComm" value="البريد المؤرشف "
+													update=":mainForm:includeform:inbox-out-tab:outboxdt"
+													action="#{inboxBean.showArchivedOutBox(actionEvent)}" />
+												<p:tooltip for="arcComm" value="قد يأخذ العرض وقت أطول" />
+												<span class="badge" id="Archived_outbox_lbl">#{inboxBean.archivedOutboxCount}</span>
+											</div>
+											<div class="col-md-4">
+												<p:commandLink value="البريد الصادر"
+													update=":mainForm:includeform:inbox-out-tab:outboxdt"
+													action="#{inboxBean.showOutBox(actionEvent)}" />
+												<span class="badge" id="outbox_lbl">#{inboxBean.outboxCount}</span>
+											</div>
+										</div>
+									</div>
+								</f:facet>
+								<p:column id="senderCol" style="white-space: nowrap;"
+									headerText="المُرسل  " width="18%"
+									filterBy="#{outboxitem.wrkReciever}">
+										#{outboxitem.wrkReciever} <br />
+										#{outboxitem.convWrkCreateTime} |#{outboxitem.convWrkHdate} |
+										 <div class="fa fa-paperclip" style="color: #B9B9B9" /> #{outboxitem.convWrkAttachCount} |
+										<div class="fa fa-comment" style="color: #B9B9B9" /> #{outboxitem.convWrkTotalSteps} 
+										
+									</p:column>
+								<p:column width="47%" style="white-space: nowrap;"
+									headerText="الموضوع " filterBy="#{outboxitem.appTitle}">
+                                #{outboxitem.appTitle}
+                            </p:column>
+								<p:column style="white-space: nowrap;" headerText="التوجيه "
+									width="100">
+									<div style="font-size: 14px;">#{outboxitem.purpose}</div>
+								</p:column>
+							</p:dataTable>
+							<p:dialog widgetVar="outboxsrchDlg" closeOnEscape="true"
+								resizable="false" header=" بحث في البريد الصادر"
+								minimizable="true" style="direction: rtl;" showEffect="explode"
+								hideEffect="explode">
+
+								<h:form id="outbxsearchForm">
+									<h:panelGrid columns="3" style="direction: rtl;">
+										<p:inputText value="#{inboxBean.outboxSearchKey}"
+											style="font-size: 20px;width: 300px;"
+											placeholder="  ..أدخل كلمة البحث" id="OutboxSearchKey"
+											onkeypress="if (event.keyCode == 13) {
+                                                    test();
+                                                    return false;
+                                                }" />
+										<p:remoteCommand name="test"
+											process="@this,
+                                                     :mainForm:includeform:inbox-out-tab:outbxsearchForm:OutboxSearchKey,
+                                                     :mainForm:includeform:inbox-out-tab:outbxsearchForm:outboxIncludeArchive"
+											actionListener="#{inboxBean.SearchOutboxMail(actionEvent)}"
+											update=":mainForm:includeform:inbox-out-tab:outboxdt" />
+										<p:commandButton value="بحث" icon="fa fa-search"
+											class="btn btn-default"
+											process="@this,:mainForm:includeform:inbox-out-tab:outbxsearchForm:OutboxSearchKey,
+                                                     :mainForm:includeform:inbox-out-tab:outbxsearchForm:outboxIncludeArchive"
+											action="#{inboxBean.SearchOutboxMail(actionEvent)}"
+											update=":mainForm:includeform:inbox-out-tab:outboxdt" />
+										<p:row>
+											<p:selectBooleanCheckbox id="outboxIncludeArchive"
+												style="padding: 7px;"
+												value="#{inboxBean.outboxSearchIncludearchive}" />
+											<p:outputLabel value="تضمين البحث داخل المعاملات المؤرشفة" />
+										</p:row>
+									</h:panelGrid>
+								</h:form>
+							</p:dialog>
+							<p:dialog style="direction: rtl;" resizable="false"
+								hideEffect="clip" showEffect="fade" closable="false"
+								modal="true" width="900" height="500"
+								header="المعاملة :#{inboxBean.selectedOutbox.appTitle}"
+								widgetVar="outboxDlg" id="outboxdialog">
+								<h:form id="outboxpopup">
+
+									<p:tabView id="outboxtabview">
+										<p:tab title="الشروحات ">
+										
+										#{inboxBean.selectedOutbox.appId}
+										
+											<p:dataList id="explaindatatable001"
+												value="#{inboxBean.outboxComments}" var="outboxcomm"
+												type="definition" style="height: 500px;border: none;"
+												emptyMessage="لا يوجد شروحات">
+												<f:facet name="header">الشروحات</f:facet>
+												<div class="EX_BOX"
+													style="float: left; word-wrap: break-word;">
+													<div class="EX_BOX_header">
+														<h:panelGrid columns="1">
+															<p:outputLabel>
+                                                            أرسلت بواسطة #{outboxcomm.fromName}  الي    #{outboxcomm.toName}  في #{outboxcomm.createdIn} 
+                                                        </p:outputLabel>
+															<p:outputLabel> الغرض : #{outboxcomm.purpose}</p:outputLabel>
+														</h:panelGrid>
+													</div>
+													<div class="EX_BOX_content" style="float: left;">
+														#{outboxcomm.comment}</div>
+												</div>
+											</p:dataList>
+										</p:tab>
+										<p:tab title="المرفقات">
+
+											<ui:repeat value="#{inboxBean.outattList}" var="att">
+												<div class="panel panel-default">
+													<div class="panel-body">قام بارفاقه #{att.ownerName}</div>
+													<div class="panel-footer">
+														<div class="container-fluid">
+															<h:outputLink target="_blank" value="#{att.attLink}">
+																أضغط هنا لتحميل الملف
+															</h:outputLink>
+														</div>
+													</div>
+												</div>
+											</ui:repeat>
+										</p:tab>
+									</p:tabView>
+								</h:form>
+								<f:facet name="footer">
+									<h:form>
+										<p:commandButton value="استرجاع المعاملة " process="@this"
+											action="#{inboxBean.retrieveRecordBtnAction(actionEvent)}"
+											style="float: right;font-family:kufi" class="btn btn-default"
+											icon="fa fa-share-square-o"
+											update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt,
+                                                     :mainForm:includeform:inbox-out-tab:outboxdt" />
+										<p:commandButton value=" رجوع الي البريد الصادر "
+											style="font-family:kufi" icon="fa fa-mail-reply"
+											class="btn btn-default" onclick="PF('outboxDlg').hide()" />
+									</h:form>
+
+								</f:facet>
+							</p:dialog>
+						</p:tab>
+
+						<p:tab title="اختيار متعدد" id="multiSelecttab" rendered="false" >
+							<p:dataTable value="#{inboxBean.mails}" var="inboxitem"
+								id="inboxdtMS" rowKey="#{inboxitem.wrkId}"
+								widgetVar="inbox_dtMS" selection="#{inboxBean.selectedInboxs}"
+								paginatorPosition="top" lazy="true" paginator="true" rows="12"
+								emptyMessage="لا يوجد معاملات " rowIndexVar="rowIndex"
+								style="margin-bottom: 20px;font-size: medium;"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+								<f:facet name="footer">
+									<p:commandButton value="تحديد الاجراء المطلوب" id="btn00111"
+										action="#{inboxBean.MultipleSelectInboxAction(actionEvent)}"
+										process="@this,inboxdtMS" />
+
+								</f:facet>
+
+								<p:column headerText="شـ " width="3%">
+                                #{inboxitem.convWrkTotalSteps}
+
+                            </p:column>
+								<p:column headerText="مـ" width="3%">
+                                #{inboxitem.convWrkAttachCount}
+                            </p:column>
+								<p:column style="white-space: nowrap;" headerText="المُرسل  "
+									width="15%">
+                                #{inboxitem.wrkSender}
+                            </p:column>
+								<p:column headerText="التاريخ " width="8%">
+									<div style="font-size: 15px; direction: ltr;">
+										#{inboxitem.convWrkHdate}</div>
+								</p:column>
+								<p:column headerText="التوقيت " width="7%">
+
+									<div style="font-size: 16px;">#{inboxitem.wrkCreateTime}</div>
+								</p:column>
+								<p:column style="white-space: nowrap;" width="40%"
+									headerText="الموضوع ">
+									<div id="read-icon" class="fa  fa-check"
+										style="font-size: 14px;" /> #{inboxitem.appTitle} 
+
+									<p:tooltip for="@(.myTable tr[role=row][data-ri=#{rowIndex}])"
+										trackMouse="true" hideEffect="fade"
+										value="This is row number #{rowIndex}"
+										style="font-size: medium;direction: rtl;max-width: 500px;">
+										<h:panelGrid columns="2">
+											<p:outputLabel value="الموضوع" style="color: #045491" />
+											<p:outputLabel value="#{inboxitem.appTitle}" />
+											<p:outputLabel value="التوجية" style="color: #045491" />
+											<p:outputLabel value="#{inboxitem.purpose}" />
+											<p:outputLabel value="عدد المرفقات " style="color: #045491" />
+											<p:outputLabel value="#{inboxitem.convWrkAttachCount}" />
+											<p:outputLabel value=" الخطاب ؟" style="color: #045491" />
+											<p:outputLabel
+												value="#{inboxitem.hasComment == 1 ? 'يوجد خطاب' : ' لا يوجد' }" />
+
+										</h:panelGrid>
+										<p:outputLabel value="#{inboxitem.firstComment}" />
+									</p:tooltip>
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الوارد " width="9%">
+
+									<div style="font-size: 18px;">
+										<div class="fa    fa-pencil" style="font-size: 14px;" />
+										#{inboxitem.convWrkIncomeNo}
+									</div>
+								</p:column>
+								<p:column width="4%" rendered="false">
+
+									<p:commandLink style="width: 10px;height: 10px;"
+										process="inboxdt"
+										actionListener="#{inboxBean.archiveInboxRecord(actionEvent)}">
+
+										<div id="arch-icon" class="fa fa-archive"
+											style="font-size: 15px;" />
+										<f:setPropertyActionListener value="#{inboxitem}"
+											target="#{inboxBean.selectedInbox}" />
+									</p:commandLink>
+								</p:column>
+								<p:column selectionMode="multiple" width="5%"
+									style="text-align:center" />
+							</p:dataTable>
+							
+							<p:messages autoUpdate="true" />
+
+						</p:tab>
+					</p:tabView>
+
+
+
+					<p:dialog style="direction: rtl;left: 1px;" showEffect="fade"
+						hideEffect="fade" widgetVar="sendersDlg" resizable="false"
+						header="حدد جهة الإرسال">
+						<h:form id="sendersform">
+							<h:panelGrid columns="2" style="font-size: medium;">
+								<p:selectOneListbox value="#{inboxBean.selectedSender}"
+									style="width: 300px;" id="senderListbox" filter="true"
+									filterMatchMode="contains">
+
+									<f:selectItems value="#{inboxBean.inboxSenderList}" />
+									<p:ajax event="change"
+										update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+										process="@this,senderListbox"
+										listener="#{inboxBean.chnageSenderListBox}" />
+								</p:selectOneListbox>
+							</h:panelGrid>
+						</h:form>
+					</p:dialog>
+
+					<p:dialog style="direction: rtl;left: 1px;" showEffect="fade"
+						hideEffect="fade" widgetVar="userfoldersDlg" resizable="false"
+						header="حدد المجلد">
+						<h:form id="userfolders">
+							<h:panelGrid columns="2" style="font-size: medium;">
+								<p:selectOneListbox value="#{inboxBean.selectedUserFolder}"
+									style="width: 300px;" id="userFolderListbox" filter="true"
+									filterMatchMode="contains">
+
+									<f:selectItems value="#{inboxBean.userFolders}" />
+									<p:ajax event="change"
+										update=":mainForm:includeform:inbox-out-tab:inboxdtform:inboxdt"
+										process="@this,userFolderListbox"
+										listener="#{inboxBean.chnageUserFolderListBox}" />
+								</p:selectOneListbox>
+							</h:panelGrid>
+						</h:form>
+					</p:dialog>
+
+					<p:growl id="gr" autoUpdate="true" showDetail="false" />
+					<p:idleMonitor timeout="10000000">
+						<p:ajax event="idle" listener="#{inboxBean.onIdle1}" update="gr" />
+					</p:idleMonitor>
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

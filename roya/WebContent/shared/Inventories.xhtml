@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
+<head>
+
+
+<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+
+
+<link rel="stylesheet"
+	href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+<script
+	src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+</head>
+<ui:composition template="/pages/menuBar.xhtml">
+
+	<ui:define name="content">
+	<h:form id="includeform">
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="container col-md-12 "
+			style="background-color: white; border-top: 5px solid #428BCA;">
+
+
+
+			<br></br>
+			<div>
+				<h3 class="page-header"
+					style="margin: 0px 0 20px ! important; color: #428bca">جرد المستودعات
+					</h3>
+			</div>
+			<div class="row">
+			<h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">البيانات الرئيسية
+					</h4>
+					
+						<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4"><label class="btxt">رقم الجرد</label>
+							
+							</div>
+							<div class="col-md-8">
+
+								 <h:inputText id="type1" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.inventoryId}" disabled="true"/>
+
+							</div>
+
+						</div>
+						</div>
+					
+							<div class="col-md-4">
+							  <div class="row ">
+							<div class="col-md-4"><label class="btxt">تاريخ الجرد</label>
+							
+							</div>
+							<div class="col-md-8">
+	                            <h:inputText id="type" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.createddate}" disabled="true"/>
+
+
+							</div>
+
+						</div>
+						</div>
+					<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4"><label class="btxt">نوع الجرد</label>
+							
+							</div>
+							<div class="col-md-8">
+
+								<h:inputText id="type3" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.inventoryType}" disabled="true"/>
+							</div>
+
+						</div>
+						</div>
+						
+				
+			</div>
+			
+			<br /><br />
+	<div class="row">
+			
+						<div class="col-md-4">
+						<div class="row ">
+							<div class="col-md-4"><label class="btxt">الرقم الألي</label>
+							
+							</div>
+							<div class="col-md-8">
+
+								 <h:inputText id="type4" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.specialNo}"  disabled="true"/>
+
+							</div>
+
+						</div>
+						</div>
+					
+						<div class="col-md-4">
+							<div class="row ">
+							<div class="col-md-4"><label class="btxt">تاريخ بداية الجرد</label>
+							
+							</div>
+							<div class="col-md-8">
+	                            <h:inputText id="type5" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.inventoryStartDate}"  disabled="true"/>
+
+
+							</div>
+
+						</div>
+						</div>
+						<div class="col-md-4">
+						  <div class="row ">
+							<div class="col-md-4"><label class="btxt">تاريخ نهاية الجرد</label>
+							
+							</div>
+							<div class="col-md-8">
+
+								<h:inputText id="type6" styleClass="form-control"
+									value="#{inventoryMasterBean.inventoryMaster.inventoryEndDate}"  disabled="true"/>
+
+							</div>
+
+						</div>
+						</div>
+						
+				
+			</div>
+
+<br /><br />
+                 <h4 class="page-header"
+					style="margin: 0px 58px 20px ! important; color: #FF5722">إدخال مواد الجرد
+					</h4>
+				<div class="col-md-10">
+
+					
+					<div class="row" style="display: inline-block;" >
+						<div class="col-md-3">
+							<h:outputLabel styleClass="btxt" value="اختر الصنف" />
+						</div>
+
+						<div class="col-md-5">
+						
+								<p:selectOneMenu id="itemId" 
+									required="true" requiredMessage="اختر المجموعة الرئيسية"
+									value="#{inventoryMasterBean.item}" styleClass="form-control" effect="fade" filter="true">
+									
+									<f:selectItem itemLabel="اختر المجموعة الرئيسية "></f:selectItem>
+									<f:selectItems value="#{articlesBean.articles}" var="x"
+										itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+								    <f:ajax execute="itemId" listener="#{inventoryMasterBean.updateUnite}" render="unit"></f:ajax>
+							</p:selectOneMenu>
+							</div>
+							<div class="col-md-3" style="float: left;">
+						<button type="button" class="btn btn-primary" style="position: relative; left: -53px;" data-toggle="modal" data-target="#gridSystemModal2">
+						    <span class="glyphicon glyphicon-search"></span> إضافة مواد
+					 </button>
+					 </div>
+						</div>
+						
+			
+		<br></br>
+		
+		<div class="row">
+			<div class="col-md-3">
+				<h:outputLabel styleClass="btxt" value="الكمية"></h:outputLabel>
+			</div>
+			<div class="col-md-4">
+				<h:inputText styleClass="form-control" id="count" required="true"
+					requiredMessage="من فضلك ادخل  العدد المطلوب"
+					value="#{inventoryMasterBean.inventoryRecord.inventoryActual}"
+					validatorMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
+
+				</h:inputText>
+			</div>
+
+			<h:panelGroup id="unit">
+				<div class="col-md-3">
+					<h:outputLabel styleClass="btxt" style="font-size:large"
+						value="  #{inventoryMasterBean.article.itemUnite.name eq null ? '  ':( inventoryMasterBean.article.itemUnite.name )} "></h:outputLabel>
+				</div>
+			</h:panelGroup>
+		</div>
+	
+		
+		<br></br>
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-3"> -->
+<!-- 				<h:outputLabel styleClass="btxt" value="سعر الوحدة"></h:outputLabel> -->
+<!-- 			</div> -->
+<!-- 			<div class="col-md-4"> -->
+<!-- 				<h:inputText styleClass="form-control" id="UnitPrice" required="true" -->
+<!-- 					requiredMessage="من فضلك ادخل  السعر  المطلوب" -->
+<!-- 					value="" -->
+<!-- 					validatorMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد "> -->
+<!-- 				</h:inputText> -->
+<!-- 			</div> -->
+			
+<!-- 			<div  class="col-md-3"> -->
+<!-- 				<p:selectOneMenu  style="min-width: 75px !important;"  id="priceItem" value="" > -->
+<!-- 					<f:selectItem itemValue="item1" itemLabel="هللة" /> -->
+<!--                     <f:selectItem itemValue="item2" itemLabel="ريال" /> -->
+<!-- 				</p:selectOneMenu> -->
+				
+<!-- 			</div> -->
+			
+<!-- 		</div> -->
+	
+		
+		
+		<div class="row">
+			<div class="col-md-3">
+				<h:outputLabel styleClass="btxt" value="المواصفات "></h:outputLabel>
+			</div>
+			<div class="col-md-7">
+				<h:inputText id="desc" styleClass="form-control"
+					value="#{inventoryMasterBean.inventoryRecord.notes}"></h:inputText>
+			</div>
+
+		</div>
+		
+		<br></br>
+		
+		<div  style="float: left; margin-bottom: 20px;">
+			<h:commandButton style="float:right" styleClass="btn btn-success"
+				value="اضافة">
+				<f:ajax listener="#{inventoryMasterBean.addInventoryItem}"
+					execute="desc  count" render="table desc count"></f:ajax>
+			</h:commandButton>
+		</div>
+
+		<br></br>
+
+		
+</div>
+
+
+		<div class="row">
+			<h:panelGroup id="table">
+				<div class="col-md-8 ">
+
+					<div class="table-responsive">
+
+
+
+
+
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+
+									<th>رقم</th>
+									<th>اسم الصنف</th>
+									<th>العدد</th>
+									<th>الوحدة</th>
+									<th>المواصفات</th>
+									<th>حذف</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat var="det" varStatus="x"
+									value="#{inventoryMasterBean.inventoryRecordList}">
+									<tr>
+
+										<td>#{x.index+1}</td>
+										<td>#{det.articleName}</td>
+										<td>#{det.inventoryActual}</td>
+										<td>#{det.uniteName}</td>
+										<td>#{det.notes}</td>
+										<td><p:commandButton id="xx"
+												style="width: 13px; height: 24px;" icon="fa fa-times"
+												styleClass=" btn btn-danger">		
+												<f:ajax listener="#{inventoryMasterBean.removeRecord(det)}"
+													render="@form"></f:ajax>
+											</p:commandButton></td>
+
+
+									</tr>
+
+								</ui:repeat>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+			</h:panelGroup>
+
+		</div>
+		<hr></hr>
+		
+
+		<div class="col-md-12 ">
+			<hr></hr>
+
+			<h:commandButton value="حفظ"
+				style=" margin-bottom: 19px;
+						float:left"
+				styleClass="btn btn-primary">
+				<f:ajax listener="#{inventoryMasterBean.save}" execute="notes"
+					render="@form"></f:ajax>
+			</h:commandButton>
+			<br></br>
+		</div>
+
+
+							<div id="gridSystemModal2" class="modal fade" tabindex="-1"
+								role="dialog" aria-labelledby="gridModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="modal-title" id="gridModalLabel">إضافة صنف جديد </h4>
+										</div>
+										<h:panelGroup id="refPopup">
+											<div class="modal-body">
+												<div class="container-fluid bd-example-row">
+													<br></br>
+
+																	
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="الاسم" />
+						</div>
+						<div class="col-md-10">
+
+							<h:inputText   id="name" required="true" styleClass="form-control"
+								requiredMessage="ادخل الاسم"
+								value="#{articlesBean.article.name}"></h:inputText>
+
+						</div>
+					</div>
+					<br></br>
+
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="الرمز" />
+						</div>
+
+						<div class="col-md-10">
+
+							<h:inputText required="true" id="code" styleClass="form-control"
+								requiredMessage="ادخل الرمز"  
+								value="#{articlesBean.article.code}" />
+
+						</div>
+
+
+					</div>
+					<br></br>
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="الرئيسى" />
+						</div>
+
+						<div  class="col-md-7">
+							<h:selectOneMenu id="groupId" styleClass="form-control"
+								required="true" requiredMessage="اختر المجموعة الرئيسية"
+								value="#{articlesBean.groupId}">
+								<f:ajax listener="#{articlesBean.updateSubGroups}"
+									execute="groupId" event="valueChange" render="sub"></f:ajax>
+								<f:selectItem itemLabel="اختر المجموعة الرئيسية "></f:selectItem>
+
+								<f:selectItems value="#{articlesBean.articleGroups}" var="x"
+									itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</h:selectOneMenu>
+
+						</div>
+
+
+					</div>
+					<br></br>
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="الفرعى" />
+						</div>
+
+						<div class="col-md-7">
+							<h:selectOneMenu id="sub" styleClass="form-control" required="true"
+								requiredMessage="اختر المجموعة الفرعية"
+								value="#{articlesBean.article.subGroupId}">
+								<f:selectItem itemLabel="اختر المجموعة الفرعية "></f:selectItem>
+								<f:selectItems value="#{articlesBean.articleSubGroups}"
+									var="x" itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</h:selectOneMenu>
+
+						</div>
+
+
+					</div>
+					<br></br>
+
+					<div class="row ">
+						<div class="col-md-2">
+							<h:outputLabel styleClass="btxt" value="الوحدة" />
+						</div>
+
+						<div class="col-md-7">
+							<h:selectOneMenu  styleClass="form-control" required="true"
+								requiredMessage="اختر الوحدة "
+								value="#{articlesBean.article.itemUniteId}">
+
+								<f:selectItem itemLabel="اختر الوحدة  "></f:selectItem>
+
+								<f:selectItems value="#{articlesBean.unites}" var="x"
+									itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+							</h:selectOneMenu>
+
+						</div>
+
+
+					</div>
+					<br></br>
+
+
+
+
+
+<!-- 					<div class="row"> -->
+
+<!-- 						<div> -->
+
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h:commandButton rendered="#{articlesBean.newFlag}" value="جديد"   -->
+								
+<!-- 									styleClass="btn btn-primary btn-sm"> -->
+
+<!-- 									<f:ajax  immediate="true"  render="@form name code" -->
+<!-- 										listener="#{articlesBean.newArticle}"></f:ajax> -->
+<!-- 								</h:commandButton> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h:commandButton value="حفظ" styleClass="btn btn-primary btn-sm" -->
+<!-- 									rendered="#{! articlesBean.newFlag}"> -->
+
+<!-- 									<f:ajax execute="@form" render="@form" -->
+<!-- 										listener="#{articlesBean.addArticle}"></f:ajax> -->
+<!-- 								</h:commandButton> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h:commandButton value=" حفظ التعديل" -->
+<!-- 									styleClass="btn btn-primary btn-sm" -->
+<!-- 									rendered="#{articlesBean.newFlag}"> -->
+
+<!-- 									<f:ajax execute="@form" render="@form" -->
+<!-- 										listener="#{articlesBean.updateArticle}"></f:ajax> -->
+<!-- 								</h:commandButton> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+
+
+				
+
+													
+													<br></br>
+
+
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-green"
+														data-dismiss="modal">#{msg['back']}</button>
+													<h:commandButton style="float:left"
+														value="#{msg['confirmation']}"
+														styleClass="btn btn-primary" >
+														<f:ajax execute="refPopup" listener="#{articlesBean.addArticle}"></f:ajax>
+													</h:commandButton>
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+							</div>
+
+
+
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/ js/vendor/jquery-2.1.4.min.js"></script>
+
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/tabcomplete.min.js"></script>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/livefilter.min.js"></script>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/src/bootstrap-select.js"></script>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/filterlist.min.js"></script>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/plugins.js"></script>
+			</div>
+</h:form>
+		
+	</ui:define>
+</ui:composition>
+
+
+</html>

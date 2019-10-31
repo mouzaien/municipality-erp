@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<!-- 	<h:head> -->
+
+	<!-- 		<link -->
+	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
+	<!-- 			rel="stylesheet" type="text/css"></link> -->
+	<!-- 	</h:head> -->
+
+	<!--	<script type="text/javascript">  
+	 	window.onload = window.history.forward(0);
+ 	</script> \
+ 	-->
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="card card-w-title" dir="rtl">
+						<h1 style="color: #7CB342; text-align: center;">#{msg['notification.list']}
+						</h1>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="حالة الإشعار" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{notifPenalitiesBean.status}"
+									autoWidth="true">
+									<f:selectItem itemLabel="اختر الحالة"
+										noSelectionOption="#{null}" />
+									<f:selectItem itemLabel="إشعار" itemValue="0" />
+									<f:selectItem itemLabel="مخالفة" itemValue="1" />
+									<f:selectItem itemLabel="ملغى" itemValue="2" />
+									<f:ajax render="@form" execute="@this" event="change"
+										listener="#{notifPenalitiesBean.loadNotifPenalities}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<p:dataTable var="penalItem"
+							value="#{notifPenalitiesBean.notifPenalitiesList}" id="inboxdt"
+							widgetVar="penal_dt" paginator="true" paginatorPosition="bottom"
+							rows="12" emptyMessage="لا يوجد" rowIndexVar="rowIndex"
+							filteredValue="#{notifPenalitiesBean.filteredNotifPenalities}"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('penal_dt').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="text-align: center;"
+								headerText="#{msg['notif.number']}"
+								filterBy="#{penalItem.notifId}" filterMatchMode="contains"
+								width="15%">
+                                    #{penalItem.notifId}
+                                </p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['licence.number']}" width="35%"
+								filterBy="#{penalItem.licenceNo}" filterMatchMode="contains">										
+										#{penalItem.licenceNo}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['date']}" width="35%"
+								filterBy="#{penalItem.notifDate}" filterMatchMode="contains">
+								<h:outputText value="#{penalItem.notifDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['status']}" width="5%">
+								<h:outputText
+									value="#{(penalItem.status == 1)? 'مخالفة':((penalItem.status == 2)?'ملغى':'إشعار')}" />
+							</p:column>
+
+							<p:column width="5%" style="text-align:center"
+								headerText="#{msg['details']}">
+								<p:commandButton onclick="PF('penality_dlg').show()"
+									action="#{notifPenalitiesBean.loadSelectedNotification}"
+									process="@this" icon="ui-icon-search"
+									update="includeform:myDialog">
+									<f:setPropertyActionListener value="#{penalItem}"
+										target="#{notifPenalitiesBean.notifFinesMaster}" />
+								</p:commandButton>
+							</p:column>
+							<p:column width="5%" style="text-align:center" headerText="طباعة">
+								<p:commandButton ajax="false" icon="ui-icon-print"
+									onclick="this.form.target='_blank'"
+									action="#{notifPenalitiesBean.printNotifReport}">
+									<f:setPropertyActionListener value="#{penalItem}"
+										target="#{notifPenalitiesBean.notifFinesMaster}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+
+
+						<p:dialog widgetVar="penality_dlg" id="penality_dlgId" width="70%"
+							header="تسجيل المخالفة" style="margin-top: -127px;"
+							hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+							resizable="false">
+							<h:panelGroup id="myDialog">
+
+
+								<div class="ui-g ">
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['notif.number']}"
+											styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.notifId}" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['date']}" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.notifDate}" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="الإدارة المختصة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.deptName}" />
+									</div>
+								</div>
+
+
+
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="المراقب" styleClass="btxt" />
+									</div>
+									<div class="ui-g-4">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.supervisorName}" />
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-4">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.fName}" />
+									</div>
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="الملاحظات" styleClass="btxt" />
+									</div>
+									<div class="ui-g-10">
+										<h:outputLabel
+											value="#{notifPenalitiesBean.notifFinesMaster.observation}" />
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="ui-g-12">
+										<div class="ui-g">
+											<div class="ui-g-12 ">
+												<div class="table-responsive"
+													style="position: relative; overflow-y: auto; width: 98%; padding-right: 27px;">
+													<table id="fine_tab"
+														class="table table-striped table-hover">
+														<thead>
+															<tr>
+																<th width="15%">القسم</th>
+																<th width="30%">الملاحظات</th>
+																<th width="15%">عنوان المخالفة</th>
+																<th width="10%">الحد الادنى</th>
+																<th width="10%">الحد الأعلى</th>
+																<th width="10%">العدد</th>
+																<th width="10%">حذف</th>
+															</tr>
+														</thead>
+														<tbody>
+															<ui:repeat var="fdet" varStatus="x"
+																value="#{notifPenalitiesBean.notifFinesMaster.notifFinesDetailsList}">
+																<tr>
+																	<td width="15%">#{fdet.fineSection.name}</td>
+																	<td width="25%">#{fdet.observation}</td>
+																	<!-- 																<td width="20%">#{fdet.evaluationValue}</td> -->
+																	<td width="20%"><p:selectOneMenu id="setupList"
+																			autoWidth="false" converter="fineSetupConverter"
+																			value="#{fdet.fineSection.selectedFine}"
+																			styleClass="form-control">
+																			<p:ajax event="change" process="@this"
+																				update="minVal,maxVal" />
+																			<f:selectItem itemLabel="" noSelectionOption="true" />
+																			<f:selectItems value="#{fdet.fineSection.finesList}"
+																				var="pen" itemValue="#{pen}"
+																				itemLabel="#{pen.fineDesc}" />
+																		</p:selectOneMenu></td>
+																	<td width="10%"><p:outputLabel id="minVal"
+																			value="#{fdet.fineSection.selectedFine.fineMinimumValue}" /></td>
+																	<td width="10%"><p:outputLabel id="maxVal"
+																			value="#{fdet.fineSection.selectedFine.fineSupermumValue}" /></td>
+																	<td width="10%"><p:inputText id="notCount"
+																			size="2"
+																			disabled="#{notifPenalitiesBean.notifFinesMaster.status != 0}"
+																			value="#{fdet.fineCount}">
+																			<p:ajax event="blur" process="@this" />
+																		</p:inputText></td>
+
+																	<td width="10%"><p:commandButton process="@this"
+																			icon="ui-icon-close" title="حذف"
+																			rendered="#{notifPenalitiesBean.notifFinesMaster.status == 0}"
+																			onclick="PF('confirmdlg').show();">
+																			<f:setPropertyActionListener value="#{fdet}"
+																				target="#{notifPenalitiesBean.selectedDetails}" />
+																		</p:commandButton></td>
+
+																</tr>
+															</ui:repeat>
+														</tbody>
+													</table>
+												</div>
+
+
+											</div>
+										</div>
+										<br />
+
+									</div>
+
+									<br />
+								</div>
+
+								<br />
+								<div align="left">
+									<p:commandButton value="تسجيل المخالفة"
+										styleClass="btn btn-primary"
+										rendered="#{notifPenalitiesBean.notifFinesMaster.status == 0}"
+										style="margin-left:3px;" onclick="PF('confirmdlg1').show();">
+									</p:commandButton>
+									<p:commandButton value="إلغاء" styleClass="btn btn-primary"
+										rendered="#{notifPenalitiesBean.notifFinesMaster.status == 0}"
+										update="@form" action="#{notifPenalitiesBean.cancel}"
+										style="margin-left:3px;"
+										onsuccess="PF('penality_dlg').hide();">
+									</p:commandButton>
+									<p:commandButton value="رجوع" styleClass="btn btn-primary"
+										immediate="true" onsuccess="PF('penality_dlg').hide();" />
+								</div>
+							</h:panelGroup>
+							<div />
+						</p:dialog>
+						<p:dialog widgetVar="confirmdlg" width="30%"
+							header="هل أنت متأكد من الحذف ؟" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<p:commandButton value="نعم" styleClass="btn btn-primary"
+								style="float:left;" update="includeform:myDialog"
+								onsuccess="PF('confirmdlg').hide();"
+								action="#{notifPenalitiesBean.deleteSelDetails}" />
+							<p:spacer />
+							<p:commandButton value="لا" styleClass="btn btn-primary"
+								style="float:left;" update="includeform:myDialog"
+								onsuccess="PF('confirmdlg').hide();" />
+						</p:dialog>
+						<p:dialog widgetVar="confirmdlg1" width="30%"
+							header="هل أنت متأكد من تسجيل المخالفة؟" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<h:form>
+								<p:commandButton value="نعم" styleClass="btn btn-primary"
+									style="float:left;" action="#{notifPenalitiesBean.save}"
+									onsuccess="PF('confirmdlg1').hide();"
+									update="includeform:myDialog" />
+								<p:spacer />
+								<p:commandButton value="لا" styleClass="btn btn-primary"
+									style="float:left;" update="includeform"
+									onsuccess="PF('confirmdlg1').hide();" />
+							</h:form>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

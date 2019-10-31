@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">تموين
+							المحروقات</h3>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-11" />
+									<div class="col-md-1">
+										<p:commandButton value="إضافة"
+											style="float:left;font-family: kufi !important;"
+											action="#{fuelSupplyBean.addFuelSupply}"
+											oncomplete="PF('supply_dlg').show()"
+											update="includeform:addPG">
+										</p:commandButton>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<p:dataTable var="fuelItem" id="fuelTable"
+									value="#{fuelSupplyBean.fuelSuppliesList}"
+									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									filteredValue="#{fuelSupplyBean.filteredFuelSuppliesList}"
+									paginator="true" rows="12">
+									<p:column headerText="نوع المحروقات"
+										filterBy="#{fuelItem.fuelType.name}"
+										filterMatchMode="contains"
+										style="width:25%;text-align:center;">
+										<h:outputText value="#{fuelItem.fuelType.name}" />
+									</p:column>
+									<p:column headerText="الكمية" filterBy="#{fuelItem.quantity}"
+										filterMatchMode="contains"
+										style="width:25%;text-align:center;">
+										<h:outputText value="#{fuelItem.quantity}" />
+									</p:column>
+									<p:column headerText="تاريخ التموين"
+										filterBy="#{fuelItem.supplyDate}" filterMatchMode="contains"
+										style="width:25%;text-align:center;">
+										<h:outputText value="#{fuelItem.supplyDate}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="الكمية الجملية"
+										style="width:18%;text-align:center;">
+										<h:outputText value="#{fuelItem.actualQuantity}" />
+									</p:column>
+									<p:column width="7%" style="text-align:center"
+										headerText="#{msg['delete']}">
+										<p:commandButton id="delete" immediate="true"
+											icon="ui-icon-trash" update="@form"
+											action="#{fuelSupplyBean.deleteFuelSupply}">
+											<f:setPropertyActionListener value="#{fuelItem}"
+												target="#{fuelSupplyBean.fuelSupply}" />
+
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<p:dialog widgetVar="supply_dlg" id="supply_dlgId"
+					header="أضف تموين محروقات" width="40%" hideEffect="fade"
+					showEffect="explode" dir="rtl" modal="true" resizable="false">
+					<h:panelGroup id="addPG">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="نوع المحروقات" styleClass="btxt" />
+								</div>
+								<div class="col-md-8">
+									<p:selectOneMenu
+										value="#{fuelSupplyBean.fuelSupply.fuelTypeId}"
+										style="width: 100%">
+										<f:selectItem itemLabel="أختر نوع المحروقات" itemValue="" />
+										<f:selectItems var="cont" itemValue="#{cont.id}"
+											itemLabel="#{cont.name}"
+											value="#{loadingDataBean.fuelTypeList}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="الكمية" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<p:inputText value="#{fuelSupplyBean.fuelSupply.quantity}"
+										style="width: 100%" />
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-3">
+									<p:outputLabel value="تاريخ التموين" styleClass="btxt" />
+								</div>
+								<div class="col-md-4">
+									<p:calendar value="#{fuelSupplyBean.fuelSupply.supplyDate}"
+										mindate="#{fuelBean.fuelTransaction.startDate}" id="end_date"
+										locale="ar" navigator="true" pattern="dd/MM/yyyy">
+									</p:calendar>
+									<p:outputLabel value="#{fuelSupplyBean.fuelSupply.supplyDate}"
+										rendered="#{!fuelSupplyBean.addMode}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div align="center">
+							<p:commandButton value="حفظ" styleClass="btn btn-primary"
+								update="@form" rendered="#{fuelSupplyBean.addMode}"
+								action="#{fuelSupplyBean.save}" style="margin-left:3px;"
+								onsuccess="PF('supply_dlg').hide();">
+							</p:commandButton>
+							<p:commandButton value="رجوع" styleClass="btn btn-primary"
+								immediate="true" onsuccess="PF('supply_dlg').hide();" />
+						</div>
+						<p:messages id="messages" autoUpdate="true" />
+					</h:panelGroup>
+
+
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

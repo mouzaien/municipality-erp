@@ -1,0 +1,587 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/datatableCss4/js/jquery.dataTables.min.js"></script>
+
+
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link>
+		<link rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link>
+
+	</h:head>
+	<ui:composition template="/pages/menuBar.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<h:panelGroup rendered="#{!searchPenaltyBean.withNationalId}">
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">بيانات
+								الرخصة</h3>
+						</div>
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row ">
+										<div class="col-md-2">
+											<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.licNo}" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="#{msg['commercial.name']}"
+												styleClass="btxt" />
+										</div>
+										<div class="col-md-6">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.trdName}" />
+										</div>
+									</div>
+
+
+									<div class="row ">
+										<div class="col-md-2">
+											<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+										</div>
+										<div class="col-md-4">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.licOwnerName}" />
+										</div>
+
+									</div>
+
+
+
+
+									<div class="row ">
+										<div class="col-md-2">
+											<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+										</div>
+										<div class="col-md-10">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.licAdress}" />
+										</div>
+
+									</div>
+
+
+									<div class="row ">
+										<div class="col-md-2">
+											<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.licBeginDate}" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{searchPenaltyBean.trdMasterFile.licEndDate}" />
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<br />
+					<br />
+					<div class="row">
+						<h:commandButton style="float:left;" value="تسجيل مخالفة"
+							styleClass="btn btn-primary" immediate="true"
+							action="#{searchPenaltyBean.addLicencePenality}">
+						</h:commandButton>
+					</div>
+
+				</h:panelGroup>
+
+
+
+
+
+
+
+
+
+				<h:panelGroup id="natNo" rendered="#{searchPenaltyBean.withNationalId}">
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">بيانات
+								صاحب الرخصة</h3>
+						</div>
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+								
+											<div class="col-md-2">
+												<h:outputLabel value="#{msg['identity']}" styleClass="btxt" />
+											</div>
+											<div class="col-md-2">
+												<h:outputLabel
+													value="#{searchPenaltyBean.reqFinesMaster.fIdNo}" />
+											</div>
+											<div class="col-md-1">
+												<p:commandButton type="button" update="natNo" icon="fa fa-fw fa-user"
+													onclick="PF('dPeoples').show();" />
+											</div>
+											
+											<div class="col-md-2">
+												<h:outputLabel value="#{msg['name']}" styleClass="btxt" />
+											</div>
+											<div class="col-md-5">
+												<h:outputLabel
+													value="#{searchPenaltyBean.reqFinesMaster.fName}" />
+											</div>
+											
+										
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+
+				<br></br>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">قائمة
+							المخالفات</h3>
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-12 ">
+
+							<div class="table-responsive"
+								style="position: relative; height: 300px; overflow-y: auto; width: 98%; padding-right: 27px;">
+
+
+							<h:panelGroup id="penTable">
+
+
+								<table id="exemple" class="table table-striped table-hover">
+									<thead>
+										<tr>
+
+											<th>رقم المخالفة</th>
+											<th>تاريخ المخالفة</th>
+											<th>رقم الاثبات</th>
+											<th>صاحب المخالفة</th>
+											<h:panelGroup rendered="#{searchPenaltyBean.withNationalId}">
+												<th>رقم الرخصة</th>
+											</h:panelGroup>
+											<th>القيمة</th>
+											<th>حالة الدفع</th>
+											<th>الرقم المميز</th>
+											<th>التفاصيل</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat var="det" varStatus="x"
+											value="#{searchPenaltyBean.reqFinesMasterList}">
+
+
+											<tr>
+
+												<td>#{det.fineNo}</td>
+												<td>#{det.fineDate}</td>
+												<td>#{det.fIdNo}</td>
+												<td>#{det.fName}</td>
+												<h:panelGroup rendered="#{searchPenaltyBean.withNationalId}">
+													<td>#{det.fLicenceNo}</td>
+												</h:panelGroup>
+												<td>#{det.totalValue}</td>
+												<td>#{(det.fFineCase==2)? msg['paid']:msg['not.paid']}</td>
+												<td>#{det.fKeycode}</td>
+												<td><p:commandButton
+														oncomplete="PF('detailsDG').show();"
+														action="#{searchPenaltyBean.DetailLic}" process="@this"
+														icon="ui-icon-search" update="includeform:myDialog">
+														<f:setPropertyActionListener value="#{det}"
+															target="#{searchPenaltyBean.reqFinesMaster}" />
+													</p:commandButton></td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br></br>
+				<div class="row">
+					<h:commandButton style="float:left;" value="رجوع"
+						styleClass="btn btn-primary" immediate="true"
+						action="SearchPenality">
+					</h:commandButton>
+				</div>
+				<hr></hr>
+				
+				
+				<p:dialog widgetVar="detailsDG" id="details_dlgId" width="70%" header="التفاصيل" style="margin-top: -60px;"
+						 hideEffect="fade" showEffect="explode" height="70%"
+						dir="rtl" modal="true" resizable="false">
+					<h:panelGroup id="myDialog">
+<!-- 						<div class="modal-dialog modal-lg " style="clear: both;" -->
+<!-- 							role="document"> -->
+<!-- 							<div class="modal-content"> -->
+<!-- 								<div class="modal-header"> -->
+<!-- 									<button type="button" class="close" data-dismiss="modal" -->
+<!-- 										aria-label="Close"> -->
+<!-- 										<span aria-hidden="true"></span> -->
+<!-- 									</button> -->
+<!-- 									<h4 class="modal-title" id="gridModalLabel">التفاصيل</h4> -->
+<!-- 								</div> -->
+								<div class="modal-body">
+									<div class="container-fluid bd-example-row">
+										<br></br>
+										<div class="row">
+											<h4 class="page-header"
+												style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
+												المخالفة</h4>
+
+											<div class="col-md-12">
+												<div class="row ">
+													<div class="col-md-12">
+														<div class="row ">
+															<div class="col-md-2">
+																<label class="btxt">رقم الرخصة</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fLicenceNo}" />
+															</div>
+
+															<div class="col-md-2">
+																<label class="btxt">المخطط</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fMapNo}" />
+															</div>
+
+
+															<div class="col-md-2">
+																<label class="btxt">القطعة</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fBlockNo}" />
+															</div>
+
+
+														</div>
+													</div>
+
+
+													<div class="col-md-12">
+														<div class="row ">
+															<div class="col-md-2">
+																<label class="btxt">رقم المخالفة</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fineNo}" />
+															</div>
+															<div class="col-md-2">
+																<label class="btxt">رقم المحضر</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fReportNo}" />
+															</div>
+
+															<div class="col-md-2">
+																<label class="btxt">الرقم المميز</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fKeycode}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<br />
+
+												<div class="row ">
+
+													<div class="col-md-12">
+														<div class="row ">
+
+
+															<div class="col-md-2">
+																<label class="btxt">حالة المخالفة</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{(searchPenaltyBean.reqFinesMaster.fFineCase==2)? msg['paid']:msg['not.paid']}" />
+															</div>
+
+
+															<div class="col-md-2">
+																<label class="btxt">تاريخ المحضر</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.fineDate}" />
+															</div>
+															<div class="col-md-2">
+																<label class="btxt">نوع النشاط</label>
+
+															</div>
+															<div class="col-md-2">
+																<h:outputLabel
+																	value="#{(searchPenaltyBean.reqFinesMaster.activityType==0)? msg['healthy']:msg['commercial']}" />
+															</div>
+
+														</div>
+													</div>
+
+												</div>
+												<br />
+												<div class="row ">
+
+													<div class="col-md-12">
+														<div class="row ">
+
+
+															<div class="col-md-2">
+																<label class="btxt">الإدارة المختصة</label>
+
+															</div>
+															<div class="col-md-4">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.deptName}" />
+															</div>
+
+															<div class="col-md-2">
+																<label class="btxt">المراقب</label>
+
+															</div>
+															<div class="col-md-4">
+																<h:outputLabel
+																	value="#{searchPenaltyBean.reqFinesMaster.supervisorName}" />
+															</div>
+														</div>
+
+
+													</div>
+												</div>
+
+											</div>
+											<br />
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row">
+
+
+														<div class="col-md-2">
+															<label class="btxt">شرح المخالفة</label>
+
+														</div>
+														<div class="col-md-10">
+															<h:outputLabel
+																value="#{searchPenaltyBean.reqFinesMaster.fFineDesc}" />
+														</div>
+
+
+
+													</div>
+												</div>
+
+											</div>
+											<br />
+											<div class="row ">
+
+												<div class="col-md-12">
+													<div class="row ">
+														<div class="col-md-2">
+															<label class="btxt">رقم التبليغ</label>
+
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{searchPenaltyBean.reqFinesMaster.fLetterNo}" />
+														</div>
+														<div class="col-md-2">
+															<label class="btxt">تاريخ الإغلاق</label>
+
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{searchPenaltyBean.reqFinesMaster.fCloseDate}" />
+														</div>
+														<div class="col-md-2">
+															<label class="btxt">تاريخ الفسخ</label>
+
+														</div>
+														<div class="col-md-2">
+															<h:outputLabel
+																value="#{searchPenaltyBean.reqFinesMaster.fReopenDate}" />
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+
+										<br />
+									</div>
+									<br></br>
+
+									<div class="row">
+										<h4 class="page-header"
+											style="margin: 0px 58px 20px ! important; color: #FF5722">تفاصيل
+											المخالفة</h4>
+
+										<div class="col-md-12">
+											<div class="row ">
+
+												<h:panelGroup id="tableDetails">
+
+													<div class="col-md-12 ">
+
+														<div class="table-responsive"
+															style="position: relative; height: 300px; overflow-y: auto; width: 98%; padding-right: 27px;">
+
+															<table class="table table-striped table-hover">
+																<thead>
+																	<tr>
+
+																		<th>بيان الغرامة</th>
+																		<th>الحد الادنى</th>
+																		<th>الحد الأعلى</th>
+																		<th>عدد المخالفات</th>
+																		<th>قيمةالغرامة</th>
+																		<th>إجمالي الغرامة</th>
+
+
+																	</tr>
+																</thead>
+																<tbody>
+																	<ui:repeat var="fdet" varStatus="x"
+																		value="#{searchPenaltyBean.lstReqFinesDetails}">
+
+
+																		<tr>
+
+																			<td>#{fdet.reqFinesSetup.fineDesc}</td>
+																			<td>#{fdet.reqFinesSetup.fineMinimumValue}</td>
+																			<td>#{fdet.reqFinesSetup.fineSupermumValue}</td>
+																			<td>#{fdet.fineCount}</td>
+																			<td>#{fdet.fineValue}</td>
+																			<td>#{fdet.fineTotalValue}</td>
+
+																		</tr>
+
+																	</ui:repeat>
+																</tbody>
+															</table>
+														</div>
+
+
+													</div>
+												</h:panelGroup>
+
+											</div>
+											<br />
+
+										</div>
+
+										<br />
+									</div>
+
+									<div>
+										<button type="button" class="btn btn-primary" style="float: left;"
+							onclick="PF('detailsDG').hide();">رجوع</button>
+
+									</div>
+								</div>
+<!-- 							</div> -->
+<!-- 						</div> -->
+					</h:panelGroup>
+					</p:dialog>
+<!-- 				</div> -->
+				<p:dialog header="تحديد" widgetVar="dPeoples" modal="true"
+					width="50%" dir="rtl" minHeight="50">
+					<p:dataTable value="#{loadingDataBean.arcPeoples}"
+						style="width:100%" selectionMode="single"
+						selection="#{penaltyBean.selectedPeople}" var="people" id="ARCpDT"
+						paginator="true" rows="12" emptyMessage="لا يوجد"
+						rowKey="#{people.nationalId}"
+						filteredValue="#{searchPenaltyBean.filteredArcPeoples}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:ajax event="rowSelect"
+							listener="#{searchPenaltyBean.onRowSelect}"></p:ajax>
+						<p:column style="text-align: center;" headerText="رقم"
+							filterBy="#{people.nationalId}" width="10%"
+							filterMatchMode="contains">
+                                    #{people.nationalId}
+                                </p:column>
+						<p:column style="white-space: nowrap;"
+							headerText="#{msg['commercial.name']}" width="55%"
+							filterBy="#{people.completeName}" filterMatchMode="contains">										
+										#{people.completeName}										
+									</p:column>
+					</p:dataTable>
+					<br/>
+					<div class="row" align="center">
+						<h:commandButton value="موافق" styleClass="btn btn-primary"
+							action="#{searchPenaltyBean.checkLic}">
+							<p:ajax process="@form" oncomplete="PF('dPeoples').hide();"
+								update="includeform:natNo includeform:penTable"></p:ajax>
+						</h:commandButton>
+						<button type="button" class="btn btn-primary"
+							onclick="PF('dPeoples').hide();">رجوع</button>
+					</div>
+				</p:dialog>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>

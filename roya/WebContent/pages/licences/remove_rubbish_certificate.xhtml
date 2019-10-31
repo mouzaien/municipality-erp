@@ -1,0 +1,502 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{rubbishRemoveBean.loadSelectedCertificate}"></f:viewAction>
+	</f:metadata>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<ui:composition template="/pages/menuBar.xhtml">
+
+
+	<ui:define name="content">
+
+		<div>
+
+			<h:form id="includeform">
+
+
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br />
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px ! important; color: #428bca">#{msg['remove.rubbish.licence']}
+						</h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h:panelGroup id="natNo">
+									<div class="row">
+
+										<div class="col-md-2">
+											<h:outputLabel value="#{msg['identity']}" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{rubbishRemoveBean.bldLicHangover.licHangoverAplOwner}" />
+										</div>
+										<div class="col-md-1">
+											<p:commandButton type="button" update="natNo"
+												rendered="#{!rubbishRemoveBean.consultMode}"
+												icon="fa fa-fw fa-user" onclick="PF('dPeoples').show();" />
+										</div>
+
+										<div class="col-md-2">
+											<h:outputLabel value="#{msg['name']}" styleClass="btxt" />
+										</div>
+										<div class="col-md-5">
+											<h:outputLabel
+												value="#{rubbishRemoveBean.selectedPeople.completeName}" />
+										</div>
+
+
+									</div>
+								</h:panelGroup>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['cheque.Number']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakNo}"
+											styleClass="form-control" />
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakNo}" />
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['cheque.Date']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<p:inputMask rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakDate}"
+											mask="99/99/9999" dir="ltr" size="5">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+										</p:inputMask>
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakDate}" />
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['his.source']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakSource}"
+											styleClass="form-control" />
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverSakSource}" />
+									</div>
+								</div>
+
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['licence.number']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicNo}"
+											styleClass="form-control" />
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicNo}" />
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['licesnse.date']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<p:inputMask rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicDate}"
+											mask="99/99/9999" dir="ltr" size="5">
+										</p:inputMask>
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicDate}" />
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['licesnse.source']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicSource}"
+											styleClass="form-control" />
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldLicSource}" />
+									</div>
+
+								</div>
+
+								<br />
+
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['plan']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverPlnNo}"
+											styleClass="form-control" />
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverPlnNo}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['pieces']}" styleClass="btxt" />
+										<p:commandButton value="إضافة" styleClass="btn btn-primary"
+											rendered="#{!rubbishRemoveBean.consultMode}"
+											style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+											actionListener="#{rubbishRemoveBean.addPiece}"
+											update="piecesList">
+										</p:commandButton>
+									</div>
+									<div class="col-md-6">
+										<p:dataGrid var="pc"
+											rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.pieces}"
+											columns="6" style="width : 100%" emptyMessage=""
+											layout="grid" rows="10" id="piecesList">
+
+											<h:inputText value="#{pc.id.pieceId}"
+												styleClass="form-control" />
+										</p:dataGrid>
+										<h:outputLabel rendered="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.piecesNumbers}" />
+									</div>
+
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['building.type']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:selectOneMenu styleClass="form-control"
+											disabled="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldTyp}"
+											style="width:100%; dir:rtl;">
+											<f:selectItem itemLabel="#{msg['armed']}" itemValue="1" />
+											<f:selectItem itemLabel="#{msg['hanger']}" itemValue="2" />
+										</h:selectOneMenu>
+									</div>
+
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['building.use']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:selectOneMenu styleClass="form-control"
+											disabled="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldUse}">
+											<f:selectItem itemLabel="بناء سكني" itemValue="1" />
+											<f:selectItem itemLabel="بناء تجاري" itemValue="2" />
+											<f:selectItem itemLabel="بناء سكني تجاري" itemValue="11" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['supervisor']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:selectOneMenu styleClass="form-control"
+											disabled="#{rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverWatcher}">
+											<f:selectItem itemValue=""
+												itemLabel="#{msg['choose.employee']}" />
+											<f:selectItems value="#{rubbishRemoveBean.usersList}"
+												var="emp" itemValue="#{emp.userId}"
+												itemLabel="#{emp.employeeName}" />
+										</h:selectOneMenu>
+									</div>
+								</div>
+
+
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['building.height']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldHeight}"
+											styleClass="form-control" />
+										<h:outputLabel
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverBldHeight}"
+											rendered="#{rubbishRemoveBean.consultMode}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['lic.height']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverWallHeight}"
+											styleClass="form-control" />
+										<h:outputLabel
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverWallHeight}"
+											rendered="#{rubbishRemoveBean.consultMode}" />
+									</div>
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['floor.number']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-2">
+										<h:inputText rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverFloorCount}"
+											styleClass="form-control" />
+										<h:outputLabel
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverFloorCount}"
+											rendered="#{rubbishRemoveBean.consultMode}" />
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['finishing.facade']}"
+											styleClass="btxt" />
+									</div>
+									<div class="col-md-10">
+										<h:inputTextarea rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverFrontFinish}"
+											styleClass="form-control" />
+										<h:outputLabel
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverFrontFinish}"
+											rendered="#{rubbishRemoveBean.consultMode}" />
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="#{msg['description']}" styleClass="btxt" />
+									</div>
+									<div class="col-md-10">
+										<h:inputTextarea rendered="#{!rubbishRemoveBean.consultMode}"
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverNotes}"
+											styleClass="form-control" />
+										<h:outputLabel
+											value="#{rubbishRemoveBean.bldLicHangover.licHangoverNotes}"
+											rendered="#{rubbishRemoveBean.consultMode}" />
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-7">
+										<br></br>
+
+										<div class="row">
+											<div class="col-md-2">
+												<h:outputLabel styleClass="btxt" value=" الارفاق " />
+
+											</div>
+											<div class="col-md-10">
+												<p:fileUpload id="upload"
+													widgetVar="newCommentFileUpload100" multiple="true"
+													update="att-list"
+													fileUploadListener="#{rubbishRemoveBean.uploadFile}"
+													uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+													label="تحديد المرفق" sizeLimit="300000000"
+													previewWidth="30" />
+											</div>
+											<h:commandButton id="btn_1" value="uploadFiles"
+												style="display: none">
+												<f:ajax event="click"
+													listener="#{rubbishRemoveBean.refreshFilesUploaded}"
+													render="att-list">
+												</f:ajax>
+											</h:commandButton>
+										</div>
+										<br></br>
+										<div class="row">
+											<div class="col-md-2">
+												<h:outputLabel value="  " />
+
+											</div>
+											<div>
+												<ul>
+													<h:panelGroup id="att-list">
+														<br></br>
+														<ui:repeat var="attach"
+															value="#{rubbishRemoveBean.attachList}">
+															<div class="row">
+																<div class="col-md-5">
+																	<h:outputLabel value="#{attach.attachRealName}" />
+																</div>
+																<div class="col-md-1">
+																	<h:commandButton class="btn btn-danger"
+																		immediate="true" render="att-list" value="إلغاء"
+																		actionListener="#{rubbishRemoveBean.deleteAttchFile(attach.attachRealName)}">
+																	</h:commandButton>
+																</div>
+															</div>
+														</ui:repeat>
+													</h:panelGroup>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-5">
+
+										<br></br> <a
+											href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+											id="FileLoderID" class="btn btn-primary"
+											style="display: none; float: left; margin-left: 84px;"
+											onclick="notVisibleDIv()"> تحميل المرفقات </a>
+										<div style="display: inline;">
+											<a
+												href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+												class="btn btn-primary icon-pencil" onclick="visibleDIv()"
+												style="padding-top: 1px; padding-bottom: 1px;"> <img
+												src="#{facesContext.externalContext.requestContextPath}/resources/images/scanner-200.png"
+												width="40" height="40" border="0"></img>
+
+											</a>
+											<div class="col-md-6" id="divError"
+												style="display: none; float: left;">
+												<h:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح"
+													style="color:red"></h:outputLabel>
+											</div>
+
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+					<br></br>
+					<div style="color: color: #428bca">
+						<h3 class="page-header"
+							style="margin: 0px 0 20px ! important; color: #428bca">
+							المرفقات</h3>
+					</div>
+					<div class="panel-body">
+						<p:outputLabel rendered="#{rubbishRemoveBean.attList eq null }"
+							value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel>
+						<ul>
+							<h:panelGroup id="AttachmantTab">
+								<ui:repeat value="#{rubbishRemoveBean.attList}" var="att">
+									<div class="panel panel-default">
+										<div class="panel-body">قام بارفاقه #{att.ownerName}</div>
+										<div class="panel-footer">
+											<div class="container-fluid">
+												<h:outputLink target="_blank" value="#{att.attLink}">
+																أضغط هنا لتحميل الملف
+															</h:outputLink>
+											</div>
+										</div>
+									</div>
+								</ui:repeat>
+							</h:panelGroup>
+						</ul>
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="col-md-12">
+
+
+						<h:commandButton value="#{msg['save']}"
+							style="float:left;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="btn btn-primary"
+							rendered="#{!rubbishRemoveBean.activatePrint}"
+							action="#{rubbishRemoveBean.saveRubbishRemoveCertificateAction}">
+
+						</h:commandButton>
+
+
+						<h:outputLink id="gg"
+							rendered="#{rubbishRemoveBean.activatePrint}"
+							style="float:left;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+							styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+							value="#{rubbishRemoveBean.urlCertificate}" target="_blank">
+							<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+							<span class="ui-button-text">#{msg['print']}</span>
+							<f:ajax execute="@form"></f:ajax>
+						</h:outputLink>
+					</div>
+				</div>
+				<p:dialog header="تحديد" widgetVar="dPeoples" modal="true"
+					width="50%" dir="rtl" minHeight="50">
+					<p:dataTable value="#{loadingDataBean.arcPeoples}"
+						style="width:100%" selectionMode="single"
+						selection="#{rubbishRemoveBean.selectedPeople}" var="people"
+						id="ARCpDT" paginator="true" rows="12" emptyMessage="لا يوجد"
+						rowKey="#{people.nationalId}"
+						filteredValue="#{rubbishRemoveBean.filteredArcPeoples}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						<p:ajax event="rowSelect"
+							listener="#{rubbishRemoveBean.onRowSelect}"></p:ajax>
+						<p:column style="text-align: center;" headerText="رقم"
+							filterBy="#{people.nationalId}" width="10%"
+							filterMatchMode="contains">
+                                    #{people.nationalId}
+                                </p:column>
+						<p:column style="white-space: nowrap;"
+							headerText="#{msg['commercial.name']}" width="55%"
+							filterBy="#{people.completeName}" filterMatchMode="contains">										
+										#{people.completeName}										
+									</p:column>
+					</p:dataTable>
+					<br />
+					<div class="row" align="center">
+						<h:commandButton value="موافق" styleClass="btn btn-primary"
+							action="#{rubbishRemoveBean.checkLic}">
+							<p:ajax process="@form" oncomplete="PF('dPeoples').hide();"
+								update="includeform:natNo"></p:ajax>
+						</h:commandButton>
+						<button type="button" class="btn btn-primary"
+							onclick="PF('dPeoples').hide();">رجوع</button>
+					</div>
+				</p:dialog>
+			</h:form>
+			<script>
+				function visibleDIv() {
+					document.getElementById("FileLoderID").style.display = "block";
+					document.getElementById("divError").style.display = "block";
+				}
+				function notVisibleDIv() {
+
+					document.getElementById("divError").style.display = "none";
+					document.getElementById("FileLoderID").style.display = "none";
+					document.getElementById("includeform:btn_1").click();
+				}
+			</script>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

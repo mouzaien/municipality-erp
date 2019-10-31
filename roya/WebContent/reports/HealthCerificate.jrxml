@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HealthCerificate" language="groovy" columnDirection="RTL" pageWidth="610" pageHeight="300" columnWidth="610" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" uuid="a07da40f-61fd-4cd8-bd86-d4ff01775c2a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="2"/>
+	<parameter name="p1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[/* Formatted on 2016/11/22 09:41 (Formatter Plus v4.8.8) */
+SELECT ALL lic_helth_data.ID a1,
+           lic_helth_data.appl_date,
+            lic_helth_data.apll_owner
+           || ' تاريخه: '
+           || lic_helth_data.id_date
+           || ' هـ'
+           || ' مصدره :'
+           || lic_helth_data.id_source a5,
+            lic_helth_data.appl_name a2,
+           lic_helth_data.id_date, lic_helth_data.is_type,
+              'الجنسيــة : '
+           || lic_helth_data.nation
+           || ' '
+           || ' المهنة :'
+           || lic_helth_data.job a3,lic_helth_data.job,lic_helth_data.nation,
+           lic_helth_data.station,
+           '' || lic_helth_data.rsl_end_date || ' هــ ' d2,
+           '' || lic_helth_data.rsl_bgn_date || ' هــ ' d1,
+              'المهنـــــة : '
+           || lic_helth_data.job
+           || ' لدى '
+           || (SELECT trd_name || ' ' || lic_address
+                 FROM lic_master_helth
+                WHERE appl_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )  ) a4,
+(SELECT trd_name || ' ' || lic_address
+                 FROM lic_master_helth
+                WHERE appl_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )  ) a4_1,
+
+(SELECT trd_name
+                 FROM lic_master_helth
+                WHERE appl_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )  ) trd_name,
+(SELECT  lic_address
+                 FROM lic_master_helth
+                WHERE appl_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} ) ) lic_address,
+
+           lic_helth_data.apll_owner, lic_helth_data.tefod_date,
+           lic_helth_data.homma_date, lic_helth_data.k_name,
+           lic_helth_data.date_depend, lic_helth_data.depend1,
+           '*' || lic_helth_data.ID || '*' barcode, lic_helth_data.ID,
+           lic_master_helth.apll_type ,
+           (SELECT ALL  ARC_PEOPLE_PIC.PIC FROM  ARC_PEOPLE_PIC where ARC_PEOPLE_PIC.natno=lic_helth_data.apll_owner ) PIC ,
+           ' تم إدخال البيانات بواسطة  '||NVL(get_name(lic_master_helth.DEPEND1),'**') createdBY ,
+
+(select HRS_SIGNS.SIGN_date
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 117
+and ARC_RECORDS.id = $P{p1}
+and HRS_SIGNS.DOC_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )
+and HRS_SIGNS.sign_step_id = 2 ) SIGN_DATE  ,
+(select HRS_SIGNS.SIGN_JOB_NAME
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 117
+and ARC_RECORDS.id = $P{p1}
+and HRS_SIGNS.DOC_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )
+and HRS_SIGNS.sign_step_id = 2 ) SIGN_JOB_NAME  ,
+
+(select GET_REAL_EMPNAME(SIGN_USER_ID)
+from ARC_RECORDS,HRS_SIGNS
+where APP_TYPE = 117
+and ARC_RECORDS.id = $P{p1}
+and HRS_SIGNS.DOC_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )
+and HRS_SIGNS.sign_step_id = 2) sign_real_name ,
+
+
+(
+select WRK_PROFILE_SIGN.DDD
+from ARC_RECORDS,HRS_SIGNS ,wrk_profile_sign
+where APP_TYPE = 117
+and ARC_RECORDS.id = $P{p1}
+and HRS_SIGNS.SIGN_USER_ID  =  wrk_profile_sign.USER_ID
+and HRS_SIGNS.DOC_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )
+and HRS_SIGNS.sign_step_id = 2) SIGN001
+
+
+
+
+
+
+
+      FROM lic_helth_data, lic_master_helth
+     WHERE lic_helth_data.appl_id = lic_master_helth.appl_id
+       AND lic_helth_data.appl_id = (select NVL(max(doc_id),0) from hRS_SIGNS where ARC_RECORD_ID =$P{p1} )]]>
+	</queryString>
+	<field name="A1" class="java.math.BigDecimal"/>
+	<field name="APPL_DATE" class="java.lang.String"/>
+	<field name="A5" class="java.lang.String"/>
+	<field name="A2" class="java.lang.String"/>
+	<field name="ID_DATE" class="java.lang.String"/>
+	<field name="IS_TYPE" class="java.lang.String"/>
+	<field name="A3" class="java.lang.String"/>
+	<field name="JOB" class="java.lang.String"/>
+	<field name="NATION" class="java.lang.String"/>
+	<field name="STATION" class="java.lang.String"/>
+	<field name="D2" class="java.lang.String"/>
+	<field name="D1" class="java.lang.String"/>
+	<field name="A4" class="java.lang.String"/>
+	<field name="A4_1" class="java.lang.String"/>
+	<field name="TRD_NAME" class="java.lang.String"/>
+	<field name="LIC_ADDRESS" class="java.lang.String"/>
+	<field name="APLL_OWNER" class="java.math.BigDecimal"/>
+	<field name="TEFOD_DATE" class="java.lang.String"/>
+	<field name="HOMMA_DATE" class="java.lang.String"/>
+	<field name="K_NAME" class="java.lang.String"/>
+	<field name="DATE_DEPEND" class="java.lang.String"/>
+	<field name="DEPEND1" class="java.math.BigDecimal"/>
+	<field name="BARCODE" class="java.lang.String"/>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="APLL_TYPE" class="java.math.BigDecimal"/>
+	<field name="PIC" class="java.io.InputStream"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="SIGN_DATE" class="java.lang.String"/>
+	<field name="SIGN_JOB_NAME" class="java.lang.String"/>
+	<field name="SIGN_REAL_NAME" class="java.lang.String"/>
+	<field name="SIGN001" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="270" splitType="Stretch">
+			<textField>
+				<reportElement x="353" y="16" width="123" height="27" uuid="bcb1c5d5-1cfa-4861-ab58-dce39bd48333"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{A1}+"").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="43" width="322" height="28" uuid="0bd9fa0f-b6d9-480b-995f-434cabef5c55"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{A2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="18" y="157" width="457" height="27" uuid="5e0f9b34-0f8b-4c5d-8faa-71ae22f9342a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{A5}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="488" y="186" width="114" height="27" uuid="5c22b628-2b69-4536-a55d-b6e1bd9f81ff"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ التحصينات:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="313" y="186" width="162" height="27" uuid="d8efbdbc-e525-40ad-97b2-2ac40c062692"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{TEFOD_DATE} +"هـ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="488" y="16" width="114" height="27" uuid="847aeb6c-4b82-4d48-9f2e-0c3c53859ffa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الرقـــم :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="43" width="114" height="28" uuid="a520577d-3ee4-4f30-9484-acfaafc0e2ef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاســـــــم :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="71" width="114" height="28" uuid="c6b3d347-4bc2-40dd-8334-939283333423"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الجنسيــة :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="71" width="43" height="28" uuid="58e2a110-3805-42df-9e64-80a573ad19f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المهنة :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="154" y="71" width="163" height="28" uuid="e460cf4d-3336-4962-b350-f9efecf695fb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JOB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="376" y="71" width="100" height="28" uuid="5755e106-b704-4f2c-b361-307698a57350"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NATION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="488" y="100" width="114" height="28" uuid="8de572a6-1663-4991-82b4-577730a126ff"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[صاحب العمل :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="488" y="128" width="114" height="28" uuid="c77ca736-0427-49bc-87e2-5250099bea8b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[العنوان :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="128" width="322" height="28" uuid="08c1d8c6-f035-40a4-bc00-2f17085327ad"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="19" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{A4_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="488" y="157" width="114" height="27" uuid="5bf5e9da-2c7f-4542-a284-45e20384daf7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[رقم الإثبات:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="154" y="100" width="322" height="28" uuid="272902bc-d1cf-457b-9115-0eb336ee2419"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{K_NAME}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="133" y="156" width="439" height="1" forecolor="#FFFFFF" uuid="c51b559c-35d0-43bd-9ed7-678ec93c37ad"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="488" y="213" width="114" height="27" uuid="75493b8f-5858-47ad-87ed-72c74e920554"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ الإنتهـاء:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="214" y="186" width="90" height="27" uuid="bfe9cae9-6c67-4e60-b341-c1481909bc00"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ الإصدار :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="21" y="187" width="180" height="27" uuid="40729501-9a0e-4081-9e02-36748055daf8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{D1}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="313" y="213" width="162" height="27" uuid="9fe2c88c-02b6-4283-9922-f308d580788b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{D2}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="181" y="254" width="421" height="16" uuid="6cd6169d-b964-4c9e-ae8d-202497f4ca2e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CREATEDBY}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="38" y="222" width="73" height="45" uuid="e09534c2-ec5e-42e4-a70e-719ee5228a53"/>
+				<imageExpression><![CDATA[$F{SIGN001}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="32" y="33" width="96" height="102" uuid="bd25eb56-11b3-4a2c-baf3-d9e469e5bdd5"/>
+				<imageExpression><![CDATA[$F{PIC}]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement mode="Transparent" x="18" y="137" width="126" height="19" uuid="c9576d7b-41ee-4f31-bdc0-4f2970193aec"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SSCC18" drawText="true" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{A1}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="219" width="140" height="16" uuid="64466c51-eb46-40b4-b8e9-ed313578846b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_JOB_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="254" width="140" height="16" uuid="f8c1cc03-3520-48cc-a49f-d2eb65347307"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_REAL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="0" width="140" height="33" uuid="ccb3a686-7750-4c60-8a48-488a5294fbc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="16" width="200" height="27" uuid="cb021062-51b9-42c8-895f-1e7370dcc15b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["نوع الإصدار : "+($F{APLL_TYPE} == "1" ? "تجديد" :"جديد")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

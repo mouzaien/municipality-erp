@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:head>
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{rubbishRemoveBean.loadAllCertificates}"></f:viewAction>
+		</f:metadata>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+
+<!-- 				<p class="text-center"> -->
+<!-- 					<h:outputLabel styleClass="btxt" -->
+<!-- 						style="font-weight:bold; font-size:30px;" -->
+<!-- 						value="#{msg['rubbish.certificate']}"> -->
+<!-- 					</h:outputLabel> -->
+
+<!-- 				</p> -->
+
+				<h:form id="includeform">
+
+
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca">#{msg['rubbish.certificate']} : #{msg['list.demands']}
+							</h3>
+						</div>
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="row">
+
+										<p:dataTable var="certifItem" id="inboxdt"
+											value="#{rubbishRemoveBean.certificatesList}"
+											emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" paginatorPosition="bottom"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											filteredValue="#{rubbishRemoveBean.filteredCertificates}"
+											paginator="true" rows="12">
+
+											<p:column style="text-align: center;" headerText="الهوية"
+												filterBy="#{certifItem.licHangoverAplOwner}"
+												filterMatchMode="contains" width="10%">
+                                    #{certifItem.licHangoverAplOwner}
+
+                                </p:column>
+											<p:column style="white-space: nowrap;"
+												headerText="#{msg['licence.number']}" width="55%"
+												filterBy="#{certifItem.licHangoverBldLicNo}"
+												filterMatchMode="contains">										
+										#{certifItem.licHangoverBldLicNo}						
+									</p:column>
+											<p:column style="white-space: nowrap;text-align: center;"
+												headerText="#{msg['licesnse.date']}" width="15%"
+												filterBy="#{certifItem.licHangoverBldLicDate}"
+												filterMatchMode="contains">										
+										#{certifItem.licHangoverBldLicDate}										
+									</p:column>
+											<p:column width="5%" style="text-align:center"
+												headerText="#{msg['details']}">
+												<p:commandButton style="background-color: #3F729B;"
+													action="#{rubbishRemoveBean.chooseCertificate(certifItem)}"
+													icon="ui-icon-search">
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

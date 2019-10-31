@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>تسجيل مخالفة</title>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<!-- <style type="">
+.ui-selectonemenu .ui-widget .ui-state-default .ui-corner-all .form-control
+	{
+	min-width: 20px !important;
+	color: red;
+}
+</style> -->
+		<h:form>
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer">
+
+				<p:commandButton value="حفظ" action="#{penaltyBean.save}"
+					styleClass="cyan-btn" icon="ui-icon ui-icon-save">
+					<f:ajax render="@all"></f:ajax>
+				</p:commandButton>
+			</div>
+		</h:form>
+		<br></br>
+		<div class="row" style="color: color: #428bca"></div>
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				تسجيل مخالفة <span class="fa fa-fw fa-file-text"></span>
+			</h1>
+			<h:form id="includeform">
+				<div>
+					<h:panelGroup rendered="#{penaltyBean.fineForLic}">
+
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.licNo}" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel value="#{msg['commercial.name']}"
+									styleClass="btxt" />
+							</div>
+							<div class="ui-g-6">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.trdName}" />
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-4">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.licOwnerName}" />
+							</div>
+
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-10">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.licAdress}" />
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.licBeginDate}" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel value="#{penaltyBean.trdMasterFile.licEndDate}" />
+							</div>
+						</div>
+
+
+					</h:panelGroup>
+					<h:panelGroup id="natNo" rendered="#{!penaltyBean.fineForLic}">
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value="رقم السجل" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:commandButton value="تحديد" type="button" update="natNo"
+									onclick="PF('dPeoples').show();" />
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel styleClass="btxt"
+									value="#{penaltyBean.reqFinesMaster.fIdNo}" />
+							</div>
+							<div class="ui-g-5">
+								<h:outputLabel styleClass="btxt"
+									value="#{penaltyBean.reqFinesMaster.fName}" />
+							</div>
+						</div>
+					</h:panelGroup>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="نوع النشاط" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu styleClass="form-control" id="activId"
+								required="true" value="#{penaltyBean.activityType}">
+								<f:ajax execute="@this"></f:ajax>
+								<f:selectItems value="#{penaltyBean.activitiesTypes}"
+									var="activ" itemLabel="#{activ.name}" itemValue="#{activ.id}"></f:selectItems>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="المراقب" />
+						</div>
+						<div class="ui-g-3">
+							<p:selectOneMenu styleClass="form-control" id="visorId"
+								filter="true" filterMatchMode="contains" required="true"
+								value="#{penaltyBean.supervisorId}">
+								<f:ajax execute="@this"></f:ajax>
+								<f:selectItems value="#{penaltyBean.supervisors}" var="visor"
+									itemLabel="#{visor.name}" itemValue="#{visor.userId}"></f:selectItems>
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br /> <br />
+				</div>
+			</h:form>
+			<hr />
+			<div class="col-lg-12">
+
+				<div style="color: color: #428bca">
+					<h1 style="color: #7CB342; text-align: center;">قائمة
+						المخالفات</h1>
+				</div>
+				<div class="row">
+					<h:form id="fines">
+
+						<h:panelGroup id="table">
+							<div class="ui-g">
+								<div class="table-responsive">
+									<p:dataTable var="penaltyItem" id="inboxdt"
+										value="#{penaltyBean.codesFinesList}"
+										emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+										paginatorPosition="bottom"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+										filteredValue="#{penaltyBean.filteredArcPeoples}"
+										paginator="true" rows="17">
+
+										<f:facet name="header">
+											<p:outputPanel>
+												<h:outputText value="ابحث فى كل الحقول:" />
+												<p:inputText id="globalFilter"
+													onkeyup="PF('cellemp').filter()" style="width:150px"
+													placeholder="كلمة البحث">
+												</p:inputText>
+											</p:outputPanel>
+										</f:facet>
+
+
+
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="الرقم" width="10%" filterBy="#{penaltyItem.id}"
+											filterMatchMode="contains">										
+										#{penaltyItem.id} 									
+									</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="مسمى المخالفة" width="30%">
+
+											<div>
+												<p:selectOneMenu style=" width:300px" autoWidth="false"
+													requiredMessage="يجب اختيار نوع المخالفة" id="fineIdB"
+													rendered="#{penaltyItem.visible}" converter="fineConverter"
+													filter="true" filterMatchMode="contains" required="true"
+													value="#{penaltyBean.selectedCodeFiner}">
+													<p:ajax process="@this" update="fines:table"
+														listener="#{penaltyBean.updateFiner(penaltyItem)}" />
+													<f:selectItems value="#{penaltyBean.codesFines}"
+														itemLabelEscaped="#{finer.fineDesc}"
+														itemDescription="#{finer.fineDesc}" var="finer"
+														itemLabel="#{finer.fineCode}#{finer.shortDesc}"
+														itemValue="#{finer}"></f:selectItems>
+												</p:selectOneMenu>
+												<h:outputLabel value="#{penaltyItem.fineDesc}" id="lblFiner"
+													rendered="#{!penaltyItem.visible}"
+													style="width:100% !important;">
+												</h:outputLabel>
+											</div>
+
+										</p:column>
+
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="الحد الأدنى" width="10%">#{penaltyItem.fineMinimumValue}</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="الحد الأعلى" width="10%">#{penaltyItem.fineSupermumValue}</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="العدد" width="5%">
+											<p:inputText disabled="false" value="#{penaltyItem.fineNbr}"
+												style="width:100% !important;">
+												<p:ajax event="blur" process="@this,fines:table"
+													update="sumId"
+													listener="#{penaltyBean.calcFineValSum(penaltyItem)}" />
+
+											</p:inputText>
+										</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="القيمة" width="10%">
+											<p:inputText disabled="false"
+												value="#{penaltyItem.fineValue}"
+												style="width:100% !important;">
+												<p:ajax event="blur" process="@this,fines:table"
+													listener="#{penaltyBean.calcFineValSum(penaltyItem)}"
+													update="sumId" />
+											</p:inputText>
+										</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="المجموع" width="10%">
+											<p:inputText disabled="true" id="sumId"
+												value="#{penaltyItem.fineValSum}"
+												style="width:100% !important;">
+											</p:inputText>
+										</p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText=":" width="5%"></p:column>
+										<p:column style="white-space: nowrap;text-align: center;"
+											headerText="#{penaltyBean.fineSum}" width="5%">
+											<div class="image-box-footer">
+												<p:commandButton id="addBtn" icon="ui-icon ui-icon-add">
+													<p:ajax listener="#{penaltyBean.addFiner(penaltyItem)}"
+														process="fines:table" update="fines:table" />
+												</p:commandButton>
+											</div>
+										</p:column>
+
+
+									</p:dataTable>
+								</div>
+							</div>
+						</h:panelGroup>
+					</h:form>
+				</div>
+				<h:form>
+					<div class="ui-g">
+
+						<div class="ui-g-10" />
+						<div class="image-box-footer" align="left">
+							<p:commandButton rendered="#{penaltyBean.fineForLic}"
+								value="رجوع" immediate="true"
+								action="#{penaltyBean.returnToLicence}">
+							</p:commandButton>
+						</div>
+
+					</div>
+				</h:form>
+
+				<h:form>
+					<p:dialog widgetVar="dPeoples" modal="true" width="50%" dir="rtl"
+						minHeight="50">
+						<h1 style="color: #7CB342; text-align: center;">تحديد</h1>
+						<p:dataTable value="#{loadingDataBean.licencesList}"
+							style="width:100%" selectionMode="single"
+							selection="#{penaltyBean.selectedPeople}" var="people"
+							id="ARCpDT" paginator="true" rows="12" emptyMessage="لا يوجد"
+							rowKey="#{people.aplOwner}" paginatorPosition="bottom"
+							filteredValue="#{penaltyBean.filteredArcPeoples}"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							<p:ajax event="rowSelect" listener="#{penaltyBean.onRowSelect}"></p:ajax>
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="text-align: center;" headerText="رقم السجل"
+								filterBy="#{people.aplOwner}" width="20%"
+								filterMatchMode="contains">
+                                    #{people.aplOwner}
+                                </p:column>
+							<p:column style="text-align: center;white-space: nowrap;"
+								headerText="الرخصة" width="20%" filterBy="#{people.licNo}"
+								filterMatchMode="contains">										
+										#{people.licNo}
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="الإسم"
+								width="60%" filterBy="#{people.trdName}"
+								filterMatchMode="contains">										
+										#{people.trdName}										
+									</p:column>
+
+						</p:dataTable>
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="موافق" styleClass="cyan-btn"
+								actionListener="#{penaltyBean.checkLic}">
+								<p:ajax oncomplete="PF('dPeoples').hide();"
+									update="includeform:natNo"></p:ajax>
+							</p:commandButton>
+							<p:spacer width="10px" height="10px"></p:spacer>
+							<p:commandButton value="رجوع" onclick="PF('dPeoples').hide();"></p:commandButton>
+						</div>
+					</p:dialog>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

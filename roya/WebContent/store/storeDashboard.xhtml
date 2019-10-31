@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+<h:head>
+
+
+	<link rel="apple-touch-icon" href="apple-touch-icon.png"></link>
+<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+
+</h:head>
+<h:body>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+		<div class="container col-md-12"
+			style="background-color: white; border-top: 5px solid #428BCA;">
+			<h:form id="includeform">
+
+
+				<br></br>
+				<div>
+				
+				<img src="#{facesContext.externalContext.requestContextPath}/resources/images/banner.jpg" class="img-responsive" alt="Responsive image" style="height: 168px; width: 100%;"></img>
+				</div>
+				<div>
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">المستودع
+						 </h3>
+				</div>
+
+                 <div class="row">
+                  <div class="container col-md-4">
+	                  <div class=" hover01 qz">
+	                <h:commandLink  styleClass="#{storeNavigationBean.addArticleFlag?'storeBar':''}" actionListener="#{storeNavigationBean.navigate(3)}">
+	                 <figure>
+	                     <img src="#{facesContext.externalContext.requestContextPath}/resources/images/add_Group.png" style="height: 193px; width: 93%;"></img>
+	                  </figure>     
+	                    </h:commandLink> 
+                          <br/>
+                       </div>
+	               </div>
+	               <div class="container col-md-4">
+	                  <div class=" hover01 qz">
+	                  <h:commandLink  styleClass="#{storeNavigationBean.addArticleFlag?'storeBar':''}" actionListener="#{storeNavigationBean.navigate(2)}">
+	                  <figure>
+	                     <img src="#{facesContext.externalContext.requestContextPath}/resources/images/add_SubGroup.png" style="height: 193px; width: 93%;"></img>
+	                   </figure> 
+	                      </h:commandLink> 
+                          <br/>
+                       </div>
+	               </div>
+	               <div class="container col-md-4">
+	                  <div class=" hover01 qz">
+	                  <h:commandLink  styleClass="#{storeNavigationBean.addArticleFlag?'storeBar':''}" actionListener="#{storeNavigationBean.navigate(1)}">
+	                  <figure>
+	                     <img src="#{facesContext.externalContext.requestContextPath}/resources/images/add_Article.png" style="height: 193px; width: 93%;"></img>
+	                   </figure> 
+	                      </h:commandLink> 
+                          <br/>
+                       </div>
+	               </div>
+                  </div>
+                  <div class="row">
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  </div>
+				</h:form>
+				</div>
+				
+	
+</h:body>
+
+</html>

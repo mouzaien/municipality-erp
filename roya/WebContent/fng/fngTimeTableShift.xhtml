@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css" />
+
+	<title>اوقات الدوام</title>
+</h:head>
+<ui:composition template="../pages/menuBar.xhtml">
+	<ui:define name="content">
+		<div class="row" style="color: color: #428bca">
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">البيانات
+			</h3>
+		</div>
+		<div style="background-color: white; border-top: 5px solid #428BCA;"
+			class="container col-md-12">
+			<br />
+			<h:form id="includeform">
+			</h:form>
+			<br />
+			<div class="col-lg-12"
+				style="background-color: white; border-top: 5px solid #428BCA">
+				<br></br>
+				<div style="color: color: #428bca">
+					<h3 class="page-header"
+						style="margin: 0px 0 20px ! important; color: #428bca">اوقات الدوام
+					</h3>
+				</div>
+				<div class="row">
+						<div class="col-md-12">
+						
+						<p:dataTable id="timetable" var="tim" value="#{fngTimes.timeTable}"
+						editable="true"	widgetVar="cellTime"
+								filteredValue="#{fngTimes.filterTimeTable}"
+								sortBy="#{tim.timeShiftId}" sortOrder="descending" rows="10"
+								paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellTime').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+								<p:ajax event="rowEdit" update="timetable"
+									listener="#{fngTimes.onRowEdit}" />
+								<p:ajax event="rowEditCancel" update="timetable"
+									listener="#{fngTimes.onRowCancel}" />
+								
+						<p:column headerText="الشفت"
+									filterBy="#{tim.timeName}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.timeName}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="period"
+												value="#{tim.timeName}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+									<p:column headerText="وقت الدخول الرسمى "
+									filterBy="#{tim.startWork}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.startWork}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="Startwork"
+												value="#{tim.startWork}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+							<p:column headerText="وقت الخروج الرسمى"
+									filterBy="#{tim.endWork}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.endWork}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="endwork"
+												value="#{tim.endWork}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="وقت فتح بصمه الحضور"
+									filterBy="#{tim.fingerSatrtOpen}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.fingerSatrtOpen}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="fingerSatrtOpen"
+												value="#{tim.fingerSatrtOpen}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="وقت قفل بصمه الحضور"
+									filterBy="#{tim.fingerStartClosed}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.fingerStartClosed}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="fingerStartClosed"
+												value="#{tim.fingerStartClosed}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="وقت فتح بصمه الخروج"
+									filterBy="#{tim.fingerEndOpen}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.fingerEndOpen}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="fingerEndOpen"
+												value="#{tim.fingerEndOpen}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="وقت غلق بصمه الخروج"
+									filterBy="#{tim.fingerEndClosed}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.fingerEndClosed}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="fingerEndClosed"
+												value="#{tim.fingerEndClosed}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+									<p:column headerText="الوقت المسموح به للتاخير"
+									filterBy="#{tim.lateTimeAllowed}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{tim.lateTimeAllowed}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="lateTimeAllowed"
+												value="#{tim.lateTimeAllowed}" style="width:96%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column style="width:100px">
+									<p:rowEditor />
+								</p:column>
+						</p:dataTable>
+						
+						</div>
+						</div>
+						
+				<h:form>
+					<div class="row">
+						<br></br>
+						<div class="col-md-10" />
+						<div class="col-md-1" style="padding-right: 0 !important">
+							<h:commandButton rendered="#{penaltyBean.fineForLic}"
+								style="float:left;font-family: kufi !important;width:100%;"
+								value="رجوع" immediate="true" styleClass="btn btn-primary"
+								action=" ">
+							</h:commandButton>
+						</div>
+						<div class="col-md-1" style="padding-right: 0 !important">
+							<h:commandButton value="حفظ" action=" "
+								style="float:left;font-family: kufi !important;width:100%;"
+								styleClass="btn btn-primary">
+								<f:ajax render="@all"></f:ajax>
+							</h:commandButton>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

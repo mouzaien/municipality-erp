@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<script type="application/javascript">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+       function handleMsg(msg){
+        alert(msg);
+    }
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<style type="text/css">
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right !important;
+	border-bottom: 1px solid #333;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.dashboard .user-card .user-card-content .user-detail ul li {
+	padding: 26px 24px !important;
+}
+</style>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<br />
+			<div class="image-box-footer">
+				<p:commandButton value="مشروع جديد" icon="fa fa-plus"
+					action="#{projectsParamBean.addNewProject}" process="@this"
+					oncomplete=" PF('mydialog').show()" update="includeform:panelGroup"
+					immediate="true">
+				</p:commandButton>
+			</div>
+			<br />
+			<br />
+			<div class="card card-w-title">
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					المشاريع <span class="ui-icon ui-icon-location-city"></span>
+				</h1>
+				<br />
+				<p:dataTable id="emp" var="projectsDataTable" style="direction:rtl;"
+					value="#{projectsParamBean.projectList}" widgetVar="cellemp"
+					rows="13" paginator="true" paginatorPosition="bottom"
+					emptyMessage="الجدول فارغ"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column headerText="المسلسل " width="10%"
+						filterBy="#{projectsDataTable.userId}">
+						<h:outputText value="#{projectsDataTable.id}" />
+					</p:column>
+					<p:column headerText="رقم المشروع"
+						filterBy="#{projectsDataTable.number}">
+						<h:outputText value="#{projectsDataTable.number}"></h:outputText>
+
+					</p:column>
+
+
+
+					<p:column headerText="إسم المشروع"
+						filterBy="#{projectsDataTable.name}">
+						<h:outputText value="#{projectsDataTable.name}"></h:outputText>
+
+					</p:column>
+					<p:column headerText="تفاصيل" style="width:50px;text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup" oncomplete=" PF('mydialog').show()"
+							action="#{projectsParamBean.loadSelectedProject}"
+							icon="ui-icon-search" title="View" modal="true">
+							<f:setPropertyActionListener value="#{projectsDataTable}"
+								target="#{projectsParamBean.project}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				<p:dialog header="بيانات المشروع" position="center"
+					widgetVar="mydialog" responsive="true" id="inputData2"
+					closable="true" dir="rtl" resizable="true" modal="true">
+
+					<h:panelGroup id="panelGroup">
+						<div class="ui-g">
+							<br />
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="اسم المشروع " />
+							</div>
+							<div class="ui-g-10">
+								<p:inputText id="projectName"
+									value="#{projectsParamBean.project.name}" style="width:100%">
+								</p:inputText>
+							</div>
+							<div class="ui-g-2">
+
+								<h:outputLabel for="basic" value="رقم المشروع" />
+							</div>
+							<div class="ui-g-10">
+								<p:inputText id="projectNum"
+									value="#{projectsParamBean.project.number}" style="width:100%">
+								</p:inputText>
+							</div>
+							<br /> <br /> <br />
+						</div>
+						<div align="center">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="حفظ" icon="fa fa-save"
+									rendered="#{projectsParamBean.addMode}"
+									action="#{projectsParamBean.saveProject}" update="@form"
+									onsuccess="PF('mydialog').hide(); ">
+								</p:commandButton>
+								<p:commandButton value="تعديل" icon="fa fa-edit"
+									rendered="#{!projectsParamBean.addMode}"
+									action="#{projectsParamBean.updateProject}" update="@form"
+									onsuccess="PF('mydialog').hide();">
+								</p:commandButton>
+								<p:spacer height="4"></p:spacer>
+								<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+									icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+									onsuccess="PF('mydialog').hide();" />
+							</div>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

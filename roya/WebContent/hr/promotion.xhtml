@@ -1,0 +1,666 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<!-- 	<h:head> -->
+	<!-- 		<f:metadata> -->
+	<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
+	<!-- 				action="#{jobsBean.loadJobs}"></f:viewAction> -->
+	<!-- 		</f:metadata> -->
+	<!-- 		<link -->
+	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
+	<!-- 			rel="stylesheet" type="text/css"></link> -->
+	<!-- 	</h:head> -->
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="true" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+						<p:commandButton value="إضافة"
+							oncomplete=" PF('addPromotionDialog').show()"
+							icon="ui-icon ui-icon-add" styleClass="cyan-btn"
+							action="#{overtimeBean.addOvertime}" process="@this"
+							update="includeform:addDialog">
+						</p:commandButton>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+
+						<div>
+							<h1 style="color: #7CB342; text-align: center;">
+								ترقية موظف <span class="fa fa-fw fa-angle-double-up"></span>
+							</h1>
+
+
+						</div>
+
+
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="الموظف" styleClass="btxt" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneMenu id="empNBList" filter="true"
+									filterMatchMode="contains" value="#{promotionBean.employerNB}">
+									<f:selectItem itemValue=""
+										itemLabel="#{msg['choose.employee']}" />
+									<f:selectItems value="#{promotionBean.employersList}" var="emp"
+										itemValue="#{emp.employeNumber}"
+										itemLabel="#{emp.employeNumber} - #{emp.firstName} #{emp.secondName} #{emp.thirdName}" />
+									<p:ajax process="@this" update="includeform:myTable"
+										event="change" listener="#{promotionBean.loadJobs}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<!-- 								<p:inputText style="width: 60%;" -->
+								<!-- 									value="#{promotionBean.incomeDate_H}" -->
+								<!-- 									styleClass="form-control form-controlCal"> -->
+								<!-- 																		<p:ajax event="blur" process="@this" -->
+								<!-- 																			listener="#{grigAndHijriCalender.setGregDate}"></p:ajax> -->
+
+								<!-- 								</p:inputText> -->
+
+							</div>
+						</div>
+
+						<br />
+
+						<div>
+
+							<p:dataTable id="myTable" var="jobItem"
+								value="#{promotionBean.empHistoricalList}"
+								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+								paginatorPosition="bottom" widgetVar="cellemp"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								paginator="true" rows="17">
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('cellemp').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="رقم الوظيفة" width="20%"
+									filterBy="#{jobItem.jobcode}" filterMatchMode="contains">										
+										#{jobItem.jobcode} 									
+									</p:column>
+								<p:column style="white-space: nowrap;" headerText="الوظيفة"
+									width="20%" filterBy="#{jobItem.govJob4.jobName}"
+									filterMatchMode="contains">										
+										#{jobItem.govJob4.jobName}										
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="المرتبة" width="25%"
+									filterBy="#{jobItem.rankNumber}" filterMatchMode="contains">										
+										#{jobItem.rankNumber}									
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="الدرجة" width="20%"
+									filterBy="#{jobItem.classNumber}" filterMatchMode="contains">										
+										#{jobItem.classNumber}									
+									</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="نوع الترقية" width="20%"
+									filterBy="#{jobItem.recordType}" filterMatchMode="contains">										
+										#{jobItem.recordType}									
+									</p:column>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التفاصيل" width="15%">
+									<p:commandButton oncomplete="PF('detailsDG').show();"
+										action="#{promotionBean.loadPromotionDetails}"
+										icon="ui-icon-search" update="includeform:myDialog">
+										<f:setPropertyActionListener value="#{jobItem}"
+											target="#{promotionBean.empHistorical}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+
+
+						<p:dialog header="إضافة ترقية موظف" widgetVar="addPromotionDialog"
+							modal="true" width="70%" dir="rtl">
+
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox value="#{promotionBean.higriMode}">
+										<p:ajax update="pDates2,pDates1" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<h:outputLabel value="الموظف" styleClass="btxt" />
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu id="empList" filter="true" style="width: 100%"
+										filterMatchMode="contains" value="#{promotionBean.employerNB}">
+										<f:selectItem itemValue=""
+											itemLabel="#{msg['choose.employee']}" />
+										<f:selectItems value="#{promotionBean.employersList}"
+											var="emp" itemValue="#{emp.employeNumber}"
+											itemLabel="#{emp.employeNumber} - #{emp.firstName} #{emp.secondName} #{emp.thirdName}" />
+										<f:ajax render="includeform:addDialog jobList"
+											execute="empList" event="change"
+											listener="#{promotionBean.loadLastJob}" />
+									</p:selectOneMenu>
+								</div>
+
+
+								<div class="ui-g-2">
+									<h:outputLabel value="نوع الترقية" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="moveList" filter="true"
+										filterMatchMode="contains"
+										value="#{promotionBean.newJob.recordType}">
+										<f:selectItem itemValue="" itemLabel="إختر نوع الترقية" />
+										<f:selectItems value="#{promotionBean.empMoveTypeList}"
+											var="move" itemValue="#{move.id}"
+											itemLabel="#{move.id} - #{move.name}" />
+									</p:selectOneMenu>
+								</div>
+
+
+							</div>
+
+
+							<h:panelGroup id="addDialog">
+								<div>
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText value="#{promotionBean.newJob.incomNo}"
+												styleClass="form-control" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ وارد القرار" styleClass="btxt" />
+										</div>
+
+										<div class="ui-g-2">
+
+											<h:panelGroup id="pDates1">
+												<p:inputText id="hiri1"
+													value="#{promotionBean.incomeDate_H}"
+													onfocus="loadCalendar();" required="true"
+													requiredMessage="يرجى اختيار التاريخ"
+													rendered="#{promotionBean.higriMode}"
+													styleClass="form-control form-controlCal">
+												</p:inputText>
+
+												<p:calendar id="gric1" value="#{promotionBean.incomeDate_G}"
+													pattern="dd/MM/yyyy" rendered="#{!promotionBean.higriMode}">
+												</p:calendar>
+											</h:panelGroup>
+										</div>
+
+										<!-- 		  <p:calendar value="#{promotionBean.newJob.incomDateGrig}"> -->
+										<!-- 			 <f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+										<!-- 	 	  </p:calendar> -->
+										<div class="ui-g-2">
+											<h:outputLabel value="سنة الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText value="#{promotionBean.newJob.incomYear}"
+												styleClass="form-control" />
+										</div>
+									</div>
+
+
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText value="#{promotionBean.newJob.executeNo}"
+												styleClass="form-control" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ القرار" styleClass="btxt" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:panelGroup id="pDates2">
+												<p:inputText id="hiri2"
+													value="#{promotionBean.executeDate_H}"
+													onfocus="loadCalendar();" required="true"
+													requiredMessage="يرجى اختيار التاريخ"
+													rendered="#{promotionBean.higriMode}"
+													styleClass="form-control form-controlCal">
+												</p:inputText>
+
+												<p:calendar id="gric2"
+													value="#{promotionBean.executeDate_G}" pattern="dd/MM/yyyy"
+													rendered="#{!promotionBean.higriMode}">
+												</p:calendar>
+											</h:panelGroup>
+
+										</div>
+										<!-- 										<div class="ui-g-2"> -->
+										<!-- 											<p:calendar value="#{promotionBean.newJob.executeDateGrig}"> -->
+										<!-- 																								<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+										<!-- 											</p:calendar> -->
+										<!-- 										</div> -->
+										<div class="ui-g-2">
+											<h:outputLabel value="مصدر القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<p:inputText styleClass="form-control"
+												value="#{promotionBean.newJob.EXeCuteSouRCe}" />
+										</div>
+									</div>
+									<p:separator />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.govJob4.jobName}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.jobNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.rankNumber}" />
+										</div>
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الدرجة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.classNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.basicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="بدل إنتقال" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.transferSalary}" />
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب داخلي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.mandateInner}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب خارجي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.mandateOuter}" />
+										</div>
+									</div>
+
+
+
+
+								</div>
+							</h:panelGroup>
+
+							<p:separator />
+
+							<h:panelGroup id="newJob">
+								<div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة المنقول إليها"
+												styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu id="jobList" value="#{promotionBean.jobId}">
+												<f:selectItem itemValue="" itemLabel="إختر الوظيفة" />
+												<f:selectItems value="#{promotionBean.jobsList}" var="jb"
+													itemValue="#{jb.createId}" itemLabel="#{jb.gov4.jobName}" />
+												<f:ajax render="includeform:newJob" execute="jobList"
+													event="change" listener="#{promotionBean.loadJob}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.jobNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة المنقول إليها"
+												styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.rankNumber}" />
+										</div>
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الدرجة المنقول إليها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.classNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.basicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="بدل إنتقال" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.transferSalary}" />
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب داخلي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.mandateInner}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب خارجي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.newJob.mandateOuter}" />
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+
+							<br />
+							<div align="left" class="image-box-footer">
+								<p:commandButton value="حفظ" styleClass="btn btn-primary"
+									action="#{promotionBean.savePromotion}"
+									onsuccess="PF('addPromotionDialog').hide();">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('addPromotionDialog').hide();" />
+								<p:commandButton value="طباعة" styleClass="btn btn-primary"
+									action="#{promotionBean.print}" immediate="true"
+									onsuccess="PF('addPromotionDialog').hide();" />
+							</div>
+						</p:dialog>
+
+						<p:dialog header="بيانات ترقية موظف" widgetVar="detailsDG"
+							id="detailsDGId" width="70%" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+
+								<div>
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:outputLabel value="#{promotionBean.empHistorical.empName}" />
+										</div>
+
+									</div>
+								</div>
+
+
+								<div>
+
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{promotionBean.empHistorical.incomNo}" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ وارد القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.incomDate}" />
+
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="سنة الوارد" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.incomYear}" />
+										</div>
+									</div>
+
+
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.executeNo}" />
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputLabel value="تاريخ القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.executeDate}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="مصدر القرار" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.EXeCuteSouRCe}" />
+
+										</div>
+									</div>
+									<p:separator />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldJobName}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldJobNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldRanknumber}" />
+										</div>
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الدرجة المنقول منها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldClassnumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldBasicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="بدل إنتقال" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldTransferSalary}" />
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب داخلي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldMandateInner}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب خارجي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.oldMandateOuter}" />
+										</div>
+									</div>
+
+
+
+
+								</div>
+
+
+								<p:separator />
+
+
+								<div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الوظيفة المنقول إليها"
+												styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.govJob4.jobName}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="رقم الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.jobNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="المرتبة المنقول إليها"
+												styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.rankNumber}" />
+										</div>
+									</div>
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="الدرجة المنقول إليها" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.classNumber}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.basicSalary}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="بدل إنتقال" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.transferSalary}" />
+										</div>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب داخلي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.mandateInner}" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="إنتداب خارجي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{promotionBean.empHistorical.mandateOuter}" />
+										</div>
+									</div>
+								</div>
+
+							</h:panelGroup>
+							<br />
+							<div align="left" class="image-box-footer">
+								<p:commandButton value="رجوع" styleClass="btn btn-primary"
+									immediate="true" onsuccess="PF('detailsDG').hide();" />
+							</div>
+						</p:dialog>
+					</div>
+				</h:form>
+
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,81 @@
+--- WebTemplate.xhtml
++++ WebTemplate.xhtml
+@@ -32,7 +32,7 @@
+ 
+ </h:head>
+ 
+-<h:body>
++<h:body style="font-family: 'kufi' !important;">
+ 
+ 	<h:form id="tempform">
+ 		<p:idleMonitor timeout="900000">
+@@ -45,7 +45,7 @@
+ 
+ 		<div class="navbar-header">
+ 			<span
+-				style="font-family: 'kufi' !important; font-size: x-large; color: #036fab;font-weight: bold;">نظام
++				style="font-family: 'kufi' !important; font-size: x-large; color: #036fab; font-weight: bold;">نظام
+ 				التعاملات الألكترونية</span>
+ 			<button type="button" class="navbar-toggle collapsed"
+ 				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+@@ -58,6 +58,7 @@
+ 			id="bs-example-navbar-collapse-1">
+ 
+ 			<ul class="nav navbar-nav navbar-right">
+-				<li><p:commandLink actionListener="#{homeBean.goInbox}" style="font-family: 'kufi' !important;"
++				<li><p:commandLink actionListener="#{homeBean.goInbox}"
++						style="font-family: 'kufi' !important;"
+ 						value="#{msg['new.inbox']}" /></li>
+ 				<li><span class="badge"
+@@ -62,4 +63,4 @@
+ 						value="#{msg['new.inbox']}" /></li>
+ 				<li><span class="badge"
+-					style="font-family: 'kufi' !important;font-size: small; background-color: #449d44;">#{inboxBean.unreadInboxCount}</span>
++					style="font-family: 'kufi' !important; font-size: small; background-color: #449d44;">#{inboxBean.unreadInboxCount}</span>
+ 				</li>
+@@ -65,6 +66,7 @@
+ 				</li>
+-				<li class="dropdown" style="font-family: 'kufi' !important;" ><a href="#" class="dropdown-toggle "
+-					data-toggle="dropdown" role="button" aria-expanded="false">#{templateBean.findCurrentUser().vusers_real_name}
++				<li class="dropdown" style="font-family: 'kufi' !important;"><a
++					href="#" class="dropdown-toggle " data-toggle="dropdown"
++					role="button" aria-expanded="false">#{templateBean.findCurrentUser().vusers_real_name}
+ 						<span class=" glyphicon glyphicon-user"></span>
+ 				</a>
+ 					<ul class="dropdown-menu" role="menu"
+@@ -79,7 +81,8 @@
+ 						<li class="divider"></li>
+ 
+ 					</ul></li>
+-				<li><p:commandLink value="#{msg['logout']}" ajax="false" style="font-family: 'kufi' !important;"
++				<li><p:commandLink value="#{msg['logout']}" ajax="false"
++						style="font-family: 'kufi' !important;"
+ 						action="#{templateBean.logOutbtn}" /></li>
+ 			</ul>
+ 		</div>
+@@ -105,8 +108,7 @@
+ 				<div class="col-md-10">
+ 					<div style="height: 528px;">
+ 						<div class="panel "
+-							style="color: #36633D; font-family: 'kufi' !important; font-size: 25px; font-weight:bold ;
+-							 background-color: transparent; margin-bottom: 5px; border: none;">
++							style="color: #036fab; font-family: 'kufi' !important; font-size: 25px; font-weight: bold; background-color: transparent; margin-bottom: 5px; border: none;">
+ 							<ui:insert name="top" />
+ 						</div>
+ 						<div>
+@@ -121,14 +123,7 @@
+ 
+ 	</h:form>
+ 	<div
+-		
+-		style="position: fixed; left: 0px; bottom: 0px; 
+-		color:white;	
+-		
+-		height: 20px; width: 100%;; background: #999; 
+-		font-family: 'cocon' !important; 
+-		background-color: #036fab; 
+-		text-align: center;">
++		style="position: fixed; left: 0px; bottom: 0px; color: white; height: 20px; width: 100%;; background: #999; font-family: 'cocon' !important; background-color: #036fab; text-align: center;">
+ 		#{msg['copyright']} &copy; 2015</div>
+ </h:body>
+ 

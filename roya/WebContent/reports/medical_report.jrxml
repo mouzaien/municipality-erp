@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="medical_report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
+	<property name="ireport.zoom" value="0.8481952367449697"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER1.xml"/>
+	<parameter name="record_id" class="java.lang.Integer"/>
+	<parameter name="day" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select fun_get_inf001_ar (arc_users.empno) as employer,natno,date_medical,HRS_MEDICAL_CHECK.PLACE_MEDICAL,
+REC_H_DATE APP_DATE,
+income_no APP_income_no,
+(select SIGN_USER_ID from  HRS_SIGNS where HRS_SIGNS.SIGN_STEP_ID=2 and ARC_RECORD_ID = arc.id) mark,
+(select WRK_PROFILE.SIGN2 from  HRS_SIGNS,WRK_PROFILE where HRS_SIGNS.SIGN_STEP_ID=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE.USER_ID and ARC_RECORD_ID = arc.id) mark_img,
+GET_REAL_EMPNAME(SIGN_USER_ID) real_name, sign_job_name TITLEPOS,WRK_PROFILE_SIGN.DDD
+
+from HRS_MEDICAL_CHECK ,arc_users,hrs_master_file,WRK_PROFILE_SIGN,HRS_SIGNS,arc_records arc
+
+where HRS_MEDICAL_CHECK.DEMAND_USER_ID = ARC_USERS.USER_ID
+ and WRK_PROFILE_SIGN.USER_ID = HRS_SIGNS.SIGN_USER_ID
+and  HRS_MASTER_FILE.EMPNO = ARC_USERS.EMPNO
+and HRS_MEDICAL_CHECK.ACCEPT_Y_N = 'Y'
+ and HRS_SIGNS.ARC_RECORD_ID=260706
+  and HRS_SIGNS.SIGN_IS_VISIBLE = 1
+  and ARC.ID= HRS_SIGNS.ARC_RECORD_ID
+  and HRS_SIGNS.DOC_ID=HRS_MEDICAL_CHECK.ID]]>
+	</queryString>
+	<field name="EMPLOYER" class="java.lang.String"/>
+	<field name="NATNO" class="java.math.BigDecimal"/>
+	<field name="DATE_MEDICAL" class="java.lang.String"/>
+	<field name="PLACE_MEDICAL" class="java.lang.String"/>
+	<field name="APP_DATE" class="java.lang.String"/>
+	<field name="APP_INCOME_NO" class="java.lang.String"/>
+	<field name="MARK" class="java.math.BigDecimal"/>
+	<field name="MARK_IMG" class="java.io.InputStream"/>
+	<field name="REAL_NAME" class="java.lang.String"/>
+	<field name="TITLEPOS" class="java.lang.String"/>
+	<field name="DDD" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="600" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="147" width="134" height="20" uuid="814d737a-fc1a-45c6-b80e-fb9b78149672"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الموظفين 405/266"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="179" width="138" height="20" uuid="472414e7-4974-44b3-92ce-f37d3d2d416b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["طلب تقرير طبي"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="72" y="217" width="423" height="20" uuid="ba6c0d44-02f5-4c15-ab3d-74a8cf1f0ec1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المكرم مدير "+$F{PLACE_MEDICAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="16" y="122" width="97" height="20" uuid="596ba28a-b38d-4776-acfe-7f9a560509f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APP_INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="16" y="142" width="97" height="20" uuid="14d6a7a5-b60b-4b08-b6bf-fdc3fe790344"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APP_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="254" width="545" height="126" uuid="075d8d0d-f11c-4271-92fa-71d299c08fb9"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السلام عليكم و رحمة الله و بركاته \n"
++"حيث أفاد الموظف طرفنا  "+$F{EMPLOYER}+" رقم الهوية الوطنية "+$F{NATNO}+" بأنه قد راجعكم في يوم "+$P{day}+" "+$F{DATE_MEDICAL}+" للعلاج.\n لذا نأمل موافاتنا بتقرير طبي عن المذكور مع إيضاح التفاصيل في حالة إجراء عملية لنتمكن من إتخاذ اللازم وفق اللائحة."
++". \n و السلام عليكم و رحمة الله و بركاته."]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="12" y="415" width="149" height="59" uuid="b4a01243-5cab-47bd-b42d-23f62b1647ba"/>
+				<imageExpression><![CDATA[$F{DDD}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="11" y="474" width="150" height="20" uuid="d3aec133-950a-44a8-9152-6c2139b2bffd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REAL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="392" width="151" height="23" uuid="b2c0cfc6-63ff-47a7-bd11-a6679b29a5eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLEPOS}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="460" y="440" width="58" height="34" uuid="23a48ab3-b9d0-4e2b-9796-caf3c9becdde"/>
+				<imageExpression><![CDATA[$F{MARK_IMG}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="231" y="0" width="324" height="20" forecolor="#FF0000" uuid="1d1aaff2-089a-412b-bfa1-a60ac851054f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# معا_ضد_الإرهاب_والفكر_الضال"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

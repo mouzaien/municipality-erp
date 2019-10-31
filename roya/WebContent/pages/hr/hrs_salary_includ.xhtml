@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+</h:head>
+<body>
+	<h:form id="vcs">
+		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				#{msg['Salary.Issue']}<span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+			<div class="image-box-footer">
+				<h:panelGroup id="pButtons">
+					<p:commandButton value="تنفيذ" id="search" update="salary"
+						rendered="#{hrsSalaryBean.action eq 1}" styleClass="cyan-btn"
+						style="float: left !important;" icon="ui-icon-done"
+						process="@this,month,empssort,pyear"
+						actionListener="#{hrsSalaryBean.searchSalary}">
+					</p:commandButton>
+					<p:commandButton value="تنفيذ" id="save" icon="ui-icon-done"
+						rendered="#{hrsSalaryBean.action eq 2}" styleClass="cyan-btn"
+						style="float: left !important;" update="salary"
+						process="@this,month,empssort,pyear"
+						actionListener="#{hrsSalaryBean.calcSalary}">
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton action="#{hrsSalaryBean.printIreportIssueSal}" ajax="false"
+						rendered="#{hrsSalaryBean.action eq 3}" icon="ui-icon-done"
+						styleClass="cyan-btn" style="float: left !important;"
+						onclick="this.form.target='_blank'" value="تنفيذ">
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton action="#{hrsSalaryBean.printIreportIssueFull}" ajax="false"
+						rendered="#{hrsSalaryBean.action eq 4}" icon="ui-icon-done"
+						style="float: left !important;" styleClass="cyan-btn"
+						onclick="this.form.target='_blank'" value="تنفيذ">
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton value="تنفيذ" ajax="false"
+						rendered="#{hrsSalaryBean.action eq 5}"
+						style="float: left !important;" styleClass="cyan-btn"
+						actionListener="#{hrsSalaryBean.dowloadSalariesFile(1)}"
+						onclick="PrimeFaces.monitorDownload(start, stop);"
+						icon="ui-icon-done">
+						<p:fileDownload value="#{hrsSalaryBean.file}" />
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
+<!-- 					<p:commandButton value="تنفيذ" ajax="false" -->
+<!-- 						rendered="#{hrsSalaryBean.action eq 6}" -->
+<!-- 						style="float: left !important;" styleClass="cyan-btn" -->
+<!-- 						actionListener="#{hrsSalaryBean.dowloadSalariesFile(2)}" -->
+<!-- 						onclick="PrimeFaces.monitorDownload(start, stop);" -->
+<!-- 						icon="ui-icon-done"> -->
+<!-- 						<p:fileDownload value="#{hrsSalaryBean.file}" /> -->
+<!-- 					</p:commandButton> -->
+				</h:panelGroup>
+				<p:spacer width="20" height="10"></p:spacer>
+				<p:selectOneMenu id="choise" value="#{hrsSalaryBean.action}"
+					style="float: left !important;padding-left:5px;">
+					<f:selectItem itemLabel="بحث" itemValue="1" />
+					<f:selectItem itemLabel="#{msg['sheet.isue']}" itemValue="2" />
+					<f:selectItem itemLabel="طباعةالرواتب" itemValue="3" />
+					<f:selectItem itemLabel="خلاصةالرواتب" itemValue="4" />
+					<f:selectItem itemLabel="ملف الرواتب" itemValue="5" />
+<!-- 					<f:selectItem itemLabel="خارج الدوام" itemValue="6" /> -->
+					<p:ajax process="@this" update="pButtons"></p:ajax>
+				</p:selectOneMenu>
+
+
+			</div>
+			<br></br> <br></br> <br></br>
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-1">
+					<h:outputLabel value="الشهر"></h:outputLabel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-2">
+					<p:selectOneMenu id="month" value="#{hrsSalaryBean.pmonth}">
+						<f:selectItem itemLabel="اختر الشهر" itemValue="" />
+						<f:selectItems value="#{hrsSalaryBean.listMonth}" var="months"
+							itemLabel="#{months.nameGr} #{months.id}"
+							itemValue="#{months.id}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-1">
+					<h:outputLabel value="السنه">
+					</h:outputLabel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-2">
+					<p:inputNumber id="pyear" maxlength="4" decimalPlaces="0"
+						maxValue="3000" style="width:75px" value="#{hrsSalaryBean.pyear}"></p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-2">
+					<h:outputLabel value="تصنيف الموظف"></h:outputLabel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-2">
+					<p:selectOneMenu id="empssort" value="#{hrsSalaryBean.catid}">
+						<f:selectItem itemLabel="اختر التصنيف" itemValue="" />
+						<f:selectItems value="#{hrsSalaryBean.listCategory}"
+							var="category" itemLabel="#{category.categoryName}"
+							itemValue="#{category.id}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<br /> <br /> <br /> <br />
+			<p:dataTable id="salary" var="salaryemps"
+				value="#{hrsSalaryBean.listSalary}" editable="true"
+				widgetVar="cellsalary" filteredValue="#{hrsSalaryBean.filterSalary}"
+				rows="10" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter" onkeyup="PF('cellsalary').filter()"
+							style="width:150px" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
+				<p:ajax event="rowEdit" update="salary"
+					listener="#{hrsSalaryBean.onRowEdit}" />
+				<p:ajax event="rowEditCancel" update="salary"
+					listener="#{hrsSalaryBean.onRowCancel}" />
+
+				<p:column headerText="رقم الموظف"
+					filterBy="#{salaryemps.id.employerNumber}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.id.employerNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="emps" value="#{salaryemps.id.employerNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="المبلغ المستحق"
+					filterBy="#{salaryemps.salDeserved}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.salDeserved}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="deserved" value="#{salaryemps.salDeserved}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="بدل النقل"
+					filterBy="#{salaryemps.salTransmit}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.salTransmit}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="trans" value="#{salaryemps.salTransmit}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="بدل طبيعة العمل لاول مربوط"
+					filterBy="#{salaryemps.salNaturalFirstSalary}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.salNaturalFirstSalary}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="firstnatural"
+								value="#{salaryemps.salNaturalFirstSalary}" style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="بدل طبيعة العمل للاساسى"
+					filterBy="#{salaryemps.salNaturalNow}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.salNaturalNow}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="naturalnow" value="#{salaryemps.salNaturalNow}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:100px">
+					<p:rowEditor />
+				</p:column>
+				<p:column style="width:65px;text-align: center">
+				</p:column>
+			</p:dataTable>
+		</div>
+	</h:form>
+</body>
+</html>

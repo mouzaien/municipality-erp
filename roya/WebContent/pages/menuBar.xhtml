@@ -1,0 +1,986 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<h:head>
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+	<meta name="description" content=""></meta>
+	<meta name="author" content=""></meta>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/js/bootstrap-arabic.js" />
+	<title>#{msg['app.title']}</title>
+
+	<!-- Bootstrap Core CSS -->
+	<link
+		href="pages/bower_components/bootstrap/dist/css/bootstrap.min.css"
+		rel="stylesheet"></link>
+
+	<!-- MetisMenu CSS -->
+	<link href="pages/bower_components/metisMenu/dist/metisMenu.min.css"
+		rel="stylesheet"></link>
+
+	<!-- Timeline CSS -->
+	<link href="pages/dist/css/timeline.css" rel="stylesheet"></link>
+
+	<!-- Custom CSS -->
+	<link href="pages/dist/css/sb-admin-2.css" rel="stylesheet"></link>
+
+	<!-- Morris Charts CSS -->
+	<link href="pages/bower_components/morrisjs/morris.css"
+		rel="stylesheet"></link>
+
+	<!-- Custom Fonts -->
+	<link
+		href="pages/bower_components/font-awesome/css/font-awesome.min.css"
+		rel="stylesheet" type="text/css"></link>
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
+		target="head">
+
+	</h:outputScript>
+
+	<script>
+		document.onreadystatechange = function() {
+			var state = document.readyState
+			if (state == 'complete') {
+				setTimeout(
+						function() {
+
+							document.getElementById('loading').style.visibility = "hidden";
+						}, 1000);
+			}
+		}
+
+		$(document)
+				.ready(
+
+						function() {
+							document.getElementById('loading').style.visibility = "hidden";
+							function handleAjax(data) {
+								var status = data.status;
+
+								switch (status) {
+								case "begin":
+									// This is the start of the AJAX request.
+									// alert("begin");
+									document.getElementById('loading').style.visibility = "visible";
+									//document.getElementsById('wait')[0].className = 'loading';
+									//$("#wait").css("display", "block");
+									//document.getElementById('loading').css("overflow-y","hidden")
+									break;
+
+								case "complete":
+									// This is invoked right after AJAX response is returned.
+									// alert("complete");
+									//document.getElementById('loading').style.visibility = "hidden";
+									break;
+
+								case "success":
+									// This is invoked right after successful processing of AJAX response and update of HTML DOM.
+									document.getElementById('loading').style.visibility = "hidden";
+									//document.getElementsById('wait')[0].className = '';
+									// $("#wait").css("display", "none");
+									break;
+								}
+							}
+							// Setup the statusUpdate function to hear all events on the page
+							jsf.ajax.addOnEvent(handleAjax);
+
+						});
+	</script>
+	<h:outputScript library="javax.faces" name="jsf.js" />
+</h:head>
+<h:body style=" background-color: #f7f7f7">
+	<p:dialog id="input_Hiden" header="تنبيه" widgetVar="alertExpire"
+		onShow="startIdleMonitor()">
+		<h:outputText value="جلسة عمل المتصفح الخاص بك تنتهي في " />
+		<h:outputText id="dialog-count-down" style="font-weight: bold;" />
+		<h:outputText value=" ثواني" />
+		<br />
+		<h:outputText value="هل ترغب في الاستمرار في جلسة العمل الخاصة بك؟" />
+		<h:form>
+			<p:commandButton value="نعم" process="@this" update="input_Hiden"
+				onclick="stopCount()" />
+			<br />
+			<p:remoteCommand name="logout" action="#{loginBean.logout}" />
+		</h:form>
+		<script type="text/javascript">
+			var TIME = 30; // in seconds
+			var countTimer = TIME;
+			var processTimer;
+			var timer_is_on = 0;
+			var countDownDiv = "dialog-count-down";
+			var txtCountDown = null;
+			if (!txtCountDown)
+				txtCountDown = document.getElementById(countDownDiv);
+			function startIdleMonitor() {
+				countTimer = TIME;
+				txtCountDown.innerHTML = countTimer;
+				doTimer();
+			}
+			function timedCount() {
+				txtCountDown.innerHTML = countTimer;
+				if (countTimer == 0) {
+					stopCount();
+					logout();
+					return;
+				}
+				countTimer = countTimer - 1;
+				processTimer = setTimeout("timedCount()", 1000);
+			}
+			function doTimer() {
+				if (!timer_is_on) {
+					timer_is_on = 1;
+					timedCount();
+				}
+			}
+			function stopCount() {
+				clearTimeout(processTimer);
+				timer_is_on = 0;
+			}
+		</script>
+	</p:dialog>
+	<div id="loading" style="overflow-y: visible !important;">
+		<img id="loading-image"
+			src="#{facesContext.externalContext.requestContextPath}/resources/images/ajax-loader2.gif" />
+	</div>
+	<div class="container" style="width: 100%;">
+		<h:form id="mainForm">
+			<p:idleMonitor timeout="300000" onidle="PF('alertExpire').show();">
+			</p:idleMonitor>
+
+			<div class="row" style="width: 100%; margin: 0px;">
+				<div class="col-md-12">
+					<nav class="navbar navbar-inverse" style="background: #607D8B;">
+						<div class="container-fluid">
+
+<!-- 							<div class="navbar-header"> -->
+<!-- 								<button type="button" class="navbar-toggle" -->
+<!-- 									data-toggle="collapse" data-target="#myNavbar"> -->
+<!-- 									<span class="icon-bar"></span> <span class="icon-bar"></span> <span -->
+<!-- 										class="icon-bar"></span> -->
+<!-- 								</button> -->
+<!-- 								<a class="navbar-brand" href="http://www.bkeryah.gov.sa"> <img -->
+<!-- 									src="#{facesContext.externalContext.requestContextPath}/resources/images/logo.png" -->
+<!-- 									height="100%" /> -->
+<!-- 								</a> -->
+<!-- 							</div> -->
+
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav navbar-left">
+
+<!-- 									<li><h:commandLink action="dashboard"> -->
+<!-- 											<span class="glyphicon glyphicon-home"></span> -->
+<!-- 									 الرئيسية </h:commandLink></li> -->
+<!-- 									<li class="dropdown"><a class="dropdown-toggle" -->
+<!-- 										data-toggle="dropdown" href="#" role="button" -->
+<!-- 										aria-haspopup="true" aria-expanded="false">المعاملات <span -->
+<!-- 											class="caret"></span> -->
+<!-- 									</a> -->
+<!-- 										<ul class="dropdown-menu"> -->
+<!-- 											<li></li> -->
+<!-- 											<li><h:commandLink action="PersonalComment" -->
+<!-- 													rendered="#{loginBean.currentUser.mgrId != null}"> -->
+<!-- 													<span class="glyphicon glyphicon-pencil"></span> -->
+<!-- 													<f:ajax></f:ajax> -->
+<!-- 									 إنشاء خطاب  </h:commandLink></li> -->
+
+<!-- 											<li><h:commandLink -->
+<!-- 													action="#{mainManagedBean.goToCreatComment}"> -->
+<!-- 													<f:ajax></f:ajax> -->
+
+<!-- 													<span class="glyphicon glyphicon-pencil"></span> -->
+<!-- 									 إنشاء خطاب شخصى   </h:commandLink></li> -->
+<!-- 											<li><h:commandLink action="internalMemo"> -->
+<!-- 													<f:ajax></f:ajax> -->
+<!-- 													<span class="glyphicon glyphicon-file"></span> -->
+<!-- 									 إنشاء مذكرة داخلية </h:commandLink></li> -->
+<!-- 											<secc:authorize -->
+<!-- 												ifAnyGranted="ROLE_COMMUNICATION,ROLE_SUPPORT"> -->
+<!-- 												<li><h:commandLink action="createIncome"> -->
+<!-- 														<f:ajax></f:ajax> -->
+<!-- 														<span class="glyphicon glyphicon-file"></span> -->
+<!-- 									إنشاء وارد عام جديد </h:commandLink></li> -->
+<!-- 											</secc:authorize> -->
+<!-- 											<secc:authorize -->
+<!-- 												ifAnyGranted="ROLE_SUPPORT,ROLE_COMMUNICATION,ROLE_ARCHITECT"> -->
+<!-- 												<li><h:commandLink action="deptBox"> -->
+<!-- 														<f:ajax></f:ajax> -->
+<!-- 														<div style="display: inline-block; width: 120px"> -->
+<!-- 															<span class="glyphicon glyphicon-certificate" -->
+<!-- 																style="margin-left: 8px;"></span>تسليم المعاملات -->
+<!-- 														</div> -->
+<!-- 													</h:commandLink></li> -->
+<!-- 											</secc:authorize> -->
+<!-- 										</ul> -->
+<!-- 									</li> -->
+									<li><h:commandLink rendered="false"
+											action="#{mainManagedBean.returnTomails}"
+											update=":includeform" process="@this,:includeform">
+											<span class="glyphicon glyphicon-envelope"></span>
+											<h:panelGroup id="notification">
+							 البريد  <label style="color: red; font-size: larger">
+													(#{menuBarBean.unreadMailsString}) </label>
+											</h:panelGroup>
+											<f:ajax></f:ajax>
+										</h:commandLink></li>
+									<!-- 									<h:panelGroup rendered="#{loginBean.manager}"> -->
+<!-- 									<li><h:commandLink action="archive"> -->
+<!-- 											<f:ajax></f:ajax> -->
+<!-- 											   الأرشيف -->
+<!-- 										</h:commandLink></li> -->
+									<!-- 									</h:panelGroup> -->
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR,ROLE_SALARY">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false"> شئون الموظفين
+												<SPAN class="caret"></SPAN>
+										</a>
+											<ul class="dropdown-menu" role="menu">
+												<secc:authorize
+													ifAnyGranted="ROLE_SUPPORT,ROLE_HR,ROLE_SALARY">
+													<li class="dropdown-submenu"><a tabindex="-1">
+															<div style="display: inline-block; width: 120px">
+																<span style="margin-left: 8px;"></span>الاجازات
+															</div>
+															<div style="display: inline-block">
+																<i class="fa fa-chevron-left"></i>
+															</div>
+													</a>
+														<ul class="dropdown-menu" style="right: 100% !important;">
+															<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR">
+																<li><h:commandLink action="vaction_info">
+																		<div style="display: inline-block; width: 120px">
+																			<SPAN style="margin-left: 8px;"></SPAN> استعلام
+																			الاجازات
+																		</div>
+																		<f:ajax></f:ajax>
+																	</h:commandLink></li>
+
+															</secc:authorize>
+														</ul></li>
+													<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+														<li class="dropdown-submenu"><a tabindex="-1">
+																<div style="display: inline-block; width: 120px">
+																	<span style="margin-left: 8px;"></span>الأداء الوظيفي
+																</div>
+																<div style="display: inline-block">
+																	<i class="fa fa-chevron-left"></i>
+																</div>
+														</a>
+															<ul class="dropdown-menu" style="right: 100% !important;">
+																<!-- 															<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR"> -->
+																<li><h:commandLink action="performance">
+																		<div style="display: inline-block; width: 120px">
+																			<SPAN style="margin-left: 8px;"></SPAN>الميثاق
+																		</div>
+																		<f:ajax></f:ajax>
+																	</h:commandLink></li>
+																<li><h:commandLink action="charterPerform">
+																		<div style="display: inline-block; width: 120px">
+																			<SPAN style="margin-left: 8px;"></SPAN>تقييم الأداء
+																		</div>
+																		<f:ajax></f:ajax>
+																	</h:commandLink></li>
+																<li><h:commandLink action="appreciation">
+																		<div style="display: inline-block; width: 120px">
+																			<SPAN style="margin-left: 8px;"></SPAN>التقدير العام
+																		</div>
+																		<f:ajax></f:ajax>
+																	</h:commandLink></li>
+																<!-- 															</secc:authorize> -->
+															</ul></li>
+													</secc:authorize>
+
+													<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+														<li class="dropdown-submenu"><a tabindex="-1">
+																<div style="display: inline-block; width: 120px">
+																	<span style="margin-left: 8px;"></span>الموظفين
+																</div>
+																<div style="display: inline-block">
+																	<i class="fa fa-chevron-left"></i>
+																</div>
+														</a>
+
+															<ul class="dropdown-menu" style="right: 100% !important;">
+
+																<li><h:commandLink action="recruitEmployers">
+																		<div style="display: inline-block; width: 120px">
+																			<SPAN style="margin-left: 8px;"></SPAN> تعيين
+																			الموظفين
+																		</div>
+																		<f:ajax></f:ajax>
+																	</h:commandLink></li>
+																<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+																	<li><h:commandLink action="leavingEmp">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>طي قيد موظف
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																	<li><h:commandLink action="promotion">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>ترقية موظف
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																	<li><h:commandLink action="overtimesearch">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>استعلام خارج
+																				دوام
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																	<li><h:commandLink action="overtime">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>إضافة خارج
+																				دوام
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																	<li><h:commandLink action="fngAbsence">
+																			<div style="display: inline-block; width: 120px">
+																				التأخير و الغياب</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																</secc:authorize>
+															</ul></li>
+													</secc:authorize>
+													<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+														<li class="dropdown-submenu"><a tabindex="-1">
+																<div style="display: inline-block; width: 120px">
+																	<span style="margin-left: 8px;"></span>الوظائف
+																</div>
+																<div style="display: inline-block">
+																	<i class="fa fa-chevron-left"></i>
+																</div>
+														</a>
+
+															<ul class="dropdown-menu" style="right: 100% !important;">
+																<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR">
+																	<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+																		<li><h:commandLink action="hrsSalaryScale">
+																				<div style="display: inline-block; width: 120px">
+																					<SPAN style="margin-left: 8px;"></SPAN>سلم الرواتب
+																				</div>
+																				<f:ajax></f:ajax>
+																			</h:commandLink></li>
+																		<li><h:commandLink action="hrsLoan">
+																				<div style="display: inline-block; width: 120px">
+																					<SPAN style="margin-left: 8px;"></SPAN>القروض
+																				</div>
+																				<f:ajax></f:ajax>
+																			</h:commandLink></li>
+
+																		<li><h:commandLink action="postsClass">
+																				<div style="display: inline-block; width: 120px">
+																					<SPAN style="margin-left: 8px;"></SPAN>وظائف
+																					الديوان
+																				</div>
+																				<f:ajax></f:ajax>
+																			</h:commandLink></li>
+																	</secc:authorize>
+																	<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+																		<li><h:commandLink action="salaryPayroll">
+																				<div style="display: inline-block; width: 120px">
+																					<SPAN style="margin-left: 8px;"></SPAN>إصدار
+																					الرواتب
+																				</div>
+																				<f:ajax></f:ajax>
+																			</h:commandLink></li>
+																	</secc:authorize>
+																</secc:authorize>
+																<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SALARY">
+																	<li><h:commandLink action="postsClass">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>وظائف
+																				المتعاقدين
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+
+																	<li><h:commandLink action="prime">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>العلاوة
+																				السنوية
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+
+																	<li><h:commandLink action="jobs">
+																			<div style="display: inline-block; width: 120px">
+																				<SPAN style="margin-left: 8px;"></SPAN>حركات الوظيفة
+																			</div>
+																			<f:ajax></f:ajax>
+																		</h:commandLink></li>
+																</secc:authorize>
+															</ul></li>
+													</secc:authorize>
+												</secc:authorize>
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_STORE">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">نظام المستودع الإلكتروني<span
+												class="caret"></span>
+										</a>
+											<ul class="dropdown-menu">
+												<li></li>
+
+												<li><h:commandLink action="store">
+														<f:ajax></f:ajax>
+														<span class="glyphicon glyphicon-list"></span>
+         										 الأصناف </h:commandLink></li>
+
+												<li><h:commandLink action="inventoriesList">
+														<f:ajax></f:ajax>
+
+														<span class="glyphicon glyphicon-check"></span>
+             										عرض الجرد</h:commandLink></li>
+
+												<li><h:commandLink action="memoReceipt">
+														<f:ajax></f:ajax>
+
+														<span class="glyphicon glyphicon-certificate"></span>
+             										مذكرة الإستلام</h:commandLink></li>
+												<li class="dropdown-submenu"><a tabindex="-1">
+														<div style="display: inline-block; width: 120px">
+															<span class=" glyphicon glyphicon-dashboard"
+																style="margin-left: 8px;"></span>إستعلام
+														</div>
+														<div style="display: inline-block">
+															<i class="fa fa-chevron-left"></i>
+														</div>
+
+												</a>
+													<ul class="dropdown-menu" style="right: 100% !important;">
+														<li><h:commandLink action="search_exchange_request"> إستعلام عن صرف مواد <f:ajax></f:ajax>
+															</h:commandLink></li>
+														<li><h:commandLink action="search_article">إستعلام عن أصناف<f:ajax></f:ajax>
+															</h:commandLink></li>
+													</ul></li>
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVESTMENT">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">الاستثمار <span
+												class="caret"></span>
+										</a>
+											<ul class="dropdown-menu">
+												<li><h:commandLink action="announcements">المزايدات</h:commandLink></li>
+												<li><h:commandLink action="real_estate">العقارات</h:commandLink></li>
+												<li><h:commandLink action="investors">المستثمرين</h:commandLink></li>
+												<li><h:commandLink action="tenders">العطاءات</h:commandLink></li>
+												<li><h:commandLink action="select_tender">ترسية العطاءات</h:commandLink></li>
+												<li><h:commandLink action="contracts">العقود</h:commandLink></li>
+												<li><h:commandLink action="contract_direct">العقود المباشرة</h:commandLink></li>
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_ATELIER">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">الورشة <span
+												class="caret"></span>
+										</a>
+											<ul class="dropdown-menu">
+												<li><h:commandLink action="vehicles">المركبات</h:commandLink></li>
+												<li><h:commandLink action="user_cars">تسليم المركبات</h:commandLink></li>
+												<li><h:commandLink action="fuel">صرف المحروقات</h:commandLink></li>
+												<li><h:commandLink action="fuel_supply">تموين المحروقات</h:commandLink></li>
+											</ul></li>
+									</secc:authorize>
+									<!-- 									<secc:authorize ifAnyGranted="ROLE_SUPPORT"> -->
+<!-- 									<li class="dropdown"><a class="dropdown-toggle" -->
+<!-- 										data-toggle="dropdown" href="#" role="button" -->
+<!-- 										aria-haspopup="true" aria-expanded="false">الدعم الفني<span -->
+<!-- 											class="caret"></span> -->
+<!-- 									</a> -->
+<!-- 										<ul class="dropdown-menu"> -->
+<!-- 											<li></li> -->
+<!-- 											<li><h:commandLink action="newRequest">طلب دعم</h:commandLink></li> -->
+<!-- 											<li><h:commandLink action="userRequests">طلباتي</h:commandLink></li> -->
+<!-- 											<li><h:commandLink rendered="#{loginBean.technicalUser}" -->
+<!-- 													action="technicalUsers">الفنيين</h:commandLink></li> -->
+<!-- 										</ul></li> -->
+									<!-- 									</secc:authorize> -->
+<!-- 									<secc:authorize ifNotGranted="ROLE_PRESIDENT"> -->
+<!-- 										<li class="dropdown"><a class="dropdown-toggle" -->
+<!-- 											data-toggle="dropdown" href="#" role="button" -->
+<!-- 											aria-haspopup="true" aria-expanded="false">خدمات<span -->
+<!-- 												class="caret"></span></a> -->
+<!-- 											<ul class="dropdown-menu" role="menu"> -->
+<!-- 												<secc:authorize -->
+<!-- 													ifAnyGranted="ROLE_BILL,ROLE_INVESTMENT,ROLE_EXTRACT,ROLE_BENEFIT,ROLE_NAT_PRINT,ROLE_SUPPORT,ROLE_COMMUNICATION"> -->
+<!-- 													<li class="dropdown-submenu"><a tabindex="-1"> -->
+<!-- 															<div style="display: inline-block; width: 120px"> -->
+<!-- 																<span style="margin-left: 8px;"></span>المواطنون -->
+<!-- 															</div> -->
+<!-- 															<div style="display: inline-block"> -->
+<!-- 																<i class="fa fa-chevron-left"></i> -->
+<!-- 															</div> -->
+<!-- 													</a> -->
+<!-- 														<ul class="dropdown-menu" style="right: 100% !important;"> -->
+<!-- 															<secc:authorize -->
+<!-- 																ifAnyGranted="ROLE_BILL,ROLE_INVESTMENT,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink action="search_bill"> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span style="margin-left: 8px;"></span>الفواتير -->
+<!-- 																		</div> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+<!-- 															<secc:authorize ifAnyGranted="ROLE_BILL,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink action="calcfees"> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span style="margin-left: 8px;"></span>رسوم التراخيص -->
+<!-- 																		</div> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+
+<!-- 															<secc:authorize ifAnyGranted="ROLE_EXTRACT,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink -->
+<!-- 																		action="#{mainManagedBean.projectExtractNavi}"> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span style="margin-left: 8px;"></span>انشاء مستخلص -->
+<!-- 																		</div> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+
+<!-- 															<secc:authorize ifAnyGranted="ROLE_BENEFIT,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink action="beneficiaryData"> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span class=" glyphicon glyphicon-user" -->
+<!-- 																				style="margin-left: 8px;"></span>إظافة مستفيد -->
+<!-- 																		</div> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+<!-- 															<secc:authorize -->
+<!-- 																ifAnyGranted="ROLE_NAT_PRINT,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink action="nationalprint"> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span class=" glyphicon glyphicon-user" -->
+<!-- 																				style="margin-left: 8px;"></span>برنت أحوال -->
+<!-- 																		</div> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+
+<!-- 															<secc:authorize -->
+<!-- 																ifAnyGranted="ROLE_COMMUNICATION,ROLE_SUPPORT"> -->
+<!-- 																<li><h:commandLink action="printbarcode"> -->
+<!-- 																		<div style="display: inline-block; width: 120px"> -->
+<!-- 																			<span class=" glyphicon glyphicon-user" -->
+<!-- 																				style="margin-left: 8px;"></span>طباعة باركود -->
+<!-- 																		</div> -->
+<!-- 																		<f:ajax></f:ajax> -->
+<!-- 																	</h:commandLink></li> -->
+<!-- 															</secc:authorize> -->
+<!-- 														</ul></li> -->
+<!-- 												</secc:authorize> -->
+<!-- 												<li class="dropdown-submenu"><a tabindex="-1"> -->
+<!-- 														<div style="display: inline-block; width: 120px"> -->
+<!-- 															<span style="margin-left: 8px;"></span>الموظفون -->
+<!-- 														</div> -->
+<!-- 														<div style="display: inline-block"> -->
+<!-- 															<i class="fa fa-chevron-left"></i> -->
+<!-- 														</div> -->
+<!-- 												</a> -->
+<!-- 													<ul class="dropdown-menu" style="right: 100% !important;"> -->
+
+<!-- 														<secc:authorize ifNotGranted="ROLE_SPECIAL_AUTHORIZATION"> -->
+<!-- 															<li><h:commandLink -->
+<!-- 																	action="#{mainManagedBean.updateContent('AUTORIZATION')}" -->
+<!-- 																	update=" :includeform" process="@this, :includeform"> -->
+<!-- 																	<div style="display: inline-block; width: 120px"> -->
+<!-- 																		<span style="margin-left: 8px;"></span>إستئذان -->
+<!-- 																	</div> -->
+<!-- 																	<f:ajax></f:ajax> -->
+<!-- 																</h:commandLink></li> -->
+<!-- 														</secc:authorize> -->
+
+
+<!-- 														<secc:authorize ifAnyGranted="ROLE_SPECIAL_AUTHORIZATION"> -->
+<!-- 															<li><h:commandLink -->
+<!-- 																	action="#{mainManagedBean.updateContent('SPECIAL_AUTORIZATION')}" -->
+<!-- 																	update=" :includeform" process="@this, :includeform"> -->
+<!-- 																	<div style="display: inline-block; width: 120px"> -->
+<!-- 																		<span style="margin-left: 8px;"></span>إستئذان -->
+<!-- 																	</div> -->
+<!-- 																	<f:ajax></f:ajax> -->
+<!-- 																</h:commandLink></li> -->
+<!-- 														</secc:authorize> -->
+
+
+
+
+<!-- 														<li><h:commandLink -->
+<!-- 																action="#{mainManagedBean.updateContent('WORKMISSION')}" -->
+<!-- 																update=" :includeform" process="@this, :includeform"> -->
+<!-- 																<div style="display: inline-block; width: 120px"> -->
+<!-- 																	<span style="margin-left: 8px;"></span>مهمة عمل -->
+<!-- 																</div> -->
+<!-- 																<f:ajax></f:ajax> -->
+<!-- 															</h:commandLink></li> -->
+<!-- 														<secc:authorize -->
+<!-- 															ifAnyGranted="ROLE_EMP_SCR,ROLE_SUPPORT,ROLE_SICK_VACATION"> -->
+
+<!-- 															<li class="dropdown-submenu"><a tabindex="-1"> -->
+
+<!-- 																	<div style="display: inline-block; width: 120px"> -->
+<!-- 																		<span class=" glyphicon glyphicon-dashboard" -->
+<!-- 																			style="margin-left: 8px;"></span>إجازات -->
+<!-- 																	</div> -->
+<!-- 																	<div style="display: inline-block"> -->
+<!-- 																		<i class="fa fa-chevron-left"></i> -->
+<!-- 																	</div> -->
+
+<!-- 															</a> -->
+<!-- 																<ul class="dropdown-menu" -->
+<!-- 																	style="right: 100% !important;"> -->
+<!-- 																	<li><h:commandLink -->
+<!-- 																			action="#{mainManagedBean.updateContent('VACATION')}" -->
+<!-- 																			update=" :includeform" process="@this, :includeform"> إعتيادية <f:ajax></f:ajax> -->
+<!-- 																		</h:commandLink></li> -->
+<!-- 																	<li><h:commandLink -->
+<!-- 																			action="#{mainManagedBean.updateContent('LEAVESUCCESSOR')}" -->
+<!-- 																			update=" :includeform" process="@this, :includeform">مباشرة<f:ajax></f:ajax> -->
+<!-- 																		</h:commandLink></li> -->
+<!-- 																	<secc:authorize ifAnyGranted="ROLE_SICK_VACATION"> -->
+<!-- 																		<li><h:commandLink action="sick_vacation" -->
+<!-- 																				immediate="true">مرضية</h:commandLink></li> -->
+<!-- 																	</secc:authorize> -->
+<!-- 																</ul></li> -->
+<!-- 														</secc:authorize> -->
+<!-- 														<secc:authorize ifAnyGranted="ROLE_EMP_SCR"> -->
+
+<!-- 															<li><h:commandLink -->
+<!-- 																	action="#{mainManagedBean.updateContent('SALARY')}" -->
+<!-- 																	update=" :includeform" process="@this, :includeform"> -->
+<!-- 																	<div style="display: inline-block; width: 120px"> -->
+<!-- 																		<span style="margin-left: 8px;"></span>تعريف وتحويل -->
+<!-- 																	</div> -->
+<!-- 																	<f:ajax></f:ajax> -->
+<!-- 																</h:commandLink></li> -->
+<!-- 														</secc:authorize> -->
+<!-- 														<secc:authorize ifAnyGranted="ROLE_SUPPORT"> -->
+<!-- 															<li class="dropdown-submenu"><a tabindex="-1"> -->
+
+<!-- 																	<div style="display: inline-block; width: 120px"> -->
+<!-- 																		<span class=" glyphicon glyphicon-briefcase" -->
+<!-- 																			style="margin-left: 8px;"></span>طلبات توظيفية -->
+<!-- 																	</div> -->
+<!-- 																	<div style="display: inline-block"> -->
+<!-- 																		<i class="fa fa-chevron-left"></i> -->
+<!-- 																	</div> -->
+
+<!-- 															</a> -->
+<!-- 																<ul class="dropdown-menu" -->
+<!-- 																	style="right: 100% !important;"> -->
+<!-- 																	<li><h:commandLink -->
+<!-- 																			action="#{mainManagedBean.updateContent('TRAINING')}" -->
+<!-- 																			update=" :includeform" process="@this, :includeform"> -->
+<!-- 																			<f:ajax></f:ajax>دورة تدريبية</h:commandLink></li> -->
+<!-- 																	<li><h:commandLink -->
+<!-- 																			action="#{mainManagedBean.updateContent('MEDICALREPORT')}" -->
+<!-- 																			update=" :includeform" process="@this, :includeform">تقرير طبي</h:commandLink></li> -->
+<!-- 																</ul></li> -->
+<!-- 														</secc:authorize> -->
+<!-- 														<li><h:commandLink -->
+<!-- 																action="#{mainManagedBean.exchangeRequestNavi}"> -->
+<!-- 																<div style="display: inline-block; width: 120px"> -->
+<!-- 																	<span style="margin-left: 8px;"></span>صرف مواد -->
+<!-- 																</div> -->
+<!-- 															</h:commandLink></li> -->
+<!-- 													</ul></li> -->
+<!-- 											</ul></li> -->
+<!-- 									</secc:authorize> -->
+									<secc:authorize ifAnyGranted="ROLE_DEV,ROLE_SUPPORT">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">التطوير
+												الإداري<span class="caret"></span>
+										</a>
+											<ul class="dropdown-menu">
+												<li></li>
+												<secc:authorize ifAnyGranted="ROLE_DEV,ROLE_SUPPORT">
+													<li><h:commandLink action="charging">
+															<div style="display: inline-block; width: 120px">
+																<span class="glyphicon glyphicon-certificate"
+																	style="margin-left: 8px;"></span>تكليف
+															</div>
+														</h:commandLink></li>
+												</secc:authorize>
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_FINE_REBOUND,ROLE_SUPPORT">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">#{msg['licences']}<span
+												class="caret"></span></a>
+
+											<ul class="dropdown-menu">
+												<li></li>
+												<secc:authorize
+													ifAnyGranted="ROLE_FINE_REBOUND,ROLE_SUPPORT">
+													<li><h:commandLink action="fine_rebound">
+															<div style="display: inline-block; width: 120px">
+																<span class="glyphicon glyphicon-certificate"
+																	style="margin-left: 8px;"></span>#{msg['fine.rebound']}
+															</div>
+														</h:commandLink></li>
+												</secc:authorize>
+												<li class="dropdown-submenu"><a tabindex="-1">
+														<div style="display: inline-block; width: 120px">
+															<span style="margin-left: 8px;"></span>المحلات
+														</div>
+														<div style="display: inline-block">
+															<i class="fa fa-chevron-left"></i>
+														</div>
+												</a>
+													<ul class="dropdown-menu" style="right: 100% !important;">
+														<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_PENALITY">
+															<li><h:commandLink action="SearchPenality">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>عرض الرخص
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="licPeriod">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>تقارير الرخص
+																	</div>
+																</h:commandLink></li>
+														</secc:authorize>
+													</ul></li>
+												<li class="dropdown-submenu"><a tabindex="-1">
+														<div style="display: inline-block; width: 120px">
+															<span style="margin-left: 8px;"></span>البناء
+														</div>
+														<div style="display: inline-block">
+															<i class="fa fa-chevron-left"></i>
+														</div>
+												</a>
+													<ul class="dropdown-menu" style="right: 100% !important;">
+														<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+															<li><h:commandLink action="new_building">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>بناء جديد
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="attach_building">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>ملحق جديد
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="new_building_wall">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>طلب رخصة تسوير
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink
+																	action="search_remove_rubbish_certificate">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>شهلدة إزالة
+																		مخلفات
+																	</div>
+																</h:commandLink></li>
+														</secc:authorize>
+													</ul></li>
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_PENALITY">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">الرقابة<span
+												class="caret"></span></a>
+
+											<ul class="dropdown-menu">
+												<li></li>
+												<li class="dropdown-submenu"><a tabindex="-1">
+														<div style="display: inline-block; width: 120px">
+															<span style="margin-left: 8px;"></span>المخالفات
+														</div>
+														<div style="display: inline-block">
+															<i class="fa fa-chevron-left"></i>
+														</div>
+												</a>
+													<ul class="dropdown-menu" style="right: 100% !important;">
+														<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_PENALITY">
+															<li><h:commandLink action="penalty_setup">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>تعريف العقوبات
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="penalty">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>مخالفة جديدة
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="searchPenalities">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>عرض العقوبات
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="licence_penalities">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>بواسطة السجل
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="new_fin_req">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>التقارير
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="new_replace_fine">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>إعادة إصدار
+																		فاتورة
+																	</div>
+																</h:commandLink></li>
+															<li><h:commandLink action="notif_penalities">
+																	<div style="display: inline-block; width: 120px">
+																		<span style="margin-left: 8px;"></span>
+																		إشعارات المخالفات
+																	</div>
+																</h:commandLink></li>
+														</secc:authorize>
+													</ul></li>
+
+											</ul></li>
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SETTING,ROLE_SUPPORT">
+										<li class="dropdown"><a class="dropdown-toggle"
+											data-toggle="dropdown" href="#" role="button"
+											aria-haspopup="true" aria-expanded="false">#{msg['setting']}<span
+												class="caret"></span></a>
+											<ul class="dropdown-menu">
+												<li></li>
+												<secc:authorize ifAnyGranted="ROLE_SETTING,ROLE_SUPPORT">
+													<li><h:commandLink action="user_roles">
+															<div style="display: inline-block; width: 120px">
+																#{msg['user.roles']}</div>
+														</h:commandLink></li>
+
+													<secc:authorize ifAnyGranted="ROLE_SETTING,ROLE_SUPPORT">
+														<li><h:commandLink action="scenario">
+																<div style="display: inline-block; width: 120px">
+																	#{msg['scenario']}</div>
+															</h:commandLink></li>
+													</secc:authorize>
+
+													<li><h:commandLink action="sysProperties">
+															<div style="display: inline-block; width: 120px">
+																#{msg['user.prop']}</div>
+														</h:commandLink></li>
+													<li><h:commandLink action="users">
+															<div style="display: inline-block; width: 120px">
+																المستخدمين</div>
+														</h:commandLink></li>
+													<li><h:commandLink action="peoples">
+															<div style="display: inline-block; width: 120px">
+																المستفيدين</div>
+														</h:commandLink></li>
+												</secc:authorize>
+
+											</ul></li>
+									</secc:authorize>
+
+<!-- 									<li class="dropdown"><a class="dropdown-toggle" -->
+<!-- 										data-toggle="dropdown" href="#" role="button" -->
+<!-- 										aria-haspopup="true" aria-expanded="false">البصمة<span -->
+<!-- 											class="caret"></span></a> -->
+<!-- 										<ul class="dropdown-menu"> -->
+<!-- 											<li></li> -->
+<!-- 											<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_FNG"> -->
+<!-- 												<li><h:commandLink action="empPlanfication"> -->
+<!-- 														<div style="display: inline-block; width: 120px"> -->
+<!-- 															جدولة الموظفين</div> -->
+<!-- 													</h:commandLink></li> -->
+<!-- 												<li><h:commandLink action="fngtimetable"> -->
+<!-- 														<div style="display: inline-block; width: 120px"> -->
+<!-- 															أوقات الدوام</div> -->
+<!-- 													</h:commandLink></li> -->
+<!-- 												<li><h:commandLink action="particularFng"> -->
+<!-- 														<div style="display: inline-block; width: 120px"> -->
+<!-- 															تبصيم</div> -->
+<!-- 													</h:commandLink></li> -->
+<!-- 											</secc:authorize> -->
+<!-- 											<li><h:commandLink action="fngMonitoring"> -->
+<!-- 													<div style="display: inline-block; width: 120px"> -->
+<!-- 														المتابعة</div> -->
+<!-- 												</h:commandLink></li> -->
+
+<!-- 										</ul></li> -->
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li><h:commandLink action="mails" immediate="true">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											عودة </h:commandLink></li>
+
+									<li><h:commandLink action="profile" immediate="true">
+											<span class="glyphicon glyphicon-user"></span>
+											#{loginBean.currentUser.employeeName} </h:commandLink></li>
+									<li><h:commandLink action="#{loginBean.logout}">
+											
+									 خروج <span class="glyphicon glyphicon-log-out"></span>
+										</h:commandLink></li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+
+			<!-- Header -->
+
+			<div class="row" style="width: 99%">
+				<div class="col-md-2" />
+				<div class="col-md-10">
+					<ui:insert name="header" id="header" />
+				</div>
+			</div>
+		</h:form>
+		<!-- Slider -->
+		<div class="row" style="width: 100%;margin:0;">
+			<div id="div1" class="col-md-2" style="border-left: none;">
+				<h:form id="form">
+					<img
+						src="#{facesContext.externalContext.requestContextPath}/resources/images/logo_methneb.png"
+						width="50%" style="margin-right: 25% !important" />
+					<ui:insert name="second-menu" id="sec_menu" />
+				</h:form>
+			</div>
+
+			<!-- Content -->
+
+			<div id="div2" class="col-md-10">
+				<ui:insert name="content" id="cont-ui" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function closeDiv() {
+			document.getElementById("div1").style.display = "none";
+			document.getElementById("div2").style.width = "100%";
+		}
+	</script>
+</h:body>
+</html>

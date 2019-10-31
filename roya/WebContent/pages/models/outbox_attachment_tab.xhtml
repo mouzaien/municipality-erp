@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+<p:accordionPanel style="margin-top:20px">
+	<p:tab title="#{msg['attachments']}" id="attachments">
+		<div class="image-box-footer" style="float: left">
+			<p:commandButton value="#{msg['confirm.upload']}" update="attachments"
+				styleClass="cyan-btn" process="@this" icon="fa fa-fw fa-chain"
+				actionListener="#{outBoxDefenationBean.saveAttchs}" immediate="true">
+			</p:commandButton>
+		</div>
+		<div class="panel-body">
+			<p:outputLabel rendered="#{outBoxDefenationBean.outattList eq null }"
+				value="#{msg['no.attachments']}"></p:outputLabel>
+			<ul>
+				<h:panelGroup id="AttachmantTab">
+					<h:form>
+					<ui:repeat varStatus="x" value="#{outBoxDefenationBean.outattList}"
+						var="att">
+						<p:panelGrid columns="4" columnClasses="ui-grid-col-8"
+							layout="grid" styleClass="ui-panelgrid-blank">
+							<h2
+								style="margin: 0px 0 20px ! important; color: #7CB342; font-weight: bold;">
+								#{msg['file.number']} <span class="task-status"
+									style="background-color: #7CB342 !important;">#{x.index+1}</span>
+							</h2>
+							<p:outputLabel>
+								<h4>اسم الملف : #{att.attName}</h4>
+							</p:outputLabel>
+							<p:outputLabel>
+								<h4>قام بارفاقه : #{att.ownerName}</h4>
+							</p:outputLabel>
+								<p:commandButton value="#{msg['download.file']}" ajax="false"
+									class="panel-footer" icon="ui-icon-arrowthick-1-s">
+									<p:fileDownload
+										value="#{outBoxDefenationBean.getFile(att.attName)}" />
+								</p:commandButton>
+						</p:panelGrid>
+					</ui:repeat>
+							</h:form>
+				</h:panelGroup>
+			</ul>
+		</div>
+	</p:tab>
+</p:accordionPanel>
+</html>

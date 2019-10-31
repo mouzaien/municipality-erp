@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<f:metadata>
+	</f:metadata>
+
+	<h:head>
+
+		<!-- <link
+			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css"></link> -->
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<!-- 	<ui:define name="second-menu">
+			</ui:define> -->
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+				
+					<div class="image-box-footer" align="left">
+						<p:commandButton value="#{msg['fine.add']}" id="save"
+							update="fines" process="@this" icon="ui-icon ui-icon-add"
+							styleClass="cyan-btn"
+							actionListener="#{penalitySetupBean.addRowPenality}">
+						</p:commandButton>
+					</div>
+					<br></br>
+					<div class="card card-w-title" dir="rtl">
+
+
+						<h1 style="color: #7CB342; text-align: center;">
+							#{msg['fines']} <span style="color: red;"
+								class="fa fa-fw fa-file-text"></span>
+						</h1>
+
+						<br />
+
+						<p:dataTable value="#{penalitySetupBean.codesFines}"
+							var="finesetup" id="fines" rowKey="#{finesetup.id}"
+							widgetVar="fineset" paginator="true" rows="17"
+							emptyMessage="لا يوجد" editable="true" rowIndexVar="rowIndex"
+							sortBy="#{finesetup.id}" sortOrder="descending"
+							filteredValue="#{penalitySetupBean.codesFineSetup}"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							<f:facet name="header">
+
+
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('fineset').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+								<br />
+							</f:facet>
+							<p:ajax event="rowEdit" update="fines"
+								listener="#{penalitySetupBean.onRowEdit}" />
+							<p:ajax event="rowEditCancel" update="fines"
+								listener="#{penalitySetupBean.onRowCancel}" />
+							<p:column headerText="#{msg['finesetup.number']}" width="6%"
+								filterBy="#{finesetup.fineCode}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineCode}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="finecode" value="#{finesetup.fineCode}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{msg['finesetup.list']}" width="45%"
+								filterBy="#{finesetup.fineDesc}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineDesc}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="finedesc" value="#{finesetup.fineDesc}"
+											style="width:96%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{msg['finesetup.punish']}" width="30%"
+								filterBy="#{finesetup.fineAction}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineAction}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="fineaction" value="#{finesetup.fineAction}"
+											style="width:96%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{msg['finesetup.min']}" width="7%"
+								filterBy="#{finesetup.fineMinimumValue}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineMinimumValue}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="minvalue"
+											value="#{finesetup.fineMinimumValue}" style="width:96%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{msg['finesetup.max']}" width="7%"
+								filterBy="#{finesetup.fineSupermumValue}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineSupermumValue}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="maxvalue"
+											value="#{finesetup.fineSupermumValue}" style="width:96%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="width:5%">
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+
+					</div>
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

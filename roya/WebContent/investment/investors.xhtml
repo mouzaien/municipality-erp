@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<!-- 	<h:head> -->
+	<!-- 		<f:metadata> -->
+	<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
+	<!-- 				action="#{investorsBean.loadInvestors}"></f:viewAction> -->
+	<!-- 		</f:metadata> -->
+	<!-- 		 <link -->
+	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
+	<!-- 			rel="stylesheet" type="text/css"></link>   -->
+	<!-- 	</h:head> -->
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer" align="left">
+						<p:commandButton value="إضافة" styleClass="cyan-btn"
+							icon="ui-icon ui-icon-add" oncomplete=" PF('addDialog').show()"
+							action="#{investorsBean.addInvestor}" process="@this"
+							update="includeform:addPG">
+						</p:commandButton>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<div style="color: color: #428bca">
+							<h1 style="color: #7CB342; text-align: center;">
+								المستثمرون <span class="fa fa-fw fa-dollar"></span>
+							</h1>
+
+						</div>
+
+						<p:dataTable var="userItem" id="allusersettingdt"
+							widgetVar="loanVar" value="#{investorsBean.investorsList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom" sortBy="#{investorsBean.investor.id}"
+							sortOrder="ascending"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{investorsBean.filteredInvestorsList}"
+							paginator="true" rows="17">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column id="invIdcol" headerText="الرقم"
+								filterBy="#{userItem.id}" filterMatchMode="contains" width="10%"
+								style="text-align: center;">
+                            #{userItem.id}
+                        </p:column>
+							<p:column id="idcol" headerText="السجل التجاري"
+								filterBy="#{userItem.tradeRecord}" filterMatchMode="contains"
+								width="10%" style="text-align: center;">
+                            #{userItem.tradeRecord}
+                        </p:column>
+							<p:column headerText="اسم الشركة" filterBy="#{userItem.name}"
+								filterMatchMode="contains" width="56%">
+                            #{userItem.name}
+                        </p:column>
+							<p:column headerText="نوع النشاط" width="20%"
+								style="text-align: center;">
+                            #{userItem.activityType}
+                        </p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التفاصيل" width="7%">
+								<p:commandButton oncomplete="PF('addDialog').show();"
+									action="#{investorsBean.loadInvestor}" process="@this"
+									icon="ui-icon-search" update="includeform:addPG">
+									<f:setPropertyActionListener value="#{userItem}"
+										target="#{investorsBean.investor}" />
+								</p:commandButton>
+							</p:column>
+							<!-- 							<p:column style="white-space: nowrap;text-align: center;" -->
+							<!-- 								headerText="حذف" width="7%"> -->
+							<!-- 								<p:commandButton id="delete" immediate="true" -->
+							<!-- 									icon="ui-icon-trash" update="@form" -->
+							<!-- 									action="#{investorsBean.deleteInvestor}"> -->
+							<!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+							<!-- 										target="#{investorsBean.investor}" /> -->
+
+							<!-- 								</p:commandButton> -->
+							<!-- 							</p:column> -->
+
+						</p:dataTable>
+
+
+
+
+
+						<p:dialog widgetVar="addDialog" width="70%" header="" modal="true"
+							dir="rtl" closable="true">
+							<h:panelGroup id="addPG">
+								<h3 style="color: #7CB342; text-align: center;">إضافة
+									مستثمر</h3>
+								<br />
+
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<h:outputLabel value="هجري  :  " />
+										<p:selectBooleanCheckbox value="#{investorsBean.higriMode}">
+											<p:ajax update="pDates1" process="@this"></p:ajax>
+										</p:selectBooleanCheckbox>
+									</div>
+								</div>
+
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="إسم الشركة" styleClass="btxt" />
+									</div>
+									<div class="ui-g-5">
+										<p:inputText value="#{investorsBean.investor.name}"
+											required="true" requiredMessage="إسم الشركة مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.name}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="السجل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.tradeRecord}"
+											required="true" requiredMessage="إالسجل مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.tradeRecord}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="نوع السجل" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu id="investor_id_type" required="true"
+											requiredMessage="نوع السجل مطلوب"
+											value="#{investorsBean.investor.investorIdType}">
+											<f:selectItem itemLabel="إختر نوع السجل" itemValue="" />
+											<f:selectItems
+												value="#{investorsBean.investorIdentityTypeList}"
+												var="invIdentity" itemLabel="#{invIdentity.name}"
+												itemValue="#{invIdentity.id}" />
+										</p:selectOneMenu>
+
+										<!-- 										<p:selectOneMenu id="invIdType" -->
+										<!-- 											value="#{investorsBean.idType}"> -->
+										<!-- 											<f:selectItem itemLabel="إختر نوع السجل" itemValue="" /> -->
+										<!-- 											<f:selectItems -->
+										<!-- 												value="#{investorsBean.investorIdentityTypeList}" var="id" -->
+										<!-- 												itemLabel="#{id.name}" itemValue="#{id.id}" /> -->
+										<!-- 										</p:selectOneMenu> -->
+									</div>
+
+								</div>
+
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="صادرة من" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.region}"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.region}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="بتاريخ" styleClass="btxt" />
+									</div>
+									<!-- <div class="ui-g-2"> -->
+									<!--  <h:panelGroup rendered="#{investorsBean.addMode}"> -->
+									<!--  <ui:include src="../shared/calender.xhtml" /> -->
+									<!--  </h:panelGroup> -->
+									<!-- 									 <p:outputLabel -->
+									<!-- 									 value="#{investorsBean.investor.higriCreateDate}" -->
+									<!-- 									 rendered="#{!investorsBean.addMode}" /> -->
+
+									<!--  <p:calendar id="date" pattern="dd/MM/yyyy" locale="ar" -->
+									<!--  value="#{investorsBean.selectedDate}"> -->
+									<!--  </p:calendar> -->
+									<!--  <p:outputLabel value="#{investorsBean.investor.createDate}" -->
+									<!--  rendered="#{!investorsBean.addMode}" /> -->
+									<!--  </div> -->
+
+
+									<div class="ui-g-2">
+										<h:panelGroup id="pDates1">
+											<p:inputText id="hiri1" value="#{investorsBean.selectedDate}"
+												onfocus="loadCalendar();" required="true"
+												requiredMessage="يرجى اختيار تاريخ"
+												rendered="#{investorsBean.higriMode}"
+												styleClass="form-control form-controlCal">
+											</p:inputText>
+
+											<p:calendar id="gric1"
+												value="#{investorsBean.selectedDate_G}" pattern="dd/MM/yyyy"
+												rendered="#{!investorsBean.higriMode}">
+											</p:calendar>
+										</h:panelGroup>
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="نوع النشاط" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.activityType}"
+											style="width: 100%" required="true"
+											rendered="#{investorsBean.addMode}"
+											requiredMessage="نوع النشاط  مطلوب" />
+										<p:inputText value="#{investorsBean.investor.activityType}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="نوع المستثمر" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu id="investor_type" required="true"
+											requiredMessage="نوع المستثمر مطلوب"
+											value="#{investorsBean.investor.investorType}">
+											<f:selectItem itemLabel="إختر نوع المستثمر" itemValue="" />
+											<f:selectItems value="#{investorsBean.investorTypeList}"
+												var="invType" itemLabel="#{invType.name}"
+												itemValue="#{invType.id}" />
+										</p:selectOneMenu>
+
+
+									</div>
+
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="هاتف" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.phone}"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.phone}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="فاكس" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.fax}"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.fax}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="جوال" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.mobile}"
+											required="true" requiredMessage="الجوال مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.mobile}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="حالة المستثمر" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:selectOneMenu id="Investor_status" required="true"
+											requiredMessage="حالة المستثمر مطلوبة"
+											value="#{investorsBean.investor.investorStatus}">
+											<f:selectItem itemLabel="إختر حالة المستثمر" itemValue="" />
+											<f:selectItems value="#{investorsBean.investorStatusList}"
+												var="invStatus" itemLabel="#{invStatus.name}"
+												itemValue="#{invStatus.id}" />
+										</p:selectOneMenu>
+
+									</div>
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="ص.ب" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.postalCode}"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.postalCode}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="الرمز" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.code}"
+											rendered="#{investorsBean.addMode}" style="width: 100%" />
+										<p:inputText value="#{investorsBean.investor.code}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="العنوان" styleClass="btxt" />
+									</div>
+									<div class="ui-g-6">
+										<p:inputText value="#{investorsBean.investor.address}"
+											required="true" requiredMessage="العنوان مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%"
+											id="newMobileNumber" />
+										<p:inputText value="#{investorsBean.investor.address}"
+											rendered="#{!investorsBean.addMode}" />
+									</div>
+								</div>
+								<p:messages id="messages" autoUpdate="true" />
+
+								<br />
+								<div class="image-box-footer" align="left">
+									<p:commandButton value="تعديل" id="updateBtn" update="@form"
+										rendered="#{!investorsBean.addMode}"
+										action="#{investorsBean.save}"
+										onsuccess="PF('addDialog').hide();">
+									</p:commandButton>
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="حفظ" id="addBtn" update="@form"
+										rendered="#{investorsBean.addMode}"
+										action="#{investorsBean.save}"
+										onsuccess="PF('addDialog').hide();">
+									</p:commandButton>
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onsuccess="PF('addDialog').hide();" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

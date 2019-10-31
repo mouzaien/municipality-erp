@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
+	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
+		type="text/css"></link>
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+
+<h:body>
+	<div class="container col-md-12 "
+		style="background-color: white; border-top: 5px solid #428BCA;">
+		<br />
+		<div>
+			<h3 class="page-header"
+				style="margin: 0px 0 20px ! important; color: #428bca">#{msg['new.building.wall.title']}</h3>
+		</div>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['identity']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-6">
+							<h:outputLabel
+								value="#{NewBuildingWallBean.newBuilding.licWallAplOwner}" />
+							<h:outputLabel value="#{NewBuildingWallBean.owner.completeName}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['request.date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel id="name"
+								value="#{NewBuildingWallBean.newBuilding.licWallHDate}" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['cheque.Number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{NewBuildingWallBean.newBuilding.licWallSakNo}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['cheque.Date']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{NewBuildingWallBean.newBuilding.licWallSakDate}" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['his.source']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{NewBuildingWallBean.newBuilding.licWallSakSource}" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['licno']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallBldLicNo}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['licdate']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallBldLicDate}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['licsource']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel
+								value="#{NewBuildingWallBean.newBuilding.licWallBldLicSource}" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['bill.number']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallBillNumber}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.lenght']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallLength}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.height']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallHeight}"
+								styleClass="form-control" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.max.heig.hwall']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallMaxHeight}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.material']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallMaterial}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.land.area']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallLandArea}"
+								styleClass="form-control" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['lic.wall.man.heigh']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallManHeight}"
+								styleClass="form-control" />
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['surveyor']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control"
+								value="#{NewBuildingWallBean.newBuilding.licWallWatcherId}">
+								<f:selectItem itemValue="" itemLabel="#{msg['choose.employee']}" />
+								<f:selectItems value="#{NewBuildingWallBean.usersList}"
+									var="emp" itemValue="#{emp.userId}"
+									itemLabel="#{emp.employeeName}" />
+							</h:selectOneMenu>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['engineering.desc']}"
+								styleClass="btxt" />
+						</div>
+						<div class="col-md-2">
+							<h:selectOneMenu styleClass="form-control"
+								value="#{NewBuildingWallBean.newBuilding.licWallEngOfficeId}">
+								<f:selectItems value="#{loadingDataBean.engineeringOfficeList}"
+									var="off" itemValue="#{off.id}" itemLabel="#{off.title}" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['north.border']}" styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallNorthBorder}"
+								styleClass="form-control">
+							</h:inputText>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['notrh.dimention']}"
+								styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallNorthDim}"
+								styleClass="form-control"></h:inputText>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['east.border']}" styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallEastBorder}"
+								styleClass="form-control"></h:inputText>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['east.dimention']}" styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallEastDim}"
+								styleClass="form-control"></h:inputText>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['south.border']}" styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallSouthBorder}"
+								styleClass="form-control"></h:inputText>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['south.dimention']}"
+								styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallSouthDim}"
+								styleClass="form-control"></h:inputText>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['weast.border']}" styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallWestBorder}"
+								styleClass="form-control"></h:inputText>
+						</div>
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['weast.dimention']}"
+								styleClass="btxt">
+							</h:outputLabel>
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallWestDim}"
+								styleClass="form-control"></h:inputText>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-2">
+							<h:outputLabel value="#{msg['plan']}" styleClass="btxt" />
+						</div>
+						<div class="col-md-4">
+							<h:inputText
+								value="#{NewBuildingWallBean.newBuilding.licWallPlnNo}"
+								styleClass="form-control" />
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['chose.kroki']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-4">
+								<p:fileUpload id="RecordsUploaderID" widgetVar="RecordsUploader"
+									multiple="true" auto="true"
+									fileUploadListener="#{NewBuildingWallBean.enterImage}"
+									uploadLabel="ارفاق" cancelLabel="إلغاء" label="اختيار الكروكي"
+									previewWidth="0" process="@this"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+									sizeLimit="300000000" />
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['address']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-4">
+								<h:inputTextarea
+									value="#{NewBuildingWallBean.newBuilding.licWallAddress}"
+									styleClass="form-control" />
+							</div>
+							<div class="col-md-2">
+								<h:outputLabel value="#{msg['description']}" styleClass="btxt" />
+							</div>
+							<div class="col-md-4">
+								<h:inputTextarea
+									value="#{NewBuildingWallBean.newBuilding.licWallNotes}"
+									styleClass="form-control" />
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-7">
+								<br></br>
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel styleClass="btxt" value=" الارفاق " />
+									</div>
+									<div class="col-md-10">
+										<p:fileUpload id="upload" widgetVar="newCommentFileUpload100"
+											multiple="true" update="att-list"
+											fileUploadListener="#{NewBuildingWallBean.uploadFile}"
+											uploadLabel="ارفاق" mode="advanced" cancelLabel="إلغاء"
+											label="تحديد المرفق" sizeLimit="300000000" previewWidth="30" />
+									</div>
+									<h:commandButton id="btn_1" value="uploadFiles"
+										style="display: none">
+										<f:ajax event="click"
+											listener="#{NewBuildingWallBean.refreshFilesUploaded}"
+											render="att-list">
+										</f:ajax>
+									</h:commandButton>
+								</div>
+								<br></br>
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel value="  " />
+									</div>
+									<div>
+										<ul>
+											<h:panelGroup id="att-list">
+												<br></br>
+												<ui:repeat var="attach"
+													value="#{NewBuildingWallBean.attachList}">
+													<div class="row">
+														<div class="col-md-5">
+															<h:outputLabel value="#{attach.attachRealName}" />
+														</div>
+														<div class="col-md-1">
+															<h:commandButton class="btn btn-danger" immediate="true"
+																render="att-list" value="إلغاء"
+																actionListener="#{NewBuildingWallBean.deleteAttchFile(attach.attachRealName)}">
+															</h:commandButton>
+														</div>
+													</div>
+												</ui:repeat>
+											</h:panelGroup>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<br></br> <a
+									href="webrun:C:\\WINDOWS\\ARCHIVING\\UploadToFTP.bat"
+									id="FileLoderID" class="btn btn-primary"
+									style="display: none; float: left; margin-left: 84px;"
+									onclick="notVisibleDIv()"> تحميل المرفقات </a>
+								<div style="display: inline;">
+									<a href="webrun:C:\\WINDOWS\\ARCHIVING\\ScanMultipage64bit.exe"
+										class="btn btn-primary icon-pencil" onclick="visibleDIv()">
+										<i class="material-icons">scanner</i>
+									</a>
+									<div class="col-md-6" id="divError"
+										style="display: none; float: left;">
+										<h:outputLabel value=" يجب تحميل المرفقات بعد إنتهاء المسح"
+											style="color:red"></h:outputLabel>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+
+								<h:commandButton value="#{msg['back']}" action="mails"
+									immediate="true"
+									style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+									class="btn btn-primary">
+
+								</h:commandButton>
+
+								<h:commandButton value="#{msg['accept']}"
+									rendered="#{NewBuildingWallBean.activateAccept}"
+									style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+									styleClass="btn btn-primary"
+									action="#{NewBuildingWallBean.acceptAction}">
+
+								</h:commandButton>
+								<h:outputLink id="gg"
+									rendered="#{NewBuildingWallBean.activatePrint}"
+									style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
+									styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"
+									value="#{NewBuildingWallBean.url}" target="_blank">
+									<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+									<span class="ui-button-text">#{msg['print']}</span>
+									<f:ajax execute="@form"></f:ajax>
+								</h:outputLink>
+							</div>
+						</div>
+						<p:dialog widgetVar="PrintBillDlgVar" id="PrintBillDlg"
+							modal="true" showEffect="explode" width="50%" resizable="false"
+							responsive="true">
+							<h:form>
+								<div class="container-fluid">
+									<div class="row" style="text-align: center;">
+										<div class="alert alert-success" style="font-size: x-large;">
+											تمت إضافة الفاتورة رقم : #{NewBuildingWallBean.newBillNmber}</div>
+									</div>
+									<div class="row" style="text-align: center;">
+										<h:commandButton style="float:left;margin-left:3px;"
+											value="طباعة الفاتورة" immediate="true"
+											styleClass="btn btn-primary"
+											onclick="this.form.target='_blank'"
+											action="#{NewBuildingWallBean.printBarcodeReport}">
+										</h:commandButton>
+									</div>
+								</div>
+							</h:form>
+						</p:dialog>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<script>
+			function visibleDIv() {
+				document.getElementById("FileLoderID").style.display = "block";
+				document.getElementById("divError").style.display = "block";
+			}
+			function notVisibleDIv() {
+
+				document.getElementById("divError").style.display = "none";
+				document.getElementById("FileLoderID").style.display = "none";
+				document.getElementById("includeform:btn_1").click();
+			}
+		</script>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hr_letter" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="395"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER1.xml"/>
+	<parameter name="record_id" class="java.lang.Integer"/>
+	<parameter name="compName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select fun_get_inf001_ar(HRS_EMP_HISTORICAL.empno) as name, natno,   get_sys_prop_val('BALADIA_NAME') as baladya  ,fsrvdt,HRS_LETTER_REQUEST.JOB ,HRMS_GET_RANKTITEL(HRS_LETTER_REQUEST.RANK) rank ,
+HRS_LETTER_REQUEST.COMMISION,
+HRS_EMP_HISTORICAL.JOBNO ,WRK_PROFILE_SIGN.DDD,SIGN_USER_ID,HRS_LETTER_REQUEST.BANK_ACCOUNT,HRS_LETTER_REQUEST.BANK_ID,
+HRS_LETTER_REQUEST.DESTINATION,HRS_LETTER_REQUEST.PURPOSE,HRS_EMP_HISTORICAL.BSCSAL,
+GET_REAL_EMPNAME(SIGN_USER_ID) real_name, sign_job_name TITLEPOS,
+(SELECT REC_H_DATE FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE APP_ID = $P{record_id}) ) as APP_DATE,
+(SELECT income_no FROM ARC_RECORDS WHERE ID =(SELECT MIN(APP_ID) FROM wrk_application WHERE APP_ID = $P{record_id} ) ) as APP_income_no
+from hrs_master_file,hrs_emp_historical,hrs_signs,HRS_LETTER_REQUEST,arc_users,WRK_PROFILE_SIGN
+where HRS_MASTER_FILE.EMPNO = HRS_EMP_HISTORICAL.EMPNO
+ and  HRS_EMP_HISTORICAL.FLG=1
+ and HRS_LETTER_REQUEST.EMPNO = HRS_MASTER_FILE.EMPNO
+ and HRS_LETTER_REQUEST.ID = HRS_SIGNS.DOC_ID
+ and HRS_SIGNS.SIGN_IS_VISIBLE = 1
+ and WRK_PROFILE_SIGN.USER_ID = HRS_SIGNS.SIGN_USER_ID
+ and ARC_USERS.EMPNO =  HRS_LETTER_REQUEST.EMPNO
+ and HRS_SIGNS.ARC_RECORD_ID=$P{record_id}]]>
+	</queryString>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="NATNO" class="java.math.BigDecimal"/>
+	<field name="BALADYA" class="java.lang.String"/>
+	<field name="FSRVDT" class="java.lang.String"/>
+	<field name="JOB" class="java.lang.String"/>
+	<field name="RANK" class="java.lang.String"/>
+	<field name="COMMISION" class="java.math.BigDecimal"/>
+	<field name="JOBNO" class="java.math.BigDecimal"/>
+	<field name="DDD" class="java.io.InputStream"/>
+	<field name="SIGN_USER_ID" class="java.math.BigDecimal"/>
+	<field name="BANK_ACCOUNT" class="java.lang.String"/>
+	<field name="BANK_ID" class="java.math.BigDecimal"/>
+	<field name="DESTINATION" class="java.lang.String"/>
+	<field name="PURPOSE" class="java.lang.String"/>
+	<field name="BSCSAL" class="java.math.BigDecimal"/>
+	<field name="REAL_NAME" class="java.lang.String"/>
+	<field name="TITLEPOS" class="java.lang.String"/>
+	<field name="APP_DATE" class="java.lang.String"/>
+	<field name="APP_INCOME_NO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="600" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="394" y="137" width="80" height="15" uuid="814d737a-fc1a-45c6-b80e-fb9b78149672"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الموارد البشرية "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="170" width="138" height="17" uuid="472414e7-4974-44b3-92ce-f37d3d2d416b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" شهادة تعريف بالراتب"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="72" y="211" width="423" height="20" uuid="ba6c0d44-02f5-4c15-ab3d-74a8cf1f0ec1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إلى من يهمه الأمر"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="16" y="112" width="97" height="20" uuid="596ba28a-b38d-4776-acfe-7f9a560509f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APP_INCOME_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="16" y="132" width="97" height="20" uuid="14d6a7a5-b60b-4b08-b6bf-fdc3fe790344"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APP_DATE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="234" width="523" height="4" uuid="04eee2e6-df26-4509-96d5-3e8cc1896761"/>
+			</line>
+			<line>
+				<reportElement x="7" y="329" width="521" height="1" uuid="ae49da0c-0a08-40d5-8a6d-12c9527de6fc"/>
+			</line>
+			<textField>
+				<reportElement x="272" y="241" width="249" height="19" uuid="1f148905-b68d-42a0-8a8c-051d33d44899"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاسم/ "+$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="262" width="249" height="19" uuid="4aa3ff49-a074-449e-9071-07a757e8022e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["جهة العمل/ "+$F{BALADYA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="282" width="249" height="19" uuid="3689b2bf-d5f0-47c3-91a3-bd56ca932f29"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوظيفة/ "+ $F{JOB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="272" y="303" width="249" height="19" uuid="363bf5f9-a04d-4d0e-a80b-9a6d3a06067c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الراتب الأساسي/ "+$F{BSCSAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="242" width="249" height="19" uuid="ceda620d-549f-4562-bff6-d170ad7fe34f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["سجل مدني رقم/ "+$F{NATNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="263" width="249" height="19" uuid="b2d71f4b-f2c3-4970-8ba4-83b010f383e6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بداية الخدمة/ "+$F{FSRVDT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="283" width="249" height="19" uuid="f305fc71-34b8-4509-b27c-e97d674b9572"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المرتبة/ "+$F{RANK} + "  رقم/"+$F{JOBNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="303" width="249" height="19" uuid="9ffa4fec-a27f-4741-9a92-9eb1058d7821"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" بدل النقل/ "+$F{COMMISION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="353" width="462" height="38" uuid="075d8d0d-f11c-4271-92fa-71d299c08fb9"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تشهد "+$P{compName}+" بأن الموضح إسمه و بياناته أعلاه من منسوبي البلدية ولا يزال على رأس العمل حتى تاريخه.. و قد منحت هذه الشهادة بناء على طلبه لتقديمها إلى من يهمه الأمر. "]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="12" y="515" width="149" height="59" uuid="1a3d5460-5b53-4ec7-8ee7-8f4fe6eeacb6"/>
+				<imageExpression><![CDATA[$F{DDD}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="11" y="574" width="150" height="20" uuid="3b02893e-46a2-4c9e-b60c-549efba16103"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REAL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="492" width="151" height="23" uuid="41d3106f-c086-464b-bc10-0bb60aa7da3d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLEPOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="183" y="406" width="199" height="20" uuid="2c118ef7-61ef-471d-8728-85727cfc55c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[ والسلام عليكم ورحمة الله وبركاته.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="151" width="80" height="20" uuid="b8820dd2-0e10-4e1c-a3c6-81bfcb681fee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[405/266]]></text>
+			</staticText>
+			<line>
+				<reportElement x="262" y="237" width="1" height="91" uuid="c7ab9d31-65cc-4390-91f8-b4a772f2cd55"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="231" y="0" width="324" height="20" forecolor="#FF0000" uuid="1d1aaff2-089a-412b-bfa1-a60ac851054f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# معا_ضد_الإرهاب_والفكر_الضال"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

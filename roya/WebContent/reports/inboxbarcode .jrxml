@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inboxbarcode" language="groovy" pageWidth="250" pageHeight="130" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a7074ca-17a9-4b02-ae99-0c769d9a4014">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+
+     ARC_RECORDS."ID" AS ARC_RECORDS_ID,
+     ARC_RECORDS."REC_ID" AS ARC_RECORDS_REC_ID,
+     ARC_RECORDS."REC_G_DATE" AS ARC_RECORDS_REC_G_DATE,
+     ARC_RECORDS."REC_H_DATE" AS ARC_RECORDS_REC_H_DATE,
+     ARC_RECORDS."REC_TITLE" AS ARC_RECORDS_REC_TITLE,
+     ARC_RECORDS."STRUCT_ID" AS ARC_RECORDS_STRUCT_ID,
+     ARC_RECORDS."CREATED_IN" AS ARC_RECORDS_CREATED_IN,
+     ARC_RECORDS."CREATED_BY" AS ARC_RECORDS_CREATED_BY,
+     ARC_RECORDS."APP_TYPE" AS ARC_RECORDS_APP_TYPE,
+     ARC_RECORDS."INCOME_NO" AS ARC_RECORDS_INCOME_NO,
+     ARC_RECORDS."INCOME_H_DATE" AS ARC_RECORDS_INCOME_H_DATE,
+     ARC_RECORDS."FILES_NO" AS ARC_RECORDS_FILES_NO,
+     ARC_RECORDS."LETTER_FROM" AS ARC_RECORDS_LETTER_FROM,
+     ARC_RECORDS."LETTER_TO" AS ARC_RECORDS_LETTER_TO,
+     ARC_RECORDS."LETTER_FROM_NO" AS ARC_RECORDS_LETTER_FROM_NO,
+     ARC_RECORDS."LETTER_FROM_DATE" AS ARC_RECORDS_LETTER_FROM_DATE,
+     ARC_RECORDS."PPL_ID" AS ARC_RECORDS_PPL_ID,
+     ARC_RECORDS."IS_IMPORTANT" AS ARC_RECORDS_IS_IMPORTANT,
+     ARC_RECORDS."INCOME_YEAR" AS ARC_RECORDS_INCOME_YEAR,
+     ARC_RECORDS."NATIONAL_ID" AS ARC_RECORDS_NATIONAL_ID,
+     ARC_RECORDS."LETTER_FROM_TYP" AS ARC_RECORDS_LETTER_FROM_TYP
+FROM
+     "ARC_RECORDS" ARC_RECORDS
+where ARC_RECORDS."ID" = $P{p1}]]>
+	</queryString>
+	<field name="ARC_RECORDS_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_REC_ID" class="java.lang.String"/>
+	<field name="ARC_RECORDS_REC_G_DATE" class="java.sql.Timestamp"/>
+	<field name="ARC_RECORDS_REC_H_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_REC_TITLE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_STRUCT_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_CREATED_IN" class="java.sql.Timestamp"/>
+	<field name="ARC_RECORDS_CREATED_BY" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_APP_TYPE" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_INCOME_NO" class="java.lang.String"/>
+	<field name="ARC_RECORDS_INCOME_H_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_FILES_NO" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_FROM" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_TO" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_LETTER_FROM_NO" class="java.lang.String"/>
+	<field name="ARC_RECORDS_LETTER_FROM_DATE" class="java.lang.String"/>
+	<field name="ARC_RECORDS_PPL_ID" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_IS_IMPORTANT" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_INCOME_YEAR" class="java.math.BigDecimal"/>
+	<field name="ARC_RECORDS_NATIONAL_ID" class="java.lang.String"/>
+	<field name="ARC_RECORDS_LETTER_FROM_TYP" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="88" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="1" width="182" height="10" forecolor="#868686" uuid="d740bebb-3fc7-4715-afe8-df597144d648"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="PDF417" drawText="true" checksumRequired="false" barHeight="40">
+					<jr:codeExpression><![CDATA[$F{ARC_RECORDS_INCOME_NO}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="0" y="11" width="200" height="45" uuid="ab537398-dc42-4fd3-9635-614b1d4ef94f"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false" barHeight="0">
+					<jr:codeExpression><![CDATA[$F{ARC_RECORDS_INCOME_NO}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="56" width="210" height="20" uuid="7cef265e-ea92-42d9-a1e2-47a944786751"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ARC_RECORDS_REC_H_DATE}+'>>>>>'+$F{ARC_RECORDS_INCOME_NO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="68" width="210" height="12" uuid="f8c8eced-9028-4b21-8c29-51ac24a69f1f"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الغرفة التجارية الصناعية بالبكيرية >>وارد>>INBOX.>]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+
+	<f:metadata>
+		<f:viewAction action="#{archiveBean.loadData}"
+			phase="APPLY_REQUEST_VALUES" />
+	</f:metadata>
+
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<style>
+.ui-inputfield {
+	width: 97%;
+}
+
+#includeform:arabicEndDate_input {
+	width: 97%;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+	margin-top: -4px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	font-size: small !important;
+	text-align: right;
+	border-bottom: 1px solid black;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	font-weight: bolder !important;
+	font-size: small !important;
+}
+
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+	direction: rtl;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+	margin-right: 2pc;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+	{
+	margin: 0px 20px 0 1px;
+	direction: rtl;
+	float: right;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close
+	{
+	margin-right: -46px;
+}
+
+body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label
+	{
+	padding-right: 29px;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-inputfield
+	{
+	text-align: right;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.dashboard .user-card .user-card-content .user-detail ul li {
+	padding: 26px 24px !important;
+}
+
+body .ui-treetable tbody tr td .ui-chkbox {
+	margin-left: 23px;
+}
+</style>
+		<h:body>
+			<h:form id="includeform" target="_blank">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer">
+
+					<p:commandButton value="البحث" icon="ui-icon ui-icon-visibility">
+						<f:ajax execute="@form" render="@form"
+							listener="#{archiveBean.searchArcRecords}"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<br />
+				<div class="card card-w-title" style="direction: rtl;">
+					<div style="color: color: #428bca">
+						<h1
+							style="color: #7CB342; float: unset; text-align: center; direction: ltr;">
+							#{msg['archive']}<span class="ui-icon ui-icon-archive"></span>
+						</h1>
+					</div>
+					<div class="panel-body">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="#{msg['subject']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:inputText value="#{archiveBean.subject}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="#{msg['letter']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:inputText value="#{archiveBean.letter}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="#{msg['incoming']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:inputText value="#{archiveBean.incomeNB}"
+									styleClass="form-control" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value="الوارد الخارجي" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:inputText value="#{archiveBean.letterFromNo}"
+									styleClass="form-control">
+								</p:inputText>
+							</div>
+						</div>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<h:outputLabel value="#{msg['source']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:selectOneMenu value="#{archiveBean.recordSender}"
+									filter="true" filterMatchMode="contains" id="newRecordfrom"
+									style="width:100%">
+									<f:selectItem itemLabel="اختر   مرسل/جهة المعاملة "
+										itemValue="" />
+									<f:selectItems value="#{archiveBean.letterFromMap}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<h:outputLabel value="#{msg['section']}" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-5">
+								<p:selectCheckboxMenu filter="true" filterMatchMode="contains"
+									style="width:60% ;" layout="grid" columns="1"
+									value="#{archiveBean.selectedStructIdList}"
+									label="#{sec.structDescription}" effect="fade">
+									<f:selectItems value="#{archiveBean.sectionsList}" var="archiv"
+										itemLabel="#{archiv.structDescription}"
+										itemValue="#{archiv.structId}" />
+								</p:selectCheckboxMenu>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-5"></div>
+							<div class="col-md-1"></div>
+							<div class="col-md-3"></div>
+						</div>
+						<br /> <br />
+						<h:panelGroup id="recordTable">
+							<p:dataTable var="archive" value="#{archiveBean.recordsList}"
+								emptyMessage="لايوجد بيانات" widgetVar="archiveVar"
+								rowIndexVar="rowIndex" paginatorPosition="bottom"
+								filteredValue="#{archiveBean.filteredRecordsList}"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								paginator="true" rows="25">
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('archiveVar').filter()" style="width:150px;"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+									<br />
+								</f:facet>
+								<p:column style="text-align: center;" headerText="رقم "
+									width="7%">
+                                   #{rowIndex +1}
+                                </p:column>
+								<p:column headerText="#{msg['record']}" width="79%"
+									filterBy="#{archive.recTitle}" filterMatchMode="contains">#{archive.recTitle}						
+								</p:column>
+								<p:column headerText="#{msg['income']}" width="7%"
+									filterBy="#{archive.incomeNo}" filterMatchMode="contains">
+										#{archive.incomeNo}
+									</p:column>
+								<p:column headerText="عرض" width="7%">
+									<p:commandButton action="#{archiveBean.viewRowData(archive)}"
+										ajax="false" icon="ui-icon-search" process="@this">
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</h:panelGroup>
+					</div>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

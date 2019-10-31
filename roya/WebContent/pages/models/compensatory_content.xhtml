@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+</h:head>
+<div class="card card-w-title">
+
+
+	<div class="ui-g">
+		<div class="ui-g-2">
+			<h:outputLabel value="اسم الموظف: "></h:outputLabel>
+		</div>
+		<div class="ui-g-2">
+			<h:outputLabel
+				value="#{compensatoryLeaveBean.eName}"></h:outputLabel>
+		</div>
+	</div>
+
+	<p:dataTable id="EmpCompVac" var="empComp"
+		value="#{compensatoryLeaveBean.empCompVacStok}">
+		<p:column headerText="نوع الإجازة">
+			<h:outputText value="#{empComp.comp}" />
+		</p:column>
+		<p:column headerText="الرصيد">
+			<h:outputText value="#{empComp.qty}" />
+		</p:column>
+		<p:column headerText="المتمتع به">
+			<h:outputText value="#{empComp.taken}" />
+		</p:column>
+		<p:column headerText="المتبقي">
+			<h:outputText value="#{empComp.remain}" />
+		</p:column>
+		<p:summaryRow>
+			<p:column colspan="3" style="text-align:left">
+				<h:outputText value="إجمالي المتبقي:" />
+			</p:column>
+			<p:column>
+				<h:outputText value="#{compensatoryLeaveBean.total}" />
+			</p:column>
+		</p:summaryRow>
+	</p:dataTable>
+</div>
+</html>

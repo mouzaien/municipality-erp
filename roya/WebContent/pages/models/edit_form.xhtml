@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+<!-- 	<link href="Css/style.css" rel="stylesheet" type="text/css"></link> -->
+<!-- 	<link href="../resources/css/purecss/pure-min.css" rel="stylesheet" -->
+<!-- 		type="text/css"></link> -->
+
+<!-- 	<link rel="stylesheet" type="text/css" -->
+<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" -->
+<!-- 		href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" /> -->
+<!-- 	<link type="text/css" rel="stylesheet" -->
+<!-- 		href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-south-street" /> -->
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<style>
+</style>
+</h:head>
+<h:body>
+
+
+		<p:tabView dynamic="true" id="wrktab"
+			activeIndex="#{mainManagedBean.mailExecutor.inboxDtActiveIndex}" style="border: none;">
+
+			<p:tab title="بيانات المعاملة " titleStyle="width:80px">
+				<br></br>
+				<br></br>
+
+				<div class="panel panel-primary"
+					style="border-color: rgb(150, 202, 66);">
+					<div class="panel-heading"
+						style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+						<h:outputLabel value=" بيانات المعاملة  " />
+
+					</div>
+					<div class="panel-body">
+
+
+						<div class="row">
+							<div class="col-md-1">
+								<p:outputLabel value="  رقم المعاملة" />
+							</div>
+							<div class="col-md-3">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedInbox.appId} &frasl; #{mainManagedBean.mailExecutor.selectedInbox.wrkId} " />
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1">
+								<p:outputLabel value="الموضوع " />
+
+							</div>
+							<div class="col-md-3">
+								<p:outputLabel value="#{mainManagedBean.mailExecutor.selectedInbox.appTitle}"
+									style="white-space: nowrap;" />
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1">
+								<p:outputLabel value="المرسل " />
+
+							</div>
+							<div class="col-md-3">
+								<p:outputLabel value=" #{mainManagedBean.mailExecutor.selectedInbox.wrkSender}" />
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1">
+								<p:outputLabel value="أنشأت في " />
+
+							</div>
+
+							<div class="col-md-3">
+								<p:outputLabel
+									value="#{mainManagedBean.mailExecutor.selectedInbox.wrkHdate} #{inboxitem.wrkCreateTime}" />
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<br></br>
+
+
+				<div class="panel panel-primary"
+					style="border-color: rgb(150, 202, 66);">
+					<div class="panel-heading"
+						style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+						<h:outputLabel value=" عرض الشروحات  " />
+
+					</div>
+					<div class="panel-body">
+						<ul>
+							<ui:repeat varStatus="x" value="#{mainManagedBean.mailExecutor.comments}" var="comm">
+
+								<br></br>
+								<p:outputLabel rendered="#{mainManagedBean.mailExecutor.comments eq Empty }"
+									value="عفوا لا يوجد شروحات لهذه المعاملة "></p:outputLabel>
+								<li><p:outputLabel>
+                                   أرسلت بواسطة #{comm.fromName}  الي    #{comm.toName}  في #{comm.createdIn} 
+                                                            </p:outputLabel></li>
+								<li><p:outputLabel> الغرض : #{comm.purpose}</p:outputLabel></li>
+								<li>#{comm.comment}</li>
+								<hr></hr>
+							</ui:repeat>
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel style=" margin-top: 5px;"
+									value=" اختر اسم المجلد لنقل المعاملة " />
+							</div>
+
+
+
+
+							<div class="col-md-2">
+								<p:selectOneMenu value="#{mainManagedBean.mailExecutor.newRecordTargetFolder}"
+									style="width:100%">
+									<f:selectItem itemLabel=" اختر اسم المجلد " />
+									<f:selectItem itemLabel="المجلد الرئيسي للمعاملات"
+										itemValue="0" />
+									<f:selectItems value="#{mainManagedBean.mailExecutor.userFolders}" />
+									<p:ajax event="change" process="@this"
+										listener="#{mainManagedBean.mailExecutor.changetargetFolder(abe)}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="col-md-3">
+
+								<p:commandButton
+									style="width: 50%; color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+									value="نقل" icon="fa fa-paper-plane">
+
+								</p:commandButton>
+							</div>
+
+
+
+
+
+						</div>
+
+
+					</div>
+				</div>
+
+				<br></br>
+
+
+
+
+				<br></br>
+
+
+
+			</p:tab>
+
+			<p:tab title="المرفقات" titleStyle="width:80px">
+				<h:form target="_blank">
+					<br></br>
+					<div class="panel panel-primary"
+						style="border-color: rgb(150, 202, 66);">
+						<div class="panel-heading"
+							style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+							<h:outputLabel value="المرفقات " />
+
+						</div>
+						<div class="panel-body">
+							<p:outputLabel rendered="#{mainManagedBean.mailExecutor.attList eq null }"
+								value="     لا يوجد مرفقات لهذه المعاملة  "></p:outputLabel>
+							<ul>
+								<h:panelGroup id="AttachmantTab">
+									<ui:repeat value="#{mainManagedBean.mailExecutor.attList}" var="att">
+
+										<li>قام بارفاقه #{att.ownerName} <a href="#{att.attLink}"
+											target="_blank">أضغط هنا </a> لتحميل الملف
+										</li>
+										<li><p:outputPanel rendered="#{att.isPdf}">
+												<object type="application/pdf" data="#{att.attLink}"
+													height="300px" width="100%">
+													ميزة الأستعراض غير مدعمة للمتصفح <a href="#{att.attLink}">أضغط
+														هنا </a> لتحميل الملف .
+												</object>
+											</p:outputPanel></li>
+										<li><p:outputPanel rendered="#{!att.isPdf}">
+												<h:outputLink target="_blank" value="#{att.attLink}">
+													<img src="#{att.attLink}" style="height: 300px;" />
+												</h:outputLink>
+											</p:outputPanel></li>
+										<hr></hr>
+
+
+									</ui:repeat>
+								</h:panelGroup>
+							</ul>
+
+
+
+
+						</div>
+					</div>
+
+
+					<br></br>
+					<div class="panel panel-primary"
+						style="border-color: rgb(150, 202, 66);">
+						<div class="panel-heading"
+							style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+							<h:outputLabel value="اضافة مرفق " />
+
+						</div>
+						<div class="panel-body">
+							<p:fileUpload id="RecordsUploaderID" widgetVar="RecordsUploader"
+								multiple="true" auto="true"
+								fileUploadListener="#{mainManagedBean.mailExecutor.uploadRecordFiles}"
+								uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
+								previewWidth="0" process="@this"
+								style="width: 100%;display: block;"
+								allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|exe|mp3|dwg|mp4)$/"
+								sizeLimit="300000000" update="AttachmantTab" />
+						</div>
+					</div>
+
+
+				</h:form>
+			</p:tab>
+
+
+
+			<p:tab title="الإحالة " titleStyle="width:80px">
+
+				<br></br>
+
+
+				<div class="panel panel-primary"
+					style="border-color: rgb(150, 202, 66);">
+					<div class="panel-heading"
+						style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+						<h:outputLabel value="  احالة المعاملة  " />
+
+					</div>
+					<div class="panel-body">
+						<h:form id="form001">
+
+
+							<div class="row">
+								<div class="col-md-1">
+									<p:outputLabel value="الشـــــــرح" />
+								</div>
+								<div>
+									<p:inputTextarea style="margin-right: 14px;  width: 857px;"
+										class="col-md-10" value="#{mainManagedBean.mailExecutor.wrkCommTxt}" id="wrkcomm" />
+								</div>
+							</div>
+
+							<br></br>
+							<div class="row">
+								<div class="col-md-1">
+									<p:outputLabel value="التوجيه " />
+								</div>
+								<div class="col-md-10">
+									<p:selectOneMenu id="wrkpurp00" value="#{mainManagedBean.mailExecutor.wrkPurp}"
+										panelStyle="width:305px" effect="fade" var="d"
+										style="width:300px;direction: rtl;" filter="true"
+										filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+										<f:selectItems value="#{mainManagedBean.mailExecutor.purpMap}" />
+
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<br></br>
+							<div class="row" id="abc002">
+								<div class="col-md-1">
+									<p:outputLabel value="جهات الإرسال " />
+								</div>
+								<div class="col-md-10" id="abc001">
+									<p:accordionPanel style="background-color: #3c763d !important;"
+										multiple="true" id="accord">
+										<p:tab title="جهة إرسال أصل المعاملة"
+											style="background-color:rgba(9, 62, 6, 0.78)  ! importan ;"
+											id="orgsendcontact">
+											<p:tabView id="copycontact">
+												<p:tab title="موظفي القسم" id="tab000">
+													<p:selectOneRadio id="empr"
+														value="#{mainManagedBean.mailExecutor.wrkReciever}" layout="grid" columns="3">
+														<p:ajax update="mngr"
+															listener="#{mainManagedBean.mailExecutor.clearMngRadioList(valueChangeEvent)}" />
+														<f:selectItems value="#{mainManagedBean.mailExecutor.empMap}" />
+													</p:selectOneRadio>
+												</p:tab>
+												<p:tab title=" مديري الإدارات"
+													rendered="#{mainManagedBean.mailExecutor.isManager}">
+													<p:selectOneRadio id="mngr" layout="grid" columns="3"
+														value="#{mainManagedBean.mailExecutor.wrkReciever1}">
+														<p:ajax update="empr"
+															listener="#{mainManagedBean.mailExecutor.clearEmpRadioList(valueChangeEvent)}" />
+														<f:selectItems value="#{mainManagedBean.mailExecutor.mgrMap}" />
+													</p:selectOneRadio>
+												</p:tab>
+											</p:tabView>
+										</p:tab>
+										<br></br>
+										<br></br>
+										<p:tab title="جهات إرسال صور المعاملة" id="copyTab">
+											<p:tabView id="wrkcopy00">
+												<p:tab title="موظفي القسم" id="wrktab00">
+													<p:selectManyCheckbox id="wrkemplst"
+														value="#{mainManagedBean.mailExecutor.wrkCopyEmpRecievers}" layout="grid"
+														columns="3">
+														<f:selectItems value="#{mainManagedBean.mailExecutor.empMap}" />
+													</p:selectManyCheckbox>
+												</p:tab>
+												<p:tab title=" مديري الإدارات"
+													rendered="#{mainManagedBean.mailExecutor.isManager}">
+													<p:selectManyCheckbox id="wrkmnglst"
+														value="#{mainManagedBean.mailExecutor.wrkCopyMngRecievers}" layout="grid"
+														columns="3">
+														<f:selectItems value="#{mainManagedBean.mailExecutor.mgrMap}" />
+													</p:selectManyCheckbox>
+												</p:tab>
+											</p:tabView>
+										</p:tab>
+									</p:accordionPanel>
+								</div>
+							</div>
+							<br></br>
+
+
+							<div class="row">
+								<div class="col-md-1">
+									<p:outputLabel value="ملحوظات" />
+								</div>
+								<div class="col-md-2">
+
+									<h:outputLabel value="المعاملة عاجلة" />
+									<p:selectBooleanCheckbox value="#{mainManagedBean.mailExecutor.isImportant}"
+										id="isimport" />
+								</div>
+								<div class="col-md-2">
+									<p:outputLabel value=" الشرح سري" />
+									<p:selectBooleanCheckbox value="#{mainManagedBean.mailExecutor.isSecret}"
+										id="issecret" />
+								</div>
+
+
+
+							</div>
+
+
+							<br></br>
+							<div class="row"></div>
+
+							<!-- End Of Row -->
+
+						</h:form>
+					</div>
+					<div class="panel-footer">
+
+						<div class="text-center">
+
+							<p:commandButton
+								style=" height: 30px;    color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;     width: 180px;
+    "
+								value="احالة المعاملة " icon="fa fa-paper-plane"
+								action="#{mainManagedBean.mailExecutor.wrkSendAction(actionEvent)}">
+								<p:confirm header="تأكيد الإرسال "
+									message="هل تود إرسال الاحالة حقا ؟ " icon="ui-icon-alert" />
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="explode"
+								hideEffect="explode">
+								<p:commandButton value="موافق" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="تراجع" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+
+						</div>
+					</div>
+				</div>
+				<p:messages autoUpdate="true" />
+
+
+				<br></br>
+
+
+
+			</p:tab>
+
+			<p:tab title="خطاب التغطية" id="commenttab" titleStyle="width:80px">
+				<br></br>
+				<div class="panel panel-primary"
+					style="border-color: rgb(150, 202, 66);">
+					<div class="panel-heading"
+						style="height: 32px; background: rgba(9, 62, 6, 0.78);">
+						<h:outputLabel value=" بيانات خطاب التغطية  " />
+
+					</div>
+					<div class="panel-body">
+
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value="موجه إلي" />
+							</div>
+							<div class="col-md-10">
+								<p:inputText style="width: 190px;" id="commenttoid"
+									value="#{mainManagedBean.mailExecutor.commentTo}" />
+							</div>
+						</div>
+						<br></br>
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value=" نوع الخطاب" />
+							</div>
+							<div class="col-md-6">
+
+								<div class="row">
+									<div class="col-md-5">
+										<p:selectOneMenu id="commTyp" value="#{mainManagedBean.mailExecutor.commentTyp}"
+											panelStyle="width:305px" effect="fade" var="d"
+											style="width: 100%;" filter="true" filterMatchMode="contains">
+											<f:selectItem itemLabel="اختر   توجيه المعاملة " itemValue="" />
+											<f:selectItems value="#{mainManagedBean.mailExecutor.commentTypes}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="col-md-5">
+
+										<div class="row">
+											<div class="col-md-2">
+												<p:outputLabel style=" margin-top: 5px;" value=" المرفقات" />
+											</div>
+											<div class="col-md-8">
+												<p:inputText value="#{mainManagedBean.mailExecutor.commentAppAttach}" />
+											</div>
+										</div>
+
+									</div>
+									<div class="col-md-4"></div>
+								</div>
+							</div>
+						</div>
+
+						<br></br>
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value="موضوع الخطاب" />
+							</div>
+							<div class="col-md-10">
+								<p:inputText id="commenttopicid" style="width: 100%;"
+									value="#{mainManagedBean.mailExecutor.commentTopic}" />
+
+							</div>
+						</div>
+						<br></br>
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value="صورة الفئة الأعلي  " />
+							</div>
+							<div class="col-md-10">
+								<p:inputTextarea id="commentuppercopyid"
+									style="width: 100%;min-height: 30px;max-height: 60px;overflow: auto;"
+									value="#{mainManagedBean.mailExecutor.upperCopy}" />
+							</div>
+						</div>
+						<br></br>
+
+
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value=" نص الخطاب " />
+							</div>
+							<div class="col-md-10">
+								<p:inputTextarea disabled="#{mainManagedBean.mailExecutor.isSelectedCommentSigned}"
+									id="commentconentid" style="width: 100%;overflow: auto;"
+									value="#{mainManagedBean.mailExecutor.commentContent}" />
+							</div>
+						</div>
+						<br></br>
+						<div class="row">
+							<div class="col-md-2">
+								<p:outputLabel value="صورة الفئة الادني " />
+							</div>
+							<div class="col-md-10">
+								<p:inputTextarea id="commentlowercopyid"
+									style="width: 100%;overflow: auto;max-height: 60px;"
+									value="#{mainManagedBean.mailExecutor.lowerCopy}" />
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+
+						<div class="row ">
+							<div class="col-md-2">
+
+								<p:commandButton value="  تأشير الخطاب" id="markbtn"
+									class="btn btn-default"
+									action="#{mainManagedBean.mailExecutor.markCommentAction(actionEvent)}"
+									style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+									type="submit" process="@this" icon="fa fa-check"
+									rendered="#{mainManagedBean.mailExecutor.canMark}">
+
+									<p:confirm header="تأكيد الإرسال "
+										message="هل تود التأشير علي الخطاب  ؟ " icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:tooltip for="markbtn" value="kokowawa" trackMouse="true">
+
+									<p:outputLabel value="#{mainManagedBean.mailExecutor.markingInfo}" />
+
+								</p:tooltip>
+								<p:confirmDialog widgetVar="confirmDlg" global="true"
+									showEffect="explode" hideEffect="explode">
+									<p:commandButton value="تراجع" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									<p:commandButton value="موافق" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								</p:confirmDialog>
+
+							</div>
+
+							<h:panelGroup id="signBtn">
+								<h:panelGroup rendered="#{mainManagedBean.mailExecutor.canSign}">
+									<div class="col-md-2">
+										<p:commandButton
+											style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+											value="التوقيع علي الخطاب" rendered="#{mainManagedBean.mailExecutor.canSign}"
+											action="#{mainManagedBean.mailExecutor.signCommentActionBtn(actionEvent)}"
+											process="@this " icon="fa fa-check-square" />
+									</div>
+									<div class="col-md-2">
+										<p:commandButton
+											style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+											value="التوقيع باسم  أمين الغرفة"
+											action="#{mainManagedBean.mailExecutor.signCommentByNameActionBtn(actionEvent)}"
+											process="@this" icon="fa fa-check-circle-o"
+											rendered="#{mainManagedBean.mailExecutor.isManager}" />
+									</div>
+									<!-- 							<div class="col-md-2">
+										<p:commandButton
+											style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+											value="التوقيع باسم الأمين"
+											action="#{mainManagedBean.mailExecutor.signCommentAmeenActionBtn(actionEvent)}"
+											process="@this" icon="fa fa-check-circle-o" rendered="false" />
+									</div> -->
+								</h:panelGroup>
+							</h:panelGroup>
+
+
+							<div class="col-md-2">
+								<p:commandButton
+									style="width: 100%;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px; float:right ; width:100%  "
+									value=" حفظ" icon="fa fa-save"
+									action="#{mainManagedBean.mailExecutor.commentSaveAction(actionEvent)}"
+									rendered="#{! mainManagedBean.mailExecutor.isSelectedCommentSigned}"
+									id="commentSaveButton" process="@this">
+									<p:confirm header="تأكيد الإرسال "
+										message="هل تود حفظ الخطاب   ؟ " icon="ui-icon-alert" />
+								</p:commandButton>
+
+								<p:confirmDialog global="true" showEffect="explode"
+									hideEffect="explode">
+									<p:commandButton value="موافق" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="تراجع" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								</p:confirmDialog>
+							</div>
+							<div class="col-md-2">
+								<h:outputLink
+									value="http://#{mainManagedBean.mailExecutor.reportServerIp}/reports/rwservlet?report&amp;report=d:\\archiving\\reports\\COMMENT2.rdf&amp;P_1=#{mainManagedBean.mailExecutor.selectedInbox.wrkId}"
+									target="_blank"
+									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn btn-default"
+									style="width: 100%;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;">
+									<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+									<span class="ui-button-text">طباعة</span>
+								</h:outputLink>
+							</div>
+							<div class="col-md-2">
+								<p:commandButton
+									style="width: 100%;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+									value="تعديل "
+									action="#{mainManagedBean.mailExecutor.EditWrkCommentBtnAction(actionEvent)}"
+									process="@this" icon="fa fa-edit">
+									<p:confirm header="تأكيد التعديل  "
+										message="في حالة التعديل سيتم إعادة تعيين التوقيعات ..؟ هل تود الاستمرار "
+										icon="ui-icon-alert" />
+								</p:commandButton>
+
+								<p:confirmDialog global="true">
+									<p:commandButton value="تراجع" type="button"
+										icon="ui-icon-close" />
+									<p:commandButton value="موافق" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+
+								</p:confirmDialog>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<br></br>
+				<br></br>
+
+
+				<p:messages autoUpdate="true" />
+
+				<!-- END OF ROW -->
+
+				<h:panelGroup>
+
+					<p:dialog widgetVar="confirm-sign-dlg" id="confirmSigndialog"
+						hideEffect="clip" showEffect="fade" dir="rtl" modal="false"
+						appendTo="@(body)" style="background-color: #ccffcc"
+						resizable="false" width="500" height="150"
+						header="قم بتأكيد التوقيع">
+						<h:form id="signfrndlg">
+							<div style="width: 100%">
+								<div style="float: right; width: 75%">
+									<h:panelGrid columns="1" style="text-align: center;">
+
+										<p:password id="confrmpass"
+											placeholder="أدخل رمز التوقيع السري" style="width: 310px;"
+											value="#{mainManagedBean.mailExecutor.confirmPassword}" />
+
+
+										<p:selectOneMenu id="signlist"
+											value="#{mainManagedBean.mailExecutor.selectedUserInSignComment}"
+											panelStyle="width:320px" effect="fade" var="d"
+											style="width:310px;direction: rtl;" filter="true"
+											filterMatchMode="contains">
+											<f:selectItem itemLabel="اختر  جهة الإرسال " itemValue="" />
+											<f:selectItems value="#{mainManagedBean.mailExecutor.commentSignEmployeesList}" />
+										</p:selectOneMenu>
+										<p:selectCheckboxMenu label=" صور الخطاب" id="commChkbx"
+											filter="true" filterMatchMode="contains"
+											style="width: 100%;direction: rtl; "
+											value="#{mainManagedBean.mailExecutor.commentCopyReciever}">
+											<f:selectItems value="#{mainManagedBean.mailExecutor.mgrMap}" />
+										</p:selectCheckboxMenu>
+										<span></span>
+										<p:separator />
+										<span></span>
+										<p:commandButton value="توقيع الخطاب" class="btn btn-default"
+											process="@this"
+											style="width: 100%;     color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none;    height: 30px;"
+											type="submit" icon="fa fa-legal"
+											action="#{mainManagedBean.mailExecutor.commentSignAction(actionEvent)}" />
+									</h:panelGrid>
+
+								</div>
+								<div style="float: right; width: 19%">
+									<img src="../resources/images/lock.png" width="120"
+										height="120"></img>
+								</div>
+							</div>
+						</h:form>
+
+					</p:dialog>
+
+				</h:panelGroup>
+				<p:outputLabel value="* #{mainManagedBean.mailExecutor.convMarkingInfo}"
+					style="color: #D80042;margin-right: 50px;font-family: monospace !important" />
+
+			</p:tab>
+
+
+			<p:tab title="نموذج" id="model" titleStyle="width:80px">
+
+								<ui:include src="#{mainManagedBean.modelContent}"> 
+
+								</ui:include> 
+
+			</p:tab>
+
+
+		</p:tabView>
+		<br></br>
+
+		<div style="width: 60%; margin-right: 20%;">
+
+
+			<div class="row">
+				<div class="col-md-3 col-xs-6">
+					<h:outputLink
+						style="width: 100%; color: #fff; background: #36633D !important; text-shadow: -1px 1px #417cb8; border: none; height: 30px;"
+						value="http://#{mainManagedBean.mailExecutor.reportServerIp}/reports/rwservlet?report&amp;report=d:\\archiving\\reports\\r04.rdf&amp;P1=#{mainManagedBean.mailExecutor.selectedInbox.wrkId}"
+						target="_blank"
+						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+						<span class="ui-button-icon-left ui-icon ui-c fa fa-print" />
+						<span class="ui-button-text" style="margin-top: 4px;">طباعة
+							الشروحات</span>
+					</h:outputLink>
+				</div>
+				<div class="col-md-3 col-xs-6">
+					<p:commandButton value="إضافة المعاملة  للمفضلة" icon="fa fa-star"
+						style="width: 100%; height: 30px;    color: #fff;
+    background: #36633D !important;
+    text-shadow: -1px 1px #417cb8;
+    border: none; "
+						type="submit" process="@this"
+						action="#{mainManagedBean.mailExecutor.addToFavourit(actionEvent)}" />
+				</div>
+
+				<div class="col-md-3 col-xs-6">
+					<p:commandButton
+						style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;;
+    text-shadow: -1px 1px #417cb8;
+    border: none; ;"
+						process="@this" value="أرشفة المعاملة" icon="fa fa-archive"
+						action="#{mainManagedBean.mailExecutor.SendRecordToArchive(actionEvent)}">
+
+
+						<p:confirm header="تأكيد الأرشــفة  "
+							message=" هل تود الاستمرار وأرشفة المعاملة؟  "
+							icon="fa fa-archive" />
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="explode"
+						hideEffect="explode">
+						<p:commandButton value="موافق" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="تراجع" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+				<div class="col-md-3 col-xs-6 ">
+					<p:commandButton
+						style="width: 100%;height: 30px;     color: #fff;
+    background: #36633D !important;;
+    text-shadow: -1px 1px #417cb8;
+    border: none; ;"
+						ajax="false" value="رجوع إلي البريد  " icon="fa fa-mail-reply"
+						action="#{mainManagedBean.updateContent('MAILS')}"
+						update=":mainForm:includeform"
+						process="@this,:mainForm:includeform" />
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+</h:body>
+
+</html>

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<p:messages closable="true" autoUpdate="true"></p:messages>
+			<div class="image-box-footer">
+				<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+					action="#{autorizationSettingsBean.save}" styleClass="cyan-btn">
+<!-- 					<f:ajax execute="@form"></f:ajax> -->
+				</p:commandButton>
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">
+					الإستئذانات <span class="fa fa-fw fa-tags"></span>
+				</h1>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel value="عدد الساعات بالشهر"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber
+							value="#{autorizationSettingsBean.autorization.autorMonthHours}"></p:inputNumber>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel value="عدد الإستئذانات باليوم"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber
+							value="#{autorizationSettingsBean.autorization.autorPerDay}"></p:inputNumber>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel value="عدد الساعات المحسوبة لعدم تبصيم الخروج"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:calendar id="outTime"
+							value="#{autorizationSettingsBean.autorization.notFingerOut}"
+							pattern="HH:mm" timeOnly="true" maxHour="6" />
+
+						<!-- 						<p:selectOneMenu id="minutesList" -->
+						<!-- 							value="#{hrsVacSoldBean.hrsVacSold.currentYear}" filter="true" -->
+						<!-- 							filterMatchMode="contains"> -->
+						<!-- 							<f:selectItem itemLabel="عدد الدقائق" itemValue=""></f:selectItem> -->
+						<!-- 							<f:selectItems value="#{autorizationSettingsBean.minutes}" -->
+						<!-- 								var="minute" itemLabel="#{minute}" itemValue="#{minute}"></f:selectItems> -->
+						<!-- 						</p:selectOneMenu> -->
+						<!-- 						<p:spacer height="10px"></p:spacer> -->
+						<!-- 						<p:selectOneMenu id="hoursList" -->
+						<!-- 							value="#{hrsVacSoldBean.hrsVacSold.currentYear}" filter="true" -->
+						<!-- 							filterMatchMode="contains"> -->
+						<!-- 							<f:selectItem itemLabel="عدد الساعات" itemValue=""></f:selectItem> -->
+						<!-- 							<f:selectItems value="#{autorizationSettingsBean.hours}" -->
+						<!-- 								var="hour" itemLabel="#{hour}" itemValue="#{hour}"></f:selectItems> -->
+						<!-- 						</p:selectOneMenu> -->
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel value="عدد ساعات الإستئذانات كحد أدنى"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber
+							value="#{autorizationSettingsBean.autorization.autorDayHoursMin}"></p:inputNumber>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel value="عدد ساعات الإستئذانات كحد أقصى"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber
+							value="#{autorizationSettingsBean.autorization.autorDayHoursMax}"></p:inputNumber>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
+
+

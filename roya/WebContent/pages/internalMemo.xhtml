@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<f:metadata>
+	<f:viewAction action="#{internalMemoBean.init}"
+		phase="APPLY_REQUEST_VALUES" />
+</f:metadata>
+
+<ui:composition template="/template.xhtml">
+
+	<ui:define name="content">
+		<style>
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+	width: 22px !important;
+	height: 22px !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+	direction: rtl;
+}
+</style>
+		<h:form id="includeform" enctype="multipart/form-data">
+			<p:messages closable="true" autoUpdate="true"></p:messages>
+			<div class="image-box-footer">
+				<h:panelGroup id="buttons">
+<!-- 					<h:form id="includeform1" enctype="multipart/form-data"> -->
+						<p:commandButton icon="ui-icon ui-icon-assignment-return"
+							ajax="false" action="#{internalMemoBean.saveMemo}"
+							rendered="#{!internalMemoBean.savedClicked}"
+							value="#{msg['send']}">
+						</p:commandButton>
+						<secc:authorize ifAnyGranted="ROLE_TELECOM">
+							<p:spacer width="10" height="10"></p:spacer>
+							<p:commandButton icon="ui-icon ui-icon-save"
+								styleClass="cyan-btn"
+								update=":includeform:buttons memoData dialogSelect attachP"
+								rendered="#{internalMemoBean.savedClicked}"
+								action="#{internalMemoBean.saveMemBefore}"
+								value="#{msg['save']}">
+							</p:commandButton>
+						</secc:authorize>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:fileUpload skinSimple="true" mode="simple"
+							style="padding-top: 7px" value="#{internalMemoBean.file}"
+							uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
+							previewWidth="0" sizeLimit="300000000">
+						</p:fileUpload>
+<!-- 					</h:form> -->
+				</h:panelGroup>
+				<p:spacer width="2" height="2"></p:spacer>
+				<ui:include src="/DWT_Scan_Upload_Demo.xhtml">
+				</ui:include>
+			</div>
+			<br />
+
+			<div class="card card-w-title">
+
+				<h1 style="color: #7CB342;">
+					#{msg['menu.memo']}<span class="fa fa-fw fa-file-text-o"></span>
+				</h1>
+
+				<br></br> <br></br> <br></br>
+
+				<h:panelGroup id="memoData">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-8," layout="grid"
+						styleClass="ui-panelgrid-blank form-group"
+						style="border:0px none; background-color:transparent; direction:rtl">
+						<p:outputLabel value="#{msg['transaction.title']}" />
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText id="arcTitleInputText" styleClass="form-control"
+								value="#{internalMemoBean.arcRecord.recTitle}" required="true"
+								requiredMessage="#{msg['transaction.title.required']}"
+								style="width:100%" />
+							<label>#{msg['transaction.title.add']}</label>
+						</h:panelGroup>
+
+						<p:outputLabel value="#{msg['subject.transaction']}" />
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputTextarea styleClass="form-control" rows="10" cols="30"
+								style="width:100%"
+								value="#{internalMemoBean.wrkApplication.applicationUsercommentStr}"
+								required="true" requiredMessage="#{msg['subject.requird']}"
+								id="arclongtxt" />
+							<label>#{msg['subject.add']}</label>
+						</h:panelGroup>
+						<p:outputLabel value="#{msg['redirect.transaction']}" />
+
+						<p:selectOneMenu id="typ" filter="true" filterMatchMode="contains"
+							style="width:100%" value="#{internalMemoBean.applicationPurpose}"
+							var="d" required="true"
+							requiredMessage="#{msg['redirect.purpose.add']}">
+							<f:selectItem itemLabel="#{msg['redirect.purpose']}" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems var="pp" itemLabel="#{pp.purposeName}"
+								itemValue="#{pp.idStr} " value="#{internalMemoBean.wrkPurposes}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="12" columnClasses="ui-grid-col-2"
+						id="explanationP" layout="grid"
+						styleClass="ui-panelgrid-blank form-group"
+						style="border:0px none; background-color:transparent; direction:rtl">
+						<p:outputLabel value="#{msg['secret.explanation']}" />
+						<p:selectBooleanCheckbox id="SecretCommItem"
+							value="#{internalMemoBean.wrkApplication.visibleFlag}" />
+						<p:outputLabel value="#{msg['urgent.transaction']}" />
+						<p:selectBooleanCheckbox id="imprtantCommItem"
+							value="#{internalMemoBean.arcRecord.importantFlag}" />
+					</p:panelGrid>
+					<h:panelGroup id="attachP">
+						<div class="ui-g" dir="rtl">
+							<secc:authorize ifAnyGranted="ROLE_TELECOM">
+								<div class="ui-grid-col-2">
+									<p:outputLabel value="#{msg['outcomiong']}"
+										style="padding-right: 27px" />
+								</div>
+								<div class="ui-md-1">
+									<p:selectBooleanCheckbox id="createIncomeItem"
+										style="padding-right: 17px"
+										value="#{internalMemoBean.arcRecord.outcomingNumFlag}">
+										<p:ajax update="buttons attachP dialogSelect" process="@this"
+											listener="#{internalMemoBean.updateButtons}"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+								<div class="ui-md-2">
+									<h:panelGroup id="destinationP">
+										<p:selectOneMenu filter="true" filterMatchMode="contains"
+											required="true" rendered="#{internalMemoBean.savedClicked}"
+											requiredMessage="#{msg['outcoming.destination.req']}"
+											style="width:100%" id="letterFrom" styleClass="form-control"
+											value="#{internalMemoBean.arcRecord.letterFrom}">
+											<f:selectItem itemLabel="#{msg['choose.sender.or.source']} "
+												itemValue="" />
+											<f:selectItems value="#{loadingDataBean.listLetterFrom}"
+												var="letter" itemLabel="#{letter.wrkLetterFromName}"
+												itemValue="#{letter.wrkLetterfromId}" />
+<!-- 											<f:ajax execute="letterFrom createIncomeItem" /> -->
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</div>
+								<div class="ui-g-12 ui-md-4 ui-lg-1">
+									<p:commandLink immediate="true" style="float:left"
+										rendered="#{internalMemoBean.savedClicked}"
+										action="#{newIncomeBean.showAddFromDlg(actionEvent)}">
+										<div class="fa fa-plus" style="font-size: x-large;"></div>
+									</p:commandLink>
+								</div>
+								<div class="ui-g-12 ui-md-4 ui-lg-2">
+									<p:selectOneMenu
+										value="#{internalMemoBean.arcRecord.attachsType}"
+										rendered="#{internalMemoBean.savedClicked}" id="newAttchyp"
+										filter="true" filterMatchMode="contains" style="width:100% ;">
+										<f:selectItem itemLabel="#{msg['attach.type']}" itemValue="" />
+										<f:selectItems value="#{internalMemoBean.documentsTypes}"
+											var="app" itemLabel="#{app.name}" itemValue="#{app.id}" />
+										<f:ajax execute="newAttchyp" />
+									</p:selectOneMenu>
+								</div>
+								<p:outputLabel value="عدد المرفقات"
+									rendered="#{internalMemoBean.savedClicked}" />
+								<p:inputNumber id="attachNumber" maxlength="2" maxValue="999"
+									rendered="#{internalMemoBean.savedClicked}" minValue="0"
+									value="#{internalMemoBean.arcRecord.filesNo}">
+									<f:ajax execute="attachNumber" />
+								</p:inputNumber>
+							</secc:authorize>
+						</div>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-2" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+							<p:outputLabel for="" value="#{msg['senders.direction']}" />
+							<p:commandButton value="#{msg['select.receiver']}" type="button"
+								rendered="#{!internalMemoBean.savedClicked}"
+								onclick="PF('dlg2').show();" />
+
+						</p:panelGrid>
+					</h:panelGroup>
+
+				</h:panelGroup>
+			</div>
+
+			<h:panelGroup id="dialogSelect">
+
+				<p:dialog header="#{msg['senders.direction']}" widgetVar="dlg2"
+					modal="true" height="500" width="700">
+					<p:accordionPanel>
+						<p:tab title="#{msg['origin.receivers']}">
+							<p:tabView>
+								<p:tab title="#{msg['section.emplopyees']}">
+									<p:selectOneRadio id="empr"
+										value="#{internalMemoBean.wrkReciever}" layout="grid"
+										columns="2">
+										<p:ajax update="mngr" process="empr"
+											listener="#{internalMemoBean.selectMngReceiver}" />
+										<f:selectItems value="#{internalMemoBean.listOfEmpsInDept}"
+											var="emp" itemValue="#{emp.userId}"
+											itemLabel="#{emp.userName}" />
+
+									</p:selectOneRadio>
+								</p:tab>
+								<p:tab title="#{msg['sections.directors']}"
+									rendered="#{(internalMemoBean.currentUser.wrkRoleId != 4 or internalMemoBean.currentUser.deptId == 29)?'true':'false' }">
+									<p:selectOneRadio id="mngr"
+										value="#{internalMemoBean.wrkReciever}" layout="grid"
+										columns="2">
+										<p:ajax update="empr" process="mngr"
+											listener="#{internalMemoBean.selectEmpReceiver}" />
+										<f:selectItems value="#{internalMemoBean.managersList}"
+											var="mgr" itemValue="#{mgr.userId}"
+											itemLabel="#{mgr.userName}" />
+									</p:selectOneRadio>
+								</p:tab>
+							</p:tabView>
+
+						</p:tab>
+						<p:tab title="#{msg['copy.receivers']}">
+							<p:tabView>
+								<p:tab title="#{msg['section.emplopyees']}">
+
+									<p:selectBooleanCheckbox id="checkAllFlagBTN"
+										title="#{msg['select.all']}"
+										value="#{internalMemoBean.checkAllDeptEmpsFlag}">
+
+										<p:ajax listener="#{internalMemoBean.checkAllListner}"
+											process="checkAllFlagBTN" update="wrkCopyMngrRecievers"></p:ajax>
+
+									</p:selectBooleanCheckbox>
+								</p:tab>
+								<p:tab title="#{msg['sections.directors']}"
+									rendered="#{(internalMemoBean.currentUser.wrkRoleId != 4 or internalMemoBean.currentUser.wrkSectionId==24)?'true':'false' }">
+									<div style="max-height: 22em">
+										<p:selectBooleanCheckbox layout="grid" columns="2"
+											id="checkAllFlagBTNForMngr" title="#{msg['select.all']}"
+											value="#{internalMemoBean.checkAllDeptEmpsFlagMngr}">
+											<p:ajax
+												listener="#{internalMemoBean.checkAllListnerForManagers}"
+												process="checkAllFlagBTNForMngr"
+												update="wrkCopyMngrRecievers" event="change" />
+
+										</p:selectBooleanCheckbox>
+										<br /> <br />
+
+										<p:selectManyCheckbox id="wrkCopyMngrRecievers"
+											value="#{internalMemoBean.wrkCopyMngRecievers}" layout="grid"
+											columns="2">
+											<f:selectItems value="#{internalMemoBean.managersList}"
+												var="mgr" itemValue="#{mgr.userId}"
+												itemLabel="#{mgr.userName}" />
+										</p:selectManyCheckbox>
+									</div>
+								</p:tab>
+							</p:tabView>
+						</p:tab>
+					</p:accordionPanel>
+					<p:spacer height="50" width="50">
+					</p:spacer>
+					<p:commandButton icon="ui-icon ui-icon-save" styleClass="cyan-btn"
+						value="تم" onclick="PF('dlg2').hide();" />
+
+				</p:dialog>
+				<h:inputHidden id="mylst" />
+			</h:panelGroup>
+
+			<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
+				width="300" hideEffect="fade" showEffect="explode" dir="rtl"
+				modal="true" resizable="false" header="#{msg['print.barcode']}">
+				<h:panelGroup id="signfrndlg">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="row">
+								<div class="col-md-2"></div>
+								<h:outputLabel value="#{msg['confirm.print.barcode']}" />
+							</div>
+							<br></br> <br></br>
+							<div style="float: left;">
+								<p:commandButton value="#{msg['print']}" immediate="true"
+									onclick="this.form.target='_blank'" ajax="false"
+									icon="ui-icon ui-icon-local-printshop"
+									action="#{internalMemoBean.printBarcode}">
+								</p:commandButton>
+								<p:commandButton value="#{msg['close']}" immediate="true"
+									icon="ui-icon ui-icon-keyboard-arrow-left"
+									styleClass=" orange-btn"
+									onclick="PF('print-barcode-dlg').hide()">
+								</p:commandButton>
+							</div>
+
+						</div>
+
+					</div>
+				</h:panelGroup>
+
+			</p:dialog>
+
+		</h:form>
+		<secc:authorize ifAnyGranted="ROLE_TELECOM">
+			<p:dialog widgetVar="add-from-dlg" id="add-from-dlg-id" modal="true"
+				width="400" height="150" header="#{msg['add.income.source']}"
+				resizable="false" closable="true">
+				<h:form>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-12 ui-lg-12" style="direction: rtl;">
+							<br></br>
+							<p:inputText id="input001"
+								style="width:100% ;font-size: small !important;"
+								placeholder="#{msg['please.add.name.source']}" required="true"
+								requiredMessage="#{msg['required.field']}"
+								value="#{newIncomeBean.newIncomeFrom}" />
+						</div>
+
+
+
+					</div>
+					<br></br>
+					<br></br>
+					<div class="ui-g" style="float: left;">
+						<p:commandButton style="width:100%" value="#{msg['save']}"
+							process="@this,input001"
+							update="input001,:includeform:letterFrom"
+							action="#{newIncomeBean.saveNewFrom(ae)}" />
+
+					</div>
+				</h:form>
+			</p:dialog>
+		</secc:authorize>
+	</ui:define>
+	<br></br>
+</ui:composition>
+
+
+</html>

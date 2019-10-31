@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Smashing HTML5!</title>
+<link rel="stylesheet" type="text/css"
+	href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css">
+
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+<script type="text/javascript"
+	src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<!--[if lte IE 7]>
+  <script src="js/IE8.js" type="text/javascript"></script><![endif]-->
+<!--[if lt IE 7]>
+ 
+  <link rel="stylesheet" type="text/css" media="all" href="css/ie6.css"/><![endif]-->
+</head>
+
+<body id="index" class="home">
+
+	<input type="text" name="startDate" id="startDate" />
+	<input type="button" id="test" onclick="myFunction()"></input>
+	<script type="text/javascript">
+		$("#startDate").focus(function() {
+
+			$('.calendars-cmd-today ').html('اليوم');
+			$('.calendars-cmd-prev').html('السابق >');
+			$('.calendars-cmd-next').html('< اللاحق');
+			$('.calendars-ctrl').css('display', 'none');
+			$('.calendars-month').css('width', '244px');
+			$('.calendars-month').css('float', 'right');
+			$('.calendars').css('width', '245px');
+
+		});
+
+		$("#startDate").calendarsPicker({
+			calendar : $.calendars.instance('ummalqura'),
+			language : 'ar'
+		});
+		function myFunction() {
+		    
+		    alert("texts");
+		}
+	</script>
+	
+
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

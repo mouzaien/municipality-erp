@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.css"></link>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.min.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.plugin.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.picker.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.plus.js"></script>
+
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/convertHG.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
+	<script type="text/javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
+
+
+
+
+	<script type="text/javascript">
+		//	window.onload = window.history.forward(0);
+	</script>
+</h:head>
+<h:body>
+
+	<p:messages autoUpdate="true" closable="true"></p:messages>
+	<secc:authorize ifAnyGranted="ROLE_NORMAL_VACATION">
+		<div class="ui-g-12 ui-md-12 ui-lg-12">
+			<p:accordionPanel
+				style="background-color: white;text-align: right !important;"
+				activeIndex="null">
+				<p:tab title="#{msg['owner.vacation.data']}">
+					<br></br>
+					<div style="color: color: #428bca"></div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<p:selectOneMenu id="empList" filterMatchMode="contains"
+											filter="true"
+											value="#{mainManagedBean.mailExecutor.employerId}">
+											<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+											<f:selectItems value="#{loadingDataBean.employersList}"
+												var="emp" itemLabel="#{emp.employeeName}"
+												itemValue="#{emp.userId}" />
+											<f:ajax render="@all" execute="@this" event="change"
+												listener="#{mainManagedBean.mailExecutor.loadEmployerData}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+
+								<br />
+								<div class="row"></div>
+							</div>
+						</div>
+					</div>
+				</p:tab>
+			</p:accordionPanel>
+
+		</div>
+	</secc:authorize>
+
+
+	<div class="card card-w-title">
+
+
+		<h1 style="color: #7CB342; text-align: center;">
+			#{msg['normal.vacation.score']}<span class="fa fa-fw fa-sun-o"></span>
+		</h1>
+		<br></br>
+		<div class="image-box-footer">
+			<p:commandButton value="#{msg['back']}" action="mails"
+				immediate="true" icon="ui-icon ui-icon-keyboard-arrow-left"
+				styleClass=" orange-btn">
+			</p:commandButton>
+			<p:spacer width="10" height="10"></p:spacer>
+
+			<p:commandButton value="#{msg['send']}"
+				icon="ui-icon ui-icon-assignment-return"
+				rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+				action="#{mainManagedBean.saveAction}">
+				<f:ajax execute="@form" />
+			</p:commandButton>
+		</div>
+
+		<br></br>
+
+		<p:panel id="details_data">
+			<f:facet name="header">
+				<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['vacation.score']}
+                    </f:facet>
+			<p:panelGrid columns="6"
+				columnClasses="ui-grid-col-4,ui-grid-col-2,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-2"
+				layout="grid" styleClass="ui-panelgrid-blank form-group"
+				style="border:0px none; background-color:transparent; direction:rtl">
+				<h:outputLabel value="#{msg['score.vacations.start']}"></h:outputLabel>
+				<h:outputLabel
+					value="#{mainManagedBean.mailExecutor.employeeVacation.totalVacationPeriod}"
+					style="font-weight: bolder;"></h:outputLabel>
+				<!-- 				<h:outputLabel value="#{msg['vacation.total.history']}" -->
+				<!-- 					styleClass="btxt"></h:outputLabel> -->
+				<!-- 				<h:outputLabel -->
+				<!-- 					value="#{mainManagedBean.mailExecutor.employeeVacation.usedTotalVacationPeriod}" -->
+				<!-- 					style="font-weight: bolder;"></h:outputLabel> -->
+				<h:outputLabel value="#{msg['vacation.total.taken']}"></h:outputLabel>
+				<h:outputLabel id="VACSUM360"
+					value="#{mainManagedBean.mailExecutor.employeeVacation.usedNormalYearlyPeriod}"
+					style="font-weight: bolder;"></h:outputLabel>
+				<h:outputLabel value="#{msg['vacation.total.available']}"
+					styleClass="btxt"></h:outputLabel>
+				<h:outputLabel
+					value="#{mainManagedBean.mailExecutor.employeeVacation.remainTotalVacationPeriod}"
+					style="font-weight: bolder;"></h:outputLabel>
+
+				<h:outputLabel value="#{msg['vacation.Maximum.due']}"></h:outputLabel>
+				<h:outputLabel id="MXVAC116"
+					value="#{mainManagedBean.mailExecutor.employeeVacation.remainNormalYearlyPeriod}"
+					style="font-weight: bolder;"></h:outputLabel>
+				<h:outputLabel value="#{msg['vacation..five.days.less']}"></h:outputLabel>
+				<h:outputLabel
+					value="#{5-mainManagedBean.mailExecutor.employeeVacation.periodLessFive}"
+					style="font-weight: bolder;"></h:outputLabel>
+
+				<!-- 				<h:outputLabel value="#{msg['vacation.last.period']}" -->
+				<!-- 					styleClass="btxt"></h:outputLabel> -->
+				<!-- 				<h:outputLabel -->
+				<!-- 					value="#{mainManagedBean.mailExecutor.employeeVacation.lastVacationPeriod}" -->
+				<!-- 					style="font-weight: bolder;"></h:outputLabel> -->
+				<!-- 				<h:outputLabel value="#{msg['vacation.last.date']}" -->
+				<!-- 					styleClass="btxt"></h:outputLabel> -->
+				<!-- 				<h:outputLabel -->
+				<!-- 					value="#{mainManagedBean.mailExecutor.lastVacationDate}" -->
+				<!-- 					style="font-weight: bolder;" /> -->
+				<p:spacer></p:spacer>
+				<p:spacer></p:spacer>
+			</p:panelGrid>
+		</p:panel>
+
+
+		<h:form prependId="false">
+			<p:panel id="formPanel">
+				<f:facet name="header">
+					<span class="fa fa-fw fa-cogs"></span> &nbsp;&nbsp; #{msg['vacation.data']}
+                    </f:facet>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputLabel value="هجري  :  " />
+						<p:selectBooleanCheckbox
+							value="#{mainManagedBean.mailExecutor.higriMode}">
+							<p:ajax update="VACASTRT" process="@this"></p:ajax>
+						</p:selectBooleanCheckbox>
+					</div>
+				</div>
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank form-group"
+					style="border:0px none; background-color:transparent; direction:rtl">
+
+					<h:outputLabel value="#{msg['vacation.date.start']}"
+						styleClass="btxt"></h:outputLabel>
+
+					<h:panelGroup id="VACASTRT">
+						<p:inputText id="hiri1"
+							value="#{mainManagedBean.mailExecutor.higriDate}"
+							onfocus="loadCalendar();" required="true"
+							requiredMessage="يرجى اختيار تاريخ"
+							rendered="#{mainManagedBean.mailExecutor.higriMode}"
+							styleClass="form-control form-controlCal">
+							<p:ajax event="blur"
+								update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
+								process="@this"
+								listener="#{mainManagedBean.mailExecutor.checkdate}">
+							</p:ajax>
+						</p:inputText>
+
+						<p:calendar id="gric1"
+							value="#{mainManagedBean.mailExecutor.grigDate}"
+							pattern="dd/MM/yyyy"
+							rendered="#{!mainManagedBean.mailExecutor.higriMode}">
+							<p:ajax event="blur"
+								update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
+								process="@this"
+								listener="#{mainManagedBean.mailExecutor.checkdate}">
+							</p:ajax>
+						</p:calendar>
+					</h:panelGroup>
+
+					<!-- 					<p:inputText id="VACASTRT1" style="width: 60%;" -->
+					<!-- 						styleClass="form-control form-controlCal " -->
+					<!-- 						value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationStart}"> -->
+					<!-- 											<p:ajax event="blur" -->
+					<!-- 												update="VACEND,salList,valvac,VACWRKFROM,VACWRKto" -->
+					<!-- 												process="@this" -->
+					<!-- 												listener="#{mainManagedBean.mailExecutor.checkdate}"> -->
+					<!-- 											</p:ajax> -->
+					<!-- 					</p:inputText> -->
+					<h:outputLabel value="#{msg['vacation.period']}"></h:outputLabel>
+					<p:inputNumber id="vacprd" style="width:70%"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}">
+						<p:ajax event="blur"
+							update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
+							process="@this"
+							listener="#{mainManagedBean.mailExecutor.checkdate}">
+						</p:ajax>
+
+					</p:inputNumber>
+
+					<h:outputLabel value="#{msg['vacation.date.finish']}"
+						styleClass="btxt" />
+
+					<p:outputLabel id="VACEND"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.higriVacationEnd}"></p:outputLabel>
+
+					<h:outputLabel value="#{msg['vacation.value']}" styleClass="btxt"></h:outputLabel>
+					<h:outputLabel id="valvac"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.costVacation}"></h:outputLabel>
+
+
+					<h:outputLabel value="#{msg['vacation.with.salary']}"></h:outputLabel>
+					<p:selectOneMenu id="salList"
+						disabled="#{mainManagedBean.mailExecutor.disableList}"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.vactionCalc}"
+						style=" width: 60%;dir:rtl;">
+						<f:selectItem itemLabel="#{msg['without.salary']}" itemValue="2" />
+						<f:selectItem itemLabel="#{msg['with.salary']}" itemValue="1" />
+
+					</p:selectOneMenu>
+					<h:outputLabel value="#{msg['note']}" styleClass="btxt"></h:outputLabel>
+					<p:inputTextarea
+						value="#{mainManagedBean.mailExecutor.employeeVacation.note}"
+						cols="90" rows="4"></p:inputTextarea>
+
+					<h:outputLabel value="#{msg['vacation.work.from']}"
+						styleClass="btxt"></h:outputLabel>
+					<h:outputLabel id="VACWRKFROM"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.HDatevacationFrom}"></h:outputLabel>
+					<h:outputLabel value="#{msg['vacation.work.to']}"></h:outputLabel>
+					<h:outputLabel id="VACWRKto"
+						value="#{mainManagedBean.mailExecutor.employeeVacation.HDateVacationTo}" />
+				</p:panelGrid>
+				<div class="col-md-2">
+					<h:commandButton id="calcDate" value="#{msg['calcul.return.date']}"
+						style="font-size: 10px !important;margin-left: 5px;margin-right: 5px;display:none !important">
+						<f:ajax render="VACEND" execute="@form"
+							listener="#{mainManagedBean.mailExecutor.checkdate}">
+						</f:ajax>
+					</h:commandButton>
+				</div>
+
+			</p:panel>
+
+
+
+			<script type="text/javascript">
+				$(".form-controlCal").focus(function() {
+					$('.calendars-cmd-today ').html('اليوم');
+					$('.calendars-cmd-prev').html('السابق >');
+					$('.calendars-cmd-next').html(' > اللاحق ');
+					$('.calendars-ctrl').css('display', 'none');
+					$('.calendars-month').css('width', '244px');
+					$('.calendars-month').css('float', 'right');
+					$('.calendars').css('width', '245px');
+
+				});
+
+				$(".form-controlCal").calendarsPicker(
+						{
+							calendar : $.calendars.instance('ummalqura'),
+							language : 'ar',
+							onSelect : function(date) {
+								document.getElementById('includeform:calcDate')
+										.click();
+							}
+						});
+			</script>
+
+
+		</h:form>
+	</div>
+</h:body>
+</html>

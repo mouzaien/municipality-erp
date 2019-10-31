@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link href="../resources/css/style.css" rel="stylesheet" type="text/css"></link>
+    </h:head>
+    <body>
+
+        <ui:composition template="./WebTemplate.xhtml">
+
+            <ui:define name="top">
+                <div class="container-fluid">
+                    <div class="row">
+                      
+                <h:form>
+                    إعدادات المستخدمين
+                    <p:commandButton value="إنشاء مستخدم جديد " 
+                                     icon="fa fa-plus" 
+                                     style="float: left;margin-top: 4px;"
+                                     process="@this"
+                                     action="#{usersettingbean.createUserBtnAction(actionEvent)}" />
+                </h:form>   
+                    </div>
+                </div>
+               
+            </ui:define>
+
+            <ui:define name="content">
+
+                
+                <h:form id="uform">
+                    <p:dataTable
+                        value="#{usersettingbean.allUsers}"
+                        style="direction: rtl;font-size: medium;margin-bottom: 30px;font-weight: bold;"
+                        var="userItem"
+                        rowKey="#{userItem.vuser_id}"
+                        id="allusersettingdt"
+                        paginator="true"
+                        rows="12"
+                        emptyMessage=" لا توجد بيانات للمستخدمين"
+                        >
+                        <p:column id="idcol" headerText="المسلسل" filterBy="#{userItem.vuser_id}" filterMatchMode="contains" width="8%" style="text-align: center;">
+                            #{userItem.vuser_id}
+                        </p:column>
+                        <p:column headerText="اسم المستخدم" filterBy="#{userItem.vusers_real_name}" filterMatchMode="contains" width="18%" >
+                            #{userItem.vusers_real_name}
+                        </p:column>
+                        <p:column headerText="معرف الدخول" width="12%" style="text-align: center;" >
+                            #{userItem.vusers_login_name}
+                        </p:column>
+                        <p:column width="15%" headerText="  الإدارة-القسم" filterBy="#{userItem.departmentName}" filterMatchMode="contains" style="text-wrap: none;" >
+                            #{userItem.departmentName}
+                        </p:column>
+                        <p:column width="20%" headerText=" المدير المباشر" style="text-wrap: none;" >
+                            #{userItem.managerName}
+                        </p:column>
+                        <p:column width="10%">
+                            <div class="container-fluid" style="direction: rtl;" >
+                                <div class="row"  >
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <p:commandButton value="تعديل" icon="fa fa-edit"  
+                                                         process="@this,:tempform:uform:allusersettingdt"
+                                                         action="#{usersettingbean.editUserBtnAction(actionEvent)}"
+                                                         update=":tempform:editDlgId"
+                                                         >
+                                            <f:setPropertyActionListener
+
+                                                value="#{userItem}" 
+                                                target="#{usersettingbean.selectedUser}" />
+                                        </p:commandButton>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+
+                <p:dialog
+                    widgetVar="createUserDlg" showEffect="fade" hideEffect="fade"
+                    width="500"
+                    height="500"
+                    header="إنشاء مستخدم جديد"
+                    modal="true"
+                    closable="false"
+                    >
+                    <h:form id="createuserform">
+
+                        <p:panelGrid columns="2" style="width: 100%">
+                            <p:outputLabel value=" اللقب"/>
+                            <p:selectOneMenu value="#{usersettingbean.newUserTitleId}" style="width: 100%" required="true" requiredMessage="يرجي إختيار اللقب"  id="newTitle" >
+                                <f:selectItem itemLabel="أختر اللقب" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.titlesMap}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="الاسم الأول"  />
+                            <p:inputText value="#{usersettingbean.newUserFirstName}" style="width: 100%" required="true" requiredMessage="الاسم الأول مطلوب" id="newfirst" />
+                            <p:outputLabel value="الأسم الأخير"  />
+                            <p:inputText value="#{usersettingbean.newUserLastName}" style="width: 100%" id="newlast" />
+                            <p:outputLabel value="معرف الدخول "  />
+                            <p:inputText value="#{usersettingbean.newUserLoginName}" style="width: 100%" required="true" requiredMessage="معرف الدخول مطلوب" id="newloginname" />
+                            <p:outputLabel value="كلمة المرور"  />
+                            <p:password value="#{usersettingbean.newUserPassword}" feedback="true"  style="width: 100%" required="true" requiredMessage="كلمة المرور مطلوبة" id="newpass"
+                                        weakLabel="كلمة المرور ضعيفة" 
+                                        goodLabel="كلمة المرور جيدة" 
+                                        strongLabel="كلمة المرور قوية " />
+                            <p:outputLabel value="  المدير المباشر" />
+                            <p:selectOneMenu value="#{usersettingbean.newUserManagerId}" style="width: 100%" var="userItem" filter="true"  filterMatchMode="contains"
+                                             required="true" requiredMessage="اختر المدير المباشر" id="newmgr"
+                                             >
+                                <f:selectItem itemLabel="أختر المدير المباشر" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.managersMap}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="نظام سير العمل" />
+                            <p:selectOneMenu value="#{usersettingbean.newUserWrkRoleId}" style="width: 100%" required="true" requiredMessage="" >
+                                <f:selectItem itemLabel="أختر الدائرة الوظيفية" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.rolesMap}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="الدائرة الوظيفية" />
+                            <p:selectOneMenu value="#{usersettingbean.newUserDeptId}" id="newdepartment"
+                                             required="true" requiredMessage="الدائرة الوظيفية مطلوبة"
+                                             style="width: 100%" var="userItem" filter="true"  filterMatchMode="contains" >
+                                <p:ajax event="change" update="sectionlist,jobList"  listener="#{usersettingbean.deptListChangeEvent}" />
+                                <f:selectItem itemLabel="أختر الإدارة" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.deptsMap}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="القسم" />
+                            <p:selectOneMenu 
+                                required="true" requiredMessage="يرجي أختيار القسم"
+                                value="#{usersettingbean.newSectionId}" id="sectionlist" style="width: 100%">
+                                <p:ajax event="change" update="jobList"  listener="#{usersettingbean.sectionListChangeEvent}" />
+                                <f:selectItem itemLabel="أختر القسم" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.sectionsMap}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="الدرجة الوظيفية" />
+                            <p:selectOneMenu 
+                                value="#{usersettingbean.newUserJobId}"
+                                required="true" requiredMessage="أدخل الدرجة الوظيفية أولا"
+                                id="jobList" style="width: 100%">
+                                <f:selectItem itemLabel="أختر القسم" itemValue="" />
+                                <f:selectItems value="#{usersettingbean.jobssMap}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="رقم الجوال" />
+                            <p:inputText value="#{usersettingbean.newUserMobileNumber}" style="width: 100%" required="true" requiredMessage="رقم الجوال مطلوب"  id="newMobileNumber" />
+
+
+
+                        </p:panelGrid>
+                        <div class="container-fluid">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <p:commandButton  value="حفظ المستخدم" 
+                                                      process="@this,newdepartment,newTitle,newmgr,newpass,newfirst,newlast,sectionlist,jobList,newMobileNumber,newloginname" 
+                                                      action="#{usersettingbean.saveUserBtnAction(actionEvent)}" 
+                                                      update=":tempform:uform:allusersettingdt"
+                                                      style="width: 100%"
+                                                      icon="fa fa-save"  />
+                                </div>
+                                <div class="col-md-6">
+                                    <p:commandButton value="رجوع"
+                                                     icon="fa fa-close"
+                                                     style="width: 100%"
+                                                     process="@this"
+                                                     action="#{usersettingbean.createUserfooterBtnAction(actionEvent)}"  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:messages id="messages"  autoUpdate="true"  />
+
+                    </h:form>
+
+                </p:dialog>
+
+                <p:dialog
+                    widgetVar="editUserDlg" showEffect="fade" hideEffect="explode" resizable="false" closable="true"
+                    width="500"
+                    height="400"
+                    id="editDlgId"
+                    header="  تعديل بيانات المستخدم  #{usersettingbean.selectedUser.vusers_real_name}"
+                    modal="true"
+                    >
+                    <p:accordionPanel id="empEditAccordPanelId">
+                        <p:tab id="basicEditTab001" title="تعديل بيانات الاسم ">
+                            <h:form id="edituserform" style="font-size: medium;font-weight: bold;">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="الأســم الأول" />
+                                    <p:inputText value="#{usersettingbean.editnewFirstName}" id="editnewFirstNameID" />
+                                    <p:outputLabel value="الاســم الأخير" />
+                                    <p:inputText value="#{usersettingbean.editnewLastName}" id="editnewLastNameID" />
+                                    <p:outputLabel value="الاســم بالعربي" />
+                                    <p:inputText value="#{usersettingbean.editnewArName}" id="editnewArNameID" />
+                                    <p:outputLabel value="الاســم بالافرنجي" />
+                                    <p:inputText value="#{usersettingbean.editnewEnName}" id="editnewEnNameID" />
+                                    <p:spacer />
+                                    <p:commandButton value="تعديل"
+                                                     icon="fa fa-floppy-o"
+                                                     process="@this,editnewFirstNameID,editnewLastNameID,editnewArNameID,editnewEnNameID"
+                                                     action="#{usersettingbean.updateUserNameBtnAction(actionEvent)}"
+                                                     />
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab id="deptEditTab001" title="تعديل الموقع الاداري - نقل المستخدم">
+                            <h:form id="deptEditTabFormId">
+                                <p:panelGrid columns="2" style="width: 100%">
+                                    <p:outputLabel value="  المدير المباشر" />
+                                    <p:selectOneMenu value="#{usersettingbean.editNewUserManagerId}" style="width: 100%" 
+                                                     var="userItem" filter="true"  filterMatchMode="contains"
+
+                                                     required="true" requiredMessage="اختر المدير المباشر" id="Editnewmgr"
+                                                     >
+                                        <f:selectItem itemLabel="أختر المدير المباشر" itemValue="" />
+                                        <f:selectItems value="#{usersettingbean.managersMap}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="نظام سير العمل" />
+                                    <p:selectOneMenu value="#{usersettingbean.editNewUserWrkRoleId}" style="width: 100%" 
+                                                     required="true" requiredMessage="" id="EditROLE" >
+                                        <f:selectItem itemLabel="أختر الدائرة الوظيفية" itemValue="" />
+                                        <f:selectItems value="#{usersettingbean.rolesMap}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="الدائرة الوظيفية" />
+                                    <p:selectOneMenu value="#{usersettingbean.editNewUserDeptId}" id="Editnewdepartment"
+                                                     required="true" requiredMessage="الدائرة الوظيفية مطلوبة"
+                                                     style="width: 100%" var="userItem" filter="true"  filterMatchMode="contains" >
+                                        <p:ajax event="change"  process="@this,Editnewdepartment"
+                                                update="Editsectionlist,EditjobList"
+                                                listener="#{usersettingbean.deptEditListChangeEvent}" />
+                                        <f:selectItem itemLabel="أختر الإدارة" itemValue="" />
+                                        <f:selectItems value="#{usersettingbean.deptsMap}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="القسم" />
+                                    <p:selectOneMenu 
+                                        required="true" requiredMessage="يرجي أختيار القسم"
+                                        value="#{usersettingbean.editNewSectionId}" id="Editsectionlist" style="width: 100%">
+                                        <p:ajax event="change"  
+                                                update="EditjobList"
+                                                listener="#{usersettingbean.sectionEditListChangeEvent}" />
+                                        <f:selectItem itemLabel="أختر القسم" itemValue="" />
+                                        <f:selectItems value="#{usersettingbean.editSectionsMap}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="الدرجة الوظيفية" />
+                                    <p:selectOneMenu 
+                                        value="#{usersettingbean.editNewUserJobId}"
+                                        required="true" requiredMessage="أدخل الدرجة الوظيفية أولا"
+                                        id="EditjobList" style="width: 100%">
+                                        <f:selectItem itemLabel="أختر القسم" itemValue="" />
+                                        <f:selectItems value="#{usersettingbean.editJobssMap}" />
+                                    </p:selectOneMenu>
+                                    <p:spacer />
+                                    <p:commandButton value="تعديل"
+                                                     icon="fa fa-floppy-o"
+                                                     process="@this"
+                                                     action="#{usersettingbean.updateUserDeptInfo(actionEvent)}"
+                                                     update="Editnewmgr,EditROLE,Editnewdepartment,Editsectionlist,EditjobList"
+                                                     />
+                                    <p:messages autoUpdate="true" />
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab id="pwdEditTab001" title="تعديل  كلمة المرور">
+                            <h:form id="pwduserform" style="font-size: medium;font-weight: bold;">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="كلمة المرور" />
+                                    <p:password value="#{usersettingbean.newPwdString}" required="true"
+                                                requiredMessage="كلمة المرور مطلوبة"
+                                                id="newpwdId"
+                                                />
+                                    <p:spacer />
+                                    <p:commandButton value="تعديل"
+                                                     icon="fa fa-floppy-o"
+                                                     process="@this,newpwdId"
+                                                     action="#{usersettingbean.updateUserpasswordBtnAction(actionEvent)}"
+                                                     update="newpwdId"
+                                                     />
+                                </p:panelGrid>
+                                <p:growl autoUpdate="true" />
+                            </h:form>
+                        </p:tab>
+
+
+                    </p:accordionPanel>
+
+
+
+
+                    <f:facet name="footer" >
+                        <p:commandButton value="رجوع"  icon="fa fa-close"
+                                         action="#{usersettingbean.editUserfooterBtnAction(actionEvent)}" />
+                    </f:facet>
+                </p:dialog>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

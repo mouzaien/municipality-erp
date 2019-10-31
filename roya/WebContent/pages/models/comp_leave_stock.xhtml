@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+</h:head>
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+
+			<h:form id="includeform" prependId="false">
+				<p:messages id="msgs" closable="true" autoUpdate="true"></p:messages>
+
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						رصيد الإجازات التعويضية<span class="fa fa-fw fa-clock-o"></span>
+					</h1>
+					<h:panelGroup id="ManagerMode"
+						rendered="#{compensatoryLeaveBean.disabled}">
+						<div class="ui-g" dir="ltr">
+							<!-- 							<div class="ui-g-12 ui-md-6 ui-lg-3"> -->
+							<!-- 								<p:selectOneMenu id="section" filter="true" -->
+							<!-- 									filterMatchMode="contains" style="width:100%" -->
+							<!-- 									value="#{compensatoryLeaveBean.deptId}" autoWidth="true"> -->
+							<!-- 									<f:selectItem itemValue="-1" itemLabel="كل الإدارات" /> -->
+							<!-- 									<f:selectItems value="#{loadingDataBean.depatmentList}" -->
+							<!-- 										var="dept" itemValue="#{dept.id}" itemLabel="#{dept.deptName}" /> -->
+							<!-- 									<f:ajax render="emps" execute="section" event="change" -->
+							<!-- 										listener="#{compensatoryLeaveBean.loadEmployersByDept}" /> -->
+							<!-- 								</p:selectOneMenu> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-12 ui-md-6 ui-lg-4"> -->
+							<!-- 								<p:selectCheckboxMenu id="emps" var="user" required="true" -->
+							<!-- 									style="width:100%" panelStyleClass="empClass" -->
+							<!-- 									requiredMessage="إختر الموظف" -->
+							<!-- 									value="#{compensatoryLeaveBean.selectedUsers}" label="الموظفين" -->
+							<!-- 									multiple="false" filter="true" filterMatchMode="contains" -->
+							<!-- 									converter="userConverter"> -->
+							<!-- 									<f:selectItems value="#{compensatoryLeaveBean.users}" /> -->
+							<!-- 									<f:ajax execute="@this" render="special correct" -->
+							<!-- 										listener="#{compensatoryLeaveBean.onRowSelect}"></f:ajax> -->
+							<!-- 									<p:ajax event="toggleSelect" process="@this" /> -->
+							<!-- 								</p:selectCheckboxMenu> -->
+							<!-- 							</div> -->
+							<div class="ui-g-12 ui-md-6 ui-lg-5" dir="ltr">
+								<!-- 								<p:commandButton value="#{msg['comje.stock.filter']}" -->
+								<!-- 									ajax="false" icon="ui-icon ui-icon-assignment-return" -->
+								<!-- 									actionListener="#{compensatoryLeaveBean.SaveVac}" -->
+								<!-- 									process="dataGrid" update="formPanel"> -->
+								<!-- 								</p:commandButton> -->
+								<!-- 								<p:spacer width="10px"></p:spacer> -->
+								<p:commandButton value="إضافة" styleClass="cyan-btn"
+									icon="ui-icon ui-icon-add" oncomplete=" PF('addDialog').show()"
+									process="@this" update="includeform:addPG" />
+
+							</div>
+						</div>
+					</h:panelGroup>
+					<br></br>
+					<!-- 					<p:panel id="formPanel" style="padding-right:0px;"> -->
+					<!-- 						<f:facet name="header"> -->
+					<!-- 							<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp; #{msg['request.data']} -->
+					<!--                     </f:facet> -->
+					<!-- 					<p:dataTable var="comLeaveitem" id="outboxdt" editable="true" -->
+					<!-- 						value="#{compensatoryLeaveBean.usersCompVacStock}" -->
+					<!-- 						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" -->
+					<!-- 						filteredValue="#{compensatoryLeaveBean.filterCompVacStock}" -->
+					<!-- 						paginatorPosition="bottom" widgetVar="outfineset" -->
+					<!-- 						sortOrder="descending" -->
+					<!-- 						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" -->
+					<!-- 						paginator="true" rows="10"> -->
+					<!-- 						<f:facet name="header"> -->
+					<p:dataTable var="comLeaveitem" id="outboxdt"
+						value="#{compensatoryLeaveBean.usersCompVacStock}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						filteredValue="#{compensatoryLeaveBean.filterCompVacStock}"
+						editable="true" paginatorPosition="bottom" widgetVar="outfineset"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						paginator="true" rows="10">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+									onkeyup="PF('outfineset').filter()"
+									style="width:150px;font-size: x-large;"
+									placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+							<br />
+						</f:facet>
+						<p:ajax event="rowEdit"
+							listener="#{compensatoryLeaveBean.onRowEdit}"
+							update=":includeform:msgs" />
+						<p:ajax event="rowEditCancel"
+							listener="#{compensatoryLeaveBean.onRowCancel}"
+							update=":includeform:msgs" />
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="رقم الموظف" width="15%"
+							filterBy="#{comLeaveitem.empno}" filterMatchMode="contains">
+							<h:outputText value="#{comLeaveitem.empno}" />
+						</p:column>
+						<p:column width="58%" style="text-align:center"
+							headerText="اسم الموظف" filterBy="#{comLeaveitem.empName}"
+							filterMatchMode="contains">
+							<h:outputText value="#{comLeaveitem.empName}" />
+						</p:column>
+						<p:column style="text-align: center;" headerText="السنة"
+							width="21%" filterBy="#{comLeaveitem.year}"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{comLeaveitem.year}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{comLeaveitem.year}" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="text-align: center;" headerText="تعويضية عن"
+							width="21%" filterBy="#{comLeaveitem.comp}"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{comLeaveitem.comp}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{comLeaveitem.comp}" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="text-align: center;" headerText="الرصيد"
+							width="21%" filterBy="#{comLeaveitem.qty}"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{comLeaveitem.qty}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{comLeaveitem.qty}" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="text-align: center;" headerText="المتمتع به"
+							width="21%" filterBy="#{comLeaveitem.taken}"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{comLeaveitem.taken}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{comLeaveitem.taken}" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="text-align: center;" headerText="المتبقي"
+							filterBy="#{comLeaveitem.remain}" width="15%"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{comLeaveitem.remain}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{comLeaveitem.remain}" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="تعديل" style="text-align: center;"
+							width="10%">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+					<!-- 					</p:panel> -->
+
+					<p:dialog widgetVar="addDialog" width="50%" header="" modal="true"
+						dir="rtl" closable="true">
+						<h:panelGroup id="addPG">
+							<h3 style="color: #7CB342; text-align: center;">إضافة إجازة
+								لموظف</h3>
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="الموظف" />
+								</div>
+								<div class="ui-g-5">
+
+									<p:selectOneMenu
+										value="#{compensatoryLeaveBean.empNO}"
+										required="true" requiredMessage="إختر الموظف" filter="true"
+										filterMatchMode="contains">
+
+										<f:selectItem itemLabel="إختر الموظف" itemValue="" />
+
+										<f:selectItems value="#{compensatoryLeaveBean.employers}"
+											var="emp"
+											itemLabel="#{emp.employeNumber} - #{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName} "
+											itemValue="#{emp.employeNumber}" />
+									</p:selectOneMenu>
+
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="السنة" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="employeeList" required="true"
+										requiredMessage="إدخل السنة"
+										value="#{compensatoryLeaveBean.empVacYear}" filter="true"
+										filterMatchMode="contains">
+										<f:selectItem itemLabel="إختر السنة" itemValue=""></f:selectItem>
+										<f:selectItems value="#{compensatoryLeaveBean.years}"
+											var="year" itemLabel="#{year}" itemValue="#{year}"></f:selectItems>
+
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="نوع الإجازة" />
+								</div>
+								<div class="ui-g-5">
+									<p:selectOneMenu id="list_vac_type" filter="true"
+										filterMatchMode="contains" required="true"
+										requiredMessage="إختر نوع الاجازة"
+										value="#{compensatoryLeaveBean.empCompVacType}">
+										<f:selectItem itemLabel="#{msg['vacation.selectvactype']}"
+											itemValue="" />
+										<f:selectItem itemLabel="عيد الفطر" itemValue="4" />
+										<f:selectItem itemLabel="عيد الأضحى" itemValue="5" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="الرصيد" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputNumber id="old_sold" maxValue="999" required="true"
+										requiredMessage="إدخل الرصيد"
+										value="#{compensatoryLeaveBean.qty}"></p:inputNumber>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="المتمتع به" />
+								</div>
+								<div class="ui-g-5">
+									<p:inputNumber id="tanken" maxValue="999" required="true"
+										requiredMessage="المتمتع به"
+										value="#{compensatoryLeaveBean.taken}"></p:inputNumber>
+								</div>
+							</div>
+							<br />
+							<div class="image-box-footer" align="left">
+
+								<p:commandButton value="حفظ"
+									action="#{compensatoryLeaveBean.saveVacaiton}"
+									onsuccess=" PF('addDialog').hide()" styleClass="cyan-btn"
+									update=":includeform:outboxdt,:includeform:msgs ">
+								</p:commandButton>
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="رجوع" immediate="true"
+									onsuccess="PF('addDialog').hide();" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

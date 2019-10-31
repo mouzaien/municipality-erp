@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+ 						http://www.springframework.org/schema/security
+ 						http://www.springframework.org/schema/security/spring-security-4.0.xsd">	
+	
+	
+	
+	
+	<sec:http auto-config="true" use-expressions="true">
+		<sec:csrf disabled="true" />
+
+		<sec:intercept-url pattern="/hr/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/investment/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/pages/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/Services/*" access="permitAll" />
+		<sec:intercept-url pattern="/javax.faces.resource/*"
+			access="permitAll" />
+		<sec:intercept-url pattern="/pages/licences/fine_rebound_model.xhtml"
+			access="hasAnyRole('ROLE_FINE_REBOUND,ROLE_SUPPORT')" />
+		<sec:intercept-url pattern="/setting/*"
+			access="hasAnyRole('ROLE_SETTING,ROLE_DEAN,ROLE_SUPPORT')" />
+
+		<sec:form-login login-page="/login.xhtml"
+			authentication-failure-url="/login.xhtml" />
+		<!-- <sec:remember-me key="jsfspring-sec" services-ref="rememberMeServices"/> -->
+		<sec:logout invalidate-session="true"
+			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"
+			logout-success-url="/login.xhtml" />
+		<sec:session-management invalid-session-url="/login.xhtml">
+			<sec:concurrency-control />
+		</sec:session-management>
+	</sec:http>
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider
+			user-service-ref="myUserDetailsService"></sec:authentication-provider>
+	</sec:authentication-manager>
+</beans:beans>

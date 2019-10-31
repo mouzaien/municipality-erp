@@ -1,0 +1,414 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<link href="../resources/css/style.css" rel="stylesheet"
+		type="text/css"></link>
+</h:head>
+<h:body>
+
+	<ui:composition template="./WebTemplate.xhtml">
+
+		<ui:define name="top">
+				#{msg['param.system']}
+            </ui:define>
+
+		<ui:define name="content">
+			<h:form id="setting-main-form" style="direction: rtl;">
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+                     
+                    <p:dialog widgetVar="statusDialog" modal="true"
+					draggable="false" closable="false" resizable="false"
+					showHeader="false">
+                            <p:graphicImage
+						value="../resources/images/loadingT.gif" />
+				</p:dialog>
+				<p:growl id="gro" autoUpdate="true" />
+				<p:accordionPanel id="setting-accoud-panel" dir="rtl"
+					style="margin-bottom: 20px;">
+<!-- 					<p:tab id="depts-setting-tab" -->
+<!-- 						title="     إعدادات الإدارات و الأقسام" rendered="false"> -->
+<!-- 						<p:tabView> -->
+<!-- 							<p:tab title="تعريف الأقســام"> -->
+<!-- 								<p:commandLink value=" تعريف الأقســام" -->
+<!-- 									onclick="PF('createDeptDlg').show();" type="button" /> -->
+<!-- 								<p:dialog widgetVar="createDeptDlg" style="direction: rtl;" -->
+<!-- 									modal="true" showEffect="fade" hideEffect="fade" -->
+<!-- 									header=" تعريف الأقســام" width="800" height="450" -->
+<!-- 									resizable="false"> -->
+
+
+<!-- 									<f:facet name="footer"> -->
+<!-- 										<p:commandButton value="رجوع الي الإعدادت" icon="fa fa-eject" -->
+<!-- 											onclick="PF('createDeptDlg').hide();" /> -->
+<!-- 									</f:facet> -->
+<!-- 								</p:dialog> -->
+<!-- 							</p:tab> -->
+<!-- 							<p:tab title=" تعريف الإدارات"> -->
+<!-- 								<p:commandLink value=" تعريف الإدارات" -->
+<!-- 									onclick="PF('createSubDeptDlg').show();" type="button" /> -->
+<!-- 								<p:dialog widgetVar="createSubDeptDlg" style="direction: rtl;" -->
+<!-- 									modal="true" showEffect="fade" hideEffect="fade" -->
+<!-- 									header=" تعريف الإدارات" width="800" height="450" -->
+<!-- 									resizable="false"> -->
+
+
+<!-- 									<f:facet name="footer"> -->
+<!-- 										<p:commandButton value="رجوع الي الإعدادت" icon="fa fa-eject" -->
+<!-- 											onclick="PF('createSubDeptDlg').hide();" /> -->
+<!-- 									</f:facet> -->
+<!-- 								</p:dialog> -->
+<!-- 							</p:tab> -->
+<!-- 						</p:tabView> -->
+<!-- 					</p:tab> -->
+					<p:tab id="mail-setting-tab" title="#{msg['param.inbox.operation']}">
+
+						<p:tabView id="tab009">
+							<p:tab title="#{msg['sender.direction']}">
+								<h:form id="from_form001">
+									<p:dataTable value="#{systemSettingBean.letterFromList}"
+										var="from" scrollable="true" scrollRows="10"
+										scrollHeight="300" scrollWidth="500"
+										style="margin-bottom: 5px;width:400px;">
+										<p:column headerText="#{msg['sequence']}">
+                                                #{from.convWrkLetterfromId}
+                                            </p:column>
+										<p:column headerText="#{msg['name.destination']}">
+                                                #{from.wrkLetterFromName}
+
+                                            </p:column>
+									</p:dataTable>
+
+									<p:commandButton value="#{msg['definiton.sender.direction']}" process="@this"
+										class="btn btn-default" icon="fa fa-ellipsis-h"
+										action="#{systemSettingBean.NewLetterFromBtnAction(actionEvent)}"
+										update=":tempform:setting-main-form:setting-accoud-panel:tab009:from_form:nlfrom" />
+								</h:form>
+
+								<p:dialog position="center" widgetVar="incomeContactDlg"
+									modal="true" width="400" dir="rtl" height="150"
+									showEffect="fade" hideEffect="fade"
+									header="#{msg['definiton.sender.direction']}" resizable="false" id="fromdlg">
+									<h:form id="from_form">
+										<p:growl autoUpdate="true" />
+										<p:panelGrid columns="4">
+											<p:outputLabel value="" />
+											<p:inputText class="form-control" id="nlfrom" required="true"
+												requiredMessage="#{msg['required']}"
+												value="#{systemSettingBean.newletterFrom}"
+												placeholder="#{msg['enter.sender.direction']}" />
+											<p:message id="msgNlfrom" for="nlfrom" display="icon" />
+
+										</p:panelGrid>
+										<p:separator />
+										<div align="center">
+											<p:commandButton value="#{msg['save']}"
+												process="@this,:tempform:setting-main-form:setting-accoud-panel:tab009:from_form:nlfrom"
+												actionListener="#{systemSettingBean.addNewLetterFromAction(actionEvent)}"
+												update=":tempform:setting-main-form:setting-accoud-panel:tab009:from_form:nlfrom, msgNlfrom"
+												icon="fa fa-save" />
+											<p:spacer width="50" />
+											<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+												onclick="PF('incomeContactDlg').hide();" />
+										</div>
+									</h:form>
+
+
+								</p:dialog>
+							</p:tab>
+							<p:tab title="#{msg['transactions.type']}" id="typtab001">
+								<h:form id="appTypDtForm">
+									<p:dataTable value="#{systemSettingBean.arcAppTypeList}"
+										var="typ" style="margin-bottom: 5px;" paginator="true"
+										paginatorPosition="top" rows="10" id="appTypdt">
+										<p:column>
+                                                #{typ.convArcAppliactionTypeId}
+                                            </p:column>
+										<p:column>
+                                                #{typ.arcApplicationType}
+                                            </p:column>
+
+									</p:dataTable>
+									<p:commandButton value="#{msg['definition.transactions.type']}" process="@this"
+										class="btn btn-default" icon="fa fa-ellipsis-h"
+										update=":tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+										action="#{systemSettingBean.NewAppTypBtnAction(actionEvent)}" />
+								</h:form>
+								<p:dialog widgetVar="recordsTypeDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['definition.transactions.type']}" resizable="false">
+									<h:form id="typform001">
+										<p:panelGrid columns="3">
+											<p:outputLabel value="#{msg['enter.transactions.type']}" />
+											<p:inputText id="arctypid"
+												value="#{systemSettingBean.newArcTyp}" required="true"
+												requiredMessage="#{msg['required']}" />
+											<p:commandButton value="#{msg['save']}" style="float: left;"
+												process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:appTypDtForm:appTypdt,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+												update=":tempform:setting-main-form:setting-accoud-panel:tab009:typform001:arctypid"
+												action="#{systemSettingBean.addNewarcTypAction(actionEvent)}"
+												icon="fa fa-save" />
+										</p:panelGrid>
+
+									</h:form>
+
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('recordsTypeDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+
+							</p:tab>
+							<p:tab title="#{msg['directing.type']}" id="purpTab001">
+								<h:form id="purpForm001">
+									<p:dataTable value="#{systemSettingBean.wrkPurposeList}"
+										var="purp" style="margin-bottom: 5px;" paginator="true"
+										paginatorPosition="top" rows="10" id="purpdt001">
+										<p:column headerText="#{msg['sequence']}">
+                                                #{purp.convPurpId}
+                                            </p:column>
+										<p:column headerText="#{msg['directing.name']}">
+                                                #{purp.purpName}
+                                            </p:column>
+									</p:dataTable>
+									<p:commandLink value="#{msg['definition.directing.type']}"
+										class="btn btn-primary" style="color: white;"
+										action="#{systemSettingBean.NewPurpBtnAction(actionEvent)}"
+										process="@this" />
+								</h:form>
+
+								<p:dialog widgetVar="redirectionTypeDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['directing.name']}" resizable="false">
+									<h:form id="purpDlgForm001">
+										<p:panelGrid columns="3">
+											<p:outputLabel value="#{msg['enter.directing.type']}" />
+											<p:inputText id="purpDlgit001" required="true"
+												requiredMessage="#{msg['required']}"
+												value="#{systemSettingBean.newwrkPurpose}" />
+											<p:commandButton value="#{msg['save']}"
+												process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:purpDlgForm001:purpDlgit001"
+												action="#{systemSettingBean.addNewWrkPurposeBtnAction(actionEvent)}"
+												update=":tempform:setting-main-form:setting-accoud-panel:tab009:purpForm001:purpdt001, 
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:purpDlgForm001:purpDlgit001"
+												style="float: left;" icon="fa fa-save" />
+										</p:panelGrid>
+
+									</h:form>
+
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('redirectionTypeDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+
+							</p:tab>
+							<p:tab title="#{msg['favourite.list']}">
+								<div class="container-fluid">
+									<div class="row" style="margin-top: 20px;">
+										<div class="col-md-2">#{msg['choose.employee']}</div>
+										<div class="col-md-5">
+											<p:selectOneMenu id="alluser-list"
+												value="#{systemSettingBean.selectedUserId}"
+												style="width: 100%;" var="userItem" filter="true"
+												filterMatchMode="contains">
+												<f:selectItem itemLabel="#{msg['choose.employee']}" itemValue="" />
+												<f:selectItems value="#{systemSettingBean.allUsers}" />
+											</p:selectOneMenu>
+
+										</div>
+										<p:commandButton value="#{msg['show.favourite']}" icon="fa fa-search"
+											process="@this,alluser-list" update="favdt"
+											action="#{systemSettingBean.showUserFavourits(actionEvent)}" />
+									</div>
+
+									<div class="row" style="alignment-baseline: middle;">
+
+
+										<p:dataTable id="favdt" style="width: 80%"
+											emptyMessage="#{msg['empty.list']}" var="rec"
+											value="#{systemSettingBean.selectedUserFavouritList}">
+											<p:column headerText="#{msg['m']}" width="20%"
+												style="font-size: 22px;font-weight: bold;">
+                                                    #{rec.convSpecialAddressId}
+                                                </p:column>
+											<p:column headerText="#{msg['name']}"
+												style="font-size: 22px;font-weight: bold;">
+                                                    #{rec.specialAddressName}
+                                                </p:column>
+
+										</p:dataTable>
+									</div>
+								</div>
+								<p:commandButton value="#{msg['add.favourite']}"
+									onclick="PF('editFavDlg').show();" class="btn btn-default"
+									icon="fa fa-pencil" />
+								<p:dialog widgetVar="editFavDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['customize.favourite.list']}" width="800" height="50"
+									resizable="false">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-5">
+												<p:selectOneMenu id="newalluser-list"
+													value="#{systemSettingBean.selectedNewSpecialaddress}"
+													style="width: 100%;" var="userItem" filter="true"
+													filterMatchMode="contains">
+													<f:selectItem itemLabel="#{msg['choose.employee']}" itemValue="" />
+													<f:selectItems value="#{systemSettingBean.allUsers}" />
+												</p:selectOneMenu>
+
+											</div>
+											<p:commandButton value="#{msg['save']}" icon="fa fa-plus"
+												process="@this,newalluser-list" update="favdt"
+												action="#{systemSettingBean.addNewSpecialAddress(actionEvent)}" />
+										</div>
+									</div>
+
+
+
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('editFavDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+							</p:tab>
+							<p:tab title="#{msg['transactions.reception']}" id="letterToTab001">
+
+								<p:dataTable value="#{systemSettingBean.letterToList}" var="to"
+									style="margin-bottom: 5px;" paginator="true"
+									paginatorPosition="top" rows="10" id="lettToDt001">
+									<p:column headerText="#{msg['sequence']}">
+                                            #{to.convWrkLetterToId}
+                                        </p:column>
+									<p:column headerText="#{msg['receiver.name']}">
+                                            #{to.wrkLetterToName}
+                                        </p:column>
+								</p:dataTable>
+								<p:commandLink value="#{msg['definition.transactions.reception']}"
+									class="btn btn-primary"
+									style="color: white;margin-bottom: 5px;"
+									onclick="PF('recieverContactDlg').show();" type="button" />
+
+								<p:dialog widgetVar="recieverContactDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['definition.transactions.reception']}" width="600" height="50"
+									resizable="false">
+
+									<h:form id="addLettToForm001">
+										<p:panelGrid columns="3">
+											<p:outputLabel value="#{msg['enter.receiver']}" />
+											<p:inputText id="lettToItid" required="true"
+												requiredMessage="#{msg['enter.receiver']}"
+												value="#{systemSettingBean.newletterTo}" />
+											<p:commandButton value="#{msg['save']}"
+												process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:addLettToForm001:lettToItid"
+												icon="fa fa-save"
+												update=":tempform:setting-main-form:setting-accoud-panel:tab009:addLettToForm001:lettToItid,
+                                                                  :tempform:setting-main-form:setting-accoud-panel:tab009:lettToDt001"
+												action="#{systemSettingBean.addNewlettertoBtnAction(actionEvent)}" />
+										</p:panelGrid>
+									</h:form>
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('recieverContactDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+							</p:tab>
+							<p:tab title="#{msg['referral.direction']}">
+								<p:dataTable value="#{systemSettingBean.referralManagerList}"
+									var="reftyp" style="margin-bottom: 5px;" paginator="true"
+									paginatorPosition="top" rows="10" id="refsettingDt">
+									<p:column headerText="#{msg['num.employee']}">
+                                            #{reftyp.convReferralManagerId}
+                                        </p:column>
+									<p:column headerText="#{msg['named']}">
+                                            #{reftyp.referralName}
+                                        </p:column>
+									<p:column headerText="#{msg['employee.name']}">
+                                            #{reftyp.referralRealName}
+                                        </p:column>
+								</p:dataTable>
+								<p:commandLink value="#{msg['definition.referral.direction']}"
+									class="btn btn-primary" style="color: white;"
+									onclick="PF('senderContactDlg').show();" type="button" />
+
+								<p:dialog widgetVar="senderContactDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['definition.referral.direction']}" width="600" height="140"
+									resizable="false">
+									<h:form id="refForm001">
+										<p:panelGrid columns="2">
+											<p:outputLabel value="#{msg['employee.name']}" />
+											<p:selectOneMenu style="width: 300px;" required="true"
+												requiredMessage="#{msg['choose.employee']}" filter="true"
+												filterMatchMode="contains" id="refSlsectMenuId"
+												value="#{systemSettingBean.selectRefUserId}">
+												<f:selectItem itemLabel="#{msg['required.employee']}" itemValue="" />
+												<f:selectItems value="#{systemSettingBean.allUsers}" />
+												<p:ajax event="change" update="selectedrefnameId"
+													listener="#{systemSettingBean.refUsersListChanged}" />
+											</p:selectOneMenu>
+											<p:outputLabel value="#{msg['employee.name']}" />
+											<p:outputLabel id="selectedrefnameId"
+												value="#{systemSettingBean.selectRefUserName}"
+												style="width: 300px;" />
+											<p:spacer />
+											<p:commandButton value="#{msg['save']}" icon="fa fa-save"
+												process="@this,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:selectedrefnameId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:refSlsectMenuId"
+												action="#{systemSettingBean.addNewRefSettingActionBtn(actionEvent)}"
+												update=":tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:refSlsectMenuId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refForm001:selectedrefnameId,
+                                                                 :tempform:setting-main-form:setting-accoud-panel:tab009:refsettingDt" />
+										</p:panelGrid>
+										<div
+											style="color: red; text-align: right; font-size: 13px; font-family: sans-serif;">
+											#{msg['requirement']}</div>
+									</h:form>
+
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('senderContactDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+							</p:tab>
+							<p:tab title="#{msg['transfert.transaction']}">
+								<p:commandLink value="#{msg['transfert.transaction']}"
+									onclick="PF('moveRecordsDlg').show();" type="button" />
+
+								<p:dialog widgetVar="moveRecordsDlg" style="direction: rtl;"
+									modal="true" showEffect="fade" hideEffect="fade"
+									header="#{msg['transfert.transaction']}" width="800" height="450"
+									resizable="false">
+
+
+									<f:facet name="footer">
+										<p:commandButton value="#{msg['cancel']}" icon="fa fa-eject"
+											onclick="PF('moveRecordsDlg').hide();" />
+									</f:facet>
+								</p:dialog>
+							</p:tab>
+						</p:tabView>
+					</p:tab>
+					<p:tab id="menu-setting-tab"
+						title="#{msg['param.principal.list']}">
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

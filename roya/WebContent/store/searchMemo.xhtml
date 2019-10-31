@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+
+
+		<!-- 		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link> -->
+
+
+		<!-- 		<link rel="stylesheet" -->
+		<!-- 			href="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/css/bootstrap/bootstrap.min.css"></link> -->
+		<!-- 		<link rel="stylesheet" -->
+		<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/PFDataTableCustomize.css"></link> -->
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="#{msg['search']}" icon="ui-icon-search"
+						styleClass="purple-btn">
+						<f:ajax execute="@form" render="includeform:"
+							listener="#{stockEntryBean.searchMemoReceipts(e)}"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center;">
+						استعلام عن مذكرات الإستلام <span class="fa fa-fw fa-copy"></span>
+					</h1>
+					<div class="ui-g" dir="rtl">
+						<div class="ui-g-12 ui-md-2">
+							<h:outputLabel value="المستودع" />
+						</div>
+						<div class="ui-g-12 ui-md-4">
+							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								placeholder="إختر المستودع" value="#{stockEntryBean.strNo}"
+								style="direction: rtl;height: 39px;">
+								<f:selectItem itemValue="-1" itemLabel="الكل"></f:selectItem>
+								<f:selectItems value="#{stockEntryBean.allWareHouses}" var="c"
+									itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+								<p:ajax process="@this" update="memoTable"
+									listener="#{stockEntryBean.loadAllMemoReceiptList}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br />
+
+					<div class="ui-g">
+
+						<div class="ui-g-1">
+							<label class="btxt">من</label>
+
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hiri1" value="#{stockEntryBean.beginDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+							</p:inputText>
+							<!-- 							<p:inputMask value="#{exchangeRequestBean.beginDate}" -->
+							<!-- 								mask="99/99/9999"> -->
+							<!-- 								<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+							<!-- 							</p:inputMask> -->
+
+						</div>
+
+						<div class="ui-g-1">
+							<label class="btxt">إلى</label>
+
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hiri2" value="#{stockEntryBean.finishDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+							</p:inputText>
+							<!-- 							<p:inputMask value="#{exchangeRequestBean.finishDate}" -->
+							<!-- 								mask="99/99/9999" /> -->
+
+						</div>
+
+
+					</div>
+
+					<br />
+					<p:dataTable var="memmoItem" id="memoTable"
+						value="#{stockEntryBean.memoReceiptList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom" widgetVar="vtWidget"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{stockEntryBean.filterMemoReceiptList}"
+						paginator="true" rows="12">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('vtWidget').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+
+
+
+						<p:column headerText="رقم المذكرة"
+							filterBy="#{memmoItem.stockFinEntryNo}"
+							filterMatchMode="contains" style="width:20%">
+							<h:outputText value="#{memmoItem.stockFinEntryNo}" />
+						</p:column>
+						<p:column headerText="تاريخ المذكرة"
+							filterBy="#{memmoItem.stockFinEntryHdate}"
+							filterMatchMode="contains" style="width:20%">
+							<h:outputText value="#{memmoItem.stockFinEntryHdate}" />
+						</p:column>
+						<p:column headerText="الجهة الموردة"
+							filterBy="#{memmoItem.supplierName}" filterMatchMode="contains"
+							style="width:25%">
+							<h:outputText value="#{memmoItem.supplierName}" />
+						</p:column>
+						<!-- 						<p:column headerText="الملاحظات" style="width:30%"> -->
+						<!-- 							<h:outputText value="#{memmoItem.notes}" /> -->
+						<!-- 						</p:column> -->
+						<p:column width="5%" style="text-align:center"
+							headerText="#{msg['details']}">
+							<p:commandButton
+								action="#{stockEntryBean.loadSelectedMemoReceipt(memmoItem)}"
+								icon="ui-icon-search" oncomplete="PF('memo_dlg').show()"
+								update="includeform:memo_dlgId">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+
+
+					<p:dialog widgetVar="memo_dlg" id="memo_dlgId" width="70%"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel value=" الجهة الموردة " />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel
+									value=" #{stockEntryBean.memoReceipt.supplierName}"></p:outputLabel>
+							</div>
+
+						</div>
+						<br></br>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel styleClass="btxt" value="الرقم الخاص "></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel
+									value="#{stockEntryBean.memoReceipt.stockFinEntryNo}"></p:outputLabel>
+							</div>
+
+						</div>
+						<br></br>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-1">
+								<p:outputLabel styleClass="btxt" value="التاريخ "></p:outputLabel>
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel
+									value="#{stockEntryBean.memoReceipt.stockFinEntryHdate}"></p:outputLabel>
+							</div>
+
+						</div>
+
+						<br />
+						<h:panelGroup id="table">
+							<div class="col-md-12 ">
+
+								<div class="table-responsive">
+
+									<hr></hr>
+
+
+
+									<table id="tabStore" class="table table-striped table-hover">
+										<thead>
+											<tr>
+
+												<th>رقم</th>
+												<th>اسم الصنف</th>
+												<!--	<th>حالة الصنف</th> -->
+												<th>العدد</th>
+												<th>الوحدة</th>
+												<th>سعر الوحدة</th>
+												<th>القيمة الكلية</th>
+												<!-- 												<th>المواصفات</th> -->
+
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="det" varStatus="x"
+												value="#{stockEntryBean.memoReceipt.stockInDetailsList}">
+
+
+												<tr>
+
+													<td>#{x.index+1}</td>
+													<td>#{det.article.name}</td>
+													<!-- <td>#{det.articleStatusName}</td> -->
+													<td>#{det.qty}</td>
+													<td>#{det.uniteName}</td>
+													<td>#{det.price}</td>
+													<td>#{det.total}</td>
+													<!-- 													<td>#{det.notes}</td> -->
+
+												</tr>
+
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+						</h:panelGroup>
+
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="طباعة" ajax="false"
+								onclick="this.form.target='_blank'" styleClass="purple-btn"
+								icon="ui-icon ui-icon-print"
+								action="#{stockEntryBean.printMemoReport_A4_Action()}" />
+							<!-- immediate="true" styleClass="btn btn-primary" -->
+							<!-- 								onclick="this.form.target='_blank'" -->
+							<p:spacer height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								styleClass="btn btn-primary" onclick="PF('memo_dlg').hide()" />
+
+						</div>
+
+					</p:dialog>
+
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>
