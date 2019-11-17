@@ -7,6 +7,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.springframework.util.StringUtils;
+import org.springframework.webflow.action.SetAction;
 
 import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.entities.ArcUsers;
@@ -49,6 +50,7 @@ public class TrainingExecutor extends MailExecutor<HrsEmployeeTraining> {
 		acceptVisible = false;
 		modelContentHtml = "training_model.xhtml";
 		contentModel = this;
+		
 	}
 	
 	/**

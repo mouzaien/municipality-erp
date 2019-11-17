@@ -2040,7 +2040,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		List<EmployeeForDropDown> specialEmpList = new ArrayList<>();
 
 		for (WrkSpecialAddress id : usersIds) {
-			if (id.getId().getUserInListId() != 264) {
+			if (id.getId().getUserInListId() != MyConstants.ARCHIVE_USER_ID) {
 				String hql2 = " Select concat(V.firstName , ' ', V.lastName)   from ArcUsers V Where  V.userId=:id ";
 				Query query2 = sessionFactory.getCurrentSession().createQuery(hql2);
 				query2.setParameter("id", id.getId().getUserInListId());
@@ -4329,7 +4329,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		inventories = criteria.list();
 		return inventories;
 	}
-
+	@Transactional
 	@Override
 	public List<Article> getAllArticles() {
 		return loadAll(Article.class);

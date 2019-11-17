@@ -66,17 +66,18 @@ body .ui-accordion .ui-accordion-header {
 					<div class="image-box-footer">
 						<h:panelGroup id="buttons">
 							<p:commandButton id="send_btn"
-								update="buttons destPanel srcPanel"
+								update=" destPanel srcPanel"
 								rendered="#{!newIncomeBean.savedClicked}"
-								icon="ui-icon ui-icon-assignment-return" value="#{msg['save']}"
+								icon="ui-icon ui-icon-assignment-return" value="#{msg['send']}"
 								action="#{newIncomeBean.SaveIncome}">
 							</p:commandButton>
-							<p:commandButton id="attch_btn" 
+				<!-- 			<p:commandButton id="attch_btn" 
 								update="buttons destPanel srcPanel"
 								rendered="#{newIncomeBean.savedClicked}"
 								icon="ui-icon ui-icon-assignment-return" value="إحالة"
 								action="#{newIncomeBean.addtransAttachs}">
-							</p:commandButton>
+							</p:commandButton>       -->
+							
 						</h:panelGroup>
 						<p:spacer width="10" height="10"></p:spacer>
 						<ui:include src="/DWT_Scan_Upload_Demo.xhtml" />
@@ -100,7 +101,7 @@ body .ui-accordion .ui-accordion-header {
 								بتاريخ :
 								<ui:include src="/shared/calender.xhtml"></ui:include>
 							</div>
-							<div class="ui-md-2">
+							<div class="ui-md-2" style="display:none">
 								<p:selectOneMenu value="#{newIncomeBean.newRecord.attachsType}"
 									id="newAttchyp" filter="true" filterMatchMode="contains"
 									style="width:100% ;">
@@ -115,6 +116,20 @@ body .ui-accordion .ui-accordion-header {
 									minValue="0" value="#{newIncomeBean.newRecord.attachNB}">
 								</p:inputNumber>
 							</div>
+							<div class="col-md-4 btxt">
+									<h:outputLabel value="الخطاب المشار إليه" />
+								</div>
+								<div class="col-md-6">
+									<p:inputText id="incomeNorefered" styleClass="form-control"
+										converterMessage="يجب إدخال رقم الخطاب المشار اليه بطريقه صحيحة"
+										style="font-size: small !important;"
+										value="#{newIncomeBean.newIncomeNoRefered}">
+										<f:convertNumber integerOnly="true" type="number" />
+										<p:ajax event="blur" update="p-att-id"
+											listener="#{newIncomeBean.changeReferencedLetter}"
+											process="@this" />
+									</p:inputText>
+								</div>
 							<!-- 							<p:inputText id="incomedateFromSender" -->
 							<!-- 								placeholder="#{msg['income.letter.date']} " style="width:100%" -->
 							<!-- 								value="#{newIncomeBean.newRecord.letterFromDate}" /> -->

@@ -10,7 +10,7 @@
 		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-dark' : ''}">
 		<div class="sidebar-logo">
 			<a href="dashboard.xhtml"> <p:graphicImage
-					name="images/login/icon-logo.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
+					name="images/login/logo.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
 			</a> <a href="#" class="sidebar-anchor" title="Toggle Menu"></a>
 		</div>
 
@@ -47,7 +47,7 @@
 								<p:menuitem id="menu3" value="#{msg['menu.memo']}"
 									action="internalMemo" icon="fa fa-fw fa-file-text-o" />
 								<secc:authorize ifNotGranted="ROLE_PRESIDENT">
-									<secc:authorize ifAnyGranted="ROLE_TELECOM">
+									<secc:authorize ifAnyGranted="ROLE_COMMUNICATION">
 										<p:menuitem id="menu4" value="#{msg['menu.arrived.mail']}"
 											action="createIncome" icon="fa fa-fw fa-paste" />
 										<p:menuitem id="sb_barcode" value="طباعة باركود "
@@ -102,21 +102,52 @@
 
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="menu5_Service"
-											value="#{msg['salary.definition']}" icon="fa fa-fw fa-dollar"
+											value="تعريف وتحويل" icon="fa fa-fw fa-dollar"
 											action="#{mainManagedBean.updateContent('SALARY')}"></p:menuitem>
-										<p:menuitem id="menu6_Service"
+								<!-- 		<p:menuitem id="menu6_Service"
 											value="#{msg['training.model.menu']}"
 											icon="fa fa-fw fa-leanpub"
 											action="#{mainManagedBean.updateContent('TRAINING')}"></p:menuitem>
 										<p:menuitem id="menu7_Service"
 											value="#{msg['medical.report.menu']}"
 											icon="fa fa-fw fa-medkit"
-											action="#{mainManagedBean.updateContent('MEDICALREPORT')}"></p:menuitem>
+											action="#{mainManagedBean.updateContent('MEDICALREPORT')}"></p:menuitem>   -->
 										<p:menuitem id="projectExtract_Service" value="إنشاء مستخلص"
 											action="projectExtract"></p:menuitem>
-									</secc:authorize>
+									</secc:authorize   >
 									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
+										
+										
+										
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+										<p:menuitem id="aaa" value="برنت أحوال"
+										action="nationalprint"></p:menuitem>
+										<p:menuitem id="bb" value="إظافة مستفيد"
+										action="beneficiaryData"></p:menuitem>
+									</secc:authorize>
+									
+										
+										
+ 									<secc:authorize ifAnyGranted="ROLE_SUPPORT"> 
+									   
+									   <p:submenu id="jobs_requests" label="طلبات توظيفية"
+										    icon="ui-icon ui-icon-people">
+											<p:menuitem id="training" value="دوره تدريبيه" 
+											action="#{mainManagedBean.updateContent('TRAINING')}"  icon="fa fa-fw fa-leanpub" />
+											<p:menuitem id="medic_report" value="تقرير طبي" 
+											action="#{mainManagedBean.updateContent('MEDICALREPORT')}"  icon="fa fa-fw fa-medkit" />
+											
+										</p:submenu>
+										
+										
+									</secc:authorize> 
+										
+										
+										
+										
+										
+		<!-- hereeeee -->							
 
 								</p:submenu>
 							</secc:authorize>

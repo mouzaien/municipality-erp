@@ -85,7 +85,12 @@
 				<h:panelGroup id="dtata" style="padding:0px">
 					<p:tabView id="trans_TV"
 						activeIndex="#{mailDefenationBean.tabActiveIndex}">
-
+						<p:tab id="letter_tab" title="#{msg['comment.data']}"
+							rendered="#{(mailDefenationBean.recordHasComment and !mainManagedBean.mailExecutor.isModel) or mailDefenationBean.commRendred}">
+							<h:panelGrid id="letterPG" style="width:100%">
+								<ui:include src="letter_tab.xhtml" />
+							</h:panelGrid>
+						</p:tab>
 						<p:tab title="#{msg['transaction.data']}">
 							<h:panelGrid style="width:100%">
 								<ui:include src="transaction_tab.xhtml" />
@@ -100,12 +105,6 @@
 							rendered="#{!mainManagedBean.mailExecutor.isModel}">
 							<h:panelGrid style="width:100%">
 								<ui:include src="transfer_tab.xhtml" />
-							</h:panelGrid>
-						</p:tab>
-						<p:tab id="letter_tab" title="#{msg['comment.data']}"
-							rendered="#{(mailDefenationBean.recordHasComment and !mainManagedBean.mailExecutor.isModel) or mailDefenationBean.commRendred}">
-							<h:panelGrid id="letterPG" style="width:100%">
-								<ui:include src="letter_tab.xhtml" />
 							</h:panelGrid>
 						</p:tab>
 						<p:tab title="#{msg['model']}"

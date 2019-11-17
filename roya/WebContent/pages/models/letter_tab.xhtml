@@ -191,7 +191,14 @@ body .ui-menu {
 			<p:inputText disabled="#{mailDefenationBean.selectedCommentSigned}"
 				id="newwrklowcopy" style="width:100%"
 				value="#{mailDefenationBean.comment.secondCopy}" />
-			<p:outputLabel styleClass="btxt" value="#{msg['comment.text']}" />
+			<p:outputLabel styleClass="btxt" value="#{msg['font.size']}" />
+			<p:selectOneMenu id="fontSizeText"
+				value="#{mailDefenationBean.comment.fontSize}" required="true"
+				requiredMessage="#{msg['required.fields']}">
+				<f:selectItems value="#{loadingDataBean.fontSizeList}" />
+			</p:selectOneMenu>
+		</p:panelGrid>
+		<p:outputLabel styleClass="btxt" value="#{msg['comment.text']}" />
 			<h:panelGroup styleClass="md-inputfield">
 				<p:inputTextarea style="width:100%" cols="30" rows="10" placeholder="أدخل نص الخطاب"
 					disabled="#{mailDefenationBean.selectedCommentSigned}"
@@ -200,13 +207,6 @@ body .ui-menu {
 					<f:ajax render="commentconentid" execute="commentconentid"></f:ajax>
 				</p:inputTextarea>
 			</h:panelGroup>
-			<p:outputLabel styleClass="btxt" value="#{msg['font.size']}" />
-			<p:selectOneMenu id="fontSizeText"
-				value="#{mailDefenationBean.comment.fontSize}" required="true"
-				requiredMessage="#{msg['required.fields']}">
-				<f:selectItems value="#{loadingDataBean.fontSizeList}" />
-			</p:selectOneMenu>
-		</p:panelGrid>
 		<br></br>
 		<p:outputLabel value="*#{mailDefenationBean.convMarkingInfo} "
 			style="font-size:small ;color: #428bca" />

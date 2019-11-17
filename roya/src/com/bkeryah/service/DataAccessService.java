@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.faces.bean.ManagedProperty;
+
 import org.apache.log4j.Logger;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
@@ -178,6 +180,7 @@ import utilities.Utils;
 public class DataAccessService implements IDataAccessService {
 
 	private DataAccess dataAccessDAO;
+	
 	private ICommonDao commonDao;
 	// private HijriCalendarUtil hijri = new HijriCalendarUtil();
 
@@ -1226,7 +1229,7 @@ public class DataAccessService implements IDataAccessService {
 		}
 
 		int applicationId = commonDao.saveWrkApp(application, recordId).getApplicationId();
-
+		System.out.println("setwrkappid  "+applicationId);
 		comment.setWRKAPPID(applicationId);
 		comment.setAppHdate(HijriCalendarUtil.findCurrentHijriDate());
 		comment.setWroteBy(Utils.findCurrentUser().getUserId());
@@ -1234,7 +1237,7 @@ public class DataAccessService implements IDataAccessService {
 		comment.setMarkedIn(HijriCalendarUtil.findCurrentHijriDate());
 		// comment.setFontSize(14);
 		comment.setSignType("S");
-		comment.setAppNo(arcRecord.getIncomeNo());
+		comment.setAppNo(arcRecord.getIncomeNo());   //?????
 		comment.setWroteIn(hutil.findCurrentHijriDate());
 		// comment.setCommentType(1);
 		Integer commentId = save(comment);
@@ -2395,11 +2398,14 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId) {
+		System.out.println("00000000"+wrkApplication.getId().getApplicationId());
+		System.out.println("11111111"+wrkApplication.getId().getStepId());
 		ArcRecords arcRecords = (ArcRecords) commonDao.findEntityById(ArcRecords.class,
 				wrkApplication.getArcRecordId());
 		arcRecords.setIncomeHDate(HijriCalendarUtil.findCurrentHijriDate());
-		if (arcRecords.getOutcomingNo() == null)
-			arcRecords.setOutcomingNo(commonDao.createOutcomeNo());
+		if (arcRecords.getIncomeNo() == null)
+			arcRecords.setIncomeNo(commonDao.createIncomeNo());
+		
 		commonDao.update(arcRecords);
 
 		WrkComment wrkComment = (WrkComment) commonDao.findEntityById(WrkComment.class,
@@ -2417,7 +2423,7 @@ public class DataAccessService implements IDataAccessService {
 		for (WrkApplication wrkApp : commonDao.findAllWrkApplicationById(wrkApplication.getId().getApplicationId())) {
 			wrkApp.setApplicationIsVisible(0);
 			wrkApp.setApplicationIsRead(1);
-			saveObject(wrkApp);
+			updateObject(wrkApp);
 		}
 
 		WrkApplicationId wrkApplicationId = new WrkApplicationId(wrkApplication.getId().getApplicationId(),
@@ -4183,25 +4189,28 @@ public class DataAccessService implements IDataAccessService {
 			if (attachList.size() > 0)
 				attachIds = addAttachs(attachList);
 			ArcUsers au = commonDao.findUserById(wrkApplication.getToUserId());
+			Integer newRecordId = arcRecords.getId();
+			newRecordId = saveNewArcRecords(arcRecords, au);
+			wrkApplication.setApplicationIsVisible(0);
+			wrkApplication.setApplicationIsRead(1);
+	//		if (!isForSave) {
 
-			if (!isForSave) {
-
-				List<WrkApplication> allRecordWrkApplications = commonDao
-						.findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
-				for (WrkApplication wrkApp : allRecordWrkApplications) {
-					wrkApp.setApplicationIsVisible(0);
-					wrkApp.setApplicationIsRead(1);
-					commonDao.update(wrkApp);
-				}
+	//			List<WrkApplication> allRecordWrkApplications = commonDao
+	//					.findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
+	//			for (WrkApplication wrkApp : allRecordWrkApplications) {
+	//				wrkApp.setApplicationIsVisible(0);
+	//				wrkApp.setApplicationIsRead(1);
+	//				commonDao.update(wrkApp);
+	//			}
 				// updateWrkApplication(wrkApplication);
 
-				wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
+			//	wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
 
-			}
-			Integer newRecordId = arcRecords.getId();
-			if (isForSave) {
-				newRecordId = saveNewArcRecords(arcRecords, au);
-			}
+	//		}
+	//		Integer newRecordId = arcRecords.getId();
+	//		if (isForSave) {
+	//			newRecordId = saveNewArcRecords(arcRecords, au);
+	//		}
 			result = Integer.parseInt(arcRecords.getIncomeNo());
 
 			wrkApplication.setApplicationCreateDate(new Date());

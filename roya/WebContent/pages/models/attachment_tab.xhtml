@@ -39,12 +39,13 @@
 							style="background-color: #7CB342 !important;">#{x.index+1}</span>
 					</h2>
 					<p:outputLabel>#{msg['attached.by']} #{att.ownerName}</p:outputLabel>
-					<h:form prependId="false">
+				<!-- 	<h:form prependId="false">   -->
 					<p:commandButton value="#{msg['download.file']}" ajax="false"
 						immediate="true" class="panel-footer"
 						icon="ui-icon-arrowthick-1-s">
 						<p:fileDownload value="#{mailDefenationBean.getFile(att.attName)}" />
-					</p:commandButton></h:form>
+					</p:commandButton>
+					<!-- </h:form>  -->
 				</p:panelGrid>
 			</ui:repeat>
 		

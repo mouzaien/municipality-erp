@@ -87,7 +87,7 @@ public class User implements Serializable {
 	@Formula("(select d.DEPT_NAME from WRK_DEPT d where d.id = DEPT_Id)")
 	private String deptName;
 
-	@Column(name = "EMPNO_TMP")
+	@Transient
 	private Integer empnoTmp;
 
 	// todo get The Rest Of Formulas

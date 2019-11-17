@@ -261,6 +261,7 @@ public class MailsBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
 		session.setAttribute("arcRecord", selectedInbox.AppId);
+		System.out.println("appId "+selectedInbox.AppId);
 		session.setAttribute("type", selectedInbox.getWrkType());
 		session.setAttribute("selectedMail", selectedInbox);
 		String page = mainManagedBean.editMail(selectedInbox);

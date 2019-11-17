@@ -566,7 +566,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				mail.setWrkCreateTime(rs.getString("create_time"));
 				mail.setWrkGDate(rs.getString("m_date"));
 				mail.setWrkHdate(rs.getString("h_date"));
-				mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
+			//	mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
 				outList.add(mail);
 			}
 		} catch (Exception e) {
@@ -783,7 +783,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				mail.setHasComment(rs.getInt("hasCommentx"));
 				mail.setHasComment(rs.getInt("hasCommentx"));
 				mail.setFromId(rs.getInt("from_id"));
-				mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
+			//	mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
 				outList.add(mail);
 			}
 		} catch (Exception e) {
@@ -6490,11 +6490,11 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		List<StoreRequestModel> storeRequestModelLst = new ArrayList<StoreRequestModel>();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?)}";
 			callableStatement = connection.prepareCall(sql);
 
 			callableStatement.setInt(1, articleId);
-			callableStatement.setInt(3, strNo);
+			//callableStatement.setInt(3, strNo);
 			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
@@ -6508,7 +6508,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				store.setArticleId(rs.getInt("id"));
 				store.setArticleName(rs.getString("name"));
 				store.setArticleCode(rs.getString("code"));
-				store.setArticleUnite(rs.getString("ITEMUNITNAME"));
+				//store.setArticleUnite(rs.getString("ITEMUNITNAME"));
 				storeRequestModelLst.add(store);
 			}
 		} catch (Exception e) {

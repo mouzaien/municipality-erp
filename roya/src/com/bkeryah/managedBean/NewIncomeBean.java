@@ -127,7 +127,7 @@ public class NewIncomeBean extends Scanner implements Serializable {
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
-		documentsTypes = dataAccessService.getAllDocumentsType();
+		//documentsTypes = dataAccessService.getAllDocumentsType();
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class NewIncomeBean extends Scanner implements Serializable {
 
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('print-barcode-dlg').show()");
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));

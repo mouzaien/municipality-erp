@@ -7,8 +7,8 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 <f:metadata>
-	<f:viewAction action="#{mainManagedBean.mailExecutor.init}"
-		phase="APPLY_REQUEST_VALUES" />
+<!--  	<f:viewAction action="#{mainManagedBean.mailExecutor.init}"  -->
+<!--		phase="APPLY_REQUEST_VALUES" />    -->
 </f:metadata>
 <h:head>
 
@@ -49,6 +49,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 			#{msg['salary.definition']}<span class="fa fa-fw fa-dollar"></span>
 		</h1>
 		<br></br>
+		<h:form>
 		<h:panelGroup id="panel">
 			<p:messages autoUpdate="true" closable="true"></p:messages>
 
@@ -120,7 +121,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 
 
 			<div class="ui-g" style="float: right;">
-
+	
 				<p:selectOneRadio disabled="#{mainManagedBean.mailExecutor.viewer}"
 					id="city" immediate="true"
 					value="#{mainManagedBean.mailExecutor.updateViewFlage}"
@@ -134,6 +135,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 						itemValue="233">
 					</f:selectItem>
 				</p:selectOneRadio>
+				
 			</div>
 			<br />
 			<br />
@@ -481,6 +483,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 
 			</h:panelGroup>
 		</h:panelGroup>
+		</h:form>
 	</div>
 </h:body>
 </html>

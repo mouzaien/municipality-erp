@@ -144,6 +144,7 @@ public class Scanner {
 	}
 
 	public StreamedContent getFile(String fileName) {
+		System.out.println(fileName);
 		InputStream stream = null;
 		StreamedContent file = null;
 		try {
@@ -179,6 +180,10 @@ public class Scanner {
 		try {
 			String attchs = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 					.get("includeform:mylst");
+			
+			List lst=Arrays.asList(attchs.split(";"));
+			
+			
 			return Arrays.asList(attchs.split(";"));
 		} catch (Exception e) {
 		}

@@ -779,6 +779,8 @@ public class MailDefenationBean extends Scanner {
 					currentUser.setSigned(signedOk);
 				}
 				if (currentUser.isSigned()) {
+					System.out.println("wrkappid"+wrkId.getApplicationId());
+					System.out.println("wrkappid"+wrkId.getStepId());
 					WrkApplication wrk = commonDao.findWrkApplicationById(wrkId);
 
 					dataAccessService.signComment(wrk, commentSignType, selectedUserInSignComment);

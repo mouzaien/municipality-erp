@@ -148,6 +148,7 @@ function Dynamsoft_OnReady() {
 }
 
 function AcquireImage() {
+	
 	if (DWObject) {
 		DWObject.SelectSource(
 				function() {

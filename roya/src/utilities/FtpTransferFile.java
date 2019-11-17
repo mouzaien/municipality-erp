@@ -30,10 +30,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 public class FtpTransferFile {
-	final static String host = "192.168.2.11:14147";
-	final static String user = "administrator";
-	final static String pass = "Oraserverdb200";
-	final static int port = 14147;
+	final static String host = "10.27.9.5";
+	final static String user = "Administrator";
+	final static String pass = "Adminoraserver200";
+	final static int port = 21;
 
 	public static InputStream getFile(String fileName) throws IOException {
 		InputStream inputStream = null;

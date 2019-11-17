@@ -74,7 +74,7 @@ public class InternalMemoBean extends Scanner {
 		attachList = new ArrayList<>();
 		setCurrentUser(Utils.findCurrentUser());
 		setWrkPurposes(dataAccessService.getAllPurposes());
-		documentsTypes = dataAccessService.getAllDocumentsType();
+		//documentsTypes = dataAccessService.getAllDocumentsType();
 		setAllManagers(dataAccessService.getAllManagersFromWFS());
 		listOfEmpsInDept = dataAccessService.findAllEmployeesInDept(currentUser.getUserId());
 		List<EmployeeForDropDown> specialEMpList = dataAccessService.getSpecialEmployeeList();

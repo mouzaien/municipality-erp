@@ -78,9 +78,9 @@ public class ArcRecords {
 	private Integer recordIsImportant;
 	@Column(name = "INCOME_YEAR")
 	private Integer incomeYear;
-	@Column(name = "attachs_type")
+	@Transient
 	private Integer attachsType;
-	@Column(name = "outcoming_no")
+	@Transient
 	private Integer outcomingNo;
 	@Transient
 	private boolean importantFlag;
@@ -392,7 +392,7 @@ public class ArcRecords {
 	}
 
 	public void setOutcomingNo(Integer outcomingNo) {
-		this.outcomingNo = outcomingNo;
+	this.outcomingNo = outcomingNo;
 	}
 
 	public boolean isOutcomingNumFlag() {

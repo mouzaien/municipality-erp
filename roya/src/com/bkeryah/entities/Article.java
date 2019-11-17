@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -41,13 +42,15 @@ public class Article {
 	private ArticleSubGroup articleSubGroup;// = new ArticleSubGroup();
 	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
 	private Set<ExchangeRequestDetails> exchangeRequestDetailsList;
-
+	
+	@Transient
 	private int strNo;
-	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
-	@ManyToOne
-	private WhsWarehouses whsWarehouses;
+//	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
+//	@ManyToOne
+//	private WhsWarehouses whsWarehouses;
 
-	@Column(name = "art_type")
+	//@Column(name = "art_type")
+	@Transient
 	private Integer artType = 1;
 
 	public int getId() {
@@ -86,13 +89,13 @@ public class Article {
 		return articleSubGroup;
 	}
 
-	public WhsWarehouses getWhsWarehouses() {
-		return whsWarehouses;
-	}
+//	public WhsWarehouses getWhsWarehouses() {
+//		return whsWarehouses;
+//	}
 
-	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
-		this.whsWarehouses = whsWarehouses;
-	}
+//	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
+//		this.whsWarehouses = whsWarehouses;
+//	}
 
 	public void setSubGroupId(Integer subGroupId) {
 		this.subGroupId = subGroupId;

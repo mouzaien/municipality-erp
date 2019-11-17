@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-12T09:47:26 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inbarcode" language="groovy" pageWidth="250" pageHeight="130" columnWidth="200" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a7074ca-17a9-4b02-ae99-0c769d9a4014">
 	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="p1" class="java.lang.String"/>
 	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
@@ -29,11 +30,10 @@
      ARC_RECORDS."PPL_ID" AS ARC_RECORDS_PPL_ID,
      ARC_RECORDS."IS_IMPORTANT" AS ARC_RECORDS_IS_IMPORTANT,
      ARC_RECORDS."INCOME_YEAR" AS ARC_RECORDS_INCOME_YEAR,
-     nvl(dt.name,' ') as attchTypeName
+     ' ' as attchTypeName
 FROM
-     "ARC_RECORDS" ARC_RECORDS , DOCUMENTS_TYPE dt
-where ARC_RECORDS."ID" = $P{p1}
-and ARC_RECORDS.ATTACHS_TYPE = dt.id(+)]]>
+     "ARC_RECORDS" ARC_RECORDS 
+where ARC_RECORDS."ID" = $P{p1}]]>
 	</queryString>
 	<field name="ARC_RECORDS_ID" class="java.math.BigDecimal"/>
 	<field name="ARC_RECORDS_REC_ID" class="java.lang.String"/>
@@ -126,7 +126,7 @@ and ARC_RECORDS.ATTACHS_TYPE = dt.id(+)]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{attchTypeName} + " - عدد " +$F{ARC_RECORDS_FILES_NO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ARC_RECORDS_FILES_NO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="130" y="66" width="69" height="22" backcolor="#F8F8F8" uuid="6417b3a9-b92b-4263-8d9b-fea600ac7871"/>

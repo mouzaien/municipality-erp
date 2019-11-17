@@ -19,12 +19,22 @@
 </h:head>
 
 
-<h:body>
+
 
 	
 		<p:messages autoUpdate="true" closable="true"></p:messages>
+		<div class="image-box-footer" align="left">
+		
+					<p:commandButton value="حفظ" styleClass="btn  btn-primary" style="float:left">
+						<f:ajax execute="insideForm" render="vv"
+							listener="#{beneficiaryDataBean.save}"></f:ajax>
 
-		<div class="container col-md-12"
+					</p:commandButton>
+		
+		</div>
+		<br></br><br></br>
+
+		<div  class="card card-w-title" dir="rtl"
 			style="background-color: white; border-top: 5px solid #428BCA;">
 			<br></br>
 			<div style="color: color: #428bca">
@@ -331,17 +341,12 @@
 				</div>
 				</h:panelGroup>
 				<hr></hr>
-				<div class="col-md-12 " style="margin-bottom: 4px">
+				
 
-					<h:commandButton value="حفظ" styleClass="btn  btn-primary" style="float:left">
-						<f:ajax execute="insideForm" render="vv"
-							listener="#{beneficiaryDataBean.save}"></f:ajax>
-
-					</h:commandButton>
-				</div>
+				
 			</h:form>
 		</div>
-</h:body>
+
 
 
 </html>
