@@ -54,38 +54,38 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 			<p:messages autoUpdate="true" closable="true"></p:messages>
 
 			<div class="image-box-footer" style="float: left">
-				<p:commandButton rendered="#{! mainManagedBean.mailExecutor.viewer}"
+				<p:commandButton rendered="#{! mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.hrLetter}"
 					value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return"
-					action="#{mainManagedBean.saveAction}">
-					<f:ajax execute="@form bnk ibn" />
+					action="#{mainManagedBean.mailExecutor.sendRequestForHrletter}">
+					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['reception']}"
 					styleClass="green-btn ui-state-hover"
 					icon="fa fa-fw fa-check-circle"
-					rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized}"
+					rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized and mainManagedBean.mailExecutor.transferSalary }"
 					immediate="true"
 					action="#{mainManagedBean.mailExecutor.acceptAction}">
-				</p:commandButton>
+				</p:commandButton>   
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['refuse']}"
 					icon="ui-icon ui-icon-cancel"
-					rendered="#{mainManagedBean.mailExecutor.viewer  and mainManagedBean.mailExecutor.authorized}"
+					rendered="#{mainManagedBean.mailExecutor.viewer  and mainManagedBean.mailExecutor.authorized and mainManagedBean.mailExecutor.hrLetter }"
 					immediate="true"
 					action="#{mainManagedBean.mailExecutor.refuseAction}">
-				</p:commandButton>
+				</p:commandButton> 
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['send.request']}"
 					styleClass="cyan-btn ui-state-hover" icon="fa fa-fw fa-send"
-					rendered="#{! mainManagedBean.mailExecutor.viewer}"
-					action="#{mainManagedBean.mailExecutor.sendRequestForHrletter}">
-					<f:ajax execute="@form"></f:ajax>
+					rendered="#{! mainManagedBean.mailExecutor.viewer  and mainManagedBean.mailExecutor.transferSalary}"
+					action="#{mainManagedBean.saveAction}">
+					<f:ajax execute="@form bnk ibn" />
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['accept']}" immediate="true"
 					styleClass="indigo-btn flat ui-state-hover"
 					icon="fa fa-fw fa-thumbs-up"
-					rendered="#{mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.authorized}"
+					rendered="#{mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.authorized and mainManagedBean.mailExecutor.hrLetter }"
 					action="#{mainManagedBean.mailExecutor.acceptActionForHr}">
 					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
@@ -93,13 +93,13 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 				<p:commandButton value="#{msg['print']}" icon="fa fa-fw fa-print"
 					immediate="true" styleClass="purple-btn"
 					onclick="this.form.target='_blank'"
-					rendered="#{mainManagedBean.mailExecutor.canPrint}"
+					rendered="#{mainManagedBean.mailExecutor.canPrint  and mainManagedBean.mailExecutor.hrLetter }"
 					action="#{mainManagedBean.mailExecutor.printHrLetterReportAction}">
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<h:panelGroup>
 					<p:commandButton
-						rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized}"
+						rendered="#{mainManagedBean.mailExecutor.viewer   and mainManagedBean.mailExecutor.authorized and mainManagedBean.mailExecutor.transferSalary}"
 						value="#{msg['refuse']}" onclick="PF('dlgRefuse').show();"
 						styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel"></p:commandButton>
 				</h:panelGroup>
@@ -126,14 +126,15 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 					id="city" immediate="true"
 					value="#{mainManagedBean.mailExecutor.updateViewFlage}"
 					layout="lineDirection" columns="2">
-					<p:ajax update="panel" process="@form"
-						listener="#{mainManagedBean.mailExecutor.updateView}" />
+					
 					<f:selectItem itemLabel="#{msg['comment.direction.dde']}"
 						itemValue="232" />
 
 					<f:selectItem itemLabel="#{msg['comment.direction.bank']}"
 						itemValue="233">
 					</f:selectItem>
+					<p:ajax event="change" update="panel" process="@form"
+						listener="#{mainManagedBean.mailExecutor.updateView}" />  
 				</p:selectOneRadio>
 				
 			</div>
