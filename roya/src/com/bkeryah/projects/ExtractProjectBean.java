@@ -48,6 +48,7 @@ public class ExtractProjectBean extends ArcScenarioManager {
 	private List<WrkPurpose> wrkPurposes;
 	private String applicationPurpose;
 	private String url;
+	private boolean flag;
 
 	@PostConstruct
 	public void init() {
@@ -89,6 +90,7 @@ public class ExtractProjectBean extends ArcScenarioManager {
 			projectExtract = new ProjectExtract();
 			projectNumber = "";
 			contractId = "";
+			System.out.println("TMAM");
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage("خطا فى التنفيذ");
@@ -246,9 +248,19 @@ public class ExtractProjectBean extends ArcScenarioManager {
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
+	
 
 	@Override
 	public boolean isCurrUserSignAutorized(IDataAccessService dataAccessService, Integer appID) {
 		return super.isCurrUserSignAutorized(this.dataAccessService, this.arcRcordId);
+	}
+
+	public boolean isFlag() {
+		flag=projectExtract.getCreatedBy()==currentUser.getUserId()?false:true;
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 }
