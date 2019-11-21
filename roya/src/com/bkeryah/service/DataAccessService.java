@@ -3304,7 +3304,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public void updateArcRecordsIncomeNo(ArcRecords arcRecords) {
-		arcRecords.setOutcomingNo(createOutcomeNo());
+		arcRecords.setIncomeNo(createIncomeNo());
 		updateObject(arcRecords);
 	}
 

@@ -63,6 +63,9 @@ public class BeneficiaryDataBean {
 //		peopleInfo.setPaperType(Integer.parseInt(paperTypId.trim()));
 //		peopleInfo.setNationalityId(Integer.parseInt(nationalityId.trim()));
 		try {
+			
+			peopleInfo.setPaperType((Integer)Integer.parseInt(paperTypId.trim()));
+			
 			dataAccessService.addArcPeople(peopleInfo);
 			nationalityId = "";
 			paperTypId = "";
