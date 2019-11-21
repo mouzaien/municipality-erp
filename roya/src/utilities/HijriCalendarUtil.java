@@ -36,6 +36,8 @@ public class HijriCalendarUtil {
 	}
 
 	public static String ConvertHijriTogeorgianDate(String inputdate) throws ParseException {
+		if(inputdate == null)
+			return null;
 		int total = 0;
 		String in_date2;
 		String in_dat;
@@ -50,6 +52,8 @@ public class HijriCalendarUtil {
 						item.getMon09(), item.getMon10(), item.getMon11(), item.getMon12(), item.getYearStartDate());
 			}
 		}
+		if(currentYear == null)
+			return null;
 		in_date2 = inputdate.replace("/", "");
 		in_dat = inputdate.substring(6) + in_date2.substring(2, 4) + in_date2.substring(0, 2);
 
@@ -782,8 +786,8 @@ public class HijriCalendarUtil {
 		yearsList.add(new YearClass(1447, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 30, 29, "2025/06/26"));
 		yearsList.add(new YearClass(1448, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 29, "2026/06/16"));
 		yearsList.add(new YearClass(1449, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2027/06/06"));
-//		yearsList.add(new YearClass(1450, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2028/05/26"));
-//		yearsList.add(new YearClass(1451, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1450, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2028/05/26"));
+		yearsList.add(new YearClass(1451, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
 		return yearsList;
 
 	}

@@ -1784,4 +1784,6 @@ public interface IDataAccessService {
 
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
 	public List<Article> getAllArticles();
+
+	public void updateContractDirect(ContractDirect contractDirect);
 }
