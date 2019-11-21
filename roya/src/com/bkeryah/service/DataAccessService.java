@@ -1579,7 +1579,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecords.setCreatedIn(new Date());
 		arcRecords.setLetterFrom(user.getDeptId());
 		if (withIncomeNumber) {
-			arcRecords.setIncomeNo(commonDao.createOutcomeNo().toString());
+			arcRecords.setIncomeNo(commonDao.createIncomeNo().toString());
 			arcRecords.setIncomeHDate(CurrentHijriDate);
 		} else {
 			arcRecords.setIncomeNo("");
