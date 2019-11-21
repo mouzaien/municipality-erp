@@ -81,6 +81,69 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private Integer contractSubcatgId;
 	@Column(name = "CONTRACT_STATUS")
 	private Integer contractStatId;
+//	@ManyToOne
+//	@JoinColumn(name = "CONTRACT_MAIN_CATG", referencedColumnName = "ID", insertable = false, updatable = false)
+//	private ContractMainCategory contractMainCategory;
+//	@ManyToOne
+//	@JoinColumn(name = "CONTRACT_SUB_CATG", referencedColumnName = "ID", insertable = false, updatable = false)
+//	private ContractSubcategory contractSubcategory;
+	
+//	public ContractMainCategory getContractMainCategory() {
+//		return contractMainCategory;
+//	}
+//
+//	public void setContractMainCategory(ContractMainCategory contractMainCategory) {
+//		this.contractMainCategory = contractMainCategory;
+//	}
+//
+//	public ContractSubcategory getContractSubcategory() {
+//		return contractSubcategory;
+//	}
+//
+//	public void setContractSubcategory(ContractSubcategory contractSubcategory) {
+//		this.contractSubcategory = contractSubcategory;
+//	}
+
+	@Transient
+	private Date billGStartDate;
+	@Transient
+	private Date billGEndDate;
+	@Transient
+	private String billStartDate;
+	@Transient
+	private String billEndDate;
+	
+	public Date getBillGStartDate() {
+		return billGStartDate;
+	}
+
+	public void setBillGStartDate(Date billGStartDate) {
+		this.billGStartDate = billGStartDate;
+	}
+
+	public Date getBillGEndDate() {
+		return billGEndDate;
+	}
+
+	public void setBillGEndDate(Date billGEndDate) {
+		this.billGEndDate = billGEndDate;
+	}
+
+	public String getBillStartDate() {
+		return billStartDate;
+	}
+
+	public void setBillStartDate(String billStartDate) {
+		this.billStartDate = billStartDate;
+	}
+
+	public String getBillEndDate() {
+		return billEndDate;
+	}
+
+	public void setBillEndDate(String billEndDate) {
+		this.billEndDate = billEndDate;
+	}
 
 	// @Formula("(select cb.bill_id from contract_bills cb where cb.contract_id
 	// = id and status = 0)")
@@ -307,7 +370,7 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	}
 
 	public String getStatusName() {
-		switch (status) {
+		switch (contractStatId) {
 		case 1:
 			statusName = Utils.loadMessagesFromFile("new");
 			break;

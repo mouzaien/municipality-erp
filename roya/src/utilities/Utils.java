@@ -460,7 +460,8 @@ public class Utils {
 		try {
 
 			String myDate = HijriCalendarUtil.ConvertHijriTogeorgianDate(hijriDate);
-
+			if(myDate == null)
+				return null;
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 			Date date = format.parse(myDate);
 			return date;

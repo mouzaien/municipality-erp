@@ -80,7 +80,10 @@ public class ContractDirectBean {
 			cont.getActionsList().add(ContractOperationEnum.DELETE);
 			cont.getActionsList().add(ContractOperationEnum.BILL);
 			try {
-				if (Utils.convertHDateToGDate(cont.getEndDate()).before(new Date())) {
+				Date endDate = Utils.convertHDateToGDate(cont.getEndDate());
+				if(endDate == null)
+					return ;
+				if (endDate.before(new Date())) {
 					cont.getActionsList().add(ContractOperationEnum.RENEW);
 					cont.setFinished(1);
 				} else {
@@ -132,6 +135,7 @@ public class ContractDirectBean {
 			} else {
 				contractDirect.setStatus(1);
 			}
+			contractDirect.setContractDate(new Date());
 			dataAccessService.saveContractDirect(contractDirect);
 			if (contractsDirectList == null)
 				contractsDirectList = new ArrayList<>();
@@ -154,6 +158,8 @@ public class ContractDirectBean {
 			if (!higriMode) {
 				selecteStartDate = Utils.grigDatesConvert(selecteStartDate_G);
 				selecteEndDate = Utils.grigDatesConvert(selecteEndDate_G);
+				contractDirect.setBillStartDate(Utils.grigDatesConvert(contractDirect.getBillGStartDate()));
+				contractDirect.setBillEndDate(Utils.grigDatesConvert(contractDirect.getBillGEndDate()));
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

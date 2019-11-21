@@ -9,8 +9,9 @@
 	<div
 		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-dark' : ''}">
 		<div class="sidebar-logo">
-			<a href="dashboard.xhtml"> <p:graphicImage
-					name="images/login/logo.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
+			<a href="dashboard.xhtml"> 
+			<p:graphicImage
+					name="#{loadingDataBean.logoCustomer}" library="serenity-layout" /> 
 			</a> <a href="#" class="sidebar-anchor" title="Toggle Menu"></a>
 		</div>
 

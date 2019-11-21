@@ -2306,7 +2306,7 @@ public class DataAccessService implements IDataAccessService {
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request) {
 		Integer hrEmployeeIdInteger = getHrResponsibleId();
 		ArcRecords arcRecord = new ArcRecords();
-		arcRecord.setRecTitle(" Ø·Ù„Ø¨ ØªØ­ÙˆÙŠÙ„ Ø±Ø§ØªØ¨ Ø§Ù„Ù‰ Ø­Ø³Ø§Ø¨ Ø¨Ù†Ùƒ " + " Ù…Ù‚Ø¯Ù… Ù…Ù† "
+		arcRecord.setRecTitle(" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + " Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
 				+ Utils.findCurrentUser().getEmployeeName());
 		arcRecord.setApplicationType(appType);
 		Integer recordId = createNewArcRecord(arcRecord, false, hrEmployeeIdInteger);
@@ -2321,7 +2321,7 @@ public class DataAccessService implements IDataAccessService {
 		application.setToUserId(hrEmployeeIdInteger);
 
 		WrkApplicationId applicationId = createNewWrkApplication(recordId, application,
-				" Ø·Ù„Ø¨ ØªØ­ÙˆÙŠÙ„ Ø±Ø§ØªØ¨ Ø§Ù„Ù‰ Ø­Ø³Ø§Ø¨ Ø¨Ù†Ùƒ " + "  Ù…Ù‚Ø¯Ù… Ù…Ù† "
+				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + "  Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
 						+ Utils.findCurrentUser().getEmployeeName(),
 				true, null);
 
@@ -2434,8 +2434,8 @@ public class DataAccessService implements IDataAccessService {
 		if (recieverUserId == 0)
 			recieverUserId = wrkComment.getMarkedBy();
 		newWrkApp.setToUserId(recieverUserId);
-		newWrkApp.setApplicationUsercomment("تم توقيع الخطاب بتاريخ " + HijriCalendarUtil.findCurrentHijriDate()
-				+ " بواسطة  " + Utils.findCurrentUser().getFirstName() + " يرجي تصدير المعاملة  ");
+		newWrkApp.setApplicationUsercomment("ØªÙ… ØªÙˆÙ‚ÙŠØ¹ Ø§Ù„Ø®Ø·Ø§Ø¨ Ø¨ØªØ§Ø±ÙŠØ® " + HijriCalendarUtil.findCurrentHijriDate()
+				+ " Ø¨ÙˆØ§Ø³Ø·Ø©  " + Utils.findCurrentUser().getFirstName() + " ÙŠØ±Ø¬ÙŠ ØªØµØ¯ÙŠØ± Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©  ");
 		newWrkApp.setApplicationCreateDate(new Date());
 		newWrkApp.setApplicationCreateTime(HijriCalendarUtil.findCurrentTime());
 		newWrkApp.setHijriDate(HijriCalendarUtil.findCurrentHijriDate());
@@ -2815,11 +2815,11 @@ public class DataAccessService implements IDataAccessService {
 			letterRequest.setAcceptStatus(MyConstants.YES);
 			updateObject(letterRequest);
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
-			// copyOfHrDocumentAndSendReport(docId, " ØªÙ…Øª
-			// Ø§Ù„Ù…ÙˆØ§Ù�Ù‚Ø©
-			// Ø¹Ù„Ù‰ Ø·Ù„Ø¨Ùƒ
-			// Ø§Ù„Ø®Ø§Øµ Ø¨ØªØ¹Ø±Ø¨Ù�
-			// Ø§Ù„Ø±Ø§ØªØ¨ ", ownerOfDemand,
+			// copyOfHrDocumentAndSendReport(docId, " Ã˜ÂªÃ™â€¦Ã˜Âª
+			// Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â©
+			// Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’
+			// Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜ÂªÃ˜Â¹Ã˜Â±Ã˜Â¨Ã™ï¿½
+			// Ã˜Â§Ã™â€žÃ˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ ", ownerOfDemand,
 			// MyConstants.REPORT_SALAR);
 
 			updateArcRecordsIncomeNo(app.getArcRecordId());
@@ -2864,11 +2864,11 @@ public class DataAccessService implements IDataAccessService {
 			updateObject(medicalRequest);
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
-			// copyOfHrDocumentAndSendReport(docId, " ØªÙ…Øª
-			// Ø§Ù„Ù…ÙˆØ§Ù�Ù‚Ø©
-			// Ø¹Ù„Ù‰ Ø·Ù„Ø¨Ùƒ
-			// Ø§Ù„Ø®Ø§Øµ Ø¨Ø§Ù„ØªÙ‚Ø±ÙŠØ±
-			// Ø§Ù„Ø·Ø¨Ù‰ ", ownerOfDemand,
+			// copyOfHrDocumentAndSendReport(docId, " Ã˜ÂªÃ™â€¦Ã˜Âª
+			// Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â©
+			// Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’
+			// Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜Â§Ã™â€žÃ˜ÂªÃ™â€šÃ˜Â±Ã™Å Ã˜Â±
+			// Ã˜Â§Ã™â€žÃ˜Â·Ã˜Â¨Ã™â€° ", ownerOfDemand,
 			// MyConstants.REPORT_MEDICAL);
 
 		} else {
@@ -2908,19 +2908,19 @@ public class DataAccessService implements IDataAccessService {
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
 			commonDao.updateVacationAfterInit(vacationId);
 			updateObject(employeeInitiation);
-			// sendRecordCopy(0, "ØªÙ… Ù‚Ø¨ÙˆÙ„ Ø·Ù„Ø¨Ùƒ
-			// Ø¨Ù…Ø¨Ø§Ø´Ø±Ø©
-			// Ø§Ù„Ø¹Ù…Ù„ ", ownerOfDemand);
+			// sendRecordCopy(0, "Ã˜ÂªÃ™â€¦ Ã™â€šÃ˜Â¨Ã™Ë†Ã™â€ž Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’
+			// Ã˜Â¨Ã™â€¦Ã˜Â¨Ã˜Â§Ã˜Â´Ã˜Â±Ã˜Â©
+			// Ã˜Â§Ã™â€žÃ˜Â¹Ã™â€¦Ã™â€ž ", ownerOfDemand);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
-			// copyOfHrDocumentAndSendReport(docId, " ØªÙ…Øª
-			// Ø§Ù„Ù…ÙˆØ§Ù�Ù‚Ø©
-			// Ø¹Ù„Ù‰ Ø·Ù„Ø¨Ùƒ
-			// Ø§Ù„Ø®Ø§Øµ Ø¨Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø© ",
+			// copyOfHrDocumentAndSendReport(docId, " Ã˜ÂªÃ™â€¦Ã˜Âª
+			// Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â©
+			// Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’
+			// Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â¨Ã˜Â§Ã˜Â´Ã˜Â±Ã˜Â© ",
 			// ownerOfDemand,
 			// MyConstants.REPORT_MEDICAL);
-			// sendRecordCopy(0, "ØªÙ… Ù‚Ø¨ÙˆÙ„ Ø·Ù„Ø¨Ùƒ
-			// Ø¨Ù…Ø¨Ø§Ø´Ø±Ø©
-			// Ø§Ù„Ø¹Ù…Ù„ ", ownerOfDemand);
+			// sendRecordCopy(0, "Ã˜ÂªÃ™â€¦ Ã™â€šÃ˜Â¨Ã™Ë†Ã™â€ž Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’
+			// Ã˜Â¨Ã™â€¦Ã˜Â¨Ã˜Â§Ã˜Â´Ã˜Â±Ã˜Â©
+			// Ã˜Â§Ã™â€žÃ˜Â¹Ã™â€¦Ã™â€ž ", ownerOfDemand);
 		} else {
 			saveHrsSigns(archRecordId, docId, false, "", Utils.findCurrentUser().getUserId(), docType);
 		}
@@ -2996,7 +2996,7 @@ public class DataAccessService implements IDataAccessService {
 			updateObject(currentInfoForRequest);
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
 			copyOfHrDocumentAndSendReport(docId,
-					" ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§Ù�Ù‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨Ùƒ Ø§Ù„Ø®Ø§Øµ Ø¨ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ø±Ø§ØªØ¨  ", ownerOfDemand,
+					" Ã˜ÂªÃ™â€¦Ã˜Âª Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â© Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’ Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â§Ã™â€žÃ˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨  ", ownerOfDemand,
 					MyConstants.REPORT_SALARY);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
 
@@ -3154,9 +3154,9 @@ public class DataAccessService implements IDataAccessService {
 			return manager;
 		case "CURRENT_USER":
 			return fromId;
-		case "GET_REQUEST_OWNER_MANAGER":// Ø±Ø¦ÙŠØ³
-											// Ø§Ù„Ø¬Ù‡Ø©
-											// Ø§Ù„Ø·Ø§Ù„Ø¨Ø©
+		case "GET_REQUEST_OWNER_MANAGER":// Ã˜Â±Ã˜Â¦Ã™Å Ã˜Â³
+											// Ã˜Â§Ã™â€žÃ˜Â¬Ã™â€¡Ã˜Â©
+											// Ã˜Â§Ã™â€žÃ˜Â·Ã˜Â§Ã™â€žÃ˜Â¨Ã˜Â©
 			return manager;
 		case "GET_REQUEST_OWNER":
 			return fromUser.getUserId();
@@ -3641,7 +3641,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecord.setApplicationType(MailTypeEnum.PROJECTeXTRACT.getValue());
 
 		arcRecord.setRecTitle(Utils.loadMessagesFromFile("payment.number") + " " + projectExtract.getNumber()
-				+ "من  مشروع " + contract.getProject().getName() + " مقدم من  " + user.getEmployeeName());
+				+ "Ù…Ù†  Ù…Ø´Ø±ÙˆØ¹ " + contract.getProject().getName() + " Ù…Ù‚Ø¯Ù… Ù…Ù†  " + user.getEmployeeName());
 
 		int recordId = createNewArcRecord(arcRecord, false, toId);
 
@@ -3963,7 +3963,7 @@ public class DataAccessService implements IDataAccessService {
 
 		ArcRecords arcRecord = new ArcRecords();
 		arcRecord.setApplicationType(MailTypeEnum.ACTUALEXCHANGE.getValue());
-		arcRecord.setRecTitle("  Ø·Ù„Ø¨ Ø§Ù…Ø± ØµØ±Ù� Ù�Ø¹Ù„Ù‰ Ø¨Ù†Ø§Ø¡ Ø¹Ù„Ù‰ Ø·Ù„Ø¨ ØµØ±Ù� Ù…ÙˆØ§Ø¯ Ø±Ù‚Ù…     "
+		arcRecord.setRecTitle("  Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜Â§Ã™â€¦Ã˜Â± Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™ï¿½Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â¨Ã™â€ Ã˜Â§Ã˜Â¡ Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™â€¦Ã™Ë†Ã˜Â§Ã˜Â¯ Ã˜Â±Ã™â€šÃ™â€¦     "
 				+ actualDisbursement.getGeneralrequestNumber());
 		int recordId = createNewArcRecord(arcRecord, false, 280);
 
@@ -3976,8 +3976,8 @@ public class DataAccessService implements IDataAccessService {
 		application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
 
 		// application.setApplicationUserDeptJob(applicationUserDeptJob);
-		String userComment = "  Ø·Ù„Ø¨ Ø§Ù…Ø± ØµØ±Ù� Ù�Ø¹Ù„Ù‰ Ø¨Ù†Ø§Ø¡ Ø¹Ù„Ù‰ Ø·Ù„Ø¨ ØµØ±Ù� Ù…ÙˆØ§Ø¯ Ø±Ù‚Ù…     "
-				+ actualDisbursement.getGeneralrequestNumber() + " Ù…Ù† Ø§Ø¯Ø§Ø±Ø© "
+		String userComment = "  Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜Â§Ã™â€¦Ã˜Â± Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™ï¿½Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â¨Ã™â€ Ã˜Â§Ã˜Â¡ Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™â€¦Ã™Ë†Ã˜Â§Ã˜Â¯ Ã˜Â±Ã™â€šÃ™â€¦     "
+				+ actualDisbursement.getGeneralrequestNumber() + " Ã™â€¦Ã™â€  Ã˜Â§Ã˜Â¯Ã˜Â§Ã˜Â±Ã˜Â© "
 				+ actualDisbursement.getDepartment();
 		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
 
@@ -4057,7 +4057,7 @@ public class DataAccessService implements IDataAccessService {
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
 			copyOfHrDocumentAndSendReport(docId,
-					"  ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§Ù�Ù‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨Ùƒ Ø¨Ø´ÙƒÙ„ Ù†Ù‡Ø§Ø¦Ù‰  Ù…Ù† Ø§Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹Ø§Øª ÙˆÙŠØ±Ø¬Ù‰  Ø§Ù„Ø°Ù‡Ø§Ø¨ Ø§Ù„Ù‰  Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹ Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù…  ",
+					"  Ã˜ÂªÃ™â€¦Ã˜Âª Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â© Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’ Ã˜Â¨Ã˜Â´Ã™Æ’Ã™â€ž Ã™â€ Ã™â€¡Ã˜Â§Ã˜Â¦Ã™â€°  Ã™â€¦Ã™â€  Ã˜Â§Ã˜Â¯Ã˜Â§Ã˜Â±Ã˜Â© Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â³Ã˜ÂªÃ™Ë†Ã˜Â¯Ã˜Â¹Ã˜Â§Ã˜Âª Ã™Ë†Ã™Å Ã˜Â±Ã˜Â¬Ã™â€°  Ã˜Â§Ã™â€žÃ˜Â°Ã™â€¡Ã˜Â§Ã˜Â¨ Ã˜Â§Ã™â€žÃ™â€°  Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â³Ã˜ÂªÃ™Ë†Ã˜Â¯Ã˜Â¹ Ã™â€žÃ™â€žÃ˜Â§Ã˜Â³Ã˜ÂªÃ™â€žÃ˜Â§Ã™â€¦  ",
 					originalOwnerId, "");
 
 		} else {
@@ -4368,7 +4368,7 @@ public class DataAccessService implements IDataAccessService {
 		else {
 			arcRecordCopy.setOutcomingNumFlag(false);
 		}
-		arcRecordCopy.setRecTitle(" صورة  من  " + arcRecord.getRecTitle());
+		arcRecordCopy.setRecTitle(" ØµÙˆØ±Ø©  Ù…Ù†  " + arcRecord.getRecTitle());
 
 		WrkApplication wrkApplicationCopy = new WrkApplication(wrkApplication);
 
@@ -4401,16 +4401,16 @@ public class DataAccessService implements IDataAccessService {
 	public void sendInternalMemoryForCopyInCharging(Charging charging) {
 		WrkApplication wrkApplication = new WrkApplication();
 		ArcRecords arcRecord = new ArcRecords();
-		wrkApplication.setApplicationUsercomment(" " + "  تم تكليف    " + charging.getEmployeInChargingNameBefore()
-				+ "  بدلا من  " + charging.getEmployeInChargingNameAfter() + "  في الفترة من   "
-				+ charging.getChargingStratDate() + " إلى " + charging.getChargingEndDate()
+		wrkApplication.setApplicationUsercomment(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
+				+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+				+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 		);
 		wrkApplication.setApplicationPurpose(12);
 		wrkApplication.setToUserId(charging.getEmployeInChargingId());
-		arcRecord.setRecTitle(" " + "  تم تكليف      " + charging.getEmployeInChargingNameBefore() + "  بدلا من  "
-				+ charging.getEmployeInChargingNameAfter() + "  في الفترة من   " + charging.getChargingStratDate()
-				+ " إلى " + charging.getChargingEndDate()
+		arcRecord.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�      " + charging.getEmployeInChargingNameBefore() + "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  "
+				+ charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   " + charging.getChargingStratDate()
+				+ " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 		);
 		List<Integer> attachmentIds = new ArrayList<>();
@@ -4435,17 +4435,17 @@ public class DataAccessService implements IDataAccessService {
 			else {
 				arcRecordCopy.setOutcomingNumFlag(false);
 			}
-			arcRecordCopy.setRecTitle(" " + "  تم تكليف    " + charging.getEmployeInChargingNameBefore() + "  بدلا من  "
-					+ charging.getEmployeInChargingNameAfter() + "  في الفترة من   " + charging.getChargingStratDate()
-					+ " إلى " + charging.getChargingEndDate()
+			arcRecordCopy.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore() + "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  "
+					+ charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   " + charging.getChargingStratDate()
+					+ " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 			);
 
 			WrkApplication wrkApplicationCopy = new WrkApplication(wrkApplication);
 			wrkApplicationCopy
-					.setApplicationUsercomment(" " + "  تم تكليف    " + charging.getEmployeInChargingNameBefore()
-							+ "  بدلا من  " + charging.getEmployeInChargingNameAfter() + "  في الفترة من   "
-							+ charging.getChargingStratDate() + " إلى " + charging.getChargingEndDate()
+					.setApplicationUsercomment(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
+							+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+							+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 			);
 			wrkApplicationCopy.setToUserId(id);
@@ -4716,7 +4716,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional()
 	public void addChargingProcess(Charging charging) {
-		charging.setEmployeInChargingNameAfter(charging.getEmployeInChargingNameAfter() + " المكلف");
+		charging.setEmployeInChargingNameAfter(charging.getEmployeInChargingNameAfter() + " Ø§Ù„Ù…ÙƒÙ„Ù�");
 		save(charging);
 		sendInternalMemoryForCopyInCharging(charging);
 		chargingEmp(charging.getEmployeInChargingId());
@@ -4833,13 +4833,13 @@ public class DataAccessService implements IDataAccessService {
 		newWrkapp.setId(wrkApplicationId);
 		newWrkapp.setFromUserId(wrkapp.getToUserId());
 		newWrkapp.setToUserId(userId);
-		// newWrkapp.setApplicationUsercommentStr("ØªÙ…Øª
-		// Ø§Ù„Ø¥Ø­Ø§Ù„Ø©
-		// Ø¨ÙˆØ§Ø³Ø·Ø© " +
+		// newWrkapp.setApplicationUsercommentStr("Ã˜ÂªÃ™â€¦Ã˜Âª
+		// Ã˜Â§Ã™â€žÃ˜Â¥Ã˜Â­Ã˜Â§Ã™â€žÃ˜Â©
+		// Ã˜Â¨Ã™Ë†Ã˜Â§Ã˜Â³Ã˜Â·Ã˜Â© " +
 		// Utils.findCurrentUser().getFirstName() + " "
 		// + Utils.findCurrentUser().getLastName() + "
-		// Ù„Ù„Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ù…Ù†
-		// Ø£Ø±Ø´ÙŠÙ� Ø§Ù„Ø­Ù�Ø¸
+		// Ã™â€žÃ™â€žÃ˜Â§Ã˜Â³Ã˜ÂªÃ˜Â±Ã˜Â¬Ã˜Â§Ã˜Â¹ Ã™â€¦Ã™â€ 
+		// Ã˜Â£Ã˜Â±Ã˜Â´Ã™Å Ã™ï¿½ Ã˜Â§Ã™â€žÃ˜Â­Ã™ï¿½Ã˜Â¸
 		// ");
 		newWrkapp.setApplicationPurpose(19);
 		newWrkapp.setArcRecordId(wrkapp.getArcRecordId());
@@ -7406,22 +7406,22 @@ public class DataAccessService implements IDataAccessService {
 		double advcost = 0.0;
 		double rubish = 0.0;
 		if (tradType == 0) {
-			MsgEntry.addErrorMessage("أختر نوع الإصدار ");
+			MsgEntry.addErrorMessage("Ø£Ø®ØªØ± Ù†ÙˆØ¹ Ø§Ù„Ø¥ØµØ¯Ø§Ø± ");
 			return null;
 		}
 		if ((tradType == 1 || tradType == 2)
 				&& (marketArea == 0 || advArea == 0 || issueYears == 0 || activityType == 0)) {
-			MsgEntry.addErrorMessage("أدخل بيانات  النشاط  / مساحة اللوحة / المحل  / سنوات الإصدار ");
+			MsgEntry.addErrorMessage("Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª  Ø§Ù„Ù†Ø´Ø§Ø·  / Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø© / Ø§Ù„Ù…Ø­Ù„  / Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± ");
 			return null;
 		}
 
 		if (tradType == 3) {
-			result.add(new PayBillDetails(1422103, 1422103, 100.0, "رسوم "));
+			result.add(new PayBillDetails(1422103, 1422103, 100.0, "Ø±Ø³ÙˆÙ… "));
 			return result;
 		}
 		if (tradType == 4 || tradType == 5 || tradType == 6) {
-			result.add(new PayBillDetails(1422103, 1422103, 20.0, "رسوم "));
-			result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "كشفية"));
+			result.add(new PayBillDetails(1422103, 1422103, 20.0, "Ø±Ø³ÙˆÙ… "));
+			result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "ÙƒØ´Ù�ÙŠØ©"));
 			return result;
 		}
 
@@ -7459,11 +7459,11 @@ public class DataAccessService implements IDataAccessService {
 		billCashRubish = commonDao.loadBillCashRubish(MyConstants.issue_Category, activityType);
 		rubish = billCashRubish.get(0).getCatrgory3() * marketArea;
 
-		result.add(new PayBillDetails(1422103, 1422103, roundNum(sum * issueYears), "رسوم "));
-		result.add(new PayBillDetails(11452512, 11452512, roundNum(advcost * issueYears), "لوحات"));
-		result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "كشفية"));
+		result.add(new PayBillDetails(1422103, 1422103, roundNum(sum * issueYears), "Ø±Ø³ÙˆÙ… "));
+		result.add(new PayBillDetails(11452512, 11452512, roundNum(advcost * issueYears), "Ù„ÙˆØ­Ø§Øª"));
+		result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "ÙƒØ´Ù�ÙŠØ©"));
 		// result.add(new PayBillDetails(1421908, 1421908, roundNum(rubish *
-		// issueYears), "نفايات "));
+		// issueYears), "Ù†Ù�Ø§ÙŠØ§Øª "));
 
 		return result;
 	}
@@ -7486,15 +7486,15 @@ public class DataAccessService implements IDataAccessService {
 		List<PayBillDetails> result = new ArrayList<>();
 
 		if (issueType == 3) {
-			result.add(new PayBillDetails(1422103, 1422103, 100.0, "رسوم"));
+			result.add(new PayBillDetails(1422103, 1422103, 100.0, "Ø±Ø³ÙˆÙ…"));
 			return result;
 		}
 		if (issueType == 0) {
-			MsgEntry.addErrorMessage("أختر نوع الإصدار   ");
+			MsgEntry.addErrorMessage("Ø£Ø®ØªØ± Ù†ÙˆØ¹ Ø§Ù„Ø¥ØµØ¯Ø§Ø±   ");
 			return null;
 		}
 		if ((issueType == 2) && (advArea == 0 || issueYears == 0 || area == 0)) {
-			MsgEntry.addErrorMessage("أدخل مساحة المحطة - سنوات الإصدار - مساحة اللوحة");
+			MsgEntry.addErrorMessage("Ø£Ø¯Ø®Ù„ Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù…Ø­Ø·Ø© - Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± - Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø©");
 			return null;
 		}
 		List<BillIssueRubish> billCashRubish = new ArrayList<>();
@@ -7509,22 +7509,22 @@ public class DataAccessService implements IDataAccessService {
 
 			rubish = billCashRubish.get(0).getCatrgory3() * issueYears;
 
-			result.add(new PayBillDetails(1422106, 1422106, sum, "رسوم"));
+			result.add(new PayBillDetails(1422106, 1422106, sum, "Ø±Ø³ÙˆÙ…"));
 			// result.add(new PayBillDetails(1422106, 1422106, rubish,
-			// "نفايات"));
+			// "Ù†Ù�Ø§ÙŠØ§Øª"));
 			// result.add(new PayBillDetails(11452512, 11452512,
-			// roundNum(advcost * issueYears), "لوحات"));
-			result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "كشفية"));
+			// roundNum(advcost * issueYears), "Ù„ÙˆØ­Ø§Øª"));
+			result.add(new PayBillDetails(1422109, 1422109, PREVIEW_FEES, "ÙƒØ´Ù�ÙŠØ©"));
 			break;
 		case 2:
 			rubish = billCashRubish.get(0).getCatrgory3() * issueYears;
 			// result.add(new PayBillDetails(1422106, 1422106, rubish,
-			// "نفايات"));
+			// "Ù†Ù�Ø§ÙŠØ§Øª"));
 
 			result = calctradingMarket(issueType, 1, advArea, addAdvArea, area, issueYears);
 			break;
 		case 3:
-			result.add(new PayBillDetails(1422103, 1422103, 100.0, "رسوم"));
+			result.add(new PayBillDetails(1422103, 1422103, 100.0, "Ø±Ø³ÙˆÙ…"));
 			break;
 		default:
 			break;
@@ -7579,7 +7579,7 @@ public class DataAccessService implements IDataAccessService {
 		}
 		List<PayBillDetails> result = new ArrayList<>();
 
-		result.add(new PayBillDetails(1422106, 1422106, sum, " رسوم حفر الشوارع"));
+		result.add(new PayBillDetails(1422106, 1422106, sum, " Ø±Ø³ÙˆÙ… Ø­Ù�Ø± Ø§Ù„Ø´ÙˆØ§Ø±Ø¹"));
 		;
 		return result;
 	}
@@ -7636,30 +7636,30 @@ public class DataAccessService implements IDataAccessService {
 	public void loadNormalVacationNew(int empNB, String firstApplicationDate, String gregBirthDate, Integer userid,
 			int currentDebit, HrEmployeeVacation employeeVacation) {
 		// HrsSumVacation hrsSumVacation = commonDao.listsumbyEmp(empNB);
-		// /* رصيد الاجازات منذ بدء التعين */
+		// /* Ø±ØµÙŠØ¯ Ø§Ù„Ø§Ø¬Ø§Ø²Ø§Øª Ù…Ù†Ø° Ø¨Ø¯Ø¡ Ø§Ù„ØªØ¹ÙŠÙ† */
 		// employeeVacation
 		// .setTotalVacationPeriod(getTotalVacationPeriod(empNB,
 		// firstApplicationDate));
 		employeeVacation.setTotalVacationPeriod(getTotalVacationSold((empNB)));
 		// employeeVacation.setTotalVacationPeriod(hrsSumVacation.getVACOLDYEAR37());
-		/* اجمالى ماتمتع به خلال العام */ employeeVacation
+		/* Ø§Ø¬Ù…Ø§Ù„Ù‰ Ù…Ø§ØªÙ…ØªØ¹ Ø¨Ù‡ Ø®Ù„Ø§Ù„ Ø§Ù„Ø¹Ø§Ù… */ employeeVacation
 				.setUsedNormalYearlyPeriod(commonDao.getUsedNormalYearlyPeriod(empNB));
-		/* جمله الاجازت التاريخيه */employeeVacation.setUsedTotalVacationPeriod(
-				getUsedTotalVacationPeriod(empNB)/* اجازات لتاريخ اليوم */);
-		/* جمله الرصيد المتاح */employeeVacation
+		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø§Ø¬Ø§Ø²Øª Ø§Ù„ØªØ§Ø±ÙŠØ®ÙŠÙ‡ */employeeVacation.setUsedTotalVacationPeriod(
+				getUsedTotalVacationPeriod(empNB)/* Ø§Ø¬Ø§Ø²Ø§Øª Ù„ØªØ§Ø±ÙŠØ® Ø§Ù„ÙŠÙˆÙ… */);
+		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */employeeVacation
 				.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
 						.getUsedNormalYearlyPeriod()/*
 													 * + hrsSumVacation.
 													 * getVACSUMYEARSOLD()
 													 */));
-		// /*الرصيد الحالى للسنه */ currentDebit
+		// /*Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„Ù‰ Ù„Ù„Ø³Ù†Ù‡ */ currentDebit
 		// int x = commonDao.loadVacationSumLastYear(empNB);
 
 		// employeeVacation.setVacationPeriodThisYear(getVacationPeriodThisYear());
 		// + employeeVacation.getVacationPeriodThisYear()));
 		int maxYearlyPeriod = 120;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		/* الرصيد المسموح به اقل من 120 */ employeeVacation
+		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation
 				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(maxYearlyPeriod,
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
@@ -7852,14 +7852,23 @@ public class DataAccessService implements IDataAccessService {
 				contract.getTender().getAnnouncementDetailsId());
 		annDetails.setStatus(1);
 		commonDao.update(annDetails);
-		// if(selectedClausesList != null){
-		// for(String cls : selectedClausesList){
-		// ContractClause conCla = new ContractClause();
-		// conCla.setContractId(contId);
-		// conCla.setClauseId(Integer.parseInt(cls));
-		// commonDao.save(conCla);
-		// }
-		// }
+		
+		Integer contractId = commonDao.save(contract);
+		PayLicBills newBill = new PayLicBills();
+		newBill.setBillOwnerName(contract.getInvRepresentName());
+		newBill.setLicenceNumber(contractId);
+		newBill.setLicenceType(MyConstants.CONTRACT_TYPE);
+		newBill.setBillStatus(0);
+		newBill.setPayDateFrom(contract.getBillStartDate());
+		newBill.setPayDateTo(contract.getBillEndDate());
+		PayBillDetails payDetails = new PayBillDetails();
+		payDetails.setPayMaster(11200);
+		payDetails.setPayDetails(11201);
+		payDetails.setAmount(contract.getAnnualRent());
+		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
+		newBill.getPayBillDetails().add(payDetails);
+		newBill.setPayAmount(contract.getAnnualRent());
+		saveBill(newBill);
 	}
 
 	@Override
@@ -8031,7 +8040,43 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public void saveContractDirect(ContractDirect contractDirect) {
-		commonDao.save(contractDirect);
+		Integer contractId = commonDao.save(contractDirect);
+		PayLicBills newBill = new PayLicBills();
+		newBill.setBillOwnerName(contractDirect.getInvRepresentName());
+		newBill.setLicenceNumber(contractId);
+		newBill.setLicenceType(MyConstants.CONTRACT_DIRECT_TYPE);
+		newBill.setBillStatus(0);
+		newBill.setPayDateFrom(contractDirect.getBillStartDate());
+		newBill.setPayDateTo(contractDirect.getBillEndDate());
+		PayBillDetails payDetails = new PayBillDetails();
+		payDetails.setPayMaster(11200);
+		payDetails.setPayDetails(11201);
+		payDetails.setAmount(contractDirect.getAnnualRent());
+		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
+		newBill.getPayBillDetails().add(payDetails);
+		newBill.setPayAmount(contractDirect.getAnnualRent());
+		saveBill(newBill);
+	}
+	
+	@Override
+	@Transactional
+	public void updateContractDirect(ContractDirect contractDirect) {
+		commonDao.update(contractDirect);
+		PayLicBills newBill = new PayLicBills();
+		newBill.setBillOwnerName(contractDirect.getInvRepresentName());
+		newBill.setLicenceNumber(contractDirect.getId());
+		newBill.setLicenceType(MyConstants.CONTRACT_DIRECT_TYPE);
+		newBill.setBillStatus(0);
+		newBill.setPayDateFrom(contractDirect.getBillStartDate());
+		newBill.setPayDateTo(contractDirect.getBillEndDate());
+		PayBillDetails payDetails = new PayBillDetails();
+		payDetails.setPayMaster(11200);
+		payDetails.setPayDetails(11201);
+		payDetails.setAmount(contractDirect.getAnnualRent());
+		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
+		newBill.getPayBillDetails().add(payDetails);
+		newBill.setPayAmount(contractDirect.getAnnualRent());
+		saveBill(newBill);
 	}
 
 	@Override
@@ -8411,37 +8456,37 @@ public class DataAccessService implements IDataAccessService {
 	public void loadNormalVacationNew(int empNB, String firstApplicationDate, String gregBirthDate, Integer userid,
 			int currentDebit, HrEmployeeVacation employeeVacation, HrsVacSold hrsVacSoldList) {
 		// HrsSumVacation hrsSumVacation = commonDao.listsumbyEmp(empNB);
-		// /* رصيد الاجازات منذ بدء التعين */
+		// /* Ø±ØµÙŠØ¯ Ø§Ù„Ø§Ø¬Ø§Ø²Ø§Øª Ù…Ù†Ø° Ø¨Ø¯Ø¡ Ø§Ù„ØªØ¹ÙŠÙ† */
 		// employeeVacation
 		// .setTotalVacationPeriod(getTotalVacationPeriod(empNB,
 		// firstApplicationDate));
 		// employeeVacation.setTotalVacationPeriod(getTotalVacationSold((empNB)));
 		employeeVacation.setTotalVacationPeriod((hrsVacSoldList.getOldSold()) + (hrsVacSoldList.getCurrentYearSold()));
 		// employeeVacation.setTotalVacationPeriod(hrsSumVacation.getVACOLDYEAR37());
-		/* اجمالى ماتمتع به خلال العام */
+		/* Ø§Ø¬Ù…Ø§Ù„Ù‰ Ù…Ø§ØªÙ…ØªØ¹ Ø¨Ù‡ Ø®Ù„Ø§Ù„ Ø§Ù„Ø¹Ø§Ù… */
 		// employeeVacation.setUsedNormalYearlyPeriod(commonDao.getUsedNormalYearlyPeriod(empNB));
 		employeeVacation.setUsedNormalYearlyPeriod(hrsVacSoldList.getCurrentYearTaken());
-		/* جمله الاجازت التاريخيه */
+		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø§Ø¬Ø§Ø²Øª Ø§Ù„ØªØ§Ø±ÙŠØ®ÙŠÙ‡ */
 		// employeeVacation.setUsedTotalVacationPeriod(
-		// getUsedTotalVacationPeriod(empNB)/* اجازات لتاريخ اليوم */);
+		// getUsedTotalVacationPeriod(empNB)/* Ø§Ø¬Ø§Ø²Ø§Øª Ù„ØªØ§Ø±ÙŠØ® Ø§Ù„ÙŠÙˆÙ… */);
 
-		// /* جمله الرصيد المتاح */employeeVacation
+		// /* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */employeeVacation
 		// .setRemainTotalVacationPeriod((int)
 		// employeeVacation.getTotalVacationPeriod() - (employeeVacation
 		// .getUsedNormalYearlyPeriod()/*
 		// * + hrsSumVacation.
 		// * getVACSUMYEARSOLD()
 		// */));
-		/* جمله الرصيد المتاح */
+		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */
 		employeeVacation.setRemainTotalVacationPeriod(hrsVacSoldList.getAvalibelSold());
-		// /*الرصيد الحالى للسنه */ currentDebit
+		// /*Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„Ù‰ Ù„Ù„Ø³Ù†Ù‡ */ currentDebit
 		// int x = commonDao.loadVacationSumLastYear(empNB);
 
 		// employeeVacation.setVacationPeriodThisYear(getVacationPeriodThisYear());
 		// + employeeVacation.getVacationPeriodThisYear()));
 		int maxYearlyPeriod = 120;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		/* الرصيد المسموح به اقل من 120 */ employeeVacation
+		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation
 				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(maxYearlyPeriod,
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
