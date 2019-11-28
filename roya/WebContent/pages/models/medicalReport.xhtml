@@ -66,6 +66,8 @@
 			 #{msg['medical.report.menu']}<span class="fa fa-fw fa-medkit"></span>
 		</h1>
 		<br></br>
+		
+		
 	   <h:form prependId="false">
 	   <div class="image-box-footer" style="float: left">
 	   
@@ -77,10 +79,10 @@
 				action="#{mainManagedBean.mailExecutor.printMedicalReportAction}">
 			</p:commandButton>
 			 <p:spacer width="10" height="10"></p:spacer>
-					<p:commandButton value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return" 
-						rendered="#{! mainManagedBean.mailExecutor.actionMode}"
+					<p:commandButton value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return" ajax="false"
+					onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"
+						rendered="#{! mainManagedBean.mailExecutor.actionMode}" 
 						action="#{mainManagedBean.saveAction}">
-						<f:ajax execute="@form"></f:ajax>
 					</p:commandButton>	
 					 <p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['accept']}" styleClass="indigo-btn flat ui-state-hover" icon="fa fa-fw fa-thumbs-up"
@@ -133,7 +135,7 @@
 						      
 								 <h:panelGroup
 										rendered="#{!mainManagedBean.mailExecutor.actionMode}">
-											<p:inputText id="startDate" name="startDate" style="width: 70%;"
+											<p:inputText id="startDate" required="true" name="startDate" style="width: 70%;"
 												styleClass="form-control form-controlCal ">
 												
 											</p:inputText>
