@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-26T13:58:27 -->
+<!-- 2019-11-28T11:33:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fingerprint_list2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="52"/>
@@ -22,7 +22,9 @@
 	<parameter name="LOGO_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="name_customer" class="java.lang.String"/>
+	<parameter name="compName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -175,7 +177,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+$P{name_customer}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+$P{compName}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="0" width="120" height="65" uuid="581923fe-0dc7-4227-8691-3db4e6fe7446"/>

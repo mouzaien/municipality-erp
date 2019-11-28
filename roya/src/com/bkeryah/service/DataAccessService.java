@@ -2306,7 +2306,7 @@ public class DataAccessService implements IDataAccessService {
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request) {
 		Integer hrEmployeeIdInteger = getHrResponsibleId();
 		ArcRecords arcRecord = new ArcRecords();
-		arcRecord.setRecTitle(" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + " Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
+		arcRecord.setRecTitle(" طلب تحويل الراتب مقدم من الموظف  "
 				+ Utils.findCurrentUser().getEmployeeName());
 		arcRecord.setApplicationType(appType);
 		Integer recordId = createNewArcRecord(arcRecord, false, hrEmployeeIdInteger);
@@ -2321,7 +2321,7 @@ public class DataAccessService implements IDataAccessService {
 		application.setToUserId(hrEmployeeIdInteger);
 
 		WrkApplicationId applicationId = createNewWrkApplication(recordId, application,
-				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + "  Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
+				" طلب تحويل الراتب مقدم من الموظف"
 						+ Utils.findCurrentUser().getEmployeeName(),
 				true, null);
 

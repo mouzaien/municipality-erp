@@ -25,7 +25,7 @@
 							<f:ajax render="emp allEmp" execute="@this" event="change"
 								listener="#{empPlanificationBean.reLoadEmployers}" />
 						</p:selectBooleanCheckbox>
-						<span style="font-size: 16px;">&nbsp;&nbsp;&nbsp; كل
+						<span style="font-size: 16px;"> كل
 							الموظفين </span>
 					</div>
 					<br /> <br />
@@ -46,26 +46,28 @@
 									<!-- 										<f:ajax render="empList" execute="section" event="change" -->
 									<!-- 											listener="#{empPlanificationBean.loadEmployersByDept}" /> -->
 									<!-- 									</p:selectOneMenu> -->
-									<p:selectManyMenu id="section" style="width:100%" filter="true"
+									<p:selectCheckboxMenu id="section" panelStyleClass="empClass" style="width:70%" filter="true"
 										filterMatchMode="contains" showCheckbox="true"
-										value="#{empPlanificationBean.deptIds}">
+										value="#{empPlanificationBean.deptIds}"
+										label="اختر الاداره">
+										
 										<f:selectItems value="#{loadingDataBean.depatmentList}"
 											var="dept" itemValue="#{dept.id}"
 											itemLabel="#{dept.deptName}" />
 										<f:ajax render="empList" execute="section" event="change"
 											listener="#{empPlanificationBean.loadEmployersByDept}" />
-									</p:selectManyMenu>
+									</p:selectCheckboxMenu>
 
-									<p:selectCheckboxMenu id="section2" var="dept" required="true"
+								<!-- 	<p:selectCheckboxMenu id="section2" var="dept" required="true"
 										style="width:100%" panelStyleClass="empClass"
 										requiredMessage="إختر الإدارة"
 										value="#{empPlanificationBean.deptIds}" label="إختر الإدارة"
 										multiple="false" filter="true" filterMatchMode="contains"
-										converter="departmentConverter">
+										>
 										<f:selectItems value="#{loadingDataBean.depatmentList}" />
 										<p:ajax event="toggleSelect" process="@this"
 											listener="#{empPlanificationBean.loadEmployersByDept}" />
-									</p:selectCheckboxMenu>
+									</p:selectCheckboxMenu>  -->
 									<h:outputLabel value="#{EmpPlanificationBean.deptName}" />
 								</div>
 								<div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -74,7 +76,7 @@
 								<div class="ui-g-12 ui-md-6 ui-lg-4">
 									<p:selectCheckboxMenu id="empList" var="user" required="true"
 										style="width:100%" panelStyleClass="empClass"
-										requiredMessage="إختر الموظف"
+										requiredMessage="إختر الموظف" converter="userConverter"
 										value="#{empPlanificationBean.employersListSelected}"
 										label="إختر الموظفين" multiple="false" filter="true"
 										filterMatchMode="contains">
@@ -115,6 +117,7 @@
 							</p:selectBooleanCheckbox>
 						</div>
 					</div>
+			<!--  		<h:panelGroup id="tst"> -->
 					<div class="ui-g">
 						<div class="ui-g-1">
 							<h:outputLabel value="من" />
@@ -140,7 +143,7 @@
 								</p:calendar>
 							</h:panelGroup>
 						</div>
-						<div class="ui-g-1">
+						<div class="ui-g-1" style="margin-right: 8%">
 							<h:outputLabel value="إلى" />
 						</div>
 						<!-- 						<div class="ui-g-12 ui-md-6 ui-lg-4"> -->
@@ -167,14 +170,10 @@
 							</h:panelGroup>
 						</div>
 						<div class="ui-g-2"></div>
-						<div class="ui-g-12 ui-md-6 ui-lg-4">
-							<div class="iamge-box-footer" align="left">
-								<p:commandButton value="إظهار دوام الموظف"
-									icon="ui-icon ui-icon-developer-board" styleClass="green-btn"
-									onclick="PF('timetable').show();">
-									<p:ajax oncomplete="PF('timetable').hide();"
-										listener="#{empPlanificationBean.loadUserPeriodShift}"
-										update="outTable"></p:ajax>
+						<div class="ui-g-12 ui-md-6 ui-lg-4" style="display: block;width:600px;margin-right: 70%" align="left">
+							<div class="iamge-box-footer" >
+								<p:commandButton  value="إظهار دوام الموظف" process="@form" actionListener="#{empPlanificationBean.loadUserShifts}"
+									update="outTable" icon="ui-icon ui-icon-developer-board" styleClass="green-btn">
 								</p:commandButton>
 								<p:spacer height="10"></p:spacer>
 								<p:commandButton value="إعطاء الدوامات"
@@ -191,6 +190,7 @@
 							</div>
 						</div>
 					</div>
+				<!--	</h:panelGroup> -->
 					<br />
 				</div>
 				<p:dialog header="إختيار الدوام" widgetVar="timetable" modal="true"
@@ -236,7 +236,7 @@
 					paginator="true" rows="10">
 					<f:facet name="header">
 						<p:outputPanel>
-							<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
+							<h:outputText value="ابحث فى كل الحقول:" /> 
 											<p:inputText id="globalFilter"
 								onkeyup="PF('outfineset').filter()"
 								style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
