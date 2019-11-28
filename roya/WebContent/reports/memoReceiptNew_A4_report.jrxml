@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="memoReceiptNew_A4_report" language="groovy" pageWidth="933" pageHeight="660" orientation="Landscape" whenNoDataType="NoPages" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-28T08:39:03 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="memoReceiptNew_A4_report" language="groovy" pageWidth="933" pageHeight="660" orientation="Landscape" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
 	<property name="ireport.zoom" value="0.7181761481074908"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -10,6 +11,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["F:\\projects\\methnab\\roya\\WebContent\\reports\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -49,15 +51,6 @@
 	</title>
 	<pageHeader>
 		<band height="171" splitType="Stretch">
-			<staticText>
-				<reportElement x="690" y="70" width="170" height="20" uuid="e4ff094a-81df-4b2a-a163-c7a71195947c">
-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<text><![CDATA[إدارة مستودعات بلدية محافظة المذنب]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="690" y="90" width="130" height="20" uuid="2cddfc9d-e81f-4216-8464-3fc035f00148"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -377,6 +370,17 @@
 				<textFieldExpression><![CDATA[("نموذج رقم ( "+4+" ) ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="70" width="170" height="19" uuid="f90eb5d3-5f23-4f2b-8620-994add4e5212">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إدارة مستودعات "+$P{compName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

@@ -8670,4 +8670,5 @@ public class DataAccessService implements IDataAccessService {
 		// TODO Auto-generated method stub
 		return commonDao.getAllArticles();
 	}
+
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-20T14:16:18 -->
+<!-- 2019-11-27T14:51:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="letter" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -17,6 +17,9 @@
 	</parameter>
 	<parameter name="current_user" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[22]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cityName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[select 'حيث تقدم الينا المواطن/ـه ' || $P{C_name} ||chr(10)||
@@ -91,13 +94,6 @@ from dual]]>
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="87" width="555" height="27" uuid="9842f507-12e0-4208-a045-274c912c1996"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[المكرم / مدير إدارة الأحوال المدنية بمحافظة البكيرية]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="369" y="5" width="109" height="20" uuid="fae03c22-1504-4d6e-9852-ae35e8c7e8ff"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
@@ -133,6 +129,18 @@ from dual]]>
 				<textFieldExpression><![CDATA[$F{CURR_USER_INFO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="87" width="555" height="27" uuid="5f820d66-4b63-4926-9934-f18aebbf341c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المكرم / مدير إدارة الأحوال المدنية ب"+$P{cityName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

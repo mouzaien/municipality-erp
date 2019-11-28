@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exchange_report" language="groovy" pageWidth="933" pageHeight="660" orientation="Landscape" whenNoDataType="NoPages" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-27T15:13:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exchange_report" language="groovy" pageWidth="933" pageHeight="660" orientation="Landscape" columnWidth="865" leftMargin="34" rightMargin="34" topMargin="0" bottomMargin="0" uuid="fb189b38-8952-4b00-b770-6179c82ba575">
 	<property name="ireport.zoom" value="0.7181761481074908"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -11,6 +12,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["F:\\projects\\methnab\\roya\\WebContent\\reports\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT  GEN.STOCK_FIN_ENTRY_NO,stock.STRNAME,supp.RELATEDENTITYNAME as SUPPNAME,gen.STOCK_FIN_ENTRY_HDATE,gen.STOCK_BUY_NO,gen.STOCK_BUY_DATE,gen.STOCK_NOTICE_NO,gen.STOCK_NOTICE_DATE,
 (SELECT SUM(detail.total) from WHS_stock_in_details detail where detail.STOCKMASTER_IN = gen.ID and gen.id =$P{memoReceiptNo}) as Total,
@@ -81,15 +83,6 @@ and gen.STOCK_NO=stock.STRNO and gen.STOCK_SUPPLIER_ID = supp.RELATEDENTITYID]]>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[الشئون البلدية و القروية]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="597" y="105" width="128" height="18" uuid="8734f0d1-629e-4945-8b25-88d9eb638168">
-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<text><![CDATA[بلدية محافظة المذنب]]></text>
 			</staticText>
 			<textField pattern="">
 				<reportElement x="145" y="164" width="47" height="20" uuid="2f82dac3-e962-472f-8147-e206034d025f"/>
@@ -231,6 +224,18 @@ and gen.STOCK_NO=stock.STRNO and gen.STOCK_SUPPLIER_ID = supp.RELATEDENTITYID]]>
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STRNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="597" y="105" width="128" height="17" uuid="5c931180-5ca9-4dee-87eb-541f0dfe165b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{compName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

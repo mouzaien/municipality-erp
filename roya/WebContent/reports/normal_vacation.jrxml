@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-27T13:17:18 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vac116_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="177cf036-51e3-4814-ab14-20014672039e">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
@@ -348,15 +349,6 @@ $F{ENAME}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{VACAPRD}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="0" y="41" width="555" height="53" isPrintWhenDetailOverflows="true" uuid="a0f7abec-70a3-4dc1-b258-df2b23a339f6"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Arial" size="14" isBold="true" pdfFontName="" pdfEncoding="" isPdfEmbedded="false"/>
-				</textElement>
-				<text><![CDATA[ إن رئيس بلدية محافظة المذنب
- بناء على الصلاحيات الممنوحة له, وإستناداً إلى المادة (28/1) من نظام الخدمة المدنية.
-وإشارة الى طلب الإجازة المقدم من المذكور بعالية واستحقاقه للإجازة نظاما ولموافقة رئيسه المباشر , واستنادا لمقتضيات لائحة الإجازات]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="229" y="103" width="100" height="20" uuid="f2d6472e-dd2e-4ad7-80fb-c63cf54896f8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
@@ -433,6 +425,18 @@ $F{VACAEND}
 				</textElement>
 				<text><![CDATA[والسلام عليكم ورحمة الله وبركاته]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="41" width="555" height="53" uuid="9e005062-f928-48be-90fb-e12c57d90d32">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" إن رئيس "+$P{compName}+" بناء على الصلاحيات الممنوحة له, وإستناداً إلى المادة (28/1) من نظام الخدمة المدنية. وإشارة الى طلب الإجازة المقدم من المذكور بعالية واستحقاقه للإجازة نظاما ولموافقة رئيسه المباشر , واستنادا لمقتضيات لائحة الإجازات"]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

@@ -115,6 +115,7 @@ public class LoadingDataBean {
 	private List<WrkLetterFromClass> listLetterFrom;
 	private String investmentCity;
 	private String logoCustomer;
+	private String customerName;
 
 	public String getLogoCustomer() {
 		return logoCustomer;
@@ -139,6 +140,8 @@ public class LoadingDataBean {
 			investmentCity = dataAccessService.findSystemProperty("INVESTMENT_CITY");
 		if(StringUtils.isEmpty(logoCustomer))
 			logoCustomer = dataAccessService.findSystemProperty("LOGO_CUSTOMER");
+		if(StringUtils.isEmpty(customerName))
+			customerName = dataAccessService.findSystemProperty("CUSTOMER_NAME");
 	}
 
 	public Map<Integer, RequestStatus> getStatusMap() {
@@ -686,6 +689,14 @@ public class LoadingDataBean {
 
 	public void setInvestmentCity(String investmentCity) {
 		this.investmentCity = investmentCity;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	

@@ -224,6 +224,7 @@ public class FngAbsenceBean {
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
+		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

@@ -73,7 +73,7 @@
 						<div class="ui-g-2">
 							<p:selectOneMenu class="form-control" id="groupId" filterMatchMode="contains" filter="true"
 								required="true" requiredMessage="اختر المجموعة الرئيسية"
-								value="#{articlesBean.groupId}">
+								value="#{articlesBean.article.groupId}">
 								<!-- 								<f:ajax listener="#{articlesBean.updateSubGroups}" -->
 								<!-- 									execute="groupId" event="valueChange" render="sub"></f:ajax> -->
 								<f:selectItem itemLabel="اختر المجموعة الرئيسية "></f:selectItem>
@@ -123,7 +123,7 @@
 
 								<f:selectItem itemLabel="اختر المستودع  "></f:selectItem>
 
-								<f:selectItems value="#{inventoryMasterBean.allWareHouses}" var="x"
+								<f:selectItems value="#{articlesBean.warehouses}" var="x"
 									itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
 									<p:ajax listener="#{articlesBean.reloadStrArticles}" update="table_Store"></p:ajax>
 							</p:selectOneMenu>

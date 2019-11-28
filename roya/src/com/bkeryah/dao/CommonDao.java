@@ -2553,8 +2553,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<FinEntity> loadSupliers() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(FinEntity.class);
 		Disjunction or = Restrictions.disjunction();
-		or.add(Restrictions.like("finEntityTypeUser", "%" + "مورد" + "%"));
-		or.add(Restrictions.like("finEntityTypeUser", "%" + "مقاول" + "%"));
+		or.add(Restrictions.like("finEntityTypeUser", "%" + Utils.loadMessagesFromFile("importer") + "%"));
+		or.add(Restrictions.like("finEntityTypeUser", "%" + Utils.loadMessagesFromFile("contractor") + "%"));
 		criteria.add(or);
 		List supliers = criteria.list();
 		return supliers;

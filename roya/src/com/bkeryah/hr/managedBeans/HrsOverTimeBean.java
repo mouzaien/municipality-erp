@@ -128,15 +128,15 @@ public class HrsOverTimeBean {
 		String pmonth = null;
 		String reportName = "/reports/overtime.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("year", pyear);
 		// listMonth.get(index)
 		if (frommonth <= 12)
-			pmonth = " لشهر " + listMonth.get(frommonth - 1).getNameAr();
+			pmonth = " Ù„Ø´Ù‡Ø± " + listMonth.get(frommonth - 1).getNameAr();
 		if (frommonth == 13)
-			pmonth = " خلال اجازة عيد الفطر";
+			pmonth = " Ø®Ù„Ø§Ù„ Ø§Ø¬Ø§Ø²Ø© Ø¹ÙŠØ¯ Ø§Ù„Ù�Ø·Ø±";
 		else if (frommonth == 14)
-			pmonth = "خلال اجازة عيد الاضحى";
+			pmonth = "Ø®Ù„Ø§Ù„ Ø§Ø¬Ø§Ø²Ø© Ø¹ÙŠØ¯ Ø§Ù„Ø§Ø¶Ø­Ù‰";
 		parameters.put("month", pmonth);
 
 		// parameters.put("month", listMonth.get(frommonth - 1).getNameAr());
@@ -154,7 +154,7 @@ public class HrsOverTimeBean {
 	private void printAnnouncementReportAction() {
 		String reportName = "/reports/overtime_employers.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("year", pyear);
 		parameters.put("min_month", frommonth);
 		parameters.put("max_month", tomonth);

@@ -183,7 +183,7 @@ public class LeavingEmployerBean {
 		parameters.put("bankName",
 				((HrsLoanType) dataAccessService.findEntityById(HrsLoanType.class, bankId)).getLoanTypeName());
 		parameters.put("monthName", ((Sys012) dataAccessService.findEntityById(Sys012.class, month)).getNameAr());
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
