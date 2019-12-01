@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,42 +23,35 @@ public class Article {
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	private int id;
-	@Column(name = "group_id")
-	private Integer groupId;
 	@Column(name = "sub_group_id")
 	private Integer subGroupId;
 	@Column(name = "item_Unite_Id")
 	private int itemUniteId;
-	
-	@Column(name = "name")
+	@JoinColumn(insertable = false, updatable = false, name = "Item_Unite_Id")
+	@ManyToOne
+	private ItemUnite itemUnite;
 	private String name;
-	@Column(name = "CODE")
 	private String code;
-	@Column(name = "strno")
-	private Integer strNo;
-	@Column(name = "art_type")
-	private Integer artType = 1;
 
 	// @JoinColumn(insertable=false,updatable=false,name="group_id")
 	// @ManyToOne
 	// private ArticleGroup articleGroup;
 
-	
-	@JoinColumn(insertable = false, updatable = false, name = "Item_Unite_Id")
-	@ManyToOne
-	private ItemUnite itemUnite;
 	@JoinColumn(insertable = false, updatable = false, name = "sub_group_id")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ArticleSubGroup articleSubGroup;// = new ArticleSubGroup();
 	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
 	private Set<ExchangeRequestDetails> exchangeRequestDetailsList;
 	
-	
-	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
-	@ManyToOne
-	private WhsWarehouses whsWarehouses;
+	@Transient
+	private int strNo;
+//	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
+//	@ManyToOne
+//	private WhsWarehouses whsWarehouses;
 
-	
+	//@Column(name = "art_type")
+	@Transient
+	private Integer artType = 1;
 
 	public int getId() {
 		return id;
@@ -94,13 +89,13 @@ public class Article {
 		return articleSubGroup;
 	}
 
-	public WhsWarehouses getWhsWarehouses() {
-		return whsWarehouses;
-	}
+//	public WhsWarehouses getWhsWarehouses() {
+//		return whsWarehouses;
+//	}
 
-	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
-		this.whsWarehouses = whsWarehouses;
-	}
+//	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
+//		this.whsWarehouses = whsWarehouses;
+//	}
 
 	public void setSubGroupId(Integer subGroupId) {
 		this.subGroupId = subGroupId;
@@ -138,11 +133,11 @@ public class Article {
 		this.exchangeRequestDetailsList = exchangeRequestDetailsList;
 	}
 
-	public Integer getStrNo() {
+	public int getStrNo() {
 		return strNo;
 	}
 
-	public void setStrNo(Integer strNo) {
+	public void setStrNo(int strNo) {
 		this.strNo = strNo;
 	}
 
@@ -152,14 +147,6 @@ public class Article {
 
 	public void setArtType(Integer artType) {
 		this.artType = artType;
-	}
-
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
 	}
 
 }

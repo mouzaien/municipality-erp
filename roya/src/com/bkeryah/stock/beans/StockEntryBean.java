@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -21,6 +22,7 @@ import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.ArticleStatus;
+import com.bkeryah.entities.ExchangeRequest;
 import com.bkeryah.entities.FinEntity;
 import com.bkeryah.entities.FinFinancialYear;
 import com.bkeryah.entities.HrScenario;
@@ -55,9 +57,8 @@ public class StockEntryBean {
 	private FinFinancialYear finYear = new FinFinancialYear();
 	private FinEntity supplier = new FinEntity();
 
-//	private List<EmployeeForDropDown> supplierList = new ArrayList<>();
-	private List<FinEntity> suppliersList;
-//	private Map<String, Integer> supplierMap;
+	private List<EmployeeForDropDown> supplierList = new ArrayList<>();
+	private Map<String, Integer> supplierMap;
 	private EmployeeForDropDown oneSupplier = new EmployeeForDropDown();
 
 	private StockInDetails stockInDetails = new StockInDetails();
@@ -67,8 +68,8 @@ public class StockEntryBean {
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 	private Integer currentFinYear;
-//	private Integer itemId;
-//	private Integer selectedStatus;
+	private Integer itemId;
+	private Integer selectedStatus;
 	private Integer selectedWareHouse = 10;
 	private Integer stockInMasterId;
 	private boolean allowAdd = true;
@@ -150,7 +151,20 @@ public class StockEntryBean {
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 		// for dropdownList suppliers
 		// setSupplierMap(stockServiceDao.getAllNameSuppliers());
-		/*setSupplierMap(stockServiceDao.getAllNameSuppliers());
+		setSupplierMap(stockServiceDao.getAllNameSuppliers());
+		// for (Entry<String, Integer> entry : supplierMap.entrySet()) {
+		//
+		// if (entry.getKey() != null && entry.getValue() != null) {
+		// EmployeeForDropDown sup = new EmployeeForDropDown();
+		// sup.setName(entry.getKey());
+		// sup.setId(entry.getValue());
+		// supplierList.add(sup);
+		// sup = new EmployeeForDropDown();
+		// } else {
+		// continue;
+		// }
+		//
+		// }
 
 		// forSupplier
 		for (Entry<String, Integer> entry : supplierMap.entrySet()) {
@@ -165,8 +179,8 @@ public class StockEntryBean {
 				continue;
 			}
 
-		}*/
-		suppliersList = dataAccessService.loadSupliers();
+		}
+
 	}
 
 	public void getMemoReceiptDetails() {
@@ -203,14 +217,14 @@ public class StockEntryBean {
 
 	public void addInStockItem(AjaxBehaviorEvent event) {
 		if ((supplierId == null) || selectedWareHouse == null) {
-			MsgEntry.addErrorMessage("Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø®ØªØ± Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹ ÙˆØ§Ù„Ù…ÙˆØ±Ø¯");
+			MsgEntry.addErrorMessage("من فضلك اختر المستودع والمورد");
 			return;
 		}
 		try {
-//			stockInDetails.setArticleId(itemId);
-			article = (Article) dataAccessService.findEntityById(Article.class, stockInDetails.getArticleId());
-			articleStatus = (ArticleStatus) dataAccessService.findEntityById(ArticleStatus.class, stockInDetails.getArticleStatus());
-//			stockInDetails.setArticleStatus(selectedStatus);
+			stockInDetails.setArticleId(itemId);
+			article = (Article) dataAccessService.findEntityById(Article.class, itemId);
+			articleStatus = (ArticleStatus) dataAccessService.findEntityById(ArticleStatus.class, selectedStatus);
+			stockInDetails.setArticleStatus(selectedStatus);
 			stockInDetails.setUniteName(article.getItemUnite().getName());
 			stockInDetails.setArticleName(article.getName());
 			stockInDetails.setArticleStatusName(articleStatus.getArticleStatusName());
@@ -225,8 +239,7 @@ public class StockEntryBean {
 			// allowAdd = false;
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			MsgEntry.addErrorMessage("خطا في العملية");
 		}
 
 	}
@@ -255,7 +268,6 @@ public class StockEntryBean {
 		parameters.put("memoReceiptNo", stockEntryMaster.getStockEntryMasterId());// "259306";
 		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath("/reports/memoReceiptDetails.jasper"));
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -272,7 +284,6 @@ public class StockEntryBean {
 
 	private String printMemo(String reportName, StockEntryMaster entryMaster) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		List<StockInDetails> memoEntryDetails = entryMaster.getStockInDetailsList();
 		List<StockEntryModel> stockEntryDetails = new ArrayList<StockEntryModel>();
 		Integer eleNbr = 0;
@@ -292,7 +303,7 @@ public class StockEntryBean {
 				total = detTotal + entryDet.getTotal();
 				StockEntryModel stockEntryModelSub = new StockEntryModel();
 				stockEntryModelSub.setNum(num);
-				stockEntryModelSub.setArtName("Ù…Ø§Ù‚Ø¨Ù„Ù‡");
+				stockEntryModelSub.setArtName("ماقبله");
 				// stockEntryModel.setAmountInLetters(dataAccessService.getAmountInLetters(total.toString()));
 				num++;
 				// System.out.println("1 "
@@ -368,10 +379,10 @@ public class StockEntryBean {
 		return "";
 	}
 
-	public void saveStock() {
+	public void save(AjaxBehaviorEvent abe) {
 		try {
-//			String selectedSupplier = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-//					.get("supplier");
+			String selectedSupplier = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("supplier");
 			String hdate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 					.get("startDate");
 			String hNotifdate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
@@ -394,7 +405,7 @@ public class StockEntryBean {
 				stockEntryMaster.setUserId(currentUser.getUserId());
 				stockEntryMaster.setStockFinEntryGdate(df.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(hdate)));
 			} catch (ParseException e1) {
-				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+				MsgEntry.addErrorMessage("خطا فى إدخال البيانات");
 				e1.printStackTrace();
 			}
 
@@ -403,25 +414,20 @@ public class StockEntryBean {
 				try {
 					stockInMasterId = stockServiceDao.addStockIn(stockEntryMaster, currentUser.getUserId(),
 							StockInDetailList);
-					stockEntryMaster = new StockEntryMaster();
 					stockInDetails = new StockInDetails();
 					StockInDetailList = new ArrayList<>();
 					article = new Article();
-					currentFinYear = null;
-					selectedWareHouse = null;
-					blockSupplier = false;
-					
-					MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+					MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
 				} catch (Exception e) {
-					MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+					MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 					e.printStackTrace();
 
 				}
 			} else {
-				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.no.article"));
+				MsgEntry.addErrorMessage("من فضلك اضف على الاقل واحد صنف");
 			}
 		} catch (NumberFormatException e) {
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 			e.printStackTrace();
 		}
 
@@ -453,7 +459,7 @@ public class StockEntryBean {
 				stockEntryMaster.setUserId(currentUser.getUserId());
 				stockEntryMaster.setStockFinEntryGdate(df.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(hdate)));
 			} catch (ParseException e1) {
-				MsgEntry.addErrorMessage("Ø®Ø·Ø§ Ù�Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª");
+				MsgEntry.addErrorMessage("خطا فى إدخال البيانات");
 				e1.printStackTrace();
 				return "";
 			}
@@ -466,17 +472,17 @@ public class StockEntryBean {
 					stockInDetails = new StockInDetails();
 					StockInDetailList = new ArrayList<>();
 					article = new Article();
-					MsgEntry.addAcceptFlashInfoMessage("ØªÙ… Ø§Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨Ùƒ Ø¨Ù†Ø¬Ø§Ø­");
+					MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
 				} catch (Exception e) {
-					MsgEntry.addErrorMessage("Ø®Ø·Ø§ Ù�Ù‰ ØªÙ†Ù�ÙŠØ° Ø§Ù„Ø¹Ù…Ù„ÙŠØ©");
+					MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 					e.printStackTrace();
 
 				}
 			} else {
-				MsgEntry.addErrorMessage("Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø¶Ù� Ø¹Ù„Ù‰ Ø§Ù„Ø§Ù‚Ù„ ÙˆØ§Ø­Ø¯ ØµÙ†Ù�");
+				MsgEntry.addErrorMessage("من فضلك اضف على الاقل واحد صنف");
 			}
 		} catch (NumberFormatException e) {
-			MsgEntry.addErrorMessage("Ø®Ø·Ø§ Ù�Ù‰ ØªÙ†Ù�ÙŠØ° Ø§Ù„Ø¹Ù…Ù„ÙŠØ©");
+			MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 			return "";
 		}
 		return "mails";
@@ -508,10 +514,10 @@ public class StockEntryBean {
 		// String items = "";
 		// for (ExchangeRequestDetails detail :
 		// request.getExchangeRequestDetailsList()) {
-		// items = items + detail.getArticle().getName() + " Ø§Ù„ÙƒÙ…ÙŠØ©: " +
+		// items = items + detail.getArticle().getName() + " الكمية: " +
 		// detail.getExchangeAtcualyCount() + "\n";
 		// }
-		// String userComment = wrkAppComment + " Ø§Ù„Ø£ØµÙ†Ø§Ù�:" + items;
+		// String userComment = wrkAppComment + " الأصناف:" + items;
 		wrkAppComment = "";
 		applicationPurpose = "1";
 		dataAccessService.acceptStockEntry(stockEntryMaster, recordId, MailTypeEnum.MEMO_RECEIPT.getValue(),
@@ -527,14 +533,14 @@ public class StockEntryBean {
 		stockEntryMaster.setSerialNumber(SerialNum);
 		dataAccessService.updateObject(stockEntryMaster);
 		// }
-		// MsgEntry.addInfoMessage("ØªÙ… Ø§Ù„Ø­Ù�Ø¸");
+		// MsgEntry.addInfoMessage("تم الحفظ");
 		System.out.println("New serial number is:---  " + stockEntryMaster.getSerialNumber() + " ---");
 	}
 
 	public void cancleUpdateSerialNum() {
 
 		SerialNum = stockEntryMaster.getSerialNumber();
-		// MsgEntry.addErrorMessage("ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ù�Ø¸");
+		// MsgEntry.addErrorMessage("تم إلغاء الحفظ");
 		System.out.println("New serial number is:---  " + stockEntryMaster.getSerialNumber() + " ---");
 	}
 
@@ -610,13 +616,13 @@ public class StockEntryBean {
 		this.articleStatus = articleStatus;
 	}
 
-//	public Integer getSelectedStatus() {
-//		return selectedStatus;
-//	}
-//
-//	public void setSelectedStatus(Integer selectedStatus) {
-//		this.selectedStatus = selectedStatus;
-//	}
+	public Integer getSelectedStatus() {
+		return selectedStatus;
+	}
+
+	public void setSelectedStatus(Integer selectedStatus) {
+		this.selectedStatus = selectedStatus;
+	}
 
 	public boolean isAllowAdd() {
 		return allowAdd;
@@ -650,13 +656,13 @@ public class StockEntryBean {
 		this.stockInDetails = stockInDetails;
 	}
 
-//	public Integer getItemId() {
-//		return itemId;
-//	}
-//
-//	public void setItemId(Integer itemId) {
-//		this.itemId = itemId;
-//	}
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
+	}
 
 	public Integer getCurrentFinYear() {
 		return currentFinYear;
@@ -674,13 +680,13 @@ public class StockEntryBean {
 		this.allArticlesStatus = allArticlesStatus;
 	}
 
-//	public Map<String, Integer> getSupplierMap() {
-//		return supplierMap;
-//	}
-//
-//	public void setSupplierMap(Map<String, Integer> supplierMap) {
-//		this.supplierMap = supplierMap;
-//	}
+	public Map<String, Integer> getSupplierMap() {
+		return supplierMap;
+	}
+
+	public void setSupplierMap(Map<String, Integer> supplierMap) {
+		this.supplierMap = supplierMap;
+	}
 
 	public FinEntity getSupplier() {
 		return supplier;
@@ -770,13 +776,13 @@ public class StockEntryBean {
 		this.articles = articles;
 	}
 
-//	public List<EmployeeForDropDown> getSupplierList() {
-//		return supplierList;
-//	}
-//
-//	public void setSupplierList(List<EmployeeForDropDown> supplierList) {
-//		this.supplierList = supplierList;
-//	}
+	public List<EmployeeForDropDown> getSupplierList() {
+		return supplierList;
+	}
+
+	public void setSupplierList(List<EmployeeForDropDown> supplierList) {
+		this.supplierList = supplierList;
+	}
 
 	public EmployeeForDropDown getOneSupplier() {
 		return oneSupplier;
@@ -875,14 +881,6 @@ public class StockEntryBean {
 
 	public void setBlockSupplier(boolean blockSupplier) {
 		this.blockSupplier = blockSupplier;
-	}
-
-	public List<FinEntity> getSuppliersList() {
-		return suppliersList;
-	}
-
-	public void setSuppliersList(List<FinEntity> suppliersList) {
-		this.suppliersList = suppliersList;
 	}
 
 }

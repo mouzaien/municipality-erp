@@ -29,6 +29,9 @@ public class Employer {
 	private String birthDateGerige;
 	private Integer CategoryId;
 	private Integer trans;
+	private Integer salaryStatus;//0 stopped 1 no
+	private Integer mandateInner;
+	private Integer employee_type;
 
 	public String getReturnDate() {
 		return returnDate;
@@ -250,6 +253,30 @@ public class Employer {
 
 	public void setTrans(Integer trans) {
 		this.trans = trans;
+	}
+
+	public Integer getSalaryStatus() {
+		return salaryStatus;
+	}
+
+	public void setSalaryStatus(Integer salaryStatus) {
+		this.salaryStatus = salaryStatus;
+	}
+
+	public Integer getMandateInner() {
+		return mandateInner;
+	}
+
+	public void setMandateInner(Integer mandateInner) {
+		this.mandateInner = mandateInner;
+	}
+
+	public Integer getEmployee_type() {
+		return employee_type;
+	}
+
+	public void setEmployee_type(Integer employee_type) {
+		this.employee_type = employee_type;
 	}
 
 	

@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template.xhtml">
+
+
+	<ui:define name="content">
+		<h:form prependId="false">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+
+			<div class="image-box-footer">
+				<p:commandButton value="إرسال" styleClass="btn btn-primary"
+					ajax="false" onclick="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()"
+					action="#{deputationTrainingBean.saveRequest}" />
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">
+					#{msg['deputation']}<span class="fa fa-fw fa-clock-o"></span>
+				</h1>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="الموظف" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<p:selectOneMenu id="empNBList" filter="true"
+							filterMatchMode="contains"
+							value="#{deputationTrainingBean.employerNB}">
+							<f:selectItem itemLabel="اختر الموظف " itemValue="" />
+							<f:selectItems value="#{deputationTrainingBean.employersList}"
+								var="emp" itemValue="#{emp.employeNumber}"
+								itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+							<p:ajax event="change" update="@form" process="@this"
+								listener="#{deputationTrainingBean.loadEmployer}">
+							</p:ajax>
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="الوظيفة">
+						</h:outputLabel>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel value="#{deputationTrainingBean.employer.job}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel value="المرتبة"></h:outputLabel>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel value="#{deputationTrainingBean.employer.rankName}" />
+					</div>
+				</div>
+				<br /> <br />
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="تاريخ أول تعيين" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel
+							value="#{deputationTrainingBean.employer.firstApplicationDate}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="الراتب الأساسي" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel
+							value="#{deputationTrainingBean.employer.basicSalary}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel value="جهة العمل" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel
+							value="#{deputationTrainingBean.employer.department}" />
+					</div>
+				</div>
+				<br /> <br />
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="بدل النقل الشهري" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel value="#{deputationTrainingBean.employer.trans}" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="بدل الركاب" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-2">
+						<h:outputLabel
+							value="#{deputationTrainingBean.employer.mandateInner}" />
+					</div>
+					<!-- 				<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+					<!-- 						<h:outputLabel value="جهة العمل"/> -->
+					<!-- 				</div> -->
+					<!-- 				<div class="ui-g-12 ui-md-6 ui-lg-2"> -->
+					<!-- 					<h:outputLabel -->
+					<!-- 												value="#{deputationTrainingBean.employer.department}" /> -->
+					<!-- 				</div> -->
+				</div>
+
+
+				<br></br>
+
+				<div class="col-lg-12"
+					style="background-color: white; border-top: 5px solid #428BCA">
+
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<p:selectOneRadio id="typeMenu"
+								value="#{deputationTrainingBean.type}">
+								<f:selectItem itemLabel="انتداب" itemValue="1"></f:selectItem>
+								<f:selectItem itemLabel="تدريب" itemValue="0"></f:selectItem>
+
+								<p:ajax process="typeMenu" event="change" update="depTrain"
+									listener="#{deputationTrainingBean.changeType}"></p:ajax>
+							</p:selectOneRadio>
+
+
+						</div>
+					</div>
+					<h:panelGroup id="depTrain">
+
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="عدد الايام" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:inputText required="true" id="txtdays"
+									value="#{deputationTrainingBean.dep_train.dayscount}">
+									<p:ajax event="blur" update="enddate,transportFees,depTrain"
+										process="@this,startDate"
+										listener="#{deputationTrainingBean.change}">
+									</p:ajax>
+
+
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-1">
+								<h:outputLabel value="بدل النقل" styleClass="btxt" />
+
+							</div>
+
+							<div class="ui-g-2">
+
+								<h:outputLabel value="#{deputationTrainingBean.trans}"
+									id="transportFees">
+
+
+								</h:outputLabel>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="بدل التدريب" id="depTrainl"
+									style="width:100%;"
+									rendered="#{deputationTrainingBean.type eq 0}" />
+							</div>
+
+							<div class="ui-g-2">
+								<h:outputLabel id="depTrainv"
+									value="#{deputationTrainingBean.train}"
+									rendered="#{deputationTrainingBean.type eq 0}">
+								</h:outputLabel>
+
+							</div>
+						</div>
+					</h:panelGroup>
+					<br></br>
+
+					<div class="ui-g">
+						<div class="ui-md-1">
+							<p:outputLabel value="المهمه" />
+						</div>
+
+						<div class="ui-md-4">
+							<p:inputText required="true" style="width:100%"
+								value="#{deputationTrainingBean.dep_train.mission}">
+
+							</p:inputText>
+						</div>
+					</div>
+
+					<br></br>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+
+							<p:outputLabel value="تاريخ البدايه" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<!-- 						<ui:include src="../../shared/calender.xhtml" /> -->
+
+							<h:panelGroup id="VACASTRT">
+								<p:inputText id="startDate"
+									value="#{deputationTrainingBean.dep_train.hij_st_date}"
+									onfocus="loadCalendar();"
+									styleClass="form-control form-controlCal">
+									<p:ajax event="blur" update="enddate" process="@this"
+										listener="#{deputationTrainingBean.calculateDate}" />
+								</p:inputText>
+							</h:panelGroup>
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<p:outputLabel value="تاريخ النهايه" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:outputLabel id="enddate"
+								value="#{deputationTrainingBean.end_date}" />
+
+						</div>
+						<div class="col-md-2">
+							<p:commandButton id="calcDate"
+								value="#{msg['calcul.return.date']}"
+								actionListener="#{deputationTrainingBean.calculateDate}"
+								process="startDate,txtdays" update="enddate"
+								style="font-size: 10px !important;margin-left: 5px;margin-right: 5px;display:none !important;">
+							</p:commandButton>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<script type="text/javascript">
+				$(".form-controlCal").blur(function() {
+					$('.calendars-cmd-today ').html('اليوم');
+					$('.calendars-cmd-prev').html('السابق >');
+					$('.calendars-cmd-next').html(' > اللاحق ');
+					$('.calendars-ctrl').css('display', 'none');
+					$('.calendars-month').css('width', '244px');
+					$('.calendars-month').css('float', 'right');
+					$('.calendars').css('width', '245px');
+
+				});
+
+				$(".form-controlCal").calendarsPicker({
+					calendar : $.calendars.instance('ummalqura'),
+					language : 'ar',
+					onSelect : function(date) {
+						document.getElementById('calcDate').click();
+					}
+				});
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

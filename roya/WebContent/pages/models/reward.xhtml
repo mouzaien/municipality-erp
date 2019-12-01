@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+
+	<h:body>
+  
+  
+		<ui:composition template="/template.xhtml">
+			
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages id="Msg" autoUpdate="true" closable="true" />
+					<div  align="left">
+							<p:commandButton  value="ارسال" action="#{rewardBean.saveReward}"></p:commandButton>
+					</div>
+				 <div class="card card-w-title" dir="rtl">
+						<div class="col-lg-12"
+						style="background-color: white;">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca"></h3>
+							<div class="row">
+								<h:panelGroup id="details_data">
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu style="width:70%;" id="empNBList" filter="true"
+												filterMatchMode="contains"
+												value="#{rewardBean.employerNB}">
+												
+												<f:selectItems 
+													value="#{rewardBean.employersList}" var="emp"
+													itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+												<f:ajax render="includeform:details_data "
+													execute="empNBList" event="change"
+													listener="#{rewardBean.loadEmployer}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel value="#{rewardBean.employer.job}" />
+										</div>
+
+										<div class="ui-g-1">
+											<h:outputLabel value="المرتبة" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{rewardBean.employer.rankName}" />
+										</div>
+									</div>
+									<br />
+									<br />
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:outputLabel
+												value="#{rewardBean.employer.firstApplicationDate}" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{rewardBean.employer.basicSalary}" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="جهة العمل" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{rewardBean.employer.department}" />
+										</div>
+										</div>
+										
+										<br></br> <br></br>
+										<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="بدل النقل" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<h:outputLabel
+												value="#{rewardBean.employer.trans}" />
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel value="بدل الركاب" styleClass="btxt" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel
+												value="#{rewardBean.employer.mandateInner}" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+						</div>
+						
+
+
+					</div>
+
+
+					<div  class="col-lg-12"
+						style="background-color: white; border-top:5px solid #428BCA">
+						<div  style="margin-top: 20px">
+						<h:panelGroup class="ui-g" style="margin-top:50px;" id="tst">
+							<div class="ui-g-4">
+								
+								<p:selectOneMenu  required="true" style="width:70%"  id="month" value="#{rewardBean.month}">
+									<f:selectItem itemLabel="اختر الشهر" itemValue="" />
+									<f:selectItems  value="#{rewardBean.listMonth}" var="months"
+										itemLabel="#{months.nameAr} #{months.id}"
+										itemValue="#{months.id}" />
+										
+								</p:selectOneMenu>
+
+							</div>
+							<div>
+							
+							</div>
+							<div  class="ui-g-1">
+									<h:outputLabel  value="السنه" styleClass="btxt" />
+							</div>
+							<div class="ui-g-3">
+								
+								 <p:spinner id="minMax" value="#{rewardBean.year}" min="1440" max="1441" />
+
+							</div>
+							<div  class="ui-g-1">
+									<h:outputLabel value="المبلغ" styleClass="btxt" />
+							</div>
+							
+							<div class="ui-g-3">
+							<p:inputNumber id="amount" required="true" validatorMessage="must enter field" value="#{rewardBean.amount}" ></p:inputNumber>
+							</div>
+							<br></br><br></br>
+							<div   class="ui-g-1" >
+									<h:outputLabel  value="نوع المكافاه" styleClass="btxt" />
+							</div>
+							
+							<div   class="ui-g-8">
+							<p:inputText id="rewardtype" required="true" style="width:100%;" value="#{rewardBean.reward_type}" >
+								
+							</p:inputText>
+							</div>
+						
+							
+						</h:panelGroup>
+						
+						</div>
+							
+					 </div>
+				   </div>
+				</h:form>
+				
+
+			</ui:define>
+		</ui:composition>
+
+
+
+	</h:body>
+</f:view>
+</html>

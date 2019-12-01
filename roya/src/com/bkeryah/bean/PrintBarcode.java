@@ -31,7 +31,7 @@ public class PrintBarcode implements Serializable {
 		ArcRecords arcRec = new ArcRecords();
 		String reportName = "/reports/inbarcode.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 
 		if (checkOutComing) {
 			arcRec = dataAccessService.findRecordByOutComeNo(incomeNumber);

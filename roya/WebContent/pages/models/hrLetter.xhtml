@@ -55,10 +55,9 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 
 			<div class="image-box-footer" style="float: left">
 				<p:commandButton rendered="#{! mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.hrLetter}"
-					value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return" ajax="false"
-					onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"
+					value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return"
 					action="#{mainManagedBean.mailExecutor.sendRequestForHrletter}">
-					
+					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['reception']}"
@@ -92,7 +91,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['print']}" icon="fa fa-fw fa-print"
-					immediate="true" styleClass="purple-btn" ajax="false"
+					immediate="true" styleClass="purple-btn"
 					onclick="this.form.target='_blank'"
 					rendered="#{mainManagedBean.mailExecutor.canPrint  and mainManagedBean.mailExecutor.hrLetter }"
 					action="#{mainManagedBean.mailExecutor.printHrLetterReportAction}">

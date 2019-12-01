@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-27T14:43:10 -->
+<!-- 2017-10-31T10:24:31 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penalities_list" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -21,7 +21,6 @@
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="condition" class="java.lang.String"/>
-	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select FD.FINE_NO, fd.fine_value,M.FINE_DATE, M.F_ID_NO, M.F_FINE_CASE, M.F_NAME, M.F_LICENCE_NO,M.F_TRADE_MARK_NAME , US.EMPNAME
 from REQ_FINES_DETAILS fd,REQ_FINES_master m,arc_users us
@@ -71,7 +70,7 @@ where M.FINE_NO=FD.FINE_NO and M.F_SUPERVISOR_CODE=US.USER_ID  $P!{condition}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+$P{compName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="90" width="149" height="23" uuid="85ecbd55-df0f-489c-9a9a-8ddeaf53ee19">

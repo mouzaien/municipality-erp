@@ -225,7 +225,6 @@ public class newReqFinBean extends Scanner implements Serializable {
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("condition", condition);
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);			
 		return"";
 	}

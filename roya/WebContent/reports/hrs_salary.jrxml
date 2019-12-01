@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-21T12:55:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrs_salary" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="737dfd62-6224-448f-be22-74056000af0b">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
@@ -369,9 +370,9 @@ $P{compName}+"\n"+
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="Arial" size="7"/>
 				</textElement>
-				<text><![CDATA[اخرى]]></text>
+				<text><![CDATA[الزراعي]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="138" y="40" width="20" height="20" uuid="96231a50-743c-4802-9496-0e3c46f2b5e4"/>
@@ -687,7 +688,7 @@ $P{compName}+"\n"+
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SAL_OTHER_OUT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{SAL_BANK_3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.##">
 				<reportElement x="138" y="0" width="20" height="19" uuid="1b765770-6497-4106-b645-64c94fe3954e">
@@ -1041,7 +1042,7 @@ $P{compName}+"\n"+
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumotherout}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumzeraa}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.##">
 				<reportElement x="303" y="0" width="55" height="18" uuid="11e3e3c7-1d18-4aef-8ea3-184d2312c4d6">

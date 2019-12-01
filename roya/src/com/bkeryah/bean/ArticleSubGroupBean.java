@@ -16,7 +16,6 @@ import com.bkeryah.entities.ArticleSubGroup;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
-import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -48,11 +47,11 @@ public class ArticleSubGroupBean {
 			articleSubGroup = new ArticleSubGroup();
 			articleSubGroups = dataAccessService.getAllArticleSubGroups();
 			articleGroups = dataAccessService.getAllArticleGroups();
-			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+			MsgEntry.addInfoMessage("تم اضافة المجموعة بنجاح");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation")+" "+Utils.loadMessagesFromFile("error.repeated.code"));
+			MsgEntry.addErrorMessage("  رمز مكرر) خطا فى  اضافة المجموعة) ");
 		}
 	}
 
@@ -64,11 +63,11 @@ public class ArticleSubGroupBean {
 			articleSubGroups = dataAccessService.getAllArticleSubGroups();
 			// articleGroups = dataAccessService.getAllArticleGroups();
 			newFlag = false;
-			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+			MsgEntry.addInfoMessage("تم تعديل المجموعة بنجاح");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation")+" "+Utils.loadMessagesFromFile("error.repeated.code"));
+			MsgEntry.addErrorMessage("  رمز مكرر) خطا فى  اضافة المجموعة) ");
 		}
 	}
 
@@ -79,15 +78,14 @@ public class ArticleSubGroupBean {
 	public void onRowEdit(RowEditEvent event) {
 		ArticleSubGroup selectedItem = (ArticleSubGroup) event.getObject();
 		dataAccessService.updateObject(selectedItem);
-		MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation")+": "+selectedItem.getName());
-//		FacesMessage msg = new FacesMessage("تم حفظ التعديل", selectedItem.getName());
-//		FacesContext.getCurrentInstance().addMessage(null, msg);
+		FacesMessage msg = new FacesMessage("تم حفظ التعديل", selectedItem.getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		articleSubGroups = dataAccessService.getAllArticleSubGroups();
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		/*FacesMessage msg = new FacesMessage("تم إلغاء التعديل", ((ArticleSubGroup) event.getObject()).getName());
-		FacesContext.getCurrentInstance().addMessage(null, msg);*/
+		FacesMessage msg = new FacesMessage("تم إلغاء التعديل", ((ArticleSubGroup) event.getObject()).getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	//////////////////////////// end of edit //////////////////////

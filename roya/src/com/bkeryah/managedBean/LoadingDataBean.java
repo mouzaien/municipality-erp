@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import com.bkeryah.bean.WrkLetterFromClass;
 import com.bkeryah.entities.ArcPeopleModel;
@@ -112,18 +111,7 @@ public class LoadingDataBean {
 	private List<ContractCancelReason> reasonsList;
 	private List<ContractDirectType> contractDirectTypesList;
 	private List<LicTrdMasterFile> licencesList;
-	private List<WrkLetterFromClass> listLetterFrom;
-	private String investmentCity;
-	private String logoCustomer;
-	private String customerName;
-
-	public String getLogoCustomer() {
-		return logoCustomer;
-	}
-
-	public void setLogoCustomer(String logoCustomer) {
-		this.logoCustomer = logoCustomer;
-	}
+	List<WrkLetterFromClass> listLetterFrom;
 
 	public List<RequestStatus> getStatusMapList() {
 		return statusMapList;
@@ -136,12 +124,6 @@ public class LoadingDataBean {
 	@PostConstruct
 	public void init() {
 		loadReqsMap();
-		if(StringUtils.isEmpty(investmentCity))
-			investmentCity = dataAccessService.findSystemProperty("INVESTMENT_CITY");
-		if(StringUtils.isEmpty(logoCustomer))
-			logoCustomer = dataAccessService.findSystemProperty("LOGO_CUSTOMER");
-		if(StringUtils.isEmpty(customerName))
-			customerName = dataAccessService.findSystemProperty("CUSTOMER_NAME");
 	}
 
 	public Map<Integer, RequestStatus> getStatusMap() {
@@ -682,22 +664,4 @@ public class LoadingDataBean {
 	public void setListLetterFrom(List<WrkLetterFromClass> listLetterFrom) {
 		this.listLetterFrom = listLetterFrom;
 	}
-	
-	public String getInvestmentCity() {
-		return investmentCity;
-	}
-
-	public void setInvestmentCity(String investmentCity) {
-		this.investmentCity = investmentCity;
-	}
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	
 }

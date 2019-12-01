@@ -90,7 +90,6 @@ public class UserCarsBean{
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = "/reports/user_cars.jasper";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("LOGO_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);

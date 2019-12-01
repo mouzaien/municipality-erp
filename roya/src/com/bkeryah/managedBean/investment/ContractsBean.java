@@ -84,10 +84,7 @@ public class ContractsBean {
 			cont.getActionsList().add(ContractOperationEnum.DELETE);
 			cont.getActionsList().add(ContractOperationEnum.BILL);
 			try {
-				Date endDate = Utils.convertHDateToGDate(cont.getEndDate());
-				if(endDate == null)
-					return ;
-				if (endDate.before(new Date()))
+				if (Utils.convertHDateToGDate(cont.getEndDate()).before(new Date()))
 					cont.getActionsList().add(ContractOperationEnum.RENEW);
 				else if (cont.getStatus() != ContractOperationEnum.CANCEL.getAction())
 					cont.getActionsList().add(ContractOperationEnum.CANCEL);
@@ -145,7 +142,6 @@ public class ContractsBean {
 			} else {
 				contract.setStatus(1);
 			}
-			contract.setContractDate(new Date());
 			dataAccessService.saveContract(contract, selectedClausesList);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 			if (contractsList == null)
@@ -164,24 +160,18 @@ public class ContractsBean {
 	public void sortDates() {
 
 		try {
-//			if (higriMode) {
-//				selecteStartDate_G = Utils.convertHDateToGDate(selecteStartDate);
-//				selecteEndDate_G = Utils.convertHDateToGDate(selecteEndDate);
-//			} else {
-//				selecteStartDate = Utils.grigDatesConvert(selecteStartDate_G);
-//				selecteEndDate = Utils.grigDatesConvert(selecteEndDate_G);
-//			}
-			
-			if (!higriMode) {
+			if (higriMode) {
+				selecteStartDate_G = Utils.convertHDateToGDate(selecteStartDate);
+				selecteEndDate_G = Utils.convertHDateToGDate(selecteEndDate);
+			} else {
 				selecteStartDate = Utils.grigDatesConvert(selecteStartDate_G);
 				selecteEndDate = Utils.grigDatesConvert(selecteEndDate_G);
-				contract.setBillStartDate(Utils.grigDatesConvert(contract.getBillGStartDate()));
-				contract.setBillEndDate(Utils.grigDatesConvert(contract.getBillGEndDate()));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+		contract.setContractDate(selecteStartDate_G);
 		contract.setStartDate(selecteStartDate);
 		contract.setEndDate(selecteEndDate);
 	}

@@ -122,7 +122,7 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 		String reportName = "/reports/normal_vacation.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("seqid", employeeVacation.getId());
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

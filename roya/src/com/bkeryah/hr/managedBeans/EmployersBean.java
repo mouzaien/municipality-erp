@@ -47,6 +47,19 @@ public class EmployersBean {
 		return "recruitEmployers";
 	}
 
+	public String goToEmployeeDetails() {
+//		System.err.println("  employeeNumber " + employeeNumber);
+		// FacesContext facesContext = FacesContext.getCurrentInstance();
+		// HttpSession session = (HttpSession)
+		// facesContext.getExternalContext().getSession(true);
+		// session.setAttribute("employeeNumber", employeeNumber);
+//		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+//		flash.put("employeeNumber", employeeNumber);
+
+		return "recruitNewEmployers";
+	}
+	
+	
 	public void onRowEdit(RowEditEvent event) {
 		HrsMasterFile selectedElm = (HrsMasterFile) event.getObject();
 		dataAccessService.updateObject(selectedElm);

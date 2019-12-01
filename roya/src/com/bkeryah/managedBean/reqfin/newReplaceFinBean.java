@@ -151,7 +151,6 @@ public class newReplaceFinBean extends Scanner implements Serializable {
 		 String reportName = "/reports/bill.jasper";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("p1", payLicBill.getBillNumber());
-			parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 			parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 					.getRealPath("/reports/bill_detail.jasper"));
 			Utils.printPdfReport(reportName, parameters);

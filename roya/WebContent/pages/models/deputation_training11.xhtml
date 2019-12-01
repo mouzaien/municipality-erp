@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+
+	<h:body>
+
+
+		<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca"></h3>
+							<div class="row">
+								<h:panelGroup id="details_data">
+									<div class="col-md-12">
+										<div class="col-md-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										<div class="col-md-3">
+											<p:selectOneMenu id="empNBList" filter="true"
+												filterMatchMode="contains"
+												value="#{deputationTrainingBean.employerNB}">
+												<f:selectItem itemLabel="اختر الموظف " itemValue="" />
+												<f:selectItems
+													value="#{deputationTrainingBean.employersList}" var="emp"
+													itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+												<f:ajax render="includeform:details_data includeform:tst"
+													execute="empNBList" event="change"
+													listener="#{deputationTrainingBean.loadEmployer}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="الوظيفة" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="#{deputationTrainingBean.employer.job}" />
+										</div>
+
+										<div class="col-md-2">
+											<h:outputLabel value="المرتبة" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.rankName}" />
+										</div>
+									</div>
+									<br />
+									<br />
+									<div class="col-md-12">
+										<div class="col-md-2">
+											<h:outputLabel value="تاريخ أول تعيين" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.firstApplicationDate}" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="الراتب الأساسي" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.basicSalary}" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="جهة العمل" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.department}" />
+										</div>
+										<br></br> <br></br>
+										<div class="col-md-2">
+											<h:outputLabel value="بدل النقل" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.trans}" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel value="بدل الركاب" styleClass="btxt" />
+										</div>
+										<div class="col-md-2">
+											<h:outputLabel
+												value="#{deputationTrainingBean.employer.mandateInner}" />
+										</div>
+										
+									</div>
+								</h:panelGroup>
+							</div>
+						</div>
+						<br /> <br /> <br /> <br />
+
+
+					</div>
+
+
+
+
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<h:panelGroup id="tst">
+							<br></br>
+							<div style="color: #428bca">
+								<h3 class="page-header">
+
+									<p:selectOneRadio id="typeMenu"
+										value="#{deputationTrainingBean.type}">
+										<f:selectItem itemLabel="انتداب" itemValue="1"></f:selectItem>
+										<f:selectItem itemLabel="تدريب" itemValue="0"></f:selectItem>
+
+										<f:ajax render="includeform:tst" execute="typeMenu"
+											event="change"
+											listener="#{deputationTrainingBean.changeType}"></f:ajax>
+									</p:selectOneRadio>
+									
+								</h3>
+								<div style="margin-top: 15px" class="col-md-1">
+									<h:outputLabel value="عدد الايام" styleClass="btxt" />
+								</div>
+								<div class="col-md-1">
+									<h:inputText required="true" style="border:1px solid black;width:60px;"
+										id="txtdays" value="#{deputationTrainingBean.no_of_days}"
+										styleClass="form-control input-small">
+
+										<f:ajax render="includeform:tst" execute="txtdays"
+											event="blur" listener="#{deputationTrainingBean.change}">
+
+
+										</f:ajax>
+
+									</h:inputText>
+
+								</div>
+							
+
+								
+								<div style="margin-top: 15px;margin-right:100px" class="col-md-1">
+									<h:outputLabel value="بدل النقل" styleClass="btxt" />
+								</div>
+								<div class="col-md-1">
+									<h:outputLabel value="#{deputationTrainingBean.trans}"
+										styleClass="form-control input-small">
+
+
+									</h:outputLabel>
+
+								</div>
+								<h:panelGroup id="badal">
+									<div id="tdreb">
+										<div style="margin-right:150px;" class="col-md-1">
+
+											<h:outputLabel   value="بدل التدريب" styleClass="btxt"
+												rendered="#{deputationTrainingBean.type eq 0}" />
+										</div>
+										<div class="col-md-1">
+											<h:outputLabel value="#{deputationTrainingBean.train}"
+												rendered="#{deputationTrainingBean.type eq 0}"
+												styleClass="form-control input-small">
+
+											</h:outputLabel>
+
+										</div>
+
+									</div>
+
+								</h:panelGroup>
+								<br></br><br></br><br></br>
+								<div style="display:block;margin-bottom:70px;">
+								<div class="col-md-1">
+									<h:outputLabel value="المهمه" styleClass="btxt" />
+								</div>
+								<div  class="col-md-11">
+									<h:inputText required="true" style="border:1px solid black;"
+										value="#{deputationTrainingBean.purpose}"
+										styleClass="form-control input-small">
+
+									</h:inputText>
+
+								</div>
+								</div>
+
+
+								
+							</div>
+							
+							
+							
+							
+						
+						
+						</h:panelGroup>
+						<hr></hr>
+						<div  class="col-md-1">
+							<h:outputLabel value="تاريخ البدايه" styleClass="btxt" />
+						</div>
+						<div class="col-md-3">
+							<ui:include src="../../shared/calender.xhtml" />
+						</div>
+						
+						
+						<div  class="col-md-1">
+							<h:outputLabel value="تاريخ النهايه" styleClass="btxt" />
+						</div>
+						<div class="col-md-3">
+							<h:inputText id="enddate"
+								value="#{deputationTrainingBean.end_date}"
+								styleClass="form-control input-small">
+
+							</h:inputText>
+							
+						</div>
+						
+
+
+
+							
+						
+						<div style=" ;display: block;margin-top:10px;margin-bottom:50px; float: left;">
+						
+
+							<h:commandButton style="color:white; height:35px;border-radius:8px;width:85px;background-color:rgb(51,113,255)" value="ارسال"
+								action="#{deputationTrainingBean.saveRequest}"></h:commandButton>
+						</div>
+						
+
+					</div>
+
+				</h:form>
+				<script>
+						document.getElementById("startDate").addEventListener("blur",()=>{
+							setTimeout(function(){ 
+								
+								
+								
+								
+								var x=document.getElementById("startDate").value;
+								
+								var day=parseInt(x.slice(0,2));
+								var month=parseInt(x.slice(3,5));
+								var year=parseInt(x.slice(6,10));
+								console.log(day);
+								console.log(month);
+								console.log(year);
+								
+								
+								var y=parseInt(document.getElementById("includeform:txtdays").value);
+								var days=day+y;
+								if(month==2||month==4||month==7||month==12)
+									{
+									if(days>29)
+										{
+										month++;
+										days-=28;
+										}
+									}else{
+										if(days>30)
+											{
+											month++;
+											days-=30
+											}
+									}
+								if(month>12)
+									{
+									year++;
+									month-=12;
+									}
+								
+								var enddate=days+"/"+month+"/"+year;
+								if (isNaN(days)){}
+								else{
+									if(days.toString().length==1)days="0"+days;
+									if(month.toString().length==1)month="0"+month;
+									enddate=days+"/"+month+"/"+year;
+								document.getElementById("includeform:enddate").value=enddate;
+								}
+								
+								
+							}, 2000);
+							
+						
+						})
+						
+						
+						</script>
+
+			</ui:define>
+		</ui:composition>
+
+
+
+	</h:body>
+</f:view>
+</html>

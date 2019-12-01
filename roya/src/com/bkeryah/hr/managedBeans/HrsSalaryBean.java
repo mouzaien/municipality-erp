@@ -78,7 +78,7 @@ public class HrsSalaryBean {
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = (getCatid() == 4) ? "/reports/hrs_salary_saudi.jasper" : "/reports/hrs_salary.jasper";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 		parameters.put("mon", getPmonth());
 		parameters.put("year", getPyear());
 		parameters.put("catcode", getCatid());
@@ -90,7 +90,7 @@ public class HrsSalaryBean {
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = "/reports/hrs_salary_all.jasper";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 		parameters.put("month", getPmonth());
 		parameters.put("year", getPyear());
 		Utils.printPdfReport(reportName, parameters);

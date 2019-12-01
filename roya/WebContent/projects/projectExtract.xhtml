@@ -23,8 +23,7 @@
 			<div class="image-box-footer" align="left">
 				<p:commandButton value="حفظ"
 					rendered="#{!extractProjectBean.viewModeFlag}"
-					styleClass="btn  btn-primary"
-					onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+					styleClass="btn  btn-primary">
 					<p:ajax process="@form" update="@form"
 						listener="#{extractProjectBean.save}"></p:ajax>
 				</p:commandButton>

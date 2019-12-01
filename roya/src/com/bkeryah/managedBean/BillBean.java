@@ -324,7 +324,6 @@ public class BillBean {
 		parameters.put("p1", payLicBill.getBillNumber()+"");
 		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath("/reports/bill_detail.jasper"));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

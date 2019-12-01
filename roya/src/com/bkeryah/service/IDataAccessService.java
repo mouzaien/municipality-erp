@@ -57,6 +57,7 @@ import com.bkeryah.entities.BillIssueDigDetail;
 import com.bkeryah.entities.Charging;
 import com.bkeryah.entities.DepartmentArcRecords;
 import com.bkeryah.entities.DeptArcRecords;
+import com.bkeryah.entities.DeputationTraining;
 import com.bkeryah.entities.DocumentScenario;
 import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
@@ -99,6 +100,7 @@ import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.ProjectExtract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.RewardInfo;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysBirthCountry;
@@ -1504,7 +1506,7 @@ public interface IDataAccessService {
 
 	public List<Sys051> loadAllPayTypes();
 
-	public void saveLeavingEmployer(HrsEmpTerminate empTerminate);
+	public void saveLeavingEmployer(HrsEmpTerminate empTerminate, HrsEmpHistorical empHistorical, HrsJobHistorical jobHistorical);
 
 	public void exportSalaryFile(Integer year, Integer month, Integer type);
 
@@ -1784,6 +1786,25 @@ public interface IDataAccessService {
 
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
 	public List<Article> getAllArticles();
+	public void addJobToHistory(HrsJobCreation job, HrsJobCreation oldJob, Integer actionNB) ;
+	public HrsJobHistorical	loadLastHistoricalJob(Integer jobNumber, String jobCode);
+//	public HrsJobHistorical gethrsjobHistorical(Integer employerNB);
 
-	public void updateContractDirect(ContractDirect contractDirect);
+	public HrsJobCreation loadJobCreation(Integer jobNumber, String jobCode);
+
+	public void saveOperation(DeputationTraining dep_tr);
+
+	public void exportDepTrainFile(Integer emp_no, Integer month, Integer year);
+
+	List<DeputationTraining> loadStatus(Integer emp_number);
+
+	List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year);
+
+	void saveReward(RewardInfo rewardinfo);
+
+	List<RewardInfo> loadRewards(Integer emp_number);
+
+	void exportRewardFile(Integer emp_no, Integer month, Integer year);
+
+	List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year);
 }
