@@ -101,8 +101,8 @@
 				<p:commandButton value="#{msg['send']}"
 					icon="ui-icon ui-icon-assignment-return"
 					rendered="#{!mainManagedBean.mailExecutor.readOnly}"
-					action="#{mainManagedBean.saveAction}" update="formPanel">
-					<f:ajax execute="@form"></f:ajax>
+					action="#{mainManagedBean.saveAction}">
+<!-- 					<f:ajax execute="@form"></f:ajax> -->
 				</p:commandButton>
 			</div>
 
