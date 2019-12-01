@@ -43,7 +43,7 @@ public class InventoryBean {
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		currentUserId = currentUser.getUserId();
-		inventoriesList = dataAccessService.getInventoriesByStrNo(strNo);
+		inventoriesList = dataAccessService.getInventoriesByStrNo(1);
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 	}
 
@@ -77,7 +77,7 @@ public class InventoryBean {
 			inventoriesList = dataAccessService.getInventoriesByStrNo(strNo);
 			refreshPage();
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage("Ù‚Ø¯ ÙŠÙƒÙˆÙ† Ù‡Ù†Ø§Ùƒ Ø¬Ø±Ø¯ Ø£Ø®Ø± Ù…Ù�ØªÙˆØ­ Ø¹Ù„ÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹");
+			MsgEntry.addErrorMessage("قد يكون هناك جرد أخر مفتوح علي هذا المستودع");
 		}
 	}
 

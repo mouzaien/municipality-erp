@@ -69,12 +69,15 @@ public class HrsJobCreation {
 	@Column(name = "EXCDT")
 	private String excutionDate;
 
+	@Column(name = "GIRG_JOB_DATE")
+	private Date girgJobDate;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "JOBCOD", referencedColumnName = "ID", insertable = false, updatable = false)
 	private HrsGovJob4 gov4;
 
-	@Transient
-	private Date girgJobDate;
+	 
+	
 
 	public HrsJobCreation(HrsJobCreation job) {
 		super();

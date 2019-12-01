@@ -1,14 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/com/bkeryah/bean/ArticleGroupBean.java=UTF-8
-encoding//src/com/bkeryah/bean/ArticleSubGroupBean.java=UTF-8
-encoding//src/com/bkeryah/bean/ArticlesBean.java=UTF-8
-encoding//src/com/bkeryah/bean/BillsIssueBeanTest.java=UTF-8
-encoding//src/com/bkeryah/bean/InventoryBean.java=UTF-8
-encoding//src/com/bkeryah/bean/InventoryMasterBean.java=UTF-8
-encoding//src/com/bkeryah/dao/CommonDao.java=UTF-8
-encoding//src/com/bkeryah/dao/StockServiceDao.java=UTF-8
 encoding//src/com/bkeryah/hr/managedBeans/HrsOverTimeBean.java=UTF-8
-encoding//src/com/bkeryah/managedBean/MailDefenationBean.java=UTF-8
 encoding//src/com/bkeryah/service/DataAccessService.java=UTF-8
-encoding//src/com/bkeryah/shared/beans/ExchangeRequestBean.java=UTF-8
-encoding//src/com/bkeryah/stock/beans/StockEntryBean.java=UTF-8
+encoding/<project>=UTF-8

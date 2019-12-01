@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-27T14:29:26 -->
+<!-- 2018-04-01T12:20:35 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fuel_transactions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a78b5a73-92e4-4012-bcf4-4ee6744b3667">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
@@ -9,7 +9,6 @@
 	<parameter name="LOGO_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select F.DELIVERY_QTY,F.START_DATE,F.END_DATE,CM.NAME as model, CB.NAME as brand, FT.NAME as fuelT,C.MATRICULE,
 C.NUM_DOOR, US.EMPNAME 
@@ -70,7 +69,7 @@ where F.START_DATE between  TO_DATE ($P{start_date}, 'dd/mm/yyyy') and  TO_DATE 
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+$P{compName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="0" width="120" height="65" uuid="88f5361c-3dd3-4e3c-9346-a76d0fbe7112"/>

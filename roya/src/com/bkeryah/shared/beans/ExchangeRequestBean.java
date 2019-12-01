@@ -155,7 +155,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				enableAccept = true;
 				enableRefuse = true;
 			} else if (currentUser.getUserId().equals(dataAccessService.getPropertiesValue(MyConstants.WAREHOUSE_MGR))
-					&& stepNum == scenario.getStepsCount() - 4) {
+					&& stepNum == scenario.getStepsCount() - 3) {
 				enableAccept = true;
 				enableRefuse = true;
 				enableTransfert = true;
@@ -246,9 +246,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		if (loadQtyDetailsOfRequst()) {
 			String items = "";
 			for (ExchangeRequestDetails detail : request.getExchangeRequestDetailsList()) {
-				items = items + detail.getArticle().getName() + " "+Utils.loadMessagesFromFile("article.quantity")+ " " + detail.getExchangeAtcualyCount() + "\n";
+				items = items + detail.getArticle().getName() + " الكمية: " + detail.getExchangeAtcualyCount() + "\n";
 			}
-			String userComment = wrkAppComment + " "+Utils.loadMessagesFromFile("for.articles")+ " " + items;
+			String userComment = wrkAppComment + " الأصناف:" + items;
 
 			dataAccessService.acceptActionforExchangeRequest(recordId, MailTypeEnum.EXCHANGEREQUEST.getValue(), request,
 					userComment, Integer.parseInt(applicationPurpose.trim()), enableAccept,
@@ -304,14 +304,14 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				request = new ExchangeRequest();
 				exchangeRequestDetails = new ArrayList<>();
 				article = new Article();
-				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("success.operation"));
+				MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
 			} catch (Exception e) {
-				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+				MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 				e.printStackTrace();
 
 			}
 		} else {
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.enter.minimum.one.article"));
+			MsgEntry.addErrorMessage("من فضلك اضف على الاقل واحد صنف");
 		}
 		return "mails";
 		// }
@@ -408,7 +408,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			return;
 		}
 		if (itemId.equals(0)) {
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.select.article"));
+			MsgEntry.addErrorMessage(" اختر الصنف اولا	");
 			return;
 		}
 		canSave = true;
@@ -422,13 +422,12 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 			exchangeRequestDetails.add(requestDetailsRecord);
 			requestDetailsRecord = new ExchangeRequestDetails();
-			item = "";
 			article = new Article();
 			if (exchangeRequestDetails.size() == 12)
 				allowAdd = false;
 		} catch (Exception e) {
 			canSave = false;
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.select.article"));
+			MsgEntry.addErrorMessage(" اختر الصنف اولا	");
 		}
 
 	}
@@ -450,7 +449,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		parameters.put("exchange_req_no", request.getGeneralrequestNumber());// "259306";
 		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath("/reports/sub_exchange_report2.jasper"));
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -519,7 +517,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("articleId", -1);
 		parameters.put("strnumber", strNo);// "259306";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

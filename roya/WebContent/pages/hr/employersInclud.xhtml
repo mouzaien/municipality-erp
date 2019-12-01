@@ -29,11 +29,27 @@
 <body>
 	<h:form id="vcs">
 		<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer">
+						<p:commandButton value="إضافة"
+							icon="ui-icon ui-icon-add" styleClass="cyan-btn"
+							action="#{employersBean.goToEmployeeDetails()}"  
+							 >
+						</p:commandButton>
+					</div>
 		<div class="card card-w-title" dir="rtl">
 			<h1 style="color: #7CB342; text-align: center;">
 				الموظفين<span class="fa fa-fw fa-clock-o"></span>
 			</h1>
-			<br /> <br /> <br />
+			<br />  
+		
+					<br /> <br /> 
+<!-- 			<div class="ui-g"> -->
+<!-- 								<div class="ui-g-2"> -->
+<!-- 			<p:commandButton icon="ui-icon ui-icon-search" -->
+<!-- 						action="#{employersBean.goToEmployeeDetails()}"> -->
+
+<!-- 					</p:commandButton> -->
+<!-- 					</div></div> -->
 			<p:dataTable id="emp" var="employer"
 				value="#{employersBean.employers}" editable="true"
 				widgetVar="cellemp" paginatorPosition="bottom"

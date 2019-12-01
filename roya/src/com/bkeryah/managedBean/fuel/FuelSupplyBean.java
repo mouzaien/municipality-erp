@@ -44,7 +44,6 @@ public class FuelSupplyBean{
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = "/reports/cars_list.jasper";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("LOGO_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);

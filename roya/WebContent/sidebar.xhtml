@@ -9,9 +9,8 @@
 	<div
 		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-dark' : ''}">
 		<div class="sidebar-logo">
-			<a href="dashboard.xhtml"> 
-			<p:graphicImage
-					name="#{loadingDataBean.logoCustomer}" library="serenity-layout" /> 
+			<a href="dashboard.xhtml"> <p:graphicImage
+					name="images/login/logo.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
 			</a> <a href="#" class="sidebar-anchor" title="Toggle Menu"></a>
 		</div>
 
@@ -163,8 +162,8 @@
 										action="promotion" icon="fa fa-line-chart" />
 									<p:menuitem id="sm_leavingEmp" value="طي قيد موظف"
 										action="leavingEmp" icon="fa fa-user-times" />
-									<p:menuitem id="sm_newEmp" value="تعيين موظف جديد"
-										action="recruitEmployers" icon="fa fa-fw fa-user-plus" />
+<!-- 									<p:menuitem id="sm_newEmp" value="تعيين موظف جديد" -->
+<!-- 										action="recruitEmployers" icon="fa fa-fw fa-user-plus" /> -->
 									<p:menuitem id="sm_vacs" value="استعلام الاجازات"
 										action="vaction_info" icon="ui-icon ui-icon-weekend" />
 									<p:menuitem id="hrs_sum_vacation" value="الإجازات"
@@ -190,6 +189,14 @@
 									<p:menuitem id="sm_absent" value="التأخير والغياب"
 										action="fngAbsence" icon="ui-icon ui-icon-alarm-off" />
 									<p:menuitem id="sm_loan" value="القروض" action="hrsLoan"
+										icon="ui-icon ui-icon-money-off" />
+										<p:menuitem id="sm_train" value="التدريب" action="hrsTraining"
+										icon="ui-icon ui-icon-money-off" />
+										<p:menuitem id="sm_trainList" value="استعلام التدريب" action="hrsTrainingSearch"
+										icon="ui-icon ui-icon-money-off" />
+										<p:menuitem id="sm_rewards" value="المكافأت" action="hrsRewards"
+										icon="ui-icon ui-icon-money-off" />
+										<p:menuitem id="sm_rewardsList" value="استعلام المكافأت" action="hrsRewardsSearch"
 										icon="ui-icon ui-icon-money-off" />
 								</p:submenu>
 							</secc:authorize>

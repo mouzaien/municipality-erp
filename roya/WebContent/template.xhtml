@@ -50,7 +50,7 @@
 		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
 	<script type="text/javascript"
 		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
-	
+
 
 
 	<ui:insert name="head" />
@@ -93,9 +93,6 @@ body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-d
 		<h:outputText value=" ثواني" />
 		<br />
 		<h:outputText value="هل ترغب في الاستمرار في جلسة العمل الخاصة بك؟" />
-		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
-				</p:ajaxStatus>
-				
 		<h:form>
 			<p:commandButton value="نعم" process="@this" update="inputHiden"
 				onclick="stopCount()" />
@@ -221,22 +218,17 @@ body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-d
 		</div>
 	</div>
 
-<!-- 	<p:ajaxStatus -->
-<!-- 		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px"> -->
-<!-- 		<f:facet name="start"> -->
-<!-- 			<i class="fa fa-circle-o-notch fa-spin ajax-loader" -->
-<!-- 				aria-hidden="true"></i> -->
-<!-- 		</f:facet> -->
+	<p:ajaxStatus
+		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+		<f:facet name="start">
+			<i class="fa fa-circle-o-notch fa-spin ajax-loader"
+				aria-hidden="true"></i>
+		</f:facet>
 
-<!-- 		<f:facet name="complete"> -->
-<!-- 			<h:outputText value="" /> -->
-<!-- 		</f:facet> -->
-<!-- 	</p:ajaxStatus> -->
-<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-             
-			<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-    			<p:graphicImage name="/images/loading.gif" />
-			</p:dialog>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
 
 	<h:outputStylesheet name="css/nanoscroller.css"
 		library="serenity-layout" />

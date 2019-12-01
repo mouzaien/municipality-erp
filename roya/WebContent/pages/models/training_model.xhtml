@@ -54,7 +54,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 <h:body>
 
 
-	
+
 
 	<div class="card card-w-title">
 
@@ -63,27 +63,11 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 			#{msg['training.model']}<span class="fa fa-fw fa-leanpub"></span>
 		</h1>
 		<br></br>
-		
-<!-- 		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;"> -->
-    
-     
-<!--     <f:facet name="start"> -->
-<!--         <p:graphicImage name="/images/loading.gif" /> -->
-<!--     </f:facet> -->
- 
-    
-<!-- </p:ajaxStatus> -->
- 
-<!-- <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> -->
-             
-<!-- <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false"> -->
-<!--     <p:graphicImage name="/images/loading.gif" /> -->
-<!-- </p:dialog> -->
-		
+
 		<h:form prependId="false">
 
 
-			<p:messages id="myMsg" autoUpdate="true" closable="true"></p:messages>
+			<p:messages autoUpdate="true" closable="true"></p:messages>
 
 
 			<div class="image-box-footer" style="float: left">
@@ -93,11 +77,11 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
-				<p:commandButton value="#{msg['send']}" process="@form" 
-					icon="ui-icon ui-icon-assignment-return" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"
-					rendered="#{!mainManagedBean.mailExecutor.readOnly}" ajax="false"
-					action="#{mainManagedBean.saveAction}" >
-					
+				<p:commandButton value="#{msg['send']}"
+					icon="ui-icon ui-icon-assignment-return"
+					rendered="#{!mainManagedBean.mailExecutor.readOnly}"
+					action="#{mainManagedBean.saveAction}">
+					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['accept']}"
@@ -124,7 +108,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 					<span class="fa fa-fw fa-list-alt"></span> &nbsp;&nbsp;#{msg['employee.details']}
                     </f:facet>
 
-<h:panelGroup id="trainingPG">
+
 				<div class="ui-g">
 					<div class="ui-g-12 ui-md-6 ui-lg-2">
 						<h:outputLabel value="#{msg['training.place']}" />
@@ -232,7 +216,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 
 				</div>
 
-</h:panelGroup>
+
 
 
 

@@ -6490,11 +6490,11 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		List<StoreRequestModel> storeRequestModelLst = new ArrayList<StoreRequestModel>();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?)}";
 			callableStatement = connection.prepareCall(sql);
 
 			callableStatement.setInt(1, articleId);
-			callableStatement.setInt(3, strNo);
+			//callableStatement.setInt(3, strNo);
 			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
@@ -6541,13 +6541,11 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 			callableStatement.setInt(2, strNo);
 			callableStatement.setInt(3, inventoryId);
-			//TODO AMEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRR IMPORTANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNT change null
-			callableStatement.setString(4, null);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(1);
 
@@ -6897,7 +6895,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement = connection.createStatement();
 			String sql = "select empno,trans,MANDIN,MANDOUT,natno,fun_get_inf001_ar(empno) as name,RANKCOD,CLSSCOD,fun_get_sys002(natcod) nat,natcod,fun_get_stp006(rankcod) rank, "
 					+ "fun_get_stp007(clsscod,rankcod)clss, bscsal,catcod,empsts,fun_get_newClss(clsscod,rankcod) newclss, fun_get_Clssbscsal(fun_get_newClss(clsscod,rankcod) ,"
-					+ "rankcod) newSal from HRSV$INF001 where empsts=1 and catcod in (1,2,3,4) and natcod=1 and fun_get_newClss(clsscod,rankcod) <> clsscod";
+					+ "rankcod) newSal,JOBCOD,JOBNO from HRSV$INF001 where empsts=1 and catcod in (1,2,3,4) and natcod=1 and fun_get_newClss(clsscod,rankcod) <> clsscod";
 
 			rs = callableStatement.executeQuery(sql);
 			while (rs.next()) {
@@ -6916,6 +6914,9 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				prime.setBasicSalary(rs.getInt("newSal"));
 				prime.setMandateInner(rs.getInt("MANDIN"));
 				prime.setMandateOuter(rs.getInt("MANDOUT"));
+				prime.setJobcode(rs.getString("JOBCOD"));
+				prime.setJobcode(rs.getString("JOBNO"));
+
 				primesList.add(prime);
 			}
 			return primesList;

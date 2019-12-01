@@ -53,7 +53,6 @@ public class NationalIdBean {
 		parameters.put("C_name", name);
 		parameters.put("print_type", (requestType.equals("1"))?Utils.loadMessagesFromFile("new.local.licence"):Utils.loadMessagesFromFile("renew.local.licence"));
 		parameters.put("current_user", Utils.findCurrentUser().getUserId());
-		parameters.put("cityName", dataAccessService.findSystemProperty("INVESTMENT_CITY"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

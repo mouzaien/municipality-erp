@@ -12,7 +12,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import com.bkeryah.entities.HrsEmpHistorical;
 import com.bkeryah.entities.HrsEmpTerminate;
+import com.bkeryah.entities.HrsJobHistorical;
 import com.bkeryah.entities.HrsMasterFile;
 import com.bkeryah.hr.entities.HrsLoan;
 import com.bkeryah.hr.entities.HrsLoanDetails;
@@ -65,10 +67,14 @@ public class LeavingEmployerBean {
 	private Date incomeDate_G;
 	private String executedDate;
 	private Date executedDate_G;
+	List<HrsMasterFile> activeEmployersList;
+	private HrsEmpHistorical empHistorical;
+	private HrsJobHistorical jobHistorical;
 
 	@PostConstruct
 	public void init() {
 		empTerminateList = dataAccessService.loadAllEmpTerminates();
+		  activeEmployersList = dataAccessService.loadActiveEmpsHasSalary();
 	}
 
 	public void loadEmployerData() {
@@ -78,6 +84,8 @@ public class LeavingEmployerBean {
 
 	public void loadEmployer() throws ParseException {
 		employer = (HrsMasterFile) dataAccessService.findEntityById(HrsMasterFile.class, employerNB);
+		empHistorical = dataAccessService.getHRsEmpHistoricalByEmpNo(employerNB);
+		  jobHistorical = dataAccessService.loadLastHistoricalJob(empHistorical.getJobNumber(), empHistorical.getJobcode());
 		if (employer.getFirstApplicationDate() != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			int daysNB = HijriCalendarUtil.findDatesDifferenceInDays(employer.getFirstApplicationDate(),
@@ -108,7 +116,8 @@ public class LeavingEmployerBean {
 			empTerminate.setVacationGive((hasVacation) ? MyConstants.YES : MyConstants.NO);
 			empTerminate.setSalaryGive((hasSalary) ? MyConstants.YES : MyConstants.NO);
 			empTerminate.setRewardGive((hasReward) ? MyConstants.YES : MyConstants.NO);
-			dataAccessService.saveLeavingEmployer(empTerminate);
+			
+			dataAccessService.saveLeavingEmployer(empTerminate,empHistorical,jobHistorical);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +142,7 @@ public class LeavingEmployerBean {
 	}
 
 	public void calculateTotal() {
-		empTerminate.setNatevalue(rewardValue + vacationValue);
+		empTerminate.setNatevalue( (rewardValue == null ? 0 :rewardValue ) + (vacationValue==null ? 0 :vacationValue));
 	}
 
 	public void stopLoan() {
@@ -183,7 +192,7 @@ public class LeavingEmployerBean {
 		parameters.put("bankName",
 				((HrsLoanType) dataAccessService.findEntityById(HrsLoanType.class, bankId)).getLoanTypeName());
 		parameters.put("monthName", ((Sys012) dataAccessService.findEntityById(Sys012.class, month)).getNameAr());
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -426,6 +435,30 @@ public class LeavingEmployerBean {
 
 	public void setExecutedDate_G(Date executedDate_G) {
 		this.executedDate_G = executedDate_G;
+	}
+
+	public List<HrsMasterFile> getActiveEmployersList() {
+		return activeEmployersList;
+	}
+
+	public void setActiveEmployersList(List<HrsMasterFile> activeEmployersList) {
+		this.activeEmployersList = activeEmployersList;
+	}
+
+	public HrsEmpHistorical getEmpHistorical() {
+		return empHistorical;
+	}
+
+	public void setEmpHistorical(HrsEmpHistorical empHistorical) {
+		this.empHistorical = empHistorical;
+	}
+
+	public HrsJobHistorical getJobHistorical() {
+		return jobHistorical;
+	}
+
+	public void setJobHistorical(HrsJobHistorical jobHistorical) {
+		this.jobHistorical = jobHistorical;
 	}
 
 }

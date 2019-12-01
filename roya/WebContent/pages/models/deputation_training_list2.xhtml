@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+
+	<h:body>
+
+		<ui:composition template="/pages/menuBar.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="col-lg-12"
+						style="background-color: white; border-top: 5px solid #428BCA">
+						<br></br>
+						<div style="color: color: #428bca">
+							<h3 class="page-header"
+								style="margin: 0px 0 20px ! important; color: #428bca"></h3>
+							<div class="row">
+								<h:panelGroup id="details_data">
+									<div  class="col-md-12">
+									  <div  class="col-md-3">
+										<div style="width:100px" class="col-md-1">
+											<h:outputLabel value="الموظف" styleClass="btxt" />
+										</div>
+										
+											<p:selectOneMenu id="empNBList" 
+												 value="#{deputationTrainingBean.employerNB}">
+											<f:selectItem itemLabel="الكل" itemValue="0" ></f:selectItem>
+												<f:selectItems value="#{deputationTrainingBean.employersList}" var="emp"
+													itemValue="#{emp.employeNumber}"
+													itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
+													
+												<f:ajax render="data"
+													execute="empNBList" event="change"
+													listener="#{deputationTrainingBean.loadStatus}" />
+											</p:selectOneMenu>
+											</div>
+											<div class="col-md-3">
+											<div style="width:100px" class="col-md-1">
+											<h:outputLabel style="margin-right:15px;" value="الشهر" styleClass="btxt"></h:outputLabel>
+											</div>
+											<p:selectOneMenu required="true" style="width:200px;" id="selectedmonth" value="#{deputationTrainingBean.month}">
+											<f:selectItem itemLabel="اختر الشهر" itemValue="" />
+											<f:selectItems value="#{deputationTrainingBean.listMonth}" var="months"
+													itemLabel="#{months.nameAr} #{months.id}"
+													itemValue="#{months.id}" />
+											<f:ajax render="data"
+													execute="empNBList" event="change"
+													listener="#{deputationTrainingBean.loadMonthYearStatus}" />
+											
+											</p:selectOneMenu>
+											</div>
+											<p:commandButton value="الانتدابات والدورات" ajax="false" style="float: left !important;"
+									actionListener="#{deputationTrainingBean.dowloadDepTrainFile}"
+									onclick="PrimeFaces.monitorDownload(start, stop);"
+									icon="ui-icon-arrowthick-1-s">
+									<p:fileDownload value="#{deputationTrainingBean.file}" />
+								</p:commandButton>
+						
+											
+											<div class="col-md-3">
+											<div style="width:100px" class="col-md-1">
+											<h:outputLabel style="margin-right:15px;" value="السنه" styleClass="btxt"></h:outputLabel>
+											</div>
+											
+											<p:spinner id="minMax" value="#{deputationTrainingBean.year}" min="1435"
+													 max="1500">
+													<f:ajax render="data" execute="empNBList" event="blur"
+														listener="#{deputationTrainingBean.loadMonthYearStatus}" />
+												</p:spinner>
+											</div>
+											<br></br>
+											<br></br>
+											<br></br>
+											
+											 <p:dataTable id="data" var="lst"  value="#{deputationTrainingBean.list}" >
+											 
+											 
+											    <p:column headerText="نوع المهمه" filterable="true" filterBy="#{lst.type_of_mission}" filterMatchMode="contains">
+										           <center> <h:outputText value="#{lst.type_of_mission}" /></center>
+										        </p:column>
+											 
+												    <p:column  headerText="عدد الايام"   >
+												   	 <center>  <h:outputText  value="#{lst.dayscount}" /></center>
+												    </p:column>
+												 
+												    <p:column headerText="المهمه">
+												        <center><h:outputText value="#{lst.mission}" /></center>
+												    </p:column>
+												 
+												    <p:column headerText="بدل النقل">
+												        <center><h:outputText value="#{lst.trans_allowance}" /></center>
+												    </p:column>
+												 
+												    <p:column headerText="بدل التدريب">
+												       <center><h:outputText value="#{lst.train_allowance}" /></center>
+												    </p:column>
+												    <p:column headerText="السنه" >
+												       <center><h:outputText value="#{lst.year}" /></center>
+												    </p:column>
+												    
+												   
+												     <p:column headerText="الشهر"  >
+												        <center><h:outputText value="#{lst.month}" /></center>
+												    </p:column>
+												     <p:column headerText="تاريخ البدا">
+												        <center><h:outputText value="#{lst.hij_st_date}" /></center>
+												    </p:column>
+												    <p:column headerText="النوع" filterable="true" filterBy="#{lst.category_name}" filterMatchMode="contains">
+												        <center><h:outputText value="#{lst.category_name}" /></center>
+												    </p:column>
+												   
+												    
+												   
+												     
+											</p:dataTable>
+										
+								
+											
+									</div>
+									
+								</h:panelGroup>
+							</div>
+						</div>
+						
+					</div>
+
+				</h:form>
+				
+			</ui:define>
+		</ui:composition>
+
+
+
+	</h:body>
+</f:view>
+</html>
