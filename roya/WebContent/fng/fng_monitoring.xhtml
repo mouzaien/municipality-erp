@@ -152,17 +152,15 @@
 								rendered="#{fngMonitoringBean.reporterMode}">
 								<div class="ui-g">
 									<div class="ui-g-12 ui-md-6 ui-lg-3">
-										<p:selectCheckboxMenu id="section" filter="true" showCheckbox="true"  
-											filterMatchMode="contains" style="width:100%" label="الاداره"
+										<p:selectManyMenu id="section" filter="true" showCheckbox="true"  
+											filterMatchMode="contains" style="width:100%" 
 											value="#{fngMonitoringBean.deptIds}" autoWidth="true">
 											<f:selectItems value="#{loadingDataBean.depatmentList}"
 												var="dept" itemValue="#{dept.id}"
 												itemLabel="#{dept.deptName}" />
-										  	<f:ajax render="emps" execute="section" event="change"
-												listener="#{fngMonitoringBean.loadEmployersByDept}" /> 
-												<p:ajax event="toggleSelect" process="section"></p:ajax>
-												 
-										</p:selectCheckboxMenu>
+											<f:ajax render="emps" execute="section" event="change"
+												listener="#{fngMonitoringBean.loadEmployersByDept}" />
+										</p:selectManyMenu>
 									</div>
 									<div class="ui-g-12 ui-md-6 ui-lg-4">
 										<p:selectCheckboxMenu id="emps" var="user" required="true"

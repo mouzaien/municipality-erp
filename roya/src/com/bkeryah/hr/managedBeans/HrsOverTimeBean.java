@@ -132,11 +132,11 @@ public class HrsOverTimeBean {
 		parameters.put("year", pyear);
 		// listMonth.get(index)
 		if (frommonth <= 12)
-			pmonth = " لشهر " + listMonth.get(frommonth - 1).getNameAr();
+			pmonth = Utils.loadMessagesFromFile("about.month") + listMonth.get(frommonth - 1).getNameGr();
 		if (frommonth == 13)
-			pmonth = " خلال اجازة عيد الفطر";
+			pmonth = Utils.loadMessagesFromFile("eid.fitr");
 		else if (frommonth == 14)
-			pmonth = "خلال اجازة عيد الاضحى";
+			pmonth = Utils.loadMessagesFromFile("eid.adha");
 		parameters.put("month", pmonth);
 
 		// parameters.put("month", listMonth.get(frommonth - 1).getNameAr());

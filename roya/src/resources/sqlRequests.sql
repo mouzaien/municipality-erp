@@ -165,3 +165,25 @@ and  HMF.EMPNO = sal.empno  and hist.empno = sal.empno and hist.flg = 1
 )totsalary
 WHERE id =1; 
 
+DeptTrainRequest:= select '000'||  rpad(trim(to_char(prop_value)),8,' ')  ||  TRIM(TO_CHAR(NULL,'YYYYMMDD')) || rpad(trim(to_char('X')),35,' ')   as salary from HRS_SALARY_PROPERTIES 
+	                    where prop_name  = 'Agreement Number'  
+	                    union ALL select replace(112 || '000000' || rpad(trim(to_char(hrs_master_file.empno)),16,' ') || rpad(trim(to_char(hrs_master_file.natno)),12,' ') 
+	                    || rpad(trim(to_char(pay_banks.bank_swift)),11,' ')   ||  rpad(trim(to_char(hrs_master_file.accno)),34,' ') || 
+	                    trim(to_char(((nvl(DEPUTATION_TRAINING.TRANSPORT_ALLOWANCE,0)+nvl(DEPUTATION_TRAINING.TRAINING_ALLOWANCE,0))),'000000000000.99')) || 'SAR' || 
+	                    rpad(trim(to_char('X')),35,' ') || rpad(trim(to_char('X')),20,' ')   || rpad(trim(to_char('X')),9,' ') || 
+	                    rpad(substr(FUN_GET_INF001_AR(hrs_master_file.empno),1,35),35,' ') || rpad(trim(to_char('X')),140 ,' ') , chr(10),'') AS SALARY 
+	                    FROM DEPUTATION_TRAINING, hrs_master_file, pay_banks WHERE (    (hrs_master_file.empno = DEPUTATION_TRAINING.MASTER_EMPNO) 
+	                    AND (pay_banks.ID = hrs_master_file.bnkcod)) and  hrs_master_file.EMPNO = DEPUTATION_TRAINING.MASTER_EMPNO and hrs_master_file.EMPSTS=1 AND op_year =:year AND op_month =:month
+	                    union all select '999'|| sum(trim(to_char (((nvl(DEPUTATION_TRAINING.TRAINING_ALLOWANCE,0)+nvl(DEPUTATION_TRAINING.TRANSPORT_ALLOWANCE,0))),'000000000000000.99'))) 
+	                    FROM  DEPUTATION_TRAINING , hrs_master_file HMF where HMF.EMPNO = DEPUTATION_TRAINING.MASTER_EMPNO AND op_year =:year AND op_month =:month;
+RewardRequest:= select '000'||  rpad(trim(to_char(prop_value)),8,' ')  ||  TRIM(TO_CHAR(NULL,'YYYYMMDD')) || rpad(trim(to_char('X')),35,' ')   as salary from HRS_SALARY_PROPERTIES 
+	                    where prop_name  = 'Agreement Number'  
+	                    union ALL select replace(112 || '000000' || rpad(trim(to_char(hrs_master_file.empno)),16,' ') || rpad(trim(to_char(hrs_master_file.natno)),12,' ') 
+	                    || rpad(trim(to_char(pay_banks.bank_swift)),11,' ')   ||  rpad(trim(to_char(hrs_master_file.accno)),34,' ') || 
+	                    trim(to_char(((nvl(reward.amount,0))),'000000000000.99')) || 'SAR' || 
+	                    rpad(trim(to_char('X')),35,' ') || rpad(trim(to_char('X')),20,' ')   || rpad(trim(to_char('X')),9,' ') || 
+	                    rpad(substr(FUN_GET_INF001_AR(hrs_master_file.empno),1,35),35,' ') || rpad(trim(to_char('X')),140 ,' ') , chr(10),'') AS SALARY 
+	                    FROM reward, hrs_master_file, pay_banks WHERE (    (hrs_master_file.empno = reward.MASTER_EMPNO) 
+	                    AND (pay_banks.ID = hrs_master_file.bnkcod)) and  hrs_master_file.EMPNO = reward.MASTER_EMPNO and hrs_master_file.EMPSTS=1 AND reward_year =:year AND reward_month =:month
+	                    union all select '999'|| sum(trim(to_char (((nvl(reward.amount,0))),'000000000000000.99'))) 
+	                    FROM  reward , hrs_master_file HMF where HMF.EMPNO = reward.MASTER_EMPNO AND reward_year =:year AND reward_month =:month ;

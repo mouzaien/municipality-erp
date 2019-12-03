@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.HrsMasterFile;
@@ -128,6 +129,8 @@ public class LoanBean {
 		parameters.put("month", month);
 		parameters.put("bankName", ((HrsLoanType)dataAccessService.findEntityById(HrsLoanType.class, bankId)).getLoanTypeName());
 		parameters.put("monthName", ((Sys012)dataAccessService.findEntityById(Sys012.class, month)).getNameAr());
+		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
+				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

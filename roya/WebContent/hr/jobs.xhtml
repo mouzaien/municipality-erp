@@ -9,8 +9,8 @@
 
 	<h:head>
 		<f:metadata>
-<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
-<!-- 				action="#{jobsBean.loadJobs}"></f:viewAction> -->
+			<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
+			<!-- 				action="#{jobsBean.loadJobs}"></f:viewAction> -->
 		</f:metadata>
 		<!-- <link
 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css"
@@ -133,7 +133,6 @@
 										<div class="ui-g-4">
 
 											<p:selectOneMenu id="list1" required="true"
-											
 												requiredMessage="يرجى اختيار التصنيف"
 												styleClass="form-control" value="#{jobsBean.job.categoryId}">
 												<f:selectItem itemLabel="اختر التصنيف" itemValue=""
@@ -168,8 +167,8 @@
 													value="#{loadingDataBean.jobRankslist}"
 													itemValue="#{rank.id.rankCode}"
 													itemLabel="#{rank.rankName}" />
-<!-- 												<f:ajax render="list3" execute="list2" event="change" -->
-<!-- 													listener="#{jobsBean.loadJobsByCategory}" /> -->
+																								<f:ajax render="list3" execute="list2" event="change"
+																									listener="#{jobsBean.loadJobsByCategory}" />
 											</p:selectOneMenu>
 
 										</div>
@@ -187,10 +186,11 @@
 												requiredMessage="يرجى ادخال  مسمى الوظيفة"
 												disabled="#{(jobsBean.consultMode) || (jobsBean.damageMode)}"
 												value="#{jobsBean.job.jobCode}">
+												<f:selectItem itemLabel="يرجي اختيار الوظيفة" itemValue="" />
 												<f:selectItems value="#{jobsBean.jobsLabelList}" var="role"
 													itemLabel="#{role.jobName}" itemValue="#{role.jobCode}" />
-												<p:ajax process="@this" update="job_code" 
-												listener="#{jobsBean.loadHistricalJob}"/>
+												<p:ajax process="@this" update="job_code"
+													listener="#{jobsBean.loadHistricalJob}" />
 											</p:selectOneMenu>
 										</div>
 
@@ -201,8 +201,8 @@
 											<h:outputLabel styleClass="btxt" value="كود الوظيفة" />
 										</div>
 										<div class="ui-g-2">
-											<p:inputText class="form-control" id="job_code"
-												value="#{jobsBean.job.jobCode}"></p:inputText>
+											<p:outputLabel class="form-control" id="job_code"
+												value="#{jobsBean.job.jobCode}"></p:outputLabel>
 										</div>
 										<div class="ui-g-2">
 											<h:outputLabel styleClass="btxt" value="رقم الوظيفة" />

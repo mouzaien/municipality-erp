@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Formula;
-
 @Entity
 @Table(name = "FNG_USERTEMPSHIFT")
 public class FngUserTempShift {
@@ -34,12 +32,12 @@ public class FngUserTempShift {
 	private Integer secondTimeid;
 	@Transient
 	private String secondTimeName;
-	@Formula("(select w.EMPNAME from ARC_USERS w where w.USER_ID = USERID)")
+	@Transient
 	private String userName;
 	@Transient
 	private String userDeptName;
 
-	@Formula("(select w.TIMENAME from FNG_TIMETABLE w where w.TIMEID = TIMEID)")
+	@Transient
 	private String timeName;
 
 	public String getTimeName() {

@@ -19,11 +19,9 @@ import com.bkeryah.mails.FactoryOfFactories;
 import com.bkeryah.mails.MailExecutor;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.mails.MailsFactory;
-import com.bkeryah.mails.TrainingExecutor;
 import com.bkeryah.mails.VacationExecutor;
 import com.bkeryah.service.IDataAccessService;
 
-import utilities.MsgEntry;
 import utilities.MyConstants;
 import utilities.Utils;
 

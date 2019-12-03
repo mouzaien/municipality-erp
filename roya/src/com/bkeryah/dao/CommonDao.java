@@ -88,6 +88,7 @@ import com.bkeryah.entities.BillIssueRubish;
 import com.bkeryah.entities.Charging;
 import com.bkeryah.entities.DepartmentArcRecords;
 import com.bkeryah.entities.DeptArcRecords;
+import com.bkeryah.entities.DeputationTraining;
 import com.bkeryah.entities.DocumentScenario;
 import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
@@ -125,6 +126,7 @@ import com.bkeryah.entities.PayMaster;
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.RewardInfo;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -2260,8 +2262,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsJobCreation.class);
 		criteria.add(Restrictions.eq("categoryId", catid));
 		criteria.add(Restrictions.eq("jobstatus", status));
-		// if (rank != null)
-		// criteria.add(Restrictions.eq("rankCode", rank));
+		 if (rank != null)
+		 criteria.add(Restrictions.eq("rankCode", rank));
 		List<HrsJobCreation> jobs = criteria.list();
 		System.out.println("jobs size ----> " + jobs.size());
 		return jobs;
@@ -4334,4 +4336,159 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<Article> getAllArticles() {
 		return loadAll(Article.class);
 	}
+
+	@Transactional
+	@Override
+	public HrsJobCreation loadJobCreation(Integer jobNumber, String jobCode) {
+		HrsJobCreation job = new HrsJobCreation();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsJobCreation.class);
+		criteria.add(Restrictions.eq("jobCode", jobCode));
+		criteria.add(Restrictions.eq("jobNumber", jobNumber));
+
+		Object result = criteria.uniqueResult();
+		if (result != null) {
+			job = (HrsJobCreation) result;
+		}
+		return job;
+	}
+	@Override
+	@Transactional
+	public void addOperation(Object dep_tr)
+	{
+		
+		sessionFactory.getCurrentSession().save(dep_tr);
+		
+		
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> loadDepTrain(Integer emp_no,Integer month,Integer year) {
+	
+		List<String> list = new ArrayList<String>();
+		String sql;
+		try {
+			
+			sql = Utils.readSqlRequest("DeptTrainRequest");
+			
+			System.out.println(sql);
+			Session currentSession = sessionFactory.getCurrentSession();
+			
+			
+			Query salaryQuery = currentSession.createSQLQuery(sql);
+		
+			
+			salaryQuery.setParameter("year", year);
+			
+			salaryQuery.setParameter("month", month);
+			
+			list = salaryQuery.list();
+	
+			return list;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+		}
+		return list;
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<DeputationTraining> loadStatus(Integer emp_number){
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+		
+		if(emp_number!=0)
+		{
+		 criteria.add(Restrictions.eq("emp_no", emp_number));
+		 return criteria.list();
+		}else {
+			
+			return criteria.list();
+		}
+	}
+		@SuppressWarnings("unchecked")
+		@Override
+		@Transactional
+		public List<DeputationTraining> loadStatus(Integer emp_number,Integer month,Integer year){
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+			
+			
+			if(emp_number!=0)
+			{
+			 criteria.add(Restrictions.eq("emp_no", emp_number));
+			
+			if(month!=null) criteria.add(Restrictions.eq("month", month));
+			 if(year!=null)criteria.add(Restrictions.eq("year", year));
+			
+			 return criteria.list();
+			
+			}else {
+				if(month!=null)	 criteria.add(Restrictions.eq("month", month));
+				if(year!=null)criteria.add(Restrictions.eq("year", year));
+				return criteria.list();
+			}
+		}
+ 
+		@Override
+		@Transactional
+		public void saveReward(RewardInfo rewardinfo) {
+			
+			sessionFactory.getCurrentSession().save(rewardinfo);
+			}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		@Transactional
+		public List<RewardInfo> loadRewards(Integer emp_number){
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+			 if(emp_number!=0)criteria.add(Restrictions.eq("emp_no", emp_number));
+			 
+			 return criteria.list();
+		}
+		public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year){
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+			
+			 if(emp_number!=0)
+				{
+				 criteria.add(Restrictions.eq("emp_no", emp_number));
+				
+				if(month!=null) criteria.add(Restrictions.eq("month", month));
+				 if(year!=null)criteria.add(Restrictions.eq("year", year));
+				
+				 return criteria.list();
+				
+				}else {
+					if(month!=null)	 criteria.add(Restrictions.eq("month", month));
+					if(year!=null)criteria.add(Restrictions.eq("year", year));
+					return criteria.list();
+				}
+		}
+		@SuppressWarnings("unchecked")
+		@Override
+		public List<String> loadReward(Integer emp_no,Integer month,Integer year) {
+			List<String> list = new ArrayList<String>();
+			String sql;
+			try {
+				
+				sql = Utils.readSqlRequest("RewardRequest");
+				
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+				Query salaryQuery = currentSession.createSQLQuery(sql);
+				
+				
+				salaryQuery.setParameter("year", year);
+				
+				salaryQuery.setParameter("month", month);
+				
+				list = salaryQuery.list();
+			
+				return list;
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} finally {
+			}
+			return list;
+		}
+
+
 }

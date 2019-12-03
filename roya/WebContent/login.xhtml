@@ -17,72 +17,72 @@
 	<h:outputScript name="js/layout.js" library="serenity-layout" />
 	<h:outputScript name="js/ripple.js" library="serenity-layout" />
 </h:head>
-    <h:body styleClass="login-body">
-    <h:form prependId="false">
-    
-    <style>
-    body .ui-messages .ui-messages-error{
-    
-    width: 37%;
-    position: absolute;
-    top: 100px;
-    left: 30%;
-    direction: rtl;
-    }
-    </style>
-        <div class="login-panel ui-fluid">
-            <div class="login-panel-header">
-                <p:graphicImage name="#{loadingDataBean.logoCustomer}" library="serenity-layout" />
-            </div>
-            <div class="login-panel-content">
-                <div class="ui-g">
-                    <div class="ui-g-12" >
-                        <h1>برنامج رؤية</h1>
-                    </div>
-                    <div class="ui-g-12">
-                        <h:panelGroup styleClass="md-inputfield">
-                            <p:inputText id="username"
-													style="font-family: 'kufi' !important;font-size: medium;width: 100%;text-transform: uppercase"
-													value="#{loginBean.userName}" required="true"
-													requiredMessage="#{msg['empty.user']}" />
-                            <label>المستخدم</label>
-                        </h:panelGroup>
-                    </div>
-                    <div class="ui-g-12">
-                        <h:panelGroup styleClass="md-inputfield">
-                            <p:password
-													style="font-family: 'kufi' !important; width: 100%"
-													id="password" value="#{loginBean.passWord}" required="true"
-													requiredMessage="#{msg['empty.password']}" />
-                            <label>كلمة العبور</label>
-                        </h:panelGroup>
-                    </div>
-                    <div class="ui-g-6 ">
-<!--                         <p:selectBooleanCheckbox id="rememberme" /> -->
-<!--                         <p:outputLabel for="rememberme" value="Remember Me?" /> -->
-                    </div>
-                    <div class="ui-g-6 password-reset">
-<!--                         <h:outputLink>Reset Password</h:outputLink> -->
-                    </div>
-                    <br></br>
-                     <br></br>
-                    <div class="ui-g-12">
-                        <p:commandButton ajax="false" value="#{msg['login']}"
-													process="pass name"
-													style="font-size: x-large !important; font-weight: bold !important;"
-													icon="fa fa-sign-in" 
-													action="#{loginBean.login}" />
-                    </div>
-                    <p:messages autoUpdate="true"></p:messages>
-<!--                     <div class="ui-g-12"> -->
-<!--                         Don't have an account? <h:outputLink value="#">Sign Up</h:outputLink> now. -->
-<!--                     </div> -->
-                </div>
-            </div>
-        </div>
-        
-        <h:outputStylesheet name="css/layout-moody.css" library="serenity-layout" />
-        </h:form>
+
+<h:body styleClass="login-body">
+	<h:form prependId="false">
+
+		<style>
+body .ui-messages .ui-messages-error {
+	width: 37%;
+	position: absolute;
+	top: 100px;
+	left: 30%;
+	direction: rtl;
+}
+</style>
+		<div class="login-panel ui-fluid">
+			<div class="login-panel-header">
+				<p:graphicImage name="images/login/logo.png"
+					library="serenity-layout" />
+			</div>
+			<div class="login-panel-content">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<h1>بلديه البكيريه</h1>
+					</div>
+					<div class="ui-g-12">
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText id="username"
+								style="font-family: 'kufi' !important;font-size: medium;width: 100%;text-transform: uppercase"
+								value="#{loginBean.userName}" required="true"
+								requiredMessage="#{msg['empty.user']}" />
+							<label>المستخدم</label>
+						</h:panelGroup>
+					</div>
+					<div class="ui-g-12">
+						<h:panelGroup styleClass="md-inputfield">
+							<p:password style="font-family: 'kufi' !important; width: 100%"
+								id="password" value="#{loginBean.passWord}" required="true"
+								requiredMessage="#{msg['empty.password']}" />
+							<label>كلمة العبور</label>
+						</h:panelGroup>
+					</div>
+					<div class="ui-g-6 ">
+						<!--                         <p:selectBooleanCheckbox id="rememberme" /> -->
+						<!--                         <p:outputLabel for="rememberme" value="Remember Me?" /> -->
+					</div>
+					<div class="ui-g-6 password-reset">
+						<!--                         <h:outputLink>Reset Password</h:outputLink> -->
+					</div>
+					<br></br> <br></br>
+					<div class="ui-g-12">
+						<p:commandButton ajax="false" value="#{msg['login']}"
+							process="pass name"
+							style="font-size: x-large !important; font-weight: bold !important;"
+							icon="fa fa-sign-in" action="#{loginBean.login}" />
+					</div>
+					<p:messages autoUpdate="true"></p:messages>
+					<!--                     <div class="ui-g-12"> -->
+					<!--                         Don't have an account? <h:outputLink value="#">Sign Up</h:outputLink> now. -->
+					<!--                     </div> -->
+				</div>
+			</div>
+		</div>
+
+		<h:outputStylesheet name="css/layout-moody.css"
+			library="serenity-layout" />
+	</h:form>
+
 	<h:form prependId="false">
 		<center> <p:dialog showEffect="explode" hideEffect="bounce" style="background-color:#E8EDF0;" dir="rtl" width="400"
 			closeOnEscape="true" draggable="false" minWidth="300" minHeight="180"

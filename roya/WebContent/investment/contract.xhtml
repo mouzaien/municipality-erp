@@ -81,7 +81,7 @@
                             #{userItem.tender.investor.name}
                         </p:column>
 						<p:column headerText="الحالة" width="9%"
-							filterBy="#{userItem.contractStatId}" filterMatchMode="exact">
+							filterBy="#{userItem.status}" filterMatchMode="exact">
 							<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('ContractsTable').filter()">
 									<f:selectItem itemLabel="إختر الحالة" itemValue="#{null}"
@@ -114,14 +114,14 @@
 						<!-- 								</p:column> -->
 						<p:column width="15%" style="text-align:center"
 							headerText="العملية">
-							<p:selectOneMenu style="width:50%" id="operation_choice"
+							<p:selectOneMenu style="width:50%"
 								value="#{userItem.operationId}">
 								<f:selectItem itemLabel="اختر العملية" itemValue="0" />
 								<f:selectItems value="#{userItem.actionsList}" var="x"
 									itemLabel="#{x.name}" itemValue="#{x.action}" />
 							</p:selectOneMenu>
 							<p:spacer width="5" />
-							<p:commandButton icon="fa fa-mail-reply" update="@form" process="@this,operation_choice"
+							<p:commandButton icon="fa fa-mail-reply" update="@form"
 								action="#{contractsBean.doAction}">
 								<f:setPropertyActionListener value="#{userItem}"
 									target="#{contractsBean.contract}" />
@@ -129,7 +129,7 @@
 
 						</p:column>
 						<p:column width="5%" style="text-align:center" headerText="طباعة">
-							<p:commandButton ajax="false" icon="ui-icon-print"
+							<p:commandButton ajax="false" icon="ui-icon-print" immediate="true"
 								onclick="this.form.target='_blank'"
 								action="#{contractsBean.printContractReport}">
 								<f:setPropertyActionListener value="#{userItem}"
@@ -153,7 +153,7 @@
 								<div class="ui-g-12 ui-md-6 ui-lg-3">
 									<h:outputLabel value="هجري  :  " />
 									<p:selectBooleanCheckbox value="#{contractsBean.higriMode}">
-										<p:ajax update="pDates1,pDates12,pDates3,pDates4" process="@this"></p:ajax>
+										<p:ajax update="pDates1,pDates12" process="@this"></p:ajax>
 									</p:selectBooleanCheckbox>
 								</div>
 							</div>
@@ -197,7 +197,7 @@
 										</p:inputText>
 
 										<p:calendar id="gric1"
-											value="#{contractsBean.selecteStartDate_G}"
+											value="#{contractsBean.selecteStartDate}"
 											pattern="dd/MM/yyyy" rendered="#{!contractsBean.higriMode}">
 										</p:calendar>
 									</h:panelGroup>
@@ -442,51 +442,7 @@
 								</div>
 							</div>
 
-							<div class="ui-g">
-								<div class="ui-g-2">
-									<p:outputLabel value="تاريخ بداية فترة الفاتورة"
-										styleClass="btxt" />
-								</div>
-								<div class="ui-g-2">
-									<h:panelGroup id="pDates4">
-										<p:inputText id="hiri4"
-											value="#{contractsBean.contract.billStartDate}"
-											onfocus="loadCalendar();" required="true"
-											requiredMessage="يرجى اختيار تاريخ بداية العقد"
-											rendered="#{contractsBean.higriMode}"
-											styleClass="form-control form-controlCal">
-										</p:inputText>
 
-										<p:calendar id="gric41"
-											value="#{contractsBean.contract.billGStartDate}"
-											pattern="dd/MM/yyyy"
-											rendered="#{!contractsBean.higriMode}">
-										</p:calendar>
-									</h:panelGroup>
-								</div>
-								<div class="ui-g-2">
-									<p:outputLabel value="تاريخ نهاية الفترة الفاتورة"
-										styleClass="btxt" />
-								</div>
-								<div class="ui-g-2">
-									<!-- 											<p:inputMask mask="99/99/9999" value="#{contractDirectBean.contractDirect.billEndDate}" /> -->
-									<h:panelGroup id="pDates3">
-										<p:inputText id="hiri3"
-											value="#{contractsBean.contract.billEndDate}"
-											onfocus="loadCalendar();" required="true"
-											requiredMessage="يرجى اختيار تاريخ بداية العقد"
-											rendered="#{contractsBean.higriMode}"
-											styleClass="form-control form-controlCal">
-										</p:inputText>
-
-										<p:calendar id="gric32"
-											value="#{contractsBean.contract.billGEndDate}"
-											pattern="dd/MM/yyyy"
-											rendered="#{!contractsBean.higriMode}">
-										</p:calendar>
-									</h:panelGroup>
-								</div>
-							</div>
 
 							<div class="ui-g">
 								<div class="ui-g-2">

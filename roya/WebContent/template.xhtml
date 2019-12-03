@@ -50,7 +50,7 @@
 		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js"></script>
 	<script type="text/javascript"
 		src="#{facesContext.externalContext.requestContextPath}/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura-ar.js"></script>
-	
+
 
 
 	<ui:insert name="head" />
@@ -93,9 +93,6 @@ body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-d
 		<h:outputText value=" ثواني" />
 		<br />
 		<h:outputText value="هل ترغب في الاستمرار في جلسة العمل الخاصة بك؟" />
-		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
-				</p:ajaxStatus>
-				
 		<h:form>
 			<p:commandButton value="نعم" process="@this" update="inputHiden"
 				onclick="stopCount()" />
@@ -193,22 +190,6 @@ body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-d
 			<ui:include src="topbar.xhtml" />
 
 			<div class="layout-breadcrumb">
-				<ul>
-					<!--                         <li><p:link outcome="/pages/dashboard"><i class="material-icons">&#xE88A;</i></p:link></li> -->
-					<!--                         <li>/</li> -->
-					<!--                         <ui:insert name="breadcrumb" /> -->
-				</ul>
-				<!--                     <h:form> -->
-				<!--                     <div class="layout-breadcrumb-options"> -->
-				<!--                         <a href="#" title="Backup"> -->
-				<!--                             <i class="material-icons">&#xE864;</i> -->
-				<!--                         </a> -->
-				<!--                         <a href="#" title="Bookmark" > -->
-				<!--                             <i class="material-icons">&#xE866;</i> -->
-				<!--                         </a> -->
-
-				<!--                     </div> -->
-				<!--                     </h:form> -->
 			</div>
 
 			<div class="layout-content " style="background-color: #9e9e9e1c;">
@@ -220,23 +201,22 @@ body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-d
 			<div class="layout-main-mask"></div>
 		</div>
 	</div>
-
-<!-- 	<p:ajaxStatus -->
-<!-- 		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px"> -->
-<!-- 		<f:facet name="start"> -->
-<!-- 			<i class="fa fa-circle-o-notch fa-spin ajax-loader" -->
-<!-- 				aria-hidden="true"></i> -->
-<!-- 		</f:facet> -->
-
-<!-- 		<f:facet name="complete"> -->
-<!-- 			<h:outputText value="" /> -->
-<!-- 		</f:facet> -->
-<!-- 	</p:ajaxStatus> -->
 <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
              
-			<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-    			<p:graphicImage name="/images/loading.gif" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" width="20%" height="20%">
+    			<p:graphicImage name="/images/loading.gif" width="100%"/>
 			</p:dialog>
+	<p:ajaxStatus
+		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+		<f:facet name="start">
+			<i class="fa fa-circle-o-notch fa-spin ajax-loader"
+				aria-hidden="true"></i>
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
 
 	<h:outputStylesheet name="css/nanoscroller.css"
 		library="serenity-layout" />

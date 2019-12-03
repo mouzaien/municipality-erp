@@ -58,7 +58,7 @@ public class OvertimeBean {
 	public void calculateNormalOvertime() {
 		double sal = 0;
 		double trans = 0;
-		if (overtime.getBasicSalry() != null) {
+		if (employer.getBasicSalary() != null) {
 			if ((overtime.getNormalDays() != null) && (overtime.getNormalHours() != null)) {
 				sal = Utils.formatDouble(
 						employer.getBasicSalary() * overtime.getNormalDays() * overtime.getNormalHours() / (155d));
@@ -126,7 +126,7 @@ public class OvertimeBean {
 	public void calculateAidOvertime() {
 		double sal = 0;
 		double trans = 0;
-		if (overtime.getBasicSalry() != null) {
+		if (employer.getBasicSalary() != null) {
 			if ((overtime.getFeastDays() != null) && (overtime.getFeastHours() != null)) {
 				sal = Utils.formatDouble(
 						employer.getBasicSalary() * overtime.getFeastDays() * overtime.getFeastHours() / (155d));

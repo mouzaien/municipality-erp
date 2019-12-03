@@ -652,7 +652,7 @@ public class FngMonitoringBean {
 
 		parameters.put("fromDate", (higriMode) ? startGeorDate : mstartDate);
 		parameters.put("toDate", (higriMode) ? endGeorDate : mEndDate);
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
