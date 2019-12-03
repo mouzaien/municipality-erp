@@ -4324,7 +4324,7 @@ public class DataAccessService implements IDataAccessService {
 
 		List<Integer> attachmentIds = addAttachments(attachs);
 
-		if (!isForSave) {
+//		if (!isForSave) {
 			if (wrkApplication.getId() != null) {
 
 				List<WrkApplication> allRecordWrkApplications = commonDao
@@ -4339,7 +4339,7 @@ public class DataAccessService implements IDataAccessService {
 				wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
 			}
 
-		}
+//		}
 		AddNewInternalMemo(wrkApplication, arcRecord, attachmentIds);
 
 		for (String id : toCopyList) {
