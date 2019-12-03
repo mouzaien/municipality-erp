@@ -2434,8 +2434,8 @@ public class DataAccessService implements IDataAccessService {
 		if (recieverUserId == 0)
 			recieverUserId = wrkComment.getMarkedBy();
 		newWrkApp.setToUserId(recieverUserId);
-		newWrkApp.setApplicationUsercomment("ØªÙ… ØªÙˆÙ‚ÙŠØ¹ Ø§Ù„Ø®Ø·Ø§Ø¨ Ø¨ØªØ§Ø±ÙŠØ® " + HijriCalendarUtil.findCurrentHijriDate()
-				+ " Ø¨ÙˆØ§Ø³Ø·Ø©  " + Utils.findCurrentUser().getFirstName() + " ÙŠØ±Ø¬ÙŠ ØªØµØ¯ÙŠØ± Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©  ");
+		newWrkApp.setApplicationUsercomment("تم توقيع الخطاب بتاريخ " + HijriCalendarUtil.findCurrentHijriDate()
+		+ " بواسطة  " + Utils.findCurrentUser().getFirstName() + " يرجي تصدير المعاملة  ");
 		newWrkApp.setApplicationCreateDate(new Date());
 		newWrkApp.setApplicationCreateTime(HijriCalendarUtil.findCurrentTime());
 		newWrkApp.setHijriDate(HijriCalendarUtil.findCurrentHijriDate());
@@ -3817,8 +3817,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	public Integer save(Object myObject) {
-		// if (myObject instanceof ArcRecords)
-		// ((ArcRecords) myObject).setId(createArcRecordsId());
+		 if (myObject instanceof ArcRecords)
+		 ((ArcRecords) myObject).setId(createArcRecordsId());
 		return commonDao.save(myObject);
 	}
 
