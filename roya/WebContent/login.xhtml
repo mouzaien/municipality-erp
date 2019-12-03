@@ -84,7 +84,7 @@
         <h:outputStylesheet name="css/layout-moody.css" library="serenity-layout" />
         </h:form>
 	<h:form prependId="false">
-		<p:dialog header="الدعم الفنى " dir="rtl" width="300"
+		<center> <p:dialog showEffect="explode" hideEffect="bounce" style="background-color:#E8EDF0;" dir="rtl" width="400"
 			closeOnEscape="true" draggable="false" minWidth="300" minHeight="180"
 			widgetVar="dlg2" modal="true" height="150">
 
@@ -104,9 +104,9 @@
 			</div>
 
 			<br></br>
-			<h:commandButton styleClass="btn btn-primary btn-sm btn-block"
-				action="#{loginBean.supportLogin}" value="دخول"></h:commandButton>
-		</p:dialog>
+			<p:commandButton styleClass="btn btn-primary btn-sm btn-block"
+				action="#{loginBean.supportLogin}" value="دخول"></p:commandButton>
+		</p:dialog></center>
 	</h:form>
 </h:body>
 
