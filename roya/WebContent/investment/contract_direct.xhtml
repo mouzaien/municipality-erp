@@ -180,7 +180,7 @@
 							</p:column>
 							<p:column width="5%" style="text-align:center" headerText="طباعة">
 								<p:commandButton ajax="false" icon="ui-icon-print"
-									onclick="this.form.target='_blank'"
+									onclick="this.form.target='_blank'" immediate="true"
 									action="#{contractDirectBean.printContractReport}">
 									<f:setPropertyActionListener value="#{userItem}"
 										target="#{contractDirectBean.contractDirect}" />
