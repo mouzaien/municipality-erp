@@ -215,7 +215,6 @@ public class NewBuildingWallBean extends Scanner implements Serializable {
 		String reportName = "/reports/bill.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("p1", newBillNmber);
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

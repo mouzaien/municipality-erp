@@ -1,0 +1,792 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+<body>
+	<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="recruitId">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="image-box-footer">
+					<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+						styleClass="cyan-btn" action="#{recruitEmployer.saveEmployer}">
+						<!-- 						actionListener="#{recruitEmployer.convertHijriToGrig(e)}" -->
+						<f:ajax execute="@form" />
+					</p:commandButton>
+					<p:spacer width="10px" height="10px"></p:spacer>
+					<p:commandButton value="رجوع" icon="ui-icon ui-icon-arrow-back"
+						styleClass="green-btn" action="employers">
+						<!-- 						actionListener="#{recruitEmployer.convertHijriToGrig(e)}" -->
+						<f:ajax execute="@form" />
+					</p:commandButton>
+				</div>
+				<br></br>
+
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						#{msg['hr.recruit']}</h1>
+					<p:fieldset id="fieldsetform" legend="المعلومات الشخصية"
+						toggleable="true" toggleSpeed="500">
+						<!--         <p:ajax event="toggle"   /> -->
+						<div>
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-6 ui-lg-3">
+									<h:outputLabel value="هجري  :  " />
+									<p:selectBooleanCheckbox value="#{recruitEmployer.higriMode}">
+										<p:ajax update="pDates1" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+								</div>
+							</div>
+							<!-- 				<p:outputLabel value="البحث بالرقم الوظيفى" style="color:red;"></p:outputLabel> -->
+							<!-- 				<p:selectOneMenu id="employerNumber" -->
+							<!-- 					value="#{recruitEmployer.empno}" filter="true" -->
+							<!-- 					filterMatchMode="contains"> -->
+							<!-- 					<f:selectItem itemLabel="Select One" itemValue="" /> -->
+							<!-- 					<f:selectItems value="#{recruitEmployer.listEmployersWorks}" -->
+							<!-- 						var="employers" -->
+							<!-- 						itemLabel="#{employers.firstName} #{employers.secondName} #{employers.thirdName} #{employers.forthName}" -->
+							<!-- 						itemValue="#{employers.employeNumber}" /> -->
+							<!-- 					<p:ajax process="@this" update="recruitId,recruitId:jobcode" -->
+							<!-- 						listener="#{recruitEmployer.loadEmployerData}" /> -->
+							<!-- 				</p:selectOneMenu> -->
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value=""></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=""></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="تصنيف الموظف"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="empssort"
+										value="#{recruitEmployer.hrmasfile.cactegoryId}">
+										<f:selectItem itemLabel="اختر التصنيف" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listCategory}"
+											var="category" itemLabel="#{category.categoryName}"
+											itemValue="#{category.id}" />
+										<p:ajax process="@this" event="change" update="jobcode,recrec"
+											listener="#{recruitEmployer.loadJobsByCat}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=""></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=""></p:outputLabel>
+								</div>
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="رقم الهوية"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="idnation" maxlength="10" required="true"
+										requiredMessage="رقم الهوية مطلوب"
+										value="#{recruitEmployer.hrmasfile.nationalNumber}">
+
+										<p:ajax event="blur"
+											update="firstname,secondtname,thirdtname,fourthtname"
+											process="@this,empssort"
+											listener="#{recruitEmployer.loadnameEmployerbynationid}">
+										</p:ajax>
+									</p:inputText>
+								</div>
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value="اسم الاول"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="firstname" required="true"
+										requiredMessage="الإسم الأول مطلوب"
+										value="#{recruitEmployer.hrmasfile.firstName}">
+									</p:inputText>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="اسم الاب"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:inputText id="secondtname"
+										value="#{recruitEmployer.hrmasfile.secondName}">
+									</p:inputText>
+								</div>
+
+							</div>
+
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<p:outputLabel value="اسم الجد"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="thirdtname"
+										value="#{recruitEmployer.hrmasfile.thirdName}">
+									</p:inputText>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value="اسم العائلة"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="fourthtname"
+										value="#{recruitEmployer.hrmasfile.forthName}">
+									</p:inputText>
+								</div>
+
+								<!-- 	<div class="ui-g-2">
+								<p:outputLabel value="تاريخ الميلاد هـ"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<h:panelGroup>
+								<div class="ui-g-12 ui-md-6 ui-lg-4">
+									<ui:include src="/shared/calender.xhtml"></ui:include>
+								</div>
+									<h:inputText id="hijribirthday"
+										value="#{recruitEmployer.hrmasfile.birthDateHij}"
+										styleClass="form-control form-controlCal">
+										<p:ajax event="blur" process="@this" update="girigbirthday"
+											listener="#{recruitEmployer.convertHijriToGrig}" />
+									</h:inputText>
+
+									<h:commandButton id="calcDate"
+										value="#{msg['calcul.return.date']}" class="btn btn-primary"
+										style="font-size: 10px !important;margin-left: 5px;margin-right: 5px;display:none !important">
+										<f:ajax execute="@form girigbirthday"
+											listener="#{recruitEmployer.convertHijriToGrig}">
+										</f:ajax>
+									</h:commandButton>
+
+								</h:panelGroup>
+							</div> -->
+
+
+								<!-- balabel 	<div class="ui-g-2">
+									<p:outputLabel value="تاريخ الميلاد"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+
+									<p:calendar id="girigbirthday" pattern="dd/MM/yyyy"
+										required="true" requiredMessage="تاريخ الميلاد مطلوب"
+										value="#{recruitEmployer.hrmasfile.birthDate}"
+										placeholder="تاريخ الميلاد">
+
+									</p:calendar>
+								</div> -->
+
+								<div class="ui-g-2">
+									<h:outputLabel value="تاريخ الميلاد" />
+								</div>
+
+
+
+								<div class="ui-g-2">
+									<h:panelGroup id="pDates1">
+										<p:inputText id="hiri1" value="#{recruitEmployer.birthDate_H}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ الميلاد"
+											rendered="#{recruitEmployer.higriMode}"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+
+										<p:calendar id="gric1" value="#{recruitEmployer.birthDate_G}"
+											pattern="dd/MM/yyyy" rendered="#{!recruitEmployer.higriMode}">
+										</p:calendar>
+									</h:panelGroup>
+								</div>
+
+
+
+
+								<!-- 								<div class="ui-g-2"> -->
+								<!-- 									<h:panelGroup id="pDates11"> -->
+								<!-- 										<h:panelGroup id="p11" -->
+								<!-- 											rendered="#{grigAndHijriCalender.higriMode}"> -->
+
+								<!-- 											<ui:include src="../../shared/birthdateCalender.xhtml" /> -->
+
+								<!-- 										</h:panelGroup> -->
+								<!-- 										<h:panelGroup rendered="#{!grigAndHijriCalender.higriMode}"> -->
+
+								<!-- 											<p:calendar id="arabicBirthDate" -->
+								<!-- 												value="#{grigAndHijriCalender.calecderBirthDate}" -->
+								<!-- 												pattern="dd/MM/yyyy"> -->
+								<!-- 												<f:ajax execute="@this" /> -->
+								<!-- 											</p:calendar> -->
+								<!-- 										</h:panelGroup> -->
+								<!-- 									</h:panelGroup> -->
+								<!-- 								</div> -->
+							</div>
+							<div class="ui-g">
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" الديانة"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="empreligion" required="true"
+										requiredMessage="الديانة مطلوبة"
+										value="#{recruitEmployer.hrmasfile.employeReligion}">
+										<f:selectItem itemLabel="اختر الديانة" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listReligion}"
+											var="religion" style="width:15%"
+											itemLabel="#{religion.religionName}"
+											itemValue="#{religion.id}" />
+									</p:selectOneMenu>
+								</div>
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value="مكان الميلاد"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="birtplace"
+										value="#{recruitEmployer.hrmasfile.birthPlace}" filter="true"
+										filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر مكان الميلاد" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listBirtCountry}"
+											var="birth" itemLabel="#{birth.birthName}"
+											itemValue="#{birth.id}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=" الجنسية"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="nationality"
+										value="#{recruitEmployer.hrmasfile.nationality}" filter="true"
+										filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر الجنسية" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listNationality}"
+											var="natios" itemLabel="#{natios.nationalityName}"
+											itemValue="#{natios.id}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<div class="ui-g">
+
+
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" الجنس"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="gender" required="true"
+										requiredMessage="الجنس مطلوب"
+										value="#{recruitEmployer.hrmasfile.sex}">
+										<f:selectItem itemLabel="اختر الجنس" itemValue="" />
+										<f:selectItem itemLabel="ذكر" itemValue="M" />
+
+										<f:selectItem itemLabel="انثى" itemValue="F" />
+
+									</p:selectOneMenu>
+								</div>
+
+
+
+
+								<div class="ui-g-2">
+
+									<p:outputLabel value=" جهة التخرج"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="gradeplace"
+										value="#{recruitEmployer.hrmasfile.graduteplace}"
+										filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر جهة التخرج" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listGraduat}"
+											var="graduate" itemLabel="#{graduate.graduatedPlaceName}"
+											itemValue="#{graduate.id}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=" التخصص"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="specific"
+										value="#{recruitEmployer.hrmasfile.specialization}"
+										filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر التخصص" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listSpecial}"
+											var="special" itemLabel="#{special.specializeName}"
+											itemValue="#{special.id}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+
+
+							<div class="ui-g">
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" المؤهل"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="qualification"
+										value="#{recruitEmployer.hrmasfile.qualification}"
+										filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="اختر المؤهل" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listQualified}"
+											var="qualified" itemLabel="#{qualified.qualifiedName}"
+											itemValue="#{qualified.id}" />
+									</p:selectOneMenu>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" الحالة الاجتماعية"></p:outputLabel>
+								</div>
+
+								<div class="ui-g-2">
+									<p:selectOneMenu id="socialstate" required="true"
+										requiredMessage="الحالة الإجتماعية مطلوبة"
+										value="#{recruitEmployer.hrmasfile.socialityState}">
+										<f:selectItem itemLabel="اختر الحالة" itemValue="" />
+										<f:selectItem itemLabel="متزوج" itemValue="M" />
+
+										<f:selectItem itemLabel="عازب" itemValue="S" />
+
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=" عدد الاولاد"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="childnumber"
+										value="#{recruitEmployer.hrmasfile.childsNumber}">
+									</p:inputText>
+								</div>
+							</div>
+
+							<div class="ui-g">
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value="رقم التامين الاجتماعى"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="socialassurancenumber" required="true"
+										requiredMessage="رقم التامين الاجتماعى مطلوب"
+										value="#{recruitEmployer.hrmasfile.insuranceNumber}">
+									</p:inputText>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" البنك"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="bank" required="true"
+										requiredMessage="البنك مطلوب"
+										value="#{recruitEmployer.hrmasfile.bankId}">
+										<f:selectItem itemLabel="اختر البنك" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listBank}"
+											var="banklist" itemLabel="#{banklist.name} #{banklist.id}"
+											itemValue="#{banklist.id}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value=" رقم الايبان"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="bankiban" maxlength="24" required="true"
+										requiredMessage="رقم الايبان مطلوب"
+										value="#{recruitEmployer.hrmasfile.accountNumber}">
+									</p:inputText>
+								</div>
+
+							</div>
+
+
+							<div class="ui-g">
+
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" رقم الجوال"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="mobile" required="true"
+										requiredMessage="رقم الجوال مطلوب"
+										value="#{recruitEmployer.hrmasfile.mobileNumber}">
+									</p:inputText>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" رقم العمل"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="workphone" required="true"
+										requiredMessage="رقم العمل مطلوب"
+										value="#{recruitEmployer.hrmasfile.workPhone}">
+									</p:inputText>
+								</div>
+
+								<div class="ui-g-2">
+									<p:outputLabel value=" رقم المنزل"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="homephone" required="true"
+										requiredMessage="رقم المنزل مطلوب"
+										value="#{recruitEmployer.hrmasfile.homePhone}">
+									</p:inputText>
+								</div>
+							</div>
+						</div>
+					</p:fieldset>
+
+					<br></br>
+					<p:fieldset id="jobInfo" legend="المعلومات الوظيفية"
+						toggleable="true" collapsed="true" toggleSpeed="500">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-3">
+								<h:outputLabel value="هجري  :  " />
+								<p:selectBooleanCheckbox value="#{recruitEmployer.higriMode2}">
+									<p:ajax update="pDates20,pDates21,pDates22" process="@this"></p:ajax>
+								</p:selectBooleanCheckbox>
+							</div>
+
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="بداية الخدمة بالدولة " />
+							</div>
+
+							<div class="ui-g-2">
+								<h:panelGroup id="pDates20">
+									<p:inputText id="hiri20"
+										value="#{recruitEmployer.firstApplicationDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار  بداية الخدمة بالدولة"
+										rendered="#{recruitEmployer.higriMode2}"
+										styleClass="form-control form-controlCal">
+									</p:inputText>
+
+									<p:calendar id="gric20"
+										value="#{recruitEmployer.firstApplicationDate_G}"
+										pattern="dd/MM/yyyy" rendered="#{!recruitEmployer.higriMode2}">
+									</p:calendar>
+								</h:panelGroup>
+							</div>
+
+
+
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value="الخدمة الحالية" />
+							</div>
+
+
+							<div class="ui-g-2">
+								<h:panelGroup id="pDates21">
+									<p:inputText id="hiri21"
+										value="#{recruitEmployer.firstServiceDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار الخدمة الحالية"
+										rendered="#{recruitEmployer.higriMode2}"
+										styleClass="form-control form-controlCal">
+									</p:inputText>
+
+									<p:calendar id="gric21"
+										value="#{recruitEmployer.firstServiceDate_G}"
+										pattern="dd/MM/yyyy" rendered="#{!recruitEmployer.higriMode2}">
+									</p:calendar>
+								</h:panelGroup>
+							</div>
+
+
+							<div class="ui-g-12 ui-md-6 ui-lg-2">
+								<h:outputLabel value=" تاريخ وارد القرار " />
+							</div>
+
+							<div class="ui-g-2">
+								<h:panelGroup id="pDates22">
+									<p:inputText id="hiri22" value="#{recruitEmployer.incomDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار تاريخ وارد القرار"
+										rendered="#{recruitEmployer.higriMode2}"
+										styleClass="form-control form-controlCal">
+									</p:inputText>
+
+									<p:calendar id="gric22" value="#{recruitEmployer.incomDate_G}"
+										pattern="dd/MM/yyyy" rendered="#{!recruitEmployer.higriMode2}">
+									</p:calendar>
+								</h:panelGroup>
+							</div>
+
+
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value=" مصدر القرار"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText
+									value="#{recruitEmployer.empHistoric.EXeCuteSouRCe}"
+									required="true" requiredMessage="مصدر القرار مطلوب">
+								</p:inputText>
+							</div>
+
+
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel value=" تاريخ وارد القرار"></p:outputLabel> -->
+							<!-- 							</div> -->
+
+
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:calendar pattern="dd/MM/yyyy" -->
+							<!-- 									value="#{recruitEmployer.empHistoric.incomDateGrig}" -->
+							<!-- 									required="true" requiredMessage="تاريخ وارد القرار مطلوب"> -->
+							<!-- 								</p:calendar> -->
+
+							<!-- 							</div> -->
+
+							<div class="ui-g-2">
+								<p:outputLabel value="رقم وارد القرار"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{recruitEmployer.empHistoric.incomNo}"
+									required="true" requiredMessage="رقم وارد القرار مطلوب">
+								</p:inputText>
+							</div>
+						</div>
+
+						<div class="ui-g">
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel value=" سنة وارد القرار"></p:outputLabel> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:inputNumber maxValue="2050" -->
+							<!-- 									value="#{recruitEmployer.empHistoric.incomYear}"> -->
+							<!-- 								</p:inputNumber> -->
+							<!-- 							</div> -->
+
+
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel value="بداية الخدمة بالدولة"></p:outputLabel> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-1"></div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:calendar id="firstservdate" pattern="dd/MM/yyyy" -->
+							<!-- 									required="true" requiredMessage="بداية الخدمة بالدولة مطلوبة" -->
+							<!-- 									value="#{recruitEmployer.hrmasfile.firstApplicationGrigDate}"> -->
+							<!-- 								</p:calendar> -->
+							<!-- 							</div> -->
+
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel value="الخدمة الحالية"></p:outputLabel> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:calendar id="currentservice" pattern="dd/MM/yyyy" -->
+							<!-- 									required="true" requiredMessage="الخدمة الحالية مطلوبة" -->
+							<!-- 									value="#{recruitEmployer.hrmasfile.firstServiceGrigDate}"> -->
+							<!-- 								</p:calendar> -->
+							<!-- 							</div> -->
+
+							
+						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="إدارة/ قسم مباشرة العمل"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="workdirect" required="true"
+									requiredMessage="قسم مباشرة العمل مطلوب"
+									value="#{recruitEmployer.empHistoric.departmentnumber}">
+									<f:selectItem itemLabel="اختر الادارة" itemValue="" />
+									<f:selectItems value="#{recruitEmployer.listDept}"
+										var="deptlist" itemLabel="#{deptlist.deptName}"
+										itemValue="#{deptlist.id}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value=" رمز الوظيفة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="jobcode" required="true"
+									requiredMessage="رمز الوظيفة مطلوب"
+									value="#{recruitEmployer.empHistoric.jobNumber}" filter="true"
+									filterMatchMode="contains"
+									disabled="#{recruitEmployer.renderJobStatus==3?'true':'false'}">
+									<f:selectItem itemLabel="اختر الوظيفة" itemValue="" />
+									<f:selectItems value="#{recruitEmployer.listJob}" var="joblist"
+										itemLabel="#{joblist.jobCode} #{joblist.gov4.jobName}"
+										itemValue="#{joblist.createId}" />
+									<p:ajax process="@this" update="rankHistoric,jobnumber,degree"
+										listener="#{recruitEmployer.loadRankJobNoByCode}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="المرتبة"></p:outputLabel>
+							</div>
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 															<p:outputLabel id="rank" -->
+							<!-- 																value="#{recruitEmployer.selectJob.rankCode}"> -->
+							<!-- 															</p:outputLabel> -->
+
+							<!-- 							</div> -->
+							<div class="ui-g-2">
+								<p:inputText id="rankHistoric" style="width:50% ;"
+									value="#{recruitEmployer.empHistoric.rankNumber}">
+								</p:inputText>
+							</div>
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel value="كود الوظيفة "></p:outputLabel> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:outputLabel id="jobcodenumber" -->
+							<!-- 									value="#{recruitEmployer.selectJob.jobCode}"> -->
+							<!-- 								</p:outputLabel> -->
+							<!-- 							</div> -->
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value=" رقم الوظيفة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="jobnumber"
+									value="#{recruitEmployer.empHistoric.jobNumber}">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value=" الوظيفة الفعلية"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="jobdescription"
+									value="#{recruitEmployer.hrmasfile.jobDescription}">
+								</p:inputText>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="الدرجة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<h:panelGroup id="recrec">
+									<p:selectOneMenu id="degree"
+										value="#{recruitEmployer.empHistoric.classNumber}"
+										required="true" requiredMessage="الدرجة مطلوبة"
+										rendered="#{(recruitEmployer.hrmasfile.cactegoryId==1||recruitEmployer.hrmasfile.cactegoryId==2||recruitEmployer.hrmasfile.cactegoryId==4)}">
+										<f:selectItem itemLabel="اختر الدرجة" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listScaleDgree}"
+											var="dgreelist" itemLabel="#{dgreelist.classTitle}"
+											itemValue="#{dgreelist.classCode}" />
+										<p:ajax process="@this"
+											update="basicsalary,transfer,mandatein"
+											listener="#{recruitEmployer.loadDetailClass}" />
+									</p:selectOneMenu>
+									<p:inputText id="degrtxt"
+										rendered="#{(recruitEmployer.hrmasfile.cactegoryId == 3||recruitEmployer.hrmasfile.cactegoryId == 5||recruitEmployer.hrmasfile.cactegoryId == 6||recruitEmployer.hrmasfile.cactegoryId == 7||recruitEmployer.hrmasfile.cactegoryId == 8||recruitEmployer.hrmasfile.cactegoryId == 9)}"
+										value="#{recruitEmployer.dgreeId}" />
+								</h:panelGroup>
+							</div>
+
+						</div>
+
+						<div class="ui-g">
+
+							<div class="ui-g-2">
+								<p:outputLabel value="الراتب الاساسى"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="basicsalary"
+									value="#{recruitEmployer.empHistoric.basicSalary}">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="بدل الانتقال"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="transfer"
+									value="#{recruitEmployer.empHistoric.transferSalary}">
+								</p:inputText>
+							</div>
+
+							<div class="ui-g-2">
+								<p:outputLabel value="انتداب داخلى"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="mandatein"
+									value="#{recruitEmployer.empHistoric.mandateInner}">
+								</p:inputText>
+							</div>
+
+						</div>
+
+
+						<div class="ui-g">
+
+							<div class="ui-g-2">
+								<p:outputLabel value="'طبيعة عمل"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="worknatural"
+									value="#{recruitEmployer.hrmasfile.jobNature}">
+									<f:selectItem itemLabel="اختر طبيعة العمل" itemValue="" />
+									<f:selectItem itemLabel="نعم" itemValue="Y" />
+
+									<f:selectItem itemLabel="لا" itemValue="N" />
+
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="'بدل نقل"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="trans"
+									value="#{recruitEmployer.hrmasfile.transfer}">
+									<f:selectItem itemLabel="بدل نقل" itemValue="" />
+									<f:selectItem itemLabel="نعم" itemValue="Y" />
+									<f:selectItem itemLabel="لا" itemValue="N" />
+
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="وقف الراتب"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="salstop"
+									value="#{recruitEmployer.hrmasfile.salaryStop}">
+									<f:selectItem itemLabel="اختر طبيعة العمل" itemValue="" />
+									<f:selectItem itemLabel="نعم" itemValue="1" />
+									<f:selectItem itemLabel="لا" itemValue="0" />
+
+								</p:selectOneMenu>
+							</div>
+
+						</div>
+					</p:fieldset>
+
+				</div>
+
+
+
+
+
+			</h:form>
+
+
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

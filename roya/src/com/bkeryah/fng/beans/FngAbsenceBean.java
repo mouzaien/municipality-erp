@@ -220,11 +220,10 @@ public class FngAbsenceBean {
 		parameters.put("year", printedYears);
 		parameters.put("month", printedMonths);
 		parameters.put("monthName",
-				((Sys012) dataAccessService.findEntityById(Sys012.class, fngEmpAbsent.getAbsmonth())).getNameAr());
+				((Sys012) dataAccessService.findEntityById(Sys012.class, fngEmpAbsent.getAbsmonth())).getNameGr());
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

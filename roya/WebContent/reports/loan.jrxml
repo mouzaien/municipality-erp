@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-23T11:50:49 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="loan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cfcb9d96-acb4-420b-a4f9-65485f7afb0e">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
@@ -14,6 +15,9 @@
 	<parameter name="bankName" class="java.lang.String"/>
 	<parameter name="monthName" class="java.lang.String"/>
 	<parameter name="compName" class="java.lang.String"/>
+	<parameter name="LOGO_DIR" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[select l.loan_empno,L.LOAN_NAME , D.LOAN_PAID_MONTLY,
 F.FST_NAME_AR ||' '||F.SND_NAME_AR||' '||F.TRD_NAME_AR||' '||F.FTH_NAME_AR  as name,
@@ -95,7 +99,7 @@ order by his.catcod asc , RANKCOD desc]]>
 			</textField>
 			<image>
 				<reportElement x="246" y="2" width="64" height="41" uuid="eee5482d-d39f-4c03-bb52-31ce92ef1da8"/>
-				<imageExpression><![CDATA["C:\\Users\\wasalam.BKERYAH\\Desktop\\bkeryah.gif"]]></imageExpression>
+				<imageExpression><![CDATA[ $P{LOGO_DIR} ]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="109" y="91" width="101" height="20" uuid="a66ec389-7dae-4a87-8f78-ac990bf0313e"/>

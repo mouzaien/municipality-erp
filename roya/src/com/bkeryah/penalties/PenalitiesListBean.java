@@ -69,7 +69,6 @@ public class PenalitiesListBean {
 		String reportName = "/reports/penality.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("fineNo", reqFinesMaster.getFineNo());
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("LOGO_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);
@@ -94,7 +93,6 @@ public class PenalitiesListBean {
 		parameters.put("p1", payLicBill.getBillNumber());
 		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath("/reports/bill_detail.jasper"));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

@@ -34,8 +34,6 @@ public class WhsWarehouses implements Serializable {
 	private Integer invIsBlocked;
 	@Column(name = "STORE_BOSS_ID")
 	private Integer storeBossId;
-	@Column(name = "store_dean_id")
-	private Integer storeUserId;
 
 	public Integer getInvIsBlocked() {
 		return invIsBlocked;
@@ -44,6 +42,9 @@ public class WhsWarehouses implements Serializable {
 	public void setInvIsBlocked(Integer invIsBlocked) {
 		this.invIsBlocked = invIsBlocked;
 	}
+
+	@Column(name = "store_dean_id")
+	private Integer storeUserId;
 
 	public int getStoreNumber() {
 		return storeNumber;

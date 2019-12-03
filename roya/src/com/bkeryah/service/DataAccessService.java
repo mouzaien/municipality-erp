@@ -1579,7 +1579,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecords.setCreatedIn(new Date());
 		arcRecords.setLetterFrom(user.getDeptId());
 		if (withIncomeNumber) {
-			arcRecords.setIncomeNo(commonDao.createIncomeNo().toString());
+			arcRecords.setIncomeNo(commonDao.createOutcomeNo().toString());
 			arcRecords.setIncomeHDate(CurrentHijriDate);
 		} else {
 			arcRecords.setIncomeNo("");
@@ -2306,7 +2306,7 @@ public class DataAccessService implements IDataAccessService {
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request) {
 		Integer hrEmployeeIdInteger = getHrResponsibleId();
 		ArcRecords arcRecord = new ArcRecords();
-		arcRecord.setRecTitle(" طلب تحويل الراتب مقدم من الموظف  "
+		arcRecord.setRecTitle(" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + " Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
 				+ Utils.findCurrentUser().getEmployeeName());
 		arcRecord.setApplicationType(appType);
 		Integer recordId = createNewArcRecord(arcRecord, false, hrEmployeeIdInteger);
@@ -2321,7 +2321,7 @@ public class DataAccessService implements IDataAccessService {
 		application.setToUserId(hrEmployeeIdInteger);
 
 		WrkApplicationId applicationId = createNewWrkApplication(recordId, application,
-				" طلب تحويل الراتب مقدم من الموظف"
+				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + "  Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
 						+ Utils.findCurrentUser().getEmployeeName(),
 				true, null);
 
@@ -3304,7 +3304,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public void updateArcRecordsIncomeNo(ArcRecords arcRecords) {
-		arcRecords.setIncomeNo(createIncomeNo());
+		arcRecords.setOutcomingNo(createOutcomeNo());
 		updateObject(arcRecords);
 	}
 
@@ -6401,7 +6401,7 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.loadAllJobStatus();
 	}
 
-	private void addJobToHistory(HrsJobCreation job, HrsJobCreation oldJob, Integer actionNB) {
+	public void addJobToHistory(HrsJobCreation job, HrsJobCreation oldJob, Integer actionNB) {
 		HrsJobHistorical history = new HrsJobHistorical();
 		Integer serial = 1;
 		if (oldJob != null) {
@@ -6583,7 +6583,7 @@ public class DataAccessService implements IDataAccessService {
 		category.add(2);
 		category.add(4);
 		// category.add(9);
-		if (arcUsers != null)
+		if (arcUsers != null && empl != null)
 			for (Integer x : category) {
 				if (empl.getCATegoryId() == x) {
 					employer.setName(arcUsers.getEmployeeName());
@@ -6597,7 +6597,7 @@ public class DataAccessService implements IDataAccessService {
 			}
 		;
 
-		if (arcUsers != null) {
+		if (arcUsers != null && empl != null) {
 			if (arcUsers.getEmployeeNumber() != null) {
 
 				// employer.setJob(empl.getGovJob4().getJobName());
@@ -7308,10 +7308,54 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public void saveLeavingEmployer(HrsEmpTerminate empTerminate) {
+	public void saveLeavingEmployer(HrsEmpTerminate empTerminate, HrsEmpHistorical empHistorical, HrsJobHistorical jobHistorical) {
+		HrsEmpHistorical hrsNewEmpHistorical = new HrsEmpHistorical();
+		HrsJobCreation creation = commonDao.loadJobCreation(empHistorical.getJobNumber(), empHistorical.getJobcode());
+		creation.setJobstatus(1);
+//		HrsJobHistorical hrsNewJobHistorical = new HrsJobHistorical();
+		HrsEmpHistoricalId empHistoricalId = new HrsEmpHistoricalId();
 		empTerminate.setCreatedBy(Utils.findCurrentUser().getUserId());
 		empTerminate.setCreatedIn(new Date());
-		commonDao.save(empTerminate);
+//		hrsNewEmpHistorical = empHistorical;
+//		hrsNewJobHistorical = jobHistorical;
+		empHistorical.setFlag(0);
+		empHistoricalId.setEmpno(empHistorical.getId().getEmpno());
+		empHistoricalId.setStepId((empHistorical.getId().getStepId()+1));
+		hrsNewEmpHistorical.setId(empHistoricalId);
+		
+//		hrsNewEmpHistorical.setCATegoryId(empHistorical.getCATegoryId());
+		hrsNewEmpHistorical.setIncomNo(empTerminate.getIncomeNumber());
+		hrsNewEmpHistorical.setIncomDate(empTerminate.getIncomeDateHijri());
+		hrsNewEmpHistorical.setExecuteNo(empTerminate.getExecutedNumber().toString());
+		hrsNewEmpHistorical.setExecuteDate(empTerminate.getExecutedDate());
+		hrsNewEmpHistorical.setRecordType(237);
+		hrsNewEmpHistorical.setFlag(1);
+		hrsNewEmpHistorical.setCATegoryId(empHistorical.getCATegoryId());
+		hrsNewEmpHistorical.setRankNumber(empHistorical.getRankNumber());
+		hrsNewEmpHistorical.setClassNumber(empHistorical.getClassNumber());
+		hrsNewEmpHistorical.setBasicSalary(empHistorical.getBasicSalary());
+		hrsNewEmpHistorical.setTransferSalary(empHistorical.getTransferSalary());
+		hrsNewEmpHistorical.setMandateInner(empHistorical.getMandateInner());
+		hrsNewEmpHistorical.setMandateOuter(empHistorical.getMandateOuter());
+		hrsNewEmpHistorical.setJobNumber(empHistorical.getJobNumber());
+		hrsNewEmpHistorical.setJobcode(empHistorical.getJobcode());
+//		hrsNewEmpHistorical.setRankNumber(empHistorical.getRankNumber());
+//		hrsNewEmpHistorical.setClassNumber(empHistorical.getClassNumber());
+		jobHistorical.setEmployerNumber(null);
+		jobHistorical.setSerial(jobHistorical.getSerial()+1);
+		jobHistorical.setClassCode(null);
+		jobHistorical.setIncomeNumber(empTerminate.getIncomeNumber());
+		jobHistorical.setExecuteNumber(empTerminate.getExecutedNumber().toString());
+		jobHistorical.setExecutedate(empTerminate.getExecutedDate());
+		jobHistorical.setJobStatus(1);
+		jobHistorical.setJobAction(9);
+		
+		commonDao.saveObject(empTerminate);
+		commonDao.saveObject(hrsNewEmpHistorical);
+		commonDao.saveObject(jobHistorical);
+
+		commonDao.update(empHistorical);
+		commonDao.update(creation);
 	}
 
 	@Override
@@ -7852,23 +7896,14 @@ public class DataAccessService implements IDataAccessService {
 				contract.getTender().getAnnouncementDetailsId());
 		annDetails.setStatus(1);
 		commonDao.update(annDetails);
-		
-		Integer contractId = commonDao.save(contract);
-		PayLicBills newBill = new PayLicBills();
-		newBill.setBillOwnerName(contract.getInvRepresentName());
-		newBill.setLicenceNumber(contractId);
-		newBill.setLicenceType(MyConstants.CONTRACT_TYPE);
-		newBill.setBillStatus(0);
-		newBill.setPayDateFrom(contract.getBillStartDate());
-		newBill.setPayDateTo(contract.getBillEndDate());
-		PayBillDetails payDetails = new PayBillDetails();
-		payDetails.setPayMaster(11200);
-		payDetails.setPayDetails(11201);
-		payDetails.setAmount(contract.getAnnualRent());
-		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
-		newBill.getPayBillDetails().add(payDetails);
-		newBill.setPayAmount(contract.getAnnualRent());
-		saveBill(newBill);
+		// if(selectedClausesList != null){
+		// for(String cls : selectedClausesList){
+		// ContractClause conCla = new ContractClause();
+		// conCla.setContractId(contId);
+		// conCla.setClauseId(Integer.parseInt(cls));
+		// commonDao.save(conCla);
+		// }
+		// }
 	}
 
 	@Override
@@ -8040,43 +8075,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public void saveContractDirect(ContractDirect contractDirect) {
-		Integer contractId = commonDao.save(contractDirect);
-		PayLicBills newBill = new PayLicBills();
-		newBill.setBillOwnerName(contractDirect.getInvRepresentName());
-		newBill.setLicenceNumber(contractId);
-		newBill.setLicenceType(MyConstants.CONTRACT_DIRECT_TYPE);
-		newBill.setBillStatus(0);
-		newBill.setPayDateFrom(contractDirect.getBillStartDate());
-		newBill.setPayDateTo(contractDirect.getBillEndDate());
-		PayBillDetails payDetails = new PayBillDetails();
-		payDetails.setPayMaster(11200);
-		payDetails.setPayDetails(11201);
-		payDetails.setAmount(contractDirect.getAnnualRent());
-		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
-		newBill.getPayBillDetails().add(payDetails);
-		newBill.setPayAmount(contractDirect.getAnnualRent());
-		saveBill(newBill);
-	}
-	
-	@Override
-	@Transactional
-	public void updateContractDirect(ContractDirect contractDirect) {
-		commonDao.update(contractDirect);
-		PayLicBills newBill = new PayLicBills();
-		newBill.setBillOwnerName(contractDirect.getInvRepresentName());
-		newBill.setLicenceNumber(contractDirect.getId());
-		newBill.setLicenceType(MyConstants.CONTRACT_DIRECT_TYPE);
-		newBill.setBillStatus(0);
-		newBill.setPayDateFrom(contractDirect.getBillStartDate());
-		newBill.setPayDateTo(contractDirect.getBillEndDate());
-		PayBillDetails payDetails = new PayBillDetails();
-		payDetails.setPayMaster(11200);
-		payDetails.setPayDetails(11201);
-		payDetails.setAmount(contractDirect.getAnnualRent());
-		newBill.setPayBillDetails(new HashSet<PayBillDetails>());
-		newBill.getPayBillDetails().add(payDetails);
-		newBill.setPayAmount(contractDirect.getAnnualRent());
-		saveBill(newBill);
+		commonDao.save(contractDirect);
 	}
 
 	@Override
@@ -8670,5 +8669,84 @@ public class DataAccessService implements IDataAccessService {
 		// TODO Auto-generated method stub
 		return commonDao.getAllArticles();
 	}
+
+//	@Override
+//	@Transactional
+//	public HrsJobHistorical gethrsjobHistorical(Integer employerNB) {
+//		return commonDao.loadLastHistoricalJob(jobNumber, jobCode);
+//	}
+	@Override
+	@Transactional
+	public HrsJobHistorical	loadLastHistoricalJob(Integer jobNumber, String jobCode) {
+	return commonDao.loadLastHistoricalJob(jobNumber, jobCode);
+}
+
+	@Override
+	@Transactional
+	public HrsJobCreation	loadJobCreation(Integer jobNumber, String jobCode) {
+	return commonDao.loadJobCreation(jobNumber, jobCode);
+}
+	@Override
+	@Transactional
+	public void saveOperation(DeputationTraining dep_tr) {
+		 commonDao.addOperation(dep_tr);
+	}
+	@Override
+	@Transactional
+	public void exportDepTrainFile(Integer emp_no,Integer month,Integer year) {
+		
+		List<String> fileList = commonDao.loadDepTrain(emp_no, month, year);
+		
+		String fileName = "xx.txt";
+		
+			fileName = MyConstants.deputation_training;
+		
+
+		createFileInServer(fileList, fileName);
+	}
+	@Override
+	@Transactional
+	public List<DeputationTraining> loadStatus(Integer emp_number) {
+		return commonDao.loadStatus(emp_number);
+		
+	}
+	@Override
+	@Transactional
+	public List<DeputationTraining> loadStatus(Integer emp_number,Integer month,Integer year) {
+		return commonDao.loadStatus(emp_number,month,year);
+		
+	}
+
+	@Override
+	@Transactional
+	public void saveReward(RewardInfo rewardinfo) {
+		commonDao.saveReward(rewardinfo);
+	}
+
+	@Override
+	@Transactional
+	public List<RewardInfo> loadRewards(Integer emp_number) {
+		return commonDao.loadRewards(emp_number);
+		
+	}
+	@Override
+	@Transactional
+	public void exportRewardFile(Integer emp_no,Integer month,Integer year) {
+
+		List<String> fileList = commonDao.loadReward(emp_no, month, year);
+		String fileName = "xx.txt";
+		
+			fileName = MyConstants.reward;
+		
+
+		createFileInServer(fileList, fileName);
+	}
+	@Override
+	@Transactional
+	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year) {
+		return commonDao.loadRewards(emp_number, month, year);
+		
+	}
+
 
 }

@@ -29,7 +29,7 @@
 							update="includeform:addDialog">
 						</p:commandButton>
 						<p:spacer width="10" height="10"></p:spacer>
-						<p:commandButton value="طباعة"
+						<p:commandButton value="طباعة"  
 							oncomplete=" PF('printLoanDialog').show()"
 							action="#{loanBean.printLoan}"
 							icon="ui-icon ui-icon-assignment-return" styleClass="orange-btn"
@@ -406,7 +406,7 @@
 									<div class="col-md-2">
 										<p:selectOneMenu value="#{loanBean.month}">
 											<f:selectItems value="#{loadingDataBean.monthsList}"
-												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameAr}" />
+												var="mon" itemValue="#{mon.id}" itemLabel="#{mon.nameGr}" />
 										</p:selectOneMenu>
 									</div>
 									<div class="col-md-1">
@@ -431,7 +431,7 @@
 						<br />
 						<div align="center" class="image-box-footer">
 							<p:commandButton value="طباعة" style=";margin-left:3px"
-								styleClass="btn btn-primary"
+								styleClass="btn btn-primary" ajax="false"
 								onsuccess="PF('printLoanDialog').hide();"
 								onclick="this.form.target='_blank'"
 								action="#{loanBean.printReportAction}" />

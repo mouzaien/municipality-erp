@@ -652,11 +652,10 @@ public class FngMonitoringBean {
 
 		parameters.put("fromDate", (higriMode) ? startGeorDate : mstartDate);
 		parameters.put("toDate", (higriMode) ? endGeorDate : mEndDate);
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReportFromListDataSource(reportName, parameters, tstFingersList);
 		return "";
 	}
@@ -690,7 +689,6 @@ public class FngMonitoringBean {
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReportFromListDataSource(reportName, parameters, tstFingersTotalForPrint);
 		return "";
 	}
@@ -703,7 +701,6 @@ public class FngMonitoringBean {
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReportFromListDataSource(reportName, parameters, tstFingersList);
 		return "";
 	}

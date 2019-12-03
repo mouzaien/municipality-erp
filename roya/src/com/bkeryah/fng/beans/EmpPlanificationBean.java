@@ -30,7 +30,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class EmpPlanificationBean {
-	protected static final Logger logger = Logger.getLogger(EmpPlanificationBean.class);
+	protected static final Logger logger = Logger.getLogger(PenaltyBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<User> employersList;
@@ -105,6 +105,7 @@ public class EmpPlanificationBean {
 		employersList = new ArrayList<User>();
 		List<User> empList = new ArrayList<User>();
 		for (String id : deptIds) {
+
 			empList = new ArrayList<User>();
 			empList = dataAccessService.getAllEmployeesInDept(Integer.parseInt(id));
 			employersList.addAll(empList);
@@ -121,7 +122,7 @@ public class EmpPlanificationBean {
 
 		for (FngUserTempShift shift : fngShiftLst) {
 			FngUserTempShift userShift = new FngUserTempShift();
-
+			// shift.getSecondTimeid() >
 			for (User arcUsers : employersListSelected) {
 				FngUserShiftId shiftId = new FngUserShiftId();
 				shiftId.setUserid(arcUsers.getUserId());
@@ -131,11 +132,11 @@ public class EmpPlanificationBean {
 				userShift.setId(shiftId);
 				dataAccessService.saveObject(userShift);
 				MsgEntry.addInfoMessage("تم الحفظ");
-				
+				// FngUserTempShift();
 			}
 
 		}
-		
+		// }
 		fngUserTempShiftLst.clear();
 	}
 
@@ -153,6 +154,7 @@ public class EmpPlanificationBean {
 			fngShiftLst.clear();
 			for (Date currDate = selecteDateFrom_G; currDate.getTime() <= selecteDateTo_G
 					.getTime(); currDate = new Date(currDate.getYear(), currDate.getMonth(), currDate.getDate() + 1)) {
+
 				FngUserTempShift tempShift = new FngUserTempShift();
 				FngUserShiftId tempShiftId = new FngUserShiftId();
 				tempShiftId.setWorkdate(format.format(currDate));
@@ -160,11 +162,14 @@ public class EmpPlanificationBean {
 				tempShiftId.setUserid(empId);
 				tempShift.setId(tempShiftId);
 				fngShiftLst.add(tempShift);
+
 				for (User user : employersListSelected) {
 					if (user.getUserId() != null && currDate != null) {
 
 						shifts = dataAccessService.getEmployeeShiftsById(user.getUserId(), currDate);
+
 						if (shifts.size() >= 1) {
+
 							fristOutTime = dataAccessService.getTimeShiftById(shifts.get(0).getId().getTimeid())
 									.getEndWork();
 							secondInTime = shift.getStartWork();
@@ -190,7 +195,7 @@ public class EmpPlanificationBean {
 
 			}
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error(e.toString());
 		} finally {
 			shift = null;
 			secondShift = null;
@@ -198,7 +203,7 @@ public class EmpPlanificationBean {
 
 	}
 
-	public void loadUserShifts() {
+	public void loadUserShifts(AjaxBehaviorEvent event) {
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 		List<FngUserTempShift> shifts = new ArrayList<FngUserTempShift>();
 		try {
@@ -206,42 +211,34 @@ public class EmpPlanificationBean {
 			if (higriMode) {
 				selecteDateFrom_G = Utils.convertHDateToGDate(selecteDateFrom);
 				selecteDateTo_G = Utils.convertHDateToGDate(selecteDateTo);
-				
 			}
 			fngShiftLst.clear();
 			for (Date currDate = selecteDateFrom_G; currDate.getTime() <= selecteDateTo_G
 					.getTime(); currDate = new Date(currDate.getYear(), currDate.getMonth(), currDate.getDate() + 1)) {
 
-			//	FngUserTempShift tempShift = new FngUserTempShift();
-			//	FngUserShiftId tempShiftId = new FngUserShiftId();
-			//	tempShiftId.setWorkdate(format.format(currDate));
-			//	tempShiftId.setTimeid(shift.getTimeShiftId());
-			//	tempShiftId.setUserid(empId);
-			//	tempShift.setId(tempShiftId);
-			//	fngShiftLst.add(tempShift);
+				FngUserTempShift tempShift = new FngUserTempShift();
+				FngUserShiftId tempShiftId = new FngUserShiftId();
+				tempShiftId.setWorkdate(format.format(currDate));
+				tempShiftId.setTimeid(shift.getTimeShiftId());
+				tempShiftId.setUserid(empId);
+				tempShift.setId(tempShiftId);
+				fngShiftLst.add(tempShift);
 
 				for (User user : employersListSelected) {
 					if (user.getUserId() != null && currDate != null) {
 						shifts = dataAccessService.getEmployeeShiftsById(user.getUserId(), currDate);
-						
 					}
-					FngUserTempShift userShift ;
-					FngUserShiftId shiftId ;
-					for (int i = 0; i < shifts.size(); i++) {
-						userShift = new FngUserTempShift();
-						shiftId = new FngUserShiftId();
-						shiftId.setWorkdate(format.format(currDate));
-					//	shiftId.setTimeid(shifts.get(i).get);
-					//	shiftId.setUserid(empId);
-						userShift.setTimeName(shifts.get(i).getTimeName());
-						userShift.setId(shifts.get(i).getId());
-						userShift.setUserDeptName(shifts.get(i).getUserDeptName());
-						userShift.setUserName(shifts.get(i).getUserName());
-						
-						fngUserTempShiftLst.add(userShift);
-					}
-					
-					
+
+					FngUserTempShift userShift = new FngUserTempShift();
+					FngUserShiftId shiftId = new FngUserShiftId();
+					shiftId.setWorkdate(format.format(currDate));
+					shiftId.setTimeid(shift.getTimeShiftId());
+					shiftId.setUserid(empId);
+					userShift.setTimeName(shift.getTimeName());
+					userShift.setId(shiftId);
+					userShift.setUserDeptName(user.getDeptName());
+					userShift.setUserName(user.getEmployeeName());
+					fngUserTempShiftLst.add(userShift);
 				}
 
 			}

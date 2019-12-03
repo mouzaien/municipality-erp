@@ -16,8 +16,8 @@
 				<div class="image-box-footer">
 					<h:panelGroup id="buttons">
 
-						<p:commandButton id="btnPrint" icon="ui-icon-print"
-							styleClass="purple-btn" action="#{hrsOverTime.printReportAction}"
+						<p:commandButton id="btnPrint" icon="ui-icon-print" ajax="false" process="@this"  onclick="this.form.target='_blank'"
+							styleClass="purple-btn" action="#{hrsOverTime.printReportAction}" 
 							value="طباعة">
 							<!-- rendered="#{hrsOverTime.cantPrint}" -->
 						</p:commandButton>
@@ -150,8 +150,7 @@
 
 							<br />
 
-
-							<p:dataTable value="#{hrsOverTime.listovertime}" var="car"
+							<p:dataTable  value="#{hrsOverTime.listovertime}" var="car"
 								excel="true" csv="true" pdf="true" columnVisibility="true"
 								copy="true" print="true" paginatorPosition="bottom"
 								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -167,21 +166,21 @@
 								</f:facet>
 								<p:column style="white-space: nowrap;text-align: center;"
 									value="#{car.transMoney}" headerText="بدل التنقل"
-									filterBy="#{car.transMoney}" filterMatchMode="contains" />
+									filterBy="#{car.transMoney}" filterMatchMode="contains" > #{car.transMoney} </p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									value="#{car.employeeNumber}" headerText="رقم الموظف"
-									filterBy="#{car.employeeNumber}" filterMatchMode="contains" />
+									filterBy="#{car.employeeNumber}" filterMatchMode="contains" >#{car.employeeNumber}</p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									value="#{car.normalHours}" headerText="ساعات عاديةس"
-									filterBy="#{car.normalHours}" filterMatchMode="contains" />
+									filterBy="#{car.normalHours}" filterMatchMode="contains" >#{car.normalHours}</p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									value="#{car.normalDays}" headerText="ايام عادية"
-									filterBy="#{car.normalDays}" filterMatchMode="contains" />
+									filterBy="#{car.normalDays}" filterMatchMode="contains" >#{car.basicSalry}</p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									value="#{car.basicSalry}" headerText="الراتب الاساسي"
-									filterBy="#{car.basicSalry}" filterMatchMode="contains" />
+									filterBy="#{car.basicSalry}" filterMatchMode="contains" >#{car.basicSalry}</p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
-									value="#{car.salary}" headerText="الراتب" />
+									value="#{car.salary}" headerText="الراتب" >#{car.salary} </p:column>
 							</p:dataTable>
 
 

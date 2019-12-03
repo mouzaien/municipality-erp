@@ -30,6 +30,7 @@ import com.bkeryah.entities.BillIssueRubish;
 import com.bkeryah.entities.Charging;
 import com.bkeryah.entities.DepartmentArcRecords;
 import com.bkeryah.entities.DeptArcRecords;
+import com.bkeryah.entities.DeputationTraining;
 import com.bkeryah.entities.DocumentScenario;
 import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
@@ -64,6 +65,7 @@ import com.bkeryah.entities.PayMaster;
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.RewardInfo;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -998,4 +1000,19 @@ public interface ICommonDao {
 	// to load all invenroties in WHS_GARD_MASTER table( inventory entity)
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
 
+	public HrsJobCreation loadJobCreation(Integer jobNumber, String jobCode);
+
+	public void addOperation(Object dep_tr);
+
+	public List<String> loadDepTrain(Integer emp_no, Integer month, Integer year);
+
+	List<DeputationTraining> loadStatus(Integer emp_number);
+
+	List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year);
+
+	void saveReward(RewardInfo rewardinfo);
+
+	List<RewardInfo> loadRewards(Integer emp_number);
+	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year);
+	public List<String> loadReward(Integer emp_no,Integer month,Integer year);
 }

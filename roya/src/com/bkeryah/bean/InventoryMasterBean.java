@@ -176,12 +176,12 @@ public class InventoryMasterBean {
 				article = (Article) dataAccessService.findEntityById(Article.class, itemId);
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø®ØªØ±  Ø§Ù„ØµÙ†Ù� Ø§Ù„Ù…Ø·Ù„ÙˆØ¨", "Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø®ØªØ±  Ø§Ù„ØµÙ†Ù� Ø§Ù„Ù…Ø·Ù„ÙˆØ¨"));
+						"من فضلك اختر  الصنف المطلوب", "من فضلك اختر  الصنف المطلوب"));
 
 			}
 		} catch (NullPointerException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø®ØªØ±  Ø§Ù„ØµÙ†Ù� Ø§Ù„Ù…Ø·Ù„ÙˆØ¨", "Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø®ØªØ±  Ø§Ù„ØµÙ†Ù� Ø§Ù„Ù…Ø·Ù„ÙˆØ¨"));
+					"من فضلك اختر  الصنف المطلوب", "من فضلك اختر  الصنف المطلوب"));
 			e.printStackTrace();
 		}
 
@@ -194,13 +194,13 @@ public class InventoryMasterBean {
 
 				inventoryRecordList = new ArrayList<>();
 				article = new Article();
-				MsgEntry.addAcceptFlashInfoMessage("ØªÙ… Ø§Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨Ùƒ Ø¨Ù†Ø¬Ø§Ø­");
+				MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
 			} catch (Exception e) {
 				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.execution"));
 
 			}
 		} else {
-			MsgEntry.addErrorMessage("Ù…Ù† Ù�Ø¶Ù„Ùƒ Ø§Ø¶Ù� Ø¹Ù„Ù‰ Ø§Ù„Ø§Ù‚Ù„ ÙˆØ§Ø­Ø¯ ØµÙ†Ù�");
+			MsgEntry.addErrorMessage("من فضلك اضف على الاقل واحد صنف");
 		}
 	}
 
@@ -306,20 +306,20 @@ public class InventoryMasterBean {
 	}
 
 	/*
-	 * printInventoryReportAction Ø¨Ø±Ø£Ø© Ø°Ù…Ø©
+	 * printInventoryReportAction برأة ذمة
 	 **/
 	public String printInventoryReportAction() {
 		String reportName = "/reports/NewInventory.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("gardId", inventoryMaster.getInventoryId());
 		parameters.put("STRNO", getStrNo());// "259306";
-		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
+
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
 
 	/*
-	 * printInventoryReportAction Ø¥Ø³ØªÙ…Ø§Ø±Ø© Ø¬Ø±Ø¯
+	 * printInventoryReportAction إستمارة جرد
 	 **/
 	public String printFormInventoryReportAction() {
 		String reportName = "/reports/InventoryForm.jrxml";

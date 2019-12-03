@@ -207,7 +207,7 @@
 													<f:selectItems
 														value="#{loadingDataBean.activeEmployersList}" var="emp"
 														itemValue="#{emp.employeNumber}"
-														itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName}" />
+														itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}" />
 													<f:ajax render="includeform:dataPG includeform:inboxdt"
 														execute="empList" event="change"
 														listener="#{leavingEmployerBean.loadEmployer}" />

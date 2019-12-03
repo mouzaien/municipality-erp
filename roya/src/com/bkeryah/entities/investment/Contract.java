@@ -92,46 +92,6 @@ public class Contract implements Comparable<Contract> {
 	private String startContDate;
 	@Transient
 	private String endContDate;
-	@Transient
-	private Date billGStartDate;
-	@Transient
-	private Date billGEndDate;
-	@Transient
-	private String billStartDate;
-	@Transient
-	private String billEndDate;
-
-	public String getBillStartDate() {
-		return billStartDate;
-	}
-
-	public void setBillStartDate(String billStartDate) {
-		this.billStartDate = billStartDate;
-	}
-
-	public String getBillEndDate() {
-		return billEndDate;
-	}
-
-	public void setBillEndDate(String billEndDate) {
-		this.billEndDate = billEndDate;
-	}
-
-	public Date getBillGStartDate() {
-		return billGStartDate;
-	}
-
-	public void setBillGStartDate(Date billGStartDate) {
-		this.billGStartDate = billGStartDate;
-	}
-
-	public Date getBillGEndDate() {
-		return billGEndDate;
-	}
-
-	public void setBillGEndDate(Date billGEndDate) {
-		this.billGEndDate = billGEndDate;
-	}
 
 	public Integer getId() {
 		return id;
@@ -343,7 +303,7 @@ public class Contract implements Comparable<Contract> {
 	}
 
 	public String getStatusName() {
-		switch (contractStatId) {
+		switch (status) {
 		case 1:
 			statusName = Utils.loadMessagesFromFile("new");
 			break;

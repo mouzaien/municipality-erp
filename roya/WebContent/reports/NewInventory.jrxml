@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-28T08:46:32 -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NewInventory" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0e7affd-2d62-4b50-91ed-cfe589bcd53c">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -19,7 +18,6 @@
 	<parameter name="STRNO" class="java.lang.Integer">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
-	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER,
 		 0 GARD_ADD, 0 GARD_MINUS, a.NOTES, a.GARD_START_DATE,a.GARD_END_DATE,a.SPECIAL_NO,a.STRNAME
@@ -292,6 +290,15 @@ AND it.strno =$P{STRNO}
 				</textElement>
 				<text><![CDATA[لائحة الجرد والمحاسبة]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="673" y="40" width="128" height="18" uuid="4f871a22-427c-4e22-8fd0-73bed8a369a1">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[بلدية محافظة المذنب]]></text>
+			</staticText>
 			<textField>
 				<reportElement x="302" y="38" width="128" height="14" uuid="b37ca8a7-87ea-4b37-a73d-622849cc0c0d">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
@@ -396,16 +403,6 @@ AND it.strno =$P{STRNO}
 				<textFieldExpression><![CDATA[("نموذج رقم ( "+7+" ) ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="673" y="40" width="128" height="17" uuid="c53bd014-efb7-44f6-a1f4-cadd30597322">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{compName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
