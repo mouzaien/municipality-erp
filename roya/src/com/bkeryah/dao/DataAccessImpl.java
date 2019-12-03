@@ -6490,11 +6490,11 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		List<StoreRequestModel> storeRequestModelLst = new ArrayList<StoreRequestModel>();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artQtys(?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 
 			callableStatement.setInt(1, articleId);
-			//callableStatement.setInt(3, strNo);
+			callableStatement.setInt(3, strNo);
 			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
