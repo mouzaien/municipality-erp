@@ -119,7 +119,7 @@ public class MsgEntry {
 	}
 
 	public static void showModalDialog(String Msg) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ø±Ø³Ø§Ù„Ø©", Msg);
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "ok", Msg);
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
 
