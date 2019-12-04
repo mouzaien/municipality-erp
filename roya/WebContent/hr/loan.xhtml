@@ -98,11 +98,11 @@
 						</h:panelGroup>
 					</div>
 
-					<p:dataTable var="loanItem" id="inboxdt" widgetVar="loanVar"
+					<p:dataTable var="loanItem" id="inboxdt" widgetVar="loanVar" dir="rtl"
 						value="#{loanBean.loanList}" emptyMessage="لايوجد بيانات"
 						rowIndexVar="rowIndex" paginatorPosition="bottom"
 						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-						filteredValue="#{jobsBean.filteredJobs}" paginator="true"
+						paginator="true"
 						rows="17">
 
 						<f:facet name="header">

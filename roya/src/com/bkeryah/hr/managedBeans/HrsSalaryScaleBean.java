@@ -23,7 +23,7 @@ public class HrsSalaryScaleBean {
 	private List<HrsSalaryScaleOrder> salaryScaleOrderList;
 	private List<HrsSalaryScaleDgrs> salaryScaleDgrsList;
 	private HrsSalaryScale hrsSalaryScaleSelected;
-	private Integer orderId = 3;
+	private Integer orderId;
 	private String orderSrc;
 	private String orderDate;
 	private String orderStrtdate;
