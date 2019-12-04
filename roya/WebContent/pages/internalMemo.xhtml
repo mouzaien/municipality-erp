@@ -60,7 +60,7 @@ body .ui-accordion .ui-accordion-header {
 			<p:messages closable="true" autoUpdate="true"></p:messages>
 			<div class="image-box-footer">
 				<h:panelGroup id="buttons">
-<!-- 					<h:form id="includeform1" enctype="multipart/form-data"> -->
+				
 						<p:commandButton icon="ui-icon ui-icon-assignment-return"
 							 action="#{internalMemoBean.saveMemo}"
 							rendered="#{!internalMemoBean.savedClicked}"
@@ -82,7 +82,7 @@ body .ui-accordion .ui-accordion-header {
 							uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
 							previewWidth="0" sizeLimit="300000000">
 						</p:fileUpload>
-<!-- 					</h:form> -->
+
 				</h:panelGroup>
 				<p:spacer width="2" height="2"></p:spacer>
 				<ui:include src="/DWT_Scan_Upload_Demo.xhtml">

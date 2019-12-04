@@ -2434,8 +2434,8 @@ public class DataAccessService implements IDataAccessService {
 		if (recieverUserId == 0)
 			recieverUserId = wrkComment.getMarkedBy();
 		newWrkApp.setToUserId(recieverUserId);
-		newWrkApp.setApplicationUsercomment("ØªÙ… ØªÙˆÙ‚ÙŠØ¹ Ø§Ù„Ø®Ø·Ø§Ø¨ Ø¨ØªØ§Ø±ÙŠØ® " + HijriCalendarUtil.findCurrentHijriDate()
-				+ " Ø¨ÙˆØ§Ø³Ø·Ø©  " + Utils.findCurrentUser().getFirstName() + " ÙŠØ±Ø¬ÙŠ ØªØµØ¯ÙŠØ± Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©  ");
+		newWrkApp.setApplicationUsercomment("تم توقيع الخطاب بتاريخ " + HijriCalendarUtil.findCurrentHijriDate()
+		+ " بواسطة  " + Utils.findCurrentUser().getFirstName() + " يرجي تصدير المعاملة  ");
 		newWrkApp.setApplicationCreateDate(new Date());
 		newWrkApp.setApplicationCreateTime(HijriCalendarUtil.findCurrentTime());
 		newWrkApp.setHijriDate(HijriCalendarUtil.findCurrentHijriDate());
@@ -3817,8 +3817,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	public Integer save(Object myObject) {
-		// if (myObject instanceof ArcRecords)
-		// ((ArcRecords) myObject).setId(createArcRecordsId());
+		 if (myObject instanceof ArcRecords)
+		 ((ArcRecords) myObject).setId(createArcRecordsId());
 		return commonDao.save(myObject);
 	}
 
@@ -3829,6 +3829,7 @@ public class DataAccessService implements IDataAccessService {
 			try {
 				return commonDao.saveObject(myObject);
 			} catch (Exception e) {
+				e.printStackTrace();
 				logger.error(
 						"save action primary key  :" + myObject.getClass().getSimpleName() + "  " + e.getMessage());
 				failCount++;
@@ -4324,7 +4325,7 @@ public class DataAccessService implements IDataAccessService {
 
 		List<Integer> attachmentIds = addAttachments(attachs);
 
-		if (!isForSave) {
+//		if (!isForSave) {
 			if (wrkApplication.getId() != null) {
 
 				List<WrkApplication> allRecordWrkApplications = commonDao
@@ -4339,7 +4340,7 @@ public class DataAccessService implements IDataAccessService {
 				wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
 			}
 
-		}
+//		}
 		AddNewInternalMemo(wrkApplication, arcRecord, attachmentIds);
 
 		for (String id : toCopyList) {

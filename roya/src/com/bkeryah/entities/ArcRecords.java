@@ -23,8 +23,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class ArcRecords {
 
 	@Id
-	@GenericGenerator(name = "generator", strategy = "increment")
-	@GeneratedValue(generator = "generator")
+//	@GenericGenerator(name = "generator", strategy = "increment")
+//	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
 	@Column(name = "REC_ID")

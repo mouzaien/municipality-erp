@@ -56,6 +56,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 			<div class="image-box-footer" style="float: left">
 				<p:commandButton rendered="#{! mainManagedBean.mailExecutor.viewer and mainManagedBean.mailExecutor.hrLetter}"
 					value="#{msg['send']}" icon="ui-icon ui-icon-assignment-return"
+					onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"
 					action="#{mainManagedBean.mailExecutor.sendRequestForHrletter}">
 					<f:ajax execute="@form"></f:ajax>
 				</p:commandButton>
