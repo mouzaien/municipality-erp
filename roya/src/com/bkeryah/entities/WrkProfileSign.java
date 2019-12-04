@@ -6,11 +6,14 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+
+import java.io.Serializable;
+
 import javax.persistence.Column;
 
 @Entity
 @Table(name = "WRK_PROFILE_SIGN")
-public class WrkProfileSign {
+public class WrkProfileSign implements Serializable  {
 	@Id
 	@Column(name = "USER_ID")
 	private Integer userId;

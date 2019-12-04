@@ -583,7 +583,7 @@ public interface DataAccess {
 
 	public Map<Object, Number> loadArcRecordsNBForCurrentYear(Integer userId, Integer deptId);
 
-	List<String> getEmpSalariesFile(Integer p_month, Integer p_year);
+	List<String> getEmpSalariesFile(Integer categoryId, Integer p_month, Integer p_year);
 
 	StoreRequestModel getArticleHistoryById(int articleId);
 

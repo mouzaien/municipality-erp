@@ -1508,7 +1508,7 @@ public interface IDataAccessService {
 
 	public void saveLeavingEmployer(HrsEmpTerminate empTerminate, HrsEmpHistorical empHistorical, HrsJobHistorical jobHistorical);
 
-	public void exportSalaryFile(Integer year, Integer month, Integer type);
+	public void exportSalaryFile(Integer categoryId, Integer year, Integer month, Integer type);
 
 	public List<HrsUserAbsent> getAllAbsent(String lstUser, String startDate, String endDate);
 

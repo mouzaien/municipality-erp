@@ -7336,19 +7336,20 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<String> getEmpSalariesFile(Integer p_month, Integer p_year) {
+	public List<String> getEmpSalariesFile(Integer categoryId, Integer p_month, Integer p_year) {
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		Connection connection = DataBaseConnectionClass.getConnection();
 		List<String> rowsData = new ArrayList<String>();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_salaries(?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_salaries(?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
-			callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
-			callableStatement.setInt(1, p_month);
-			callableStatement.setInt(2, p_year);
+			callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+			callableStatement.setInt(1, categoryId);
+			callableStatement.setInt(2, p_month);
+			callableStatement.setInt(3, p_year);
 			callableStatement.executeUpdate();
-			rs = (ResultSet) callableStatement.getObject(3);
+			rs = (ResultSet) callableStatement.getObject(4);
 
 			while (rs.next()) {
 				rowsData.add(rs.getString("SALARY"));

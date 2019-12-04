@@ -131,6 +131,7 @@ public class LoanBean {
 		parameters.put("monthName", ((Sys012)dataAccessService.findEntityById(Sys012.class, month)).getNameAr());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
+		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

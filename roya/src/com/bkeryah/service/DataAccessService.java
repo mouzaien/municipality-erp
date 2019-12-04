@@ -7361,9 +7361,9 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public void exportSalaryFile(Integer year, Integer month, Integer type) {
+	public void exportSalaryFile(Integer categoryId, Integer year, Integer month, Integer type) {
 
-		List<String> fileList = dataAccessDAO.getEmpSalariesFile(month, year);
+		List<String> fileList = dataAccessDAO.getEmpSalariesFile(categoryId, month, year);
 		String fileName = "xx.txt";
 		if (type.equals(1))
 			fileName = MyConstants.SALARFILE;

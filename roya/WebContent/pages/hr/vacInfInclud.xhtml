@@ -178,8 +178,7 @@
 				</p:column>
 				<p:column style="width:65px;text-align: center">
 					<p:commandButton action="#{vacationInf.printIreportFileAction}"
-						onclick="this.form.target='_blank'" value="طباعة"
-						styleClass="btn btn-success" ajax="false">
+						onclick="this.form.target='_blank'"  icon="ui-icon-print" ajax="false">
 						<f:setPropertyActionListener value="#{vacationemps}"
 							target="#{vacationInf.selectVacation}" />
 					</p:commandButton>

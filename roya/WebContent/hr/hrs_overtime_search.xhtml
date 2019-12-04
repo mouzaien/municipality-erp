@@ -16,7 +16,7 @@
 				<div class="image-box-footer">
 					<h:panelGroup id="buttons">
 
-						<p:commandButton id="btnPrint" icon="ui-icon-print" ajax="false" process="@this"  onclick="this.form.target='_blank'"
+						<p:commandButton id="btnPrint" icon="ui-icon-print" ajax="false" onclick="this.form.target='_blank'"
 							styleClass="purple-btn" action="#{hrsOverTime.printReportAction}" 
 							value="طباعة">
 							<!-- rendered="#{hrsOverTime.cantPrint}" -->
@@ -26,7 +26,7 @@
 
 						<p:commandButton value="تنفيذ" id="save" styleClass="cyan-btn"
 							update="overtime,btnPrint" icon="ui-icon-check"
-							process="@this,frommonths,tomonths,empssort,pyear"
+							process="@this,frommonths,tomonths,empssort,pyear,typeRep"
 							actionListener="#{hrsOverTime.retriveOverTime}">
 						</p:commandButton>
 
@@ -137,7 +137,7 @@
 									<p:outputLabel value="نوع الطباعة"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:selectOneMenu value="#{hrsOverTime.numReport}">
+									<p:selectOneMenu id="typeRep" value="#{hrsOverTime.numReport}">
 										<!-- rendered="#{hrsOverTime.cantPrint}" -->
 										<f:selectItem itemLabel="طباعة المسير" itemValue="1" />
 										<f:selectItem itemLabel="طباعة البيان" itemValue="2" />
