@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Table(name = "FNG_USERTEMPSHIFT")
 public class FngUserTempShift {
@@ -32,12 +34,12 @@ public class FngUserTempShift {
 	private Integer secondTimeid;
 	@Transient
 	private String secondTimeName;
-	@Transient
+	@Formula("(select w.EMPNAME from ARC_USERS w where w.USER_ID = USERID)")
 	private String userName;
 	@Transient
 	private String userDeptName;
 
-	@Transient
+	@Formula("(select w.TIMENAME from FNG_TIMETABLE w where w.TIMEID = TIMEID)")
 	private String timeName;
 
 	public String getTimeName() {
@@ -71,7 +73,7 @@ public class FngUserTempShift {
 //	public void setUserid(Integer userid) {
 //		this.userid = userid;
 //	}
-//
+
 //	public Integer getTimeid() {
 //		return timeid;
 //	}
@@ -79,11 +81,11 @@ public class FngUserTempShift {
 //	public void setTimeid(Integer timeid) {
 //		this.timeid = timeid;
 //	}
-//
+
 //	public String getWorkdate() {
 //		return workdate;
 //	}
-
+//
 //	public void setWorkdate(String workdate) {
 //		this.workdate = workdate;
 //	}

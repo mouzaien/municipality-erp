@@ -99,8 +99,8 @@ public class Scanner {
 					attachList.add(attach);
 					setActiveSend(true);
 				} catch (Exception e) {
-					FacesContext.getCurrentInstance().addMessage("lpcDlgMessage",
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, Utils.loadMessagesFromFile("no.upload"), ""));
+				//	FacesContext.getCurrentInstance().addMessage("lpcDlgMessage",
+				//			new FacesMessage(FacesMessage.SEVERITY_ERROR, Utils.loadMessagesFromFile("no.upload"), ""));
 					return false;
 				}
 			}

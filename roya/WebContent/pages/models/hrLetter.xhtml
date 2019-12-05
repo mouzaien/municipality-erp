@@ -92,7 +92,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 				</p:commandButton>
 				<p:spacer width="10" height="10"></p:spacer>
 				<p:commandButton value="#{msg['print']}" icon="fa fa-fw fa-print"
-					immediate="true" styleClass="purple-btn"
+					immediate="true" styleClass="purple-btn" ajax="false"
 					onclick="this.form.target='_blank'"
 					rendered="#{mainManagedBean.mailExecutor.canPrint  and mainManagedBean.mailExecutor.hrLetter }"
 					action="#{mainManagedBean.mailExecutor.printHrLetterReportAction}">

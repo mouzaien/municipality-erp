@@ -62,7 +62,7 @@ body .ui-accordion .ui-accordion-header {
 				<h:panelGroup id="buttons">
 				
 						<p:commandButton icon="ui-icon ui-icon-assignment-return"
-							 action="#{internalMemoBean.saveMemo}"
+							ajax="false" action="#{internalMemoBean.saveMemo}"
 							rendered="#{!internalMemoBean.savedClicked}"
 							value="#{msg['send']}">
 						</p:commandButton>
@@ -77,7 +77,7 @@ body .ui-accordion .ui-accordion-header {
 							</p:commandButton>
 						</secc:authorize>
 						<p:spacer width="10" height="10"></p:spacer>
-						<p:fileUpload skinSimple="true" mode="simple"
+						<p:fileUpload skinSimple="true" mode="simple" 
 							style="padding-top: 7px" value="#{internalMemoBean.file}"
 							uploadLabel="ارفاق" cancelLabel="إلغاء" label="تحديد المرفق"
 							previewWidth="0" sizeLimit="300000000">
@@ -171,7 +171,7 @@ body .ui-accordion .ui-accordion-header {
 											<f:selectItems value="#{loadingDataBean.listLetterFrom}"
 												var="letter" itemLabel="#{letter.wrkLetterFromName}"
 												itemValue="#{letter.wrkLetterfromId}" />
-<!-- 											<f:ajax execute="letterFrom createIncomeItem" /> -->
+											<f:ajax execute="letterFrom createIncomeItem" />
 										</p:selectOneMenu>
 									</h:panelGroup>
 								</div>

@@ -55,6 +55,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.jdbc.Work;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -937,10 +938,10 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Transactional
 	public HrsEmpHistorical getHRsEmpHistoricalByEmpNo(int employerNumber) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
-		// criteria.add(Restrictions.and(Restrictions.eq("id.empno",
-		// employerNumber), Restrictions.eq("flag", 1)));
-		criteria.add(Restrictions.eq("id.empno", employerNumber));
-		criteria.add(Restrictions.eq("flag", 1));
+		 criteria.add(Restrictions.and(Restrictions.eq("id.empno",
+		 employerNumber), Restrictions.eq("flag", 1)));
+	//	criteria.add(Restrictions.eq("id.empno", employerNumber));
+	//	criteria.add(Restrictions.eq("flag", 1));
 		return (HrsEmpHistorical) criteria.uniqueResult();
 	}
 
@@ -4097,15 +4098,26 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return true;
 	}
-
+	@Transactional
 	@Override
 	public Integer getInitUserVacSold(int findCurrentYear, int empno) {
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserVacSold.class);
-			criteria.setProjection(Projections.property("initSold"));
-			criteria.add(Restrictions.eq("initYear", findCurrentYear));
-			criteria.add(Restrictions.eq("empno", empno));
-			return (Integer) criteria.uniqueResult();
+			
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
+			criteria.setProjection(Projections.sqlProjection("(VAC_OLD_SOLD + VAC_CURR_YEAR_SOLD) as total", new String[] {"total"} , new Type[] {IntegerType.INSTANCE}));
+			criteria.add(Restrictions.eq("currentYear", findCurrentYear));
+			criteria.add(Restrictions.eq("employeeNumber", empno));
+			/*String hql = " select w.oldSold + w.currentYearSold from HrsVacSold w where w.employeeNumber=:empno AND w.currentYear=:curryear ";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			query.setParameter("empno", empno);
+			query.setParameter("curryear", findCurrentYear);*/
+			return(Integer)criteria.uniqueResult();
+//			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
+//			criteria.setProjection(Projections.property("VAC_CURR_YEAR_SOLD"));
+//			criteria.setProjection(Projections.property("VAC_OLD_SOLD"));
+//			criteria.add(Restrictions.eq("VAC_CURR_YEAR", findCurrentYear));
+//			criteria.add(Restrictions.eq("empno", empno));
+		//	return (Integer) criteria.uniqueResult();
 		} catch (Exception e) {
 			logger.error("getInitUserVacSold" + e.getMessage());
 		}
