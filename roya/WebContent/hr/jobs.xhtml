@@ -208,7 +208,7 @@
 											<h:outputLabel styleClass="btxt" value="رقم الوظيفة" />
 										</div>
 										<div class="ui-g-2">
-											<p:inputText class="form-control"
+											<p:inputText class="form-control" rendered="#{(!jobsBean.consultMode) and (!jobsBean.tahwirMode) and (!jobsBean.damageMode)}"
 												value="#{jobsBean.job.jobNumber}" />
 											<h:outputLabel
 												rendered="#{(jobsBean.consultMode) || (jobsBean.tahwirMode) || (jobsBean.damageMode)}"

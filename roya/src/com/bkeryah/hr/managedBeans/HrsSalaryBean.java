@@ -98,7 +98,7 @@ public class HrsSalaryBean {
 	}
 
 	public void dowloadSalariesFile(int type) throws IOException {
-		dataAccessService.exportSalaryFile(pyear, pmonth, type);
+		dataAccessService.exportSalaryFile(catid, pyear, pmonth, type);
 		String salarfile = "xx.txt";
 		if (type == 1)
 			salarfile = MyConstants.SALARFILE;
