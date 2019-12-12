@@ -74,12 +74,15 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 	 */
 	private String loadNormalVacationData() {
 		employeeVacation = new HrEmployeeVacation();
-		ArcUsers employee = Utils.findCurrentUser();
+		ArcUsers employee = dataAccessService.loadUserById(employerId);
 		hrsVacSold = dataAccessService.loadHrsVacSoldById(employee.getEmployeeNumber());
 
 		employeeVacation.setProcType(2);
-		int currendDebit = dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
-				HijriCalendarUtil.findCurrentHijriDate());
+	//	int currendDebit = dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
+	//			HijriCalendarUtil.findCurrentHijriDate());
+		int currendDebit = 0;
+		//		dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
+		//		HijriCalendarUtil.findCurrentHijriDate());
 		// dataAccessService.loadNormalVacationNew(employer.getEmpNB(),
 		// employer.getFirstApplicationDate(),
 		// employer.getBirthDateGerige(), employer.getId(), currendDebit,
@@ -93,6 +96,33 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 	/**
 	 * Calculate return date
 	 */
+	
+	
+	public boolean checkStartDate(HrEmployeeVacation employeeVacation)
+		{
+			boolean valid=true;
+			if ((employeeVacation.getHigriVacationStart() != null)
+					&& (!employeeVacation.getHigriVacationStart().trim().equals(""))) {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				try {
+					Calendar c = Calendar.getInstance();
+					c.setTime(new Date());
+				//	c.add(Calendar.DATE, -1);
+					c.add(Calendar.DAY_OF_MONTH,-1);
+					Date mydt = sdf.parse(sdf.format(c.getTime()));
+					
+					if (((employerId == null)||(employerId == Utils.findCurrentUser().getUserId())) && (sdf.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(employeeVacation.getHigriVacationStart())))
+							.before(mydt)) {
+						MsgEntry.addErrorMessage(MsgEntry.ERROR_BEFORE_LAST_DAY);
+						 valid=false;
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			return valid;
+		}
+	 
 	public void checkdate() {
 		try {
 			if (higriMode) {
@@ -105,6 +135,8 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(employeeVacation.getHigriVacationStart()!=null&&checkStartDate(employeeVacation)&&employeeVacation.getVacationPeriod()!=null)
+					{
 		employeeVacation.setHigriVacationStart(higriDate);
 		if (((employeeVacation.getVacationPeriod() != null) && (employeeVacation.getVacationPeriod() != 0))
 				&& (checkDays()) && (employeeVacation.getHigriVacationStart() != null)
@@ -112,6 +144,8 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 			employeeVacation.setHigriVacationEnd(HijriCalendarUtil.addDaysToHijriDate(
 					employeeVacation.getHigriVacationStart(), employeeVacation.getVacationPeriod() - 1));
 			// setVacanyEndDateFlag(true);
+	//	}}else;
+		}
 		}
 	}
 
@@ -191,7 +225,7 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 		// }
 		if (employeeVacation.getVacationPeriod() < 5) {
 			if (((employerId == null) || employerId == Utils.findCurrentUser().getUserId())
-					&& (employeeVacation.getPeriodLessFive() + employeeVacation.getVacationPeriod() > 5)) {
+					&& (employeeVacation.getPeriodLessFive() + employeeVacation.getVacationPeriod() > 10)) {
 				MsgEntry.addErrorMessage(MsgEntry.ERROR_INFERIOR_FIVE_DAYS);
 				// System.err.println("=اكبر من 5" +
 				// dataAccessService.checkPeriodVacation(employer.getEmpNB()));
@@ -205,6 +239,7 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 				Calendar c = Calendar.getInstance();
 				c.setTime(new Date());
 				// c.add(Calendar.DATE, -1);
+				c.add(Calendar.DAY_OF_MONTH,-1);
 				Date mydt = sdf.parse(sdf.format(c.getTime()));
 
 				if (((employerId == null) || (employerId == Utils.findCurrentUser().getUserId())) && (sdf
@@ -280,6 +315,8 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 
 	@Override
 	public void execute(IDataAccessService dataAccessService) {
+		employerId=Utils.findCurrentUser().getUserId();
+
 		this.dataAccessService = dataAccessService;
 		acceptVisible = false;
 		if (typeId.equals(MailTypeEnum.VACNEEDED)) {
@@ -403,7 +440,7 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 			hrsVacSold = dataAccessService.loadHrsVacSoldById(employeeVacation.getEmployeeNumber());
 			dataAccessService.acceptVacation(wrkApplicationId, employeeVacation, typeId.getValue(), hrsVacSold);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("accept.record"));
-			return "";
+			return "mails";
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("acceptAction vacation  ApplicationID :" + wrkApplicationId.getApplicationId() + "  "

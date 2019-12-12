@@ -29,6 +29,9 @@ import org.hibernate.annotations.GenericGenerator;
 		@Column(name = "MODEL_TYPE")
 		private Integer modelType;
 		
+		@Column(name = "stepId")
+		private Integer stepId;
+		
 		
 	
 
@@ -74,6 +77,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 		public void setModelType(Integer modelType) {
 			this.modelType = modelType;
+		}
+
+		public Integer getStepId() {
+			return stepId;
+		}
+
+		public void setStepId(Integer stepId) {
+			this.stepId = stepId;
 		}
 
 	

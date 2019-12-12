@@ -56,12 +56,11 @@
 									</secc:authorize>
 								</secc:authorize>
 
-								<secc:authorize
-									ifAnyGranted="ROLE_DELIVERY,ROLE_PRESIDENT,ROLE_TELECOM">
+								
 									<p:menuitem id="menu522"
 										value="#{msg['menu.transaction.delivery']}" action="deptBox"
 										icon="fa fa-fw fa-language" />
-								</secc:authorize>
+								
 							</p:submenu>
 							<secc:authorize ifNotGranted="ROLE_PRESIDENT">
 								<p:submenu id="sr_Services" label="#{msg['services']}"

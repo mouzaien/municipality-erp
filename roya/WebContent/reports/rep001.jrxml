@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-11-07T13:44:02 -->
+<!-- 2019-12-12T12:56:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep001" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a4337bc-387b-4ad7-82a5-e227206a2377">
 	<property name="ireport.zoom" value="5.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl002.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="p1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="wrkDate" class="java.lang.String"/>
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="p2" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select step_id,app_id,
 wrk_get_confidential(convert_comm(id,step_id),id,step_id) as comm
@@ -34,7 +35,7 @@ select ar.arc_record_id_child from ARC_RECORD_LINK ar, wrk_application w
    and   w.id =$P{p1} 
    )arclink
  where  wrk_application.app_id = arclink.arc_record_id_child
-
+and wrk_application.step_id <= $P{p2}
       union
 
 select step_id,app_id,

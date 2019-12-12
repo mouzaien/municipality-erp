@@ -132,9 +132,8 @@ body .ui-chkbox .ui-chkbox-box {
 									rendered="#{mailDefenationBean.currentUser.wrkRoleId != 1 ?'true':'false' }">
 									<p:selectBooleanCheckbox id="checkAllFlagBTN2"
 										value="#{mailDefenationBean.checkAllDeptEmpsFlag}">
-										<f:ajax listener="#{mailDefenationBean.checkAllListner}"
-											execute="checkAllFlagBTN"
-											render="wrkCopyEmpRecievers checkbox" event="change"></f:ajax>
+										<p:ajax listener="#{mailDefenationBean.checkAllListner}"
+											update="checkbox" event="change"></p:ajax>
 									</p:selectBooleanCheckbox>
 											&nbsp;&nbsp;
 											<p:outputLabel value="#{msg['select.all']}" />
@@ -142,8 +141,7 @@ body .ui-chkbox .ui-chkbox-box {
 									<br />
 									<p:selectManyCheckbox layout="grid" columns="3" id="checkbox"
 										value="#{mailDefenationBean.wrkCopyEmpRecievers}">
-										<f:ajax event="change" render="checkbox" execute="checkbox"
-											listener="#{mailDefenationBean.onChangeEventCheckBox}"></f:ajax>
+										<p:ajax event="change" update="checkbox" process="checkbox"></p:ajax>
 										<f:selectItems value="#{mailDefenationBean.empsMapInDept}" />
 									</p:selectManyCheckbox>
 								</p:tab>
@@ -153,10 +151,10 @@ body .ui-chkbox .ui-chkbox-box {
 										id="checkAllFlagBTNForMngr"
 										value="#{mailDefenationBean.checkAllDeptEmpsFlagMngr}">
 
-										<f:ajax
+										<p:ajax
 											listener="#{mailDefenationBean.checkAllListnerForManagers}"
-											execute="checkAllFlagBTN22"
-											render="wrkCopyMngrRecievers checkbox2 " event="change"></f:ajax>
+											
+											update=" checkbox2 " event="change"></p:ajax>
 									</p:selectBooleanCheckbox>
 										&nbsp;&nbsp;&nbsp;
 										<p:outputLabel
@@ -168,8 +166,8 @@ body .ui-chkbox .ui-chkbox-box {
 										<p:selectManyCheckbox id="checkbox2"
 											value="#{mailDefenationBean.wrkCopyMngRecievers}"
 											layout="grid" columns="3">
-											<f:ajax event="change" render="checkbox2" execute="checkbox2"
-												listener="#{mailDefenationBean.onChangeEventCheckBoxAllMngr}"></f:ajax>
+											<p:ajax event="change" update="checkbox2" process="checkbox2"
+												listener="#{mailDefenationBean.onChangeEventCheckBoxAllMngr}"></p:ajax>
 											<f:selectItems value="#{mailDefenationBean.mgrMap}" />
 										</p:selectManyCheckbox>
 									</div>
@@ -194,22 +192,22 @@ body .ui-chkbox .ui-chkbox-box {
 					id="issecret">
 					<p:ajax process="issecret"></p:ajax>
 				</p:selectBooleanCheckbox>
-<!-- 				<secc:authorize ifAnyGranted="ROLE_TELECOM"> -->
-<!-- 					<p:outputLabel value="#{msg['outcomiong']}" /> -->
-<!-- 					<p:selectBooleanCheckbox id="createIncomeItem" -->
-<!-- 						value="#{mailDefenationBean.arcRecord.outcomingNumFlag}" /> -->
+				<!-- 				<secc:authorize ifAnyGranted="ROLE_TELECOM"> -->
+				<!-- 					<p:outputLabel value="#{msg['outcomiong']}" /> -->
+				<!-- 					<p:selectBooleanCheckbox id="createIncomeItem" -->
+				<!-- 						value="#{mailDefenationBean.arcRecord.outcomingNumFlag}" /> -->
 
-<!-- 					<p:selectOneMenu filter="true" filterMatchMode="contains" -->
-<!-- 						style="width:100%" id="letterFrom" styleClass="form-control" -->
-<!-- 						value="#{mailDefenationBean.arcRecord.letterFrom}"> -->
-<!-- 						<f:selectItem itemLabel="#{msg['choose.sender.or.source']} " -->
-<!-- 							itemValue="" /> -->
-<!-- 						<f:selectItems value="#{loadingDataBean.listLetterFrom}" -->
-<!-- 							var="letter" itemLabel="#{letter.wrkLetterFromName}" -->
-<!-- 							itemValue="#{letter.wrkLetterfromId}" /> -->
-<!-- 						<p:ajax process="letterFrom createIncomeItem" /> -->
-<!-- 					</p:selectOneMenu> -->
-<!-- 				</secc:authorize> -->
+				<!-- 					<p:selectOneMenu filter="true" filterMatchMode="contains" -->
+				<!-- 						style="width:100%" id="letterFrom" styleClass="form-control" -->
+				<!-- 						value="#{mailDefenationBean.arcRecord.letterFrom}"> -->
+				<!-- 						<f:selectItem itemLabel="#{msg['choose.sender.or.source']} " -->
+				<!-- 							itemValue="" /> -->
+				<!-- 						<f:selectItems value="#{loadingDataBean.listLetterFrom}" -->
+				<!-- 							var="letter" itemLabel="#{letter.wrkLetterFromName}" -->
+				<!-- 							itemValue="#{letter.wrkLetterfromId}" /> -->
+				<!-- 						<p:ajax process="letterFrom createIncomeItem" /> -->
+				<!-- 					</p:selectOneMenu> -->
+				<!-- 				</secc:authorize> -->
 			</p:panelGrid>
 		</p:panel>
 	</div>
@@ -232,7 +230,8 @@ body .ui-chkbox .ui-chkbox-box {
 						</p:commandButton>
 						<p:commandButton value="#{msg['close']}" immediate="true"
 							icon="ui-icon ui-icon-keyboard-arrow-left"
-							styleClass=" orange-btn" onclick="PF('print-barcode-dlg').hide()" action="mails">
+							styleClass=" orange-btn" onclick="PF('print-barcode-dlg').hide()"
+							action="mails">
 						</p:commandButton>
 					</div>
 

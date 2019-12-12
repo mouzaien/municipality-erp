@@ -1015,4 +1015,5 @@ public interface ICommonDao {
 	List<RewardInfo> loadRewards(Integer emp_number);
 	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year);
 	public List<String> loadReward(Integer emp_no,Integer month,Integer year);
+	
 }

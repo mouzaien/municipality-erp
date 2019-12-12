@@ -94,8 +94,8 @@ public class SickVacationBean extends Scanner {
 	}
 
 	public void loadEmployerData() {
-//		ArcUsers user = dataAccessService.loadUserByEmpNO(employerId);
-		ArcUsers user =dataAccessService.loadUserById(employerId);
+		ArcUsers user = dataAccessService.loadUserByEmpNO(employerId);
+	  //ArcUsers user =dataAccessService.loadUserById(employerId);
 		employer.setDepartment(user.getUserDept().getDeptName());
 		employerId=user.getEmployeeNumber();
 		HrsEmpHistorical empl = dataAccessService.getHRsEmpHistoricalByEmpNo(employerId);

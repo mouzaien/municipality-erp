@@ -151,7 +151,7 @@ public class InternalMemoBean extends Scanner {
 				List<String> copyListInteger = new ArrayList<String>();
 				copyListInteger.addAll(WrkCopyEmpRecievers);
 				copyListInteger.addAll(WrkCopyMngRecievers);
-
+				
 				dataAccessService.saveMemo(wrkApplication, arcRecord, attachs, copyListInteger, false);
 
 				currArcId = arcRecord.getId();

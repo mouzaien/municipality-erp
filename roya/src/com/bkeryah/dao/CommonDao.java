@@ -78,6 +78,7 @@ import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.ArcUsersExtension;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.ArticleGroup;
+import com.bkeryah.hr.entities.HrsVacationUpdate;
 import com.bkeryah.entities.ArticleSubGroup;
 import com.bkeryah.entities.BillIssueCash;
 import com.bkeryah.entities.BillIssueDetail;
@@ -1088,7 +1089,15 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.setProjection(Projections.property("executedDate"));
 		criteria.add(Restrictions.eq("employeNumber", employerNumber));
 		String executedDateTerminate = (String) criteria.uniqueResult();
-		return executedDateTerminate;
+//		return executedDateTerminate;
+		if (executedDateTerminate != null) {
+						Integer status = getActifEmployer(employerNumber);
+						if (status > 0)
+							return null;
+						else
+						return executedDateTerminate;
+					}
+					return null;
 	}
 
 	@Override
@@ -2671,7 +2680,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<ArcUsers> getAllActiveEmployeesInDept(Integer departmentId) {
 		List<ArcUsers> users = new ArrayList<ArcUsers>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
-		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		if (departmentId != null)
 			criteria.add(Restrictions.eq("deptId", departmentId));
 		criteria.add(Restrictions.eq("isActive", 1));
@@ -4063,15 +4072,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public Integer getNewVacPeriod(int findCurrentYear) {
-		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacationUpdate.class);
-			criteria.setProjection(Projections.property("days"));
-			criteria.add(Restrictions.eq("year", findCurrentYear));
-			return (Integer) criteria.uniqueResult();
-		} catch (Exception e) {
-			logger.error("getNewVacPeriod" + e.getMessage());
-		}
-		return 0;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacationUpdate.class);
+		criteria.setProjection(Projections.sum("days"));
+		//criteria.add(Restrictions.eq("year", findCurrentYear));
+	
+		Integer days = Integer.parseInt(criteria.uniqueResult().toString());
+		return days;
 	}
 
 	@Override
@@ -4489,6 +4495,16 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			}
 			return list;
 		}
+		
+		public Integer getActifEmployer(Integer employerNumber) {
+					Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+					criteria.setProjection(Projections.property("flag"));
+					criteria.add(Restrictions.eq("id.empno", employerNumber));
+					criteria.add(Restrictions.eq("flag", 1));
+					Integer status = (Integer) criteria.uniqueResult();
+					return status;
+				}
+		
 
 
 }

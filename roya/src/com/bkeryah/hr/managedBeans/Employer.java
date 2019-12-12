@@ -29,10 +29,12 @@ public class Employer {
 	private String birthDateGerige;
 	private Integer CategoryId;
 	private Integer trans;
-	private Integer salaryStatus;//0 stopped 1 no
+
 	private Integer mandateInner;
 	private Integer employee_type;
-
+	private Integer salaryStatus;//0 stopped 1 no
+	
+	
 	public String getReturnDate() {
 		return returnDate;
 	}

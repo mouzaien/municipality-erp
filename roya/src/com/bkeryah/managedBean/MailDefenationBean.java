@@ -156,6 +156,7 @@ public class MailDefenationBean extends Scanner {
 	private Integer tabActiveIndex = 0;
 	private boolean isCommRendred;
 	private Integer currArcId;
+	private Integer stepId;
 
 	public float getfSize() {
 
@@ -383,17 +384,14 @@ public class MailDefenationBean extends Scanner {
 
 		context.execute("PF('NewCommentView').show()");
 	}
-
-	public void onChangeEventCheckBox() {
-
-	}
-
 	public void loadcomments() {
 		List<WrkCommentsClass> srcComments = null;
 		String arcIdParent = selectedInbox.getAppId();
 		ArcRecordsLink arcLink = dataAccessService.getArcLinkByRecordId(Integer.parseInt(arcIdParent));
+		if(arcLink!=null)
+		 stepId=arcLink.getStepId();
 		if (arcLink != null) {
-			srcComments = dataAccessService.findCommentsByArcId(arcLink.getArcRrecordChildId());
+			srcComments = dataAccessService.findCommentsByArcId(arcLink.getArcRrecordChildId(),arcLink.getStepId());
 		}
 		comments = dataAccessService.findCommentsByWrkId(selectedInbox.WrkId);
 		if (srcComments != null && srcComments.size() > 0) {
@@ -635,6 +633,12 @@ public class MailDefenationBean extends Scanner {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("required.origin.receiver"));
 		} else {
 			application.setArcRecordId(Integer.parseInt(selectedInbox.AppId));
+			WrkApplicationId wrkAppId=new WrkApplicationId();
+			wrkAppId.setApplicationId(Integer.parseInt(selectedInbox.WrkId));
+			wrkAppId.setStepId(selectedInbox.getStepId());
+			
+			application.setId(wrkAppId);
+			
 			try {
 				dataAccessService.sendWrkApplication(wrkId, application, secretFlag, WrkCopyEmpRecievers,
 						WrkCopyMngRecievers);
@@ -729,6 +733,7 @@ public class MailDefenationBean extends Scanner {
 				// selectedInbox.StepId);
 				WrkApplication application = new WrkApplication();
 				application.setArcRecordId(Integer.parseInt(selectedInbox.AppId));
+				
 				application.setToUserId(currentUser.getMgrId());
 				application.setApplicationPurpose(17);
 				application.setApplicationUsercomment(MessageFormat.format(
@@ -914,6 +919,7 @@ public class MailDefenationBean extends Scanner {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("p1", selectedInbox.getWrkId());// "259306";
 		parameters.put("wrkDate", selectedInbox.getWrkHdate());
+		parameters.put("p2", stepId);
 		parameters.put("title", selectedInbox.getAppTitle());
 		Utils.printPdfReport(reportName, parameters);
 		return "";

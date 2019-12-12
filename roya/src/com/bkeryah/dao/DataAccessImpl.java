@@ -6397,17 +6397,18 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId) {
+	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId,Integer stepId) {
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		List<WrkCommentsClass> comments = new ArrayList<WrkCommentsClass>();
 		Connection connection = DataBaseConnectionClass.getConnection();
 		try {
-			String sql = "{call New_PKG_WEBKIT.GET_ALL_COMMENTS_BY_ARCID(?,?,?)}";
+			String sql = "{call New_PKG_WEBKIT.GET_ALL_COMMENTS_BY_ARCID(?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setInt(1, arcId);
 			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 			callableStatement.setInt(3, Utils.findCurrentUser().getUserId());
+			callableStatement.setInt(4, stepId);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
 			while (rs.next()) {
@@ -6719,7 +6720,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		List<LicTrdMasterFile> listTrdMasterFiles = new ArrayList<LicTrdMasterFile>();
 		String condition = "";
 		Statement callableStatement = null;
-		int days = (period == null) ? 90 : period;
+		int days = (period == null) ? 108 : period;
 		try {
 			switch (typeLicence) {
 			case 1:
@@ -7223,10 +7224,10 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				// arcDept.set(rs.getInt("income_no"));
 				arcDept.setAttachNb(rs.getInt("attach_nb"));
 				arcDept.setReceiverDeptId(rs.getInt("receiver_dept_id"));
-				arcDept.setWrkId(rs.getInt("wrk_id"));
-				arcDept.setStepId(rs.getInt("step_id"));
-				arcDept.setLetterFromNo(rs.getString("LETTER_FROM_NO"));
-				arcDept.setLetterFromDate(rs.getString("LETTER_FROM_DATE"));
+		//		arcDept.setWrkId(rs.getInt("wrk_id"));
+		//		arcDept.setStepId(rs.getInt("step_id"));
+		//		arcDept.setLetterFromNo(rs.getString("LETTER_FROM_NO"));
+		//		arcDept.setLetterFromDate(rs.getString("LETTER_FROM_DATE"));
 				arcDept.setReceiverDepName(rs.getString("receiver_dep_name"));
 				if (status.equals(0)) {
 					arcDept.setDonner(Utils.findCurrentUser().getUserId());
