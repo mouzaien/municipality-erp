@@ -1260,7 +1260,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecord.setStructId(1);
 		arcRecord.setRecTitle(comment.getAppSubject());
 		arcRecord.setCreatedIn(new Date());
-		arcRecord.setOutcomingNo(commonDao.createOutcomeNo());
+		arcRecord.setIncomeNo(commonDao.createIncomeNo());
 		arcRecord.setIncomeHDate(HijriCalendarUtil.findCurrentHijriDate());
 		arcRecord.setIncomeYear(Integer.parseInt(HijriCalendarUtil.findCurrentYear()));
 		arcRecord.setRecordIsImportant(0);
@@ -1404,7 +1404,7 @@ public class DataAccessService implements IDataAccessService {
 			}
 
 			if (arcRecord.isOutcomingNumFlag()) {
-				arcRecord.setOutcomingNo(commonDao.createOutcomeNo());
+//				arcRecord.setOutcomingNo(commonDao.createOutcomeNo());
 				arcRecord.setIncomeHDate(CurrentHijriDate);
 			} else {
 
@@ -1579,7 +1579,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecords.setCreatedIn(new Date());
 		arcRecords.setLetterFrom(user.getDeptId());
 		if (withIncomeNumber) {
-			arcRecords.setIncomeNo(commonDao.createOutcomeNo().toString());
+			arcRecords.setIncomeNo(commonDao.createIncomeNo());
 			arcRecords.setIncomeHDate(CurrentHijriDate);
 		} else {
 			arcRecords.setIncomeNo("");
@@ -1996,7 +1996,7 @@ public class DataAccessService implements IDataAccessService {
 				logger.error(
 						"acceptVacation wrkID" + " " + application.getId().getApplicationId() + " " + e.getMessage());
 			}
-			employeeVacation.setExcuseNumber(commonDao.createOutcomeNo().toString());
+			employeeVacation.setExcuseNumber(commonDao.createIncomeNo());
 			String period = MessageFormat.format(Utils.loadMessagesFromFile("wrk.period"),
 					employeeVacation.getHigriVacationStart(), employeeVacation.getHigriVacationEnd());
 			commonDao.update(employeeVacation);
@@ -3304,7 +3304,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public void updateArcRecordsIncomeNo(ArcRecords arcRecords) {
-		arcRecords.setOutcomingNo(createOutcomeNo());
+		arcRecords.setIncomeNo(createIncomeNo());
 		updateObject(arcRecords);
 	}
 
@@ -3641,7 +3641,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecord.setApplicationType(MailTypeEnum.PROJECTeXTRACT.getValue());
 
 		arcRecord.setRecTitle(Utils.loadMessagesFromFile("payment.number") + " " + projectExtract.getNumber()
-				+ "Ù…Ù†  Ù…Ø´Ø±ÙˆØ¹ " + contract.getProject().getName() + " Ù…Ù‚Ø¯Ù… Ù…Ù†  " + user.getEmployeeName());
+		+ "من  مشروع " + contract.getProject().getName() + " مقدم من  " + user.getEmployeeName());
 
 		int recordId = createNewArcRecord(arcRecord, false, toId);
 
@@ -8290,11 +8290,11 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public int getTotalVacationSold(int empNB) {
-		int totalVacation = 0;
+		Integer totalVacation = 0;
 		int currYear = Integer.parseInt(utilities.HijriCalendarUtil.findCurrentYear());
-		Integer sold_curr_year = commonDao.getNewVacPeriod(currYear);
-		Integer init_sold = commonDao.getInitUserVacSold(currYear, empNB);
-		totalVacation = sold_curr_year + init_sold;
+	//	totalVacation = commonDao.getNewVacPeriod(currYear);
+		totalVacation = commonDao.getInitUserVacSold(currYear, empNB);
+	//	totalVacation = sold_curr_year + init_sold;
 		return totalVacation;
 	}
 
