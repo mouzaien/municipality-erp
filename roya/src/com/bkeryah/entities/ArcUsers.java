@@ -68,7 +68,9 @@ public class ArcUsers implements Serializable {
 	private String mobileNumber;
 	@Column(name = "IS_MOBILE")
 	private Integer hasMobile;
+	
 	@Column(name = "EMPNO", nullable = true)
+	
 	private Integer employeeNumber;
 	@Column(name = "EMPNAME")
 	private String employeeName;

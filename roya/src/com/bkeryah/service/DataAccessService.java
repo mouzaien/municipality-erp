@@ -2467,9 +2467,9 @@ public class DataAccessService implements IDataAccessService {
 		// + employeeVacation.getVacationPeriodThisYear()));
 
 		employeeVacation.setUsedNormalYearlyPeriod(commonDao.getUsedNormalYearlyPeriod(empNB));
-		int maxYearlyPeriod = 120;
+		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		employeeVacation.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(maxYearlyPeriod,
+		employeeVacation.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
 				employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		// .setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(employeeVacation.getVacationPeriodThisYear(),
@@ -2545,9 +2545,9 @@ public class DataAccessService implements IDataAccessService {
 			int srvs = (int) (days / 354);
 
 			if ((int) age >= 50 || srvs >= 25)
-				period = 120;
+				period = 144;
 			else
-				period = 90;
+				period = 108;
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -2564,8 +2564,8 @@ public class DataAccessService implements IDataAccessService {
 		String terminateDate = commonDao.getExecutionDateTermnate(empNB);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date now = new Date();
-		String finishDate = sdf.format(now);
-		// String finishDate = "01/10/2016";
+		// String finishDate = sdf.format(now);
+		 String finishDate = "21/09/2017";
 		try {
 			if (terminateDate != null)
 				finishDate = HijriCalendarUtil.ConvertHijriTogeorgianDate(terminateDate);
@@ -4369,7 +4369,7 @@ public class DataAccessService implements IDataAccessService {
 		else {
 			arcRecordCopy.setOutcomingNumFlag(false);
 		}
-		arcRecordCopy.setRecTitle(" ØµÙˆØ±Ø©  Ù…Ù†  " + arcRecord.getRecTitle());
+		arcRecordCopy.setRecTitle(" صورة  من  " + arcRecord.getRecTitle());
 
 		WrkApplication wrkApplicationCopy = new WrkApplication(wrkApplication);
 
@@ -4529,6 +4529,7 @@ public class DataAccessService implements IDataAccessService {
 				ArcRecordsLink arcRecordLink = new ArcRecordsLink();
 				arcRecordLink.setArcRecordParentId(newRecId);
 				arcRecordLink.setArcRrecordChildId(application.getArcRecordId());
+				arcRecordLink.setStepId(application.getId().getStepId());
 				arcRecordLink.setModelType(MailTypeEnum.COPY.getValue());
 				save(arcRecordLink);
 			}
@@ -5327,8 +5328,8 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
-	public List<WrkCommentsClass> findCommentsByArcId(Integer wrkId) {
-		return dataAccessDAO.findCommentsByArcId(wrkId);
+	public List<WrkCommentsClass> findCommentsByArcId(Integer wrkId,Integer stepId) {
+		return dataAccessDAO.findCommentsByArcId(wrkId,stepId);
 	}
 
 	@Override
@@ -6602,6 +6603,7 @@ public class DataAccessService implements IDataAccessService {
 			if (arcUsers.getEmployeeNumber() != null) {
 
 				// employer.setJob(empl.getGovJob4().getJobName());
+				employer.setSalaryStatus(empl.getFlag());
 				if (empl != null) {
 					if (empl.getGovJob4() != null)
 						employer.setJob(empl.getGovJob4().getJobName());
@@ -7702,10 +7704,10 @@ public class DataAccessService implements IDataAccessService {
 
 		// employeeVacation.setVacationPeriodThisYear(getVacationPeriodThisYear());
 		// + employeeVacation.getVacationPeriodThisYear()));
-		int maxYearlyPeriod = 120;
+		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation
-				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(maxYearlyPeriod,
+		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */  
+		employeeVacation.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		employeeVacation.setVacationType(MyConstants.NORMAL_VACATION);
@@ -8484,10 +8486,10 @@ public class DataAccessService implements IDataAccessService {
 
 		// employeeVacation.setVacationPeriodThisYear(getVacationPeriodThisYear());
 		// + employeeVacation.getVacationPeriodThisYear()));
-		int maxYearlyPeriod = 120;
+		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
 		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation
-				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(maxYearlyPeriod,
+				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		employeeVacation.setVacationType(MyConstants.NORMAL_VACATION);

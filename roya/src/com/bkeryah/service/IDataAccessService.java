@@ -1102,7 +1102,7 @@ public interface IDataAccessService {
 
 	public ArcRecordsLink getArcLinkByRecordId(Integer archRecordId);
 
-	List<WrkCommentsClass> findCommentsByArcId(Integer wrkId);
+	List<WrkCommentsClass> findCommentsByArcId(Integer wrkId,Integer stepId);
 
 	List<HrsAppreciationScale> findAppreciationScalesByFloorId(Integer floorId);
 

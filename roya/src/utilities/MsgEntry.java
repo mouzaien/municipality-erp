@@ -64,8 +64,8 @@ public class MsgEntry {
 	public static final String ERROR_AUTHORIZATION_NB = "لقد تجاوزت الحد المسموح به للإستئذان";
 	public static final String ERROR_VACATION_PERIOD = "مدة الإجازة يجب أن لا تقل عن 5 أيام";
 	public static final String ERROR_INFERIOR_VACATION_DAYS = "رصيدك للإجازات لا يكفي";
-	public static final String ERROR_INFERIOR_FIVE_DAYS = "أيام الإجازة يجب أن تتجاوز 5 أيام";
-	public static final String ERROR_BEFORE_LAST_DAY = "تاريخ الإجازة يجب أن يتجاوز تاريخ البارحة";
+	public static final String ERROR_INFERIOR_FIVE_DAYS = "أيام الإجازة يجب أن تتجاوز 10 أيام";
+	public static final String ERROR_BEFORE_LAST_DAY = "تاريخ الإجازة يجب أن يتجاوز تاريخ قبل البارحة";
 	public static final String acceptMsg = Utils.loadMessagesFromFile("accept.transaction");
 	public static final String refuseMsg = Utils.loadMessagesFromFile("refuse.transaction");
 	public static final String ERRORE_DELETE_VACATION = "لايمكن حذف اجازة تمت الموافقة عليها";

@@ -534,7 +534,7 @@ public interface DataAccess {
 
 	public void finishChargingEmp(int chargingEmpIn);
 
-	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId);
+	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId,Integer stepId);
 
 	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo);
 
