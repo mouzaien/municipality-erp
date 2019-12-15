@@ -152,6 +152,7 @@ public class DeptRecordsBean {
 		String reportName = "/reports/empty_records_list.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReportFromListDataSource(reportName, parameters,
 				((selectedRecords == null) || (selectedRecords.isEmpty())) ? deptRecords : selectedRecords);
 		return "";

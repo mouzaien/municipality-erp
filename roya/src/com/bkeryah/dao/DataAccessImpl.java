@@ -6542,11 +6542,13 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 			callableStatement.setInt(2, strNo);
 			callableStatement.setInt(3, inventoryId);
+			//TODO AMEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRR IMPORTANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNT change null
+			callableStatement.setString(4, null);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(1);
 

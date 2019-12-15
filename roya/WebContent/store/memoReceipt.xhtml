@@ -16,8 +16,8 @@
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
 
-					<p:commandButton value="حفظ" icon="ui-icon-save"
-						action="#{stockEntryBean.save}" styleClass="cyan-btn">
+					<p:commandButton value="حفظ" icon="ui-icon-save" process="@this,memoPG,table" update="@form"
+						actionListener="#{stockEntryBean.saveStock}" styleClass="cyan-btn">
 						<!-- 						<f:ajax listener="#{stockEntryBean.save}" -->
 						<!-- 							execute="finEntryNo noticeNo noticeDate buyno buyDate stockNO" -->
 						<!-- 							render="@form"></f:ajax> -->
@@ -31,12 +31,14 @@
 					</div>
 					<h2 style="text-align: right;">بيانات مذكرة الإستلام</h2>
 					<br />
+					<h:panelGroup id="memoPG">
 					<div class="ui-g">
 						<div class="ui-g-2">
 							<label class="btxt">السنة المالية</label>
 						</div>
 						<div class="ui-g-2">
 							<p:selectOneMenu style="direction: rtl;height: 39px;"
+								value="#{stockEntryBean.currentFinYear}"
 								required="true" filter="true" filterMatchMode="contains"
 								requiredMessage="من فضلك اختر السنة المالية">
 								<f:selectItem itemLabel="إختر السنة" itemValue="" />
@@ -115,17 +117,19 @@
 								disabled="#{stockEntryBean.blockSupplier}"
 								value="#{stockEntryBean.supplierId}">
 								<f:selectItem itemLabel="اختر المورد" itemValue="" />
-								<f:selectItems var="y" value="#{stockEntryBean.supplierList}"
-									itemLabel="#{y.name}" itemValue="#{y.id}" />
+								<f:selectItems var="y" value="#{stockEntryBean.suppliersList}"
+									itemLabel="#{y.finEntityName}" itemValue="#{y.finEntityId}" />
 							</p:selectOneMenu>
 						</div>
 					</div>
+					</h:panelGroup>
 					<br />
 					<p:separator></p:separator>
 					<br />
 
 					<h2 style="text-align: right;">أصناف الإستلام</h2>
 					<br />
+					
 					<div class="ui-g">
 						<div class="ui-g-2">
 							<label class="btxt">الصنف</label>
@@ -133,7 +137,7 @@
 						<div class="ui-g-2">
 							<h:panelGroup id="articles">
 								<p:selectOneMenu styleClass="form-control" id="stockArticles"
-									value="#{stockEntryBean.itemId}" filter="true"
+									value="#{stockEntryBean.stockInDetails.articleId}" filter="true"
 									filterMatchMode="contains" style="direction: rtl;height: 39px;">
 									<f:selectItem itemLabel="إختر صنف" itemValue="" />
 									<f:selectItems value="#{stockEntryBean.articles}" var="c"
@@ -173,7 +177,7 @@
 							<p:selectOneMenu styleClass="form-control" filter="true"
 								required="true" filterMatchMode="contains"
 								requiredMessage="من فضلك اختر الحالة"
-								value="#{stockEntryBean.selectedStatus}" id="status">
+								value="#{stockEntryBean.stockInDetails.articleStatus}" id="status">
 								<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
 								<f:selectItems value="#{stockEntryBean.allArticlesStatus}"
 									var="c" itemLabel="#{c.articleStatusName}"
@@ -193,10 +197,11 @@
 								icon="ui-icon ui-icon-add" value="اضافة">
 								<f:ajax listener="#{stockEntryBean.addInStockItem}"
 									execute="stockArticles desc  count price status suppId stockNO"
-									render="table desc status addBtn supp_grp stockNO suppId"></f:ajax>
+									render="table desc status stockArticles count price addBtn stockNO suppId"></f:ajax>
 							</p:commandButton>
 						</div>
 					</div>
+					
 					<h:panelGroup id="table">
 
 						<p:dataTable value="#{stockEntryBean.stockInDetailList}"

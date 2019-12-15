@@ -8750,6 +8750,4 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.loadRewards(emp_number, month, year);
 		
 	}
-
-
 }

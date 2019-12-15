@@ -316,7 +316,7 @@ public class HrLetterExcuter extends MailExecutor<HrLetterRequest> {
 		String reportName = "/reports/hr_letter.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("record_id", recordId);
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

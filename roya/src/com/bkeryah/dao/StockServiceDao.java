@@ -1,6 +1,7 @@
 package com.bkeryah.dao;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -234,7 +235,7 @@ public class StockServiceDao extends CommonServicesDao implements Serializable, 
 
 		ArcRecords arcRecord = new ArcRecords();
 		arcRecord.setApplicationType(MailTypeEnum.MEMO_RECEIPT.getValue());
-		arcRecord.setRecTitle(" مذكرة إستلام فعلي    " + "  محررة من طرف  " + user.getEmployeeName());
+		arcRecord.setRecTitle(MessageFormat.format(Utils.loadMessagesFromFile("memo.receipt"), user.getEmployeeName()));
 		// String recTitle = arcRecord.getRecTitle();
 		int recordId = dataAccessService.createNewArcRecord(arcRecord, false, toId);
 
@@ -248,9 +249,9 @@ public class StockServiceDao extends CommonServicesDao implements Serializable, 
 
 		String items = "";
 		for (StockInDetails detail : stockInDetailslIST) {
-			items = items + detail.getArticleName() + " الكمية: " + detail.getQty() + "\n";
+			items = items + detail.getArticleName() + Utils.loadMessagesFromFile("article.quantity")+" " + detail.getQty() + "\n";
 		}
-		String userComment = " مذكرة إستلام " + "مقدم من " + user.getEmployeeName() + " للأصناف :" + items;
+		String userComment = MessageFormat.format(Utils.loadMessagesFromFile("memo.receipt"),user.getEmployeeName()) + " "+Utils.loadMessagesFromFile("for.articles")+ " " + items;
 		dataAccessService.createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
 
 		dataAccessService.saveHrsSigns(recordId, stockEntryMasterId, false, null, Utils.findCurrentUser().getUserId(),

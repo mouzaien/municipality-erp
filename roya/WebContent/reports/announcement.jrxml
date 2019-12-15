@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-03-22T11:00:48 -->
+<!-- 2019-11-27T14:36:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="announcement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="38aa53d0-78a5-42c5-b390-50da581991f9">
 	<property name="ireport.zoom" value="1.24184264611831"/>
 	<property name="ireport.x" value="0"/>
@@ -20,6 +20,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\sub_announcement.jasper"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select an.LAST_TENDER_TIME ,AN.H_LAST_TENDER_DATE,AN.OPEN_ENV_DATE, anews.ID_NEWS_PAPER,NP.PAPER_NAME,AN.TIME_FLAG,
 (SELECT PR.SIGN2 FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('PRESIDENT_ID')) PRSIGN,
@@ -167,7 +168,7 @@ and anews.ID_NEWS_PAPER=NP.PAPER_CODE and AN.ID= $P{announcement_id}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Traditional Arabic" size="16" isBold="true" pdfEncoding="Cp1256"/>
 				</textElement>
-				<textFieldExpression><![CDATA["رئيس بلدية محافظة البكيرية"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["رئيس "+$P{compName}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame" isUsingCache="true" onErrorType="Blank">
 				<reportElement positionType="Float" x="19" y="34" width="212" height="86" uuid="27dc39cd-964c-4553-b065-26422bdadeb0"/>

@@ -493,7 +493,7 @@ Double rubish = 0.0;
 				,tradeMarketAddAdvArea, tradeMarketArea, tradeMarketIssueYears);
 		if (tradType == 1 || tradType == 2 ){
 		rubish = dataAccessService.rubishValue(getTradeMarketMainActivity());
-		tradeMarketResult.add(new PayBillDetails(1422106, 1422106, rubish *tradeMarketArea *tradeMarketIssueYears , "نفايات"));
+		tradeMarketResult.add(new PayBillDetails(1422106, 1422106, rubish *tradeMarketArea *tradeMarketIssueYears , "Ù†Ù�Ø§ÙŠØ§Øª"));
 		}
 		
 		tradeMarketIssueType = null;
@@ -512,7 +512,7 @@ Double rubish = 0.0;
 		
 		if (petrolStationIssueType == 1 || petrolStationIssueType == 2 ){
 			rubish = dataAccessService.rubishValue(12);
-			petrolStationResult.add(new PayBillDetails(1422106, 1422106, rubish*petrolStationIssueYears  , "نفايات"));
+			petrolStationResult.add(new PayBillDetails(1422106, 1422106, rubish*petrolStationIssueYears  , "Ù†Ù�Ø§ÙŠØ§Øª"));
 			}
 	}
 //		petrolStationResult = CalcFeesUtil.calculatePetrolStationFees(petrolStationIssueType, petrolStationAdvArea,
@@ -524,7 +524,7 @@ Double rubish = 0.0;
 		
 //		if (petrolStationIssueType == 1 || petrolStationIssueType == 2 ){
 //			rubish = dataAccessService.rubishValue(12);
-//			petrolStationResult.add(new PayBillDetails(1422106, 1422106, rubish*petrolStationIssueYears  , "نفايات"));
+//			petrolStationResult.add(new PayBillDetails(1422106, 1422106, rubish*petrolStationIssueYears  , "Ù†Ù�Ø§ÙŠØ§Øª"));
 //			}
 	}
 	
@@ -559,7 +559,7 @@ Double rubish = 0.0;
 		if (selectedDetailList == null || selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -571,7 +571,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -583,7 +583,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -595,7 +595,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -607,7 +607,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -619,7 +619,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -631,7 +631,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -643,7 +643,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -655,7 +655,7 @@ Double rubish = 0.0;
 		if (selectedDetailList.size() > 0) {
 			context.execute("PF('AddBillDlgVar').show();");
 		} else {
-			MsgEntry.addErrorMessage("تأكد من البيانات أولا");
+			MsgEntry.addErrorMessage("ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£ÙˆÙ„Ø§");
 		}
 
 	}
@@ -684,6 +684,7 @@ Double rubish = 0.0;
 		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
 				.getRealPath("/reports/bill_detail.jasper"));
 		parameters.put("p1", newBillNmber);
+		parameters.put("name_customer", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -698,7 +699,7 @@ Double rubish = 0.0;
 		tradeMarketIssueYears = tradeLicense.getYears();
 		tradeMarketResult = CalcFeesUtil.calculateTradeingMarketFees(tradeMarketIssueType, tradeMarketAdvArea,
 				tradeMarketAddAdvArea, tradeMarketArea, tradeMarketMainActivity, tradeMarketIssueYears);
-		tradeMarketResult.add(new PayBillDetails(1438, 1438, tradeLicense.getFine() ,"غرامات"));
+		tradeMarketResult.add(new PayBillDetails(1438, 1438, tradeLicense.getFine() ,"ØºØ±Ø§Ù…Ø§Øª"));
 	}
 
 	public List<BillIssueDetail> getSelectBillIssue() {

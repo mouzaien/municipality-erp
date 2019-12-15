@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-28T08:54:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="300" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="752dc002-b410-4732-a584-4d1b8d13417d">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebContent\reports\DataAdapter.xml"/>
 	<parameter name="item_Id" class="java.lang.Integer">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select a.tr, A.NAME , art.id,art.code, art.name ART_NAME,nvl(A.qty,0) qty,SPECIAL_NO,a.datetransaction,unit.ITEMUNITNAME
 from
@@ -167,11 +169,6 @@ where
 				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="680" y="34" width="120" height="15" uuid="6752872a-cca9-4e99-865b-e4142127fbc4"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[ادارة المستودعات بلدية المذنب]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="750" y="49" width="50" height="15" uuid="51b8ae9b-7271-4a55-b054-30acdc9d8662"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[مستودع]]></text>
@@ -219,6 +216,18 @@ where
 				<textFieldExpression><![CDATA[("نموذج رقم ( "+4+" ) ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="680" y="34" width="120" height="15" uuid="872a6815-9a43-4012-8278-51a820c94357">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إدارة مستودعات "+$P{compName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

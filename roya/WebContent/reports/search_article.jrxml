@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-11-27T15:10:55 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="search_article" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0e7affd-2d62-4b50-91ed-cfe589bcd53c">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -18,6 +19,7 @@
 	<parameter name="strnumber" class="java.lang.Integer">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select rownum num, art.id,art.code, art.name,nvl(A.qty,0) input, nvl(B.qty,0) output, nvl((A.qty - nvl(B.qty,0) ),0)available, nvl(C.qty,0) reserved,unit.ITEMUNITNAME ,store.STRNAME
 from
@@ -100,15 +102,6 @@ where
 		<band height="103" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 			<staticText>
-				<reportElement x="670" y="36" width="128" height="18" uuid="76f1aafa-91c5-402a-afec-fb6eab843c70">
-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<text><![CDATA[بلدية محافظة المذنب]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="265" y="5" width="230" height="31" uuid="8970ea04-e3b5-49b7-a4d3-3f55d51dcc17">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
@@ -149,6 +142,18 @@ where
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STRNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="36" width="128" height="17" uuid="5473c532-6aeb-4856-86b6-e599dcf3a3c6">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{compName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
