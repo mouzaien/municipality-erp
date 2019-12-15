@@ -128,7 +128,7 @@ public class HrsOverTimeBean {
 		String pmonth = null;
 		String reportName = "/reports/overtime.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("year", pyear);
 		// listMonth.get(index)
 		if (frommonth <= 12)
@@ -137,10 +137,8 @@ public class HrsOverTimeBean {
 			pmonth = Utils.loadMessagesFromFile("eid.fitr");
 		else if (frommonth == 14)
 			pmonth = Utils.loadMessagesFromFile("eid.adha");
+
 		parameters.put("month", pmonth);
-
-		// parameters.put("month", listMonth.get(frommonth - 1).getNameAr());
-
 		parameters.put("salary", strSumSalary);
 		parameters.put("trans", strSummTrans);
 		parameters.put("total", strSummTotal);
@@ -154,7 +152,7 @@ public class HrsOverTimeBean {
 	private void printAnnouncementReportAction() {
 		String reportName = "/reports/overtime_employers.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("year", pyear);
 		parameters.put("min_month", frommonth);
 		parameters.put("max_month", tomonth);

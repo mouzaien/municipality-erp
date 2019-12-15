@@ -64,6 +64,7 @@ public class FuelBean{
 		reportName = "/reports/fuel_transactions.jasper";
 		parameters.put("start_date", sdf.format(startDate));
 		parameters.put("end_date", sdf.format(endDate));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("LOGO_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);
@@ -74,6 +75,7 @@ public class FuelBean{
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		String reportName = "/reports/bill_fuel.jasper";
 		parameters.put("transactionId", fuelTransaction.getId());
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("LOGO_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);

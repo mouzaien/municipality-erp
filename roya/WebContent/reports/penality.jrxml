@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-07-30T09:34:44 -->
+<!-- 2019-11-27T15:00:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penality" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -12,6 +12,7 @@
 	<parameter name="LOGO_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="compName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select fd.id, FD.FINE_NO, f.fine_code, f.FINE_DESC, (FD.FINE_COUNT*fd.fine_value) fine_value,M.FINE_DATE , M.F_NAME, M.F_LICENCE_NO, M.F_ID_NO, M.F_FINE_CASE, B.BILL_NO,B.BILL_DATE,
 (SELECT PR.DDD FROM WRK_PROFILE_SIGN PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('PENALITIES_RESP'))  PRSIGN,
@@ -57,7 +58,7 @@ and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+$P{compName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="149" height="20" uuid="85ecbd55-df0f-489c-9a9a-8ddeaf53ee19">

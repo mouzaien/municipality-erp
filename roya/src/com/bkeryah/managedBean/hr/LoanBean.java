@@ -127,6 +127,7 @@ public class LoanBean {
 		parameters.put("loanTypeId", bankId);
 		parameters.put("year", year);
 		parameters.put("month", month);
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("bankName", ((HrsLoanType)dataAccessService.findEntityById(HrsLoanType.class, bankId)).getLoanTypeName());
 		parameters.put("monthName", ((Sys012)dataAccessService.findEntityById(Sys012.class, month)).getNameAr());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()

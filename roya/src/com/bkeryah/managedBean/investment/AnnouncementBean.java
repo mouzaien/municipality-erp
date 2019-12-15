@@ -169,6 +169,7 @@ public class AnnouncementBean {
 		parameters.put("announcement_id", selectedAnnouncement.getId());
 		parameters.put("tender_day", Utils.getDayForHigriDate(selectedAnnouncement.gethLastTenderDate()));
 		parameters.put("open_day", Utils.getDayForHigriDate(selectedAnnouncement.getOpenEnvDate()));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("SUBREPORT_DIR",
 				FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/sub_announcement.jasper"));
 		parameters.put("picture_footer",

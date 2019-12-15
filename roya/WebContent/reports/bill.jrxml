@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-04-18T11:05:56 -->
+<!-- 2019-11-26T13:40:26 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="075a02bf-6251-44ae-b744-e1e91afd8d32">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -45,8 +45,10 @@
 		<defaultValueExpression><![CDATA["./reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="p1" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="name_customer" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select
 BILL_NO, LIC_NO, LIC_TYPE, BILL_STATUS, BILL_PAY_TYPE, COLLECT_BY, COLLECTION_SR, PAY_DATE_H, PAY_DATE_G, PAY_AMOUNT, BILL_O_NAME, BILL_DATE
@@ -106,15 +108,21 @@ where bill_no   = $P{p1}]]>
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="395" y="0" width="149" height="56" uuid="c0566d71-8efb-4e44-8a87-c434dc78ec58"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+			<textField>
+				<reportElement x="396" y="0" width="149" height="56" uuid="70cfed3d-178d-4e41-a14a-21436dcf52a7">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[وزارة الشئون البلدية و القروية
-أمانة منطقة القصيم
-بلدية محافظة البكيرية]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["وزارة الشئون البلدية و القروية"
++"\n"+
+"أمانة منطقة القصيم"
++"\n"+$P{p1}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

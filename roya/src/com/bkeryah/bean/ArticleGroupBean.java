@@ -20,6 +20,7 @@ import com.bkeryah.entities.ArticleSubGroup;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
+import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -48,11 +49,11 @@ public class ArticleGroupBean {
 			dataAccessService.addNewArticleGroup(articleGroup);
 			articleGroup = new ArticleGroup();
 			articleGroups = dataAccessService.getAllArticleGroups();
-			MsgEntry.addInfoMessage("تم اضافة المجموعة بنجاح");
+			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage("  رمز مكرر) خطا فى  اضافة المجموعة) ");
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation")+" "+Utils.loadMessagesFromFile("error.repeated.code"));
 		}
 	}
 
@@ -63,11 +64,11 @@ public class ArticleGroupBean {
 			articleGroup = new ArticleGroup();
 			articleGroups = dataAccessService.getAllArticleGroups();
 			newFlag = false;
-			MsgEntry.addInfoMessage("تم تعديل المجموعة بنجاح");
+			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage("  رمز مكرر) خطا فى  اضافة المجموعة) ");
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation")+" "+Utils.loadMessagesFromFile("error.repeated.code"));
 		}
 	}
 
@@ -76,15 +77,21 @@ public class ArticleGroupBean {
 	/////////////////// row Edittor///////////////
 
 	public void onRowEdit(RowEditEvent event) {
-		ArticleGroup selectedItem = (ArticleGroup) event.getObject();
-		FacesMessage msg = new FacesMessage("تم حفظ التعديل", selectedItem.getName());
-		dataAccessService.updateObject(selectedItem);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		try {
+			ArticleGroup selectedItem = (ArticleGroup) event.getObject();
+//			FacesMessage msg = new FacesMessage("تم حفظ التعديل", selectedItem.getName());
+			dataAccessService.updateObject(selectedItem);
+			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation")+": "+selectedItem.getName());
+//			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation")+" "+Utils.loadMessagesFromFile("error.repeated.code"));
+		}
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("تم إلغاء التعديل", ((ArticleGroup) event.getObject()).getName());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		/*FacesMessage msg = new FacesMessage("تم إلغاء التعديل", ((ArticleGroup) event.getObject()).getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);*/
 	}
 
 	 

@@ -942,7 +942,7 @@ public class MailDefenationBean extends Scanner {
 		if (url.contains(MyConstants.REPORT_NORMAL_VACATION)) {
 			reportName = "/reports/normal_vacation.jasper";
 			parameters.put("seqid", Integer.parseInt(url.substring(url.indexOf("HRSQRY011_116.rdf&PVACSEQ=") + 26)));
-			parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+			parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		} else if (url.contains(MyConstants.REPORT_MEDICAL)) {
 			reportName = "/reports/medical_report.jasper";
 			parameters.put("record_id", Integer.parseInt(selectedInbox.getWrkId()));
@@ -1440,14 +1440,14 @@ public class MailDefenationBean extends Scanner {
 		if (selectedInbox.getWrkIncomeNo() != null
 				&& dataAccessService.recordIslinked(Integer.parseInt(selectedInbox.getWrkIncomeNo()))) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "المعاملة مرتبطة بالفعل", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø© Ù…Ø±ØªØ¨Ø·Ø© Ø¨Ø§Ù„Ù�Ø¹Ù„", ""));
 
 			return;
 		}
 
 		if (selectedInbox.getWrkIncomeNo() == null || selectedInbox.getWrkIncomeNo().length() < 1) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "تأكد من وجود رقم وارد", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ØªØ£ÙƒØ¯ Ù…Ù† ÙˆØ¬ÙˆØ¯ Ø±Ù‚Ù… ÙˆØ§Ø±Ø¯", ""));
 
 			return;
 		}
@@ -1461,7 +1461,7 @@ public class MailDefenationBean extends Scanner {
 		} else {
 			previousAttachList = new ArrayList<>();
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "تأكد من وجود رقم وارد", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ØªØ£ÙƒØ¯ Ù…Ù† ÙˆØ¬ÙˆØ¯ Ø±Ù‚Ù… ÙˆØ§Ø±Ø¯", ""));
 
 		}
 	}
@@ -1469,7 +1469,7 @@ public class MailDefenationBean extends Scanner {
 	public void linkRecord(ActionEvent ae) {
 		if (NewIncomeNoRefered == null || previousAttachList.size() == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "تأكد من وجود مرفقات", ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ØªØ£ÙƒØ¯ Ù…Ù† ÙˆØ¬ÙˆØ¯ Ù…Ø±Ù�Ù‚Ø§Øª", ""));
 			return;
 		}
 
@@ -1486,7 +1486,7 @@ public class MailDefenationBean extends Scanner {
 				dataAccessService.saveObject(arcRecAtt);
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "حدث خطأ أثناء التنفيذ", ""));
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªÙ†Ù�ÙŠØ°", ""));
 			}
 
 		}
@@ -1501,7 +1501,7 @@ public class MailDefenationBean extends Scanner {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('link-dlg').hide();");
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "تم الربط بنجاح", ""));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "ØªÙ… Ø§Ù„Ø±Ø¨Ø· Ø¨Ù†Ø¬Ø§Ø­", ""));
 	}
 
 	public Charging getChargObj() {

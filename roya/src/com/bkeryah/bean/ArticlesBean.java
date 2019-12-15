@@ -13,6 +13,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.RowEditEvent;
 
+import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.ArticleGroup;
 import com.bkeryah.entities.ArticleSubGroup;
@@ -21,12 +22,15 @@ import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
+import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
 public class ArticlesBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
+	@ManagedProperty(value = "#{stockServiceDao}")
+	private IStockServiceDao stockServiceDao;
 	private Article article = new Article();
 	private List<ArticleGroup> articleGroups;
 	private List<ArticleSubGroup> articleSubGroups;
@@ -36,7 +40,7 @@ public class ArticlesBean {
 	private List<Article> filterArticles;
 	private boolean newFlag;
 	private List<ItemUnite> unites;
-	private Integer groupId;
+//	private Integer groupId;
 	private Integer itemId;
 	private String item;
 	private String artType = "1";
@@ -46,9 +50,11 @@ public class ArticlesBean {
 	public void init() {
 		articleGroups = dataAccessService.getAllArticleGroups();
 		articleSubGroups = dataAccessService.getAllArticleSubGroups();
-		articles = dataAccessService.getAllArticles(article.getStrNo());
 		unites = dataAccessService.getAllUnites();
-		warehouses = dataAccessService.getAllStores();
+		warehouses = stockServiceDao.getStoreDeanWharehouses(Utils.findCurrentUser().getUserId());//dataAccessService.getAllStores();
+//		List<Integer> warehousesIds = new ArrayList<Integer>();
+//		warehouses.forEach(warehouse -> warehousesIds.add(warehouse.getStoreNumber()));
+//		articles = dataAccessService.getAllArticles(warehousesIds);
 	}
 
 	public void newArticle() {
@@ -66,20 +72,19 @@ public class ArticlesBean {
 			article = new Article();
 			articles = dataAccessService.getAllArticles(article.getStrNo());
 
-			MsgEntry.addInfoMessage("تم اضافة الصنف بنجاح");
+			MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage("  (رمز مكرر) خطا فى  اضافة الصنف  ");
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 		}
 	}
 
 	public void reloadStrArticles(AjaxBehaviorEvent ev) {
 		try {
 			articles = dataAccessService.getAllArticles(article.getStrNo());
-
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage("  خطإ  ");
+			e.printStackTrace();
 		}
 	}
 
@@ -90,16 +95,17 @@ public class ArticlesBean {
 	public void onRowEdit(RowEditEvent event) {
 		selectedItem = (Article) event.getObject();
 		dataAccessService.updateObject(selectedItem);
-		FacesMessage msg = new FacesMessage("تم حفظ التعديل", selectedItem.getName());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation")+": "+selectedItem.getName());
+//		FacesMessage msg = new FacesMessage("ØªÙ… Ø­Ù�Ø¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„", selectedItem.getName());
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
 		articles = dataAccessService.getAllArticles(article.getStrNo());
 
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		selectedItem = (Article) event.getObject();
-		FacesMessage msg = new FacesMessage("تم إلغاء التعديل", selectedItem.getName());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		/*selectedItem = (Article) event.getObject();
+		FacesMessage msg = new FacesMessage("ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„", selectedItem.getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);*/
 	}
 	////////////////////////////// Delete ///////////////////////
 
@@ -110,11 +116,11 @@ public class ArticlesBean {
 		try {
 			if (article != null) {
 				dataAccessService.deleteObject(article);
-				MsgEntry.addInfoMessage("تم حذف " + article.getName() + " بنجاح");
+				MsgEntry.addInfoMessage(Utils.loadMessagesFromFile("success.operation")+": "+article.getName());
 			}
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage("هذا الصنف لا يمكن حذفه لانه مستخدم في شاشة اخرى");
-
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 		}
 		articles = dataAccessService.getAllArticles(article.getStrNo());
 		return null;
@@ -186,13 +192,13 @@ public class ArticlesBean {
 		this.unites = unites;
 	}
 
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
-	}
+//	public Integer getGroupId() {
+//		return groupId;
+//	}
+//
+//	public void setGroupId(Integer groupId) {
+//		this.groupId = groupId;
+//	}
 
 	public Integer getItemId() {
 		return itemId;
@@ -240,5 +246,13 @@ public class ArticlesBean {
 
 	public void setSelectedItem(Article selectedItem) {
 		this.selectedItem = selectedItem;
+	}
+
+	public IStockServiceDao getStockServiceDao() {
+		return stockServiceDao;
+	}
+
+	public void setStockServiceDao(IStockServiceDao stockServiceDao) {
+		this.stockServiceDao = stockServiceDao;
 	}
 }

@@ -52,7 +52,7 @@ public class VacationInf{
 		if (selectVacation.getVacationType() == MyConstants.NORMAL_VACATION) {
 			reportName = "/reports/normal_vacation.jasper";
 			parameters.put("seqid", selectVacation.getId());
-			parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+			parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 			Utils.printPdfReport(reportName, parameters);
 		}
 		return "";
@@ -62,7 +62,7 @@ public class VacationInf{
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = "/reports/vacation_sum_subreport.jasper";
-		parameters.put("compName", Utils.loadMessagesFromFile("comp.name"));
+		parameters.put("compName", dataAccessService.findSystemProperty("CUSTOMER_NAME"));
 		parameters.put("pempno", getEmployerId());
 		parameters.put("vactype", getVacationstypeid());
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
