@@ -212,7 +212,7 @@
 						value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}">
 						<p:ajax event="blur"
 							update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
-							process="@this"
+							process="@this,VACASTRT"
 							listener="#{mainManagedBean.mailExecutor.checkdate}">
 						</p:ajax>
 

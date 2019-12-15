@@ -130,14 +130,16 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 			} else {
 				higriDate = Utils.grigDatesConvert(grigDate);
 			}
-
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		employeeVacation.setHigriVacationStart(higriDate);
 		if(employeeVacation.getHigriVacationStart()!=null&&checkStartDate(employeeVacation)&&employeeVacation.getVacationPeriod()!=null)
 					{
-		employeeVacation.setHigriVacationStart(higriDate);
+		
 		if (((employeeVacation.getVacationPeriod() != null) && (employeeVacation.getVacationPeriod() != 0))
 				&& (checkDays()) && (employeeVacation.getHigriVacationStart() != null)
 				&& (!employeeVacation.getHigriVacationStart().trim().equals(""))) {
