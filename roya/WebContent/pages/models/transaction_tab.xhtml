@@ -71,10 +71,16 @@
 	<p:scrollPanel mode="native" style="height:600px;border: white;">
 		<p:panelGrid columns="2" columnClasses="ui-grid-col-12,ui-grid-col-12"
 			layout="grid" styleClass="ui-panelgrid-blank" style="float :left;">
-			<p:commandButton value="#{msg['print']} #{msg['explanations']}"
+			<p:commandButton value=" #{msg['explanations']}"
 				icon="fa fa-fw fa-comments-o" immediate="true" styleClass="cyan-btn"
 				onclick="this.form.target='_blank'" ajax="false"
 				action="#{mailDefenationBean.printExplanationReportAction}">
+			</p:commandButton>
+			<p:commandButton value="#{msg['print']} "
+				rendered="#{mailDefenationBean.hasLetter}"
+				icon="fa fa-fw fa-comments-o" immediate="true" styleClass="cyan-btn"
+				onclick="this.form.target='_blank'" ajax="false"
+				action="#{mailDefenationBean.printReportAction}">
 			</p:commandButton>
 		</p:panelGrid>
 		<p:panelGrid>

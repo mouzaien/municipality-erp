@@ -678,7 +678,7 @@ public interface IDataAccessService {
 
 	public List<PayBank> getAllBanks();
 
-	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId);
+	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId,List<String> commentCopyReciever);
 
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request);
 
@@ -1807,4 +1807,6 @@ public interface IDataAccessService {
 	void exportRewardFile(Integer emp_no, Integer month, Integer year);
 
 	List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year);
+	
+	public Integer getIdFromWorkAppByAppId(Integer appId);
 }

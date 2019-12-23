@@ -1805,10 +1805,10 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return items;
 
 	}
-
+	@Transactional
 	@Override
 	public Integer getArchRecParentFromLinkByRecordId(Integer childArchRecordId) {
-		String hql = " Select arcRecordParentId FROM  ArcRecordsLink A Where A.arcRrecordChildId=:childArchRecordId   ";
+		String hql = "Select A.arcRrecordChildId FROM  ArcRecordsLink A Where A.arcRecordParentId=:childArchRecordId";
 
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("childArchRecordId", childArchRecordId);
@@ -4517,6 +4517,15 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 					return status;
 				}
 		
+		@Override
+		@Transactional
+		public Integer getIdFromWorkAppByAppId(Integer appId) {
+			String hql = "select app.id.applicationId  from WrkApplication  app  where  app.arcRecordId=:appId ";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			query.setParameter("appId", appId);
+			List<Integer> list = query.list();
+			return list.get(0);
+			}
 
 
 }
