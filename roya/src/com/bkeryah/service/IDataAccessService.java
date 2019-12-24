@@ -126,6 +126,8 @@ import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
+import com.bkeryah.entities.WrkLetterFrom;
+import com.bkeryah.entities.WrkLetterTo;
 import com.bkeryah.entities.WrkProfile;
 import com.bkeryah.entities.WrkProfileSign;
 import com.bkeryah.entities.WrkPurpose;
@@ -1809,4 +1811,20 @@ public interface IDataAccessService {
 	List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year);
 	
 	public Integer getIdFromWorkAppByAppId(Integer appId);
+
+	List<WrkLetterFrom> loadAllWrkLetterFrom();
+
+	List<WrkLetterTo> loadAllWrkLetterTo();
+
+	List<WrkPurpose> loadAllPurposes();
+
+	List<FngTypeAbsence> loadAllAbsenceTypes();
+
+	List<FngStatusAbsence> loadAllAbsenceStatus();
+
+	List<SysCategoryEmployer> loadAllCategoryEmployers();
+
+	List<VacationsType> loadAllVacationTypes();
+
+	List<WrkCommentType> loadAllCommentTypes();
 }
