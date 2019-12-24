@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.bean.ManagedProperty;
-
 import org.apache.log4j.Logger;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
@@ -2397,7 +2395,7 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId) {
+	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId,List<String> commentCopyReciever) {
 		System.out.println("00000000"+wrkApplication.getId().getApplicationId());
 		System.out.println("11111111"+wrkApplication.getId().getStepId());
 		ArcRecords arcRecords = (ArcRecords) commonDao.findEntityById(ArcRecords.class,
@@ -2408,6 +2406,11 @@ public class DataAccessService implements IDataAccessService {
 		
 		commonDao.update(arcRecords);
 
+		
+//		sendWrkApplication(wrkId, application, secretFlag, WrkCopyEmpRecievers,
+//				WrkCopyMngRecievers);
+	//	redirectWrkAppCopies(wrkId, WrkCopyEmpRecievers, WrkCopyMngRecievers);
+		
 		WrkComment wrkComment = (WrkComment) commonDao.findEntityById(WrkComment.class,
 				wrkApplication.getId().getApplicationId());
 		if ((wrkComment.getMarkedBy() != null) && (wrkComment.getMarkedBy() <= 0)) {
@@ -2444,6 +2447,20 @@ public class DataAccessService implements IDataAccessService {
 		newWrkApp.setApplicationIsVisible(1);
 		newWrkApp.setApplicationIsReply(1);
 		newWrkApp.setArcRecordId(wrkApplication.getArcRecordId());
+		List<Integer> commentCopyRec=new ArrayList<Integer>();
+		for (String userid : commentCopyReciever) {
+			commentCopyRec.add(Integer.parseInt(userid));
+		}
+	
+		if (commentCopyReciever != null) {
+		//	for (String userid : commentCopyReciever) {
+				redirectWrkAppCopies(wrkApplication, commentCopyRec,null);
+		//		sendCommentCopy(Utils.findCurrentUser().getUserId(), Integer.parseInt(userid),
+			//			wrkComment.getWRKAPPID().toString(), wrkApplication.getId().getApplicationId().toString());
+
+	//		}
+		}
+		//redirectWrkAppCopies(newWrkApp, commentCopyReciever, null);
 		saveObject(newWrkApp);
 		return wrkComment;
 
@@ -4500,6 +4517,7 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public boolean redirectWrkAppCopies(WrkApplication application, List<Integer> WrkCopyEmpRecievers,
 			List<Integer> WrkCopyMngRecievers) {
+		
 		Integer newRecId = null;
 		try {
 			ArcRecords applicationRecord = (ArcRecords) findEntityById(ArcRecords.class, application.getArcRecordId());
@@ -4525,7 +4543,7 @@ public class DataAccessService implements IDataAccessService {
 
 				saveObject(arcRecAtt);
 			}
-			if (WrkCopyEmpRecievers.size() > 0 | WrkCopyMngRecievers.size() > 0) {
+			if (WrkCopyEmpRecievers.size() > 0 | (WrkCopyMngRecievers!=null&&WrkCopyMngRecievers.size() > 0)) {
 				ArcRecordsLink arcRecordLink = new ArcRecordsLink();
 				arcRecordLink.setArcRecordParentId(newRecId);
 				arcRecordLink.setArcRrecordChildId(application.getArcRecordId());
@@ -4544,7 +4562,7 @@ public class DataAccessService implements IDataAccessService {
 					}
 
 				}
-			if (WrkCopyMngRecievers.size() > 0)
+			if (WrkCopyMngRecievers!=null&&WrkCopyMngRecievers.size() > 0)
 				for (Object mgrid : WrkCopyMngRecievers) {
 					WrkApplication newApplication = new WrkApplication(application);
 					int ManagerId = Integer.parseInt(String.valueOf(mgrid));
@@ -8746,8 +8764,62 @@ public class DataAccessService implements IDataAccessService {
 	}
 	@Override
 	@Transactional
-	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year) {
+	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
 		return commonDao.loadRewards(emp_number, month, year);
-		
+
+	}
+
+	@Override
+	@Transactional
+	public Integer getIdFromWorkAppByAppId(Integer appId) {
+		return commonDao.getIdFromWorkAppByAppId(appId);
+	}
+
+	@Override
+	@Transactional
+	public List<WrkLetterFrom> loadAllWrkLetterFrom() {
+		return commonDao.loadAllWrkLetterFrom();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkLetterTo> loadAllWrkLetterTo() {
+		return commonDao.loadAllWrkLetterTo();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkPurpose> loadAllPurposes() {
+		return commonDao.loadAllPurposes();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkCommentType> loadAllCommentTypes() {
+		return commonDao.loadAllCommentTypes();
+	}
+
+	@Override
+	@Transactional
+	public List<VacationsType> loadAllVacationTypes() {
+		return commonDao.loadAllVacationTypes();
+	}
+
+	@Override
+	@Transactional
+	public List<SysCategoryEmployer> loadAllCategoryEmployers() {
+		return commonDao.loadAllCategoryEmployers();
+	}
+
+	@Override
+	@Transactional
+	public List<FngStatusAbsence> loadAllAbsenceStatus() {
+		return commonDao.loadAllAbsenceStatus();
+	}
+
+	@Override
+	@Transactional
+	public List<FngTypeAbsence> loadAllAbsenceTypes() {
+		return commonDao.loadAllAbsenceTypes();
 	}
 }

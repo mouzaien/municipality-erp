@@ -126,6 +126,8 @@ import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
+import com.bkeryah.entities.WrkLetterFrom;
+import com.bkeryah.entities.WrkLetterTo;
 import com.bkeryah.entities.WrkProfile;
 import com.bkeryah.entities.WrkProfileSign;
 import com.bkeryah.entities.WrkPurpose;
@@ -678,7 +680,7 @@ public interface IDataAccessService {
 
 	public List<PayBank> getAllBanks();
 
-	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId);
+	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId,List<String> commentCopyReciever);
 
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request);
 
@@ -1807,4 +1809,22 @@ public interface IDataAccessService {
 	void exportRewardFile(Integer emp_no, Integer month, Integer year);
 
 	List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year);
+	
+	public Integer getIdFromWorkAppByAppId(Integer appId);
+
+	List<WrkLetterFrom> loadAllWrkLetterFrom();
+
+	List<WrkLetterTo> loadAllWrkLetterTo();
+
+	List<WrkPurpose> loadAllPurposes();
+
+	List<FngTypeAbsence> loadAllAbsenceTypes();
+
+	List<FngStatusAbsence> loadAllAbsenceStatus();
+
+	List<SysCategoryEmployer> loadAllCategoryEmployers();
+
+	List<VacationsType> loadAllVacationTypes();
+
+	List<WrkCommentType> loadAllCommentTypes();
 }

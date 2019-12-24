@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,7 +78,6 @@ import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.ArcUsersExtension;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.ArticleGroup;
-import com.bkeryah.hr.entities.HrsVacationUpdate;
 import com.bkeryah.entities.ArticleSubGroup;
 import com.bkeryah.entities.BillIssueCash;
 import com.bkeryah.entities.BillIssueDetail;
@@ -130,6 +128,7 @@ import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
 import com.bkeryah.entities.RewardInfo;
 import com.bkeryah.entities.SubMenu;
+import com.bkeryah.entities.SysCategoryEmployer;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
 import com.bkeryah.entities.TechnicalResponse;
@@ -146,6 +145,8 @@ import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
+import com.bkeryah.entities.WrkLetterFrom;
+import com.bkeryah.entities.WrkLetterTo;
 import com.bkeryah.entities.WrkProfile;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.entities.WrkRefrentionalSetting;
@@ -182,7 +183,9 @@ import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
 import com.bkeryah.fng.entities.AutorizationSettings;
+import com.bkeryah.fng.entities.FngStatusAbsence;
 import com.bkeryah.fng.entities.FngTimeTable;
+import com.bkeryah.fng.entities.FngTypeAbsence;
 import com.bkeryah.fng.entities.FngUserTempShift;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
@@ -226,7 +229,6 @@ import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.hr.entities.Sys051;
 import com.bkeryah.hr.entities.Sys059;
 import com.bkeryah.hr.entities.Sys112;
-import com.bkeryah.hr.entities.UserVacSold;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.User;
 import com.bkeryah.penalties.FineSection;
@@ -244,7 +246,6 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 import customeExceptions.VacationAndInitException;
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
-import utilities.MsgEntry;
 import utilities.MyConstants;
 import utilities.Utils;
 
@@ -939,10 +940,9 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Transactional
 	public HrsEmpHistorical getHRsEmpHistoricalByEmpNo(int employerNumber) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
-		 criteria.add(Restrictions.and(Restrictions.eq("id.empno",
-		 employerNumber), Restrictions.eq("flag", 1)));
-	//	criteria.add(Restrictions.eq("id.empno", employerNumber));
-	//	criteria.add(Restrictions.eq("flag", 1));
+		criteria.add(Restrictions.and(Restrictions.eq("id.empno", employerNumber), Restrictions.eq("flag", 1)));
+		// criteria.add(Restrictions.eq("id.empno", employerNumber));
+		// criteria.add(Restrictions.eq("flag", 1));
 		return (HrsEmpHistorical) criteria.uniqueResult();
 	}
 
@@ -1092,13 +1092,13 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		String executedDateTerminate = (String) criteria.uniqueResult();
 //		return executedDateTerminate;
 		if (executedDateTerminate != null) {
-						Integer status = getActifEmployer(employerNumber);
-						if (status > 0)
-							return null;
-						else
-						return executedDateTerminate;
-					}
-					return null;
+			Integer status = getActifEmployer(employerNumber);
+			if (status > 0)
+				return null;
+			else
+				return executedDateTerminate;
+		}
+		return null;
 	}
 
 	@Override
@@ -1806,9 +1806,10 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	}
 
+	@Transactional
 	@Override
 	public Integer getArchRecParentFromLinkByRecordId(Integer childArchRecordId) {
-		String hql = " Select arcRecordParentId FROM  ArcRecordsLink A Where A.arcRrecordChildId=:childArchRecordId   ";
+		String hql = "Select A.arcRrecordChildId FROM  ArcRecordsLink A Where A.arcRecordParentId=:childArchRecordId";
 
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("childArchRecordId", childArchRecordId);
@@ -2272,8 +2273,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsJobCreation.class);
 		criteria.add(Restrictions.eq("categoryId", catid));
 		criteria.add(Restrictions.eq("jobstatus", status));
-		 if (rank != null)
-		 criteria.add(Restrictions.eq("rankCode", rank));
+		if (rank != null)
+			criteria.add(Restrictions.eq("rankCode", rank));
 		List<HrsJobCreation> jobs = criteria.list();
 		System.out.println("jobs size ----> " + jobs.size());
 		return jobs;
@@ -2681,7 +2682,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<ArcUsers> getAllActiveEmployeesInDept(Integer departmentId) {
 		List<ArcUsers> users = new ArrayList<ArcUsers>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
-		 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		if (departmentId != null)
 			criteria.add(Restrictions.eq("deptId", departmentId));
 		criteria.add(Restrictions.eq("isActive", 1));
@@ -4037,8 +4038,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<LicTrdMasterFile> loadLicences() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class)
 				.setProjection(Projections.projectionList().add(Projections.property("licNo"), "licNo")
-						.add(Projections.property("trdName"), "trdName").add(Projections.property("aplOwner"),
-								"aplOwner"))
+						.add(Projections.property("trdName"), "trdName")
+						.add(Projections.property("aplOwner"), "aplOwner"))
 				.setResultTransformer(Transformers.aliasToBean(LicTrdMasterFile.class));
 		return criteria.list();
 	}
@@ -4075,8 +4076,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public Integer getNewVacPeriod(int findCurrentYear) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacationUpdate.class);
 		criteria.setProjection(Projections.sum("days"));
-		//criteria.add(Restrictions.eq("year", findCurrentYear));
-	
+		// criteria.add(Restrictions.eq("year", findCurrentYear));
+
 		Integer days = Integer.parseInt(criteria.uniqueResult().toString());
 		return days;
 	}
@@ -4104,26 +4105,31 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return true;
 	}
+
 	@Transactional
 	@Override
 	public Integer getInitUserVacSold(int findCurrentYear, int empno) {
 		try {
-			
+
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
-			criteria.setProjection(Projections.sqlProjection("(VAC_OLD_SOLD + VAC_CURR_YEAR_SOLD) as total", new String[] {"total"} , new Type[] {IntegerType.INSTANCE}));
+			criteria.setProjection(Projections.sqlProjection("(VAC_OLD_SOLD + VAC_CURR_YEAR_SOLD) as total",
+					new String[] { "total" }, new Type[] { IntegerType.INSTANCE }));
 			criteria.add(Restrictions.eq("currentYear", findCurrentYear));
 			criteria.add(Restrictions.eq("employeeNumber", empno));
-			/*String hql = " select w.oldSold + w.currentYearSold from HrsVacSold w where w.employeeNumber=:empno AND w.currentYear=:curryear ";
-			Query query = sessionFactory.getCurrentSession().createQuery(hql);
-			query.setParameter("empno", empno);
-			query.setParameter("curryear", findCurrentYear);*/
-			return(Integer)criteria.uniqueResult();
+			/*
+			 * String hql =
+			 * " select w.oldSold + w.currentYearSold from HrsVacSold w where w.employeeNumber=:empno AND w.currentYear=:curryear "
+			 * ; Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			 * query.setParameter("empno", empno); query.setParameter("curryear",
+			 * findCurrentYear);
+			 */
+			return (Integer) criteria.uniqueResult();
 //			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
 //			criteria.setProjection(Projections.property("VAC_CURR_YEAR_SOLD"));
 //			criteria.setProjection(Projections.property("VAC_OLD_SOLD"));
 //			criteria.add(Restrictions.eq("VAC_CURR_YEAR", findCurrentYear));
 //			criteria.add(Restrictions.eq("empno", empno));
-		//	return (Integer) criteria.uniqueResult();
+			// return (Integer) criteria.uniqueResult();
 		} catch (Exception e) {
 			logger.error("getInitUserVacSold" + e.getMessage());
 		}
@@ -4349,6 +4355,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		inventories = criteria.list();
 		return inventories;
 	}
+
 	@Transactional
 	@Override
 	public List<Article> getAllArticles() {
@@ -4369,38 +4376,36 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return job;
 	}
+
 	@Override
 	@Transactional
-	public void addOperation(Object dep_tr)
-	{
-		
+	public void addOperation(Object dep_tr) {
+
 		sessionFactory.getCurrentSession().save(dep_tr);
-		
-		
+
 	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> loadDepTrain(Integer emp_no,Integer month,Integer year) {
-	
+	public List<String> loadDepTrain(Integer emp_no, Integer month, Integer year) {
+
 		List<String> list = new ArrayList<String>();
 		String sql;
 		try {
-			
+
 			sql = Utils.readSqlRequest("DeptTrainRequest");
-			
+
 			System.out.println(sql);
 			Session currentSession = sessionFactory.getCurrentSession();
-			
-			
+
 			Query salaryQuery = currentSession.createSQLQuery(sql);
-		
-			
+
 			salaryQuery.setParameter("year", year);
-			
+
 			salaryQuery.setParameter("month", month);
-			
+
 			list = salaryQuery.list();
-	
+
 			return list;
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -4408,115 +4413,178 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return list;
 	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<DeputationTraining> loadStatus(Integer emp_number){
+	public List<DeputationTraining> loadStatus(Integer emp_number) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
-		
-		if(emp_number!=0)
-		{
-		 criteria.add(Restrictions.eq("emp_no", emp_number));
-		 return criteria.list();
-		}else {
-			
+
+		if (emp_number != 0) {
+			criteria.add(Restrictions.eq("emp_no", emp_number));
+			return criteria.list();
+		} else {
+
 			return criteria.list();
 		}
 	}
-		@SuppressWarnings("unchecked")
-		@Override
-		@Transactional
-		public List<DeputationTraining> loadStatus(Integer emp_number,Integer month,Integer year){
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
-			
-			
-			if(emp_number!=0)
-			{
-			 criteria.add(Restrictions.eq("emp_no", emp_number));
-			
-			if(month!=null) criteria.add(Restrictions.eq("month", month));
-			 if(year!=null)criteria.add(Restrictions.eq("year", year));
-			
-			 return criteria.list();
-			
-			}else {
-				if(month!=null)	 criteria.add(Restrictions.eq("month", month));
-				if(year!=null)criteria.add(Restrictions.eq("year", year));
-				return criteria.list();
-			}
-		}
- 
-		@Override
-		@Transactional
-		public void saveReward(RewardInfo rewardinfo) {
-			
-			sessionFactory.getCurrentSession().save(rewardinfo);
-			}
 
-		@SuppressWarnings("unchecked")
-		@Override
-		@Transactional
-		public List<RewardInfo> loadRewards(Integer emp_number){
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
-			 if(emp_number!=0)criteria.add(Restrictions.eq("emp_no", emp_number));
-			 
-			 return criteria.list();
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+
+		if (emp_number != 0) {
+			criteria.add(Restrictions.eq("emp_no", emp_number));
+
+			if (month != null)
+				criteria.add(Restrictions.eq("month", month));
+			if (year != null)
+				criteria.add(Restrictions.eq("year", year));
+
+			return criteria.list();
+
+		} else {
+			if (month != null)
+				criteria.add(Restrictions.eq("month", month));
+			if (year != null)
+				criteria.add(Restrictions.eq("year", year));
+			return criteria.list();
 		}
-		public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year){
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
-			
-			 if(emp_number!=0)
-				{
-				 criteria.add(Restrictions.eq("emp_no", emp_number));
-				
-				if(month!=null) criteria.add(Restrictions.eq("month", month));
-				 if(year!=null)criteria.add(Restrictions.eq("year", year));
-				
-				 return criteria.list();
-				
-				}else {
-					if(month!=null)	 criteria.add(Restrictions.eq("month", month));
-					if(year!=null)criteria.add(Restrictions.eq("year", year));
-					return criteria.list();
-				}
+	}
+
+	@Override
+	@Transactional
+	public void saveReward(RewardInfo rewardinfo) {
+
+		sessionFactory.getCurrentSession().save(rewardinfo);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<RewardInfo> loadRewards(Integer emp_number) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+		if (emp_number != 0)
+			criteria.add(Restrictions.eq("emp_no", emp_number));
+
+		return criteria.list();
+	}
+
+	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+
+		if (emp_number != 0) {
+			criteria.add(Restrictions.eq("emp_no", emp_number));
+
+			if (month != null)
+				criteria.add(Restrictions.eq("month", month));
+			if (year != null)
+				criteria.add(Restrictions.eq("year", year));
+
+			return criteria.list();
+
+		} else {
+			if (month != null)
+				criteria.add(Restrictions.eq("month", month));
+			if (year != null)
+				criteria.add(Restrictions.eq("year", year));
+			return criteria.list();
 		}
-		@SuppressWarnings("unchecked")
-		@Override
-		public List<String> loadReward(Integer emp_no,Integer month,Integer year) {
-			List<String> list = new ArrayList<String>();
-			String sql;
-			try {
-				
-				sql = Utils.readSqlRequest("RewardRequest");
-				
-				Session currentSession = sessionFactory.getCurrentSession();
-				
-				Query salaryQuery = currentSession.createSQLQuery(sql);
-				
-				
-				salaryQuery.setParameter("year", year);
-				
-				salaryQuery.setParameter("month", month);
-				
-				list = salaryQuery.list();
-			
-				return list;
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} finally {
-			}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> loadReward(Integer emp_no, Integer month, Integer year) {
+		List<String> list = new ArrayList<String>();
+		String sql;
+		try {
+
+			sql = Utils.readSqlRequest("RewardRequest");
+
+			Session currentSession = sessionFactory.getCurrentSession();
+
+			Query salaryQuery = currentSession.createSQLQuery(sql);
+
+			salaryQuery.setParameter("year", year);
+
+			salaryQuery.setParameter("month", month);
+
+			list = salaryQuery.list();
+
 			return list;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
 		}
-		
-		public Integer getActifEmployer(Integer employerNumber) {
-					Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
-					criteria.setProjection(Projections.property("flag"));
-					criteria.add(Restrictions.eq("id.empno", employerNumber));
-					criteria.add(Restrictions.eq("flag", 1));
-					Integer status = (Integer) criteria.uniqueResult();
-					return status;
-				}
-		
+		return list;
+	}
 
+	public Integer getActifEmployer(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.setProjection(Projections.property("flag"));
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		criteria.add(Restrictions.eq("flag", 1));
+		Integer status = (Integer) criteria.uniqueResult();
+		return status;
+	}
 
+	@Override
+	@Transactional
+	public Integer getIdFromWorkAppByAppId(Integer appId) {
+		String hql = "select app.id.applicationId  from WrkApplication  app  where  app.arcRecordId=:appId ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("appId", appId);
+		List<Integer> list = query.list();
+		return list.get(0);
+	}
+
+	@Override
+	public List<WrkLetterFrom> loadAllWrkLetterFrom() {
+		return loadAll(WrkLetterFrom.class);
+
+	}
+
+	@Override
+	public List<WrkLetterTo> loadAllWrkLetterTo() {
+		return loadAll(WrkLetterTo.class);
+
+	}
+
+	@Override
+	public List<WrkPurpose> loadAllPurposes() {
+		return loadAll(WrkPurpose.class);
+
+	}
+
+	@Override
+	public List<WrkCommentType> loadAllCommentTypes() {
+		return loadAll(WrkCommentType.class);
+
+	}
+
+	@Override
+	public List<VacationsType> loadAllVacationTypes() {
+		return loadAll(VacationsType.class);
+
+	}
+
+	@Override
+	public List<SysCategoryEmployer> loadAllCategoryEmployers() {
+		return loadAll(SysCategoryEmployer.class);
+
+	}
+
+	@Override
+	public List<FngStatusAbsence> loadAllAbsenceStatus() {
+		return loadAll(FngStatusAbsence.class);
+
+	}
+
+	@Override
+	public List<FngTypeAbsence> loadAllAbsenceTypes() {
+		return loadAll(FngTypeAbsence.class);
+
+	}
 }

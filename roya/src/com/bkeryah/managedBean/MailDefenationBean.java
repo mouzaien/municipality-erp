@@ -315,6 +315,25 @@ public class MailDefenationBean extends Scanner {
 		setDefaultValues();
 
 		checkCopyOfLetter();
+		
+		/////////////////////////////////////////
+		if(selectedMail.getWrkType()==0)
+		{
+			try {
+			Integer arcRecordParent=commonDao.getArchRecParentFromLinkByRecordId(Integer.parseInt(selectedMail.AppId));
+			comment=commonDao.getWrkCommentByAppId(
+					commonDao.getIdFromWorkAppByAppId(
+							arcRecordParent));
+			if(comment !=null && comment.getSignedBy()>0 )hasLetter =true;
+			}catch (IndexOutOfBoundsException e) {
+				
+			}
+		}
+		
+		
+		///////////////////////////////////////////
+		
+		
 	}
 
 	private void checkCopyOfLetter() {
@@ -788,15 +807,17 @@ public class MailDefenationBean extends Scanner {
 					System.out.println("wrkappid"+wrkId.getStepId());
 					WrkApplication wrk = commonDao.findWrkApplicationById(wrkId);
 
-					dataAccessService.signComment(wrk, commentSignType, selectedUserInSignComment);
+					dataAccessService.signComment(wrk, commentSignType, selectedUserInSignComment,commentCopyReciever);
 
-					if (commentCopyReciever != null) {
-						for (String userid : commentCopyReciever) {
-							dataAccessService.sendCommentCopy(currentUser.getUserId(), Integer.parseInt(userid),
-									comment.getWRKAPPID().toString(), selectedInbox.AppId);
-
-						}
-					}
+					
+					
+//					if (commentCopyReciever != null) {
+//						for (String userid : commentCopyReciever) {
+//							dataAccessService.sendCommentCopy(currentUser.getUserId(), Integer.parseInt(userid),
+//									comment.getWRKAPPID().toString(), selectedInbox.AppId);
+//
+//						}
+//					}
 					Utils.closeDialog("confirm-sign-dlg");
 					MsgEntry.showModalDialog(Utils.loadMessagesFromFile("sign.comment.success"));
 					// savePdfComment();
