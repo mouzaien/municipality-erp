@@ -8838,9 +8838,67 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getWrkAppliquationByArcId(arcRecordId);
 	}
 
+//	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
+//		return commonDao.loadRewards(emp_number, month, year);
+//
+//	}
+
 	@Override
 	@Transactional
 	public HrsSigns getHrsSignsByArcId(Integer arcRecordId) {
 		return commonDao.getHrsSignsByArcId(arcRecordId);
+	}
+
+	@Override
+	@Transactional
+	public List<WrkLetterFrom> loadAllWrkLetterFrom() {
+		return commonDao.loadAllWrkLetterFrom();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkLetterTo> loadAllWrkLetterTo() {
+		return commonDao.loadAllWrkLetterTo();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkPurpose> loadAllPurposes() {
+		return commonDao.loadAllPurposes();
+	}
+
+	@Override
+	@Transactional
+	public List<WrkCommentType> loadAllCommentTypes() {
+		return commonDao.loadAllCommentTypes();
+	}
+
+	@Override
+	@Transactional
+	public List<VacationsType> loadAllVacationTypes() {
+		return commonDao.loadAllVacationTypes();
+	}
+
+	@Override
+	@Transactional
+	public List<SysCategoryEmployer> loadAllCategoryEmployers() {
+		return commonDao.loadAllCategoryEmployers();
+	}
+
+	@Override
+	@Transactional
+	public List<FngStatusAbsence> loadAllAbsenceStatus() {
+		return commonDao.loadAllAbsenceStatus();
+	}
+
+	@Override
+	@Transactional
+	public List<FngTypeAbsence> loadAllAbsenceTypes() {
+		return commonDao.loadAllAbsenceTypes();
+	}
+
+	@Override
+	public Integer getIdFromWorkAppByAppId(Integer appId) {
+		return null;
 	}
 }
