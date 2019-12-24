@@ -67,6 +67,7 @@ import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
 import com.bkeryah.entities.RewardInfo;
 import com.bkeryah.entities.SubMenu;
+import com.bkeryah.entities.SysCategoryEmployer;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
 import com.bkeryah.entities.TechnicalResponse;
@@ -83,6 +84,8 @@ import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
+import com.bkeryah.entities.WrkLetterFrom;
+import com.bkeryah.entities.WrkLetterTo;
 import com.bkeryah.entities.WrkProfile;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.entities.WrkRefrentionalSetting;
@@ -117,7 +120,9 @@ import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
 import com.bkeryah.fng.entities.AutorizationSettings;
+import com.bkeryah.fng.entities.FngStatusAbsence;
 import com.bkeryah.fng.entities.FngTimeTable;
+import com.bkeryah.fng.entities.FngTypeAbsence;
 import com.bkeryah.fng.entities.FngUserTempShift;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
@@ -1016,5 +1021,21 @@ public interface ICommonDao {
 	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year);
 	public List<String> loadReward(Integer emp_no,Integer month,Integer year);
 	public Integer getIdFromWorkAppByAppId(Integer appId);
+
+	List<WrkLetterFrom> loadAllWrkLetterFrom();
+
+	List<VacationsType> loadAllVacationTypes();
+
+	List<FngStatusAbsence> loadAllAbsenceStatus();
+
+	List<FngTypeAbsence> loadAllAbsenceTypes();
+
+	List<SysCategoryEmployer> loadAllCategoryEmployers();
+
+	List<WrkCommentType> loadAllCommentTypes();
+
+	List<WrkPurpose> loadAllPurposes();
+
+	List<WrkLetterTo> loadAllWrkLetterTo();
 	
 }
