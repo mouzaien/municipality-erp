@@ -56,11 +56,11 @@
 									</secc:authorize>
 								</secc:authorize>
 
-								
-									<p:menuitem id="menu522"
-										value="#{msg['menu.transaction.delivery']}" action="deptBox"
-										icon="fa fa-fw fa-language" />
-								
+
+								<p:menuitem id="menu522"
+									value="#{msg['menu.transaction.delivery']}" action="deptBox"
+									icon="fa fa-fw fa-language" />
+
 							</p:submenu>
 							<secc:authorize ifNotGranted="ROLE_PRESIDENT">
 								<p:submenu id="sr_Services" label="#{msg['services']}"
@@ -77,13 +77,14 @@
 											action="#{mainManagedBean.updateContent('LEAVESUCCESSOR')}" />
 									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
-									<p:menuitem id="menu3_Service"
-										value="#{msg['menu.autorization']}" icon="fa fa-fw fa-clock-o"
-										action="#{mainManagedBean.updateContent('AUTORIZATION')}" />
-									<p:menuitem id="menu4_Service" value="#{msg['mission.menu']}"
-										icon="fa fa-fw fa-cubes"
-										action="#{mainManagedBean.updateContent('WORKMISSION')}"></p:menuitem>
-										</secc:authorize>
+										<p:menuitem id="menu3_Service"
+											value="#{msg['menu.autorization']}"
+											icon="fa fa-fw fa-clock-o"
+											action="#{mainManagedBean.updateContent('AUTORIZATION')}" />
+										<p:menuitem id="menu4_Service" value="#{msg['mission.menu']}"
+											icon="fa fa-fw fa-cubes"
+											action="#{mainManagedBean.updateContent('WORKMISSION')}"></p:menuitem>
+									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="menu_seck_Service" value="إجازة مرضية"
 											action="sick_vacation" icon="fa fa-fw fa-bed"></p:menuitem>
@@ -100,10 +101,10 @@
 									</secc:authorize>
 
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
-										<p:menuitem id="menu5_Service"
-											value="تعريف وتحويل" icon="fa fa-fw fa-dollar"
+										<p:menuitem id="menu5_Service" value="تعريف وتحويل"
+											icon="fa fa-fw fa-dollar"
 											action="#{mainManagedBean.updateContent('SALARY')}"></p:menuitem>
-								<!-- 		<p:menuitem id="menu6_Service"
+										<!-- 		<p:menuitem id="menu6_Service"
 											value="#{msg['training.model.menu']}"
 											icon="fa fa-fw fa-leanpub"
 											action="#{mainManagedBean.updateContent('TRAINING')}"></p:menuitem>
@@ -113,40 +114,41 @@
 											action="#{mainManagedBean.updateContent('MEDICALREPORT')}"></p:menuitem>   -->
 										<p:menuitem id="projectExtract_Service" value="إنشاء مستخلص"
 											action="projectExtract"></p:menuitem>
-									</secc:authorize   >
+									</secc:authorize>
 									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
-										
-										
-										
+
+
+
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
-										<p:menuitem id="aaa" value="برنت أحوال"
-										action="nationalprint"></p:menuitem>
+										<p:menuitem id="aaa" value="برنت أحوال" action="nationalprint"></p:menuitem>
 										<p:menuitem id="bb" value="إظافة مستفيد"
-										action="beneficiaryData"></p:menuitem>
+											action="beneficiaryData"></p:menuitem>
 									</secc:authorize>
-									
-										
-										
- 									<secc:authorize ifAnyGranted="ROLE_SUPPORT"> 
-									   
-									   <p:submenu id="jobs_requests" label="طلبات توظيفية"
-										    icon="ui-icon ui-icon-people">
-											<p:menuitem id="training" value="دوره تدريبيه" 
-											action="#{mainManagedBean.updateContent('TRAINING')}"  icon="fa fa-fw fa-leanpub" />
-											<p:menuitem id="medic_report" value="تقرير طبي" 
-											action="#{mainManagedBean.updateContent('MEDICALREPORT')}"  icon="fa fa-fw fa-medkit" />
-											
+
+
+
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+
+										<p:submenu id="jobs_requests" label="طلبات توظيفية"
+											icon="ui-icon ui-icon-people">
+											<p:menuitem id="training" value="دوره تدريبيه"
+												action="#{mainManagedBean.updateContent('TRAINING')}"
+												icon="fa fa-fw fa-leanpub" />
+											<p:menuitem id="medic_report" value="تقرير طبي"
+												action="#{mainManagedBean.updateContent('MEDICALREPORT')}"
+												icon="fa fa-fw fa-medkit" />
+
 										</p:submenu>
-										
-										
-									</secc:authorize> 
-										
-										
-										
-										
-										
-		<!-- hereeeee -->							
+
+
+									</secc:authorize>
+
+
+
+
+
+									<!-- hereeeee -->
 
 								</p:submenu>
 							</secc:authorize>
@@ -161,8 +163,8 @@
 										action="promotion" icon="fa fa-line-chart" />
 									<p:menuitem id="sm_leavingEmp" value="طي قيد موظف"
 										action="leavingEmp" icon="fa fa-user-times" />
-<!-- 									<p:menuitem id="sm_newEmp" value="تعيين موظف جديد" -->
-<!-- 										action="recruitEmployers" icon="fa fa-fw fa-user-plus" /> -->
+									<!-- 									<p:menuitem id="sm_newEmp" value="تعيين موظف جديد" -->
+									<!-- 										action="recruitEmployers" icon="fa fa-fw fa-user-plus" /> -->
 									<p:menuitem id="sm_vacs" value="استعلام الاجازات"
 										action="vaction_info" icon="ui-icon ui-icon-weekend" />
 									<p:menuitem id="hrs_sum_vacation" value="الإجازات"
@@ -189,14 +191,14 @@
 										action="fngAbsence" icon="ui-icon ui-icon-alarm-off" />
 									<p:menuitem id="sm_loan" value="القروض" action="hrsLoan"
 										icon="ui-icon ui-icon-money-off" />
-										<p:menuitem id="sm_train" value="التدريب" action="hrsTraining"
+									<p:menuitem id="sm_train" value="التدريب" action="hrsTraining"
 										icon="ui-icon ui-icon-money-off" />
-										<p:menuitem id="sm_trainList" value="استعلام التدريب" action="hrsTrainingSearch"
-										icon="ui-icon ui-icon-money-off" />
-										<p:menuitem id="sm_rewards" value="المكافأت" action="hrsRewards"
-										icon="ui-icon ui-icon-money-off" />
-										<p:menuitem id="sm_rewardsList" value="استعلام المكافأت" action="hrsRewardsSearch"
-										icon="ui-icon ui-icon-money-off" />
+									<p:menuitem id="sm_trainList" value="استعلام التدريب"
+										action="hrsTrainingSearch" icon="ui-icon ui-icon-money-off" />
+									<p:menuitem id="sm_rewards" value="المكافأت"
+										action="hrsRewards" icon="ui-icon ui-icon-money-off" />
+									<p:menuitem id="sm_rewardsList" value="استعلام المكافأت"
+										action="hrsRewardsSearch" icon="ui-icon ui-icon-money-off" />
 								</p:submenu>
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
@@ -246,12 +248,12 @@
 										<p:submenu id="store_sb_menu" label="إستعلام"
 											icon="fa fa-fw fa-search">
 											<p:menuitem id="st_sm_exreq" value=" صرف المواد"
-													action="search_exchange_request"
-													icon="fa fa-fw fa-search-plus "/>
+												action="search_exchange_request"
+												icon="fa fa-fw fa-search-plus " />
 											<p:menuitem id="st_sm_searchMemo" value="مذكرة استلام"
-													action="searchMemo" icon="fa fa-fw fa-search-plus " />
-												<p:menuitem id="st_sm_art" value="الاصناف"
-													action="search_article" icon="fa fa-fw fa-search-plus" />
+												action="searchMemo" icon="fa fa-fw fa-search-plus " />
+											<p:menuitem id="st_sm_art" value="الاصناف"
+												action="search_article" icon="fa fa-fw fa-search-plus" />
 										</p:submenu>
 
 									</secc:authorize>
@@ -322,7 +324,7 @@
 								</p:submenu>
 							</secc:authorize>
 							<!-- roles setting  -->
-							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_DEAN">
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 								<p:submenu id="sr_Setting" label="#{msg['setting']}"
 									icon="ui-icon ui-icon-settings">
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
@@ -340,10 +342,41 @@
 											icon="ui-icon ui-icon-assignment-turned-in"
 											action="Contracts_Screen">
 										</p:menuitem>
+										<p:menuitem id="s_supps" value="الموردين"
+											icon="ui-icon ui-icon-local-shipping" action="suppliers">
+										</p:menuitem>
+										
+										<p:menuitem id="s_absenceStatus" value="حالة الغياب"
+											icon="ui-icon ui-icon-local-shipping" action="absenceStatus">
+										</p:menuitem>
+										<p:menuitem id="s_absenceType" value="نوع الغياب"
+											icon="ui-icon ui-icon-local-shipping" action="absenceType">
+										</p:menuitem>
+										<p:menuitem id="s_categoryEmployer" value="التصنيف"
+											icon="ui-icon ui-icon-local-shipping" action="categoryEmployer">
+										</p:menuitem>
+										<p:menuitem id="s_commentType" value="نوع الخطاب"
+											icon="ui-icon ui-icon-local-shipping" action="commentType">
+										</p:menuitem>
+										<p:menuitem id="s_letterFrom" value="الجهة الموردة"
+											icon="ui-icon ui-icon-local-shipping" action="letterFrom">
+										</p:menuitem>
+										<p:menuitem id="s_letterTo" value="الجهة الخارجية"
+											icon="ui-icon ui-icon-local-shipping" action="letterTo">
+										</p:menuitem>
+										<p:menuitem id="s_purpose" value="التوجيه"
+											icon="ui-icon ui-icon-local-shipping" action="purpose">
+										</p:menuitem>
+										<p:menuitem id="s_role_desc" value="الصلاحيات"
+											icon="ui-icon ui-icon-local-shipping" action="role_desc">
+										</p:menuitem>
+										<p:menuitem id="s_roles" value="صلاحيات المستخدمين"
+											icon="ui-icon ui-icon-local-shipping" action="roles">
+										</p:menuitem>
+										<p:menuitem id="s_vacationType" value="نوع الاجازة"
+											icon="ui-icon ui-icon-local-shipping" action="vacationType">
+										</p:menuitem>
 									</secc:authorize>
-									<p:menuitem id="s_supps" value="الموردين"
-										icon="ui-icon ui-icon-local-shipping" action="suppliers">
-									</p:menuitem>
 								</p:submenu>
 							</secc:authorize>
 						</pm:menu>
