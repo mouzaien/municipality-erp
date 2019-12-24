@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:define name="head">
+		<f:metadata>
+			<f:viewAction phase="APPLY_REQUEST_VALUES"
+				action="#{settingsDataBean.defineOperation('LETTER_TO')}"></f:viewAction>
+		</f:metadata>
+	</ui:define>
+	
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<br />
+			<div class="image-box-footer">
+				<p:commandButton value="إضافة جهة" icon="fa fa-plus"
+					action="#{settingsDataBean.addLetterTo}" process="@this"
+					oncomplete=" PF('mydialog').show()" update="includeform:panelGroup"
+					immediate="true">
+				</p:commandButton>
+			</div>
+			<br />
+			<br />
+			<div class="card card-w-title">
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					الجهات الموردة <span class="ui-icon ui-icon-location-city"></span>
+				</h1>
+				<br />
+				<p:dataTable id="emp" var="letterDT" style="direction:rtl;"
+					value="#{settingsDataBean.letterToList}" widgetVar="cellemp"
+					rows="13" paginator="true" paginatorPosition="bottom" filteredValue="#{settingsDataBean.filteredLetterToList}"
+					emptyMessage="الجدول فارغ"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column headerText="المسلسل " width="10%" style="text-align: center"
+						filterBy="#{letterDT.id}">
+						<h:outputText value="#{letterDT.id}" />
+					</p:column>
+					<p:column headerText="الجهة الموردة" width="80%"
+						filterBy="#{letterDT.name}">
+						<h:outputText value="#{letterDT.name}"></h:outputText>
+
+					</p:column>
+
+					<p:column headerText="تفاصيل" width="10%" style="text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup" oncomplete=" PF('mydialog').show()"
+							action="#{settingsDataBean.loadSelectedObject}"
+							icon="ui-icon-search" title="View" modal="true">
+							<f:setPropertyActionListener value="#{letterDT}"
+								target="#{settingsDataBean.letterTo}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				<p:dialog header="بيانات الجهة الموردة" position="center"
+					widgetVar="mydialog" responsive="true" id="inputData2"
+					closable="true" dir="rtl" resizable="true" modal="true">
+
+					<h:panelGroup id="panelGroup">
+						<div class="ui-g">
+							<br />
+							<div class="ui-g-2">
+								<h:outputLabel for="basic" value="اسم الجهة " />
+							</div>
+							<div class="ui-g-10">
+								<p:inputText id="projectName" required="true" requiredMessage="#{msg['required.fields']}"
+									value="#{settingsDataBean.letterTo.name}" style="width:100%">
+								</p:inputText>
+							</div>
+							<br /> <br /> <br />
+						</div>
+						<div align="center">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="حفظ" icon="fa fa-save"
+									rendered="#{settingsDataBean.addMode}"
+									action="#{settingsDataBean.save}" update="@form"
+									onsuccess="PF('mydialog').hide(); ">
+								</p:commandButton>
+								<p:commandButton value="تعديل" icon="fa fa-edit"
+									rendered="#{!settingsDataBean.addMode}"
+									action="#{settingsDataBean.update}" update="@form"
+									onsuccess="PF('mydialog').hide();">
+								</p:commandButton>
+								<p:spacer height="4"></p:spacer>
+								<p:commandButton styleClass=" orange-btn" value="#{msg['back']}"
+									icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+									onsuccess="PF('mydialog').hide();" />
+							</div>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
