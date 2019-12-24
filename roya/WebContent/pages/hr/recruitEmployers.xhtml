@@ -65,20 +65,20 @@
 									<p:outputLabel value=""></p:outputLabel>
 								</div>
 
-<!-- 								<div class="ui-g-2"> -->
-<!-- 									<p:outputLabel value="تصنيف الموظف"></p:outputLabel> -->
-<!-- 								</div> -->
-<!-- 								<div class="ui-g-2"> -->
-<!-- 									<p:selectOneMenu id="empssort" -->
-<!-- 										value="#{recruitEmployer.hrmasfile.cactegoryId}"> -->
-<!-- 										<f:selectItem itemLabel="اختر التصنيف" itemValue="" /> -->
-<!-- 										<f:selectItems value="#{recruitEmployer.listCategory}" -->
-<!-- 											var="category" itemLabel="#{category.categoryName}" -->
-<!-- 											itemValue="#{category.id}" /> -->
-<!-- 										<p:ajax process="@this" event="change" update="recrec" -->
-<!-- 											listener="#{recruitEmployer.loadJobsByCat}" /> -->
-<!-- 									</p:selectOneMenu> -->
-<!-- 								</div> -->
+								<div class="ui-g-2">
+									<p:outputLabel value="تصنيف الموظف"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="empssort"
+										value="#{recruitEmployer.hrmasfile.cactegoryId}">
+										<f:selectItem itemLabel="اختر التصنيف" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listCategory}"
+											var="category" itemLabel="#{category.categoryName}"
+											itemValue="#{category.id}" />
+										<p:ajax process="@this" event="change" update="jobcode,recrec"
+											listener="#{recruitEmployer.loadJobsByCat}" />
+									</p:selectOneMenu>
+								</div>
 								<div class="ui-g-2">
 									<p:outputLabel value=""></p:outputLabel>
 								</div>
@@ -618,59 +618,52 @@
 						<div class="ui-g">
 						
 
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value=" رمز الوظيفة"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:selectOneMenu id="jobcode" required="true" -->
-<!-- 									requiredMessage="رمز الوظيفة مطلوب" -->
-<!-- 									value="#{recruitEmployer.empHistoric.jobNumber}" filter="true" -->
-<!-- 									filterMatchMode="contains" -->
-<!-- 									disabled="#{recruitEmployer.renderJobStatus==3?'true':'false'}"> -->
-<!-- 									<f:selectItem itemLabel="اختر الوظيفة" itemValue="" /> -->
-<!-- 									<f:selectItems value="#{recruitEmployer.listJob}" var="joblist" -->
-<!-- 										itemLabel="#{joblist.jobCode} #{joblist.gov4.jobName}" -->
-<!-- 										itemValue="#{joblist.createId}" /> -->
-<!-- 									<p:ajax process="@this" update="rankHistoric,jobnumber,degree" -->
-<!-- 										listener="#{recruitEmployer.loadRankJobNoByCode}" /> -->
-<!-- 								</p:selectOneMenu> -->
-<!-- 							</div> -->
+							<div class="ui-g-2">
+								<p:outputLabel value=" رمز الوظيفة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="jobcode" required="true"
+									requiredMessage="رمز الوظيفة مطلوب"
+									value="#{recruitEmployer.empHistoric.jobNumber}" filter="true"
+									filterMatchMode="contains"
+									disabled="#{recruitEmployer.renderJobStatus==3?'true':'false'}">
+									<f:selectItem itemLabel="اختر الوظيفة" itemValue="" />
+									<f:selectItems value="#{recruitEmployer.listJob}" var="joblist"
+										itemLabel="#{joblist.jobCode} #{joblist.gov4.jobName}"
+										itemValue="#{joblist.createId}" />
+									<p:ajax process="@this" update="rank,jobnumber,degree"
+										listener="#{recruitEmployer.loadRankJobNoByCode}" />
+								</p:selectOneMenu>
+							</div>
 
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value="المرتبة"></p:outputLabel> -->
-<!-- 							</div> -->
-							<!-- 							<div class="ui-g-2"> -->
-							<!-- 															<p:outputLabel id="rank" -->
-							<!-- 																value="#{recruitEmployer.selectJob.rankCode}"> -->
-							<!-- 															</p:outputLabel> -->
+							<div class="ui-g-2">
+								<p:outputLabel value="المرتبة"></p:outputLabel>
+							</div>
+														<div class="ui-g-2">
+																						<p:outputLabel id="rank"
+																							value="#{recruitEmployer.selectJob.rankCode}">
+																						</p:outputLabel>
 
-							<!-- 							</div> -->
+														</div>
 <!-- 							<div class="ui-g-2"> -->
 <!-- 								<p:inputText id="rankHistoric" style="width:50% ;" -->
 <!-- 									value="#{recruitEmployer.empHistoric.rankNumber}"> -->
 <!-- 								</p:inputText> -->
 <!-- 							</div> -->
-							<!-- 							<div class="ui-g-2"> -->
-							<!-- 								<p:outputLabel value="كود الوظيفة "></p:outputLabel> -->
-							<!-- 							</div> -->
-							<!-- 							<div class="ui-g-2"> -->
-							<!-- 								<p:outputLabel id="jobcodenumber" -->
-							<!-- 									value="#{recruitEmployer.selectJob.jobCode}"> -->
-							<!-- 								</p:outputLabel> -->
-							<!-- 							</div> -->
+														<div class="ui-g-2">
+															<p:outputLabel value="كود الوظيفة "></p:outputLabel>
+														</div>
+														<div class="ui-g-2">
+															<p:outputLabel id="jobcodenumber"
+																value="#{recruitEmployer.selectJob.jobCode}">
+															</p:outputLabel>
+														</div>
 						</div>
 						
 
 						<div class="ui-g">
 
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value="الراتب الاساسى"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:inputText id="basicsalary" -->
-<!-- 									value="#{recruitEmployer.empHistoric.basicSalary}"> -->
-<!-- 								</p:inputText> -->
-<!-- 							</div> -->
+							
 
 						
 
@@ -719,14 +712,14 @@
 
 						</div>
 						<div class="ui-g">
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value=" رقم الوظيفة"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:inputText id="jobnumber" -->
-<!-- 									value="#{recruitEmployer.empHistoric.jobNumber}"> -->
-<!-- 								</p:inputText> -->
-<!-- 							</div> -->
+							<div class="ui-g-2">
+								<p:outputLabel value=" رقم الوظيفة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="jobnumber"
+									value="#{recruitEmployer.empHistoric.jobNumber}">
+								</p:inputText>
+							</div>
 
 							<div class="ui-g-2">
 								<p:outputLabel value=" الوظيفة الفعلية"></p:outputLabel>
@@ -735,47 +728,56 @@
 								<p:inputText id="jobdescription"
 									value="#{recruitEmployer.hrmasfile.jobDescription}">
 								</p:inputText>
+								
 							</div>
-<!-- 								<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value="بدل الانتقال"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:inputText id="transfer" -->
-<!-- 									value="#{recruitEmployer.empHistoric.transferSalary}"> -->
-<!-- 								</p:inputText> -->
-<!-- 							</div> -->
-
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value="انتداب داخلى"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:inputText id="mandatein" -->
-<!-- 									value="#{recruitEmployer.empHistoric.mandateInner}"> -->
-<!-- 								</p:inputText> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<p:outputLabel value="الدرجة"></p:outputLabel> -->
-<!-- 							</div> -->
-<!-- 							<div class="ui-g-2"> -->
-<!-- 								<h:panelGroup id="recrec"> -->
-<!-- 									<p:selectOneMenu id="degree" -->
-<!-- 										value="#{recruitEmployer.empHistoric.classNumber}" -->
-<!-- 										required="true" requiredMessage="الدرجة مطلوبة" -->
-<!-- 										rendered="#{(recruitEmployer.hrmasfile.cactegoryId==1||recruitEmployer.hrmasfile.cactegoryId==2||recruitEmployer.hrmasfile.cactegoryId==4)}"> -->
-<!-- 										<f:selectItem itemLabel="اختر الدرجة" itemValue="" /> -->
-<!-- 										<f:selectItems value="#{recruitEmployer.listScaleDgree}" -->
-<!-- 											var="dgreelist" itemLabel="#{dgreelist.classTitle}" -->
-<!-- 											itemValue="#{dgreelist.classCode}" /> -->
-<!-- 										<p:ajax process="@this" -->
-<!-- 											update="basicsalary,transfer,mandatein" -->
-<!-- 											listener="#{recruitEmployer.loadDetailClass}" /> -->
-<!-- 									</p:selectOneMenu> -->
-<!-- 									<p:inputText id="degrtxt" -->
-<!-- 										rendered="#{(recruitEmployer.hrmasfile.cactegoryId == 3||recruitEmployer.hrmasfile.cactegoryId == 5||recruitEmployer.hrmasfile.cactegoryId == 6||recruitEmployer.hrmasfile.cactegoryId == 7||recruitEmployer.hrmasfile.cactegoryId == 8||recruitEmployer.hrmasfile.cactegoryId == 9)}" -->
-<!-- 										value="#{recruitEmployer.dgreeId}" /> -->
-<!-- 								</h:panelGroup> -->
-<!-- 							</div> -->
-
+							<div class="ui-g-2">
+								<p:outputLabel value="الدرجة"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<h:panelGroup id="recrec">
+									<p:selectOneMenu id="degree"
+										value="#{recruitEmployer.empHistoric.classNumber}"
+										required="true" requiredMessage="الدرجة مطلوبة"
+										rendered="#{(recruitEmployer.hrmasfile.cactegoryId==1||recruitEmployer.hrmasfile.cactegoryId==2||recruitEmployer.hrmasfile.cactegoryId==4)}">
+										<f:selectItem itemLabel="اختر الدرجة" itemValue="" />
+										<f:selectItems value="#{recruitEmployer.listScaleDgree}"
+											var="dgreelist" itemLabel="#{dgreelist.classTitle}"
+											itemValue="#{dgreelist.classCode}" />
+										<p:ajax process="@this"
+											update="basicsalary,transfer,mandatein"
+											listener="#{recruitEmployer.loadDetailClass}" />
+									</p:selectOneMenu>
+									<p:inputText id="degrtxt"
+										rendered="#{(recruitEmployer.hrmasfile.cactegoryId == 3||recruitEmployer.hrmasfile.cactegoryId == 5||recruitEmployer.hrmasfile.cactegoryId == 6||recruitEmployer.hrmasfile.cactegoryId == 7||recruitEmployer.hrmasfile.cactegoryId == 8||recruitEmployer.hrmasfile.cactegoryId == 9)}"
+										value="#{recruitEmployer.dgreeId}" />
+								</h:panelGroup>
+							</div>
+								
+							<div class="ui-g-2">
+								<p:outputLabel value="الراتب الاساسى"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="basicsalary"
+									value="#{recruitEmployer.empHistoric.basicSalary}">
+								</p:inputText>
+							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="انتداب داخلى"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="mandatein"
+									value="#{recruitEmployer.empHistoric.mandateInner}">
+								</p:inputText>
+							</div>
+							
+							<div class="ui-g-2">
+								<p:outputLabel value="بدل الانتقال"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="transfer"
+									value="#{recruitEmployer.empHistoric.transferSalary}">
+								</p:inputText>
+							</div>
 						</div>
 					</p:fieldset>
 

@@ -4134,7 +4134,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<DocumentsType> getAllDocumentsType() {
 		return loadAll(DocumentsType.class);
 	}
-
+	@Transactional
 	@Override
 	public List<WrkFinesEntity> getAllWrkFinesEntity() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkFinesEntity.class);
