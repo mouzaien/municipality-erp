@@ -7,10 +7,10 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:secc="http://www.springframework.org/security/tags">
 <f:view>
-	<f:metadata>
-		<f:viewAction action="#{inventoryMasterBean.loadAllArticles}"
-			phase="APPLY_REQUEST_VALUES" />
-	</f:metadata>
+	<!-- 	<f:metadata> -->
+	<!-- 		<f:viewAction action="#{inventoryMasterBean.loadAllArticles}" -->
+	<!-- 			phase="APPLY_REQUEST_VALUES" /> -->
+	<!-- 	</f:metadata> -->
 	<h:head>
 	</h:head>
 	<ui:composition template="/template.xhtml">
@@ -19,16 +19,24 @@
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
 					<h:panelGroup id="print_grd">
-						<p:commandButton value="برأة ذمة" ajax="false" disabled="#{!inventoryMasterBean.inventoryIsBlocked}"
+						<p:commandButton value="برأة ذمة" ajax="false"
+							disabled="#{!inventoryMasterBean.inventoryIsBlocked}"
 							onclick="this.form.target='_blank'" styleClass="purple-btn"
 							icon="ui-icon ui-icon-print"
 							action="#{inventoryMasterBean.printInventoryReportAction}">
 						</p:commandButton>
 						<p:spacer width="10" height="10"></p:spacer>
-						<p:commandButton value="إستمار الجرد" ajax="false" disabled="#{!inventoryMasterBean.inventoryIsBlocked}"
+						<p:commandButton value="إستمار الجرد" ajax="false"
+							disabled="#{!inventoryMasterBean.inventoryIsBlocked}"
 							onclick="this.form.target='_blank'" styleClass="purple-btn"
 							icon="ui-icon ui-icon-print"
 							action="#{inventoryMasterBean.printFormInventoryReportAction}">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="الرصيد القيدي" ajax="false"
+							onclick="this.form.target='_blank'" styleClass="purple-btn"
+							icon="ui-icon ui-icon-print"
+							action="#{inventoryMasterBean.printInventoryQtyCalculated}">
 						</p:commandButton>
 					</h:panelGroup>
 				</div>
@@ -44,15 +52,14 @@
 						</div>
 						<div class="ui-md-2">
 							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								required="true" requiredMessage="من فضلك اختر المستودع"
 								value="#{inventoryMasterBean.strNo}"
 								style="direction: rtl;height: 39px;">
 								<f:selectItem itemValue="-1" itemLabel="إختر المستودع"></f:selectItem>
 								<f:selectItems value="#{inventoryMasterBean.allWareHouses}"
 									var="c" itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
-								<!-- 								<p:ajax process="@this" update="InvLst" -->
-								<!-- 									listener="#{inventoryMasterBean.loadAllArticles}" /> -->
 								<p:ajax process="@this" update="InvLst,inventory"
-									listener="#{inventoryMasterBean.loadInventories}" />
+									listener="#{inventoryMasterBean.loadInventories()}" />
 							</p:selectOneMenu>
 						</div>
 
@@ -61,6 +68,7 @@
 						</div>
 						<div class="ui-md-2">
 							<p:selectOneMenu styleClass="form-control" id="inventory"
+								required="true" requiredMessage="من فضلك اختر الجرد"
 								value="#{inventoryMasterBean.inventoryId}"
 								style="direction: rtl;height: 39px;">
 								<f:selectItem itemValue="-1" itemLabel="إختر الجرد"></f:selectItem>
@@ -70,6 +78,23 @@
 								<p:ajax process="@this" update="InvLst print_grd"
 									listener="#{inventoryMasterBean.loadAllArticles}" />
 							</p:selectOneMenu>
+						</div>
+						<div class="ui-md-1">
+							<h:outputLabel value="التاريخ" />
+						</div>
+						<div class="ui-md-2">
+							<p:inputText id="hiri1"
+								value="#{inventoryMasterBean.inventoryDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+							</p:inputText>
+						</div>
+						<div class="ui-md-1">
+							<p:commandButton value="#{msg['refreshMail']}"
+								icon="fa fa-refresh" styleClass="cyan-btn">
+								<f:ajax execute="hiri1" render="InvLst print_grd"
+									listener="#{inventoryMasterBean.reloadArticles}" />
+							</p:commandButton>
 						</div>
 					</div>
 					<br></br> <br></br>
@@ -83,16 +108,20 @@
 							listener="#{inventoryMasterBean.onRowEdit}" />
 						<p:ajax event="rowEditCancel"
 							listener="#{inventoryMasterBean.onRowCancel}" />
-						<p:column headerText="#{msg['article.name']}"
-							filterBy="#{inventoryItem.articleName}"
-							filterMatchMode="contains" style="width:50%">
-							<h:outputText value="#{inventoryItem.articleName}" />
-						</p:column>
-						<p:column headerText="الرمز" style="width:10%" filterBy="#{inventoryItem.articleCode}"
+						<p:column headerText="الرمز" style="width:10%"
+							filterBy="#{inventoryItem.articleCode}"
 							filterMatchMode="contains">
 							<h:outputText value="#{inventoryItem.articleCode}" />
 						</p:column>
-						<p:column headerText="اخر جرد" style="width:10%">
+						<p:column headerText="#{msg['article.name']}"
+							filterBy="#{inventoryItem.articleName}"
+							filterMatchMode="contains" style="width:40%">
+							<h:outputText value="#{inventoryItem.articleName}" />
+						</p:column>
+						<p:column headerText="الوحدة" style="width:10%">
+							<h:outputText value="#{inventoryItem.artUnitName}" />
+						</p:column>
+						<p:column headerText="جرد" style="width:10%">
 							<h:outputText value="#{inventoryItem.lastGardQty}" />
 						</p:column>
 						<p:column headerText="الرصيد القيدي" style="width:10%">
@@ -104,15 +133,14 @@
 									<h:outputText value="#{inventoryItem.stock}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{inventoryItem.stock}"
-										style="width:100%" label="code" />
+									<p:inputText value="#{inventoryItem.stock}" style="width:100%"
+										label="code" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<secc:authorize ifAnyGranted="ROLE_STORE">
-							<p:column headerText="تغيير الكمية">
-								<p:rowEditor
-									rendered="#{!inventoryMasterBean.inventoryIsBlocked}" />
+							<p:column headerText="تغيير الكمية" visible="#{!inventoryMasterBean.inventoryIsBlocked}">
+								<p:rowEditor />
 							</p:column>
 						</secc:authorize>
 					</p:dataTable>

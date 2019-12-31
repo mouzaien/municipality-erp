@@ -10,6 +10,7 @@ import com.bkeryah.entities.FinFinancialYear;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StockInDetails;
 import com.bkeryah.entities.StockInOutType;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.WhsMoveType;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.model.MemoReceiptModel;
@@ -59,5 +60,8 @@ public interface IStockServiceDao {
 	public MemoReceiptModel getMemoReceiptDetails(Integer memo_receipt_id);
 
 	public List<WhsWarehouses> getStoreDeanWharehouses(Integer userId);
+
+	// تجيب مستودعات الرجيع فقط
+	public List<WhsWarehouses> getStoreDeanWharehouses();
 
 }

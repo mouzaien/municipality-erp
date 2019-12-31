@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -18,18 +19,22 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.event.RowEditEvent;
+
 import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.ArticleStatus;
-import com.bkeryah.entities.ExchangeRequest;
 import com.bkeryah.entities.FinEntity;
 import com.bkeryah.entities.FinFinancialYear;
 import com.bkeryah.entities.HrScenario;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StockInDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkPurpose;
+import com.bkeryah.hr.entities.HrsVacSold;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.StockEntryModel;
@@ -97,10 +102,17 @@ public class StockEntryBean {
 	private StockEntryMaster memoReceipt = new StockEntryMaster();
 
 	private boolean blockSupplier;
+	private boolean checkReceipt;
+	private Integer stockNoticeNo;
+	private Integer tempMstrid;
+	private StoreTemporeryReceiptMaster tempMstr = new StoreTemporeryReceiptMaster();
+	private List<StoreTemporeryReceiptMaster> tempMstrList = new ArrayList<StoreTemporeryReceiptMaster>();
+	private List<StoreTemporeryReceiptDetails> rcptStockInDetailList = new ArrayList<StoreTemporeryReceiptDetails>();
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
+		tempMstrList = dataAccessService.getAllStrTempRcptMstr();
 		// forPageView
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -220,6 +232,7 @@ public class StockEntryBean {
 			MsgEntry.addErrorMessage("من فضلك اختر المستودع والمورد");
 			return;
 		}
+		
 		try {
 			stockInDetails.setArticleId(itemId);
 			article = (Article) dataAccessService.findEntityById(Article.class, itemId);
@@ -244,12 +257,55 @@ public class StockEntryBean {
 
 	}
 
+	public void updatestockNoticeNo() {
+		if (isCheckReceipt()) {
+			stockNoticeNo = null;
+		}
+	}
+
+	public void onRowEdit(RowEditEvent event) {
+		HrsVacSold selectedItem = (HrsVacSold) event.getObject();
+		dataAccessService.updateObject(selectedItem);
+		FacesMessage msg = new FacesMessage("تم تغير أجازة الموظف رقم   ", selectedItem.getEmployeeNumber().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		HrsVacSold selectedItem = (HrsVacSold) event.getObject();
+		FacesMessage msg = new FacesMessage(" تم إلغاء التعديل ", selectedItem.getEmployeeNumber().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void loadReceiptDetailsList(AjaxBehaviorEvent e) {
+		tempMstr = (StoreTemporeryReceiptMaster) dataAccessService.getStrTemrReceiptMstrById(tempMstrid);
+		rcptStockInDetailList = dataAccessService.getStoreTemporeryReceiptDetailsById(tempMstrid);
+		StockInDetailList = new ArrayList<StockInDetails>();
+		int i = 0;
+		for (StoreTemporeryReceiptDetails item : rcptStockInDetailList) {
+			stockInDetails = new StockInDetails();
+			stockInDetails.setArticleId(item.getArticleId());
+			stockInDetails.setArticleName(dataAccessService.getArticleById(item.getArticleId()).getName());
+			stockInDetails.setArticleStatus(item.getArticleStatus());
+			stockInDetails.setQty(item.getQty());
+			stockInDetails.setQty(item.getQty());
+			stockInDetails.setNotes(item.getNotes());
+			stockInDetails.setUniteName(dataAccessService.getArticleById(item.getArticleId()).getItemUnite().getName());
+			StockInDetailList.add(i, stockInDetails);
+
+		}
+	}
+
 	private void changeTotalPrice() {
 		Float total = 0f;
 		articlesTotalPrice = 0f;
 		for (int i = 0; i < StockInDetailList.size(); i++) {
+			if (StockInDetailList.get(i).getPrice() != null) {
+				StockInDetailList.get(i)
+						.setTotal(StockInDetailList.get(i).getPrice() * StockInDetailList.get(i).getQty());
+			}
 			total = StockInDetailList.get(i).getTotal();
 			articlesTotalPrice += total;
+
 		}
 	}
 
@@ -401,6 +457,11 @@ public class StockEntryBean {
 				stockEntryMaster.setStockFinYearid(currentFinYear);
 				stockEntryMaster.setStockNo(selectedWareHouse);
 				stockEntryMaster.setStockDocutypeNo(3);
+			if (stockNoticeNo != null) {
+				stockEntryMaster.setStockNoticeNo(stockNoticeNo);
+			} else {
+				stockEntryMaster.setStockNoticeNo(tempMstr.getSpecialNumber());
+			}
 				stockEntryMaster.setStockSupplierId(supplier.getFinEntityId());
 				stockEntryMaster.setUserId(currentUser.getUserId());
 				stockEntryMaster.setStockFinEntryGdate(df.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(hdate)));
@@ -881,6 +942,54 @@ public class StockEntryBean {
 
 	public void setBlockSupplier(boolean blockSupplier) {
 		this.blockSupplier = blockSupplier;
+	}
+
+	public boolean isCheckReceipt() {
+		return checkReceipt;
+	}
+
+	public void setCheckReceipt(boolean checkReceipt) {
+		this.checkReceipt = checkReceipt;
+	}
+
+	public List<StoreTemporeryReceiptMaster> getTempMstrList() {
+		return tempMstrList;
+	}
+
+	public void setTempMstrList(List<StoreTemporeryReceiptMaster> tempMstrList) {
+		this.tempMstrList = tempMstrList;
+	}
+
+	public Integer getStockNoticeNo() {
+		return stockNoticeNo;
+	}
+
+	public void setStockNoticeNo(Integer stockNoticeNo) {
+		this.stockNoticeNo = stockNoticeNo;
+	}
+
+	public StoreTemporeryReceiptMaster getTempMstr() {
+		return tempMstr;
+	}
+
+	public void setTempMstr(StoreTemporeryReceiptMaster tempMstr) {
+		this.tempMstr = tempMstr;
+	}
+
+	public List<StoreTemporeryReceiptDetails> getRcptStockInDetailList() {
+		return rcptStockInDetailList;
+	}
+
+	public void setRcptStockInDetailList(List<StoreTemporeryReceiptDetails> rcptStockInDetailList) {
+		this.rcptStockInDetailList = rcptStockInDetailList;
+	}
+
+	public Integer getTempMstrid() {
+		return tempMstrid;
+	}
+
+	public void setTempMstrid(Integer tempMstrid) {
+		this.tempMstrid = tempMstrid;
 	}
 
 }

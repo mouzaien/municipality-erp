@@ -115,7 +115,9 @@
 										<p:menuitem id="projectExtract_Service" value="إنشاء مستخلص"
 											action="projectExtract"></p:menuitem>
 									</secc:authorize>
-									<p:menuitem id="menu8_Service" value="صرف مواد"
+									<p:menuitem id="menu9_return" value="طلب إرجاع"
+									icon="ui-icon ui-icon-redo" action="store_return"></p:menuitem>
+									<p:menuitem id="menu8_Service" value="صرف مواد" 
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
 
 								</p:submenu>
@@ -200,7 +202,10 @@
 											<p:menuitem id="su_articlesPage" value="إضافة او تعديل صنف"
 												action="articlesPage" icon="fa fa-fw fa-edit"></p:menuitem>
 										</p:submenu>
-										<p:menuitem id="st_sm_memo" value="مذكرة الإستلام"
+										<p:menuitem id="st_sm_temporary_receipt"
+											value="إشعار إستلام مؤقت" action="store_temporary_receipt"
+											icon="ui-icon ui-icon-content-paste" />
+										<p:menuitem id="st_sm_memo" value="مذكرة الإستلام" 
 											action="memoReceipt" icon="fa fa-fw fa-file" />
 									</secc:authorize>
 									<secc:authorize

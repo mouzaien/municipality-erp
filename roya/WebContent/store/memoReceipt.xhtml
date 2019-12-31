@@ -71,13 +71,29 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<label class="btxt">رقم الإشعار</label>
-
+							<label class="btxt">رقم الإشعار </label> <br />
+							<p:selectBooleanCheckbox value="#{stockEntryBean.checkReceipt}">
+								<p:ajax update="noticeNo_grp" process="@this" />
+							</p:selectBooleanCheckbox>
+							<h:outputText value=" إشعار سابق "></h:outputText>
 						</div>
 						<div class="ui-g-2">
-							<p:inputText id="noticeNo" styleClass="form-control"
+							<h:panelGroup id="noticeNo_grp">
+								<p:inputText id="noticeNo" styleClass="form-control"
 								required="true" requiredMessage="من فضلك ادخل رقم الاشعار"
-								value="#{stockEntryBean.stockEntryMaster.stockNoticeNo}" />
+									rendered="#{!(stockEntryBean.checkReceipt)}"
+									value="#{stockEntryBean.stockNoticeNo}" />
+								<p:selectOneMenu id="noticeNo_menu"
+									rendered="#{stockEntryBean.checkReceipt}"
+									value="#{stockEntryBean.tempMstrid}">
+									<f:selectItem itemLabel="إختر رقم إشعار" itemValue=""></f:selectItem>
+									<f:selectItems var="S" value="#{stockEntryBean.tempMstrList}"
+										itemLabel="#{S.specialNumber}" itemValue="#{S.id}">
+									</f:selectItems>
+									<p:ajax update="art_table"
+										listener="#{stockEntryBean.loadReceiptDetailsList}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
 						</div>
 						<div class="ui-g-2">
 							<label class="btxt">تاريخ الإشعار</label>
@@ -200,10 +216,10 @@
 					<h:panelGroup id="table">
 
 						<p:dataTable value="#{stockEntryBean.stockInDetailList}"
-							emptyMessage="لايوجد بيانات" var="storeItem"
-							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							id="art_table" emptyMessage="لايوجد بيانات" var="storeItem"
+							rowIndexVar="rowIndex" paginatorPosition="bottom" editable="true"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-							filteredValue="#{jobsBean.filteredJobs}" paginator="true">
+							paginator="true">
 							<f:facet name="header">
 								<p:outputPanel>
 									<h:outputText value="ابحث فى كل الحقول:" />
@@ -212,7 +228,8 @@
 									</p:inputText>
 								</p:outputPanel>
 							</f:facet>
-
+							<p:ajax event="rowEdit" update="total_price" />
+							<p:ajax event="rowEditCancel" update="total_price" />
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="رقم" width="5%">										
 										#{rowIndex+1} 									
@@ -234,18 +251,32 @@
 										#{storeItem.uniteName} 									
 									</p:column>
 							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="سعر الوحدة" width="10%">										
-										#{storeItem.price} 									
-									</p:column>
+								headerText="سعر الوحدة" width="10%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{storeItem.price}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{storeItem.price}" style="width:100%">
+											<p:ajax update="art_table" />
+										</p:inputText>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
 
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="المواصفات" width="10%">										
 										#{storeItem.notes} 									
 									</p:column>
-							<p:column style="white-space: nowrap;text-align: center;"
+							<p:column id="total_price"
+								style="white-space: nowrap;text-align: center;"
 								headerText="القيمة الكلية" width="10%">										
 										#{storeItem.total} 									
 									</p:column>
+							<p:column headerText="تعديل" style="text-align: center;"
+								width="5%">
+								<p:rowEditor />
+							</p:column>
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="حذف" width="10%">
 								<div class="image-box-footer">
@@ -258,6 +289,7 @@
 									<!-- 									</h:form> -->
 								</div>
 							</p:column>
+
 							<p:columnGroup type="footer">
 								<p:row>
 									<p:column colspan="7" style="text-align:left;font-size:25px "

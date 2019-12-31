@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.primefaces.model.UploadedFile;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bkeryah.bean.ArcApplicationTypeClass;
 import com.bkeryah.bean.ArcAttachmentClass;
@@ -58,6 +57,7 @@ import com.bkeryah.entities.Charging;
 import com.bkeryah.entities.DepartmentArcRecords;
 import com.bkeryah.entities.DeptArcRecords;
 import com.bkeryah.entities.DocumentScenario;
+import com.bkeryah.entities.DocumentType;
 import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
 import com.bkeryah.entities.ExchangeRequest;
@@ -79,6 +79,7 @@ import com.bkeryah.entities.HrsMasterFile;
 import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsSalaryScaleDgrs;
 import com.bkeryah.entities.HrsScenarioDocument;
+import com.bkeryah.entities.HrsSigns;
 import com.bkeryah.entities.HrsTrainingMandate;
 import com.bkeryah.entities.HrsTrainingPlace;
 import com.bkeryah.entities.HrsUserAbsent;
@@ -99,7 +100,11 @@ import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.ProjectExtract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.ReturnStore;
+import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.StockEntryMaster;
+import com.bkeryah.entities.StoreTemporeryReceiptDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysBirthCountry;
 import com.bkeryah.entities.SysCategoryEmployer;
@@ -1043,7 +1048,7 @@ public interface IDataAccessService {
 
 	public List<TechnicalUsers> loadNewTechnicalUsers();
 
-	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId);
+	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId, String inventoryDate);
 
 	public List<InventoryRecord> getInventoryrecordByarticleId(int articleId, Integer inventoryId);
 
@@ -1141,7 +1146,8 @@ public interface IDataAccessService {
 
 	List<StoreRequestModel> getTransactionsQty(int articleId, int srtNo);
 
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo);
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,
+			Integer artType, Integer employerId);
 
 	public int nationalIsFound(Long nationalNumber, Integer integer);
 
@@ -1783,5 +1789,44 @@ public interface IDataAccessService {
 	public List<StockEntryMaster> searchMemoReceipts(String beginDate, String finishDate, Integer strNo);
 
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
+
 	public List<Article> getAllArticles();
+	Integer addRturnedStoreItems(ReturnStore exchangeRequest, Integer createdForId,
+			List<ReturnStoreDetails> returnStoreDetailsList);
+
+	Integer addNewRturnedStoreItemsDetailsRecors(ReturnStoreDetails returnStoreDetailsList);
+
+	public ReturnStore getReturnStoreByArchRecordId(Integer archRecordId);
+
+	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id);
+
+	void acceptReturnStore(ReturnStore returnStore, Integer recordId, int modelType, String usercomment,
+			Integer purpose);
+
+	public List<Article> getArticlesByUserId(Integer userId);
+
+	Integer addRturnedStoreMaster(ReturnStore returnStoreMastert);
+
+	WrkApplication getWrkAppliquationByArcId(Integer arcRecordId);
+
+	HrsSigns getHrsSignsByArcId(Integer arcRecordId);
+
+	public StoreTemporeryReceiptMaster getStoreTemporeryReceiptMasterByArchRecordId(Integer archRecordId);
+
+	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id);
+
+	Integer addStoreTemporeryReceiptItems(StoreTemporeryReceiptMaster storeTemporeryReceiptMaster, Integer createdForId,
+			List<StoreTemporeryReceiptDetails> temporeryReceiptDetailsList);
+
+	public Integer addNewStoreTemporeryReceiptDetailsRecors(StoreTemporeryReceiptDetails returnStoreDetailsList);
+
+	void acceptStoreTemporeryReceipt(StoreTemporeryReceiptMaster storeTemporeryReceiptMaster, Integer recordId,
+			int modelType, String usercomment, Integer purpose);
+
+	public List<DocumentType> getAllDocumentType();
+
+	public List<StoreTemporeryReceiptMaster> getAllStrTempRcptMstr();
+
+	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id);
+
 }

@@ -4,15 +4,24 @@
 	<property name="ireport.zoom" value="0.8689931392100638"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="roya_Project.xml"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="exchange_req_no" class="java.lang.Integer"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["F:/projects/methnab/roya/WebContent/reports/sub_exchange_report2.jrxml"]]></defaultValueExpression>
-	</parameter>
 	<queryString>
-		<![CDATA[SELECT  GEN.SERIALNUMBER,(
+		<![CDATA[SELECT REQ_NAME_BOSS,REQ_SIGN_BOSS, SERIALNUMBER,REQ_sign_DATE_BOSS,STORE_MGR, STORE_MGR_SIGN, STORE_MGR_SIGN_DATE, 
+		STORE_DEAN_NAME, STORE_DEAN_SIGN,
+STORE_DEAN_SIGN_DATE,STORE_NAME,RECIEVER_SEC_NAME, RECIEVER_NAME, RECIEVER_sign_DATE,PRIV_OWNER_NAME,PRIV_OWNER_sign,PRIV_OWNER_sign_DATE,
+ a.INV_G_R_NO,num, a.code, a.name, a.ITEMUNITNAME, a.init_count, a.count, a.notes, a.SERIALNUMBER
+from
+
+(SELECT m.REQ_NAME_BOSS,m.REQ_SIGN_BOSS, m.SERIALNUMBER,m.REQ_sign_DATE_BOSS,m.STORE_MGR, m.STORE_MGR_SIGN, m.STORE_MGR_SIGN_DATE, m.STORE_DEAN_NAME, m.STORE_DEAN_SIGN,
+m.STORE_DEAN_SIGN_DATE,m.STORE_NAME,m.RECIEVER_SEC_NAME, m.RECIEVER_NAME, m.RECIEVER_sign_DATE,m.PRIV_OWNER_NAME,m.PRIV_OWNER_sign,m.PRIV_OWNER_sign_DATE,
+m.INV_G_R_NO,num, det.code, det.name, det.ITEMUNITNAME, det.init_count, det.count, det.notes
+from
+(
+SELECT gen.INV_G_R_NO,  GEN.SERIALNUMBER,(
 select us.empname   FROM hrs_signs, arc_users us
 where hrs_signs.sign_user_id = us.user_id and doc_id=$P{exchange_req_no} and   sign_step_id = 2 
 )REQ_NAME_BOSS,
@@ -85,8 +94,44 @@ where doc_id=$P{exchange_req_no} and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.U
  FROM TDR_INV_GNRL_REQ gen
 
 
-where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
+where GEN.INV_G_R_NO=$P{exchange_req_no}
+
+)M,
+(
+	select a.INV_G_R_NO,num, a.code, a.name, a.ITEMUNITNAME, a.init_count, a.count, a.notes, a.SERIALNUMBER
+	from
+	(
+		SELECT GEN.INV_G_R_NO,rownum num ,ar.code code, ar.name name, un.ITEMUNITNAME ITEMUNITNAME, det.init_count, det.count, det.notes notes, GEN.SERIALNUMBER SERIALNUMBER
+
+
+		FROM  ARTICLE ar, TDR_ITEMUNIT un, TDR_INV_REQ_DET det, TDR_INV_GNRL_REQ gen
+		where GEN.INV_G_R_NO=DET.INV_G_R_NO and DET.ITEMID=AR.ID and AR.ITEM_UNITE_ID=UN.ITEMUNITID and GEN.INV_G_R_NO=$P{exchange_req_no}
+
+	)A,
+
+	(
+		SELECT  level lev
+		FROM    dual
+		CONNECT BY
+        		level <= 11
+        		)B
+
+        where b.lev = a.num (+)
+
+        order by b.lev
+	)det
+WHERE 
+m.INV_G_R_NO = det.INV_G_R_NO
+
+)a]]>
 	</queryString>
+	<field name="NUM" class="java.math.BigDecimal"/>
+	<field name="CODE" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="ITEMUNITNAME" class="java.lang.String"/>
+	<field name="INIT_COUNT" class="java.math.BigDecimal"/>
+	<field name="COUNT" class="java.math.BigDecimal"/>
+	<field name="NOTES" class="java.lang.String"/>
 	<field name="SERIALNUMBER" class="java.math.BigDecimal"/>
 	<field name="REQ_NAME_BOSS" class="java.lang.String"/>
 	<field name="REQ_SIGN_BOSS" class="java.io.InputStream"/>
@@ -98,7 +143,6 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 	<field name="STORE_DEAN_SIGN" class="java.io.InputStream"/>
 	<field name="STORE_DEAN_SIGN_DATE" class="java.lang.String"/>
 	<field name="RECIEVER_NAME" class="java.lang.String"/>
-	<field name="RECIEVER_SIGN" class="java.io.InputStream"/>
 	<field name="RECIEVER_SEC_NAME" class="java.lang.String"/>
 	<field name="RECIEVER_SIGN_DATE" class="java.lang.String"/>
 	<field name="PRIV_OWNER_NAME" class="java.lang.String"/>
@@ -109,11 +153,11 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="183" splitType="Stretch">
+		<band height="185" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 			<property name="com.jaspersoft.studio.layout"/>
 			<staticText>
-				<reportElement x="664" y="54" width="128" height="18" uuid="157a02b9-dd09-41f4-9863-6e6edf1962ee">
+				<reportElement x="664" y="57" width="128" height="18" uuid="157a02b9-dd09-41f4-9863-6e6edf1962ee">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
 				<textElement>
@@ -122,7 +166,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				<text><![CDATA[الشئون البلدية و القروية]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="654" y="71" width="128" height="18" uuid="8734f0d1-629e-4945-8b25-88d9eb638168">
+				<reportElement x="654" y="74" width="128" height="18" uuid="8734f0d1-629e-4945-8b25-88d9eb638168">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
 				<textElement>
@@ -130,8 +174,8 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				</textElement>
 				<text><![CDATA[بلدية محافظة المذنب]]></text>
 			</staticText>
-			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="590" y="87" width="140" height="15" isRemoveLineWhenBlank="true" uuid="55eb9e1c-8222-4073-97e4-bf76e91963b3"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="590" y="90" width="140" height="15" isRemoveLineWhenBlank="true" uuid="55eb9e1c-8222-4073-97e4-bf76e91963b3"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -143,8 +187,8 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{RECIEVER_SEC_NAME}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="607" y="103" width="140" height="15" uuid="78b5c0d0-3542-4d8f-97c8-2ab15d98f78b"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="607" y="106" width="140" height="15" uuid="78b5c0d0-3542-4d8f-97c8-2ab15d98f78b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -165,18 +209,191 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
-			<subreport>
-				<reportElement positionType="Float" x="0" y="0" width="863" height="22" isPrintInFirstWholeBand="true" uuid="246c5a19-eb39-4b66-8a2e-2c31e2b75edd"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="exchange_req_no">
-					<subreportParameterExpression><![CDATA[$P{exchange_req_no}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
-			</subreport>
+		<band height="22" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="771" y="0" width="5" height="22" uuid="3044fcf3-3d14-4f52-8c9f-5f535e2f3b6b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="87" height="22" uuid="b61d9911-809b-41db-a9fc-77f77ee96145">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="601" y="0" width="148" height="22" uuid="7bb25d04-9add-42ca-8bb8-0e15e8805af4">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODE}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="381" y="0" width="224" height="22" uuid="f3d314ee-9210-44c6-928d-fe6a84214c84"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAME}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="426" y="0" width="28" height="22" uuid="335baa7c-2751-4266-9375-98bf11cf8091">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="398" y="0" width="28" height="22" uuid="d362da30-70ea-4319-9e16-e7b823f270cc"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="275" y="0" width="62" height="22" uuid="b110f132-4a33-43d8-9f3e-18dd2cd481fe">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ITEMUNITNAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="227" y="0" width="62" height="22" uuid="758a6ad0-54cc-4718-b250-22f3de9a7229"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{COUNT} == null)?"":(""+$F{COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="247" y="0" width="14" height="22" uuid="81ae48db-2258-4922-a917-0d49be9a1659"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="202" y="0" width="42" height="22" uuid="291379ef-a62f-42a3-987f-8cf65a69a367">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="176" y="0" width="62" height="22" uuid="f6fd1af9-164e-4ce6-8118-1b8e78a3d2e4">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{INIT_COUNT} == null)?"":(""+$F{INIT_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="185" y="0" width="14" height="22" uuid="79ccfd0c-0669-4bfc-9e23-bf72e4bc7a6c"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="99" y="0" width="42" height="22" uuid="3f20cca0-42e2-464b-a3e1-4a83d089f56a">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -186,9 +403,8 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 		<band height="158" splitType="Stretch">
 			<image scaleImage="FillFrame">
 				<reportElement positionType="FixRelativeToBottom" x="0" y="58" width="108" height="20" uuid="546b0710-c096-4773-a455-b8c8b288a403"/>
-				<imageExpression><![CDATA[$F{RECIEVER_SIGN}]]></imageExpression>
 			</image>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="-43" y="78" width="190" height="15" uuid="6d3248a1-dc41-4d0d-ade6-2bd033b04f32"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -197,11 +413,11 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{RECIEVER_SIGN_DATE}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="-43" y="43" width="190" height="15" uuid="6fc46d8e-23ce-41dc-bcfb-182d93cbbc9d"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -210,7 +426,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{RECIEVER_NAME}]]></textFieldExpression>
 			</textField>
@@ -218,7 +434,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				<reportElement positionType="FixRelativeToBottom" x="186" y="58" width="190" height="20" uuid="540b13b9-a7c2-4e8e-9f79-97d4f4f130b6"/>
 				<imageExpression><![CDATA[$F{STORE_DEAN_SIGN}]]></imageExpression>
 			</image>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="188" y="43" width="190" height="15" uuid="0e637288-862e-4b35-91e3-169bd85e821b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -227,11 +443,11 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STORE_DEAN_NAME}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="188" y="78" width="190" height="15" uuid="5e11d5f3-6412-4adc-b6d5-5050e1c87bb3"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -240,7 +456,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STORE_DEAN_SIGN_DATE}]]></textFieldExpression>
 			</textField>
@@ -248,7 +464,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				<reportElement positionType="FixRelativeToBottom" x="423" y="43" width="103" height="50" uuid="b73cfba9-cebb-4ae8-9198-4687dc8f070a"/>
 				<imageExpression><![CDATA[$F{STORE_MGR_SIGN}]]></imageExpression>
 			</image>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="378" y="43" width="190" height="15" uuid="c1db0b94-21a7-4f74-95e2-88be48957896"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -257,11 +473,11 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STORE_MGR}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="378" y="78" width="190" height="15" uuid="d599c8f5-c805-4262-9684-e388d79ecf4b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -270,14 +486,14 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{STORE_MGR_SIGN_DATE}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement positionType="FixRelativeToBottom" x="566" y="58" width="190" height="20" uuid="c8e9956f-bdbc-4263-a94a-bb5a33603b13"/>
 			</image>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="568" y="43" width="190" height="15" uuid="11458c70-de13-4f98-81d0-bc5ab1a5252e"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -286,12 +502,12 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{REQ_NAME_BOSS}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="563" y="78" width="190" height="15" uuid="9bd534a8-f218-47a6-9484-09cb64412a4c"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="568" y="78" width="190" height="15" uuid="9bd534a8-f218-47a6-9484-09cb64412a4c"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -299,7 +515,7 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{REQ_SIGN_DATE_BOSS}]]></textFieldExpression>
 			</textField>
@@ -307,8 +523,8 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 				<reportElement positionType="FixRelativeToBottom" x="9" y="106" width="138" height="35" uuid="2043f3cc-f472-40ab-ab69-6f88a9327057"/>
 				<imageExpression><![CDATA[$F{PRIV_OWNER_SIGN}]]></imageExpression>
 			</image>
-			<textField isBlankWhenNull="false">
-				<reportElement positionType="FixRelativeToBottom" x="-42" y="99" width="173" height="15" uuid="3ffef89b-63d7-4962-8b03-f3fb5a54328e"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="-42" y="113" width="173" height="15" uuid="3ffef89b-63d7-4962-8b03-f3fb5a54328e"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -316,9 +532,22 @@ where GEN.INV_G_R_NO=$P{exchange_req_no}]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PRIV_OWNER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="-41" y="140" width="173" height="15" uuid="426b6376-58fe-4b85-b098-d432631100c3"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRIV_OWNER_SIGN_DATE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

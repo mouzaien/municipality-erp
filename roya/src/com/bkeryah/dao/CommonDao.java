@@ -125,6 +125,9 @@ import com.bkeryah.entities.PayMaster;
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.ReturnStoreDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -4331,7 +4334,50 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	}
 
 	@Override
+	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id) {
+		List<ReturnStoreDetails> returnStoreDetails = new ArrayList<ReturnStoreDetails>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReturnStoreDetails.class);
+		criteria.add(Restrictions.eq("returnStoreId", id));
+		returnStoreDetails = criteria.list();
+		return returnStoreDetails;
+	}
+
+	@Override
+	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id) {
+		List<StoreTemporeryReceiptDetails> storeTemporeryReceiptDetails = new ArrayList<StoreTemporeryReceiptDetails>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptDetails.class);
+		criteria.add(Restrictions.eq("temporaryReceiptMasterId", id));
+		storeTemporeryReceiptDetails = criteria.list();
+		return storeTemporeryReceiptDetails;
+	}
+
+	@Override
+	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id) {
+		StoreTemporeryReceiptMaster master = new StoreTemporeryReceiptMaster();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
+		criteria.add(Restrictions.eq("id", id));
+		master = (StoreTemporeryReceiptMaster) criteria.uniqueResult();
+		return master;
+	}
+
+	@Override
 	public List<Article> getAllArticles() {
 		return loadAll(Article.class);
+	}
+
+	@Override
+	public WrkApplication getWrkAppliquationByArcId(int arcRecordId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkApplication.class);
+		criteria.add(Restrictions.eq("arcRecordId", arcRecordId));
+		criteria.add(Restrictions.eq("id.stepId", 1));
+		return (WrkApplication) criteria.uniqueResult();
+	}
+
+	@Override
+	public HrsSigns getHrsSignsByArcId(int arcRecordId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsSigns.class);
+		criteria.add(Restrictions.eq("arcRecordId", arcRecordId));
+		criteria.add(Restrictions.eq("stepId", 1));
+		return (HrsSigns) criteria.uniqueResult();
 	}
 }

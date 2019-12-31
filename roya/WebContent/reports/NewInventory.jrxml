@@ -18,6 +18,7 @@
 	<parameter name="STRNO" class="java.lang.Integer">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
+	<parameter name="inventoryDate" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER,
 		 0 GARD_ADD, 0 GARD_MINUS, a.NOTES, a.GARD_START_DATE,a.GARD_END_DATE,a.SPECIAL_NO,a.STRNAME
@@ -35,7 +36,9 @@ WHS_WAREHOUSES house
 
 WHERE  master.GARDID= $P{gardId} AND det.gardId= master.gardId  and DET.TENDERITEMID=IT.id and IT.ITEM_UNITE_ID=UN.ITEMUNITID AND it.STRNO=house.STRNO
 AND it.strno =$P{STRNO}
-)A]]>
+)A
+where
+a.GARD_ACTUAL >0]]>
 	</queryString>
 	<field name="NUM" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="NUM"/>
@@ -446,7 +449,7 @@ AND it.strno =$P{STRNO}
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{qty_calculated}== null?"__":(""+$F{qty_calculated}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{GARD_ACTUAL}== null?"__":(""+$F{GARD_ACTUAL}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -461,7 +464,7 @@ AND it.strno =$P{STRNO}
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{qty_calculated}== null?"__":(""+$F{qty_calculated}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{GARD_ACTUAL}== null?"__":(""+$F{GARD_ACTUAL}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>

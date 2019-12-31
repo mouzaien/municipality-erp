@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -4914,8 +4916,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId) {
-		return dataAccessDAO.ListInventories(strNo, inventoryId);
+	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId, String inventoryDate) {
+		return dataAccessDAO.ListInventories(strNo, inventoryId, inventoryDate);
 	}
 
 	@Override
@@ -5521,8 +5523,9 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo) {
-		return dataAccessDAO.searchExchangeRequests(beginDate, finishDate, strNo);
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,
+			Integer artType, Integer employerId) {
+		return dataAccessDAO.searchExchangeRequests(beginDate, finishDate, strNo, artType, employerId);
 	}
 
 	@Override
@@ -8612,8 +8615,232 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getInventoriesByStrNo(strNo);
 	}
 	@Override
-	public List<Article> getAllArticles() {
+	@Transactional
+	public Integer addRturnedStoreItems(ReturnStore returnStoreMaster,Integer createdForId,
+			List<ReturnStoreDetails> returnStoreDetailsList) {
+		Integer returnId = addRturnedStoreMaster(returnStoreMaster);
+		for (ReturnStoreDetails item : returnStoreDetailsList) {
+			item.setReturnStoreId(returnId);
+			saveObject(item);
+		}
+		ArcUsers sender= loadUserById(createdForId);
+		Integer toId = sender.getMgrId();
+		Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
+
+		ArcRecords arcRecord = new ArcRecords();
+		arcRecord.setApplicationType(MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue());
+		String empName = sender.getEmployeeName();
+		String subject = Utils.loadMessagesFromFile("subject.return");
+		arcRecord.setRecTitle(empName == null ? subject + empName : subject + sender.getFirstName());
+		int recordId = createNewArcRecord(arcRecord, false, toId);
+
+		WrkApplication application = new WrkApplication();
+		application.setToUserId(toId);
+
+		application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+		application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+
+		String items = "";
+		for (ReturnStoreDetails detail : returnStoreDetailsList) {
+			items = items + " " + detail.getArticleName() + " " + Utils.loadMessagesFromFile("count.exchange") + " "
+					+ detail.getQty() + "\n";
+		}
+		String userComment = Utils.loadMessagesFromFile("subject.return") + " " + empName + " "
+				+ Utils.loadMessagesFromFile("forms.exchange") + ": " + items;
+
+		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
+
+		saveHrsSigns(recordId, returnId, false, null, createdForId,
+				MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue());
+		return returnId;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.MANDATORY)
+	public Integer addNewRturnedStoreItemsDetailsRecors(ReturnStoreDetails returnStoreDetailsList) {
+		return save(returnStoreDetailsList);
+	}
+
+	@Override
+	@Transactional
+	public ReturnStore getReturnStoreByArchRecordId(Integer archRecordId) {
+		Integer DocId = commonDao.getDocIdHrsSignByRecId(archRecordId);
+		return (ReturnStore) commonDao.findEntityById(ReturnStore.class, DocId);
+	}
+
+	@Override
+	@Transactional
+	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id) {
 		// TODO Auto-generated method stub
+		return commonDao.getReturnStoreDetailsById(id);
+	}
+
+	@Override
+	@Transactional
+	public void acceptReturnStore(ReturnStore returnStore, Integer recordId, int modelType, String usercomment,
+			Integer purpose) {
+		WrkApplication app = getWrkApplicationRecordById(recordId);
+		WrkApplication application = new WrkApplication(app);
+		commonDao.updateWrkApplicationVisible(app.getId());
+		application.setId(app.getId());
+		application.setApplicationPurpose(purpose);
+		application.getId().setStepId(application.getId().getStepId() + 1);
+		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
+		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
+				returnStore.getWrhouseId());
+		application.setToUserId(userTo);
+		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
+
+		saveHrsSigns(application.getArcRecordId(), returnStore.getStoreId(), true, null,
+				Utils.findCurrentUser().getUserId(), modelType);
+		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
+		if (visible) {
+			commonDao.update(returnStore);
+			updateArcRecordsIncomeNo(app.getArcRecordId());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getArticlesByUserId(Integer userId) {
+		return dataAccessDAO.getArticlesByUserId(userId);
+	}
+
+	@Override
+	public List<Article> getAllArticles() {
 		return commonDao.getAllArticles();
+	}
+
+	@Override
+	public StoreTemporeryReceiptMaster getStoreTemporeryReceiptMasterByArchRecordId(Integer archRecordId) {
+		Integer DocId = commonDao.getDocIdHrsSignByRecId(archRecordId);
+		return (StoreTemporeryReceiptMaster) commonDao.findEntityById(StoreTemporeryReceiptMaster.class, DocId);
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id) {
+		// TODO Auto-generated method stub
+		return commonDao.getStoreTemporeryReceiptDetailsById(id);
+	}
+
+	@Override
+	@Transactional
+	public Integer addStoreTemporeryReceiptItems(StoreTemporeryReceiptMaster storeTemporeryReceiptMaster,
+			Integer createdForId, List<StoreTemporeryReceiptDetails> temporeryReceiptDetailsList) {
+		Integer storeTemporeryReceiptId = (Integer) saveObject(storeTemporeryReceiptMaster);
+
+		for (StoreTemporeryReceiptDetails rtrn : temporeryReceiptDetailsList) {
+			Integer rtrnId = addNewStoreTemporeryReceiptDetailsRecors(rtrn);
+
+		}
+		ArcUsers user = Utils.findCurrentUser();
+		Integer toId = user.getMgrId();
+		Integer applicationUserDeptJob = getUserDeptJob(user.getMgrId());
+
+		ArcRecords arcRecord = new ArcRecords();
+		arcRecord.setApplicationType(MailTypeEnum.TEMPORERY_RECEIPT.getValue());
+		String empName = user.getEmployeeName();
+		String subject = Utils.loadMessagesFromFile("subject.temp.receipt");
+		arcRecord.setRecTitle(empName == null ? subject + empName : subject + user.getFirstName());
+		int recordId = createNewArcRecord(arcRecord, false, toId);
+
+		WrkApplication application = new WrkApplication();
+		application.setToUserId(toId);
+		// application.setId(new WrkApplicationId(commonDao.createWrkId(),
+		// findStepId(recordId)));
+
+		application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+		application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+
+		String items = "";
+		for (StoreTemporeryReceiptDetails detail : temporeryReceiptDetailsList) {
+			items = items + " " + detail.getArticleName() + " " + Utils.loadMessagesFromFile("count.exchange") + " "
+					+ detail.getQty() + "\n";
+		}
+		String userComment = Utils.loadMessagesFromFile("subject.temp.receipt") + " " + empName + " "
+				+ Utils.loadMessagesFromFile("forms.exchange") + ": " + items;
+		// String userComment = "subject.exchange" + empName + "forms.exchange"
+		// + items;
+
+		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
+
+		saveHrsSigns(recordId, storeTemporeryReceiptId, false, null, Utils.findCurrentUser().getUserId(),
+				MailTypeEnum.TEMPORERY_RECEIPT.getValue());
+		return storeTemporeryReceiptId;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.MANDATORY)
+	public Integer addNewStoreTemporeryReceiptDetailsRecors(StoreTemporeryReceiptDetails temporeryReceiptDetailsList) {
+		return save(temporeryReceiptDetailsList);
+	}
+
+	@Override
+	@Transactional
+	public void acceptStoreTemporeryReceipt(StoreTemporeryReceiptMaster storeTemporeryReceiptMaster, Integer recordId,
+			int modelType, String usercomment, Integer purpose) {
+
+		WrkApplication app = getWrkApplicationRecordById(recordId);
+		WrkApplication application = new WrkApplication(app);
+		commonDao.updateWrkApplicationVisible(app.getId());
+		application.setId(app.getId());
+		application.setApplicationPurpose(purpose);
+		application.getId().setStepId(application.getId().getStepId() + 1);
+		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
+		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
+				storeTemporeryReceiptMaster.getStrNo());
+		application.setToUserId(userTo);
+		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
+
+		saveHrsSigns(application.getArcRecordId(), storeTemporeryReceiptMaster.getId(), true, null,
+				Utils.findCurrentUser().getUserId(), modelType);
+		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
+		if (visible) {
+			commonDao.update(storeTemporeryReceiptMaster);
+			updateArcRecordsIncomeNo(app.getArcRecordId());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public List<DocumentType> getAllDocumentType() {
+		List list = commonDao.findAll(DocumentType.class);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptMaster> getAllStrTempRcptMstr() {
+		List list = commonDao.findAll(StoreTemporeryReceiptMaster.class);
+		return list;
+
+	}
+
+	@Override
+	@Transactional
+	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id) {
+		return commonDao.getStrTemrReceiptMstrById(id);
+	}
+	@Override
+	@Transactional
+	public Integer addRturnedStoreMaster(ReturnStore returnStoreMastert) {
+		Integer returnId = (Integer) saveObject(returnStoreMastert);
+		return returnId;
+		
+	}
+
+	@Override
+	@Transactional
+	public WrkApplication getWrkAppliquationByArcId(Integer arcRecordId) {
+		return commonDao.getWrkAppliquationByArcId(arcRecordId);
+	}
+
+	@Override
+	@Transactional
+	public HrsSigns getHrsSignsByArcId(Integer arcRecordId) {
+		return commonDao.getHrsSignsByArcId(arcRecordId);
 	}
 }

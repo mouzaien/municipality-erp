@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -49,6 +50,9 @@ public class Article {
 
 	@Column(name = "art_type")
 	private Integer artType = 1;
+
+	@Transient
+	private String unitName;
 
 	public int getId() {
 		return id;
@@ -144,6 +148,14 @@ public class Article {
 
 	public void setArtType(Integer artType) {
 		this.artType = artType;
+	}
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
 
 }

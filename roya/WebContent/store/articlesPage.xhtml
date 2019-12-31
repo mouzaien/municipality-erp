@@ -4,7 +4,8 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
 <h:head>
 </h:head>
 <h:body>
@@ -71,8 +72,9 @@
 						</div>
 
 						<div class="ui-g-2">
-							<p:selectOneMenu class="form-control" id="groupId" filterMatchMode="contains" filter="true"
-								required="true" requiredMessage="اختر المجموعة الرئيسية"
+							<p:selectOneMenu class="form-control" id="groupId"
+								filterMatchMode="contains" filter="true" required="true"
+								requiredMessage="اختر المجموعة الرئيسية"
 								value="#{articlesBean.groupId}">
 								<!-- 								<f:ajax listener="#{articlesBean.updateSubGroups}" -->
 								<!-- 									execute="groupId" event="valueChange" render="sub"></f:ajax> -->
@@ -87,7 +89,8 @@
 							<h:outputLabel styleClass="btxt" value="الفرعى" />
 						</div>
 						<div class="ui-g-2">
-							<p:selectOneMenu id="sub" class="form-control" required="true" filterMatchMode="contains" filter="true"
+							<p:selectOneMenu id="sub" class="form-control" required="true"
+								filterMatchMode="contains" filter="true"
 								requiredMessage="اختر المجموعة الفرعية"
 								value="#{articlesBean.article.subGroupId}">
 								<f:selectItem itemLabel="اختر المجموعة الفرعية "></f:selectItem>
@@ -101,7 +104,8 @@
 						</div>
 
 						<div class="ui-g-2">
-							<p:selectOneMenu class="form-control" required="true" filterMatchMode="contains" filter="true"
+							<p:selectOneMenu class="form-control" required="true"
+								filterMatchMode="contains" filter="true"
 								requiredMessage="اختر الوحدة "
 								value="#{articlesBean.article.itemUniteId}" style="width:100%">
 
@@ -123,9 +127,10 @@
 
 								<f:selectItem itemLabel="اختر المستودع  "></f:selectItem>
 
-								<f:selectItems value="#{inventoryMasterBean.allWareHouses}" var="x"
-									itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
-									<p:ajax listener="#{articlesBean.reloadStrArticles}" update="table_Store"></p:ajax>
+								<f:selectItems value="#{inventoryMasterBean.allWareHouses}"
+									var="x" itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
+								<p:ajax listener="#{articlesBean.reloadStrArticles}"
+									update="table_Store"></p:ajax>
 							</p:selectOneMenu>
 
 						</div>
@@ -237,19 +242,24 @@
 						<p:column headerText="المستودع"
 							filterBy="#{item.whsWarehouses.storeName}"
 							filterMatchMode="contains" style="width: 15%">
-							<p:cellEditor>
-								<f:facet name="output">
-									<h:outputText value="#{item.whsWarehouses.storeName}" />
-								</f:facet>
-								<f:facet name="input">
-									<p:selectOneMenu class="form-control" required="true"
-										requiredMessage="اختر المستودع " style="width:100%"
-										value="#{item.strNo}">
-										<f:selectItems value="#{articlesBean.warehouses}" var="x"
-											itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
-									</p:selectOneMenu>
-								</f:facet>
-							</p:cellEditor>
+							<secc:authorize ifNotGranted="ROLE_STORE_BOSS">
+								<h:outputText value="#{item.whsWarehouses.storeName}" />
+							</secc:authorize>
+							<secc:authorize ifAnyGranted="ROLE_STORE_BOSS">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.whsWarehouses.storeName}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu class="form-control" required="true"
+											requiredMessage="اختر المستودع " style="width:100%"
+											value="#{item.strNo}">
+											<f:selectItems value="#{articlesBean.warehouses}" var="x"
+												itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</secc:authorize>
 						</p:column>
 						<p:column headerText="تعديل" style="width:5%">
 							<p:rowEditor style="color: green; text-align:center ;" />

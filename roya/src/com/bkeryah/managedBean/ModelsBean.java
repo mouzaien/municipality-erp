@@ -49,6 +49,10 @@ public class ModelsBean {
 			pageName = "../hr/charterPerformanceView.xhtml";
 		else if (type == 248)
 			pageName = "../hr/generalAppreciationView.xhtml";
+		else if (type == 250)
+			pageName = "../store/store_return_view.xhtml";
+		else if (type == 251)
+			pageName = "../store/store_temporary_receipt_view.xhtml";
 	}
 
 	public String getPageName() {

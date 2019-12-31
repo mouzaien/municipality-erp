@@ -378,6 +378,16 @@
 			<redirect></redirect>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>store_return</from-outcome>
+			<to-view-id>/store/store_return.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>store_temporary_receipt</from-outcome>
+			<to-view-id>/store/store_temporary_receipt.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>searchMemo</from-outcome>
 			<to-view-id>/store/searchMemo.xhtml</to-view-id>
 			<redirect></redirect>

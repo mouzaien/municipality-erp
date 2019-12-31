@@ -46,8 +46,8 @@ public class ChartView implements Serializable {
 	private Integer normalVacationCount;
 	private Integer authorizationMonthCount;
 	private String unreadMailsString;
-	private LineChartModel lineChart;
-	private BarChartModel barChart;
+	private LineChartModel lineChart =new LineChartModel();
+	private BarChartModel barChart =new BarChartModel();
 
 	/**
 	 * Load params to create dashboard data

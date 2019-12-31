@@ -4,11 +4,16 @@ import java.io.Serializable;
 
 public class InventoryModel implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int inventoryRecordId;
 	private int inventoryMasterId;
 	private int articleId;
 	private String articleName;
 	private String articleCode;
+	private String artUnitName;
 	private Integer qteActuel;
 	private Integer lastGardQty;
 	private Integer stock;
@@ -92,4 +97,11 @@ public class InventoryModel implements Serializable {
 		this.stock = stock;
 	}
 
+	public String getArtUnitName() {
+		return artUnitName;
+	}
+
+	public void setArtUnitName(String artUnitName) {
+		this.artUnitName = artUnitName;
+	}
 }

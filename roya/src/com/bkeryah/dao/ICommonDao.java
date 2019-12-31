@@ -46,6 +46,7 @@ import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsSalaryScaleDgrs;
 import com.bkeryah.entities.HrsSalaryScaleId;
 import com.bkeryah.entities.HrsScenarioDocument;
+import com.bkeryah.entities.HrsSigns;
 import com.bkeryah.entities.HrsTrainingMandate;
 import com.bkeryah.entities.HrsTrainingPlace;
 import com.bkeryah.entities.HrsUserAbsent;
@@ -64,6 +65,9 @@ import com.bkeryah.entities.PayMaster;
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.ReturnStoreDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptDetails;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SubMenu;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -997,5 +1001,13 @@ public interface ICommonDao {
 
 	// to load all invenroties in WHS_GARD_MASTER table( inventory entity)
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
+
+	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id);
+
+	WrkApplication getWrkAppliquationByArcId(int arcRecordId);
+	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id);
+
+	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id);
+	HrsSigns getHrsSignsByArcId(int arcRecordId);
 
 }

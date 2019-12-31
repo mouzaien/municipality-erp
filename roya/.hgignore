@@ -12,6 +12,7 @@ syntax: glob
 .settings/org.eclipse.wst.jsdt.ui.superType.name
 .settings/org.eclipse.wst.validation.prefs
 .class
+WebContent/WEB-INF/lib/jasperreports-metadata-6.6.0.jar
 syntax: glob
 *.class
 syntax: glob

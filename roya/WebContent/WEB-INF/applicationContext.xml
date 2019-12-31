@@ -8,6 +8,7 @@
 		        http://www.springframework.org/schema/context 
 		        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+
 	<context:component-scan base-package="com.bkeryah,common.Util" />
 	<!-- Beans Declaration -->
 	<bean id="springContext" class="com.bkeryah.licences.SpringContext" />
@@ -288,7 +289,11 @@
 				<value>com.bkeryah.entities.investment.ContractSubcategory</value>
 				<value>com.bkeryah.hr.entities.HrsVacSold</value>
 				<value>com.bkeryah.fng.entities.AutorizationSettings</value>
-
+				<value>com.bkeryah.entities.ReturnStoreDetails</value>
+				<value>com.bkeryah.entities.ReturnStore</value>
+				<value>com.bkeryah.entities.StoreTemporeryReceiptMaster</value>
+				<value>com.bkeryah.entities.StoreTemporeryReceiptDetails</value>
+				<value>com.bkeryah.entities.DocumentType</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

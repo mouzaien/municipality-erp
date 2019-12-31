@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<f:view>
+
+	<h:head>
+	</h:head>
+	<body>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer" align="left">
+				<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
+					onclick="this.form.target='_blank'" ajax="false"
+					action="#{storeReturnBean.print_documents_return}"
+					rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton>
+				<h:panelGroup id="saveBtnGrp">
+					<p:commandButton value="حفظ" id="saveBtn"
+						icon="ui-icon ui-icon-assignment-return"
+						rendered="#{storeReturnBean.canSave}" ajax="false"
+						immediate="true" action="#{storeReturnBean.save}">
+
+					</p:commandButton>
+				</h:panelGroup>
+			</div>
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<div>
+					<h1 style="color: #7CB342; text-align: center;">نموذج طلب
+						إرجاع</h1>
+				</div>
+				<br />
+
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel value="المستودع"></h:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:selectOneMenu styleClass="form-control" id="stockNO"
+							placeholder="إختر المستودع" value="#{storeReturnBean.strNo}"
+							style="direction: rtl;height: 39px;">
+							<f:selectItem itemLabel="إختر مستودع"></f:selectItem>
+							<f:selectItems value="#{storeReturnBean.allWareHouses}" var="c"
+								itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel value="التاريخ"></h:outputLabel>
+					</div>
+					<div class="ui-g-2">
+						<p:inputText id="hiri1" value="#{storeReturnBean.returnDate}"
+							required="true" requiredMessage="ادخل التاريخ"
+							onfocus="loadCalendar();"
+							disabled="#{(storeReturnBean.enableAccept) or (storeReturnBean.enablePrint)}"
+							styleClass="form-control form-controlCal">
+							<f:validator validatorId="utilities.UmmAlQUraValidator" />
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<h:outputLabel value="الموظف" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:selectOneMenu id="empList" filterMatchMode="contains"
+							disabled="#{(storeReturnBean.enableAccept) or (storeReturnBean.enablePrint)}"
+							style="width:100%" filter="true"
+							value="#{storeReturnBean.employerId}">
+							<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+							<f:selectItems value="#{loadingDataBean.employersList}" var="emp"
+								itemLabel="#{emp.employeeName}" itemValue="#{emp.userId}" />
+							<f:ajax listener="#{storeReturnBean.loadEmpAssignedArticles}"
+								execute="empList" render="articles"></f:ajax>
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<br></br>
+				<h:panelGroup
+					rendered="#{(!storeReturnBean.enableAccept) and(!storeReturnBean.enablePrint)}">
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="اختر الصنف" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="articles"
+								value="#{storeReturnBean.articleId}" required="true"
+								requiredMessage="من فضلك إختر الصنف" filterMatchMode="contains"
+								filter="true">
+								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""></f:selectItem>
+								<f:selectItems value="#{storeReturnBean.articleList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.name}"></f:selectItems>
+								<f:ajax execute="articles"
+									listener="#{storeReturnBean.loadArticle}" render="addBtn"></f:ajax>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<label class="btxt">سبب الإرجاع</label>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="reason" required="true"
+								requiredMessage="اختر السبب"
+								disabled="#{(storeReturnBean.enableAccept) or (storeReturnBean.enablePrint)}"
+								value="#{storeReturnBean.returnReason}">
+								<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
+								<f:selectItem itemLabel="إنتهاء الغرض" itemValue="1"></f:selectItem>
+								<f:selectItem itemLabel="فائض" itemValue="2"></f:selectItem>
+								<f:selectItem itemLabel="عدم الصلاحية" itemValue="3"></f:selectItem>
+								<f:selectItem itemLabel="تالف" itemValue="4"></f:selectItem>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="العدد"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="qty" value="#{storeReturnBean.qty}"
+								required="true" requiredMessage="اختر العدد" />
+						</div>
+					</div>
+				</h:panelGroup>
+				<div class="ui-g">
+					<h:panelGroup
+						rendered="#{(storeReturnBean.enableAccept) or (storeReturnBean.enablePrint)}">
+						<div class="ui-g">
+							<div class="ui-g-5">
+								<p:outputLabel value="الرقم التسلسلي "></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="serialNumId"
+									value="#{storeReturnBean.serialNum}" class="form-control">
+									<p:ajax process="@this" onstart="PF('dlgditSerial').show();" />
+								</p:inputText>
+							</div>
+						</div>
+					</h:panelGroup>
+					<div class="ui-g-1">
+						<h:outputLabel styleClass="btxt" value="الملاحظات"
+							rendered="#{(!storeReturnBean.enableAccept) and (!storeReturnBean.enablePrint)}"></h:outputLabel>
+					</div>
+					<div class="ui-g-5">
+						<p:inputText id="desc" style="width:100%"
+							rendered="#{(!storeReturnBean.enableAccept) and (!storeReturnBean.enablePrint)}"
+							value="#{storeReturnBean.notes}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<p:commandButton id="addBtn" icon="ui-icon ui-icon-add-to-photos"
+							style="float:left;" styleClass="cyan-btn"
+							disabled="#{!storeReturnBean.allowAdd}"
+							rendered="#{(!storeReturnBean.enableAccept) and(!storeReturnBean.enablePrint)}"
+							value="إضافة">
+							<f:ajax listener="#{storeReturnBean.addItem}"
+								render="details saveBtnGrp" execute="desc qty reason "></f:ajax>
+						</p:commandButton>
+					</div>
+				</div>
+				<br /> <br />
+				<h:panelGroup id="details">
+					<p:dataTable value="#{storeReturnBean.returnModelDetailsList}"
+						id="itemsTable" emptyMessage="لايوجد بيانات" var="storeItem"
+						rowIndexVar="rowIndex">
+
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="رقم" width="5%">										
+															#{rowIndex+1} 									
+														</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="اسم الصنف" width="20%">
+							<h:outputText value="#{storeItem.articleName}"></h:outputText>
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="سبب الإرجاع" width="10%">
+							<h:outputText value="#{storeReturnBean.returnReason}"></h:outputText>
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الوحدة" width="10%">
+							<h:outputText value="#{storeItem.articleUnit}"></h:outputText>
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="العدد" width="10%">										
+															#{storeItem.qty} 									
+														</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الملاحظات" width="10%">										
+															#{storeItem.notes} 									
+														</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="حذف" width="5%">
+							<div class="image-box-footer">
+								<p:commandButton id="xx" icon="fa fa-fw fa-times"
+									styleClass="red-btn">
+									<f:ajax listener="#{storeReturnBean.removeRecord(storeItem)}"
+										render=":includeform saveBtn saveBtnGrp"></f:ajax>
+								</p:commandButton>
+							</div>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</div>
+			<p:dialog header="تعديل الرقم التسلسلي" widgetVar="dlgditSerial"
+				width="30%" dir="rtl">
+				<h:panelGroup id="editSerialPopup">
+					<h:outputLabel value="هل تريد حفظ الرقم التسلسلي الجديد ؟"></h:outputLabel>
+					<br />
+					<br />
+					<div align="center">
+						<p:commandButton id="yesBtn" value="نعم " process="serialNumId"
+							styleClass="cyan-btn" oncomplete="PF('dlgditSerial').hide();">
+							<p:ajax listener="#{storeReturnBean.updateSerialNum}"
+								update="serialNumId" process="@this" />
+						</p:commandButton>
+
+						<p:spacer height="10px"></p:spacer>
+
+						<p:commandButton id="noBtn" value="لا " styleClass="red-btn"
+							oncomplete="PF('dlgditSerial').hide();">
+							<p:ajax listener="#{storeReturnBean.cancleUpdateSerialNum}"
+								process="@this" update="serialNumId" />
+						</p:commandButton>
+					</div>
+				</h:panelGroup>
+			</p:dialog>
+
+		</h:form>
+
+	</body>
+</f:view>
+</html>

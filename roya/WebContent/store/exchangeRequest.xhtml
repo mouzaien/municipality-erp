@@ -163,7 +163,7 @@ body .ui-dialog .ui-dialog-titlebar {
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-4">
 							<p:selectOneMenu styleClass="col-md-5" id="itemId"
-								style="width:100%" value="#{exchangeRequestBean.item}" required="true" requiredMessage="من فضلك إختر الصنف"
+								style="width:100%" value="#{exchangeRequestBean.requestDetailsRecord.itemId}" required="true" requiredMessage="من فضلك إختر الصنف"
 								filterMatchMode="contains" filter="true">
 								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""></f:selectItem>
 								<f:selectItems value="#{exchangeRequestBean.articleList}"

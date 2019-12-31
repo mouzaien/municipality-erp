@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="temporary_receipt_notice" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="878d7470-c189-4e4d-ad42-eadf044e8c65">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="TEMP_MSTR_ID" class="java.lang.Integer"/>
+	<parameter name="STORE_NAME" class="java.lang.String"/>
+	<parameter name="SUPPLIER_NAME" class="java.lang.String"/>
+	<parameter name="DOCUMENT_TYPE" class="java.lang.String"/>
+	<parameter name="DOCUMENT_NUMBER" class="java.lang.Integer"/>
+	<parameter name="DOCUMENT_H_DATE" class="java.lang.String"/>
+	<parameter name="SPECIAL_NUMBER" class="java.lang.Integer"/>
+	<parameter name="RECEIPT_H_DATE" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT rownum num, m.id,st_boss.SIGN_JOB_NAME STORE_MGR_NAME ,st_boss.SIGN_DATE STORE_MGR_SIGN_DATE,
+st_dean.SIGN_JOB_NAME STORE_DEAN_NAME ,st_dean.SIGN_DATE STORE_DEAN_SIGN_DATE,
+m.STORE_NO, st.STRNAME,m.SUPPLIERID, sup.RELATEDENTITYNAME SUPPLIER_NAME, dt.DOCUMENT_TYPE_NAME DOCUMENT_TYPE
+, m.DOCUMENT_NUMBER, m.SPECIAL_NUM SPECIAL_NUMBER, m.DOCUMENT_H_DATE, m.DOCUMENT_G_DATE, 
+art.CODE ART_CODE, art.NAME ART_NAME, unit.ITEMUNITNAME UNIT, nvl(det.QTY,0)QTY, det.NOTES NOTES
+FROM 
+	roya.STORE_TEMPORARY_RECEIPT_MASTER m, 
+	roya.STORE_TEMP_RECEIPT_DETAILS  det, WHS_WAREHOUSES st,
+	FIN_ENTITY sup,DOCUMENT_TYPE dt,
+	ARTICLE art, TDR_ITEMUNIT unit
+	,
+	 (
+	 select  s.doc_id id, s.SIGN_JOB_NAME,s.SIGN_DATE 
+	 from roya.arc_records r, roya.hrs_signs s,
+    roya.STORE_TEMPORARY_RECEIPT_MASTER rq 
+    where  rq.id   = s.doc_id
+    and r.id       = s.arc_record_id 
+    and r.app_type = 251 
+    and s.SIGN_IS_VISIBLE = 1
+    )st_boss
+    ,
+    (
+    select  s.doc_id id, s.SIGN_JOB_NAME,s.SIGN_DATE from arc_records r, hrs_signs s,
+    STORE_TEMPORARY_RECEIPT_MASTER rq where  rq.id = doc_id
+    and r.id = s.arc_record_id 
+    and r.app_type = 251 
+    and s.SIGN_STEP_ID = 1
+    )st_dean
+    
+	
+WHERE 
+	m.ID  				= det.TEMP_RECEIPT_MASTER_ID
+AND st.STRNO 			= m.STORE_NO
+AND m.SUPPLIERID 		= sup.RELATEDENTITYID
+AND m.DOCUMENT_TYPE  	= dt.ID
+AND art.ID 				= det.ARTICLE_ID
+AND art.ITEM_UNITE_ID 	= unit.ITEMUNITID
+AND st_boss.id          =  m.id
+AND st_dean.id          =  m.id
+AND M.ID =$P{TEMP_MSTR_ID}]]>
+	</queryString>
+	<field name="NUM" class="java.lang.Integer"/>
+	<field name="ART_CODE" class="java.lang.Integer"/>
+	<field name="ART_NAME" class="java.lang.String"/>
+	<field name="UNIT" class="java.lang.String"/>
+	<field name="QTY" class="java.lang.Integer"/>
+	<field name="NOTES" class="java.lang.String"/>
+	<field name="STORE_DEAN_NAME" class="java.lang.String"/>
+	<field name="STORE_DEAN_SIGN_DATE" class="java.lang.String"/>
+	<field name="STORE_MGR_NAME" class="java.lang.String"/>
+	<field name="STORE_MGR_SIGN_DATE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="139" splitType="Stretch">
+			<staticText>
+				<reportElement x="330" y="9" width="100" height="25" uuid="9080de08-ec40-483a-bcdf-5caaa299ddcd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[إشعـــــــار]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="2" width="82" height="15" uuid="3f848b8b-a73b-4a38-971d-03238cf7785c">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("نموذج رقم ( "+1+" ) ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="660" y="4" width="140" height="15" uuid="83b096c6-b77d-4ea1-a105-f0ecdc97c451"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[المملكة العربية السعودية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="660" y="19" width="140" height="15" uuid="1990cc8b-7b17-4857-8fae-f136ee919583"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="34" width="220" height="25" uuid="5077c569-61aa-41db-b75a-443b82255bdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[إستلام مؤقت لأصناف تحت الفحص]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="22" width="62" height="20" uuid="2f53d124-548b-442e-af69-2320017c3552"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[الرقم الخاص  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="42" width="62" height="20" uuid="5657f1ca-5112-42ac-bfd7-ea078056528f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[تاريخ الإستلام :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="62" width="62" height="20" uuid="11c17663-e7b6-40c5-a803-0b2a186a8abf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[عدد الصفحات :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="82" width="62" height="20" uuid="59f431bb-9fc7-431e-bbbd-432117f7ff9e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[المرفــــقـــات  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="82" width="62" height="20" uuid="7bf46d70-47d9-4926-9a1d-854f07e5c553"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[المورد :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="114" width="62" height="20" uuid="93c53ade-e04e-4030-8a7c-4a1d0ac10726"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[تاريخ  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="114" width="62" height="20" uuid="d88dde03-8f1e-4281-8864-c029008c6618"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[رقم  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="114" width="62" height="20" uuid="092c1cdd-756e-420f-a3ec-ce78fdc69712"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[مستند :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="660" y="34" width="140" height="15" uuid="7a786281-2083-4659-b244-33e8c052ae49"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{STORE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="550" y="82" width="130" height="20" uuid="afa3fc83-411d-46cc-bc3b-577a9fce56d5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SUPPLIER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="114" width="130" height="20" uuid="e5524ba9-e2f3-4ecb-8506-40e9c5b8f453"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DOCUMENT_TYPE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="270" y="114" width="130" height="20" uuid="16c45757-0a43-41bf-bf36-48a1247dd67b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DOCUMENT_NUMBER}== null?"":(""+$P{DOCUMENT_NUMBER}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="114" width="130" height="20" uuid="1a29fb67-9c76-41ed-b718-79bb3079ac40"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DOCUMENT_H_DATE}== null?"":(""+$P{DOCUMENT_H_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-2" y="22" width="92" height="20" uuid="7103df7b-92a2-4c4c-9677-e0e1cc0fc891"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DOCUMENT_H_DATE}== null?"":(""+$P{SPECIAL_NUMBER}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-2" y="42" width="92" height="20" uuid="4dc880fa-62aa-40e7-87f3-7fb43a2a7086"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{RECEIPT_H_DATE}== null?"":(""+$P{RECEIPT_H_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="143" height="38" uuid="9214f14b-ec07-4bc2-8270-501c22c97acf">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ملاحـظات"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="2" width="70" height="38" uuid="071f21a2-8b1c-4673-88ca-7c3c99ef906e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الكمية"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="2" width="67" height="38" uuid="c179e11f-3bf2-40ac-9263-a89bd0ac8fa3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الوحدة"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="2" width="300" height="38" uuid="41495b94-a88b-4096-9091-4ac2ad2561df">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إسم الصنف و وصفه"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="760" y="2" width="42" height="38" uuid="da564133-15d1-4fe4-ba19-53e53c6952fe">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="2" width="180" height="38" uuid="9e54b004-2778-4e06-beb1-b7c74aa65996">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الصنف"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="760" y="0" width="42" height="38" uuid="0d4cb321-db83-4eb8-8970-4acbb5226819"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM}== null?"":(""+$F{NUM}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="180" height="38" uuid="eda0085b-1ba7-4b29-a66c-f9fc4b126e94"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ART_CODE}== null?"":(""+$F{ART_CODE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="300" height="38" uuid="718a2eaa-b80a-4448-99ec-0815f7fe413b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ART_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="0" width="67" height="38" uuid="a465cab0-c335-4286-b078-90efe4b6fc9e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UNIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="0" width="70" height="38" uuid="cd9a3da3-0cea-4c82-93e6-48467f5645ef"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QTY}== null?"":(""+$F{QTY}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="143" height="38" uuid="b2eda959-88a4-4dd6-ba3e-4b390f9507e9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="91" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="11" width="82" height="20" uuid="5f9f3caa-254e-47dc-955f-047a7dfdc6ce">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="71" width="82" height="20" uuid="1db7d561-de1d-4ee8-b11c-fe2028067e6d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="51" width="82" height="20" uuid="58b4cf4c-f209-4033-943a-90f7b697cd19">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقيع"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="31" width="82" height="20" uuid="e884b6a2-0a5f-42d1-bbd6-d125be0a0722">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الإسم"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="11" width="240" height="20" uuid="799b421b-7e4f-46fb-b078-dbe70c4fdfb1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" المسّلم"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="11" width="240" height="20" uuid="f7925c84-90cc-4e5a-b4b5-48f89a0b580d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مدير إدارة المسـتودعـــات"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="11" width="240" height="20" uuid="64261fb6-073c-494b-a5e5-a8301255198f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المستلم مأمور عهدة ساحة الإستلام / أمين / مأمور المستودع "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="31" width="240" height="20" uuid="25cb00a7-28b7-409f-94f3-7ad64338f9ae">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="51" width="240" height="20" uuid="1c617323-6648-4cff-8ec1-2dc7e3379482">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="71" width="240" height="20" uuid="73c3a43a-32fd-4b36-aab4-30f82526cae3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="31" width="240" height="20" uuid="e194e25d-5d96-474e-8ac7-90cca22a8812">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="51" width="240" height="20" uuid="788b5709-85c0-434c-9ce0-f68ed0ed4af9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="71" width="240" height="20" uuid="ff75c02a-1a08-4e00-bf32-5e1013ba99ee">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_SIGN_DATE}== null?"":(""+$F{STORE_DEAN_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661").replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="31" width="240" height="20" uuid="3561fcc6-8c44-4baf-9e1e-114b0d202f06">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_MGR_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="51" width="240" height="20" uuid="1358cb63-2118-4428-a8f6-8891f0be830a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="71" width="240" height="20" uuid="76e954ba-386a-4e72-b858-1ec1ca184c70">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_MGR_SIGN_DATE}== null?"":(""+$F{STORE_MGR_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661").replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

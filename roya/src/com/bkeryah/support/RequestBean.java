@@ -197,6 +197,7 @@ public class RequestBean {
 		case MyConstants.NETWORK_SEC_BOSS2:
 		case MyConstants.IT_SEC_BOSS:
 		case MyConstants.IT_USERREQUEST_SUPP:
+		case MyConstants.IT_USERREQUEST_SUPP2:
 			roleIsAdmin = true;
 			break;
 		}

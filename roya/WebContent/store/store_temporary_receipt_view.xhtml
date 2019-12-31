@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+	<div class="image-box-footer" style="float: left">
+		<h:panelGroup rendered="#{(storeTemporaryReceipt.enablePrint)}">
+			<p:commandButton value="#{msg['print']}" immediate="true"
+				ajax="false" icon="ui-icon ui-icon-print "
+				onclick="this.form.target='_blank'"
+				action="#{storeTemporaryReceipt.print_temporary_receipt_notice}"
+				styleClass="purple-btn"></p:commandButton>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{(storeTemporaryReceipt.enableAccept)}">
+			<p:commandButton value="#{msg['accept']}" immediate="true"
+				action="#{storeTemporaryReceipt.accept}"
+				icon="ui-icon ui-icon-check">
+			</p:commandButton>
+		</h:panelGroup>
+	</div>
+
+	<ui:include src="store_temporary_receipt_include.xhtml"></ui:include>
+</h:body>
+</html>

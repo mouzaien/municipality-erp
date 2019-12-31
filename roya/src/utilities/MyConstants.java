@@ -118,5 +118,5 @@ public class MyConstants {
 	public static final String CONTRACT_DIRECT_TYPE = "I";
 	public static final Integer TT_DEPT_ID = 24;
 	public static final int IT_SEC_BOSS = 6;
-
+	public static final int IT_USERREQUEST_SUPP2 = 104;
 }

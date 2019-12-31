@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:view>
+	<h:body>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer">
+				<h:panelGroup id="saveBtnGrp">
+					<p:commandButton value="حفظ" id="saveBtn"
+						icon="ui-icon ui-icon-assignment-return"
+						rendered="#{storeTemporaryReceipt.canSave}" ajax="false"
+						immediate="true" action="#{storeTemporaryReceipt.save}">
+					</p:commandButton>
+				</h:panelGroup>
+			</div>
+			<br />
+			<br />
+			<div class="card card-w-title" dir="rtl">
+				<h:panelGroup
+					rendered="#{(!storeTemporaryReceipt.enableAccept) and(!storeTemporaryReceipt.enablePrint)}">
+					<div>
+						<h1 style="color: #7CB342; text-align: center;">
+							إشعار <br /> إستلام مؤقت لأصناف تحت الفحص
+						</h1>
+					</div>
+				</h:panelGroup>
+				<h2 style="text-align: right;">بيانات الإشعار</h2>
+				<br />
+
+
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<label class="btxt">المستند</label>
+					</div>
+					<div class="ui-g-2">
+						<p:selectOneMenu id="doc_id"
+							value="#{storeTemporaryReceipt.document}"
+							disabled="#{(storeTemporaryReceipt.enablePrint)or(storeTemporaryReceipt.blockSupplier)}">
+							<f:selectItem itemLabel="إختر نوع المستند" itemValue="0"></f:selectItem>
+							<f:selectItems var="doc" value="#{storeTemporaryReceipt.docType}"
+								itemLabel="#{doc.documentName}" itemValue="#{doc.id}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-2">
+						<label class="btxt">رقم المستند</label>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber id="documentNo" styleClass="form-control"
+							disabled="#{storeTemporaryReceipt.enablePrint}" decimalPlaces="0"
+							value="#{storeTemporaryReceipt.documentNumber}" />
+					</div>
+					<div class="ui-g-2">
+						<label class="btxt">تاريخ المستند</label>
+					</div>
+					<div class="ui-g-2">
+						<p:inputText id="documentDate"
+							disabled="#{storeTemporaryReceipt.enablePrint}"
+							value="#{storeTemporaryReceipt.documentHDate}"
+							onfocus="loadCalendar();"
+							styleClass="form-control form-controlCal">
+							<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							<f:ajax execute="@this"></f:ajax>
+						</p:inputText>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<label class="btxt">تاريخ الإستلام</label>
+					</div>
+					<div class="ui-g-2">
+						<p:inputText id="receiptDate"
+							disabled="#{storeTemporaryReceipt.enablePrint}"
+							value="#{storeTemporaryReceipt.receiptHDate}"
+							onfocus="loadCalendar();"
+							styleClass="form-control form-controlCal">
+							<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							<f:ajax execute="@this"></f:ajax>
+						</p:inputText>
+					</div>
+					<div class="ui-g-2">
+						<label class="btxt">الرقم الخاص</label>
+					</div>
+					<div class="ui-g-2">
+						<p:inputNumber id="specialNo" styleClass="form-control"
+							decimalPlaces="0" value="#{storeTemporaryReceipt.specialNum}" />
+					</div>
+					<div class="ui-g-2">
+						<label class="btxt">المستودع</label>
+					</div>
+					<div class="ui-g-2">
+						<h:panelGroup id="store_grp"
+							rendered="#{(!storeTemporaryReceipt.enableAccept) and(!storeTemporaryReceipt.enablePrint)}">
+							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								value="#{storeTemporaryReceipt.selectedWareHouse}"
+								required="true" requiredMessage="إختر المستودع"
+								disabled="#{(storeTemporaryReceipt.blockSupplier)}"
+								style="direction: rtl;height: 39px;" filter="true"
+								filterMatchMode="contains">
+								<f:selectItem itemLabel="إختر مستودع" itemValue="" />
+								<f:selectItems value="#{storeTemporaryReceipt.allWareHouses}"
+									var="s" itemLabel="#{s.storeName}" itemValue="#{s.storeNumber}" />
+								<f:ajax event="change" execute="@this"
+									listener="#{storeTemporaryReceipt.updateNameAfterChoiseArticle}"
+									render="articles"></f:ajax>
+							</p:selectOneMenu>
+						</h:panelGroup>
+						<p:inputText value="#{storeTemporaryReceipt.strName}"
+							disabled="true"
+							rendered="#{(storeTemporaryReceipt.enableAccept) or (storeTemporaryReceipt.enablePrint)}" />
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-2">
+						<h:outputLabel styleClass="btxt" value="المورد/الجهة" />
+					</div>
+					<div class="ui-g-2">
+						<h:panelGroup id="supp_grp">
+							<p:selectOneMenu styleClass="form-control" filter="true"
+								disabled="#{(storeTemporaryReceipt.enableAccept) or (storeTemporaryReceipt.blockSupplier) or(storeTemporaryReceipt.enablePrint)}"
+								filterMatchMode="contains" required="true"
+								requiredMessage="اختر المورد"
+								value="#{storeTemporaryReceipt.supplierId}">
+								<f:selectItem itemLabel="اختر المورد" itemValue="" />
+								<f:selectItems var="supplier"
+									value="#{storeTemporaryReceipt.supplierList}"
+									itemLabel="#{supplier.name}" itemValue="#{supplier.id}" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+					</div>
+				</div>
+				<br />
+				<p:separator></p:separator>
+				<br />
+				<h:panelGroup
+					rendered="#{(!storeTemporaryReceipt.enableAccept) and(!storeTemporaryReceipt.enablePrint)}">
+					<h2 style="text-align: right;">أصناف الإشعار</h2>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<label class="btxt">الصنف</label>
+						</div>
+						<div class="ui-g-2">
+							<h:panelGroup id="articles">
+								<p:selectOneMenu styleClass="form-control" id="stockArticles"
+									value="#{storeTemporaryReceipt.articleId}" filter="true"
+									filterMatchMode="contains" style="direction: rtl;height: 39px;">
+									<f:selectItem itemLabel="إختر صنف" itemValue="" />
+									<f:selectItems value="#{storeTemporaryReceipt.articleList}"
+										var="c" itemLabel="#{c.name}" itemValue="#{c.id}" />
+									<f:ajax event="change" execute="@this"
+										listener="#{storeTemporaryReceipt.loadArticle}"
+										render="addBtn"></f:ajax>
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الكمية"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:inputNumber styleClass="form-control" id="count"
+								decimalPlaces="0" value="#{storeTemporaryReceipt.qty}"
+								required="true" requiredMessage="من فضلك ادخل  الكمية "
+								validatorMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
+								<f:ajax execute="@this"></f:ajax>
+							</p:inputNumber>
+						</div>
+
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<label class="btxt">حالة الصنف</label>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu filter="true" filterMatchMode="contains"
+								value="#{storeTemporaryReceipt.selectedStatus}" id="status">
+								<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
+								<f:selectItems
+									value="#{storeTemporaryReceipt.allArticlesStatus}" var="c"
+									itemLabel="#{c.articleStatusName}"
+									itemValue="#{c.articleStatusId}" filter="true"
+									filterMatchMode="contains" />
+								<f:ajax execute="@this"></f:ajax>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="الملاحظات"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="desc" styleClass="form-control"
+								value="#{storeTemporaryReceipt.notes}">
+								<f:ajax execute="@this"></f:ajax>
+							</p:inputText>
+						</div>
+						<div class="ui-g-2">
+							<p:commandButton id="addBtn" styleClass="cyan-btn"
+								immediate="false" icon="ui-icon ui-icon-add"
+								disabled="#{!stockEntryBean.allowAdd}" value="اضافة">
+								<f:ajax listener="#{storeTemporaryReceipt.addItem}"
+									render="table saveBtnGrp saveBtn doc_id store_grp supp_grp "
+									execute="@this"></f:ajax>
+							</p:commandButton>
+						</div>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup id="table">
+					<p:dataTable
+						value="#{storeTemporaryReceipt.temporeryReceiptDetailsModelList}"
+						emptyMessage="لايوجد بيانات" var="storeItem"
+						rowIndexVar="rowIndex">
+
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="رقم" width="5%">										
+										#{rowIndex+1} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="اسم الصنف" width="15%">										
+										#{storeItem.articleName} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="حالة الصنف" width="10%">										
+										#{storeTemporaryReceipt.status} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="العدد" width="10%">										
+										#{storeItem.qty} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الوحدة" width="10%">										
+										#{storeItem.articleUnit} 									
+									</p:column>
+
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="المواصفات" width="10%">										
+										#{storeItem.notes} 									
+									</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							rendered="#{(!storeTemporaryReceipt.enableAccept) and(!storeTemporaryReceipt.enablePrint)}"
+							headerText="حذف" width="10%">
+							<div class="image-box-footer">
+								<p:commandButton id="xx" icon="fa fa-fw fa-times"
+									action="#{storeTemporaryReceipt.removeRecord}"
+									styleClass="red-btn">
+									<f:setPropertyActionListener value="#{storeItem}"
+										target="#{storeTemporaryReceipt.temporeryReceiptModelRecord}"></f:setPropertyActionListener>
+									<f:ajax
+										render=":includeform saveBtn saveBtnGrp store_grp supp_grp doc_id"
+										execute="articles count status desc"></f:ajax>
+								</p:commandButton>
+							</div>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</div>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

@@ -99,6 +99,7 @@ public class InventoryMaster {
 	}
 
 	public void setInventoryBlocked(Integer inventoryBlocked) {
+		
 		this.inventoryBlocked = inventoryBlocked;
 	}
 

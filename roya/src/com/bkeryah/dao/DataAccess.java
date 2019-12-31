@@ -43,6 +43,7 @@ import com.bkeryah.bean.WrkPurposeClass;
 import com.bkeryah.bean.WrkRolesClass;
 import com.bkeryah.bean.WrkSectionClass;
 import com.bkeryah.entities.ArcUsers;
+import com.bkeryah.entities.Article;
 import com.bkeryah.entities.DeptArcRecords;
 import com.bkeryah.entities.ExchangeRequest;
 import com.bkeryah.entities.HrsEmpHistorical;
@@ -536,11 +537,11 @@ public interface DataAccess {
 
 	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId);
 
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo);
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,Integer artType,Integer employerId);
 
 	List<StoreRequestModel> getTransactionsQty(int articleId, int strNo);
 
-	List<InventoryModel> ListInventories(int strNo, Integer inventoryId);
+	List<InventoryModel> ListInventories(int strNo, Integer inventoryId, String inventoryDate);
 
 	List<StoreRequestModel> getArticleHistory(int articleId);
 
@@ -595,4 +596,5 @@ public interface DataAccess {
 
 	public List<StockEntryMaster> searchMemoReceipts(String beginDate, String finishDate, Integer strNo);
 
+	public List<Article> getArticlesByUserId(Integer userId);
 }

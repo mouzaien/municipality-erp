@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.context.RequestContext;
 
@@ -38,12 +39,14 @@ public class InventoryBean {
 	private boolean updateMode;
 	private Integer inventoryStatus;
 	private String inventroyDate;
+	private boolean inventoryIsBlocked;
+	private boolean openedInventory;
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		currentUserId = currentUser.getUserId();
-		inventoriesList = dataAccessService.getInventoriesByStrNo(1);
+		//inventoriesList = dataAccessService.getInventoriesByStrNo(1);
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 	}
 
@@ -61,31 +64,53 @@ public class InventoryBean {
 
 		try {
 			String[] parts = inventoryMaster.getInventoryDate().split("/");
-			Integer dd = Integer.parseInt(parts[0]);
-			Integer MM = Integer.parseInt(parts[1]);
-			Integer yyyy = Integer.parseInt(parts[2]);
+			Integer year = Integer.parseInt(parts[2]);
 			inventoryMaster.setCreatedby(currentUserId);
 			inventoryMaster.setInventoryStartDate(inventoryMaster.getInventoryDate());
 			inventoryMaster.setInventoryEndDate(inventoryMaster.getInventoryDate());
 			inventoryMaster.setCreateddate(inventoryMaster.getInventoryDate());
-			inventoryMaster.setYearid(yyyy);
+			inventoryMaster.setYearid(year);
+			inventoryMaster.setStrno(strNo);
+			for (InventoryMaster inventoriey : inventoriesList) {
+				if (inventoriey.getInventoryBlocked() == 0) {
+					openedInventory = true;
+					break;
+				}
+			}
+			
 			if (updateMode) {
 				dataAccessService.updateObject(inventoryMaster);
+				inventoriesList = dataAccessService.getInventoriesByStrNo(strNo);
+				refreshPage();
 			} else {
-				dataAccessService.save(inventoryMaster);
+				if (!openedInventory) {
+					dataAccessService.save(inventoryMaster);
+					inventoriesList = dataAccessService.getInventoriesByStrNo(strNo);
+					refreshPage();
+				} else {
+					MsgEntry.addErrorMessage("قد يكون هناك جرد أخر مفتوح علي هذا المستودع");
+				}
 			}
-			inventoriesList = dataAccessService.getInventoriesByStrNo(strNo);
-			refreshPage();
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage("قد يكون هناك جرد أخر مفتوح علي هذا المستودع");
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.execution"));
 		}
+	}
+
+	public void notUpdate() {
+		updateMode = false;
+		inventoryIsBlocked = false;
+		inventoryMaster = new InventoryMaster();
 	}
 
 	public void loadSelectedInventory(InventoryMaster selectedItme) {
 		updateMode = true;
 		inventoryMaster = (InventoryMaster) dataAccessService.findEntityById(InventoryMaster.class,
 				selectedItme.getInventoryId());
-
+		if (inventoryMaster.getInventoryBlocked() != null && inventoryMaster.getInventoryBlocked() == 1) {
+			inventoryIsBlocked = true;
+		} else {
+			inventoryIsBlocked = false;
+		}
 		// inventoryMaster = new InventoryMaster();
 		// inventoryMaster.setCreatedby(selectedItme.getCreatedby());
 		// inventoryMaster.setCreateddate(selectedItme.getCreateddate());
@@ -189,6 +214,22 @@ public class InventoryBean {
 
 	public void setUpdateMode(boolean updateMode) {
 		this.updateMode = updateMode;
+	}
+
+	public boolean isInventoryIsBlocked() {
+		return inventoryIsBlocked;
+	}
+
+	public void setInventoryIsBlocked(boolean inventoryIsBlocked) {
+		this.inventoryIsBlocked = inventoryIsBlocked;
+	}
+
+	public boolean isOpenedInventory() {
+		return openedInventory;
+	}
+
+	public void setOpenedInventory(boolean openedInventory) {
+		this.openedInventory = openedInventory;
 	}
 
 }

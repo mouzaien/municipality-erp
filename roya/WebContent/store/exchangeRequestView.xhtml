@@ -436,7 +436,7 @@ body .ui-dialog .ui-dialog-titlebar {
 												disabled="#{!exchangeRequestBean.enableAccept}"
 												value="#{det.exchangeAtcualyCount}"
 												style="width:60px !important;">
-												<f:ajax execute="actualCount"></f:ajax>
+												<f:ajax execute="actualCount" listener="#{exchangeRequestBean.updateQties}" render="actualCount"></f:ajax>
 											</h:inputText></td>
 										<td><p:commandButton id="xx"
 												disabled="#{!exchangeRequestBean.enableAccept}"

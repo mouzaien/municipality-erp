@@ -2,7 +2,6 @@ package com.bkeryah.bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,9 +54,11 @@ public class InventoryMasterBean {
 	private boolean inventoryIsBlocked;
 	private Integer inventoryId;
 	private List<InventoryMaster> inventoriesList = new ArrayList<InventoryMaster>();
+	private String inventoryDate;
+	private String srtName;
 
 	public String refreshPage() {
-		
+
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		requestContext.execute("PF('vtWidget').clearFilters()");
 		return "";
@@ -117,7 +118,7 @@ public class InventoryMasterBean {
 		currentUser = Utils.findCurrentUser();
 		getInventoryMasterDetails();
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
-		inventoriesList = dataAccessService.getInventoriesByStrNo(StrNo);
+		/// inventoriesList = dataAccessService.getInventoriesByStrNo(StrNo);
 		// loadAllArticles();
 		// loadAllInventoryList();
 	}
@@ -141,7 +142,13 @@ public class InventoryMasterBean {
 	}
 
 	public List<InventoryMaster> loadInventories() {
-
+		for (WhsWarehouses whsWarehouses : allWareHouses) {
+			if (whsWarehouses.getStoreNumber() == StrNo)
+				{
+				this.srtName = whsWarehouses.getStoreName();
+				break;
+				}
+		}
 		inventoriesList = dataAccessService.getInventoriesByStrNo(StrNo);
 		return inventoriesList;
 
@@ -165,8 +172,12 @@ public class InventoryMasterBean {
 				}
 			}
 		}
-		inventoryModelList = this.dataAccessService.ListInventories(getStrNo(), inventoryId);
+		inventoryModelList = this.dataAccessService.ListInventories(getStrNo(), inventoryId, inventoryDate);
 		refreshPage();
+	}
+
+	public void reloadArticles(AjaxBehaviorEvent event) {
+		loadAllArticles();
 	}
 
 	public void updateUnite(AjaxBehaviorEvent event) {
@@ -230,9 +241,9 @@ public class InventoryMasterBean {
 		Integer articleIdParam = ((InventoryModel) event.getObject()).getArticleId();
 		inventoryRecordList = dataAccessService.getInventoryrecordByarticleId(articleIdParam, inventoryId);
 		Integer quantite = ((InventoryModel) event.getObject()).getStock();
-		Integer lastInvQty =((InventoryModel) event.getObject()).getLastGardQty();
-		
-		if (quantite == null || quantite == 0) {
+		Integer lastInvQty = ((InventoryModel) event.getObject()).getQteActuel();
+
+		if (quantite == null ) {//|| quantite == 0
 			if (inventoryRecordList.size() > 0) {
 				try {
 					inventoryRecord = inventoryRecordList.get(0);
@@ -246,19 +257,24 @@ public class InventoryMasterBean {
 			if (inventoryRecordList.size() > 0) {
 				try {
 					inventoryRecord = inventoryRecordList.get(0);
-					
-					if(lastInvQty>=quantite )
-					inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()-(lastInvQty-quantite));
+
+					if (inventoryRecord.getInventoryActual() >= quantite)
+						inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()
+								- (inventoryRecord.getInventoryActual() - quantite));
 					else
-					inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()+(quantite -lastInvQty));
-					inventoryRecord.setInventoryActual(quantite);					
-					if (inventoryRecord.getInventoryActual() >= inventoryRecord.getInventoryCalculated()) {
-						inventoryRecord.setInventoryMinus(
-								inventoryRecord.getInventoryActual() - inventoryRecord.getInventoryCalculated());
-					} else {
-						inventoryRecord.setGardAdd(
-								inventoryRecord.getInventoryCalculated() - inventoryRecord.getInventoryActual());
-					}
+						inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()
+								+ (-inventoryRecord.getInventoryActual() + quantite));
+					inventoryRecord.setInventoryActual(quantite);
+					// if (inventoryRecord.getInventoryActual() >=
+					// inventoryRecord.getInventoryCalculated()) {
+					// inventoryRecord.setInventoryMinus(
+					// inventoryRecord.getInventoryActual() -
+					// inventoryRecord.getInventoryCalculated());
+					// } else {
+					// inventoryRecord.setGardAdd(
+					// inventoryRecord.getInventoryCalculated() -
+					// inventoryRecord.getInventoryActual());
+					// }
 					dataAccessService.updateObject(inventoryRecord);
 					MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("success.execution"));
 				} catch (Exception e) {
@@ -268,15 +284,21 @@ public class InventoryMasterBean {
 				try {
 					inventoryRecord.setArticleId(((InventoryModel) event.getObject()).getArticleId());
 					inventoryRecord.setInventoryMasterId(inventoryId);
-					inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel());
+
+					// inventoryRecord.setInventoryCalculated(((InventoryModel)
+					// event.getObject()).getQteActuel());
+					if (inventoryRecord.getInventoryActual() != null
+							&& inventoryRecord.getInventoryActual() >= quantite)
+						inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()
+								- (inventoryRecord.getInventoryActual() - quantite));
+					else if (inventoryRecord.getInventoryActual() == null)
+						inventoryRecord.setInventoryCalculated(quantite);
+					else
+						inventoryRecord.setInventoryCalculated(((InventoryModel) event.getObject()).getQteActuel()
+								+ (-inventoryRecord.getInventoryActual() + quantite));
+
 					inventoryRecord.setInventoryActual(quantite);
-					if (inventoryRecord.getInventoryCalculated() >= inventoryRecord.getInventoryActual()) {
-						inventoryRecord.setInventoryMinus(
-								inventoryRecord.getInventoryCalculated() - inventoryRecord.getInventoryActual());
-					} else {
-						inventoryRecord.setGardAdd(
-								inventoryRecord.getInventoryActual() - inventoryRecord.getInventoryCalculated());
-					}
+
 					inventoryRecordId = dataAccessService.addNewInventoryDetailsRecors(inventoryRecord);
 					MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("success.execution"));
 				} catch (Exception e) {
@@ -286,7 +308,7 @@ public class InventoryMasterBean {
 			}
 
 		}
-		inventoryModelList = this.dataAccessService.ListInventories(getStrNo(), inventoryId);
+		inventoryModelList = this.dataAccessService.ListInventories(getStrNo(), inventoryId, inventoryDate);
 		refreshPage();
 	}
 
@@ -311,8 +333,9 @@ public class InventoryMasterBean {
 	public String printInventoryReportAction() {
 		String reportName = "/reports/NewInventory.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("gardId", inventoryMaster.getInventoryId());
+		parameters.put("gardId", inventoryId);
 		parameters.put("STRNO", getStrNo());// "259306";
+		parameters.put("inventoryDate", inventoryDate);
 
 		Utils.printPdfReport(reportName, parameters);
 		return "";
@@ -324,9 +347,9 @@ public class InventoryMasterBean {
 	public String printFormInventoryReportAction() {
 		String reportName = "/reports/InventoryForm.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("gardId", inventoryMaster.getInventoryId());
+		parameters.put("gardId", inventoryId);
 		parameters.put("STRNO", getStrNo());// "259306";
-
+		parameters.put("inventoryDate", inventoryDate);
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -338,6 +361,18 @@ public class InventoryMasterBean {
 	//
 	// inventoryModelList = this.dataAccessService.ListInventories();
 	// }
+	/*
+	 * printInventoryReportAction الرصيد القيدي
+	 **/
+	public String printInventoryQtyCalculated() {
+		String reportName = "/reports/InventoryCalc.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("gardId", inventoryId);
+		parameters.put("STRNO", srtName);
+		parameters.put("inventoryDate", inventoryDate);
+		Utils.printPdfReportFromListDataSource(reportName, parameters, inventoryModelList);
+		return "";
+	}
 
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
@@ -445,6 +480,14 @@ public class InventoryMasterBean {
 
 	public void setInventoryIsBlocked(boolean inventoryIsBlocked) {
 		this.inventoryIsBlocked = inventoryIsBlocked;
+	}
+
+	public String getInventoryDate() {
+		return inventoryDate;
+	}
+
+	public void setInventoryDate(String inventoryDate) {
+		this.inventoryDate = inventoryDate;
 	}
 
 }

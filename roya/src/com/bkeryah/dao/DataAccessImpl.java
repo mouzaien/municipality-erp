@@ -82,6 +82,7 @@ import com.bkeryah.bean.WrkPurposeClass;
 import com.bkeryah.bean.WrkRolesClass;
 import com.bkeryah.bean.WrkSectionClass;
 import com.bkeryah.entities.ArcUsers;
+import com.bkeryah.entities.Article;
 import com.bkeryah.entities.DeptArcRecords;
 import com.bkeryah.entities.ExchangeRequest;
 import com.bkeryah.entities.HrsEmpHistorical;
@@ -6441,18 +6442,20 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo) {
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,Integer artType,Integer employerId) {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		List<ExchangeRequest> exchangesList = new ArrayList<ExchangeRequest>();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_exchReqs(?,?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_exchReqs(?,?,?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
 			callableStatement.setString(1, beginDate);
 			callableStatement.setString(2, finishDate);
 			callableStatement.setInt(3, strNo);
+			// callableStatement.setInt(5, artType);
+			// callableStatement.setInt(6, employerId);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(4);
 			while (rs.next()) {
@@ -6535,17 +6538,18 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId) {
+	public List<InventoryModel> ListInventories(int strNo, Integer inventoryId, String inventoryDate) {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		List<InventoryModel> inventoryList = new ArrayList<InventoryModel>();
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_artsGarden(?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 			callableStatement.setInt(2, strNo);
 			callableStatement.setInt(3, inventoryId);
+			callableStatement.setString(4, inventoryDate);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(1);
 
@@ -6559,6 +6563,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				inv.setQteActuel(rs.getInt("GARD_ACTUAL"));
 				inv.setLastGardQty(rs.getInt("lstGqty"));
 				inv.setStock(rs.getInt("stock"));
+				inv.setArtUnitName(rs.getString("ITEMUNITNAME"));
 				inventoryList.add(inv);
 			}
 		} catch (Exception e) {
@@ -7506,7 +7511,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				memoReceipt.setStockFinEntryNo(rs.getInt("stock_fin_entry_no"));
 				memoReceipt.setStockFinEntryHdate(rs.getString("stock_fin_entry_hdate"));
 				memoReceipt.setStockBuyDate(rs.getString("stock_buy_date"));
-				//memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
+				// memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
 				memoReceipt.setRecordId(rs.getInt("recordId"));
 
 				memoReceiptList.add(memoReceipt);
@@ -7526,6 +7531,44 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			}
 		}
 		return memoReceiptList;
+	}
+
+	@Override
+	public List<Article> getArticlesByUserId(Integer userId) {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		List<Article> articlesList = new ArrayList<Article>();
+		Article article = new Article();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_articles(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, userId);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+				article = new Article();
+				article.setId(rs.getInt("art_id"));
+				article.setName(rs.getString("art_name"));
+				article.setUnitName(rs.getString("unit_name"));
+				articlesList.add(article);
+			}
+		} catch (Exception e) {
+			logger.error("getMemoReceiptDetails" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return articlesList;
 	}
 
 }

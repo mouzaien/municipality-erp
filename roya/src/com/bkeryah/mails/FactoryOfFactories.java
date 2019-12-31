@@ -25,11 +25,13 @@ public class FactoryOfFactories {
 		case MEMO_RECEIPT:
 		case NEW_BUILDING_LICENCE:
 		case NEW_BUILDING_WALL_LICENCE:
-		case ATTACH_BUILDING_LICENCE :	
-		case COMPACT_PERFORMANCE :
-		case GENERAL_APPRECIATION :
-		case PERFORMANCE_EVALUATION :
-			return  ServicesFactory.getInstance();
+		case ATTACH_BUILDING_LICENCE:
+		case COMPACT_PERFORMANCE:
+		case GENERAL_APPRECIATION:
+		case PERFORMANCE_EVALUATION:
+		case RETURNED_ITEMS_INVENTORY:
+		case TEMPORERY_RECEIPT:
+			return ServicesFactory.getInstance();
 		default:
 			return MailsFactory.getInstance();
 		}

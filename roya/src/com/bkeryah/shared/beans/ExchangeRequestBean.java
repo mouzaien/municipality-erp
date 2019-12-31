@@ -60,7 +60,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private String finishDate;
 	private List<Article> articleList;
 	private Article article = new Article();
-	private Integer itemId;
+	// private Integer itemId;
 	private Integer recordId;
 	private ArcUsers currentUser;
 	private boolean acceptFlag;
@@ -68,7 +68,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private String wrkAppComment;
 	private List<WrkPurpose> wrkPurposes;
 	private String applicationPurpose;
-	private String item;
 	private boolean allowAdd = true;
 	private boolean refuseFlag;
 	private String wrkReceiver;
@@ -96,22 +95,25 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private String appRefusePurpose;
 	private List<StoreRequestModel> articlesStockList;
 	private StoreRequestModel articleStore;
-	private Integer stockNo;
+	// private Integer stockNo;
 	private Integer strNo = 0;
 	private List<WhsWarehouses> allWareHouses = new ArrayList<WhsWarehouses>();
 	private boolean stockIsBlocked;
 	private boolean canSave;
 	private Integer selectedItemId;
-	
-	
+
 	@ManagedProperty(value = "#{stockServiceDao}")
 	private IStockServiceDao stockServiceDao;
+
+	private boolean checkType = false;
+	private Integer artType = 0;
+	private Integer employerId;
 
 	@PostConstruct
 	public void init() {
 		typeId = MailTypeEnum.EXCHANGEREQUEST;
 		currentUser = Utils.findCurrentUser();
-
+		employerId = currentUser.getUserId();
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -136,7 +138,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			ArcUsers fromUser = (ArcUsers) dataAccessService.findEntityById(ArcUsers.class, fromId);
 			Integer mgrId = fromUser.getMgrId();
 
-			updateQtyies();
+			updateQtyies(strNo);
 
 			technicalResponseList = dataAccessService.getTechnicalResponsesByRecordId(recordId);
 			getResponseMessage();
@@ -228,13 +230,13 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		}
 	}
 
-	private void updateQtyies() {
+	private void updateQtyies(Integer strNo) {
 		for (ExchangeRequestDetails exchangeDetail : request.getExchangeRequestDetailsList()) {
-			storeRequestModelList = dataAccessService.getTransactionsQty(exchangeDetail.getArticle().getId(), -1);
+			storeRequestModelList = dataAccessService.getTransactionsQty(exchangeDetail.getArticle().getId(), strNo);
 
 			if (storeRequestModelList.size() > 0) {
 				StoreRequestModel storeRequestModel = (StoreRequestModel) dataAccessService
-						.getTransactionsQty(exchangeDetail.getArticle().getId(), -1).get(0);
+						.getTransactionsQty(exchangeDetail.getArticle().getId(), strNo).get(0);
 				exchangeDetail.setQtyAvailable(storeRequestModel.getQtyAvailable());
 				exchangeDetail.setQtyReserved(storeRequestModel.getQtyReserved());
 			}
@@ -242,6 +244,14 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public String accept() {
+        List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
+		
+		for (ExchangeRequestDetails reqDet : reqDetails) {
+			if (!cheackQtyDetailsOfRequst(reqDet.getCount(), reqDet.getItemId(), request.getStockNo())) {
+				return "";
+			}
+		}
+		strNo = request.getStockNo();
 		dataAccessService.updateObject(request);
 		if (loadQtyDetailsOfRequst()) {
 			String items = "";
@@ -382,7 +392,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public String deliverRequestAction() {
-
 		if (SerialNum != null && SerialNum > 0) {
 			try {
 				request.setSerialNumber(SerialNum);
@@ -404,17 +413,17 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public void addTenderItem(AjaxBehaviorEvent event) {
-		if (!cheackQtyDetailsOfRequst()) {
+		strNo = article.getStrNo();
+		if (requestDetailsRecord.getItemId().equals(0)) {
+			MsgEntry.addErrorMessage(" اختر الصنف اولا	");
 			return;
 		}
-		if (itemId.equals(0)) {
-			MsgEntry.addErrorMessage(" اختر الصنف اولا	");
+		if (!cheackQtyDetailsOfRequst(requestDetailsRecord.getCount(), requestDetailsRecord.getItemId(),
+				request.getStockNo())) {
 			return;
 		}
 		canSave = true;
 		StoreRequestModel artSt = new StoreRequestModel();
-
-		requestDetailsRecord.setItemId(itemId);
 		requestDetailsRecord.setExchangeAtcualyCount(requestDetailsRecord.getCount());
 		requestDetailsRecord.setTenderItemName(article.getName());
 		try {
@@ -442,6 +451,11 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	// method for
 	// print exchange_report from search_exchange_request_view
+
+	public void changeType() {
+		isCheckType();
+		System.out.println("الحالة " + artType);
+	}
 
 	public String printExchangeReportAction() {
 		String reportName = "/reports/exchange_report.jrxml";
@@ -471,7 +485,8 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		Integer availablebQty = 0;
 		parameters.put("item_Id", selectedItemId);// "259306";
 		List<StoreRequestModel> strReqModelList = new ArrayList<StoreRequestModel>();
-		for (StoreRequestModel requestdets : articleStore.getHistoryList()) {
+		List<StoreRequestModel> artHistory = articleStore.getHistoryList();
+		for (StoreRequestModel requestdets : artHistory) {
 			StoreRequestModel requestModel = new StoreRequestModel();
 
 			requestModel.setTransactionCode(requestdets.getTransactionCode());
@@ -494,7 +509,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				break;
 			case 3:// requestChange
 				requestModel.setQtyOutput(requestdets.getQtyOutput());
-				availablebQty = availablebQty-requestModel.getQtyOutput();
+				availablebQty = availablebQty - requestModel.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);
 				break;
@@ -530,12 +545,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void updateUnite(AjaxBehaviorEvent event) {
 		try {
-			if (item != null && !item.equals(null) && !item.isEmpty()) {
-				itemId = Integer.parseInt(item.trim());
-				article = (Article) dataAccessService.findEntityById(Article.class, itemId);
+			if (requestDetailsRecord.getItemId() != null && (requestDetailsRecord.getItemId() > 0)) {
+				article = (Article) dataAccessService.findEntityById(Article.class, requestDetailsRecord.getItemId());
 				if (request.getStockNo() != null && request.getStockNo() != article.getStrNo()) {
-					item = "";
-					itemId = 0;
 					MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.exchange.request"));
 					return;
 				}
@@ -563,7 +575,8 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.coherent.dates"));
 			return;
 		}
-		exchangeRequestList = dataAccessService.searchExchangeRequests(beginDate, finishDate, strNo);
+		exchangeRequestList = dataAccessService.searchExchangeRequests(beginDate, finishDate, strNo, artType,
+				employerId);
 		// return "";
 	}
 
@@ -578,7 +591,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
 		for (ExchangeRequestDetails exchangeDetail : reqDetails) {
 			StoreRequestModel storeRequestDb = dataAccessService
-					.getTransactionsQty(exchangeDetail.getArticle().getId(), -1).get(0);
+					.getTransactionsQty(exchangeDetail.getArticle().getId(), strNo).get(0);
 			storeRequestModelQty = storeRequestDb;
 
 			if ((exchangeDetail.getExchangeAtcualyCount() > (storeRequestModelQty.getQtyAvailable()
@@ -592,11 +605,10 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		return true;
 	}
 
-	public boolean cheackQtyDetailsOfRequst() {
+	public boolean cheackQtyDetailsOfRequst(Integer qty, Integer artId, Integer storeId) {
 		StoreRequestModel storeRequestModelQty = new StoreRequestModel();
-		storeRequestModelQty = (dataAccessService.getTransactionsQty(Integer.parseInt(item), -1).get(0));
-		if (requestDetailsRecord
-				.getCount() > (storeRequestModelQty.getQtyAvailable() - storeRequestModelQty.getQtyReserved())) {
+		storeRequestModelQty = (dataAccessService.getTransactionsQty(artId, storeId).get(0));
+		if (qty > (storeRequestModelQty.getQtyAvailable() - storeRequestModelQty.getQtyReserved())) {
 			MsgEntry.addErrorMessage("رصيد صنف  " + storeRequestModelQty.getArticleName() + " غير كافي");
 			return false;
 		}
@@ -604,11 +616,22 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		return true;
 	}
 
+	public void updateQties() {
+		List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
+		for (ExchangeRequestDetails reqDet : reqDetails) {
+			if (reqDet.getExchangeAtcualyCount() > (reqDet.getQtyAvailable() - reqDet.getQtyReserved())) {
+				reqDet.setExchangeAtcualyCount(reqDet.getQtyAvailable() - reqDet.getQtyReserved());
+				MsgEntry.addErrorMessage("رصيد صنف  " + reqDet.getArticle().getName() + " غير كافي");
+				return;
+			}
+		}
+	}
+
 	public void loadSelectedExchangeRequest(ExchangeRequest selectedRequest) {
 		request = (ExchangeRequest) dataAccessService.findEntityById(ExchangeRequest.class,
 				selectedRequest.getGeneralrequestNumber());
 		request.setEmpName(selectedRequest.getEmpName());
-		updateQtyies();
+		updateQtyies(request.getStockNo());
 		// RequestContext context = RequestContext.getCurrentInstance();
 		// context.execute("PF('exchange_dlg').show()");
 	}
@@ -617,8 +640,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 		request.setSerialNumber(SerialNum);
 		dataAccessService.updateObject(request);
-		// MsgEntry.addInfoMessage("تم الحفظ");
-		System.out.println("New serial number is:---  " + request.getSerialNumber() + " ---");
 	}
 
 	public void cancleUpdateSerialNum() {
@@ -653,9 +674,10 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			if (whsWarehouses.getStoreNumber() == strNo)
 				stockIsBlocked = whsWarehouses.getInvIsBlocked().equals(1);
 		}
-		exchangeRequestList = dataAccessService.searchExchangeRequests(beginDate, finishDate, strNo);
+		exchangeRequestList = dataAccessService.searchExchangeRequests(beginDate, finishDate, strNo, artType,
+				employerId);
 
-		//refreshPage();
+		// refreshPage();
 	}
 
 	public void loadSelectedArticle(StoreRequestModel articleItem) {
@@ -722,14 +744,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		this.articleList = articleList;
 	}
 
-	public Integer getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-
 	public String getResponseText() {
 		return responseText;
 	}
@@ -776,14 +790,6 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public List<WrkPurpose> getWrkPurposes() {
 		return wrkPurposes;
-	}
-
-	public String getItem() {
-		return item;
-	}
-
-	public void setItem(String item) {
-		this.item = item;
 	}
 
 	public void setWrkPurposes(List<WrkPurpose> wrkPurposes) {
@@ -1090,7 +1096,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public void setTechnicalList(List<TechnicalUsers> technicalList) {
-		technicalList = technicalList;
+		this.technicalList = technicalList;
 	}
 
 	public Integer getStrNo() {
@@ -1139,6 +1145,35 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void setSelectedItemId(Integer selectedItemId) {
 		this.selectedItemId = selectedItemId;
+	}
+
+	public boolean isCheckType() {
+		if (checkType) {
+			artType = 2;
+		} else {
+			artType = 1;
+		}
+		return checkType;
+	}
+
+	public void setCheckType(boolean checkType) {
+		this.checkType = checkType;
+	}
+
+	public Integer getArtType() {
+		return artType;
+	}
+
+	public void setArtType(Integer artType) {
+		this.artType = artType;
+	}
+
+	public Integer getEmployerId() {
+		return employerId;
+	}
+
+	public void setEmployerId(Integer employerId) {
+		this.employerId = employerId;
 	}
 
 }

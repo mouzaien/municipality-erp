@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<body>
+
+	<h:panelGroup rendered="#{(storeReturnBean.enableAccept)}">
+		<div class="image-box-footer" align="left">
+			<p:commandButton value="#{msg['accept']}" immediate="true"
+				action="#{storeReturnBean.accept}" icon="ui-icon ui-icon-check">
+			</p:commandButton>
+			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
+				onclick="this.form.target='_blank'" ajax="false"
+				rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton>
+		</div>
+	</h:panelGroup>
+	<ui:include src="store_return_include.xhtml"></ui:include>
+</body>
+</html>

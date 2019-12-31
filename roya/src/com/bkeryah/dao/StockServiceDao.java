@@ -25,6 +25,7 @@ import com.bkeryah.entities.FinFinancialYear;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StockInDetails;
 import com.bkeryah.entities.StockInOutType;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.WhsMoveType;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplication;
@@ -296,10 +297,20 @@ public class StockServiceDao extends CommonServicesDao implements Serializable, 
 		criteria.add(deanOrBoss);
 		return criteria.list();
 	}
-	
+
 	@Override
 	@Transactional
-	public MemoReceiptModel getMemoReceiptDetails(Integer memo_receipt_id){
+	public MemoReceiptModel getMemoReceiptDetails(Integer memo_receipt_id) {
 		return dataAccessService.getMemoReceiptDetails(memo_receipt_id);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<WhsWarehouses> getStoreDeanWharehouses() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WhsWarehouses.class);
+		criteria.add(Restrictions.eq("strType", 2));
+		return criteria.list();
+	}
+
 }

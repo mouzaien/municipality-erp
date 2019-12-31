@@ -27,15 +27,30 @@
 				</div>
 				<br />
 				<div class="card card-w-title" dir="rtl">
-
-					<h1 style="color: #7CB342; text-align: center;">
-						طلبات صرف مواد <span class="fa fa-fw fa-bitbucket"></span>
-					</h1>
+					<h:panelGroup id="title">
+						<h1 style="color: #7CB342; text-align: center;">
+							<h:outputText value="طلبات صرف مواد"
+								rendered="#{!(exchangeRequestBean.checkType)}" />
+							<h:outputText value="العُهــــــد"
+								rendered="#{(exchangeRequestBean.checkType)}" />
+							<span class="fa fa-fw fa-bitbucket"></span>
+						</h1>
+					</h:panelGroup>
 					<div class="ui-g" dir="rtl">
-						<div class="ui-g-12 ui-md-2">
+						<div class="ui-g-2">
+
+							<p:selectBooleanCheckbox value="#{exchangeRequestBean.checkType}">
+								<p:ajax update=":includeform:title exchangeTable"
+									listener="#{exchangeRequestBean.changeType}" process="@this" />
+							</p:selectBooleanCheckbox>
+							<h:outputText value=" إظهار العُهد"></h:outputText>
+						</div>
+					</div>
+					<div class="ui-g" dir="rtl">
+						<div class="ui-g-12 ui-md-1">
 							<h:outputLabel value="المستودع" />
 						</div>
-						<div class="ui-g-12 ui-md-4">
+						<div class="ui-g-12 ui-md-2">
 							<p:selectOneMenu styleClass="form-control" id="stockNO"
 								placeholder="إختر المستودع" value="#{exchangeRequestBean.strNo}"
 								style="direction: rtl;height: 39px;">
@@ -46,6 +61,20 @@
 									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
 							</p:selectOneMenu>
 						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<h:outputLabel value="اختر الموظف" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:selectOneMenu id="empList" filterMatchMode="contains"
+								filter="true" value="#{exchangeRequestBean.employerId}">
+								<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+								<f:selectItems value="#{loadingDataBean.employersList}"
+									var="emp" itemLabel="#{emp.employeeName}"
+									itemValue="#{emp.userId}" />
+								<f:ajax></f:ajax>
+							</p:selectOneMenu>
+						</div>
+
 					</div>
 					<br />
 
