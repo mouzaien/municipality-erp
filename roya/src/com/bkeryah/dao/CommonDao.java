@@ -4274,7 +4274,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CompensatoryVacStock.class);
 			criteria.add(Restrictions.eq("empno", empNO));
 			criteria.add(Restrictions.eq("year", year));
-			if (compVacType != 0) {
+			if (compVacType != null && compVacType != 0) {
 				criteria.add(Restrictions.eq("comp_type", compVacType));
 			}
 			comp = criteria.list();

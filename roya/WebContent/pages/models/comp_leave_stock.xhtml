@@ -190,7 +190,7 @@
 								<div class="ui-g-5">
 
 									<p:selectOneMenu
-										value="#{compensatoryLeaveBean.empNO}"
+										value="#{compensatoryLeaveBean.compVAcSctock.empno}"
 										required="true" requiredMessage="إختر الموظف" filter="true"
 										filterMatchMode="contains">
 
@@ -209,7 +209,7 @@
 								<div class="ui-g-2">
 									<p:selectOneMenu id="employeeList" required="true"
 										requiredMessage="إدخل السنة"
-										value="#{compensatoryLeaveBean.empVacYear}" filter="true"
+										value="#{compensatoryLeaveBean.compVAcSctock.year}" filter="true"
 										filterMatchMode="contains">
 										<f:selectItem itemLabel="إختر السنة" itemValue=""></f:selectItem>
 										<f:selectItems value="#{compensatoryLeaveBean.years}"
@@ -226,7 +226,7 @@
 									<p:selectOneMenu id="list_vac_type" filter="true"
 										filterMatchMode="contains" required="true"
 										requiredMessage="إختر نوع الاجازة"
-										value="#{compensatoryLeaveBean.empCompVacType}">
+										value="#{compensatoryLeaveBean.compVAcSctock.VAC_TYPE}">
 										<f:selectItem itemLabel="#{msg['vacation.selectvactype']}"
 											itemValue="" />
 										<f:selectItem itemLabel="عيد الفطر" itemValue="4" />
@@ -239,7 +239,7 @@
 								<div class="ui-g-2">
 									<p:inputNumber id="old_sold" maxValue="999" required="true"
 										requiredMessage="إدخل الرصيد"
-										value="#{compensatoryLeaveBean.qty}"></p:inputNumber>
+										value="#{compensatoryLeaveBean.compVAcSctock.qty}"></p:inputNumber>
 								</div>
 							</div>
 							<div class="ui-g">
@@ -249,15 +249,15 @@
 								<div class="ui-g-5">
 									<p:inputNumber id="tanken" maxValue="999" required="true"
 										requiredMessage="المتمتع به"
-										value="#{compensatoryLeaveBean.taken}"></p:inputNumber>
+										value="#{compensatoryLeaveBean.compVAcSctock.taken}"></p:inputNumber>
 								</div>
 							</div>
 							<br />
 							<div class="image-box-footer" align="left">
 
 								<p:commandButton value="حفظ"
-									action="#{compensatoryLeaveBean.saveVacaiton}"
-									onsuccess=" PF('addDialog').hide()" styleClass="cyan-btn"
+									action="#{compensatoryLeaveBean.SaveVac}" process="addPG"
+									oncomplete=" PF('addDialog').hide()" styleClass="cyan-btn"
 									update=":includeform:outboxdt,:includeform:msgs ">
 								</p:commandButton>
 								<p:spacer width="10px" height="10px"></p:spacer>
