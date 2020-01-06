@@ -439,7 +439,7 @@
 		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>user_roles</from-outcome>
-			<to-view-id>/setting/roles.xhtml</to-view-id>
+			<to-view-id>/setting/user_roles.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
@@ -945,7 +945,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -954,7 +954,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -963,7 +963,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -972,7 +972,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -1055,4 +1055,86 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>absenceStatus</from-outcome>
+			<to-view-id>/setting/absenceStatus.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>absenceType</from-outcome>
+			<to-view-id>/setting/absenceType.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>categoryEmployer</from-outcome>
+			<to-view-id>/setting/categoryEmployer.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>commentType</from-outcome>
+			<to-view-id>/setting/commentType.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>letterFrom</from-outcome>
+			<to-view-id>/setting/letterFrom.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>letterTo</from-outcome>
+			<to-view-id>/setting/letterTo.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>purpose</from-outcome>
+			<to-view-id>/setting/purpose.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>role_desc</from-outcome>
+			<to-view-id>/setting/role_desc.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>roles</from-outcome>
+			<to-view-id>/setting/roles.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>vacationType</from-outcome>
+			<to-view-id>/setting/vacationType.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+
 </faces-config>
