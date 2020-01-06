@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
 
+import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
@@ -29,7 +30,7 @@ public class PenaltyBean {
 	private Integer arcPeople;
 	private Integer activityType;
 	private List<ActivityType> activitiesTypes;
-	private List<User> supervisors;
+	private List<ArcUsers> supervisors;
 	private List<ReqFinesSetup> codesFines;
 	private List<ReqFinesSetup> codesFinesList = new ArrayList<ReqFinesSetup>();
 	private Integer supervisorId;
@@ -83,7 +84,8 @@ public class PenaltyBean {
 		activitiesTypes = new ArrayList<ActivityType>();
 		activitiesTypes.add(new ActivityType(0, Utils.loadMessagesFromFile("sihi")));
 		activitiesTypes.add(new ActivityType(1, Utils.loadMessagesFromFile("tijari")));
-		supervisors = dataAccessService.getAllUsers();
+	//	supervisors = dataAccessService.getAllUsers();
+		supervisors = dataAccessService.getAllActiveEmployeesInDept(Utils.findCurrentUser().getDeptId());
 		codesFines = dataAccessService.getCodesFines();
 		ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
 		codesFinesList.add(reqFinesSetup);
@@ -123,6 +125,8 @@ public class PenaltyBean {
 			reqFinesMaster.setTotalValue(FineSum);
 			reqFinesMaster.setActivityType(activityType);
 			reqFinesMaster.setfSupervisorCode(supervisorId.toString());
+			reqFinesMaster.setfAddress(selectedPeople.getLicAdress());
+			reqFinesMaster.setfTradeMarkName(selectedPeople.getTrdName());
 			dataAccessService.saveLicencePenalty(reqFinesMaster, reqFinesDetailsList, true);
 			codesFinesList.clear();
 			codesFinesList = new ArrayList<ReqFinesSetup>();
@@ -152,6 +156,8 @@ public class PenaltyBean {
 	private void createtReqFinesMaster() {
 		reqFinesMaster = new ReqFinesMaster();
 		reqFinesMaster.setfIdNo(selectedPeople.getAplOwner());
+		reqFinesMaster.setfLicenceNo(selectedPeople.getLicNo());
+		reqFinesMaster.setfAddress(selectedPeople.getLicAdress());
 		reqFinesMaster.setfName(selectedPeople.getTrdName());
 		reqFinesMaster.setFineDate(HijriCalendarUtil.findCurrentHijriDate());
 		reqFinesMaster.setfDeptNo(Utils.findCurrentUser().getDeptId().toString());
@@ -283,11 +289,11 @@ public class PenaltyBean {
 		this.supervisorId = supervisorId;
 	}
 
-	public List<User> getSupervisors() {
+	public List<ArcUsers> getSupervisors() {
 		return supervisors;
 	}
 
-	public void setSupervisors(List<User> supervisors) {
+	public void setSupervisors(List<ArcUsers> supervisors) {
 		this.supervisors = supervisors;
 	}
 
