@@ -82,15 +82,15 @@
 					</p:cellEditor>
 				</p:column>
 
-				<p:column headerText="الاسم" filterBy="#{employer.firstName}"
+				<p:column headerText="الاسم" filterBy="#{employer.firstName} #{employer.secondName} #{employer.thirdName} #{employer.forthName}"
 					filterMatchMode="contains" width="20%">
 					<p:cellEditor>
 						<f:facet name="output">
-							<h:outputText value="#{employer.firstName}" />
+							<h:outputText value="#{employer.firstName}  #{employer.secondName} #{employer.thirdName} #{employer.forthName}" />
 							<!--  value="#{employer.firstName} #{employer.secondName} #{employer.thirdName} #{employer.forthName}"  -->
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText id="start" value="#{employer.firstName}"
+							<p:inputText id="start" value="#{employer.firstName} "
 								style="width:96%" mask="99/99/9999" />
 						</f:facet>
 					</p:cellEditor>

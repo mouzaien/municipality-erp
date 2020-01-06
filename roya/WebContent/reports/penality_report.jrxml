@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-08-05T11:45:00 -->
+<!-- 2019-12-30T09:41:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penality_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3323bf0f-bc60-4d7d-95d7-19f5834b1a61">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<subDataset name="Table Dataset 1" uuid="08d883d9-733a-4867-847f-470f858b4c8d"/>
 	<parameter name="fine_no" class="java.lang.Integer"/>
@@ -16,14 +16,14 @@
 		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\sub_penality_report.jasper"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select M.F_NAME, M.F_LICENCE_NO, M.F_TRADE_MARK_NAME,M.F_ADDRESS,N.observation,
+		<![CDATA[select M.F_NAME, M.F_LICENCE_NO, nvl(M.F_TRADE_MARK_NAME,''),nvl(M.F_ADDRESS,''),' ' OBSERVATION,
 US.EMPNAME,
 (SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = US.USER_ID) SIGN_SUP, 
 (SELECT US.EMPNAME FROM ARC_USERS US WHERE US.USER_ID = GET_SYS_PROP_VAL('HEALTH_CONTROL_HEAD')) DIRECTOR,
 (SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('HEALTH_CONTROL_HEAD')) SIGN_DIR ,
 FD.FINE_NO, f.fine_code,F.FINE_MINIMUM_VALUE,F.FINE_SUPERMUM_VALUE , f.FINE_DESC, FD.FINE_COUNT  , fd.fine_value
-from REQ_FINES_MASTER M,NOTIF_FINES_MASTER N,REQ_FINES_DETAILS fd, REQ_FINES_SETUP f, ARC_USERS US
-where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and M.FINE_NO =  $P{fine_no} and N.SUPERVISOR_EMPNO = US.EMPNO]]>
+from REQ_FINES_MASTER M,REQ_FINES_DETAILS fd, REQ_FINES_SETUP f, ARC_USERS US
+where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id  and M.FINE_NO = $P{fine_no} and M.F_SUPERVISOR_CODE = US.USER_ID]]>
 	</queryString>
 	<field name="F_NAME" class="java.lang.String"/>
 	<field name="F_LICENCE_NO" class="java.lang.String"/>
@@ -346,7 +346,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="124" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
 				<reportElement positionType="Float" x="12" y="16" width="148" height="20" uuid="dbdd4f99-e2a1-4c6c-882d-34736f5e93b3"/>

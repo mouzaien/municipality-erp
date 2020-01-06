@@ -5,7 +5,6 @@
  						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
  						http://www.springframework.org/schema/security
  						http://www.springframework.org/schema/security/spring-security-4.0.xsd">	
-	
 	<beans:bean id="myUserDetailsService" class="common.Util.MyUserDetailsService"/>
 	<sec:http auto-config="true" use-expressions="true">
 		<sec:csrf disabled="true" />
