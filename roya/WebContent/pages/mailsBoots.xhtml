@@ -9,48 +9,7 @@
 
 
 <h:head>
-	<script>
-		//     $(document).ready(function(){
-		//     	alert("ZXZXZXZX");
-		//         $('#nonAjaxLoad').hide();
-		//     });
-
-		//     $(window).bind('beforeunload', function() {
-
-		//         $('#nonAjaxLoad').show(); 
-		//     });
-	</script>
-	<style>
-.ui-datatable .ui-column-filter {
-	display: none;
-	width: 100px;
-	margin: auto;
-}
-
-.ui-datatable th.ui-state-default {
-	background: #607D8B !important;
-	color: #ffffff !important;
-	border-color: #607D8B;
-	height: 40px;
-}
-
-.outputText-Bold {
-	font-weight: bold;
-	font-size: 16px;
-	float: right;
-	padding-top: 5px;
-	margin-left: 32px;
-}
-
-/* body .ui-widget-header { */
-/*     background-color: #8fa5ab; */
-/*     color: #ffffff; */
-/*     border: 1px solid #8fa5ab; */
-/*     padding: 8px 14px; */
-/* } */
-</style>
-	<h:outputStylesheet name="css/layout-moody.css"
-		library="serenity-layout" />
+	
 </h:head>
 <h:body>
 
@@ -150,9 +109,9 @@
 									<f:facet name="header">
 										<p:outputPanel>
 											<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
-											<p:inputText id="globalFilter"
+											<p:inputText id="globalFilter" 
 												onkeyup="PF('fineset').filter()"
-												style="width:150px; font-size: x-large;"
+												style="width:50%; font-size: x-large;"
 												placeholder="كلمة البحث">
 											</p:inputText>
 										</p:outputPanel>
@@ -252,7 +211,7 @@
 											<h:outputText value="ابحث فى كل الحقول:" />&nbsp;&nbsp; 
 											<p:inputText id="globalFilter"
 												onkeyup="PF('outfineset').filter()"
-												style="width:150px;font-size: x-large;"
+												style="width:50%;font-size: x-large;"
 												placeholder="كلمة البحث">
 											</p:inputText>
 										</p:outputPanel>

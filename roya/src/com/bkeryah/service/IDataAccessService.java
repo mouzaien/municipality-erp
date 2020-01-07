@@ -994,7 +994,7 @@ public interface IDataAccessService {
 
 	void deleteMailFomFolder(WrkUserFolderMail folderMail);
 
-	public List<ArcDocumentStruct> loadArcDocumentStructList();
+	public List<WrkSection> loadArcDocumentStructList();
 
 	Integer findStepId(int recordId);
 

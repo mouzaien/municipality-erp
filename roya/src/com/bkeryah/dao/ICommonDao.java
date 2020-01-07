@@ -496,7 +496,7 @@ public interface ICommonDao {
 	public List<ArcRecords> searchArcRecords(String subject, String letter, Integer recordSender, Integer incomeNB,
 			String letterFromNo, List<Integer> selectedStructIdList, boolean employer);
 
-	public List<ArcDocumentStruct> loadArcDocumentStructList();
+	public List<WrkSection> loadArcDocumentStructList();
 
 	public Connection findConnection();
 

@@ -4710,7 +4710,7 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<ArcDocumentStruct> loadArcDocumentStructList() {
+	public List<WrkSection> loadArcDocumentStructList() {
 		return commonDao.loadArcDocumentStructList();
 	}
 

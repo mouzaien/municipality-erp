@@ -2005,9 +2005,9 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ArcDocumentStruct> loadArcDocumentStructList() {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcDocumentStruct.class);
-		criteria.addOrder(Order.desc("structId"));
+	public List<WrkSection> loadArcDocumentStructList() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
+	//	criteria.addOrder(Order.desc("structId"));
 		return criteria.list();
 	}
 

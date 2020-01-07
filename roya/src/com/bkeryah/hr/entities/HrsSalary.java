@@ -74,6 +74,8 @@ public class HrsSalary {
 	private Integer salTotalSum;
 	@Formula("(select w.EMPNAME from arc_users w where w.EMPNO = EMPNO)")
 	private String name;
+	@Column(name = "life")
+	private Integer life;
 //	public Integer getEmployerNumber() {
 //		return employerNumber;
 //	}
@@ -247,6 +249,12 @@ public class HrsSalary {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Integer getLife() {
+		return life;
+	}
+	public void setLife(Integer life) {
+		this.life = life;
 	}
 	
 	

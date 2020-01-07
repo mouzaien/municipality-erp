@@ -346,7 +346,7 @@ public class FngMonitoringBean {
 			if (higriMode) {
 
 				mstartDate = Utils.convertHDateToGDate(startGeorDate);
-				
+
 				mEndDate = Utils.convertHDateToGDate(endGeorDate);
 			} else {
 				startGeorDate = Utils.grigDatesConvert(mstartDate);
@@ -647,11 +647,12 @@ public class FngMonitoringBean {
 			reportName = "/reports/fng_pres_abs.jasper";
 		}
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		// parameters.put("fromDate", (higriMode) ? startDate : startGeorDate);
-		// parameters.put("toDate", (higriMode) ? endDate : endGeorDate);
-		
-		parameters.put("fromDate", (higriMode) ? startGeorDate : mstartDate);
-		parameters.put("toDate", (higriMode) ? endGeorDate : mEndDate);
+		String start = Utils.convertDateToString(mstartDate);
+		String dateEnd = Utils.convertDateToString(mEndDate);
+		System.out.println(" start "+start);
+		System.out.println(" dateEnd "+dateEnd);
+		parameters.put("fromDate", (higriMode) ? startGeorDate : start);
+		parameters.put("toDate", (higriMode) ? endGeorDate : dateEnd);
 
 		parameters.put("now", HijriCalendarUtil.findCurrentHijriWithTimeStamp());
 		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
@@ -741,20 +742,7 @@ public class FngMonitoringBean {
 			SimpleDateFormat hourSDF = new SimpleDateFormat("HH:mm");
 			String exithtmlTime = hourSDF.format(absFrom);
 			String returnhtmlTime = hourSDF.format(absTo);
-			System.out.println("from " + exithtmlTime + "  to " + returnhtmlTime);
-			// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			// String grigAbs = sdf.format(absDate);
-			// System.out.println(
-			// "Selected Date datatype after convert to String------>>>> " +
-			// grigAbs.getClass().getName());
-			// System.out.println("Selected Date value after convert to
-			// String------>>>> " + grigAbs);
 			HrsUserAbsent userAbsent = new HrsUserAbsent();
-			// userAbsent = new HrsUserAbsent(employe.getUserId(),
-			// HijriCalendarUtil.ConvertgeorgianDatetoHijriDate(absDate),
-			// employe.getEmployeeNumber(),
-			// exithtmlTime, returnhtmlTime, typeAuth, absDate,
-			// MyConstants.YES);
 			if (higriMode2) {
 				userAbsent = new HrsUserAbsent(employe.getUserId(), absDate, employe.getEmployeeNumber(), exithtmlTime,
 						returnhtmlTime, typeAuth, absDate, MyConstants.YES);
@@ -765,7 +753,6 @@ public class FngMonitoringBean {
 			}
 
 			dataAccessService.createHrsEmpAbsent(userAbsent);
-			System.out.println(userAbsent.getAbseDate());
 			MsgEntry.addAcceptFlashInfoMessage(utilities.Utils.loadMessagesFromFile("success.operation"));
 		} catch (Exception e) {
 			e.printStackTrace();
