@@ -206,7 +206,8 @@ body .ui-accordion .ui-accordion-header {
 								<h:outputLabel value="#{msg['send.to']}" />
 							</div>
 							<div class="ui-md-2">
-								<p:selectOneMenu filter="true"
+								<p:selectOneMenu filter="true" required="true"
+								requiredMessage="جهة الاحاله مطلوبة"
 									value="#{newIncomeBean.newWrkApplication.toUserId}"
 									style="width:100% ;" id="newRecordaftersaveto"
 									filterMatchMode="contains" styleClass="form-control"
@@ -278,7 +279,7 @@ body .ui-accordion .ui-accordion-header {
 								<p:selectOneMenu
 									value="#{newIncomeBean.newWrkApplication.applicationPurpose}"
 									id="newRecordpurp" required="true" style="width:100%"
-									filter="true" filterMatchMode="contains"
+									filter="true" filterMatchMode="contains" 
 									requiredMessage="#{msg['target.required']}"
 									panelStyle="width:150px" styleClass="form-control">
 									<f:selectItem itemLabel="#{msg['send.target']}" itemValue="" />

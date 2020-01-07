@@ -149,6 +149,7 @@ public class ChargingBean2 {
 		charging.setChargingStratDate(startDate);
 		charging.setChargingEndDate(endDate);
 		charging.setEmployeInChargingNameBefore(chargingInUser.getFirstName());
+		
 		if (chargingOutUser.getWrkRoleId() == 1) {
 
 		} else {
@@ -160,7 +161,8 @@ public class ChargingBean2 {
 			}
 		}
 		charging.setChargingEmpPrivilegeBefore(chargingInUser.getWrkRoleId());
-		charging.setChargingStatus(2);
+		charging.setChargingEmpPrivilegeAfter(chargingOutUser.getWrkRoleId());
+		charging.setChargingStatus(1);
 		try {
 			dataAccessService.addChargingProcess(charging);
 		} catch (Exception e) {

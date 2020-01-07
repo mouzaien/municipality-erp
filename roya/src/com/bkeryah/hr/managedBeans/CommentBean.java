@@ -75,6 +75,7 @@ public class CommentBean extends Scanner {
 	 * @throws IOException
 	 */
 	public String addComment() throws IOException {
+		wrkComment.setLongComment(Utils.convertTextWithEnglishNum(wrkComment.getLongComment()));
 		List<Integer> attachIds = setCommentValues();
 		if (!personalCommnetFlag) {
 			dataAccessService.addComment(wrkComment, wrkApplication, attachIds);

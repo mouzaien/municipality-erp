@@ -346,7 +346,7 @@ public class FngMonitoringBean {
 			if (higriMode) {
 
 				mstartDate = Utils.convertHDateToGDate(startGeorDate);
-
+				
 				mEndDate = Utils.convertHDateToGDate(endGeorDate);
 			} else {
 				startGeorDate = Utils.grigDatesConvert(mstartDate);
@@ -649,7 +649,7 @@ public class FngMonitoringBean {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		// parameters.put("fromDate", (higriMode) ? startDate : startGeorDate);
 		// parameters.put("toDate", (higriMode) ? endDate : endGeorDate);
-
+		
 		parameters.put("fromDate", (higriMode) ? startGeorDate : mstartDate);
 		parameters.put("toDate", (higriMode) ? endGeorDate : mEndDate);
 

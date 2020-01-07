@@ -112,7 +112,7 @@
 			<p:dataTable id="salary" var="salaryemps"
 				value="#{hrsSalaryBean.listSalary}" editable="true"
 				widgetVar="cellsalary" filteredValue="#{hrsSalaryBean.filterSalary}"
-				rows="10" paginator="true"
+				rows="10" paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15">
 				<f:facet name="header">
@@ -136,6 +136,18 @@
 						</f:facet>
 						<f:facet name="input">
 							<p:inputText id="emps" value="#{salaryemps.id.employerNumber}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="اسم الموظف"
+					filterBy="#{salaryemps.name}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="nme" value="#{salaryemps.name}"
 								style="width:96%" />
 						</f:facet>
 					</p:cellEditor>

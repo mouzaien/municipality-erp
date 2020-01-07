@@ -4734,11 +4734,11 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
-	@Transactional()
+	@Transactional
 	public void addChargingProcess(Charging charging) {
 		charging.setEmployeInChargingNameAfter(charging.getEmployeInChargingNameAfter() + " Ø§Ù„Ù…ÙƒÙ„Ù�");
 		save(charging);
-		sendInternalMemoryForCopyInCharging(charging);
+	//	sendInternalMemoryForCopyInCharging(charging);
 		chargingEmp(charging.getEmployeInChargingId());
 
 	}

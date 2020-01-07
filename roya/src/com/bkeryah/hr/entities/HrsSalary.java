@@ -6,6 +6,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 
 @Entity
 @Table(name="HRS_SALARY")
@@ -70,6 +72,8 @@ public class HrsSalary {
 	private Integer salOtherOut;
 	@Column(name = "SAL_TOTAL_SUM")
 	private Integer salTotalSum;
+	@Formula("(select w.EMPNAME from arc_users w where w.EMPNO = EMPNO)")
+	private String name;
 //	public Integer getEmployerNumber() {
 //		return employerNumber;
 //	}
@@ -237,6 +241,12 @@ public class HrsSalary {
 	}
 	public void setId(HrsSalaryId id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

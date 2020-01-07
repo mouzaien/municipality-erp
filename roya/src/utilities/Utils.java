@@ -116,13 +116,22 @@ public class Utils {
 					.replaceAll("9", "\\\u0669");
 		return returnText;
 	}
+	public static String convertTextWithEnglishNum(String txt) {
+		String returnText = txt;
+		if (returnText != null)
+			returnText = returnText.replaceAll("\\\u0660", "0").replaceAll("\\\u0661", "1").replaceAll("\\\u0662", "2")
+					.replaceAll("\\\u0663", "3").replaceAll("\\\u0664", "4").replaceAll("\\\u0665", "5")
+					.replaceAll("\\\u0666", "6").replaceAll("\\\u0667", "7").replaceAll("\\\u0668", "8")
+					.replaceAll("\\\u0669", "9");
+		return returnText;
+	}
 
 	public static String convertToEnglishDigits(String value) {
-		String newValue = value.replace("Ù¡", "1").replace("Ù¢", "2").replace("Ù£", "3").replace("Ù¤", "4")
-				.replace("Ù¥", "5").replace("Ù¦", "6").replace("Ù§", "7").replace("Ù¨", "8").replace("Ù©", "9")
-				.replace("Ù ", "0").replace("Û±", "1").replace("Û²", "2").replace("Û³", "3").replace("Û´", "4")
-				.replace("Ûµ", "5").replace("Û¶", "6").replace("Û·", "7").replace("Û¸", "8").replace("Û¹", "9")
-				.replace("Û°", "0");
+		String newValue = value.replace("١", "1").replace("٢", "2").replace("٣", "3").replace("٤", "4")
+				.replace("٥", "5").replace("٦", "6").replace("٧", "7").replace("٨", "8").replace("٩", "9")
+				.replace("٠", "0").replace("۱", "1").replace("۲", "2").replace("۳", "3").replace("۴", "4")
+				.replace("۵", "5").replace("۶", "6").replace("۷", "7").replace("۸", "8").replace("۹", "9")
+				.replace("۰", "0");
 
 		return newValue;
 	}

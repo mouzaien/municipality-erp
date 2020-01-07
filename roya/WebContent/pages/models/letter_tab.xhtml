@@ -136,7 +136,7 @@ body .ui-menu {
 				actionListener="#{mailDefenationBean.editWrkCommentBtnAction}"
 				process="@this,letterForm" icon="fa fa-edit">
 			</p:commandButton>
-			<p:commandButton id="markbtn" value="#{msg['mark.comment']}"
+			<p:commandButton id="markbtn" value="#{msg['mark.comment']}" 
 				styleClass="btn btn-default" style="float:left;width:5%;"
 				rendered="#{mailDefenationBean.canMark}"
 				action="#{mailDefenationBean.markCommentAction}" process="@this">
@@ -144,6 +144,12 @@ body .ui-menu {
 					message="#{msg['mark.comment.message.confirmation']}"
 					icon="ui-icon-alert" />
 			</p:commandButton>
+
+    <p:growl id="message" showDetail="true" />
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton  value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+    </p:confirmDialog>      
 		</h:panelGroup>
 		<!-- 								 -->
 		<!-- 						ZONE PANEL  -->
@@ -204,7 +210,7 @@ body .ui-menu {
 					disabled="#{mailDefenationBean.selectedCommentSigned}"
 					id="commentconentid"
 					value="#{mailDefenationBean.comment.longCommentArabStr}">
-					<f:ajax render="commentconentid" execute="commentconentid"></f:ajax>
+					<f:ajax render="commentconentid" execute="commentconentid" event="keyup" ></f:ajax>
 				</p:inputTextarea>
 			</h:panelGroup>
 		<br></br>

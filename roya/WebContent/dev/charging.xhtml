@@ -47,11 +47,11 @@
 					render="@form"></f:ajax>
 			</p:commandButton>
 			<p:spacer width="10" height="10"></p:spacer>
-			<p:commandButton styleClass="btn btn-danger" value="تفعيل ">
+<!-- 			<p:commandButton styleClass="btn btn-danger" value="تفعيل "> -->
 
-				<f:ajax execute="@form" listener="#{chargingBean2.finishCharging}"
-					render="@form"></f:ajax>
-			</p:commandButton>
+<!-- 				<f:ajax execute="@form" listener="#{chargingBean2.finishCharging}" -->
+<!-- 					render="@form"></f:ajax> -->
+<!-- 			</p:commandButton> -->
 			<p:spacer width="10" height="10"></p:spacer>
 <!-- 			<p:commandButton value="جديد" -->
 <!-- 				styleClass="btn btn-primary"> -->
@@ -243,12 +243,12 @@
 				<p:column headerText="عرض"
 					style="white-space: nowrap;text-align: center;" width="5%"
 					filterBy="#{comLeaveitem.taken}" filterMatchMode="contains">
-					<p:commandButton id="xx" styleClass="btn btn-success" value="عرض">
+					<h:commandButton id="xx" styleClass="btn btn-success" value="عرض">
 						<f:setPropertyActionListener value="#{charg}"
 							target="#{chargingBean2.charging}" />
 						<f:ajax execute="xx" listener="#{chargingBean2.showRecord}"
 							render="@form"></f:ajax>
-					</p:commandButton>
+					</h:commandButton>
 
 				</p:column>
 			</p:dataTable>
