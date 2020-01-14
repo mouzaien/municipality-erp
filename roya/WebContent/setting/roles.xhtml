@@ -38,7 +38,7 @@
 						<p:outputLabel styleClass="btxt" value="القسم" />
 					</div>
 					<div class="ui-g-12 ui-md-6 ui-lg-2">
-						<p:selectOneMenu id="section" styleClass="form-control"
+						<p:selectOneMenu id="section" styleClass="form-control" filter="true" filterMatchMode="contains"
 							value="#{loadingDataBean.departmentId}">
 							<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" />
 							<f:selectItems value="#{loadingDataBean.depatmentList}"

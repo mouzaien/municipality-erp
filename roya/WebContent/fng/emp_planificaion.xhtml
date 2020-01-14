@@ -36,17 +36,6 @@
 									<h:outputLabel value="الإدارة" />
 								</div>
 								<div class="ui-g-12 ui-md-6 ui-lg-3">
-									<!-- 									<p:selectOneMenu id="section" style="width:100%" filter="true" -->
-									<!-- 										filterMatchMode="contains" -->
-									<!-- 										value="#{empPlanificationBean.deptId}"> -->
-									<!-- 										<f:selectItem itemValue="" itemLabel="#{msg['choose.dept']}" /> -->
-									<!-- 										<f:selectItems value="#{loadingDataBean.depatmentList}" -->
-									<!-- 											var="dept" itemValue="#{dept.id}" -->
-									<!-- 											itemLabel="#{dept.deptName}" /> -->
-									<!-- 										<f:ajax render="empList" execute="section" event="change" -->
-									<!-- 											listener="#{empPlanificationBean.loadEmployersByDept}" /> -->
-									<!-- 									</p:selectOneMenu> -->
-<!-- 									<p:selectManyMenu id="section" style="width:100%" filter="true" -->
 									<p:selectCheckboxMenu id="section" panelStyleClass="empClass" style="width:70%" filter="true"
 										filterMatchMode="contains" showCheckbox="true" label="اختر الادارة"
 										value="#{empPlanificationBean.deptIds}">
@@ -57,18 +46,6 @@
 										<f:ajax render="empList" execute="section" event="change"
 											listener="#{empPlanificationBean.loadEmployersByDept}" />
 									</p:selectCheckboxMenu>
-
-<!-- 									<p:selectCheckboxMenu id="section2" var="dept" required="true" -->
-<!-- 										style="width:100%" panelStyleClass="empClass" -->
-<!-- 										requiredMessage="إختر الإدارة" -->
-<!-- 										value="#{empPlanificationBean.deptIds}" label="إختر الإدارة" -->
-<!-- 										multiple="false" filter="true" filterMatchMode="contains" -->
-										
-<!-- 										> -->
-<!-- 										<f:selectItems value="#{loadingDataBean.depatmentList}" /> -->
-<!-- 										<p:ajax event="toggleSelect" process="@this" -->
-<!-- 											listener="#{empPlanificationBean.loadEmployersByDept}" /> -->
-<!-- 									</p:selectCheckboxMenu> -->
 									<h:outputLabel value="#{EmpPlanificationBean.deptName}" />
 								</div>
 								<div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -172,15 +149,12 @@
 						<div class="ui-g-2"></div>
 						<div class="ui-g-12 ui-md-6 ui-lg-4">
 							<div class="iamge-box-footer" align="left">
-								<p:commandButton value="إظهار دوام الموظف" 
-									icon="ui-icon ui-icon-developer-board" styleClass="green-btn"
-									>
-									<f:ajax render="outTable"></f:ajax>
-									<p:ajax 
-										event="click"
+								<p:commandButton value="إظهار دوام الموظف"
+									icon="ui-icon ui-icon-developer-board" styleClass="green-btn">
+									<f:ajax 
 										listener="#{empPlanificationBean.loadUserShifts}"
-										process="includeform:pDates11"
-										update="outTable"></p:ajax>
+										execute="includeform:pDates11,pDates12"
+										render="outTable"></f:ajax>
 								</p:commandButton>
 								<p:spacer height="10"></p:spacer>
 								<p:commandButton value="إعطاء الدوامات"
