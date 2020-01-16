@@ -37,6 +37,8 @@ import javax.persistence.Transient;
 
 import com.bkeryah.service.IDataAccessService;
 
+import utilities.HijriCalendarUtil;
+
 
 
 @Entity
@@ -154,7 +156,10 @@ public class DeputationTraining implements Serializable {
 		return hij_st_date;
 	}
 	public void setHij_st_date(String hij_st_date) {
+		
 		this.hij_st_date = hij_st_date;
+		if ((getDayscount() != null) && (getDayscount() != 0) && (getHij_st_date() != null) && (!getHij_st_date().trim().equals("")))
+			hij_end_date = HijriCalendarUtil.addDaysToHijriDate(getHij_st_date(), getDayscount() - 1);
 	}
 	public String getHij_end_date() {
 		return hij_end_date;

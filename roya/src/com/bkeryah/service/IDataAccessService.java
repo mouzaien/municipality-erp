@@ -216,7 +216,9 @@ import com.bkeryah.licences.models.BldLicNewModel;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.AttachmentModel;
 import com.bkeryah.model.DashbordModel;
+import com.bkeryah.model.LoanModel;
 import com.bkeryah.model.MemoReceiptModel;
+import com.bkeryah.model.RetirementModel;
 import com.bkeryah.model.User;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
@@ -233,6 +235,7 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 import customeExceptions.VacationAndInitException;
 
 public interface IDataAccessService {
+	public List<WrkDept> findDepartmentById(Integer deptId);
 
 	public List<UserClass> findAllUsers();
 
@@ -1827,4 +1830,7 @@ public interface IDataAccessService {
 	List<VacationsType> loadAllVacationTypes();
 
 	List<WrkCommentType> loadAllCommentTypes();
+	public List<LoanModel> loadUsersLoan(Integer year,Integer month,Integer type);
+	public List<RetirementModel> loadRetirement();
+	
 }

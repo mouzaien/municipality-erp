@@ -291,7 +291,7 @@ public class DeputationTrainingBean {
 	}
 
 	public String getEnd_date() {
-		calculateDate();
+		//calculateDate();
 		return end_date;
 	}
 

@@ -28,6 +28,7 @@ import org.primefaces.event.UnselectEvent;
 import com.bkeryah.dao.FngVacation;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.HrsUserAbsent;
+import com.bkeryah.entities.WrkDept;
 import com.bkeryah.fng.entities.AutorizationSettings;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.model.AbsentModel;
@@ -96,6 +97,7 @@ public class FngMonitoringBean {
 	// private Date absDate;
 	private Date absFrom;
 	private Date absTo;
+	private List<WrkDept> depatmentList;
 
 	private boolean total;
 	// // Ø§Ù„Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨ØªØ§Ø¹ Ø§Ù„Ø¯ÙˆØ§Ù… Ø§Ù„Ø§Ø³Ø§Ø³ÙŠ
@@ -858,6 +860,23 @@ public class FngMonitoringBean {
 					"Old: " + oldValue + ", New:" + newValue);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+	}
+
+	public List<WrkDept> getDepatmentList() {
+		if (Currentuser.getUserId() == dataAccessService.getPropertiesValue("FINGER_MGR")) {
+			if ((depatmentList == null) || (depatmentList.isEmpty()))
+				return dataAccessService.findAllDepartments();
+			return depatmentList;
+		} else if (Currentuser.getWrkRoleId() == 2) {
+			if ((depatmentList == null) || (depatmentList.isEmpty()))
+				return dataAccessService.findDepartmentById(Currentuser.getDeptId());
+			return depatmentList;
+		} else
+			return null;
+	}
+
+	public void setDepatmentList(List<WrkDept> depatmentList) {
+		this.depatmentList = depatmentList;
 	}
 
 	public String getDeptId() {

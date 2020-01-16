@@ -92,11 +92,11 @@
 										<p:menuitem id="menu_seck_Service" value="إجازة مرضية"
 											action="sick_vacation" icon="fa fa-fw fa-bed"></p:menuitem>
 									</secc:authorize>
-									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR">
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="menu_Service"
 											value="#{msg['compensatory.leave.menu']}"
 											icon="fa fa-fw fa-cubes" action="compensatory_leave"></p:menuitem>
-
+										
 										<p:menuitem id="menu_comp_leave"
 											value="#{msg['comp.leave.stock']}" icon="fa fa-fw fa-cubes"
 											action="comp_leave_stock"></p:menuitem>

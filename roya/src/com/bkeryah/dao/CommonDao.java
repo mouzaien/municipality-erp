@@ -64,6 +64,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.bkeryah.bean.UserContactClass;
 import com.bkeryah.entities.ArcApplicationType;
 import com.bkeryah.entities.ArcAttach;
 import com.bkeryah.entities.ArcDocumentStruct;
@@ -230,6 +231,8 @@ import com.bkeryah.hr.entities.Sys051;
 import com.bkeryah.hr.entities.Sys059;
 import com.bkeryah.hr.entities.Sys112;
 import com.bkeryah.model.AbsentModel;
+import com.bkeryah.model.LoanModel;
+import com.bkeryah.model.RetirementModel;
 import com.bkeryah.model.User;
 import com.bkeryah.penalties.FineSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
@@ -4586,5 +4589,101 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<FngTypeAbsence> loadAllAbsenceTypes() {
 		return loadAll(FngTypeAbsence.class);
 
+	}
+	@Override
+	@Transactional
+	public List<WrkDept> findDepartmentById(Integer deptId){
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept.class);
+		criteria.add(Restrictions.eq("id", deptId));
+		return criteria.list();
+		
+	}
+	public List<LoanModel> loadUsersLoan(Integer year,Integer Month,Integer type){
+		List<LoanModel> list = new ArrayList<LoanModel>();
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.get_users_loan(?,?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, year);
+			callableStatement.setInt(2, Month);
+			callableStatement.setInt(3, type);
+			
+			callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(4);
+			while (rs.next()) {
+				LoanModel loanModel = new LoanModel();
+				loanModel.setEmpNo(rs.getInt("LOAN_EMPNO"));
+				loanModel.setEmpName(rs.getString("NAME"));
+				loanModel.setRowId(rs.getInt("ROW_ID"));
+				loanModel.setPaidMonthly(rs.getInt("LOAN_PAID_MONTLY"));
+				loanModel.setBankName(rs.getString("BANK_NAME"));
+				loanModel.setLoanName(rs.getString("LOAN_NAME"));
+				loanModel.setNatNo(rs.getInt("NATNO"));
+				
+				list.add(loanModel);
+
+			}
+		} catch (Exception e) {
+			logger.error( e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	public List<RetirementModel> loadRetirement(){
+		List<RetirementModel> list = new ArrayList<RetirementModel>();
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.get_users_retirement(?)}";
+			callableStatement = connection.prepareCall(sql);
+			
+			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(1);
+			while (rs.next()) {
+				RetirementModel retirementModel = new RetirementModel();
+				retirementModel.setEmpName(rs.getString("name"));
+				retirementModel.setAppDate(rs.getString("appdate"));
+				retirementModel.setBirthDay(rs.getString("bday"));
+				retirementModel.setClassCode(rs.getInt("CLSSCOD"));
+				retirementModel.setGender(rs.getString("gender"));
+				retirementModel.setNatNo(rs.getInt("natno"));
+				retirementModel.setRankCode(rs.getInt("RANKCOD"));
+				retirementModel.setText(rs.getString("text"));
+				retirementModel.setBasicSalary(rs.getInt("BSCSAL"));
+				
+				list.add(retirementModel);
+
+			}
+		} catch (Exception e) {
+			logger.error( e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+		
 	}
 }
