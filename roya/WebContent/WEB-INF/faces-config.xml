@@ -439,7 +439,7 @@
 		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>user_roles</from-outcome>
-			<to-view-id>/setting/user_roles.xhtml</to-view-id>
+			<to-view-id>/setting/roles.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>

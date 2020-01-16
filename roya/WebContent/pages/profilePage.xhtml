@@ -21,12 +21,6 @@
 
 			<h:form id="includeform">
 			<style>
-			   body .ui-dialog .ui-dialog-titlebar{
-				float: right;
-				width: 92%;
-				background-color: #472d985c;
-				
-				  }
 				body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon{
 				float: none;
 				  }
@@ -266,8 +260,8 @@
 
 					<br></br>
 
-					<div class="row">
-						<div class=" col-md-3">
+<!-- 					<div class="row"> -->
+<!-- 						<div class=" col-md-3"> -->
 
 						
 
@@ -309,50 +303,55 @@
 						</div>
 
 						<!-- 					<h:panelGroup id="ccc"> -->
-						<p:dialog header="#{msg['change.passowrd']}" widgetVar="dlgEditPassword"
-							height="300" width="500">
+				<p:dialog header="#{msg['change.passowrd']}"
+					widgetVar="dlgEditPassword" responsive="true" closable="true"
+					dir="rtl" resizable="true" modal="true">
 
-							<h:panelGroup id="refPopup">
-								<p:panelGrid columns="2"
-									columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
-									styleClass="ui-panelgrid-blank form-group"
-									style="border:0px none; background-color:transparent; direction:rtl">
+					<h:panelGroup id="refPopup" layout="grid">
+						<div class="ui-g">
+							<div class="ui-g-3" dir="rtl">
+								<h:outputLabel value="#{msg['exist.password']}" />
+							</div>
+							<div class="ui-g-3">
+								<p:password required="true"
+									requiredMessage="#{msg['enter.password']}"
+									value="#{profilePageBean.systemPassOld}" style="width:100%" />
+							</div>
+							<div class="ui-g-3">
+								<h:outputLabel value="#{msg['new.password']}" />
+							</div>
+							<div class="ui-g-3">
+								<p:password required="true"
+									requiredMessage="#{msg['enter.password']}"
+									value="#{profilePageBean.systemNewPassword}" style="width:100%" />
+							</div>
+							<div class="ui-g-3">
+								<h:outputLabel value="#{msg['confirm.password']}" />
+							</div>
+							<div class="ui-g-3">
+								<p:password required="true"
+									requiredMessage="#{msg['confirm.password.required']}"
+									value="#{profilePageBean.confirmSystemPass}" style="width:100%" />
+							</div>
+						</div>
+						<br></br>
+						<br></br>
+						<div>
+							<p:commandButton actionListener="#{profilePageBean.cancel}"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								onclick="PF('dlgEditPassword').hide();" styleClass=" orange-btn"
+								process="@form" immediate="true" value="#{msg['back']}"></p:commandButton>
+							<p:spacer width="4"></p:spacer>
+							<p:commandButton immediate="true"
+								actionListener="#{profilePageBean.saveNewSystemPass}"
+								value="#{msg['confirmation']}" icon="ui-icon ui-icon-check">
+								<f:ajax execute="refPopup" render="@form"></f:ajax>
+							</p:commandButton>
 
-									<h:outputLabel value="#{msg['exist.password']}" />
-									<p:password required="true"
-										requiredMessage="#{msg['enter.password']}"
-										value="#{profilePageBean.systemPassOld}" style="width:100%" />
-									<h:outputLabel value="#{msg['new.password']}" />
-									<p:password required="true"
-										requiredMessage="#{msg['enter.password']}"
-										value="#{profilePageBean.systemNewPassword}"
-										style="width:100%" />
-									<h:outputLabel value="#{msg['confirm.password']}" />
-									<p:password required="true"
-										requiredMessage="#{msg['confirm.password.required']}"
-										value="#{profilePageBean.confirmSystemPass}"
-										style="width:100%" />
-
-								</p:panelGrid>
-								<br></br>
-								<br></br>
-								<div>
-									<p:commandButton actionListener="#{profilePageBean.cancel}"
-										icon="ui-icon ui-icon-keyboard-arrow-left"
-										onclick="PF('dlgEditPassword').hide();"
-										styleClass=" orange-btn" process="@form" immediate="true"
-										value="#{msg['back']}"></p:commandButton>
-									<p:spacer width="4"></p:spacer>
-									<p:commandButton immediate="true"
-										actionListener="#{profilePageBean.saveNewSystemPass}"
-										value="#{msg['confirmation']}" icon="ui-icon ui-icon-check">
-										<f:ajax execute="refPopup" render="@form"></f:ajax>
-									</p:commandButton>
-
-								</div>
-							</h:panelGroup>
-						</p:dialog>
-						<p:dialog header="#{msg['signature.password']}"
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				<p:dialog header="#{msg['signature.password']}"
 							widgetVar="dlgEditPasswordSignture" height="300" width="500">
 
 							<h:panelGroup id="refPopupsin">
@@ -394,8 +393,8 @@
 							</h:panelGroup>
 						</p:dialog>
 
-					</div>
-				</div>
+<!-- 					</div> -->
+<!-- 				</div> -->
 			</h:form>
 		</ui:define>
 	</ui:composition>

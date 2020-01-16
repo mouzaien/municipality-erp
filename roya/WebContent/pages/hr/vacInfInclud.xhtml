@@ -56,14 +56,14 @@
 				widgetVar="cellvacation"
 				filteredValue="#{vacationInf.filteredVacations}"
 				sortBy="#{vacationemps.id}" sortOrder="descending" rows="10"
-				paginator="true"
+				paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15">
 				<f:facet name="header">
 					<p:outputPanel>
 						<h:outputText value="ابحث فى كل الحقول:" />
 						<p:inputText id="globalFilter"
-							onkeyup="PF('cellvacation').filter()" style="width:150px"
+							onkeyup="PF('cellvacation').filter()" style="width:50%"
 							placeholder="كلمة البحث">
 						</p:inputText>
 					</p:outputPanel>

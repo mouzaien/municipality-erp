@@ -40,9 +40,9 @@
 									icon="fa fa-fw fa-edit" action="PersonalComment"
 									rendered="#{loginBean.currentUser.mgrId != null}" />
 
-								<p:menuitem id="menu2" value="#{msg['menu.personnel.letter']}"
-									icon="fa fa-fw fa-file-text"
-									action="#{mainManagedBean.goToCreatComment}" />
+<!-- 								<p:menuitem id="menu2" value="#{msg['menu.personnel.letter']}" -->
+<!-- 									icon="fa fa-fw fa-file-text" -->
+<!-- 									action="#{mainManagedBean.goToCreatComment}" /> -->
 
 								<p:menuitem id="menu3" value="#{msg['menu.memo']}"
 									action="internalMemo" icon="fa fa-fw fa-file-text-o" />
@@ -210,7 +210,7 @@
 							</secc:authorize>
 							<p:submenu id="sr_FingerPrint" label="البصمة"
 								icon="ui-icon ui-icon-fingerprint">
-								<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_FNG">
+								<secc:authorize ifAnyGranted="ROLE_FNG">
 									<p:menuitem id="menu1_FingerPrint" value="التبصيم"
 										icon="ui-icon ui-icon-play-for-work" action="particularFng" />
 									<p:menuitem id="menu2_FingerPrint" value="أوقات الدوام"

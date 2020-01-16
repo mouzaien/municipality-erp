@@ -200,10 +200,20 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
+				<p:column headerText="غلاء المعيشة"
+					filterBy="#{salaryemps.life}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{salaryemps.life}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="life" value="#{salaryemps.life}"
+								style="width:96%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
 				<p:column style="width:100px">
 					<p:rowEditor />
-				</p:column>
-				<p:column style="width:65px;text-align: center">
 				</p:column>
 			</p:dataTable>
 		</div>

@@ -38,6 +38,7 @@ import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkComment;
+import com.bkeryah.entities.WrkSection;
 import com.bkeryah.model.AttachmentModel;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
@@ -76,7 +77,7 @@ public class ArchiveBean extends Scanner implements Serializable {
 	private TreeNode root;
 	private TreeNode[] selectedNodes;
 	private Map<ArcDocumentStruct, List<ArcDocumentStruct>> sectionsMap;
-	private List<ArcDocumentStruct> sectionsList = new ArrayList<ArcDocumentStruct>();
+	private List<WrkSection> sectionsList = new ArrayList<WrkSection>();
 	// private List<ArcDocumentStruct> selectedSectionsList;
 	private List<String> selectedStructIdList;
 	private ArcRecords selectedArcRecord;
@@ -122,8 +123,8 @@ public class ArchiveBean extends Scanner implements Serializable {
 			sectionsList = dataAccessService.loadArcDocumentStructList();
 
 		} else {
-			ArcDocumentStruct userSection = (ArcDocumentStruct) dataAccessService
-					.findEntityById(ArcDocumentStruct.class, currentUser.getWrkSection().getId());
+			WrkSection userSection = (WrkSection) dataAccessService
+					.findEntityById(WrkSection.class, currentUser.getWrkSectionId());
 			sectionsList.clear();
 			sectionsList.add(userSection);
 		}
@@ -511,11 +512,11 @@ public class ArchiveBean extends Scanner implements Serializable {
 		this.sectionsMap = sectionsMap;
 	}
 
-	public List<ArcDocumentStruct> getSectionsList() {
+	public List<WrkSection> getSectionsList() {
 		return sectionsList;
 	}
 
-	public void setSectionsList(List<ArcDocumentStruct> sectionsList) {
+	public void setSectionsList(List<WrkSection> sectionsList) {
 		this.sectionsList = sectionsList;
 	}
 

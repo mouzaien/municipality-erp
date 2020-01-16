@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2019-11-21T11:54:23 -->
+<!-- 2020-01-07T08:47:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vacation_sum_subreport1" columnDirection="RTL" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cc9f0c1e-8fdb-4193-a992-af7b3ef550b6">
 	<property name="ireport.zoom" value="1.1000000000000005"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl_DATAADAPTER.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="pempno" class="java.lang.Integer"/>
 	<parameter name="vactype" class="java.lang.Integer"/>
@@ -16,9 +16,9 @@
 fun_get_inf001_ar(HRSV$INF001.EMPNO) NM,
 HRSV$INF001.RANKCOD,HRMS_GET_GOVJOB4(HRSV$INF001.JOBCOD)JBNM, get_hrs_dept_name(HRSV$INF001.DEPTCOD) DPTNM,
 HRS_EMP_HISTORICAL.JOBNO,HRS_MASTER_FILE.FAPPLDAT,
-USER_VAC_SOLD.INIT_SOLD + USER_VAC_SOLD.YEAR_SOLD ALLCREDIT,
+HRS_VAC_SOLD.VAC_OLD_SOLD + HRS_VAC_SOLD.VAC_CURR_YEAR_SOLD ALLCREDIT,
 nvl(HRS_GET_SUM_VACA(HRS_EMP_HISTORICAL.EMPNO,116),0) VACSUM,
-(USER_VAC_SOLD.INIT_SOLD + USER_VAC_SOLD.YEAR_SOLD - nvl(HRS_GET_SUM_VACA(HRS_EMP_HISTORICAL.EMPNO,116),0)) VACRSLT,
+(HRS_VAC_SOLD.VAC_OLD_SOLD + HRS_VAC_SOLD.VAC_CURR_YEAR_SOLD - nvl(HRS_GET_SUM_VACA(HRS_EMP_HISTORICAL.EMPNO,116),0)) VACRSLT,
 (SELECT PR.SIGN2 FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('HR_ID')) HRPRSIGN,
 (SELECT PR.SIGN2 FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('VAC_SIGN_RESPONSIBLE')) VACRESPSIGN,
 note N,
@@ -27,9 +27,9 @@ HRS_EMP_VCTON.VACAEND, HRS_EMP_VCTON.EXCNO, HRS_EMP_VCTON.EXCDT,
 HRS_EMP_VCTON.VACWRKFROM, HRS_EMP_VCTON.VACWRKTO, SYS052.NAME
 
 
-FROM HRSV$INF001 , HRS_EMP_HISTORICAL , HRS_MASTER_FILE, HRS_EMP_VCTON, SYS052, USER_VAC_SOLD
+FROM HRSV$INF001 , HRS_EMP_HISTORICAL , HRS_MASTER_FILE, HRS_EMP_VCTON, SYS052, HRS_VAC_SOLD--, USER_VAC_SOLD
 
-WHERE HRS_EMP_HISTORICAL.EMPNO = HRSV$INF001.EMPNO AND  HRS_MASTER_FILE.EMPNO = USER_VAC_SOLD.EMPNO
+WHERE HRS_EMP_HISTORICAL.EMPNO = HRSV$INF001.EMPNO AND  HRS_MASTER_FILE.EMPNO = HRS_VAC_SOLD.EMPNO
 AND HRS_MASTER_FILE.EMPNO = HRSV$INF001.EMPNO
 AND HRS_MASTER_FILE.EMPNO  = $P{pempno} 
 and flg=1 

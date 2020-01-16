@@ -220,15 +220,6 @@ public class EmpPlanificationBean {
 			fngShiftLst.clear();
 			for (Date currDate = selecteDateFrom_G; currDate.getTime() <= selecteDateTo_G
 					.getTime(); currDate = new Date(currDate.getYear(), currDate.getMonth(), currDate.getDate() + 1)) {
-				
-//				FngUserTempShift tempShift = new FngUserTempShift();
-//				FngUserShiftId tempShiftId = new FngUserShiftId();
-//				tempShiftId.setWorkdate(format.format(currDate));
-//				tempShiftId.setTimeid(shift.getTimeShiftId());
-//				tempShiftId.setUserid(empId);
-//				tempShift.setId(tempShiftId);
-//				fngShiftLst.add(tempShift);
-
 				for (User user : employersListSelected) {
 					if (user.getUserId() != null && currDate != null) {
 						shifts = dataAccessService.getEmployeeShiftsById(user.getUserId(), currDate);
