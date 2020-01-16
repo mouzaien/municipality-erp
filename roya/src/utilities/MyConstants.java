@@ -120,4 +120,5 @@ public class MyConstants {
 	public static final int IT_SEC_BOSS = 6;
 	public static final String deputation_training = "dep_train.txt";
 	public static final String reward="reward.txt";
+	public static final int FINGER_MGR=24;
 }

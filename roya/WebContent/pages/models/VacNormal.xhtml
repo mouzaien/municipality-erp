@@ -179,7 +179,7 @@
 							requiredMessage="يرجى اختيار تاريخ"
 							rendered="#{mainManagedBean.mailExecutor.higriMode}"
 							styleClass="form-control form-controlCal">
-							<p:ajax event="blur"
+							<p:ajax event="blur" 
 								update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
 								process="@this"
 								listener="#{mainManagedBean.mailExecutor.checkdate}">
@@ -190,7 +190,7 @@
 							value="#{mainManagedBean.mailExecutor.grigDate}"
 							pattern="dd/MM/yyyy"
 							rendered="#{!mainManagedBean.mailExecutor.higriMode}">
-							<p:ajax event="blur"
+							<p:ajax event="blur" delay="100"
 								update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
 								process="@this"
 								listener="#{mainManagedBean.mailExecutor.checkdate}">
@@ -212,7 +212,7 @@
 						value="#{mainManagedBean.mailExecutor.employeeVacation.vacationPeriod}">
 						<p:ajax event="blur"
 							update="VACEND,salList,valvac,VACWRKFROM,VACWRKto"
-							process="@this"
+							process="@this,VACASTRT"
 							listener="#{mainManagedBean.mailExecutor.checkdate}">
 						</p:ajax>
 
@@ -285,6 +285,10 @@
 										.click();
 							}
 						});
+				
+				
+				
+				
 			</script>
 
 

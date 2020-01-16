@@ -146,7 +146,9 @@ import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.AttachmentModel;
 import com.bkeryah.model.DashbordModel;
+import com.bkeryah.model.LoanModel;
 import com.bkeryah.model.MemoReceiptModel;
+import com.bkeryah.model.RetirementModel;
 import com.bkeryah.model.User;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
@@ -8822,4 +8824,17 @@ public class DataAccessService implements IDataAccessService {
 	public List<FngTypeAbsence> loadAllAbsenceTypes() {
 		return commonDao.loadAllAbsenceTypes();
 	}
+	@Override
+	@Transactional
+	public List<WrkDept> findDepartmentById(Integer deptId){
+		return commonDao.findDepartmentById(deptId);
+	}
+	public List<LoanModel> loadUsersLoan(Integer year,Integer month,Integer type){
+		
+		return commonDao.loadUsersLoan(year,month,type);
+	}
+	public List<RetirementModel> loadRetirement(){
+		return commonDao.loadRetirement();
+	}
+	
 }

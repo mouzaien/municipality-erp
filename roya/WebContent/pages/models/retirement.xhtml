@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:BeginCalendarDate="http://java.sun.com/jsf/composite/BeginCalendarDate"
+	xmlns:EndCalendarDate="http://java.sun.com/jsf/composite/EndCalendarDate">
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<div class="card card-w-title" dir="rtl">
+			<h1 style="color: #7CB342; text-align: center;">
+				التقاعد والعقاري <span class="ui-icon ui-icon-developer-board"></span>
+			</h1>
+			<br />
+			<h:form id="includeform">
+				<p:messages id="msgs" closable="true" autoUpdate="true"></p:messages>
+				
+				<p:dialog header="العقاري" widgetVar="dlg3" showEffect="explode" hideEffect="bounce" height="100" width="1000">
+				<div class="ui-g">
+				<div class="ui-g-1">
+				<p:outputLabel value="السنة"></p:outputLabel>
+				</div>
+				<div class="ui-g-2">
+				<p:inputText required="true" value="#{retirementLoanBean.year}"></p:inputText>
+				</div>
+				<div class="ui-g-1">
+				<p:outputLabel value="الشهر"></p:outputLabel>
+				</div>
+				
+				<div class="ui-g-3" >
+				<p:spinner required="true" min="1" max="12" style="width:30%" value="#{retirementLoanBean.month}"></p:spinner>
+				</div >
+				<div class="ui-g-4">
+				<p:selectOneMenu value="#{retirementLoanBean.bankType}"  >
+					<f:selectItems value="#{retirementLoanBean.banksType}"   var="bank"
+					itemLabel="#{bank.loanTypeName}"
+					itemValue="#{bank.loanTypeId}">
+					</f:selectItems>
+				</p:selectOneMenu>
+				
+				</div>
+				
+				<div style="margin-top: 50px">
+				<p:commandButton actionListener="#{retirementLoanBean.loanAction}" update="includeform" onclick="PF('dlg3').hide();"  value="العقاري"  styleClass="teal-btn"></p:commandButton>
+				</div>
+				</div>
+				</p:dialog>
+				
+				<div class="col-md-12">
+					
+					
+					
+						
+						
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<div class="iamge-box-footer" align="left">
+								<p:commandButton value="تقاعد" immediate="true" update="includeform"
+									actionListener="#{retirementLoanBean.RetirementAction}"
+									 styleClass="green-btn">
+									
+								</p:commandButton>
+								<p:spacer height="10"></p:spacer>
+								<p:commandButton type="button"  value="العقاري"  
+									 styleClass="teal-btn" onclick="PF('dlg3').show();">
+								</p:commandButton>
+								<p:spacer height="10"></p:spacer>
+								
+							</div>
+						</div>
+					</div>
+					<br />
+				
+				
+				<br />
+				
+				<p:dataTable id="loanTable" var="loan" rendered="#{retirementLoanBean.flag eq 1}"
+					value="#{retirementLoanBean.usersLoan}"
+					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" editable="true"
+					paginatorPosition="bottom" widgetVar="outfineset"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" rows="10">
+					
+					
+		<f:facet name="{Exporters}">
+              <div style="float: left;" >
+                <h:commandLink>
+                    <p:graphicImage   name="/images/excel.png" height="30" width="60" />
+                    <p:dataExporter  type="xls" target="loanTable" fileName="loan" />
+                </h:commandLink>
+                </div> 
+                         
+         
+        </f:facet>
+					
+					
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="جدول القروض:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+								onkeyup="PF('outfineset').filter()"
+								style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+						<br />
+					</f:facet>
+					
+
+					<p:column style="text-align: center;" headerText="رقم"
+						width="10%">
+                              <h:outputText value="#{loan.rowId}"></h:outputText>   
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="رقم الموظف"
+						width="20%">
+                                   <h:outputText value="#{loan.empNo}"></h:outputText> 
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="الاسم"
+						width="30%">
+                                  <h:outputText value="#{loan.empName}"></h:outputText> 
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="القرض"
+						width="30%">
+                                  <h:outputText value="#{loan.loanName}"></h:outputText> 
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="السجل"
+						width="30%">
+                                  <h:outputText value="#{loan.natNo}"></h:outputText> 
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="البنك"
+						width="30%">
+                                  <h:outputText value="#{loan.bankName}"></h:outputText> 
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="المدفوع بالشهر"
+						width="30%">
+                                   <h:outputText value="#{loan.paidMonthly}"></h:outputText>
+                     </p:column>
+
+				</p:dataTable>
+				 
+				
+				
+				
+				<p:dataTable id="retireTable" var="retire" rendered="#{retirementLoanBean.flag eq 2}"
+					value="#{retirementLoanBean.usersRetirement}"
+					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex" editable="true"
+					paginatorPosition="bottom" widgetVar="infineset"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" rows="10">
+					<f:facet name="{Exporters}">
+			              <div style="float: left;">
+			                <h:commandLink immediate="true">
+			                    <p:graphicImage   name="/images/excel.png" height="30" width="60" />
+			                    <p:dataExporter  type="xls" target="retireTable" fileName="retire" />
+			                </h:commandLink>
+			                </div> 
+                    </f:facet>
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="جدول التقاعد:" />&nbsp;&nbsp; 
+											<p:inputText id="globalFilter"
+								onkeyup="PF('infineset').filter()"
+								style="width:150px;font-size: x-large;" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+						<br />
+					</f:facet>
+					
+
+					<p:column style="text-align: center;" headerText="رقم"
+						width="10%">
+                                 <h:outputText value="#{rowIndex+1}"></h:outputText> 
+                     </p:column>
+
+					<p:column style="text-align: center;" headerText="اسم الموظف"
+						width="30%">
+                                   <h:outputText value="#{retire.empName}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="السجل"
+						width="20%">
+                                   <h:outputText value="#{retire.natNo}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="النوع"
+						width="20%">
+                                   <h:outputText value="#{retire.gender}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="الدرجة"
+						width="20%">
+                                   <h:outputText value="#{retire.rankCode}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="الراتب الاساسي"
+						width="20%">
+                                   <h:outputText value="#{retire.basicSalary}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="المرتبة"
+						width="20%">
+                                   <h:outputText value="#{retire.classCode}"></h:outputText>
+                     </p:column>
+                     
+                      <p:column style="text-align: center;" headerText="تاريخ البدايه"
+						width="20%">
+                                   <h:outputText value="#{retire.appDate}"></h:outputText>
+                     </p:column>
+                      <p:column style="text-align: center;" headerText="تاريخ الميلاد"
+						width="20%">
+                                   <h:outputText value="#{retire.birthDay}"></h:outputText>
+                     </p:column>
+                     <p:column style="text-align: center;" headerText="مش عارف"
+						width="20%">
+                                   <h:outputText value="#{retire.text}"></h:outputText>
+                     </p:column>
+                     
+
+				
+
+				</p:dataTable>
+			 
+			
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

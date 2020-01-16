@@ -200,9 +200,9 @@
 							<h:panelGroup id="VACASTRT">
 								<p:inputText id="startDate"
 									value="#{deputationTrainingBean.dep_train.hij_st_date}"
-									onfocus="loadCalendar();"
+									
 									styleClass="form-control form-controlCal">
-									<p:ajax event="blur" update="enddate" process="@this"
+									<f:ajax event="blur"  execute="@this"
 										listener="#{deputationTrainingBean.calculateDate}" />
 								</p:inputText>
 							</h:panelGroup>
@@ -214,7 +214,7 @@
 
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<p:outputLabel id="enddate"
-								value="#{deputationTrainingBean.end_date}" />
+								value="#{deputationTrainingBean.dep_train.hij_end_date}" />
 
 						</div>
 						<div class="col-md-2">

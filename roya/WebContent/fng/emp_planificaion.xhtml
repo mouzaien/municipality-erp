@@ -173,11 +173,10 @@
 						<div class="ui-g-12 ui-md-6 ui-lg-4">
 							<div class="iamge-box-footer" align="left">
 								<p:commandButton value="إظهار دوام الموظف" 
-									icon="ui-icon ui-icon-developer-board" styleClass="green-btn"
-									>
+									icon="ui-icon ui-icon-developer-board" styleClass="green-btn">
 									<f:ajax render="outTable"></f:ajax>
 									<p:ajax 
-										event="click"
+										event="click" 
 										listener="#{empPlanificationBean.loadUserShifts}"
 										process="includeform:pDates11"
 										update="outTable"></p:ajax>

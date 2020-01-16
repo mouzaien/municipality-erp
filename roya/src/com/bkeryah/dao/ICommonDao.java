@@ -163,6 +163,8 @@ import com.bkeryah.hr.entities.Sys051;
 import com.bkeryah.hr.entities.Sys059;
 import com.bkeryah.hr.entities.Sys112;
 import com.bkeryah.model.AbsentModel;
+import com.bkeryah.model.LoanModel;
+import com.bkeryah.model.RetirementModel;
 import com.bkeryah.model.User;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesMaster;
@@ -1037,5 +1039,8 @@ public interface ICommonDao {
 	List<WrkPurpose> loadAllPurposes();
 
 	List<WrkLetterTo> loadAllWrkLetterTo();
+	public List<WrkDept> findDepartmentById(Integer deptId);
+	public List<LoanModel> loadUsersLoan(Integer year,Integer Month,Integer type);
+	public List<RetirementModel> loadRetirement();
 	
 }
