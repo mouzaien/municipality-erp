@@ -74,21 +74,21 @@ public class VacationExecutor extends MailExecutor<HrEmployeeVacation> implement
 	 */
 	private String loadNormalVacationData() {
 		employeeVacation = new HrEmployeeVacation();
-		ArcUsers employee = dataAccessService.loadUserById(employerId);
-		hrsVacSold = dataAccessService.loadHrsVacSoldById(employee.getEmployeeNumber());
+//		ArcUsers employee = dataAccessService.loadUserById(employerId);
+//		hrsVacSold = dataAccessService.loadHrsVacSoldById(employee.getEmployeeNumber());
 
 		employeeVacation.setProcType(2);
-	//	int currendDebit = dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
-	//			HijriCalendarUtil.findCurrentHijriDate());
+//		int currendDebit = dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
+//				HijriCalendarUtil.findCurrentHijriDate());
 		int currendDebit = 0;
-		//		dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
-		//		HijriCalendarUtil.findCurrentHijriDate());
-		// dataAccessService.loadNormalVacationNew(employer.getEmpNB(),
-		// employer.getFirstApplicationDate(),
-		// employer.getBirthDateGerige(), employer.getId(), currendDebit,
-		// employeeVacation);
-		dataAccessService.loadNormalVacationNew(employer.getEmpNB(), employer.getFirstApplicationDate(),
-				employer.getBirthDateGerige(), employer.getId(), currendDebit, employeeVacation, hrsVacSold);
+//				dataAccessService.getTotalVacationPeriod(employer.getEmpNB(),
+//				HijriCalendarUtil.findCurrentHijriDate());
+		 dataAccessService.loadNormalVacationNew(employer.getEmpNB(),
+		 employer.getFirstApplicationDate(),
+		 employer.getBirthDateGerige(), employer.getId(), currendDebit,
+		 employeeVacation);
+//		dataAccessService.loadNormalVacationNew(employer.getEmpNB(), employer.getFirstApplicationDate(),
+//				employer.getBirthDateGerige(), employer.getId(), currendDebit, employeeVacation, hrsVacSold);
 
 		return "VacNormal1";
 	}

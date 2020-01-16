@@ -7704,18 +7704,21 @@ public class DataAccessService implements IDataAccessService {
 			int currentDebit, HrEmployeeVacation employeeVacation) {
 		// HrsSumVacation hrsSumVacation = commonDao.listsumbyEmp(empNB);
 		// /* Ø±ØµÙŠØ¯ Ø§Ù„Ø§Ø¬Ø§Ø²Ø§Øª Ù…Ù†Ø° Ø¨Ø¯Ø¡ Ø§Ù„ØªØ¹ÙŠÙ† */
-		// employeeVacation
-		// .setTotalVacationPeriod(getTotalVacationPeriod(empNB,
-		// firstApplicationDate));
-		employeeVacation.setTotalVacationPeriod(getTotalVacationSold((empNB)));
+		 employeeVacation
+		 .setTotalVacationPeriod(getTotalVacationPeriod(empNB,
+		 firstApplicationDate));
+//		employeeVacation.setTotalVacationPeriod(getTotalVacationSold((empNB)));
 		// employeeVacation.setTotalVacationPeriod(hrsSumVacation.getVACOLDYEAR37());
 		/* Ø§Ø¬Ù…Ø§Ù„Ù‰ Ù…Ø§ØªÙ…ØªØ¹ Ø¨Ù‡ Ø®Ù„Ø§Ù„ Ø§Ù„Ø¹Ø§Ù… */ employeeVacation
 				.setUsedNormalYearlyPeriod(commonDao.getUsedNormalYearlyPeriod(empNB));
 		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø§Ø¬Ø§Ø²Øª Ø§Ù„ØªØ§Ø±ÙŠØ®ÙŠÙ‡ */employeeVacation.setUsedTotalVacationPeriod(
 				getUsedTotalVacationPeriod(empNB)/* Ø§Ø¬Ø§Ø²Ø§Øª Ù„ØªØ§Ø±ÙŠØ® Ø§Ù„ÙŠÙˆÙ… */);
-		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */employeeVacation
-				.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
-						.getUsedNormalYearlyPeriod()/*
+//		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */employeeVacation
+//				.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
+//						.getUsedNormalYearlyPeriod()
+						employeeVacation
+						.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
+								.getUsedTotalVacationPeriod()/*
 													 * + hrsSumVacation.
 													 * getVACSUMYEARSOLD()
 													 */));
