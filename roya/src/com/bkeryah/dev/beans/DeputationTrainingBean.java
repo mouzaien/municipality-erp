@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -143,8 +144,13 @@ public class DeputationTrainingBean {
 	}
 
 	public DeputationTrainingBean() {
+		System.out.println("DeputationTrainingBean constructed");
 		employerNB=0;
 		
+	}
+	@PreDestroy
+	public void destroy() {
+		System.out.println("DeputationTrainingBean destroyed");
 	}
 
 	@PostConstruct

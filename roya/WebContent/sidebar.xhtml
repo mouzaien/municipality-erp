@@ -87,8 +87,8 @@
 										icon="fa fa-fw fa-cubes"
 										action="#{mainManagedBean.updateContent('WORKMISSION')}"></p:menuitem>
 
-									<secc:authorize ifAnyGranted="ROLE_SICK_VACATION">
-									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+<!-- 									<secc:authorize ifAnyGranted="ROLE_SICK_VACATION"> -->
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SICK_VACATION">
 										<p:menuitem id="menu_seck_Service" value="إجازة مرضية"
 											action="sick_vacation" icon="fa fa-fw fa-bed"></p:menuitem>
 									</secc:authorize>
@@ -140,7 +140,7 @@
 									</secc:authorize>
 
 
-</secc:authorize>
+<!-- </secc:authorize> -->
 
 
 									<!-- hereeeee -->

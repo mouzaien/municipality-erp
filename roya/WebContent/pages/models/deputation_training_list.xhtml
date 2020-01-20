@@ -78,7 +78,15 @@
 							value="#{deputationTrainingBean.list}" paginator="true" rows="12"
 							emptyMessage="لا يوجد" rowIndexVar="rowIndex"
 							paginatorPosition="bottom"
-							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">>
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter" onkeyup="PF('trainVar').filter()"
+											style="width:50%" placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+							</f:facet>
 
 
 							<p:column headerText="نوع المهمه" filterable="true"
