@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer"></div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							المعاملات <span class="fa fa-fw fa-file-o"></span>
+						</h1>
+						<br></br>
+						<p:dataTable var="comment" id="inboxdt" widgetVar="deptCell"
+							value="#{wrCommentBean.commentList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{wrCommentBean.filteredcommentList}"
+							paginator="true" rows="13">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('deptCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="5%">										
+								#{rowIndex+1}							
+								</p:column>
+
+							<p:column style="white-space: nowrap ;text-align: center;"
+								headerText="رقم العملية" width="5%" filterBy="#{comment.appNo}"
+								filterMatchMode="contains">										
+										#{comment.appNo}										
+									</p:column>
+
+							<p:column style="white-space: nowrap;" headerText="التاريخ "
+								width="10%" filterBy="#{comment.appHdate}"
+								filterMatchMode="contains">										
+										#{comment.appHdate}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="موجهة إلى "
+								width="10%" filterBy="#{comment.appTo}"
+								filterMatchMode="contains">										
+										#{comment.appTo}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="الغرض"
+								width="10%" filterBy="#{comment.appSubject}"
+								filterMatchMode="contains">										
+										#{comment.appSubject}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="نص الخطاب"
+								width="20%" filterBy="#{comment.longComment}"
+								filterMatchMode="contains">										
+										#{comment.longComment}										
+							</p:column>
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton onclick="PF('job_dlg').show()" process="@this"
+									icon="ui-icon-create" update="includeform:myDialog"
+									styleClass="cyan-btn">
+									<f:setPropertyActionListener value="#{comment}"
+										target="#{wrCommentBean.comment}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+						<br />
+						<!-- *********************************************Update***************************************************************** -->
+						<p:dialog header="بيانات الخطابات" widgetVar="job_dlg"
+							id="job_dlgId" width="50%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="رقم العملية" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{wrCommentBean.comment.appNo}"
+												style="width: 30%"></p:inputText>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="التاريخ" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText id="notif_date" style="width: 30%"
+												value="#{wrCommentBean.appHdate}" onfocus="loadCalendar();"
+												required="true" styleClass="form-control form-controlCal"
+												requiredMessage="يرجى اختيار تاريخ">
+												<f:validator validatorId="utilities.UmmAlQUraValidator" />
+												<f:ajax execute="@this"
+													rendered="#{wrkCommentBean.comment.appHdate}"></f:ajax>
+											</p:inputText>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="موجهة إلى" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{wrCommentBean.comment.appTo}"
+												style="width: 80%"></p:inputText>
+										</div>
+										<div class="ui-g-1">
+											<p:outputLabel value="الغرض" />
+										</div>
+										<div class="ui-g-5">
+											<p:selectOneMenu id="mgr"
+												value="#{wrCommentBean.comment.appSubject}"
+												style="width: 100%" filter="true">
+												<f:selectItem itemLabel="أختر  المعاملة" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="mgr"
+													value="#{wrCommentBean.commentList}"
+													itemValue="#{mgr.appSubject}" itemLabel="#{mgr.appSubject}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="نص الخطاب" />
+										</div>
+										<div class="ui-g-5">
+											<h:panelGroup styleClass="md-inputfield">
+												<p:inputTextarea required="true"
+													style="width:100%; overflow-y: scroll;height: 500px; "
+													requiredMessage=" #{msg['comment.text.required']} "
+													id="newwrkcontent"
+													value="#{wrCommentBean.comment.longComment}"
+													styleClass="ui-grid-col-8">
+													<f:ajax render="newwrkcontent" execute="newwrkcontent"></f:ajax>
+												</p:inputTextarea>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="تعديل"
+										action="#{wrCommentBean.updateComment}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

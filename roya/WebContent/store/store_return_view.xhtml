@@ -7,16 +7,22 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <body>
 
-	<h:panelGroup rendered="#{(storeReturnBean.enableAccept)}">
+	<h:panelGroup  rendered="#{(storeReturnBean.enableAccept)}">
 		<div class="image-box-footer" align="left">
 			<p:commandButton value="#{msg['accept']}" immediate="true"
+				id="accpt_btn" disabled="#{!storeReturnBean.allowAccept}"
+				
 				action="#{storeReturnBean.accept}" icon="ui-icon ui-icon-check">
 			</p:commandButton>
+<!-- 			rendered="#{!storeReturnBean.allowAccept}" -->
 			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
 				onclick="this.form.target='_blank'" ajax="false"
+				action="#{storeReturnBean.print_documents_return}"
 				rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton>
 		</div>
 	</h:panelGroup>
 	<ui:include src="store_return_include.xhtml"></ui:include>
+
 </body>
+
 </html>

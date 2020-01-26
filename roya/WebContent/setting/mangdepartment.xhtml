@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<!-- 	<h:head> -->
+	<!-- 		<f:metadata> -->
+	<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
+	<!-- 				action="#{jobsBean.loadJobs}"></f:viewAction> -->
+	<!-- 		</f:metadata> -->
+	<!-- 		<link -->
+	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
+	<!-- 			rel="stylesheet" type="text/css"></link> -->
+	<!-- 	</h:head> -->
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<br />
+	<h:body>
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="true" />
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer">
+						<h:panelGroup id="add_grp">
+							<p:commandButton id="addbtn" value="إضافة"
+								disabled="#{!(mangDepartments.enableAdding)}"
+								oncomplete=" PF('Mo_ww').show()" icon="ui-icon ui-icon-add"
+								styleClass="cyan-btn" process="@this">
+							</p:commandButton>
+						</h:panelGroup>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+						<div>
+							<h1 style="color: #7CB342; text-align: center;">
+								الإدارات والاقسام <span class="fa fa-fw fa-fax"></span>
+							</h1>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel styleClass="btxt" value="الإدارات" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{mangDepartments.selectdDeptId}"
+									update="addbtn" style="width: 100%" filter="true"
+									id="updatedem">
+									<f:selectItem itemLabel="أخترالإدارة" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{mangDepartments.demaList}" var="dem"
+										itemValue="#{dem.id}" itemLabel="#{dem.deptName}" />
+									<p:ajax update="add_grp M_id"
+										listener="#{mangDepartments.loadSectionsByDeptId}" />
+								</p:selectOneMenu>
+							</div>
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<h:outputLabel styleClass="btxt" value="الأقسام" /> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:selectOneMenu value="#{mangDepartments.dema.deptSectionName}" -->
+							<!-- 									style="width: 100%" filter="true" id="updateden"> -->
+							<!-- 									<f:selectItem itemLabel="أختر القسم" itemValue="" /> -->
+							<!-- 									<f:selectItems var="den" value="#{mangDepartments.demaList}" -->
+							<!-- 										itemValue="#{den.id}" itemLabel="#{dema.deptSectionName}" /> -->
+							<!-- 								</p:selectOneMenu> -->
+							<!-- 							</div> -->
+							<div class="ui-g-2">
+								<!-- 								<p:inputText style="width: 60%;" -->
+								<!-- 									value="#{promotionBean.incomeDate_H}" -->
+								<!-- 									styleClass="form-control form-controlCal"> -->
+								<!-- 																		<p:ajax event="blur" process="@this" -->
+								<!-- 																			listener="#{grigAndHijriCalender.setGregDate}"></p:ajax> -->
+								<!-- 								</p:inputText> -->
+							</div>
+						</div>
+						<br />
+						<div>
+							<p:dataTable var="sec" id="inboxdt" widgetVar="deptCell"
+								value="#{mangDepartments.wrkSecList}" rowIndexVar="rowIndex"
+								paginatorPosition="bottom" emptyMessage="لا يوجد بيانات"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								paginator="true" rows="10">
+								<f:facet name="header">
+									<p:outputPanel>
+										<h:outputText value="ابحث فى كل الحقول:" />
+										<p:inputText id="globalFilter"
+											onkeyup="PF('deptCell').filter()" style="width:150px"
+											placeholder="كلمة البحث">
+										</p:inputText>
+									</p:outputPanel>
+								</f:facet>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="التسلسل" width="10%">										
+								#{rowIndex+1}							
+																</p:column>
+								<p:column headerText="القسم" width="10%"
+									filterBy="#{sec.sectionName}" filterMatchMode="contains">										
+										#{sec.sectionName}							
+									</p:column>
+								<p:column width="10%" style="text-align:center" headerText="حذف">
+									<p:commandButton style="background:red"
+										action="#{mangDepartments.showDeleteDL(sec)}"
+										icon="ui-icon-delete">
+										<!--<f:setPropertyActionListener value="#{dema}" -->
+										<!-- target="#{mangDepartments.dema}" /> -->
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+							<p:dialog header="تأكيـد الحذف" widgetVar="Mo_ss" id="H_ss"
+								width="20%" hideEffect="fade" showEffect="explode" dir="rtl"
+								modal="true">
+								<h:panelGroup id="mydeleteDialog">
+									<div style="width: 100%">
+										<h:outputLabel styleClass="btxt"
+											value="هل انت متأكد من الحذف؟" />
+										<br /> <br />
+										<div align="left" class="image-box-footer"
+											style="text-align: center;">
+											<p:commandButton value="نعــم"
+												action="#{mangDepartments.deleteSection}"
+												onsuccess="PF('Mo_ss').hide()" update="includeform:inboxdt">
+											</p:commandButton>
+
+											<p:spacer width="10px" height="10px"></p:spacer>
+											<p:commandButton styleClass="red-btn" value="لا"
+												immediate="true" onclick="PF('Mo_ss').hide()" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</p:dialog>
+						</div>
+						<!-- ************************************************************************************************************** -->
+						<p:dialog header="إضافة قسم لإدارة" widgetVar="Mo_ww" id="M_id"
+							width="50%" dir="rtl">
+							<h:panelGroup id="myaddDialog">
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt" value="الإدارة" />
+									</div>
+									<div class="ui-g-3">
+										<p:selectOneMenu disabled="true"
+											value="#{mangDepartments.selectdDeptId}"
+											style="width: 100% ;opacity:1;" filter="true" id="updatemgr">
+											<f:selectItem itemLabel="أخترالإدارة" itemValue="" />
+											<f:selectItems var="mgr" value="#{mangDepartments.demaList}"
+												itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel styleClass="btxt" value="الأقسام" />
+									</div>
+									<div class="ui-g-3">
+										<p:selectOneMenu value="#{mangDepartments.sectionId}"
+											style="width: 100%" filter="true" id="updateden">
+											<f:selectItem itemLabel="أختر القسم" itemValue="" />
+											<f:selectItems var="den" value="#{mangDepartments.secList}"
+												itemValue="#{den.id}" itemLabel="#{den.sectionName}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="حفظ"
+										action="#{mangDepartments.saveDema}"
+										oncomplete="PF('Mo_ww').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('Mo_ww').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

@@ -12,72 +12,133 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<parameter name="docId" class="java.lang.Integer"/>
+	<parameter name="STORE_NAME" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT rownum num, m.id,st_boss.SIGN_JOB_NAME STORES_MGR_NAME ,st_boss.SIGN_DATE STORE_MGR_SIGN_DATE,
-st_dean.SIGN_JOB_NAME STORE_DEAN_NAME ,st_dean.SIGN_DATE STORE_DEAN_SIGN_DATE, priv.EMPNAME PRIV_OWNER_NAME,
- st.STRNAME STORE_NAME, decode(m.REASON,4,'إنتهاء الغرض', 1, 'فائض' ,2 ,'عدم الصلاحية' ,3 ,'تالف')RETURN_REASON,boss.EMPNAME DEPT_RETURNDE_BOOS,
- m.SERIAL_NUMBER SPECIAL_NUMBER, m.RET_HDATE RETURN_DATE, dep.DEPT_NAME DEPT_RETRUNED_FROM, us.EMPNAME RETURN_EMP_NAME,
-art.CODE ART_CODE, art.NAME ART_NAME, unit.ITEMUNITNAME UNIT, nvl(det.QTY,0)QTY, det.NOTES NOTES
-FROM 
-	roya.RETURN_STORE m, 
-	roya.RETURN_STORE_DETAILS  det, WHS_WAREHOUSES st,
-	ARTICLE art, TDR_ITEMUNIT unit, ARC_USERS us, WRK_DEPT dep, ARC_USERS boss, ARC_USERS priv,
-	 (
-	 select  s.doc_id id, s.SIGN_USER_ID, s.SIGN_JOB_NAME, s.SIGN_DATE 
-	 from roya.arc_records r, roya.hrs_signs s,
-    roya.RETURN_STORE rq 
-    where  rq.id   = s.doc_id
-    and r.id       = s.arc_record_id 
-    and r.app_type    = 250
-    and s.SIGN_STEP_ID = 1
-    AND s.doc_id       =13
-     AND s.doc_id     =  13
-    )st_user
-    ,
-	 (
-	 select  s.doc_id id, s.SIGN_JOB_NAME, s.SIGN_USER_ID,s.SIGN_DATE 
-	 from roya.arc_records r, roya.hrs_signs s,
-    roya.RETURN_STORE rq 
-    where  rq.id   = s.doc_id
-    and r.id       = s.arc_record_id 
-    and r.app_type = 250
-    and s.SIGN_STEP_ID = 3
-     AND s.doc_id  =  13
-    )st_boss
-    ,
-    (
-    select  s.doc_id id, s.SIGN_JOB_NAME,s.SIGN_DATE from arc_records r, hrs_signs s,
-    RETURN_STORE rq where  rq.id = doc_id
-    and r.id = s.arc_record_id 
-    and r.app_type = 250 
-    and s.SIGN_STEP_ID = 4
-     AND s.doc_id  =  13
-    )st_dean,
-     (
-	 select  s.doc_id id, s.SIGN_USER_ID, s.SIGN_JOB_NAME, s.SIGN_DATE 
-	 from roya.arc_records r, roya.hrs_signs s,
-    roya.RETURN_STORE rq 
-    where  rq.id   = s.doc_id
-    and r.id       = s.arc_record_id 
-    and r.app_type = 250
-    and s.SIGN_STEP_ID = 5
-    AND s.doc_id=13
-    )priv
-    
-	
-WHERE 
-	m.ID  				= det.ret_id
- AND art.STRNO 			= st.STRNO
-AND art.ID 				= det.ART_ID
-AND art.ITEM_UNITE_ID 	= unit.ITEMUNITID
-AND st_boss.id          =  m.id
-AND st_dean.id          =  m.id
-AND m.ID                =   13
-AND st_user.SIGN_USER_ID = us.user_id
-AND dep.id = us.dept_id
-AND boss.user_id = st_boss.SIGN_USER_ID
-AND priv.SIGN_USER_ID = priv.user_id]]>
+		<![CDATA[SELECT
+	rownum num,
+	m.id,
+	st_boss.SIGN_JOB_NAME STORES_MGR_NAME ,
+	st_boss.SIGN_DATE STORE_MGR_SIGN_DATE,
+	st_dean.SIGN_JOB_NAME STORE_DEAN_NAME ,
+	st_dean.SIGN_DATE STORE_DEAN_SIGN_DATE,
+	priv.EMPNAME PRIV_OWNER_NAME,
+	privld.SIGN_DATE PRIV_OWNER_SIGN_DATE,
+	st.STRNAME STORE_NAME,
+	DECODE(m.REASON, 4, 'إنتهاء الغرض', 1, 'فائض' , 2 , 'عدم الصلاحية' , 3 , 'تالف')RETURN_REASON,
+	boss.EMPNAME DEPT_RETURNDE_BOOS,
+	m.SERIAL_NUMBER SPECIAL_NUMBER,
+	m.RET_HDATE RETURN_DATE,
+	dep.DEPT_NAME DEPT_RETRUNED_FROM,
+	us.EMPNAME RETURN_EMP_NAME,
+	art.CODE ART_CODE,
+	art.NAME ART_NAME,
+	unit.ITEMUNITNAME UNIT,
+	NVL(det.QTY, 0)QTY,
+	det.NOTES NOTES
+FROM
+	roya.RETURN_STORE m,
+	roya.RETURN_STORE_DETAILS det,
+	WHS_WAREHOUSES st,
+	ARTICLE art,
+	TDR_ITEMUNIT unit,
+	ARC_USERS us,
+	WRK_DEPT dep,
+	ARC_USERS boss,
+	ARC_USERS priv,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_USER_ID,
+		s.SIGN_JOB_NAME,
+		s.SIGN_DATE
+	FROM
+		roya.arc_records r,
+		roya.hrs_signs s,
+		roya.RETURN_STORE rq
+	WHERE
+		rq.id = s.doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 250
+		AND s.SIGN_STEP_ID = 1
+		AND s.doc_id = 19
+		AND s.doc_id = 19 )st_user ,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_JOB_NAME,
+		s.SIGN_USER_ID,
+		s.SIGN_DATE
+	FROM
+		roya.arc_records r,
+		roya.hrs_signs s,
+		roya.RETURN_STORE rq
+	WHERE
+		rq.id = s.doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 250
+		AND s.SIGN_STEP_ID = 3
+		AND s.doc_id = 19 )st_boss ,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_JOB_NAME,
+		s.SIGN_DATE
+	FROM
+		arc_records r,
+		hrs_signs s,
+		RETURN_STORE rq
+	WHERE
+		rq.id = doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 250
+		AND s.SIGN_STEP_ID = 4
+		AND s.doc_id = 19 )st_dean,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_USER_ID SIGN_USER_ID,
+		s.SIGN_JOB_NAME SIGN_JOB_NAME,
+		s.SIGN_DATE SIGN_DATE
+	FROM
+		roya.arc_records r,
+		roya.hrs_signs s,
+		roya.RETURN_STORE rq
+	WHERE
+		rq.id = s.doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 250
+		AND s.SIGN_STEP_ID = 5
+		AND s.doc_id = 19 )privld
+WHERE
+	m.ID = det.ret_id
+	AND art.STRNO = st.STRNO
+	AND art.ID = det.ART_ID
+	AND art.ITEM_UNITE_ID = unit.ITEMUNITID
+	AND st_boss.id = m.id
+	AND st_dean.id = m.id
+	AND m.ID = 19
+	AND st_user.SIGN_USER_ID = us.user_id
+	AND dep.id = us.dept_id
+	AND boss.user_id = st_boss.SIGN_USER_ID
+	AND privld.SIGN_USER_ID = priv.user_id]]>
 	</queryString>
+	<field name="NUM" class="java.lang.Integer"/>
+	<field name="DEPT_RETRUNED_FROM" class="java.lang.String"/>
+	<field name="ART_CODE" class="java.lang.Integer"/>
+	<field name="ART_NAME" class="java.lang.String"/>
+	<field name="UNIT" class="java.lang.String"/>
+	<field name="QTY" class="java.lang.Integer"/>
+	<field name="NOTES" class="java.lang.String"/>
+	<field name="STORE_DEAN_NAME" class="java.lang.String"/>
+	<field name="STORE_DEAN_SIGN_DATE" class="java.lang.String"/>
+	<field name="DEPT_RETURNDE_BOOS" class="java.lang.String"/>
+	<field name="RETURN_DATE" class="java.lang.String"/>
+	<field name="STORES_MGR_NAME" class="java.lang.String"/>
+	<field name="STORE_MGR_SIGN_DATE" class="java.lang.String"/>
+	<field name="RETURN_EMP_NAME" class="java.lang.String"/>
+	<field name="PRIV_OWNER_NAME" class="java.lang.String"/>
+	<field name="PRIV_OWNER_SIGN_DATE" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -129,14 +190,14 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<text><![CDATA[مستند إرجاع ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="43" width="62" height="20" uuid="5657f1ca-5112-42ac-bfd7-ea078056528f"/>
+				<reportElement x="92" y="43" width="90" height="20" uuid="5657f1ca-5112-42ac-bfd7-ea078056528f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[التاريـــــــخ :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="63" width="62" height="20" uuid="11c17663-e7b6-40c5-a803-0b2a186a8abf"/>
+				<reportElement x="92" y="63" width="90" height="20" uuid="11c17663-e7b6-40c5-a803-0b2a186a8abf"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
@@ -243,14 +304,7 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[الجهة المرجعة]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="750" y="64" width="50" height="15" uuid="0394d6a1-b11e-4064-ad21-942997e63112"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[مستودع]]></text>
+				<text><![CDATA[الجهة المرجعة :]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="212" y="43" width="331" height="21" uuid="b917614c-91dd-44d4-9906-a4179e1ac1d6">
@@ -264,6 +318,47 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["أسباب الإرجاع"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="625" y="49" width="120" height="15" uuid="feaf8d0e-27c7-4bc5-817d-8ff3bd8d5165"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPT_RETRUNED_FROM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="680" y="64" width="120" height="15" uuid="72f1a061-a04d-4409-8a1e-2f741c544410"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{STORE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="43" width="118" height="20" uuid="f495ea21-39da-42d5-a27c-3b0833668f9a"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RETURN_DATE}== null?"":(""+$F{RETURN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="63" width="118" height="20" uuid="f4c47b1f-26cc-4edf-9c73-68ce0c67db46"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 			</textField>
 		</band>
 	</title>
@@ -394,10 +489,104 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="43" splitType="Stretch"/>
+		<band height="43" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="650" y="0" width="120" height="22" uuid="94117836-a2d0-4245-b326-bc4ea349c4c7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ART_CODE}== null?"":(""+$F{ART_CODE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="770" y="0" width="32" height="22" uuid="4a509050-88eb-411b-974d-52de9003ecc1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM}== null?"":(""+$F{NUM}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="300" height="22" uuid="2172ff37-d67d-4c0f-9503-5768bfcd26b7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ART_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="50" height="22" uuid="285a7729-efb8-4c7a-a7fc-90cbee5e0e3e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UNIT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="250" y="0" width="50" height="22" uuid="6b53ff89-ed57-4dc7-adf3-c4b78c3cb073"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QTY}== null?"":(""+$F{QTY}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="40" height="22" uuid="eb2d898e-ca9f-4c89-a8c3-e2c5a245f502"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="40" height="22" uuid="0d219e59-9256-43c0-8340-0b690201ce8f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="40" height="22" uuid="156c11d4-778b-4523-9cf8-903568487145"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="130" height="22" uuid="4e56e967-fdee-4f57-b00d-a9bd1aa1e11a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTES}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<pageFooter>
-		<band height="139" splitType="Stretch">
+		<band height="163" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="720" y="0" width="83" height="20" uuid="5f9f3caa-254e-47dc-955f-047a7dfdc6ce">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -507,6 +696,7 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPT_RETURNDE_BOOS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="590" y="40" width="130" height="20" uuid="1c617323-6648-4cff-8ec1-2dc7e3379482">
@@ -529,6 +719,9 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{RETURN_DATE}== null?"":(""+$F{RETURN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="460" y="20" width="130" height="20" uuid="e194e25d-5d96-474e-8ac7-90cca22a8812">
@@ -540,6 +733,7 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_NAME}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="460" y="40" width="130" height="20" uuid="788b5709-85c0-434c-9ce0-f68ed0ed4af9">
@@ -562,6 +756,9 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_DEAN_SIGN_DATE}== null?"":(""+$F{STORE_DEAN_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="20" width="330" height="20" uuid="3561fcc6-8c44-4baf-9e1e-114b0d202f06">
@@ -618,6 +815,7 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{STORES_MGR_NAME}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="330" y="40" width="130" height="20" uuid="a32de6c9-ebc2-4fa1-add1-b79610febfa2">
@@ -640,6 +838,9 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{STORE_MGR_SIGN_DATE}== null?"":(""+$F{STORE_MGR_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="170" y="110" width="80" height="18" uuid="64cbaaad-bac2-46f2-a65a-2af0178d1803">
@@ -660,14 +861,64 @@ AND priv.SIGN_USER_ID = priv.user_id]]>
 				<text><![CDATA[صاحب الصلاحية :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="630" y="92" width="90" height="18" uuid="d2045d36-4fb6-4ab7-91a8-ff01288d7436">
+				<reportElement x="630" y="102" width="90" height="18" uuid="d2045d36-4fb6-4ab7-91a8-ff01288d7436">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<text><![CDATA[إسم السخص المرجع :]]></text>
+				<text><![CDATA[إسم الشخص المرجع :]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="102" width="187" height="18" uuid="3843a076-df69-4ab5-8b6a-879abace0f6f"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RETURN_EMP_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="89" width="170" height="18" uuid="c6879506-5507-4624-a86e-6831e7ec4a23"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRIV_OWNER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="110" width="170" height="18" uuid="516be371-a4ed-4c95-ba77-71d264b9a657"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="170" y="130" width="80" height="18" uuid="bcf59587-5074-401f-825f-888234c5986a">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[الـتـاريــــــــــــــخ : ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="130" width="170" height="18" uuid="9a729584-f180-4b11-83e7-217f68769a02"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRIV_OWNER_SIGN_DATE}== null?"":(""+$F{PRIV_OWNER_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -1,0 +1,322 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+				http://www.springframework.org/schema/tx 
+		        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		        http://www.springframework.org/schema/context 
+		        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+	<context:component-scan base-package="com.bkeryah,common.Util" />
+	<!-- Beans Declaration -->
+	<bean id="springContext" class="com.bkeryah.licences.SpringContext" />
+	<bean id="myUserDetailsService" class="common.Util.MyUserDetailsService" />
+	<!-- User Service Declaration -->
+	<bean id="dataAccessService" class="com.bkeryah.service.DataAccessService">
+		<property name="commonDao" ref="commonDao" />
+		<property name="dataAccessDAO" ref="dataAccessDAO" />
+	</bean>
+	<bean id="stockServiceDao" class="com.bkeryah.dao.StockServiceDao">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<!-- User DAO Declaration -->
+	<bean id="commonDao" class="com.bkeryah.dao.CommonDao">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="dataAccessDAO" class="com.bkeryah.dao.DataAccessImpl">
+
+	</bean>
+
+	<!-- Data Source Declaration -->
+	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:orcl" />
+		<property name="user" value="roya" />
+		<property name="password" value="123" />
+		<property name="initialPoolSize" value="1" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxStatements" value="20" />
+		<property name="minPoolSize" value="1" />
+		<property name="maxIdleTime" value="20" />
+	</bean>
+
+	<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> -->
+	<!-- <property name="dataSource" ref="DataSource" /> -->
+	<!-- </bean> -->
+
+	<!-- Session Factory Declaration -->
+	<bean id="SessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.bkeryah.entities.Article</value>
+				<value>com.bkeryah.entities.ArticleGroup</value>
+				<value>com.bkeryah.entities.ArticleSubGroup</value>
+				<value>com.bkeryah.entities.WrkUserFolderMail</value>
+				<value>com.bkeryah.entities.WrkSpecialAddress</value>
+				<value>com.bkeryah.entities.WrkInboxFolder</value>
+				<value>com.bkeryah.entities.WhsWarehouses</value>
+				<value>com.bkeryah.entities.FinFinancialYear</value>
+				<value>com.bkeryah.entities.ArcRecordsLink</value>
+				<value>com.bkeryah.entities.ActualDisbursementDetails</value>
+				<value>com.bkeryah.entities.ActualDisbursement</value>
+				<value>com.bkeryah.entities.ExchangeRequestDetails</value>
+				<value>com.bkeryah.entities.HrScenario</value>
+				<value>com.bkeryah.entities.ExchangeRequest</value>
+				<value>com.bkeryah.entities.TenderItems</value>
+				<value>com.bkeryah.entities.ItemUnite</value>
+				<value>com.bkeryah.entities.HrLetterRequest</value>
+				<value>com.bkeryah.entities.ArcPeople</value>
+				<value>com.bkeryah.entities.NationalIdType</value>
+				<value>com.bkeryah.entities.Nationality</value>
+				<value>com.bkeryah.entities.NationalIdPlaces</value>
+				<value>com.bkeryah.entities.Charging</value>
+				<value>com.bkeryah.entities.HrMedicalRequest</value>
+				<value>com.bkeryah.model.User</value>
+				<value>com.bkeryah.entities.HrEmployeeVacation</value>
+				<value>com.bkeryah.entities.PayBank</value>
+				<value>com.bkeryah.entities.WrkConfedintialReplies</value>
+				<value>com.bkeryah.entities.WrkConfedintialRepliesId</value>
+				<value>com.bkeryah.entities.WrkRefrentionalSetting</value>
+				<value>com.bkeryah.entities.ArcApplicationType</value>
+				<value>com.bkeryah.entities.ArcAttach</value>
+				<value>com.bkeryah.entities.EmployeeInitiation</value>
+				<value>com.bkeryah.entities.ArcDocumentStruct</value>
+				<value>com.bkeryah.entities.ArcFileTypes</value>
+				<value>com.bkeryah.entities.ArcRecAtt</value>
+				<value>com.bkeryah.entities.ArcRecords</value>
+				<value>com.bkeryah.entities.ArcUsers</value>
+				<value>com.bkeryah.entities.SysTitle</value>
+				<value>com.bkeryah.entities.WrkApplication</value>
+				<value>com.bkeryah.entities.WrkDept</value>
+				<value>com.bkeryah.entities.WrkJobs</value>
+				<value>com.bkeryah.entities.WrkLetterFrom</value>
+				<value>com.bkeryah.entities.WrkLetterTo</value>
+				<value>com.bkeryah.entities.WrkProfile</value>
+				<value>com.bkeryah.entities.WrkProfileSign</value>
+				<value>com.bkeryah.entities.WrkPurpose</value>
+				<value>com.bkeryah.entities.WrkRoles</value>
+				<value>com.bkeryah.entities.WrkSection</value>
+				<value>com.bkeryah.entities.WrkComment</value>
+				<value>com.bkeryah.entities.WrkCommentType</value>
+				<value>com.bkeryah.entities.HrsUserAbsent</value>
+				<value>com.bkeryah.entities.HrsSigns</value>
+				<value>com.bkeryah.entities.SysProperties</value>
+				<value>com.bkeryah.entities.HrsEmpHistorical</value>
+				<value>com.bkeryah.entities.HrsGovJob4</value>
+				<value>com.bkeryah.entities.MainMenuUser</value>
+				<value>com.bkeryah.entities.MainMenu</value>
+				<value>com.bkeryah.entities.SubMenu</value>
+				<value>com.bkeryah.entities.SubMenuUser</value>
+				<value>com.bkeryah.entities.HrsMasterFile</value>
+				<value>com.bkeryah.entities.HrsSalaryScale</value>
+				<value>com.bkeryah.entities.HrsEmpTerminate</value>
+				<value>com.bkeryah.entities.HrsEmployeeTraining</value>
+				<value>com.bkeryah.entities.HrsTrainingMandate</value>
+				<value>com.bkeryah.entities.HrsTrainingPlace</value>
+				<value>com.bkeryah.entities.HrsScenarioDocument</value>
+				<value>com.bkeryah.entities.WrkApplicationExtension</value>
+				<value>com.bkeryah.entities.ArcUsersExtension</value>
+				<value>com.bkeryah.entities.ArcRecordsExtension</value>
+				<value>com.bkeryah.entities.PayLicBills</value>
+				<value>com.bkeryah.entities.PayBillDetails</value>
+				<value>com.bkeryah.entities.PayMaster</value>
+				<value>com.bkeryah.entities.Project</value>
+				<value>com.bkeryah.entities.ProjectContract</value>
+				<value>com.bkeryah.entities.ProjectExtract</value>
+				<value>com.bkeryah.entities.DocumentScenario</value>
+				<value>com.bkeryah.entities.HealthMasterLicence</value>
+				<value>com.bkeryah.entities.HealthLicenceJob</value>
+				<value>com.bkeryah.entities.HealthLicenceCenter</value>
+				<value>com.bkeryah.entities.HealthArchiveLicence</value>
+				<value>com.bkeryah.entities.ArcPeoplePic</value>
+				<value>com.bkeryah.entities.ArcPeoplePapers</value>
+				<value>com.bkeryah.entities.Procurement</value>
+				<value>com.bkeryah.entities.ProcurementDetails</value>
+				<value>com.bkeryah.entities.FineReboundMaster</value>
+				<value>com.bkeryah.entities.UserRoles</value>
+				<value>com.bkeryah.entities.ArcRecordLinking</value>
+				<value>com.bkeryah.entities.InventoryMaster</value>
+				<value>com.bkeryah.entities.InventoryRecord</value>
+				<value>com.bkeryah.entities.VacationsType</value>
+				<value>com.bkeryah.entities.TechnicalUsers</value>
+				<value>com.bkeryah.entities.TechnicalResponse</value>
+				<value>com.bkeryah.entities.WrkCommentHistory</value>
+				<value>com.bkeryah.entities.LicTrdArchive</value>
+				<value>com.bkeryah.entities.SysReligion</value>
+				<value>com.bkeryah.entities.SysCategoryEmployer</value>
+				<value>com.bkeryah.entities.SysBirthCountry</value>
+				<value>com.bkeryah.entities.SysNationality</value>
+				<value>com.bkeryah.entities.SysGraduatePlace</value>
+				<value>com.bkeryah.entities.SysSpecialization</value>
+				<value>com.bkeryah.entities.SysQualification</value>
+				<value>com.bkeryah.hr.entities.HrsJobCreation</value>
+				<value>com.bkeryah.entities.HrsSalaryScaleDgrs</value>
+				<value>com.bkeryah.entities.FinEntity</value>
+				<value>com.bkeryah.entities.ArticleStatus</value>
+				<value>com.bkeryah.entities.StockInDetails</value>
+				<value>com.bkeryah.entities.StockEntryMaster</value>
+				<value>com.bkeryah.entities.RolePriv</value>
+				<value>com.bkeryah.entities.licences.BldLicArchive</value>
+				<value>com.bkeryah.entities.licences.BldLicBuildingTypes</value>
+				<value>com.bkeryah.entities.licences.BldLicBuildingUsage</value>
+				<value>com.bkeryah.entities.licences.BldLicDigging</value>
+				<value>com.bkeryah.entities.licences.BldLicDiggingPurpose</value>
+				<value>com.bkeryah.entities.licences.BldLicHangover</value>
+				<value>com.bkeryah.entities.licences.BldLicMasterTbl</value>
+				<value>com.bkeryah.entities.licences.BldLicTypes</value>
+				<value>com.bkeryah.entities.licences.BldLicWall</value>
+				<value>com.bkeryah.entities.licences.BldPaperTypes</value>
+				<value>com.bkeryah.entities.licences.BldLicNew</value>
+				<value>com.bkeryah.entities.licences.BldLicAttch</value>
+				<value>com.bkeryah.entities.licences.LicAgents</value>
+				<value>com.bkeryah.entities.licences.BldLicPcs</value>
+				<value>com.bkeryah.entities.TradeLicense</value>
+				<value>com.bkeryah.entities.CodesFines</value>
+				<value>com.bkeryah.penalties.LicTrdMasterFile</value>
+				<value>com.bkeryah.penalties.ReqFinesMaster</value>
+				<value>com.bkeryah.penalties.ReqFinesDetails</value>
+				<value>com.bkeryah.penalties.NotifFinesMaster</value>
+				<value>com.bkeryah.penalties.NotifFinesDetails</value>
+				<value>com.bkeryah.penalties.FineSection</value>
+				<value>com.bkeryah.penalties.ReqFinesSetup</value>
+				<value>com.bkeryah.penalties.FineSection</value>
+				<value>com.bkeryah.entities.ArcPeopleModel</value>
+				<value>com.bkeryah.entities.HrsJobHistorical</value>
+				<value>com.bkeryah.hr.entities.Sys037</value>
+				<value>com.bkeryah.hr.entities.Sys038</value>
+				<value>com.bkeryah.hr.entities.Sys112</value>
+				<value>com.bkeryah.hr.entities.HrsGovJobG</value>
+				<value>com.bkeryah.hr.entities.HrsGovJobSpec</value>
+				<value>com.bkeryah.hr.entities.HrsGovJobCatgseries</value>
+				<value>com.bkeryah.hr.entities.HrsGovJobSeries</value>
+				<value>com.bkeryah.hr.entities.HrsJobCreation</value>
+				<value>com.bkeryah.hr.entities.HrsCompactBaseFloor</value>
+				<value>com.bkeryah.hr.entities.HrsCompactFloors</value>
+				<value>com.bkeryah.hr.entities.HrsCompactGoals</value>
+				<value>com.bkeryah.hr.entities.HrsFloors</value>
+				<value>com.bkeryah.hr.entities.HrsCompactCatFloor</value>
+				<value>com.bkeryah.hr.entities.HrsCompactPerformance</value>
+				<value>com.bkeryah.hr.entities.HrsCompactRating</value>
+				<value>com.bkeryah.hr.entities.HrsGeneralAppreciation</value>
+				<value>com.bkeryah.hr.entities.HrsJobCreation</value>
+				<value>com.bkeryah.hr.entities.HrsGovJobType</value>
+				<value>com.bkeryah.hr.entities.HrsYearsPrime</value>
+				<value>com.bkeryah.entities.HrsJobHistorical</value>
+				<value>com.bkeryah.hr.entities.HrsCompactEmpCaracter</value>
+				<value>com.bkeryah.hr.entities.HrsLoan</value>
+				<value>com.bkeryah.hr.entities.HrsLoanDetails</value>
+				<value>com.bkeryah.hr.entities.HrsLoanType</value>
+				<value>com.bkeryah.hr.entities.Sys012</value>
+				<value>com.bkeryah.hr.entities.HrsSalary</value>
+				<value>com.bkeryah.entities.HrsVacationCalc</value>
+				<value>com.bkeryah.hr.entities.HrsSalaryScaleOrder</value>
+				<value>com.bkeryah.hr.entities.HrsSalaryScaleId</value>
+				<value>com.bkeryah.hr.entities.HrsAppreciationScale</value>
+				<value>com.bkeryah.fng.entities.TstFinger</value>
+				<value>com.bkeryah.fng.entities.FngTimeTable</value>
+				<value>com.bkeryah.fng.entities.TstFinger</value>
+				<value>com.bkeryah.fng.entities.FngTypeAbsence</value>
+				<value>com.bkeryah.fng.entities.FngStatusAbsence</value>
+				<value>com.bkeryah.fng.entities.FngEmpAbsent</value>
+				<value>com.bkeryah.entities.WrkProfileSign</value>
+				<value>com.bkeryah.hr.entities.HrsEmpOvertime</value>
+				<value>com.bkeryah.fng.entities.FngUserTempShift</value>
+				<value>com.bkeryah.hr.entities.Sys059</value>
+				<value>com.bkeryah.hr.entities.Sys051</value>
+				<value>com.bkeryah.hr.entities.Sys018</value>
+				<value>com.bkeryah.fng.entities.FngCheckInOut</value>
+				<value>com.bkeryah.entities.BillIssue</value>
+				<value>com.bkeryah.entities.DepartmentArcRecords</value>
+				<value>com.bkeryah.entities.BillIssueCash</value>
+				<value>com.bkeryah.entities.BillIssueDetail</value>
+				<value>com.bkeryah.entities.TradIssueType</value>
+				<value>com.bkeryah.entities.BillIssueRubish</value>
+				<value>com.bkeryah.entities.BillIssueDig</value>
+				<value>com.bkeryah.entities.BillIssueDigCash</value>
+				<value>com.bkeryah.entities.BillIssueDigDetail</value>
+				<value>com.bkeryah.hr.entities.HrsSumVacation</value>
+				<value>com.bkeryah.entities.RecDepts</value>
+				<value>com.bkeryah.entities.DeptArcRecords</value>
+				<value>com.bkeryah.entities.investment.InvNewspaper</value>
+				<value>com.bkeryah.entities.investment.AnncementNews</value>
+				<value>com.bkeryah.entities.investment.Announcement</value>
+				<value>com.bkeryah.entities.investment.Investor</value>
+				<value>com.bkeryah.entities.investment.RealEstate</value>
+				<value>com.bkeryah.entities.investment.Tender</value>
+				<value>com.bkeryah.entities.investment.Contract</value>
+				<value>com.bkeryah.entities.investment.ContractDirect</value>
+
+				<value>com.bkeryah.entities.investment.AnnoucementDetails</value>
+				<value>com.bkeryah.entities.investment.SiteType</value>
+				<value>com.bkeryah.entities.investment.ContractType</value>
+				<value>com.bkeryah.entities.investment.IntroContract</value>
+				<value>com.bkeryah.entities.investment.Clause</value>
+				<value>com.bkeryah.entities.investment.ContractCancelReason</value>
+				<value>com.bkeryah.entities.investment.ContractDirectType</value>
+				<value>com.bkeryah.support.entities.UserRequest</value>
+				<value>com.bkeryah.support.entities.RequestWatcher</value>
+				<value>com.bkeryah.support.entities.RequestStep</value>
+				<value>com.bkeryah.support.entities.RequestStatus</value>
+				<value>com.bkeryah.fuel.entities.Car</value>
+				<value>com.bkeryah.fuel.entities.CarBrand</value>
+				<value>com.bkeryah.fuel.entities.CarModel</value>
+				<value>com.bkeryah.fuel.entities.FuelTransaction</value>
+				<value>com.bkeryah.fuel.entities.FuelType</value>
+				<value>com.bkeryah.fuel.entities.UserCars</value>
+				<value>com.bkeryah.fuel.entities.VehicleType</value>
+				<value>com.bkeryah.fuel.entities.Workshop</value>
+				<value>com.bkeryah.fuel.entities.FuelSupply</value>
+				<value>com.bkeryah.hr.entities.HrsVacationUpdate</value>
+				<value>com.bkeryah.hr.entities.VacCompensatoryDays</value>
+				<value>com.bkeryah.hr.entities.CompensatoryVacStock</value>
+				<value>com.bkeryah.hr.entities.UserVacSold</value>
+				<value>com.bkeryah.hr.entities.EmpMoveType</value>
+				<value>com.bkeryah.entities.DocumentsType</value>
+				<value>com.bkeryah.penalties.WrkFinesEntity</value>
+
+				<value>com.bkeryah.entities.investment.ContractStatus</value>
+				<value>com.bkeryah.entities.investment.InvestorType</value>
+				<value>com.bkeryah.entities.investment.InvestorIdentityType</value>
+				<value>com.bkeryah.entities.investment.InvestorStatus</value>
+				<value>com.bkeryah.entities.investment.BuildingType</value>
+				<value>com.bkeryah.entities.investment.ContractMainCategory</value>
+				<value>com.bkeryah.entities.investment.ContractSubcategory</value>
+				<value>com.bkeryah.hr.entities.HrsVacSold</value>
+				<value>com.bkeryah.fng.entities.AutorizationSettings</value>
+				<value>com.bkeryah.entities.ReturnStoreDetails</value>
+				<value>com.bkeryah.entities.ReturnStore</value>
+				<value>com.bkeryah.entities.StoreTemporeryReceiptMaster</value>
+				<value>com.bkeryah.entities.StoreTemporeryReceiptDetails</value>
+				<value>com.bkeryah.entities.DocumentType</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.show_sql">
+					false
+				</prop>
+				<prop key="hibernate.connection.characterEncoding">utf-8</prop>
+				<prop key="hibernate.connection.CharSet">utf-8</prop>
+				<prop key="hibernate.connection.characterEncoding">utf-8</prop>
+				<prop key="hibernate.connection.useUnicode">utf-8</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+	<!-- Transaction Manager is defined -->
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+</beans>

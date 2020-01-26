@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+
+						<p:commandButton value="إضــافة" onclick=" PF('Uo_dd').show()"
+							styleClass="cyan-btn">
+						</p:commandButton>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							وحدة الأصناف<span class="fa fa-dashboard"></span>
+						</h1>
+						<br></br>
+
+						<p:dataTable var="unite" id="inboxdt" widgetVar="unitCell"
+							value="#{itemUniteBean.uniteList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{itemUniteBean.filtereduniteList}"
+							paginator="true" rows="13">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('unitCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="10%">										
+								#{rowIndex+1}							
+																</p:column>
+							<p:column style="white-space: nowrap;" headerText="وحدة الأصناف"
+								width="40%" filterBy="#{unite.name}" filterMatchMode="contains">										
+										#{unite.name}									
+							</p:column>
+
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton onclick="PF('job_dlg').show()" process="@this"
+									icon="ui-icon-create" update="includeform:myDialog">
+									<f:setPropertyActionListener value="#{unite}"
+										target="#{itemUniteBean.unite}" />
+								</p:commandButton>
+							</p:column>
+							<p:column width="10%" style="text-align:center" headerText="حذف">
+								<p:commandButton style="background:red"
+									onclick="PF('Uo_ss').show()" process="@this"
+									icon="ui-icon-delete">
+									<f:setPropertyActionListener value="#{unite}"
+										target="#{itemUniteBean.unite}" />
+
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:dialog header="تأكيـد الحذف" widgetVar="Uo_ss" id="U_ss"
+							width="20%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true">
+							<h:panelGroup id="mydeleteDialog">
+								<div style="width: 100%">
+									<h:outputLabel styleClass="btxt" value="هل انت متأكد من الحذف؟" />
+									<br /> <br />
+									<div align="left" class="image-box-footer"
+										style="text-align: center;">
+										<p:commandButton value="نعــم"
+											action="#{itemUniteBean.deleteUnite}"
+											onclick="PF('Uo_ss').hide()" update="includeform:inboxdt">
+										</p:commandButton>
+
+										<p:spacer width="10px" height="10px"></p:spacer>
+										<p:commandButton styleClass="red-btn" value="لا"
+											immediate="true" onclick="PF('Uo_ss').hide()" />
+									</div>
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ************************************INSERT***************************************** -->
+
+						<p:dialog header="إضافة وحدة تصنيف" widgetVar="Uo_dd" id="U_id"
+							width="30%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true" resizable="false">
+							<h:panelGroup id="myaddDialog">
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="وحدة التصنيف" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{itemUniteBean.name}" style="width:100%"></p:inputText>
+										</div>
+									</div>
+								</div>
+
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center">
+									<p:commandButton value="حفظ"
+										action="#{itemUniteBean.saveUnite}"
+										onclick="PF('Uo_dd').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+										<p:ajax update="inboxdt"></p:ajax>
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('Uo_dd').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ***********************************UPDATE****************************************** -->
+						<p:dialog header="بيانات الأصناف" widgetVar="job_dlg"
+							id="job_dlgId" width="30%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="وحدة التصنيف" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{itemUniteBean.unite.name}"
+												style="width: 100%"></p:inputText>
+										</div>
+									</div>
+								</div>
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center">
+									<p:commandButton value="تعديل"
+										action="#{itemUniteBean.updateUnite}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

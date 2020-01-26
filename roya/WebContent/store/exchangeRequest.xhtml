@@ -141,37 +141,73 @@ body .ui-dialog .ui-dialog-titlebar {
 			<p:messages autoUpdate="true" closable="true"></p:messages>
 
 			<div class="image-box-footer">
-			<h:panelGroup  id="saveBtnGrp">
-				<p:commandButton value="حفظ" id="saveBtn"
-					icon="ui-icon ui-icon-assignment-return" ajax="false" immediate="true" rendered="#{exchangeRequestBean.canSave}"
-					action="#{exchangeRequestBean.save}" process="notes">
+				<h:panelGroup id="saveBtnGrp">
+					<p:commandButton value="حفظ" id="saveBtn"
+						icon="ui-icon ui-icon-assignment-return" ajax="false"
+						immediate="true" rendered="#{exchangeRequestBean.canSave}"
+						action="#{exchangeRequestBean.save}" process="notes">
 
-				</p:commandButton></h:panelGroup>
+					</p:commandButton>
+				</h:panelGroup>
 			</div>
 			<br />
 			<div class="card card-w-title" style="direction: rtl;">
-
-
-				<h1 style="color: #7CB342; text-align: center; direction: ltr;">
-					طلب صرف مواد<span class="ui-icon ui-icon-phone-in-talk"></span>
-				</h1>
+				<h:panelGroup id="title">
+					<h1 style="color: #7CB342; text-align: center;">
+						<h:outputText value="طلب صرف مواد"
+							rendered="#{!(exchangeRequestBean.chckRtrnArt)}" />
+						<h:outputText value="طلب صرف رجيع"
+							rendered="#{(exchangeRequestBean.chckRtrnArt)}" />
+						<span class="ui-icon ui-icon-phone-in-talk"></span>
+					</h1>
+				</h:panelGroup>
 				<br></br>
 				<div class="col-md-7">
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<h:outputLabel value="اختر المستودع" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-4">
+							<h:panelGroup id="stock">
+								<p:selectOneMenu styleClass="col-md-5" id="strId"
+									style="width:100%"
+									value="#{exchangeRequestBean.request.stockNo}"
+									disabled="#{exchangeRequestBean.stockIsBlocked}"
+									required="true" requiredMessage="من فضلك إختر المستودع"
+									filterMatchMode="contains" filter="true">
+									<f:selectItem itemLabel="من فضلك إختر المستودع" itemValue=""></f:selectItem>
+									<f:selectItems value="#{exchangeRequestBean.wareHousesList}"
+										var="item" itemValue="#{item.storeNumber}"
+										itemLabel="#{item.storeName}"></f:selectItems>
+									<p:ajax update="item_grp title"
+										listener="#{exchangeRequestBean.updateArticlesList}"
+										process="@this" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+
+					</div>
 					<div class="ui-g">
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<h:outputLabel value="اختر الصنف" />
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-4">
-							<p:selectOneMenu styleClass="col-md-5" id="itemId"
-								style="width:100%" value="#{exchangeRequestBean.requestDetailsRecord.itemId}" required="true" requiredMessage="من فضلك إختر الصنف"
-								filterMatchMode="contains" filter="true">
-								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""></f:selectItem>
-								<f:selectItems value="#{exchangeRequestBean.articleList}"
-									var="item" itemValue="#{item.id}" itemLabel="#{item.name}"></f:selectItems>
-								<f:ajax execute="itemId"
-									listener="#{exchangeRequestBean.updateUnite}"
-									render="itemId unit"></f:ajax>
-							</p:selectOneMenu>
+							<h:panelGroup id="item_grp">
+								<p:selectOneMenu styleClass="col-md-5" id="itemId"
+									style="width:100%"
+									value="#{exchangeRequestBean.requestDetailsRecord.itemId}"
+									required="true" requiredMessage="من فضلك إختر الصنف"
+									filterMatchMode="contains" filter="true">
+									<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""
+										noSelectionOption="true"></f:selectItem>
+									<f:selectItems value="#{exchangeRequestBean.articleList}"
+										var="item" itemValue="#{item.id}"
+										itemLabel="#{item.name} - #{item.code}"></f:selectItems>
+									<f:ajax execute="itemId stock desc"
+										listener="#{exchangeRequestBean.updateUnite}"
+										render="itemId unit stock"></f:ajax>
+								</p:selectOneMenu>
+							</h:panelGroup>
 						</div>
 
 					</div>
@@ -182,8 +218,9 @@ body .ui-dialog .ui-dialog-titlebar {
 							<p:outputLabel value="العدد المطلوب"></p:outputLabel>
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
-							<p:inputText styleClass="form-control"   id="count"  style="width:50%"  required="true"
-								value="#{exchangeRequestBean.requestDetailsRecord.count}" 
+							<p:inputText styleClass="form-control" id="count"
+								style="width:50%" required="true"
+								value="#{exchangeRequestBean.requestDetailsRecord.count}"
 								requiredMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
 
 							</p:inputText>
@@ -205,17 +242,18 @@ body .ui-dialog .ui-dialog-titlebar {
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<p:outputLabel value="المواصفات "></p:outputLabel>
 						</div>
-						<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<div class="ui-g-12 ui-md-6 ui-lg-5">
 							<p:inputText id="desc" styleClass="form-control"
 								style="width:100%"
 								value="#{exchangeRequestBean.requestDetailsRecord.notes}"></p:inputText>
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-1">
 							<p:commandButton id="addBtn" icon="ui-icon ui-icon-add-to-photos"
-								styleClass="cyan-btn"  
+								styleClass="cyan-btn"
 								disabled="#{!exchangeRequestBean.allowAdd}" value="اضافة">
 								<f:ajax listener="#{exchangeRequestBean.addTenderItem}"
-									execute="desc  count" render="table desc count addBtn saveBtnGrp"></f:ajax>
+									execute="desc  count"
+									render="table desc count addBtn saveBtnGrp strId"></f:ajax>
 							</p:commandButton>
 						</div>
 

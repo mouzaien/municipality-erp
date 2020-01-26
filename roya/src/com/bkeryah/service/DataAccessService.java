@@ -23,8 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -1794,8 +1792,9 @@ public class DataAccessService implements IDataAccessService {
 
 		Integer fromId = user.getUserId();
 		Integer toId = user.getMgrId();
-		//SysProperties paramRecord = (SysProperties) findEntityById(SysProperties.class, 203);
-		//Integer toId = Integer.parseInt(paramRecord.getValue());
+		// SysProperties paramRecord = (SysProperties)
+		// findEntityById(SysProperties.class, 203);
+		// Integer toId = Integer.parseInt(paramRecord.getValue());
 		// Integer toId = Integer.parseInt(paramRecord.getValue());
 		if ((applicationType == MailTypeEnum.VACATION.getValue()) && (employer.getId() != fromId))
 			toId = (loadUserById(employer.getId())).getMgrId();
@@ -2061,7 +2060,7 @@ public class DataAccessService implements IDataAccessService {
 		if (visible) {
 			stockEntryMaster.setStockEntryStatus(MyConstants.YES);
 			updateStockEntry(stockEntryMaster);
-			//updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
 	}
 
@@ -4453,7 +4452,8 @@ public class DataAccessService implements IDataAccessService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.bkeryah.service.IDataAccessService#sendRecordToArchive(com.bkeryah.
+	 * @see
+	 * com.bkeryah.service.IDataAccessService#sendRecordToArchive(com.bkeryah.
 	 * bean.UserMailClass)
 	 */
 	@Override
@@ -4746,6 +4746,7 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getAllArticleSubGroups();
 	}
 
+	// get all Articles By storeNumber
 	@Override
 	public List<Article> getAllArticles(Integer strNo) {
 		// TODO Auto-generated method stub
@@ -4764,15 +4765,9 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getAllUnites();
 	}
 	/*
-	 * @Override public List<Integer> getAttachmentIdsByRecordId(int arcRecordID) {
-	 * // TODO Auto-generated method stub return null; }
+	 * @Override public List<Integer> getAttachmentIdsByRecordId(int
+	 * arcRecordID) { // TODO Auto-generated method stub return null; }
 	 */
-
-	@Override
-	public List<WrkDept> findAllDepartments() {
-		List wrkdep = commonDao.findAll(WrkDept.class);
-		return wrkdep;
-	}
 
 	@Override
 	public ArcUsers loadUserById(Integer employerId) {
@@ -8106,8 +8101,9 @@ public class DataAccessService implements IDataAccessService {
 	 * ContractBills contractBills, Integer billNumber) {
 	 * payLicBill.setBillDate(HijriCalendarUtil.findCurrentHijriDate()); if
 	 * (billNumber == 0) { billNumber = commonDao.findMaxBillId() + 1; }
-	 * payLicBill.setBillNumber(billNumber); contractBills.setBillId(billNumber);
-	 * save(payLicBill); save(contractBills); savePayBillDetails(billNumber,
+	 * payLicBill.setBillNumber(billNumber);
+	 * contractBills.setBillId(billNumber); save(payLicBill);
+	 * save(contractBills); savePayBillDetails(billNumber,
 	 * payLicBill.getPayBillDetails()); }
 	 */
 
@@ -8485,7 +8481,7 @@ public class DataAccessService implements IDataAccessService {
 		if (visible) {
 			employeeVacation.setVacationStatus(MyConstants.YES);
 
-			//updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			try {
 				employeeVacation
@@ -8498,7 +8494,7 @@ public class DataAccessService implements IDataAccessService {
 				logger.error(
 						"acceptVacation wrkID" + " " + application.getId().getApplicationId() + " " + e.getMessage());
 			}
-			//employeeVacation.setExcuseNumber(commonDao.createOutcomeNo().toString());
+			// employeeVacation.setExcuseNumber(commonDao.createOutcomeNo().toString());
 			String period = MessageFormat.format(Utils.loadMessagesFromFile("wrk.period"),
 					employeeVacation.getHigriVacationStart(), employeeVacation.getHigriVacationEnd());
 			commonDao.update(employeeVacation);
@@ -8581,7 +8577,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public WrkDept getDeptById(Integer deptId) {
-		return (WrkDept) commonDao.findEntityById(User.class, deptId);
+		return (WrkDept) commonDao.findEntityById(WrkDept.class, deptId);
 	}
 
 	@Override
@@ -8614,16 +8610,17 @@ public class DataAccessService implements IDataAccessService {
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo) {
 		return commonDao.getInventoriesByStrNo(strNo);
 	}
+
 	@Override
 	@Transactional
-	public Integer addRturnedStoreItems(ReturnStore returnStoreMaster,Integer createdForId,
+	public Integer addRturnedStoreItems(ReturnStore returnStoreMaster, Integer createdForId,
 			List<ReturnStoreDetails> returnStoreDetailsList) {
 		Integer returnId = addRturnedStoreMaster(returnStoreMaster);
 		for (ReturnStoreDetails item : returnStoreDetailsList) {
 			item.setReturnStoreId(returnId);
 			saveObject(item);
 		}
-		ArcUsers sender= loadUserById(createdForId);
+		ArcUsers sender = loadUserById(createdForId);
 		Integer toId = sender.getMgrId();
 		Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
 
@@ -8650,8 +8647,7 @@ public class DataAccessService implements IDataAccessService {
 
 		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
 
-		saveHrsSigns(recordId, returnId, false, null, createdForId,
-				MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue());
+		saveHrsSigns(recordId, returnId, false, null, createdForId, MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue());
 		return returnId;
 	}
 
@@ -8824,12 +8820,13 @@ public class DataAccessService implements IDataAccessService {
 	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id) {
 		return commonDao.getStrTemrReceiptMstrById(id);
 	}
+
 	@Override
 	@Transactional
 	public Integer addRturnedStoreMaster(ReturnStore returnStoreMastert) {
 		Integer returnId = (Integer) saveObject(returnStoreMastert);
 		return returnId;
-		
+
 	}
 
 	@Override
@@ -8838,10 +8835,11 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getWrkAppliquationByArcId(arcRecordId);
 	}
 
-//	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
-//		return commonDao.loadRewards(emp_number, month, year);
-//
-//	}
+	// public List<RewardInfo> loadRewards(Integer emp_number, Integer month,
+	// Integer year) {
+	// return commonDao.loadRewards(emp_number, month, year);
+	//
+	// }
 
 	@Override
 	@Transactional
@@ -8850,6 +8848,11 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
+	public List<WhsWarehouses> getWhsWarehouses() {
+		// TODO Auto-generated method stub
+		return commonDao.getAllWhsWarehouses();
+	}
+
 	@Transactional
 	public List<WrkLetterFrom> loadAllWrkLetterFrom() {
 		return commonDao.loadAllWrkLetterFrom();
@@ -8900,5 +8903,164 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	public Integer getIdFromWorkAppByAppId(Integer appId) {
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getAllReturnStoreArticles(Integer strNo) {
+		return dataAccessDAO.getAllReturnStoreArticles(strNo);
+	}
+	// thapet
+
+	@Override
+	public List<WrkArchiveRcipent> findAllMang() {
+		List list = commonDao.findAll(WrkArchiveRcipent.class);
+		return list;
+	}
+
+	@Override
+	public List<ItemUnite> findAllUnite() {
+		List uniteList = commonDao.findAll(ItemUnite.class);
+		return uniteList;
+	}
+
+	@Override
+	public List<WrkDept2> findAllDepartments2() {
+		List depList = commonDao.loadAllDepList();
+		return depList;
+	}
+
+	@Override
+	public List<WrkDept> findAllDema() {
+		List demaList = commonDao.loadAllDemaList();
+		return demaList;
+	}
+
+	@Override
+	public List<HrsUserAbsent> findAllAllProm() {
+		List prmList = commonDao.findAll(HrsUserAbsent.class);
+		return prmList;
+	}
+
+	@Override
+	public HrsUserAbsent loadAllPromList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<WrkSection> findAllSec() {
+		List secList = commonDao.findAll(WrkSection.class);
+		return secList;
+	}
+
+	@Override
+	public List<WrkDept> findAllDepartments() {
+		List wrkdep = commonDao.findAll(WrkDept.class);
+		return wrkdep;
+	}
+
+	@Override
+	public List<WrkSection> getwrksectionByDepId(Integer selectdDeptId) {
+		// TODO Auto-generated method stub
+		return commonDao.loadwrksectionByDepId(selectdDeptId);
+	}
+
+	@Override
+	public WrkSection findSectionById(Integer secId) {
+		return (WrkSection) commonDao.findEntityById(WrkSection.class, secId);
+	}
+
+	@Override
+	public List<InventoryMaster> findAllInventoryMaster() {
+		List invGList = commonDao.findAll(InventoryMaster.class);
+		return invGList;
+	}
+
+	@Override
+	public List<ArcRecords> findAllRecord() {
+		List record = commonDao.findAll(ArcRecords.class);
+		return record;
+	}
+
+	@Override
+	public List<HrsEmpHistorical> findAllHrsEmpHistorical() {
+		List empHisList = commonDao.findAll(HrsEmpHistorical.class);
+		return empHisList;
+	}
+
+	@Override
+	public List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO) {
+		List empHisList = commonDao.getEmpHistoricalByEmpNo(empNO);
+		return empHisList;
+	}
+
+	/// thapet
+	@Override
+	public List<WrkComment> findAllComment() {
+		List comment = commonDao.findAll(WrkComment.class);
+		return comment;
+	}
+
+	@Override
+	public List<ArcApplicationType> findAllArc() {
+		List arc = commonDao.findAll(ArcApplicationType.class);
+		return arc;
+	}
+
+	@Override
+	public List<CarBrand> findAllBrand() {
+		List brand = commonDao.findAll(CarBrand.class);
+		return brand;
+	}
+
+	@Override
+	public List<CarModel> findAllModel() {
+		List model = commonDao.findAll(CarModel.class);
+		return model;
+	}
+
+	@Override
+	public List<VehicleType> findAllVehicleType() {
+		List type = commonDao.findAll(VehicleType.class);
+		return type;
+	}
+
+	@Override
+	public List<FuelType> findAllFuelType() {
+		List type = commonDao.findAll(FuelType.class);
+		return type;
+	}
+
+	@Override
+	public List<FinFinancialYear> findAllYear() {
+		List year = commonDao.findAll(FinFinancialYear.class);
+		return year;
+	}
+
+	// amr
+	@Override
+	public Car findCarByArticleId(int id) {
+		Car carDet = commonDao.getCarByArticleId(id);
+		return carDet;
+	}
+
+	@Override
+	public List<Car> loadCarDetailsByArtId(Integer carArtId) {
+		List<Car> carDets = commonDao.getCarDetailsByArtId(carArtId);
+		return carDets;
+	}
+	
+	@Override
+	public List<Car> loadCarDetailsBySubGroupId(Integer subGroupId) {
+		return dataAccessDAO.getCarsDetailsBySubGroupId(subGroupId);
+		
+		}
+	
+	//thapet
+	@Override
+	public List<WrkApplication> findAllSteps() {
+		List steps = commonDao.findAll(WrkApplication.class);
+		return steps;
 	}
 }

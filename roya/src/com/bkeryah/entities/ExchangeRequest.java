@@ -44,7 +44,7 @@ public class ExchangeRequest {
 	private String status;
 	@Column(name = "SERIALNUMBER")
 	private Integer serialNumber;
-	@Transient
+	@Column(name = "STORE_NUMBER")
 	private Integer stockNo;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "exchangeRequest", cascade = CascadeType.ALL)
 	private List<ExchangeRequestDetails> exchangeRequestDetailsList;
@@ -172,5 +172,4 @@ public class ExchangeRequest {
 	public void setStockNo(Integer stockNo) {
 		this.stockNo = stockNo;
 	}
-
 }

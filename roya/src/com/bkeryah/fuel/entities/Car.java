@@ -1,5 +1,6 @@
 package com.bkeryah.fuel.entities;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,15 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.bkeryah.entities.investment.ContractDirect;
 
 @Entity
 @Table(name = "car")
-public class Car implements Comparable<Car> {
-	
+public class Car  implements Comparable<Car>{
+
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
@@ -38,6 +41,16 @@ public class Car implements Comparable<Car> {
 	private String matricule;
 	@Column(name = "NUM_DOOR")
 	private Integer numDoor;
+	
+	@Column(name = "ART_ID")
+	private Integer artId;
+	
+	@Column(name = "CAR_SERIAL")
+	private String carCode;
+	@Column(name = "CHASSIS_NUMBER")
+	private String chassisNumber;
+	@Column(name = "CAR_COLOR")
+	private String carColor;
 	@ManyToOne
 	@JoinColumn(name = "car_model", referencedColumnName = "ID", insertable = false, updatable = false)
 	private CarModel model;
@@ -48,7 +61,15 @@ public class Car implements Comparable<Car> {
 	@JoinColumn(name = "VEHICLE_TYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private VehicleType vehicleType;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
-	private Set<UserCars> userCarsSet;
+	private List<UserCars> userCarsSet;
+
+//	@Formula("(select a.NAME from ARTICLE a where  a.ID = ART_ID)")
+	//@Transient
+	@Formula("(select a.NAME from ARTICLE a where  a.ID = ART_ID)")
+	private String artName;
+	
+	@Formula("(select m.NAME from car_model m where  m.ID = car_model)")
+	private String modelName;
 
 	public Integer getId() {
 		return id;
@@ -122,11 +143,11 @@ public class Car implements Comparable<Car> {
 		this.vehicleType = vehicleType;
 	}
 
-	public Set<UserCars> getUserCarsSet() {
+	public List<UserCars> getUserCarsSet() {
 		return userCarsSet;
 	}
 
-	public void setUserCarsSet(Set<UserCars> userCarsSet) {
+	public void setUserCarsSet(List<UserCars> userCarsSet) {
 		this.userCarsSet = userCarsSet;
 	}
 
@@ -140,11 +161,59 @@ public class Car implements Comparable<Car> {
 
 	@Override
 	public int compareTo(Car obj) {
-		if(this.id < obj.id)
+		if (this.id < obj.id)
 			return -1;
-		else if(this.id > obj.id)
+		else if (this.id > obj.id)
 			return 1;
 		else
 			return 0;
+	}
+
+	public Integer getArtId() {
+		return artId;
+	}
+
+	public void setArtId(Integer artId) {
+		this.artId = artId;
+	}
+
+	public String getCarCode() {
+		return carCode;
+	}
+
+	public void setCarCode(String carCode) {
+		this.carCode = carCode;
+	}
+
+	public String getChassisNumber() {
+		return chassisNumber;
+	}
+
+	public void setChassisNumber(String chassisNumber) {
+		this.chassisNumber = chassisNumber;
+	}
+
+	public String getCarColor() {
+		return carColor;
+	}
+
+	public void setCarColor(String carColor) {
+		this.carColor = carColor;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
+	}
+
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
 	}
 }

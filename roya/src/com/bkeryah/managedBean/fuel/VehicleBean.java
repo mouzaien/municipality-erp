@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
+import com.bkeryah.entities.Article;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.fuel.entities.CarModel;
 import com.bkeryah.service.IDataAccessService;
@@ -27,6 +28,7 @@ public class VehicleBean{
 	private IDataAccessService dataAccessService;
 	private List<Car> carsList;
 	private List<Car> filteredCarsList;
+	private List<Article> carsArticle;
 	private List<CarModel> carModelsList;
 	private Car car = new Car();
 	private boolean addMode;
@@ -37,6 +39,9 @@ public class VehicleBean{
 	public void init() {
 		carsList = dataAccessService.loadAllCars();
 		Collections.sort(carsList);
+		carsArticle =dataAccessService.getAllArticles(13);
+	
+		//getAllArticles
 	}
 	
 	public void addCar(){
@@ -69,11 +74,26 @@ public class VehicleBean{
 	
 	public void save(){
 		try{
+			System.out.println("car.getArtId() >>" +car.getArtId());
+			Article art= dataAccessService.getArticleById(car.getArtId());
+			car.setCarCode(art.getCode());
+			if(car.getId() == null){
 			dataAccessService.save(car);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-			carsList.add((Car) dataAccessService.findEntityById(Car.class, car.getId()));
+			//carsList.add((Car) dataAccessService.findEntityById(Car.class, car.getId()));
+			
 			car = new Car();
 			logger.info("add car: id: " + car.getId());
+			}
+			else
+			{
+				update();
+				
+			}
+			carsList = dataAccessService.loadAllCars();
+			System.out.println(carsList.size());
+			Utils.updateUIComponent("includeform");
+			Utils.closeDialog("car_dlg");
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
@@ -162,6 +182,14 @@ public class VehicleBean{
 
 	public void setCarBrandId(Integer carBrandId) {
 		this.carBrandId = carBrandId;
+	}
+
+	public List<Article> getCarsArticle() {
+		return carsArticle;
+	}
+
+	public void setCarsArticle(List<Article> carsArticle) {
+		this.carsArticle = carsArticle;
 	}
 
 }

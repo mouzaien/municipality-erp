@@ -5,13 +5,13 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
-	
-	<ui:define name="head">
-		<f:metadata>
-			<f:viewAction phase="APPLY_REQUEST_VALUES"
-				action="#{settingsDataBean.defineOperation('ROLE_DESC')}"></f:viewAction>
-		</f:metadata>
-	</ui:define>
+
+<ui:define name="head">
+	<f:metadata>
+		<f:viewAction phase="APPLY_REQUEST_VALUES"
+			action="#{settingsDataBean.defineOperation('ROLE_DESC')}"></f:viewAction>
+	</f:metadata>
+</ui:define>
 
 <ui:composition template="/template.xhtml">
 	<ui:define name="content">
@@ -33,8 +33,9 @@
 				</h1>
 				<br />
 				<p:dataTable id="emp" var="letterDT" style="direction:rtl;"
-					value="#{settingsDataBean.rolesList}" widgetVar="cellemp"
-					rows="13" paginator="true" paginatorPosition="bottom" filteredValue="#{settingsDataBean.filteredRolesList}"
+					value="#{settingsDataBean.rolesList}" widgetVar="cellemp" rows="13"
+					paginator="true" paginatorPosition="bottom"
+					filteredValue="#{settingsDataBean.filteredRolesList}"
 					emptyMessage="الجدول فارغ"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 					<f:facet name="header">
@@ -46,8 +47,8 @@
 						</p:outputPanel>
 					</f:facet>
 
-					<p:column headerText="المسلسل " width="10%" style="text-align: center"
-						filterBy="#{letterDT.id}">
+					<p:column headerText="المسلسل " width="10%"
+						style="text-align: center" filterBy="#{letterDT.id}">
 						<h:outputText value="#{letterDT.id}" />
 					</p:column>
 					<p:column headerText="الإسم" width="20%"
@@ -55,15 +56,17 @@
 						<h:outputText value="#{letterDT.roleName}"></h:outputText>
 
 					</p:column>
-					
+
 					<p:column headerText="الوصف" width="60%"
 						filterBy="#{letterDT.roleDesc}">
 						<h:outputText value="#{letterDT.roleDesc}"></h:outputText>
 
 					</p:column>
 
-					<p:column headerText="تفاصيل" width="10%" style="text-align: center">
-						<p:commandButton process="@this" update="includeform:panelGroup" oncomplete=" PF('mydialog').show()"
+					<p:column headerText="تفاصيل" width="10%"
+						style="text-align: center">
+						<p:commandButton process="@this" update="includeform:panelGroup"
+							oncomplete=" PF('mydialog').show()"
 							action="#{settingsDataBean.loadSelectedObject}"
 							icon="ui-icon-search" title="View" modal="true">
 							<f:setPropertyActionListener value="#{letterDT}"
@@ -83,9 +86,11 @@
 								<h:outputLabel for="basic" value="إسم الصلاحية " />
 							</div>
 							<div class="ui-g-10">
-							<p:inputMask id="description" mask="ROLE_*?*********************" required="true" requiredMessage="#{msg['required.fields']}"
-									value="#{settingsDataBean.role.roleName}" style="width:100%"/>
-								
+								<p:inputMask id="description"
+									mask="ROLE_*?*********************" required="true"
+									requiredMessage="#{msg['required.fields']}"
+									value="#{settingsDataBean.role.roleName}" style="width:100%" />
+
 							</div>
 							<br />
 						</div>
@@ -95,13 +100,16 @@
 								<h:outputLabel for="basic" value="وصف الصلاحية " />
 							</div>
 							<div class="ui-g-10">
-								<p:inputText id="projectName" required="true" requiredMessage="#{msg['required.fields']}"
+								<p:inputText id="projectName" required="true"
+									requiredMessage="#{msg['required.fields']}"
 									value="#{settingsDataBean.role.roleDesc}" style="width:100%">
 								</p:inputText>
 							</div>
-							
+
 						</div>
-						<br /> <br /> <br />
+						<br />
+						<br />
+						<br />
 						<div align="center">
 							<div class="iamge-box-footer" align="left">
 								<p:commandButton value="حفظ" icon="fa fa-save"

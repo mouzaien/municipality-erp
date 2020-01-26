@@ -291,7 +291,7 @@ public class StockServiceDao extends CommonServicesDao implements Serializable, 
 	@Transactional
 	public List<WhsWarehouses> getStoreDeanWharehouses(Integer storeDeanId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WhsWarehouses.class);
-		Criterion strdean = Restrictions.eq("storeUserId", storeDeanId);
+		Criterion strdean = Restrictions.eq("storeDeanId", storeDeanId);
 		Criterion strboss = Restrictions.eq("storeBossId", storeDeanId);
 		LogicalExpression deanOrBoss = Restrictions.or(strdean, strboss);
 		criteria.add(deanOrBoss);
@@ -307,9 +307,11 @@ public class StockServiceDao extends CommonServicesDao implements Serializable, 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<WhsWarehouses> getStoreDeanWharehouses() {
+	public List<WhsWarehouses> getStoreWharehouses(Integer strType) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WhsWarehouses.class);
-		criteria.add(Restrictions.eq("strType", 2));
+		if (strType !=null) {
+			criteria.add(Restrictions.eq("strType", strType));
+		}
 		return criteria.list();
 	}
 

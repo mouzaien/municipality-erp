@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer"></div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							المعاملات <span class="fa fa-fw fa-file-text-o"></span>
+						</h1>
+						<br></br>
+
+
+						<p:dataTable var="record" id="inboxdt" widgetVar="deptCell"
+							value="#{recordBean.recordList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{recordBean.filteredrecordList}" paginator="true"
+							rows="13">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('deptCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="10%">										
+								#{rowIndex+1}							
+																</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التاريخ الميلادي" width="10%"
+								filterBy="#{record.recGDate}" filterMatchMode="contains">										
+										#{record.recGDate} 									
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="التاريخ الهجري" width="10%"
+								filterBy="#{record.recHDate}" filterMatchMode="contains">										
+										#{record.recHDate}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="الموضوع"
+								width="40%" filterBy="#{record.recTitle}"
+								filterMatchMode="contains">										
+										#{record.recTitle}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="العام" width="10%" filterBy="#{record.incomeYear}"
+								filterMatchMode="contains">										
+										#{record.incomeYear}										
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="رقم  المعاملة" width="10%"
+								filterBy="#{record.incomeNo}" filterMatchMode="contains">										
+										#{record.incomeNo}										
+									</p:column>
+							<p:column style="white-space: nowrap;" headerText="المعاملة"
+								width="20%" filterBy="#{record.arcApplicationType.type}" filterMatchMode="contains">										
+									#{record.arcApplicationType.type}									
+							</p:column>
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton action="#{recordBean.update}" process="@this"
+									icon="ui-icon-create" update="includeform:myDialog"
+									styleClass="cyan-btn">
+									<f:setPropertyActionListener value="#{record}"
+										target="#{recordBean.record}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+						<br />
+<!-- *****************************************************UPDATE********************************************************* -->
+
+						<p:dialog header="بيانات المعاملات" widgetVar="job_dlg"
+							id="job_dlgId" width="50%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<h:outputLabel value="  هجري " />
+										<p:selectBooleanCheckbox value="#{recordBean.higriMode}">
+											<p:ajax update="pDates1" process="@this"></p:ajax>
+										</p:selectBooleanCheckbox>
+									</div>
+								</div>
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="التاريخ" />
+										</div>
+										<div class="ui-g-5">
+											<h:panelGroup id="pDates1" style="width: 30%">
+												<p:inputText id="hiri1" value="#{recordBean.recHDate}"
+													onfocus="loadCalendar();" required="true"
+													requiredMessage="يرجى اختيار تاريخ"
+													rendered="#{recordBean.higriMode}"
+													styleClass="form-control form-controlCal">
+												</p:inputText>
+												<p:calendar id="gric1" value="#{recordBean.recGDate}"
+													pattern="dd/MM/yyyy" rendered="#{not recordBean.higriMode}">
+												</p:calendar>
+											</h:panelGroup>
+										</div>
+
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="العام" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{recordBean.record.incomeYear}"
+												style="width: 30%"></p:inputText>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="رقم  المعاملة" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{recordBean.record.incomeNo}"
+												style="width: 30%"></p:inputText>
+										</div>
+
+										<div class="ui-g-1">
+											<h:outputLabel value="المعاملة" />
+										</div>
+										<div class="ui-g-5">
+											<p:selectOneMenu id="mgr" value="#{recordBean.record.applicationType}"
+												style="width: 100%" filter="true">
+												<f:selectItem itemLabel="أختر  المعاملة" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{recordBean.typeList}"
+													itemValue="#{mgr.id}" itemLabel="#{mgr.type}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="الموضوع" />
+										</div>
+										<div class="ui-g-5">
+											<h:panelGroup styleClass="md-inputfield">
+												<p:inputTextarea required="true"
+													style="width:100%; overflow-y: scroll;height: 500px; "
+													requiredMessage=" #{msg['comment.text.required']} "
+													id="newwrkcontent" value="#{recordBean.record.recTitle}"
+													styleClass="ui-grid-col-8">
+													<f:ajax render="newwrkcontent" execute="newwrkcontent"></f:ajax>
+												</p:inputTextarea>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="تعديل"
+										action="#{recordBean.updateRecord}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

@@ -197,7 +197,8 @@ body .ui-dialog .ui-dialog-titlebar {
 				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:inputText id="serialNumId" required="true"
 						requiredMessage="من فضلك أدخل الرقم التسلسلي"
-						value="#{stockEntryBean.stockEntryMaster.stockFinEntryNo}" class="form-control">
+						value="#{stockEntryBean.stockEntryMaster.stockFinEntryNo}"
+						class="form-control">
 						<p:ajax process="@this" onstart="PF('dlgditSerial').show();"
 							listener="#{stockEntryBean.showPrintBtn}" />
 					</p:inputText>
@@ -213,20 +214,13 @@ body .ui-dialog .ui-dialog-titlebar {
 			<div class="ui-g-12 ui-md-6 ui-lg-3">
 				<h:outputLabel value=""></h:outputLabel>
 			</div>
-
 		</div>
 
 		<div class="row">
-
 			<h:panelGroup id="table">
 				<div class="col-md-12 ">
-
 					<div class="table-responsive">
-
 						<hr></hr>
-
-
-
 						<table id="tabStore" class="table table-striped table-hover">
 							<thead>
 								<tr>
@@ -245,46 +239,38 @@ body .ui-dialog .ui-dialog-titlebar {
 							<tbody>
 								<ui:repeat var="det" varStatus="x"
 									value="#{stockEntryBean.stockEntryMaster.stockInDetailsList}">
-
-
 									<tr>
-
 										<td>#{x.index+1}</td>
-										<td>#{det.article.name}</td>
+										<td>#{det.article.name} - #{det.article.code}</td>
 										<td>#{det.articleStatusName}</td>
-										<td>#{det.qty}</td>
+										<td><h:inputText value="#{det.qty}"
+												disabled="#{!stockEntryBean.enableEditMgr}"
+												style="width:60px !important;">
+											</h:inputText></td>
 										<td>#{det.uniteName}</td>
-										<td>#{det.price}</td>
-										<td>#{det.total}</td>
+										<td><h:inputText value="#{det.price}"
+												disabled="#{!stockEntryBean.enableEditMgr}"
+												style="width:60px !important;">
+											</h:inputText></td>
+										<td>#{det.total}"</td>
 										<td>#{det.notes}</td>
-
 									</tr>
-
 								</ui:repeat>
 							</tbody>
 						</table>
 					</div>
-
-
 				</div>
 			</h:panelGroup>
-
 		</div>
 
 		<div class="col-md-12 ">
 			<hr></hr>
 			<br />
-
-
-
 			<div class="col-md-4" style="float: left;">
-
 				<!-- Small modal -->
-
 				<!-- Dialog Accept -->
 				<p:dialog header="#{msg['add.explanation.confirmation']}"
 					widgetVar="dlgAccept" height="300" width="500">
-
 					<h:panelGroup id="refPopupAccept">
 						<p:panelGrid columns="2"
 							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
@@ -329,11 +315,8 @@ body .ui-dialog .ui-dialog-titlebar {
 				</p:dialog>
 				<p:dialog header="تعديل الرقم التسلسلي" widgetVar="dlgditSerial"
 					width="30%" dir="rtl">
-
 					<h:panelGroup id="editSerialPopup">
-
 						<h:outputLabel value="هل تريد حفظ الرقم التسلسلي الجديد ؟"></h:outputLabel>
-
 						<br />
 						<br />
 						<div align="center">
@@ -343,9 +326,7 @@ body .ui-dialog .ui-dialog-titlebar {
 								<p:ajax listener="#{stockEntryBean.updateSerialNum}"
 									update="serialNumId,printBtnGrp" process="@this" />
 							</p:commandButton>
-
 							<p:spacer height="10px"></p:spacer>
-
 							<p:commandButton id="noBtn" value="لا " styleClass="red-btn"
 								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{stockEntryBean.cancleUpdateSerialNum}"

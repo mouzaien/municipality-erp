@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+
+						<p:commandButton value="إضــافة" onclick=" PF('Mo_dd').show()"
+							styleClass="cyan-btn">
+						</p:commandButton>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							نوع المحروقات<span class="fa fa-tint"></span>
+						</h1>
+						<br></br>
+						<p:dataTable var="type" id="inboxdt" widgetVar="deptCell"
+							value="#{fuelTypeBean.typeList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{fuelTypeBean.filteredtypeList}" paginator="true"
+							rows="13">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('deptCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="10%" filterBy="#{rowIndex+1}"
+								filterMatchMode="contains">										
+										#{rowIndex+1}	
+										</p:column>
+							<p:column style="white-space: nowrap; text-align: center;"
+								headerText="المحروقات" width="20%" filterBy="#{type.name}"
+								filterMatchMode="contains">										
+                                  #{type.name}			
+                 			</p:column>
+
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton onclick="PF('job_dlg').show()" process="@this"
+									icon="ui-icon-create" update="includeform:myDialog">
+									<f:setPropertyActionListener value="#{type}"
+										target="#{fuelTypeBean.type}" />
+								</p:commandButton>
+							</p:column>
+							<p:column width="10%" style="text-align:center" headerText="حذف">
+								<p:commandButton style="background:red"
+									onclick="PF('Mo_ss').show()" process="@this"
+									icon="ui-icon-delete">
+									<f:setPropertyActionListener value="#{type}"
+										target="#{fuelTypeBean.type}" />
+
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:dialog header="تأكيـد الحذف" widgetVar="Mo_ss" id="H_ss"
+							width="20%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true">
+							<h:panelGroup id="mydeleteDialog">
+								<div style="width: 100%">
+									<h:outputLabel styleClass="btxt" value="هل انت متأكد من الحذف؟" />
+									<br /> <br />
+									<div align="left" class="image-box-footer"
+										style="text-align: center;">
+										<p:commandButton value="نعــم"
+											action="#{fuelTypeBean.deleteType}"
+											onclick="PF('Mo_ss').hide()" update="includeform:inboxdt">
+										</p:commandButton>
+
+										<p:spacer width="10px" height="10px"></p:spacer>
+										<p:commandButton styleClass="red-btn" value="لا"
+											immediate="true" onclick="PF('Mo_ss').hide()" />
+									</div>
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- *********************************Add******************************************** -->
+						<p:dialog header="نوع المحروقات" widgetVar="Mo_dd" id="H_id"
+							width="30%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true" resizable="false">
+							<h:panelGroup id="myaddDialog">
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g-3">
+											<h:outputLabel styleClass="btxt" value="المحروقات" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{fuelTypeBean.name}" style="width: 100%"></p:inputText>
+										</div>
+									</div>
+								</div>
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="حفظ" action="#{fuelTypeBean.saveType}"
+										onclick="PF('Mo_dd').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('Mo_dd').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ***********************************Edite****************************************** -->
+						<p:dialog header="نوع المحروقات" widgetVar="job_dlg"
+							id="job_dlgId" width="30%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="المحروقات" />
+										</div>
+										<div class="ui-g-5">
+											<p:inputText value="#{fuelTypeBean.type.name}"
+												style="width: 100%"></p:inputText>
+										</div>
+									</div>
+								</div>
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="تعديل"
+										action="#{fuelTypeBean.updateType}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

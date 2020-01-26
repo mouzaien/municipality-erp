@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:form id="includeform" dir="rtl">
+			<br />
+			<br />
+
+			<h1 style="color: #7CB342; float: unset; text-align: center;">
+				استعلام المركبات <span class="ui-icon ui-icon-cars"></span>
+			</h1>
+
+			<br />
+			<br />
+			<div class="ui-g">
+				<div class="ui-g-2">
+					<p:outputLabel value="المجموعة الرئيسية" />
+				</div>
+				<div class="ui-g-3">
+					<p:inputText disabled="true" value="مستودع السيارات"
+						style="width: 50% ; opacity: 1" />
+				</div>
+				<div class="ui-g-2">
+					<p:outputLabel value="المجموعة الفرعية" />
+				</div>
+				<div class="ui-g-3">
+					<p:selectOneMenu id="cars_list"
+						value="#{askingVehicleBean.subGroupId}" style="width: 100%">
+						<f:selectItem itemLabel="أختر المركبة" itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems var="subG" itemValue="#{subG.id}"
+							itemLabel="#{subG.name}-#{subG.code}"
+							value="#{askingVehicleBean.articleSubGroups}" />
+						<p:ajax event="change" update="includeform:carTable"
+							process="@this" listener="#{askingVehicleBean.loadCarDetails}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<p:dataTable var="carItem" id="carTable"
+					value="#{askingVehicleBean.carsList}" emptyMessage="لايوجد بيانات"
+					rowIndexVar="rowIndex" dir="rtl"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					filteredValue="#{askingVehicleBean.filteredCarsList}"
+					paginator="true" rows="12">
+					<p:column headerText="الرقم" filterBy="#{rowIndex+1}"
+						filterMatchMode="contains" style="width:5%;text-align:center;">
+						<h:outputText value="#{rowIndex+1}" />
+					</p:column>
+					<p:column headerText="اسم الصنف" filterBy="#{carItem.artName}"
+						filterMatchMode="contains" style="width:15%;text-align:center;">
+						<h:outputText value="#{carItem.artName}" />
+					</p:column>
+					<p:column headerText="رقم اللوحة" filterBy="#{carItem.matricule}"
+						filterMatchMode="contains" style="width:15%;text-align:center;">
+						<h:outputText value="#{carItem.matricule}" />
+					</p:column>
+					<p:column headerText="المصنع"
+						filterBy="#{askingVehicleBean.loadBrandName(carItem.carModel)}"
+						filterMatchMode="contains" style="width:20%;text-align:center;">
+						#{askingVehicleBean.loadBrandName(carItem.carModel)}
+					</p:column>
+					<p:column headerText="المركبة" filterBy="#{askingVehicleBean.loadModel(carItem.carModel)}"
+						filterMatchMode="contains" style="width:15%;text-align:center;">
+						#{askingVehicleBean.loadModel(carItem.carModel)}
+						
+					</p:column>
+					<p:column headerText="رقم الباب" filterBy="#{carItem.numDoor}"
+						filterMatchMode="contains" style="width:15%;text-align:center;">
+						<h:outputText value="#{carItem.numDoor}" />
+					</p:column>
+					<p:column headerText=" نوع المركبة"
+						style="width:13%;text-align:center;"
+						filterBy="#{carItem.vehicleType.name}" filterMatchMode="contains">
+						#{askingVehicleBean.loadVehicleType(carItem.vehicleTypeId)}
+						
+					</p:column>
+
+					<p:column headerText="رقم الهيكل"
+						filterBy="#{carItem.chassisNumber}" filterMatchMode="contains"
+						style="width:13%;text-align:center;">
+						<h:outputText value="#{carItem.chassisNumber}" />
+					</p:column>
+					<p:column headerText="لون المركبة" filterBy="#{carItem.carColor}"
+						filterMatchMode="contains" style="width:13%;text-align:center;">
+						<h:outputText value="#{carItem.carColor}" />
+					</p:column>
+					<p:column width="7%" style="text-align:center"
+						headerText="#{msg['details']}">
+						<p:commandButton action="#{askingVehicleBean.loadSelectedArticle}"
+							process="@this" icon="ui-icon-search">
+							<f:setPropertyActionListener value="#{carItem}"
+								target="#{askingVehicleBean.car}" />
+						</p:commandButton>
+					</p:column>
+
+
+				</p:dataTable>
+			</div>
+
+			<p:dialog widgetVar="exchange_dlg" id="exchange_dlgId" width="70%"
+				hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+				resizable="false">
+
+				<div style="text-align: center; font-size: x-large;">
+					<h:outputLabel value="حركة صنف"></h:outputLabel>
+				</div>
+
+				<br />
+				<div class="ui-g">
+					<div class="ui-g-1">
+						<h:outputLabel value="رقم الصنف"></h:outputLabel>
+					</div>
+					<div class="ui-g-3">
+						<h:outputLabel value="#{askingVehicleBean.articleCode}"></h:outputLabel>
+					</div>
+
+					<div class="ui-g-1">
+						<h:outputLabel value="إسم الصنف" />
+					</div>
+					<div class="ui-g-3">
+						<h:outputLabel value=" #{askingVehicleBean.articleName}"></h:outputLabel>
+					</div>
+
+					<!-- 							<div class="ui-g-1"> -->
+					<!-- 								<h:outputLabel value="الوحدة" /> -->
+					<!-- 							</div> -->
+
+
+					<!-- 							<div class="ui-g-3"> -->
+					<!-- 								<h:outputLabel -->
+					<!-- 									value=" #{askingVehicleBean.articleStore.articleUnite}"></h:outputLabel> -->
+					<!-- 							</div> -->
+
+				</div>
+				<br />
+
+				<table id="tabStore" class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th style="width: 20%; text-align: center">اسم العملية</th>
+							<th style="width: 20%; text-align: center">رقم المستند</th>
+							<th style="width: 20%; text-align: center">تاريخ العملية</th>
+							<th style="width: 20%; text-align: center">المستند</th>
+							<th style="width: 20%; text-align: center">الكمية الخارجة</th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						<ui:repeat var="det" varStatus="x"
+							value="#{askingVehicleBean.articleStore.historyList}">
+							<tr>
+								<td style="text-align: center">#{det.transactionName}</td>
+								<td style="text-align: center">#{det.serialNumber}</td>
+								<td style="text-align: center">#{det.transactionDate}</td>
+								<td style="text-align: center">#{det.specialNumber}</td>
+								<td style="text-align: center">#{det.qtyOutput}</td>
+
+							</tr>
+
+						</ui:repeat>
+					</tbody>
+				</table>
+
+				<br />
+				<div class="image-box-footer" align="left">
+					<!-- 							<p:commandButton value="بطاقة عهدة" ajax="false" -->
+					<!-- 								onclick="this.form.target='_blank'" styleClass="purple-btn" -->
+					<!-- 								icon="ui-icon ui-icon-print" -->
+					<!-- 								action="#{exchangeRequestBean.printProtectionCardReportAction}" /> -->
+
+					<p:spacer height="10px"></p:spacer>
+					<p:commandButton value="حركة المركبة" ajax="false"
+						onclick="this.form.target='_blank'" styleClass="purple-btn"
+						icon="ui-icon ui-icon-print"
+						action="#{askingVehicleBean.printArticleMovements}" />
+
+					<p:spacer height="10px"></p:spacer>
+					<p:commandButton value="رجوع" immediate="true"
+						onclick="PF('exchange_dlg').hide()" />
+
+				</div>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

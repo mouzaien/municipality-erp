@@ -1,5 +1,6 @@
 package com.bkeryah.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.RowEditEvent;
 
@@ -16,6 +18,7 @@ import com.bkeryah.entities.ArticleSubGroup;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
+import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -30,8 +33,8 @@ public class ArticleSubGroupBean {
 
 	@PostConstruct
 	public void init() {
-		// articleGroups = dataAccessService.getAllArticleGroups();
-		articleSubGroups = dataAccessService.getAllArticleSubGroups();
+		articleGroups = dataAccessService.getAllArticleGroups();
+		//articleSubGroups = dataAccessService.getAllArticleSubGroups();
 	}
 
 	public void newArticleGroup() {
@@ -39,8 +42,16 @@ public class ArticleSubGroupBean {
 		newFlag = false;
 		articleSubGroup = new ArticleSubGroup();
 	}
-
-	public void addArticleGroup() {
+	public void updateSubGroups(){
+		articleSubGroups = new ArrayList<>();
+		if(articleSubGroup != null )
+		{
+		articleSubGroups = dataAccessService.getAllArticleSubGroupsByGroupId(articleSubGroup.getGroupId());
+		Utils.updateUIComponent("includeform:myTable");
+		}
+	}
+	
+	public void addArticleGroup(AjaxBehaviorEvent event) {
 		try {
 
 			dataAccessService.addNewArticleSubGroup(articleSubGroup);

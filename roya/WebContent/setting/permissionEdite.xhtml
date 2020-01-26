@@ -1,0 +1,303 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+		<ui:composition template="/template.xhtml">
+			<!-- 			<p:growl autoUpdate="true" showDetail="false" /> -->
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer">
+
+						<p:commandButton value="إضــافة" immediate="true"
+							onclick=" PF('Mo_ww').show()" styleClass="cyan-btn">
+						</p:commandButton>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							طلب إستئذان <span class="fa fa-edit"></span>
+						</h1>
+						<br></br>
+						<!--<p:calendar pattern="HH:mm" mode="inline" -->
+						<!--value="#{obj.dateFrom.asbsFrom}" /> -->
+
+						<p:dataTable var="prom" id="inboxdt" widgetVar="deptCell"
+							value="#{promotionAskedBean.promList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{promotionAskedBean.filteredpromList}"
+							paginator="true" rows="13">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('deptCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+					<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="10%">										
+								#{rowIndex+1}							
+																</p:column>
+							<p:column value="#{promotionAskedBean.empList}"
+								style="white-space: nowrap;" headerText="اسم الموظف" width="10%"
+								filterBy="#{prom.employeeName}" filterMatchMode="contains">										
+										#{prom.employeeName}									
+							</p:column>
+
+							<!-- 							<p:column style="white-space: nowrap;" headerText="الرقم الوظيفي" -->
+							<!-- 								width="10%" filterBy="#{prom.empNo}" filterMatchMode="contains">										 -->
+							<!-- 										#{prom.empNo}									 -->
+							<!-- 							</p:column> -->
+							<p:column style="white-space: nowrap;" headerText="من الساعة"
+								width="10%" filterBy="#{prom.absForm}"
+								filterMatchMode="contains">										
+										#{prom.absForm}	
+							
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="إلي الساعة"
+								width="10%" filterBy="#{prom.absTo}" filterMatchMode="contains">										
+										#{prom.absTo}									
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="التاريخ الهجري" width="10%"
+								filterBy="#{prom.abseDate}" filterMatchMode="contains">										
+								#{prom.abseDate}									
+									</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="التاريخ الميلادي " width="10%"
+								filterBy="#{prom.jabsDate}" filterMatchMode="contains">										
+								#{prom.jabsDate}									
+									</p:column>
+
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton process="@this" icon="ui-icon-create"
+									action="#{promotionAskedBean.update}"
+									update="includeform:update_dlgId">
+									<f:setPropertyActionListener value="#{prom}"
+										target="#{promotionAskedBean.prom}" />
+								</p:commandButton>
+							</p:column>
+							<p:column width="10%" style="text-align:center" headerText="حذف">
+								<p:commandButton style="background:red"
+									onclick="PF('Mo_ss').show()" process="@this"
+									icon="ui-icon-delete">
+									<f:setPropertyActionListener value="#{prom}"
+										target="#{promotionAskedBean.prom}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:dialog header="تأكيـد الحذف" widgetVar="Mo_ss" id="H_ss"
+							width="20%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true">
+							<h:panelGroup id="mydeleteDialog">
+								<div style="width: 100%">
+									<h:outputLabel styleClass="btxt" value="هل انت متأكد من الحذف؟" />
+									<br /> <br />
+									<div align="left" class="image-box-footer"
+										style="text-align: center;">
+										<p:commandButton value="نعــم"
+											action="#{promotionAskedBean.deleteProm}"
+											onclick="PF('Mo_ss').hide()" update="includeform:inboxdt">
+										</p:commandButton>
+
+										<p:spacer width="10px" height="10px"></p:spacer>
+										<p:commandButton styleClass="red-btn" value="لا"
+											immediate="true" onclick="PF('Mo_ss').hide()" />
+									</div>
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ***********************************Insert*************************************************************************** -->
+
+						<p:dialog header="إضافة استئذان" widgetVar="Mo_ww" id="M_id"
+							width="55%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true" resizable="false">
+							<h:panelGroup id="myaddDialog">
+								<div class="ui-g">
+									<div class="ui-g-12 ui-md-6 ui-lg-3">
+										<h:outputLabel value="هجري  :  " />
+										<p:selectBooleanCheckbox
+											value="#{promotionAskedBean.higriMode}">
+											<p:ajax update="pDates" process="@this"></p:ajax>
+										</p:selectBooleanCheckbox>
+									</div>
+								</div>
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g">
+											<div class="ui-g-1">
+												<h:outputLabel styleClass="btxt" style="width: 50%"
+													value="الموظف" />
+											</div>
+											<div class="ui-g-5">
+												<p:selectOneMenu value="#{promotionAskedBean.prom.userIdT}"
+													filter="true" id="updatemgr">
+													<f:selectItem itemLabel="أختر الموظف" itemValue="" />
+													<f:selectItems var="mgr"
+														value="#{promotionAskedBean.empList}"
+														itemValue="#{mgr.userId}"
+														itemLabel="#{mgr.userId} || #{mgr.employeeName}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="ui-g-1">
+												<p:outputLabel value="من الساعة"></p:outputLabel>
+											</div>
+											<div class="ui-g-5">
+												<p:calendar id="beginTime"
+													value="#{promotionAskedBean.prom.absFormT}" pattern="HH:mm"
+													timeOnly="true" maxHour="12" maxMinute="60" />
+											</div>
+
+											<div class="ui-g-1">
+												<p:outputLabel value="إلي الساعة"></p:outputLabel>
+											</div>
+											<div class="ui-g-5">
+												<p:calendar id="endTime"
+													value="#{promotionAskedBean.prom.absToT}" pattern="HH:mm"
+													timeOnly="true" maxHour="12" maxMinute="60" />
+											</div>
+
+											<div class="ui-g-1">
+												<p:outputLabel value="التاريخ" styleClass="btxt" />
+											</div>
+
+											<div class="ui-g-5">
+												<h:panelGroup id="pDates">
+													<p:inputText id="hiri"
+														value="#{promotionAskedBean.hirDate}"
+														onfocus="loadCalendar();" required="true"
+														requiredMessage="يرجى اختيار تاريخ"
+														rendered="#{promotionAskedBean.higriMode}">
+													</p:inputText>
+													<p:calendar id="gric"
+														value="#{promotionAskedBean.prom.jabsDateT}"
+														pattern="dd/MM/yyyy"
+														rendered="#{not promotionAskedBean.higriMode}">
+													</p:calendar>
+												</h:panelGroup>
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="حفظ"
+										action="#{promotionAskedBean.saveProm}"
+										onclick="PF('Mo_ww').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('Mo_ww').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!--**************************************Edite************************************************************************************************************************************* -->
+
+						<p:dialog header="بيانات الإستئذان" widgetVar="update_dlg"
+							id="update_dlgId" width="55%" hideEffect="fade"
+							showEffect="explode" dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<!-- 								<div style="width: 100%"> -->
+								<div class="ui-g">
+									<p:selectBooleanCheckbox
+										value="#{promotionAskedBean.higriMode}">
+										<p:ajax update="pDates1" process="@this"></p:ajax>
+									</p:selectBooleanCheckbox>
+									<h:outputLabel value="هجري  :  " />
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الموظف" />
+									</div>
+									<div class="ui-g-5">
+										<p:selectOneMenu value="#{promotionAskedBean.prom.userId}"
+											style="width: 80%" filter="true" id="aupdatemgr">
+											<f:selectItem itemLabel="أختر الموظف" itemValue="" />
+											<f:selectItems var="mgr"
+												value="#{promotionAskedBean.empList}"
+												itemValue="#{mgr.userId}"
+												itemLabel="#{mgr.userId} || #{mgr.employeeName}" />
+										</p:selectOneMenu>
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="من الساعة"></p:outputLabel>
+									</div>
+									<div class="ui-g-5">
+										<p:calendar id="begin" value="#{promotionAskedBean.absForm}"
+											pattern="HH:mm" timeOnly="true" maxHour="12" maxMinute="60" />
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="إلي الساعة"></p:outputLabel>
+									</div>
+									<div class="ui-g-5">
+										<p:calendar id="end" value="#{promotionAskedBean.absTo}"
+											pattern="HH:mm" timeOnly="true" maxHour="12" maxMinute="60" />
+									</div>
+
+
+									<div class="ui-g-1">
+										<p:outputLabel value="التاريخ" styleClass="btxt" />
+									</div>
+									<div class="ui-g-5">
+										<h:panelGroup id="pDates1">
+											<p:inputText id="hiri1" value="#{promotionAskedBean.hirDate}"
+												onfocus="loadCalendar();" required="true"
+												requiredMessage="يرجى اختيار تاريخ"
+												rendered="#{promotionAskedBean.higriMode}"
+												styleClass="form-control form-controlCal">
+											</p:inputText>
+											<p:calendar id="gric1" value="#{promotionAskedBean.jabsDate}"
+												pattern="dd/MM/yyyy"
+												rendered="#{not promotionAskedBean.higriMode}">
+											</p:calendar>
+										</h:panelGroup>
+									</div>
+								</div>
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center;">
+									<p:commandButton value="تعديل"
+										action="#{promotionAskedBean.updateProm}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

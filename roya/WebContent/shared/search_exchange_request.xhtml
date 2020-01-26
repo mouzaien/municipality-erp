@@ -8,8 +8,8 @@
 <f:view>
 	<h:head>
 
-<script
-			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+		<!-- <script -->
+		<!-- 			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script> -->
 
 	</h:head>
 	<ui:composition template="/template.xhtml">
@@ -40,8 +40,8 @@
 						<div class="ui-g-2">
 
 							<p:selectBooleanCheckbox value="#{exchangeRequestBean.checkType}">
-								<p:ajax update=":includeform:title exchangeTable"
-									listener="#{exchangeRequestBean.changeType}" process="@this" />
+								<p:ajax update="exchangeTable" process="@this "
+									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
 							</p:selectBooleanCheckbox>
 							<h:outputText value=" إظهار العُهد"></h:outputText>
 						</div>
@@ -54,9 +54,10 @@
 							<p:selectOneMenu styleClass="form-control" id="stockNO"
 								placeholder="إختر المستودع" value="#{exchangeRequestBean.strNo}"
 								style="direction: rtl;height: 39px;">
-								<f:selectItem  itemLabel="إختر مستودع"></f:selectItem>
+								<!-- 								<f:selectItem itemLabel="إختر مستودع"></f:selectItem> -->
 								<f:selectItems value="#{exchangeRequestBean.allWareHouses}"
-									var="c" itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+									var="st" itemLabel="#{st.storeName}"
+									itemValue="#{st.storeNumber}" />
 								<p:ajax process="@this" update="exchangeTable"
 									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
 							</p:selectOneMenu>
@@ -67,11 +68,12 @@
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<p:selectOneMenu id="empList" filterMatchMode="contains"
 								filter="true" value="#{exchangeRequestBean.employerId}">
-								<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+								<f:selectItem itemLabel="الكل" itemValue="-1" />
 								<f:selectItems value="#{loadingDataBean.employersList}"
 									var="emp" itemLabel="#{emp.employeeName}"
 									itemValue="#{emp.userId}" />
-								<f:ajax></f:ajax>
+								<p:ajax process="@this,hiri1,hiri2" update="exchangeTable"
+									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
 							</p:selectOneMenu>
 						</div>
 
@@ -294,7 +296,13 @@
 
 						<br />
 						<div class="image-box-footer" align="left">
+							<p:commandButton value="بطاقة عهدة"
+								rendered="#{(exchangeRequestBean.checkType)}" ajax="false"
+								onclick="this.form.target='_blank'" styleClass="purple-btn"
+								icon="ui-icon ui-icon-print"
+								action="#{exchangeRequestBean.printProtectionCardReportAction}" />
 							<p:commandButton value="طباعة" ajax="false"
+								rendered="#{!(exchangeRequestBean.checkType)}"
 								onclick="this.form.target='_blank'" styleClass="purple-btn"
 								icon="ui-icon ui-icon-print"
 								action="#{exchangeRequestBean.printExchangeReport_A4_Action}" />

@@ -21,6 +21,7 @@ import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
+import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -45,12 +46,21 @@ public class ArticlesBean {
 	@PostConstruct
 	public void init() {
 		articleGroups = dataAccessService.getAllArticleGroups();
-		articleSubGroups = dataAccessService.getAllArticleSubGroups();
+		//articleSubGroups = dataAccessService.getAllArticleSubGroups();
 		articles = dataAccessService.getAllArticles(article.getStrNo());
 		unites = dataAccessService.getAllUnites();
 		warehouses = dataAccessService.getAllStores();
 	}
 
+	public void updateSubGroups(){
+		articleSubGroups = new ArrayList<>();
+		if(groupId != null )
+		{
+		articleSubGroups = dataAccessService.getAllArticleSubGroupsByGroupId(groupId);
+		Utils.updateUIComponent("includeform:sub");
+		}
+	}
+	
 	public void newArticle() {
 		newFlag = false;
 		article = new Article();
@@ -62,6 +72,7 @@ public class ArticlesBean {
 
 	public void addArticle(AjaxBehaviorEvent ev) {
 		try {
+			article.setGroupId(groupId);
 			dataAccessService.addNewArticle(article);
 			article = new Article();
 			articles = dataAccessService.getAllArticles(article.getStrNo());
@@ -76,7 +87,8 @@ public class ArticlesBean {
 
 	public void reloadStrArticles(AjaxBehaviorEvent ev) {
 		try {
-			articles = dataAccessService.getAllArticles(article.getStrNo());
+			if(article != null)
+			 articles = dataAccessService.getAllArticles(article.getStrNo());
 
 		} catch (Exception e) {
 			MsgEntry.addErrorMessage("  خطإ  ");

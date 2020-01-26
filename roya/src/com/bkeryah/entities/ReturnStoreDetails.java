@@ -25,12 +25,14 @@ public class ReturnStoreDetails {
 	private Integer articleId;
 	@Column(name = "QTY")
 	private Integer qty;
+	@Column(name = "EXCH_MASTER_ID")
+	private Integer exchMasterId;
 	@Column(name = "NOTES")
 	private String notes;
 	@Formula("(select a.name from ARTICLE a where a.id = ART_ID)")
 	private String articleName;
-	// @Formula("(select a.code from ARTICLE a where a.id = articleId)")
-	// private String articleCode;
+	@Formula("(select a.code from ARTICLE a where a.id = ART_ID)")
+	private String articleCode;
 
 	public Integer getId() {
 		return Id;
@@ -78,6 +80,22 @@ public class ReturnStoreDetails {
 
 	public void setArticleName(String articleName) {
 		this.articleName = articleName;
+	}
+
+	public Integer getExchMasterId() {
+		return exchMasterId;
+	}
+
+	public void setExchMasterId(Integer exchMasterId) {
+		this.exchMasterId = exchMasterId;
+	}
+
+	public String getArticleCode() {
+		return articleCode;
+	}
+
+	public void setArticleCode(String articleCode) {
+		this.articleCode = articleCode;
 	}
 
 	// public String getArticleCode() {

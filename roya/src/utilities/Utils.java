@@ -217,6 +217,8 @@ public class Utils {
 		context.execute("PF('" + DialogName + "').show()");
 	}
 
+	
+	
 	public static void closeDialog(String DialogName) {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('" + DialogName + "').hide()");
@@ -1098,5 +1100,9 @@ public class Utils {
 		}
 		return date;
 	}
-
+	public static void updateUIComponent(String ComponentName) {
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.update(ComponentName);
+		
+	}
 }

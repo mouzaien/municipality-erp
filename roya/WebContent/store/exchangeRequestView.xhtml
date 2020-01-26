@@ -134,7 +134,7 @@ body .ui-dialog .ui-dialog-titlebar {
 }
 </style>
 	<!-- 	<script language="javascript"> -->
-<![CDATA[
+	<![CDATA[
 
 // 		function openPopup() {
 
@@ -426,7 +426,7 @@ body .ui-dialog .ui-dialog-titlebar {
 									<tr>
 
 										<td>#{x.index+1}</td>
-										<td>#{det.article.name}</td>
+										<td>#{det.article.name} - #{det.article.code}</td>
 										<td>#{det.count}</td>
 										<td>#{det.article.itemUnite.name}</td>
 										<td>#{det.notes}</td>
@@ -436,7 +436,9 @@ body .ui-dialog .ui-dialog-titlebar {
 												disabled="#{!exchangeRequestBean.enableAccept}"
 												value="#{det.exchangeAtcualyCount}"
 												style="width:60px !important;">
-												<f:ajax execute="actualCount" listener="#{exchangeRequestBean.updateQties}" render="actualCount"></f:ajax>
+												<f:ajax execute="actualCount"
+													listener="#{exchangeRequestBean.updateQties}"
+													render="actualCount"></f:ajax>
 											</h:inputText></td>
 										<td><p:commandButton id="xx"
 												disabled="#{!exchangeRequestBean.enableAccept}"
@@ -620,8 +622,8 @@ body .ui-dialog .ui-dialog-titlebar {
 						<br />
 						<br />
 						<div align="center">
-							<p:commandButton id="yesBtn" value="نعم "
-								process="serialNumId" styleClass="cyan-btn" immediate="true"
+							<p:commandButton id="yesBtn" value="نعم " process="serialNumId"
+								styleClass="cyan-btn" immediate="true"
 								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{exchangeRequestBean.updateSerialNum}"
 									update="serialNumId" process="@this" />
@@ -629,8 +631,8 @@ body .ui-dialog .ui-dialog-titlebar {
 
 							<p:spacer height="10px"></p:spacer>
 
-							<p:commandButton id="noBtn" value="لا "
-								styleClass="red-btn" onclick="PF('dlgditSerial').hide();">
+							<p:commandButton id="noBtn" value="لا " styleClass="red-btn"
+								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{exchangeRequestBean.cancleUpdateSerialNum}"
 									process="@this" update="serialNumId" />
 							</p:commandButton>

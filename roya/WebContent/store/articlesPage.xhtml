@@ -76,12 +76,11 @@
 								filterMatchMode="contains" filter="true" required="true"
 								requiredMessage="اختر المجموعة الرئيسية"
 								value="#{articlesBean.groupId}">
-								<!-- 								<f:ajax listener="#{articlesBean.updateSubGroups}" -->
-								<!-- 									execute="groupId" event="valueChange" render="sub"></f:ajax> -->
-								<f:selectItem itemLabel="اختر المجموعة الرئيسية "></f:selectItem>
-
+								<f:selectItem itemLabel="اختر المجموعة الرئيسية " noSelectionOption="true"></f:selectItem>
 								<f:selectItems value="#{articlesBean.articleGroups}" var="x"
 									itemLabel="#{x.code} | #{x.name}" itemValue="#{x.id}"></f:selectItems>
+								<p:ajax listener="#{articlesBean.updateSubGroups}"
+								 process="@this" event="change"  ></p:ajax>
 							</p:selectOneMenu>
 
 						</div>
@@ -93,7 +92,7 @@
 								filterMatchMode="contains" filter="true"
 								requiredMessage="اختر المجموعة الفرعية"
 								value="#{articlesBean.article.subGroupId}">
-								<f:selectItem itemLabel="اختر المجموعة الفرعية "></f:selectItem>
+								<f:selectItem itemLabel="اختر المجموعة الفرعية " noSelectionOption="true" ></f:selectItem>
 								<f:selectItems value="#{articlesBean.articleSubGroups}" var="x"
 									itemLabel="#{x.code} |#{x.name}" itemValue="#{x.id}"></f:selectItems>
 							</p:selectOneMenu>
@@ -125,7 +124,7 @@
 								requiredMessage="اختر المستودع " style="width:100%"
 								value="#{articlesBean.article.strNo}">
 
-								<f:selectItem itemLabel="اختر المستودع  "></f:selectItem>
+								<f:selectItem itemValue="" itemLabel="اختر المستودع  " noSelectionOption="true" ></f:selectItem>
 
 								<f:selectItems value="#{inventoryMasterBean.allWareHouses}"
 									var="x" itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>

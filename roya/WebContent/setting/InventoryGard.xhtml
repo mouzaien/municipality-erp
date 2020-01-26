@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+
+
+			<ui:define name="content">
+				<h:form id="includeform">
+<!-- 					<p:growl autoUpdate="true" showDetail="false" /> -->
+					<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							جرد المستودعات<span class="fa fa-dashboard"></span>
+						</h1>
+						<br></br>
+
+						<p:dataTable var="invG" id="inboxdt" widgetVar="unitCell"
+							value="#{inventoryGardBean.inventoriesList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true" rows="12">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('unitCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:ajax event="rowEdit" listener="#{inventoryGardBean.onRowEdit}"
+								update=":includeform:msgs" />
+							<p:ajax event="rowEditCancel"
+								listener="#{inventoryGardBean.onRowCancel}"
+								update=":includeform:msgs" />
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="الرقم" width="10%" filterBy="#{rowIndex+1}"
+								filterMatchMode="contains">
+								<h:outputText value="#{rowIndex+1}" />
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="تاريخ بدء الجرد" width="15%"
+								filterBy="#{invG.inventoryStartDate}" filterMatchMode="contains">										
+										#{invG.inventoryStartDate}									
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="تاريخ انتهاء الجرد" width="15%"
+								filterBy="#{invG.inventoryEndDate}" filterMatchMode="contains">										
+										#{invG.inventoryEndDate}									
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="المستودع"
+								width="15%"
+								filterBy="#{inventoryGardBean.getStoreById(invG.strno)}"
+								filterMatchMode="contains">
+                                #{inventoryGardBean.getStoreById(invG.strno)}
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="امين المستودع"
+								width="15%"
+								filterBy="#{inventoryGardBean.getUserById(invG.createdby)}"
+								filterMatchMode="contains">	
+								 #{inventoryGardBean.getUserById(invG.createdby)}									
+																	
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="سنة الجرد"
+								width="15%" filterBy="#{invG.yearid}" filterMatchMode="contains">										
+										#{invG.yearid}									
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="حالة الجرد"
+								width="15%" filterBy="#{invG.inventoryBlocked}"
+								filterMatchMode="contains">
+
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText
+											value="#{invG.inventoryBlocked == 1 ? 'مغلق':'مفتوح'}"></h:outputText>
+
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu id="trl" value="#{invG.inventoryBlocked}"
+											style="width:125px" dir="rtl">
+											<f:selectItem itemLabel="مغلق" itemValue="1" />
+											<f:selectItem itemLabel="مفتوح" itemValue="0" />
+
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+
+							</p:column>
+							<!-- 							<p:column style="white-space: nowrap;" headerText="تاريخ الجرد" -->
+							<!-- 								width="15%" filterBy="#{invG.inventoryDate}" -->
+							<!-- 								filterMatchMode="contains">										 -->
+							<!-- 										#{invG.inventoryDate}									 -->
+							<!-- 							</p:column> -->
+							<p:column headerText="تعديل" style="width:5%">
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+						<br />
+
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

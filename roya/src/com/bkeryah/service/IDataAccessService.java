@@ -37,107 +37,7 @@ import com.bkeryah.bean.WrkLetterToClass;
 import com.bkeryah.bean.WrkPurposeClass;
 import com.bkeryah.bean.WrkRolesClass;
 import com.bkeryah.bean.WrkSectionClass;
-import com.bkeryah.entities.ActualDisbursement;
-import com.bkeryah.entities.ActualDisbursementDetails;
-import com.bkeryah.entities.ArcApplicationType;
-import com.bkeryah.entities.ArcAttach;
-import com.bkeryah.entities.ArcDocumentStruct;
-import com.bkeryah.entities.ArcPeople;
-import com.bkeryah.entities.ArcPeopleModel;
-import com.bkeryah.entities.ArcRecords;
-import com.bkeryah.entities.ArcRecordsLink;
-import com.bkeryah.entities.ArcUsers;
-import com.bkeryah.entities.Article;
-import com.bkeryah.entities.ArticleGroup;
-import com.bkeryah.entities.ArticleSubGroup;
-import com.bkeryah.entities.BillIssueDetail;
-import com.bkeryah.entities.BillIssueDig;
-import com.bkeryah.entities.BillIssueDigDetail;
-import com.bkeryah.entities.Charging;
-import com.bkeryah.entities.DepartmentArcRecords;
-import com.bkeryah.entities.DeptArcRecords;
-import com.bkeryah.entities.DocumentScenario;
-import com.bkeryah.entities.DocumentType;
-import com.bkeryah.entities.DocumentsType;
-import com.bkeryah.entities.EmployeeInitiation;
-import com.bkeryah.entities.ExchangeRequest;
-import com.bkeryah.entities.ExchangeRequestDetails;
-import com.bkeryah.entities.FinEntity;
-import com.bkeryah.entities.FinFinancialYear;
-import com.bkeryah.entities.FineReboundMaster;
-import com.bkeryah.entities.HealthMasterLicence;
-import com.bkeryah.entities.HrEmployeeVacation;
-import com.bkeryah.entities.HrLetterRequest;
-import com.bkeryah.entities.HrMedicalRequest;
-import com.bkeryah.entities.HrScenario;
-import com.bkeryah.entities.HrsEmpHistorical;
-import com.bkeryah.entities.HrsEmpTerminate;
-import com.bkeryah.entities.HrsEmployeeTraining;
-import com.bkeryah.entities.HrsGovJob4;
-import com.bkeryah.entities.HrsJobHistorical;
-import com.bkeryah.entities.HrsMasterFile;
-import com.bkeryah.entities.HrsSalaryScale;
-import com.bkeryah.entities.HrsSalaryScaleDgrs;
-import com.bkeryah.entities.HrsScenarioDocument;
-import com.bkeryah.entities.HrsSigns;
-import com.bkeryah.entities.HrsTrainingMandate;
-import com.bkeryah.entities.HrsTrainingPlace;
-import com.bkeryah.entities.HrsUserAbsent;
-import com.bkeryah.entities.InventoryMaster;
-import com.bkeryah.entities.InventoryRecord;
-import com.bkeryah.entities.ItemUnite;
-import com.bkeryah.entities.MainMenu;
-import com.bkeryah.entities.MasterFile;
-import com.bkeryah.entities.NationalIdPlaces;
-import com.bkeryah.entities.NationalIdType;
-import com.bkeryah.entities.Nationality;
-import com.bkeryah.entities.PayBank;
-import com.bkeryah.entities.PayBillDetails;
-import com.bkeryah.entities.PayLicBills;
-import com.bkeryah.entities.PayMaster;
-import com.bkeryah.entities.Procurement;
-import com.bkeryah.entities.Project;
-import com.bkeryah.entities.ProjectContract;
-import com.bkeryah.entities.ProjectExtract;
-import com.bkeryah.entities.RecDepts;
-import com.bkeryah.entities.ReturnStore;
-import com.bkeryah.entities.ReturnStoreDetails;
-import com.bkeryah.entities.StockEntryMaster;
-import com.bkeryah.entities.StoreTemporeryReceiptDetails;
-import com.bkeryah.entities.StoreTemporeryReceiptMaster;
-import com.bkeryah.entities.SubMenu;
-import com.bkeryah.entities.SysBirthCountry;
-import com.bkeryah.entities.SysCategoryEmployer;
-import com.bkeryah.entities.SysGraduatePlace;
-import com.bkeryah.entities.SysNationality;
-import com.bkeryah.entities.SysProperties;
-import com.bkeryah.entities.SysQualification;
-import com.bkeryah.entities.SysReligion;
-import com.bkeryah.entities.SysSpecialization;
-import com.bkeryah.entities.SysTitle;
-import com.bkeryah.entities.TechnicalResponse;
-import com.bkeryah.entities.TechnicalUsers;
-import com.bkeryah.entities.TenderItems;
-import com.bkeryah.entities.TradIssueType;
-import com.bkeryah.entities.UserRoles;
-import com.bkeryah.entities.VacationsType;
-import com.bkeryah.entities.WhsWarehouses;
-import com.bkeryah.entities.WrkApplication;
-import com.bkeryah.entities.WrkApplicationId;
-import com.bkeryah.entities.WrkComment;
-import com.bkeryah.entities.WrkCommentType;
-import com.bkeryah.entities.WrkDept;
-import com.bkeryah.entities.WrkInboxFolder;
-import com.bkeryah.entities.WrkJobs;
-import com.bkeryah.entities.WrkLetterFrom;
-import com.bkeryah.entities.WrkLetterTo;
-import com.bkeryah.entities.WrkProfile;
-import com.bkeryah.entities.WrkProfileSign;
-import com.bkeryah.entities.WrkPurpose;
-import com.bkeryah.entities.WrkRefrentionalSetting;
-import com.bkeryah.entities.WrkRoles;
-import com.bkeryah.entities.WrkSection;
-import com.bkeryah.entities.WrkUserFolderMail;
+import com.bkeryah.entities.*;
 import com.bkeryah.entities.investment.AnnoucementDetails;
 import com.bkeryah.entities.investment.Announcement;
 import com.bkeryah.entities.investment.BuildingType;
@@ -1011,8 +911,6 @@ public interface IDataAccessService {
 
 	Integer getFunctionOwnerWrkApp(int WrkId, String function, int arc_records);
 
-	public List<WrkDept> findAllDepartments();
-
 	public void addNewArticleGroup(ArticleGroup articleGroup);
 
 	List<ArticleGroup> getAllArticleGroups();
@@ -1793,6 +1691,7 @@ public interface IDataAccessService {
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo);
 
 	public List<Article> getAllArticles();
+
 	Integer addRturnedStoreItems(ReturnStore exchangeRequest, Integer createdForId,
 			List<ReturnStoreDetails> returnStoreDetailsList);
 
@@ -1831,8 +1730,10 @@ public interface IDataAccessService {
 
 	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id);
 
-//	List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year);
-	
+	public List<Article> getAllReturnStoreArticles(Integer strNo);
+	// List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer
+	// year);
+
 	public Integer getIdFromWorkAppByAppId(Integer appId);
 
 	List<WrkLetterFrom> loadAllWrkLetterFrom();
@@ -1850,4 +1751,64 @@ public interface IDataAccessService {
 	List<VacationsType> loadAllVacationTypes();
 
 	List<WrkCommentType> loadAllCommentTypes();
+
+	List<WhsWarehouses> getWhsWarehouses();
+
+	public WrkSection findSectionById(Integer deptId);
+
+	// thapet
+	public List<WrkArchiveRcipent> findAllMang();
+
+	public List<WrkSection> findAllSec();
+
+	List<ItemUnite> findAllUnite();
+
+	List<HrsUserAbsent> findAllAllProm();
+
+	public HrsUserAbsent loadAllPromList();
+
+	// List<WrkDept2> findAllDema();
+
+	public List<WrkDept> findAllDepartments();
+
+	List<WrkDept2> findAllDepartments2();
+
+	List<WrkSection> getwrksectionByDepId(Integer selectdDeptId);
+
+	List<WrkDept> findAllDema();
+
+	List<InventoryMaster> findAllInventoryMaster();
+
+	List<HrsEmpHistorical> findAllHrsEmpHistorical();
+
+	List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO);
+
+	// thapet
+	List<ArcRecords> findAllRecord();
+
+	List<WrkComment> findAllComment();
+
+	List<ArcApplicationType> findAllArc();
+
+	List<CarBrand> findAllBrand();
+
+	List<CarModel> findAllModel();
+
+	List<VehicleType> findAllVehicleType();
+
+	List<FuelType> findAllFuelType();
+
+	Car findCarByArticleId(int id);
+
+	List<FinFinancialYear> findAllYear();
+
+	List<Car> loadCarDetailsByArtId(Integer carArtId);
+
+    List<Car> loadCarDetailsBySubGroupId(Integer subGroupId);
+	
+	
+	// thapet
+	List<WrkApplication> findAllSteps();
+	
+	
 }

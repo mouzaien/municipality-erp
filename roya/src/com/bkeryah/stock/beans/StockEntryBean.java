@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -32,9 +31,9 @@ import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StockInDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
+import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkPurpose;
-import com.bkeryah.hr.entities.HrsVacSold;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.StockEntryModel;
@@ -43,6 +42,7 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 
 import utilities.HijriCalendarUtil;
 import utilities.MsgEntry;
+import utilities.MyConstants;
 import utilities.Utils;
 
 @ManagedBean()
@@ -102,17 +102,26 @@ public class StockEntryBean {
 	private StockEntryMaster memoReceipt = new StockEntryMaster();
 
 	private boolean blockSupplier;
-	private boolean checkReceipt;
+	private boolean checkReceipt = true;
 	private Integer stockNoticeNo;
+	private String notifDate;
 	private Integer tempMstrid;
 	private StoreTemporeryReceiptMaster tempMstr = new StoreTemporeryReceiptMaster();
 	private List<StoreTemporeryReceiptMaster> tempMstrList = new ArrayList<StoreTemporeryReceiptMaster>();
 	private List<StoreTemporeryReceiptDetails> rcptStockInDetailList = new ArrayList<StoreTemporeryReceiptDetails>();
+	private float total = 0f;
+	private SysProperties prop;
+	private boolean enableEditMgr;
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		tempMstrList = dataAccessService.getAllStrTempRcptMstr();
+		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
+		prop = (SysProperties) dataAccessService.findEntityById(SysProperties.class, MyConstants.WAREHOUSE_MANAGER);
+		if (prop.getValue().equals(currentUser.getUserId().toString())) {
+			enableEditMgr = true;
+		}
 		// forPageView
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -160,7 +169,6 @@ public class StockEntryBean {
 		setFinYear(stockServiceDao.getFinancialYearById(5));
 		setCurrentFinYear(finYear.getYEARID());
 
-		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 		// for dropdownList suppliers
 		// setSupplierMap(stockServiceDao.getAllNameSuppliers());
 		setSupplierMap(stockServiceDao.getAllNameSuppliers());
@@ -220,6 +228,7 @@ public class StockEntryBean {
 			articleStatus = (ArticleStatus) dataAccessService.findEntityById(ArticleStatus.class,
 					stockInDetails.getArticleStatus());
 			stockInDetails.setArticleName(stockInDetails.getArticle().getName());
+			stockInDetails.setArticleCode(stockInDetails.getArticle().getCode());
 			stockInDetails.setUniteName(stockInDetails.getArticle().getItemUnite().getName());
 		}
 		memoReceipt.setStockFinEntryNo(selectedMemo.getStockFinEntryNo());
@@ -232,7 +241,7 @@ public class StockEntryBean {
 			MsgEntry.addErrorMessage("من فضلك اختر المستودع والمورد");
 			return;
 		}
-		
+
 		try {
 			stockInDetails.setArticleId(itemId);
 			article = (Article) dataAccessService.findEntityById(Article.class, itemId);
@@ -240,6 +249,7 @@ public class StockEntryBean {
 			stockInDetails.setArticleStatus(selectedStatus);
 			stockInDetails.setUniteName(article.getItemUnite().getName());
 			stockInDetails.setArticleName(article.getName());
+			stockInDetails.setArticleCode(article.getCode());
 			stockInDetails.setArticleStatusName(articleStatus.getArticleStatusName());
 			StockInDetailList.add(stockInDetails);
 			blockSupplier = true;
@@ -252,6 +262,7 @@ public class StockEntryBean {
 			// allowAdd = false;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			MsgEntry.addErrorMessage("خطا في العملية");
 		}
 
@@ -264,19 +275,16 @@ public class StockEntryBean {
 	}
 
 	public void onRowEdit(RowEditEvent event) {
-		HrsVacSold selectedItem = (HrsVacSold) event.getObject();
-		dataAccessService.updateObject(selectedItem);
-		FacesMessage msg = new FacesMessage("تم تغير أجازة الموظف رقم   ", selectedItem.getEmployeeNumber().toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		StockInDetails selectedItem = (StockInDetails) event.getObject();
+		articlesTotalPrice += selectedItem.getTotal();
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		HrsVacSold selectedItem = (HrsVacSold) event.getObject();
-		FacesMessage msg = new FacesMessage(" تم إلغاء التعديل ", selectedItem.getEmployeeNumber().toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		StockInDetails selectedItem = (StockInDetails) event.getObject();
+		articlesTotalPrice += selectedItem.getTotal();
 	}
 
-	public void loadReceiptDetailsList(AjaxBehaviorEvent e) {
+	public void loadReceiptDetailsList() {
 		tempMstr = (StoreTemporeryReceiptMaster) dataAccessService.getStrTemrReceiptMstrById(tempMstrid);
 		rcptStockInDetailList = dataAccessService.getStoreTemporeryReceiptDetailsById(tempMstrid);
 		StockInDetailList = new ArrayList<StockInDetails>();
@@ -285,6 +293,7 @@ public class StockEntryBean {
 			stockInDetails = new StockInDetails();
 			stockInDetails.setArticleId(item.getArticleId());
 			stockInDetails.setArticleName(dataAccessService.getArticleById(item.getArticleId()).getName());
+			stockInDetails.setArticleCode(dataAccessService.getArticleById(item.getArticleId()).getCode());
 			stockInDetails.setArticleStatus(item.getArticleStatus());
 			stockInDetails.setQty(item.getQty());
 			stockInDetails.setQty(item.getQty());
@@ -293,9 +302,10 @@ public class StockEntryBean {
 			StockInDetailList.add(i, stockInDetails);
 
 		}
+		updateData();
 	}
 
-	private void changeTotalPrice() {
+	public void changeTotalPrice() {
 		Float total = 0f;
 		articlesTotalPrice = 0f;
 		for (int i = 0; i < StockInDetailList.size(); i++) {
@@ -312,8 +322,8 @@ public class StockEntryBean {
 	public void removeRecord(StockInDetails stockInDetails) {
 		StockInDetailList.remove(stockInDetails);
 		changeTotalPrice();
-//		if (StockInDetailList.size() < 12)
-//			allowAdd = true;
+		// if (StockInDetailList.size() < 12)
+		// allowAdd = true;
 		if (StockInDetailList.size() == 0)
 			blockSupplier = false;
 	}
@@ -435,6 +445,14 @@ public class StockEntryBean {
 		return "";
 	}
 
+	public void updateData() {
+		if (tempMstrid != null) {
+			selectedWareHouse = tempMstr.getStrNo();
+			notifDate = tempMstr.getDocumentHDate();
+			supplierId = tempMstr.getSupplierId();
+		}
+	}
+
 	public void save(AjaxBehaviorEvent abe) {
 		try {
 			String selectedSupplier = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
@@ -457,11 +475,11 @@ public class StockEntryBean {
 				stockEntryMaster.setStockFinYearid(currentFinYear);
 				stockEntryMaster.setStockNo(selectedWareHouse);
 				stockEntryMaster.setStockDocutypeNo(3);
-			if (stockNoticeNo != null) {
-				stockEntryMaster.setStockNoticeNo(stockNoticeNo);
-			} else {
-				stockEntryMaster.setStockNoticeNo(tempMstr.getSpecialNumber());
-			}
+				if (stockNoticeNo != null) {
+					stockEntryMaster.setStockNoticeNo(stockNoticeNo);
+				} else {
+					stockEntryMaster.setStockNoticeNo(tempMstr.getSpecialNumber());
+				}
 				stockEntryMaster.setStockSupplierId(supplier.getFinEntityId());
 				stockEntryMaster.setUserId(currentUser.getUserId());
 				stockEntryMaster.setStockFinEntryGdate(df.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(hdate)));
@@ -990,6 +1008,30 @@ public class StockEntryBean {
 
 	public void setTempMstrid(Integer tempMstrid) {
 		this.tempMstrid = tempMstrid;
+	}
+
+	public String getNotifDate() {
+		return notifDate;
+	}
+
+	public void setNotifDate(String notifDate) {
+		this.notifDate = notifDate;
+	}
+
+	public float getTotal() {
+		return total;
+	}
+
+	public void setTotal(float total) {
+		this.total = total;
+	}
+
+	public boolean isEnableEditMgr() {
+		return enableEditMgr;
+	}
+
+	public void setEnableEditMgr(boolean enableEditMgr) {
+		this.enableEditMgr = enableEditMgr;
 	}
 
 }

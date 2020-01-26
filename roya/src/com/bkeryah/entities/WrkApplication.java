@@ -15,6 +15,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 import utilities.Utils;
 
 @Entity
@@ -57,6 +59,16 @@ public class WrkApplication implements Serializable {
 	private Integer applicationIsVisible;
 	// @Column(name = "USER_DEP_JOB",nullable=true)
 	// private Integer applicationUserDeptJob;
+
+	 @Formula("(select u.FNAME from ARC_USERS u where u.USER_ID = FROM_ID )")
+//	@Formula("(select u.FNAME from ARC_USERS u where u.FROM_ID = USER_ID )")
+	private String fromName;
+
+	@Formula("(select u.FNAME from ARC_USERS u where u.USER_ID = TO_ID )")
+
+//	@Formula("(select u.FNAME from ARC_USERS u where u.TO_ID =USER_ID )")
+	private String toName;
+
 	@Transient
 	private String userComment;
 
@@ -248,6 +260,22 @@ public class WrkApplication implements Serializable {
 
 	public void setToCopyId(Integer toCopyId) {
 		this.toCopyId = toCopyId;
+	}
+
+	public String getFromName() {
+		return fromName;
+	}
+
+	public void setFromName(String fromName) {
+		this.fromName = fromName;
+	}
+
+	public String getToName() {
+		return toName;
+	}
+
+	public void setToName(String toName) {
+		this.toName = toName;
 	}
 
 }

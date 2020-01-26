@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:view>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer">
+
+					<p:commandButton value="حفظ" icon="ui-icon-save"
+						action="#{stockEntryBean.save}" styleClass="cyan-btn">
+						<!-- 						<f:ajax listener="#{stockEntryBean.save}" -->
+						<!-- 							execute="finEntryNo noticeNo noticeDate buyno buyDate stockNO" -->
+						<!-- 							render="@form"></f:ajax> -->
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<div>
+						<h1 style="color: #7CB342; text-align: center;">الإستلام
+							الفعلي - مذكرة إستلام</h1>
+					</div>
+					<h2 style="text-align: right;">بيانات مذكرة الإستلام</h2>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<label class="btxt">السنة المالية</label>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu style="direction: rtl;height: 39px;"
+								required="true" filter="true" filterMatchMode="contains"
+								requiredMessage="من فضلك اختر السنة المالية">
+								<f:selectItem itemLabel="إختر السنة" itemValue="" />
+								<f:selectItems value="#{stockEntryBean.allfinYears}" var="c"
+									itemLabel="#{c.yearName}" itemValue="#{c.YEARID}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-2">
+							<label class="btxt">تاريخ المذكرة</label>
+						</div>
+						<div class="ui-g-2">
+							<ui:include src="../shared/calender.xhtml" />
+						</div>
+
+					</div>
+					<div class="ui-g">
+
+						<div class="ui-g-2">
+							<label class="btxt">رقم الإشعار </label> <br />
+							<h:panelGroup id="rcpt_ch_box">
+								<!-- 								<h:panelGroup rendered="#{!(stockEntryBean.checkReceipt)}"> -->
+								<!-- 									<p:selectBooleanCheckbox value="#{stockEntryBean.checkReceipt}" -->
+								<!-- 										disabled="#{(stockEntryBean.checkReceipt)}"> -->
+								<!-- 										<p:ajax update="noticeNo_grp art_table art_dtls rcpt_ch_box" -->
+								<!-- 											process="@this" /> -->
+								<!-- 									</p:selectBooleanCheckbox> -->
+								<h:outputText value=" إشعار سابق "></h:outputText>
+								<!-- 							</h:panelGroup> -->
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<h:panelGroup id="noticeNo_grp">
+								<!-- 								<p:inputText id="noticeNo" styleClass="form-control" -->
+								<!-- 									required="true" requiredMessage="من فضلك ادخل رقم الاشعار" -->
+								<!-- 									rendered="#{!(stockEntryBean.checkReceipt)}" -->
+								<!-- 									value="#{stockEntryBean.stockNoticeNo}" /> -->
+								<p:selectOneMenu id="noticeNo_menu" filter="true"
+									filterMatchMode="contains" value="#{stockEntryBean.tempMstrid}">
+									<!-- rendered="#{stockEntryBean.checkReceipt}" -->
+									<f:selectItem itemLabel="إختر رقم إشعار" itemValue=""></f:selectItem>
+									<f:selectItems var="S" value="#{stockEntryBean.tempMstrList}"
+										itemLabel="#{S.specialNumber}" itemValue="#{S.id}">
+									</f:selectItems>
+									<p:ajax
+										update="art_table notif_date suppId stockNO rcpt_ch_box"
+										listener="#{stockEntryBean.loadReceiptDetailsList}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<label class="btxt">تاريخ الإشعار</label>
+						</div>
+						<div class="ui-g-2">
+							<!-- 		<ui:include src="../shared/calender.xhtml" /> -->
+							<!-- 		<p:inputText id="noticeDate" styleClass="form-control" value="#{stockEntryBean.stockEntryMaster.stockNoticeDate}" /> -->
+							<!-- 	 <ui:include src="../shared/NotifDate.xhtml" /> -->
+
+
+							<p:inputText id="notif_date" value="#{stockEntryBean.notifDate}"
+								onfocus="loadCalendar();" style="opacity:0.9" disabled="true"
+								styleClass="form-control form-controlCal">
+								<!-- disabled="#{stockEntryBean.checkReceipt}" -->
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								<f:ajax execute="@this"></f:ajax>
+							</p:inputText>
+						</div>
+
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<label class="btxt">رقم أمر الشراء</label>
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="buyno" styleClass="form-control" required="true"
+								requiredMessage="من فضلك ادخل امر الشراء و تاريخه"
+								value="#{stockEntryBean.stockEntryMaster.stockBuyNo}" />
+						</div>
+						<div class="ui-g-2">
+							<label class="btxt">تاريخ أمر الشراء</label>
+						</div>
+						<div class="ui-g-2">
+							<ui:include src="../shared/buyDate.xhtml" />
+							<!-- 									<p:inputText id="buyDate" styleClass="form-control" value="#{stockEntryBean.stockEntryMaster.stockBuyDate}" /> -->
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<label class="btxt">المستودع</label>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								required="true" requiredMessage="من فضلك اختر المستودع "
+								disabled="true" value="#{stockEntryBean.selectedWareHouse}"
+								style="direction: rtl;height: 39px; opacity:0.9" filter="true"
+								filterMatchMode="contains">
+								<!-- disabled="#{(stockEntryBean.blockSupplier) or (stockEntryBean.checkReceipt)}"								 -->
+								<f:selectItem itemLabel="إختر مستودع" itemValue="" />
+								<f:selectItems value="#{stockEntryBean.allWareHouses}" var="c"
+									itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+								<f:ajax event="change" execute="@this"
+									listener="#{stockEntryBean.updateNameAfterChoiseArticle}"
+									render="articles"></f:ajax>
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel styleClass="btxt" value="المورد/الجهة" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu styleClass="form-control" required="true"
+								id="suppId" style="direction: rtl;opacity:0.9;height: 39px;"
+								filter="true" requiredMessage="من فضلك اختر المورد"
+								filterMatchMode="contains" disabled="true"
+								value="#{stockEntryBean.supplierId}">
+								<!-- disabled="#{(stockEntryBean.blockSupplier) or (stockEntryBean.checkReceipt)}"								 -->
+								<f:selectItem itemLabel="اختر المورد" itemValue="" />
+								<f:selectItems var="y" value="#{stockEntryBean.supplierList}"
+									itemLabel="#{y.name}" itemValue="#{y.id}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br />
+					<p:separator></p:separator>
+					<br />
+					<h:panelGroup id="art_dtls">
+						<h:panelGroup rendered="#{!stockEntryBean.checkReceipt}">
+							<h2 style="text-align: right;">أصناف الإستلام</h2>
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<label class="btxt">الصنف</label>
+								</div>
+								<div class="ui-g-2">
+									<h:panelGroup id="articles">
+										<p:selectOneMenu styleClass="form-control" id="stockArticles"
+											value="#{stockEntryBean.itemId}" filter="true"
+											filterMatchMode="contains"
+											style="direction: rtl;height: 39px;">
+											<f:selectItem itemLabel="إختر صنف" itemValue="" />
+											<f:selectItems value="#{stockEntryBean.articles}" var="c"
+												itemLabel="#{c.name} - #{c.code}" itemValue="#{c.id}" />
+											<f:ajax event="change" execute="@this"></f:ajax>
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="الكمية"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText styleClass="form-control" id="count"
+										value="#{stockEntryBean.stockInDetails.qty}" required="true"
+										requiredMessage="من فضلك ادخل  الكمية "
+										validatorMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
+									</p:inputText>
+								</div>
+								<div class="col-md-2">
+									<h:outputLabel styleClass="btxt" style="font-size:large"
+										value="#{stockEntryBean.article.itemUnite.name}"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<label class="btxt">السعر (بالريال 00.00 )</label>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="price" styleClass="form-control"
+										required="true" requiredMessage="من فضلك ادخل  سعر الصنف "
+										value="#{stockEntryBean.stockInDetails.price}" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<label class="btxt">حالة الصنف</label>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu styleClass="form-control" filter="true"
+										required="true" filterMatchMode="contains"
+										requiredMessage="من فضلك اختر الحالة"
+										value="#{stockEntryBean.selectedStatus}" id="status">
+										<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
+										<f:selectItems value="#{stockEntryBean.allArticlesStatus}"
+											var="c" itemLabel="#{c.articleStatusName}"
+											itemValue="#{c.articleStatusId}" filter="true"
+											filterMatchMode="contains" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="الملاحظات"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="desc" styleClass="form-control"
+										value="#{stockEntryBean.stockInDetails.notes}"></p:inputText>
+								</div>
+								<div class="ui-g-4">
+									<p:commandButton id="addBtn" styleClass="cyan-btn"
+										style="float:left" icon="ui-icon ui-icon-add" value="اضافة">
+										<f:ajax listener="#{stockEntryBean.addInStockItem}"
+											execute="stockArticles desc  count price status suppId stockNO"
+											render="table desc status addBtn supp_grp stockNO suppId"></f:ajax>
+									</p:commandButton>
+								</div>
+							</div>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup id="table">
+
+						<p:dataTable value="#{stockEntryBean.stockInDetailList}"
+							id="art_table" emptyMessage="لايوجد بيانات" var="storeItem"
+<<<<<<< working copy
+							rowIndexVar="rowIndex" paginatorPosition="bottom" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:ajax event="rowEdit" update="total_price" process="price" />
+							<p:ajax event="rowEditCancel" update="total_price" />
+=======
+							rowIndexVar="rowIndex" editable="true">
+
+							<p:ajax event="rowEdit" update="art_table,total_price"
+								process="price" />
+							<p:ajax event="rowEditCancel" update="total_price,total_sum" />
+>>>>>>> destination
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="رقم" width="5%">										
+										#{rowIndex+1} 									
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="اسم الصنف" width="15%">										
+										#{storeItem.articleName} - #{storeItem.articleCode} 									
+									</p:column>
+							<p:column id="item_status"
+								style="white-space: nowrap;text-align: center;"
+								headerText="حالة الصنف" width="10%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{storeItem.articleUnit}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu styleClass="form-control" filter="true"
+											filterMatchMode="contains" immediate="true"
+											value="#{storeItem.articleStatusName}" id="status">
+											<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
+											<f:selectItems value="#{stockEntryBean.allArticlesStatus}"
+												var="c" itemLabel="#{c.articleStatusName}"
+												itemValue="#{c.articleStatusId}" filter="true"
+												filterMatchMode="contains" />
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="العدد" width="10%">										
+										#{storeItem.qty} 									
+									</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="الوحدة" width="10%">										
+										#{storeItem.uniteName} 									
+									</p:column>
+<<<<<<< working copy
+							<p:column id="price" style="white-space: nowrap;text-align: center;"
+=======
+							<p:column id="price"
+								style="white-space: nowrap;text-align: center;"
+>>>>>>> destination
+								headerText="سعر الوحدة" width="10%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{storeItem.price}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{storeItem.price}" style="width:100%">
+<<<<<<< working copy
+											<p:ajax update="total_price" process="@this"/>
+=======
+											<p:ajax update="art_table status" />
+>>>>>>> destination
+										</p:inputText>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="المواصفات" width="10%">										
+										#{storeItem.notes} 									
+									</p:column>
+							<p:column id="total_price"
+								style="white-space: nowrap;text-align: center;"
+								headerText="القيمة الكلية" width="10%">										
+										#{storeItem.total} 									
+									</p:column>
+							<p:column headerText="تعديل" style="text-align: center;"
+								width="5%">
+								<p:rowEditor />
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="حذف" width="10%">
+								<div class="image-box-footer">
+									<p:commandButton id="xx" icon="fa fa-fw fa-times"
+										styleClass="red-btn">
+										<f:ajax listener="#{stockEntryBean.removeRecord(det)}"
+											render="@form"></f:ajax>
+									</p:commandButton>
+								</div>
+							</p:column>
+
+							<p:columnGroup type="footer"
+								rendered="#{!(stockEntryBean.checkReceipt)}">
+								<p:row>
+									<p:column colspan="7" style="text-align:left;font-size:25px "
+										footerText="المجموع الكلي: " />
+									<p:column id="total_sum" colspan="3"
+										style="text-align:right;font-size:25px"
+										footerText=" #{stockEntryBean.articlesTotalPrice}  ريال" />
+
+								</p:row>
+							</p:columnGroup>
+						</p:dataTable>
+					</h:panelGroup>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>

@@ -93,6 +93,7 @@ import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
+import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.hr.entities.HrsCompactFloors;
 import com.bkeryah.hr.managedBeans.Employer;
 import com.bkeryah.licences.models.BldLicNewModel;
@@ -6442,7 +6443,8 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,Integer artType,Integer employerId) {
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,
+			Integer artType, Integer employerId) {
 		Connection connection = DataBaseConnectionClass.getConnection();
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
@@ -6454,11 +6456,13 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.setString(1, beginDate);
 			callableStatement.setString(2, finishDate);
 			callableStatement.setInt(3, strNo);
-			// callableStatement.setInt(5, artType);
-			// callableStatement.setInt(6, employerId);
+			callableStatement.setInt(5, artType);
+			callableStatement.setInt(6, employerId);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(4);
+			int i = 0;
 			while (rs.next()) {
+				i++;
 				ExchangeRequest exchange = new ExchangeRequest();
 				exchange.setGeneralrequestNumber(rs.getInt("inv_g_r_no"));
 				exchange.setSerialNumber(rs.getInt("SERIALNUMBER"));
@@ -6468,7 +6472,9 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				exchange.setStatus(rs.getString("status"));
 				exchangesList.add(exchange);
 			}
+			System.out.println(" count " + i);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("searchExchangeRequests" + e.getMessage());
 		} finally {
 			try {
@@ -6607,13 +6613,13 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				store.setQtyOutput(rs.getInt("qty"));
 				store.setArticleUnite(rs.getString("ITEMUNITNAME"));
 				store.setTransactionDate(rs.getString("datetransaction"));
-				store.setSpecialNumber(rs.getInt("SPECIAL_NO"));
 				store.setRequesterName(rs.getString("requester_name"));
 				store.setSupplierName(rs.getString("supplier"));
 				storeRequestModelLst.add(store);
 			}
 		} catch (Exception e) {
-			logger.error("getArticleHistory" + e.getMessage());
+			e.printStackTrace();
+			logger.error("getArticleHistory has " + e.getMessage());
 		} finally {
 			try {
 				if (rs != null)
@@ -7535,6 +7541,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 
 	@Override
 	public List<Article> getArticlesByUserId(Integer userId) {
+		System.out.println("user id "+userId);
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		Connection connection = DataBaseConnectionClass.getConnection();
@@ -7551,11 +7558,14 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				article = new Article();
 				article.setId(rs.getInt("art_id"));
 				article.setName(rs.getString("art_name"));
+				article.setCode(rs.getString("art_code"));
 				article.setUnitName(rs.getString("unit_name"));
+				article.setExchMasterId(rs.getInt("exmaster_id"));
+//				article.setExchMasterDate(rs.getString("exmaster_date"));
 				articlesList.add(article);
 			}
 		} catch (Exception e) {
-			logger.error("getMemoReceiptDetails" + e.getMessage());
+			logger.error("getArticlesByUserId" + e.getMessage());
 		} finally {
 			try {
 				if (rs != null)
@@ -7569,6 +7579,96 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			}
 		}
 		return articlesList;
+	}
+
+	@Override
+	public List<Article> getAllReturnStoreArticles(Integer strNo) {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		List<Article> articlesList = new ArrayList<Article>();
+		Article article = new Article();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_items_qty(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, strNo);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+				article = new Article();
+				article.setId(rs.getInt("ID"));
+				article.setName(rs.getString("NAME"));
+				article.setUnitName(rs.getString("ITEMUNITNAME"));
+				article.setQty(rs.getInt("sumQTy"));
+				article.setStrNo(strNo);
+				articlesList.add(article);
+			}
+		} catch (Exception e) {
+			logger.error("getAllReturnStoreArticles" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return articlesList;
+	}
+	@Override
+	public List<Car> getCarsDetailsBySubGroupId(Integer subGroupId) {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		List<Car> carsList = new ArrayList<>();
+		Car car = new Car();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_carDetails_BySubGrupId(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, subGroupId);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+				car = new Car();
+				car.setId(rs.getInt("ID"));
+				car.setArtId(rs.getInt("ART_ID"));
+				//System.out.println("art id"+car.getArtId());
+				car.setArtName(rs.getString("name"));
+				car.setCarCode(rs.getString("CAR_SERIAL"));
+				car.setCarColor(rs.getString("CAR_COLOR"));
+				car.setChassisNumber(rs.getString("CHASSIS_NUMBER"));
+				car.setMatricule(rs.getString("MATRICULE"));
+				car.setCarModel(rs.getInt("CAR_MODEL"));
+				car.setFuelTypeId(rs.getInt("FUEL_TYPE"));
+				car.setVehicleTypeId(rs.getInt("VEHICLE_TYPE_ID"));
+				car.setYearModel(rs.getInt("YEAR_MODEL"));
+				car.setNumDoor(rs.getInt("NUM_DOOR"));
+				carsList.add(car);
+//				 c.ID , c.ART_ID ,c.FUEL_TYPE ,c.CAR_MODEL , 
+//                 c.YEAR_MODEL ,c.VEHICLE_TYPE_ID , c.NUM_DOOR ,
+//                 c.CAR_COLOR , c.CHASSIS_NUMBER , c.CAR_SERIAL ,c.MATRICULE
+			}
+		} catch (Exception e) {
+			logger.error("getCarsDetailsBySubGroupId" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return carsList;
 	}
 
 }

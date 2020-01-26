@@ -22,7 +22,6 @@ import com.bkeryah.entities.HrsSigns;
 import com.bkeryah.entities.ReturnStore;
 import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.WhsWarehouses;
-import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.service.IDataAccessService;
@@ -53,10 +52,12 @@ public class StoreReturnBean {
 	private Integer returnReason;
 	private Integer qty;
 	private String notes;
+	private String artSerial;
 	private boolean allowAdd;
 	private boolean canSave;
 	private Integer recordId;
 	private String articleName;
+	private String artCode;
 	private String articleUnit;
 	private Integer stepNum;
 	private boolean enableAccept;
@@ -68,13 +69,15 @@ public class StoreReturnBean {
 	private Integer employerId;
 	private List<WhsWarehouses> allWareHouses = new ArrayList<WhsWarehouses>();
 	private Integer strNo = 0;
+	private Integer exchMasterId;
+	private boolean allowAccept;
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		employerId = currentUser.getUserId();
 		articleList = dataAccessService.getArticlesByUserId(employerId);
-		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses());
+		setAllWareHouses(stockServiceDao.getStoreWharehouses(2));
 		// forPageView
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -94,6 +97,11 @@ public class StoreReturnBean {
 				returnStoreModelRecord = new ReturnStoreDetailsModel();
 				returnStoreModelRecord.setArticleId(returnItemDetails.getArticleId());
 				returnStoreModelRecord.setArticleName(returnItemDetails.getArticleName());
+				System.out.println(articleId);
+				Article art = (Article) dataAccessService.findEntityById(Article.class,
+						returnItemDetails.getArticleId());
+				if (art != null)
+					returnStoreModelRecord.setArticleCode(art.getCode());
 				returnStoreModelRecord.setQty(returnItemDetails.getQty());
 				returnStoreModelRecord.setNotes(returnItemDetails.getNotes());
 				returnStoreModelRecord.setRetrunReason(returnReason);
@@ -112,6 +120,9 @@ public class StoreReturnBean {
 			}
 
 		}
+		if (returnStore.getSerialNumber() != null) {
+			allowAccept = true;
+		}
 	}
 
 	public void loadEmpAssignedArticles(AjaxBehaviorEvent abe) {
@@ -128,6 +139,14 @@ public class StoreReturnBean {
 
 	public void loadArticle(AjaxBehaviorEvent event) {
 		article = (Article) dataAccessService.findEntityById(Article.class, articleId);
+		if (article != null) {
+			// for show Article Code (Serial ) اظهار الرمز
+			this.setArtSerial(article.getCode());
+
+			Utils.updateUIComponent("includeform:ser");
+			// ser
+		}
+
 		allowAddBtn();
 	}
 
@@ -140,20 +159,26 @@ public class StoreReturnBean {
 	}
 
 	public void addItem(AjaxBehaviorEvent event) {
-		if (articleId == null || qty == null) {
+		if (articleId == null || qty == null || returnDate == null) {
 			MsgEntry.addErrorMessage("يجب أدخال البيانات بشكل صحيح");
 		} else {
 			for (Article art : articleList) {
+				System.out.println("code" + art.getCode());
 				if (art.getId() == articleId) {
+
 					this.articleName = art.getName();
 					this.articleUnit = art.getUnitName();
+					this.exchMasterId = art.getExchMasterId();
+
 				}
 			}
+			returnStoreModelRecord.setArticleCode(artSerial);
 			returnStoreModelRecord.setArticleId(articleId);
 			returnStoreModelRecord.setQty(qty);
 			returnStoreModelRecord.setNotes(notes);
 			returnStoreModelRecord.setArticleName(articleName);
 			returnStoreModelRecord.setArticleUnit(articleUnit);
+			returnStoreModelRecord.setExchMasterId(exchMasterId);
 			returnModelDetailsList.add(returnStoreModelRecord);
 			canSave = true;
 			returnStoreModelRecord = new ReturnStoreDetailsModel();
@@ -165,9 +190,11 @@ public class StoreReturnBean {
 		try {
 			for (ReturnStoreDetailsModel item : returnModelDetailsList) {
 				returnDetailsRecord.setArticleId(item.getArticleId());
+				returnDetailsRecord.setArticleCode(item.getArticleCode());
 				returnDetailsRecord.setQty(item.getQty());
 				returnDetailsRecord.setNotes(item.getNotes());
 				returnDetailsRecord.setArticleName(item.getArticleName());
+				returnDetailsRecord.setExchMasterId(item.getExchMasterId());
 				returnitemsDetailsList.add(returnDetailsRecord);
 				returnDetailsRecord = new ReturnStoreDetails();
 			}
@@ -199,16 +226,23 @@ public class StoreReturnBean {
 
 	public String print_documents_return() {
 		String reportName = "/reports/document_returned.jrxml";
+		String strName = ((WhsWarehouses) dataAccessService.findEntityById(WhsWarehouses.class, returnStore.getStrNo()))
+				.getStoreName();
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("docId", returnStore.getStoreId());
+		parameters.put("STORE_NAME", strName);
+		System.out.println(returnStore.getStoreId());
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
 
 	public void updateSerialNum() {
-		returnStore.setSerialNumber(serialNum);
-		dataAccessService.updateObject(returnStore);
-		MsgEntry.addInfoMessage("تم الحفظ");
+		if (serialNum != null) {
+			returnStore.setSerialNumber(serialNum);
+			dataAccessService.updateObject(returnStore);
+			allowAccept = true;
+			MsgEntry.addInfoMessage("تم الحفظ");
+		}
 	}
 
 	public void cancleUpdateSerialNum() {
@@ -469,5 +503,37 @@ public class StoreReturnBean {
 
 	public void setStrNo(Integer strNo) {
 		this.strNo = strNo;
+	}
+
+	public Integer getExchMasterId() {
+		return exchMasterId;
+	}
+
+	public void setExchMasterId(Integer exchMasterId) {
+		this.exchMasterId = exchMasterId;
+	}
+
+	public String getArtSerial() {
+		return artSerial;
+	}
+
+	public void setArtSerial(String artSerial) {
+		this.artSerial = artSerial;
+	}
+
+	public String getArtCode() {
+		return artCode;
+	}
+
+	public void setArtCode(String artCode) {
+		this.artCode = artCode;
+	}
+
+	public boolean isAllowAccept() {
+		return allowAccept;
+	}
+
+	public void setAllowAccept(boolean allowAccept) {
+		this.allowAccept = allowAccept;
 	}
 }

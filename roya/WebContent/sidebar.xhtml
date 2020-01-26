@@ -78,13 +78,14 @@
 											action="#{mainManagedBean.updateContent('LEAVESUCCESSOR')}" />
 									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
-									<p:menuitem id="menu3_Service"
-										value="#{msg['menu.autorization']}" icon="fa fa-fw fa-clock-o"
-										action="#{mainManagedBean.updateContent('AUTORIZATION')}" />
-									<p:menuitem id="menu4_Service" value="#{msg['mission.menu']}"
-										icon="fa fa-fw fa-cubes"
-										action="#{mainManagedBean.updateContent('WORKMISSION')}"></p:menuitem>
-										</secc:authorize>
+										<p:menuitem id="menu3_Service"
+											value="#{msg['menu.autorization']}"
+											icon="fa fa-fw fa-clock-o"
+											action="#{mainManagedBean.updateContent('AUTORIZATION')}" />
+										<p:menuitem id="menu4_Service" value="#{msg['mission.menu']}"
+											icon="fa fa-fw fa-cubes"
+											action="#{mainManagedBean.updateContent('WORKMISSION')}"></p:menuitem>
+									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="menu_seck_Service" value="إجازة مرضية"
 											action="sick_vacation" icon="fa fa-fw fa-bed"></p:menuitem>
@@ -116,8 +117,8 @@
 											action="projectExtract"></p:menuitem>
 									</secc:authorize>
 									<p:menuitem id="menu9_return" value="طلب إرجاع"
-									icon="ui-icon ui-icon-redo" action="store_return"></p:menuitem>
-									<p:menuitem id="menu8_Service" value="صرف مواد" 
+										icon="ui-icon ui-icon-redo" action="store_return"></p:menuitem>
+									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
 
 								</p:submenu>
@@ -205,7 +206,7 @@
 										<p:menuitem id="st_sm_temporary_receipt"
 											value="إشعار إستلام مؤقت" action="store_temporary_receipt"
 											icon="ui-icon ui-icon-content-paste" />
-										<p:menuitem id="st_sm_memo" value="مذكرة الإستلام" 
+										<p:menuitem id="st_sm_memo" value="مذكرة الإستلام"
 											action="memoReceipt" icon="fa fa-fw fa-file" />
 									</secc:authorize>
 									<secc:authorize
@@ -213,12 +214,12 @@
 										<p:submenu id="store_sb_menu" label="إستعلام"
 											icon="fa fa-fw fa-search">
 											<p:menuitem id="st_sm_exreq" value=" صرف المواد"
-													action="search_exchange_request"
-													icon="fa fa-fw fa-search-plus "/>
+												action="search_exchange_request"
+												icon="fa fa-fw fa-search-plus " />
 											<p:menuitem id="st_sm_searchMemo" value="مذكرة استلام"
-													action="searchMemo" icon="fa fa-fw fa-search-plus " />
-												<p:menuitem id="st_sm_art" value="الاصناف"
-													action="search_article" icon="fa fa-fw fa-search-plus" />
+												action="searchMemo" icon="fa fa-fw fa-search-plus " />
+											<p:menuitem id="st_sm_art" value="الاصناف"
+												action="search_article" icon="fa fa-fw fa-search-plus" />
 										</p:submenu>
 
 									</secc:authorize>
@@ -293,24 +294,131 @@
 								<p:submenu id="sr_Setting" label="#{msg['setting']}"
 									icon="ui-icon ui-icon-settings">
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
-										<p:menuitem id="s_users" value="المستخدمين"
-											icon="ui-icon ui-icon-people" action="emps_list">
-										</p:menuitem>
-										<p:menuitem id="sr_Roles" value="#{msg['roles']}"
-											action="user_roles" icon="ui-icon ui-icon-vpn-key"></p:menuitem>
-										<p:menuitem id="sr_Autorization" value="#{msg['Permission']}"
-											action="autorization" icon="fa fa-fw fa-tags"></p:menuitem>
-										<p:menuitem id="s_projects" value="المشاريع"
-											icon="ui-icon ui-icon-location-city" action="Projects_Screen">
-										</p:menuitem>
-										<p:menuitem id="s_contracts" value="العقود"
-											icon="ui-icon ui-icon-assignment-turned-in"
-											action="Contracts_Screen">
-										</p:menuitem>
+										<p:submenu id="st_Setting" label="المستودعات"
+											icon="ui-icon ui-icon-home">
+											<p:menuitem id="m_whs" value="المستودعات"
+												icon="ui-icon ui-icon-store" action="whs_screen">
+											</p:menuitem>
+											<p:menuitem id="m_inventory" value="جرد المستودعات"
+												icon="fa fa-fw fa-stack-overflow" action="InventoryGard">
+											</p:menuitem>
+											<p:menuitem id="m_year" value="السنة المالية"
+												icon="fa fa-fw fa-calendar" action="yearName">
+											</p:menuitem>
+											<p:menuitem id="sr_unite" value="وحدة التصنيف"
+												icon="fa fa-dashboard" action="ItemUnit">
+											</p:menuitem>
+											<p:menuitem id="s_supps" value="الموردين"
+												icon="ui-icon ui-icon-local-shipping" action="suppliers">
+											</p:menuitem>
+										</p:submenu>
+
+										<p:submenu id="st_Settingc" label="المركبات"
+											icon=" ui-icon ui-icon-directions-car">
+											<p:menuitem id="m_cars" value="#{msg['vehicles']} "
+												icon="ui-icon ui-icon-directions-car" action="vehicles">
+											</p:menuitem>
+											<p:menuitem id="ask_cars" value="#{msg['askvehicles']} "
+												icon="ui-icon ui-icon-directions-car" action="ask_vehicles">
+											</p:menuitem>
+											<p:menuitem id="sr_brand" value="المصنع"
+												icon="fa fa-building" action="carBrand">
+											</p:menuitem>
+											<p:menuitem id="sr_model" value="أنواع المركبات "
+												icon="fa fa-automobile" action="carModel">
+											</p:menuitem>
+											<p:menuitem id="sr_vtype" value="صنف المركبة"
+												icon="fa fa-truck" action="vehicleType">
+											</p:menuitem>
+											<p:menuitem id="sr_fType" value="نوع المحروقات"
+												icon="fa fa-tint " action="fuelType">
+											</p:menuitem>
+										</p:submenu>
+										<p:submenu id="st_Setting2" label="المعاملات"
+											icon="fa fa-fw fa-exchange">
+											<p:menuitem id="sm_Letter" value="نوع الخطاب"
+												action="commentType" icon="fa fa-sitemap" />
+											<p:menuitem id="sm_Letterfrom" value="الجهات المصدرة "
+												action="letterFrom" icon="fa fa-sitemap" />
+											<p:menuitem id="sm_LetterTo" value="الجهات الموردة"
+												action="letterTo" icon="fa fa-sitemap" />
+											<p:menuitem id="sm_purpose" value="توجيه الخطاب"
+												action="purpose" icon="fa fa-sitemap" />
+											<p:menuitem id="sr_record" value="المعاملات"
+												icon="fa fa-file-text-o" action="arcRecord">
+											</p:menuitem>
+											<p:menuitem id="sr_comment" value="الخطابات"
+												icon="fa fa-file-o" action="wrkComment">
+											</p:menuitem>
+											<p:menuitem id="sr_steps" value="خطوات المعاملات"
+												icon="fa fa-line-chart" action="wrkApp">
+											</p:menuitem>
+										</p:submenu>
+
+										<p:submenu id="st_Setting1" label="شئون الموظفين"
+											icon="ui-icon ui-icon-people">
+											<p:menuitem id="sm_uservacation" value="أنواع الإجازات"
+												action="vacationType" icon="ui-icon ui-icon-location-city" />
+											<p:menuitem id="EMPhis" value="تاريخ الموظفين  "
+												icon="fa fa-dashboard" action="empHistory">
+											</p:menuitem>
+											<p:menuitem id="sm_employer" value="تصنيف الموظفين"
+												action="categoryEmployer"
+												icon="ui-icon ui-icon-location-city" />
+											<p:menuitem id="sm_sysProp" value="المعرفات الوظيفية"
+												action="SearchSysProperties"
+												icon="ui-icon ui-icon-location-city" />
+										</p:submenu>
+
+										<p:submenu id="st_Setting3" label="الحضور والانصراف"
+											icon="ui-icon ui-icon-fingerprint">
+
+											<p:menuitem id="sr_prom" value="طلبات الإستذان"
+												icon="fa fa-edit" action="permissionEdite">
+											</p:menuitem>
+											<p:menuitem id="sm_operation" value="حالات الغياب"
+												action="absenceStatus" icon="fa fa-building" />
+											<p:menuitem id="sm_absence" value="أنواع الغياب"
+												action="absenceType" icon="fa fa-sitemap" />
+											<p:menuitem id="sr_Autorization" value="#{msg['Permission']}"
+												action="autorization" icon="fa fa-fw fa-tags"></p:menuitem>
+										</p:submenu>
+
+										<p:submenu id="st_Setting4" label="العامة"
+											icon="fa fa-fw fa-cogs">
+											<p:menuitem id="s_users" value="المستخدمين"
+												icon="ui-icon ui-icon-people" action="emps_list">
+											</p:menuitem>
+											<p:menuitem id="sm_depts" value="الإدارات "
+												action="departments" icon="fa fa-sitemap" />
+											<p:menuitem id="sm_section" value="الاقسام "
+												action="deptNames" icon="fa fa-sitemap" />
+											<p:menuitem id="sr_dema" value="الإدارات والأقسام"
+												icon="fa fa-fax" action="mangdepartment">
+											</p:menuitem>
+											<p:menuitem id="sr_mang" value="المديرين"
+												icon="fa fa-street-view" action="wrkArcive">
+											</p:menuitem>
+											<p:menuitem id="sm_wrkRoles" value=" الصلاحيات"
+												action="roles" icon="fa fa-fw fa-clock-o" />
+											<p:menuitem id="sm_roles" value="أنواع الصلاحيات"
+												action="role_desc" icon="ui-icon ui-icon-location-city" />
+											<p:menuitem id="sm_scenario" value="السيناريو"
+												action="scenario" icon="ui-icon ui-icon-library-books" />
+											<p:menuitem id="sr_Roles" value="#{msg['roles']}"
+												action="user_roles" icon="ui-icon ui-icon-vpn-key"></p:menuitem>
+
+											<p:menuitem id="s_projects" value="المشاريع"
+												icon="ui-icon ui-icon-location-city"
+												action="Projects_Screen">
+											</p:menuitem>
+											<p:menuitem id="s_contracts" value="العقود"
+												icon="ui-icon ui-icon-assignment-turned-in"
+												action="Contracts_Screen">
+											</p:menuitem>
+
+										</p:submenu>
 									</secc:authorize>
-									<p:menuitem id="s_supps" value="الموردين"
-										icon="ui-icon ui-icon-local-shipping" action="suppliers">
-									</p:menuitem>
 								</p:submenu>
 							</secc:authorize>
 						</pm:menu>

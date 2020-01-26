@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -48,9 +49,11 @@ public class ArcRecords {
 	private ArcUsers arcUser;
 	@Column(name = "APP_TYPE")
 	private Integer applicationType;
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "APP_TYPE", referencedColumnName = "ID", insertable = false, updatable = false)
 	private ArcApplicationType arcApplicationType;
+
 	@Column(name = "INCOME_NO")
 	private String incomeNo;
 	@Column(name = "INCOME_H_DATE")
@@ -82,6 +85,10 @@ public class ArcRecords {
 	private Integer attachsType;
 	@Column(name = "outcoming_no")
 	private Integer outcomingNo;
+
+	@Formula("(select u.TYPE from ARC_APPLICATION_TYPE u where u.ID =APP_TYPE)")
+	private String type;
+
 	@Transient
 	private boolean importantFlag;
 	@Transient
@@ -401,6 +408,14 @@ public class ArcRecords {
 
 	public void setOutcomingNumFlag(boolean outcomingNumFlag) {
 		this.outcomingNumFlag = outcomingNumFlag;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

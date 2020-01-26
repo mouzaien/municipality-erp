@@ -71,7 +71,8 @@
 							disabled="#{(storeReturnBean.enableAccept) or (storeReturnBean.enablePrint)}"
 							style="width:100%" filter="true"
 							value="#{storeReturnBean.employerId}">
-							<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue="" />
+							<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue=""
+								noSelectionOption="true" />
 							<f:selectItems value="#{loadingDataBean.employersList}" var="emp"
 								itemLabel="#{emp.employeeName}" itemValue="#{emp.userId}" />
 							<f:ajax listener="#{storeReturnBean.loadEmpAssignedArticles}"
@@ -91,9 +92,10 @@
 								value="#{storeReturnBean.articleId}" required="true"
 								requiredMessage="من فضلك إختر الصنف" filterMatchMode="contains"
 								filter="true">
-								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""></f:selectItem>
+								<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""
+									noSelectionOption="true" />
 								<f:selectItems value="#{storeReturnBean.articleList}" var="item"
-									itemValue="#{item.id}" itemLabel="#{item.name}"></f:selectItems>
+									itemValue="#{item.id}" itemLabel="#{item.name} - #{item.code}"></f:selectItems>
 								<f:ajax execute="articles"
 									listener="#{storeReturnBean.loadArticle}" render="addBtn"></f:ajax>
 							</p:selectOneMenu>
@@ -118,7 +120,14 @@
 						</div>
 						<div class="ui-g-2">
 							<p:inputText id="qty" value="#{storeReturnBean.qty}"
-								required="true" requiredMessage="اختر العدد" />
+								required="true" requiredMessage="اكتب العدد" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="الرمز"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="ser" value="#{storeReturnBean.artSerial}"
+								disabled="true" style="opacity: 1" />
 						</div>
 					</div>
 				</h:panelGroup>
@@ -169,7 +178,8 @@
 														</p:column>
 						<p:column style="white-space: nowrap;text-align: center;"
 							headerText="اسم الصنف" width="20%">
-							<h:outputText value="#{storeItem.articleName}"></h:outputText>
+							<h:outputText
+								value="#{storeItem.articleCode} - #{storeItem.articleName}"></h:outputText>
 						</p:column>
 						<p:column style="white-space: nowrap;text-align: center;"
 							headerText="سبب الإرجاع" width="10%">

@@ -26,6 +26,7 @@ import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkPurpose;
+import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.service.IDataAccessService;
 import com.bkeryah.testssss.EmployeeForDropDown;
@@ -169,9 +170,40 @@ public class StoreTemporaryReceipt {
 	}
 
 	public void loadArticle(AjaxBehaviorEvent event) {
+		if (articleId != null) {
+			article = (Article) dataAccessService.findEntityById(Article.class, articleId);
+			allowAddBtn();
+			setCarsDetails();
+		}
+	}
 
-		article = (Article) dataAccessService.findEntityById(Article.class, articleId);
-		allowAddBtn();
+	public void setCarsDetails() {
+
+		// article = (Article) dataAccessService.findEntityById(Article.class,
+		// requestDetailsRecord.getItemId());
+		if (article != null) {
+
+			// load car for رقم الهيكل ورقم البابا ورقم اللوحة ف الملاحظات
+			System.out.println("article.getId() " + article.getId());
+			List<Car> carDetails = dataAccessService.loadCarDetailsByArtId(article.getId());
+			this.setNotes("");
+			Utils.updateUIComponent("includeform:desc");
+			if (carDetails != null && carDetails.size() > 0) {
+				// String str=carDetails.getChassisNumber()==null?
+				// "":carDetails.getChassisNumber()+"رقم الهيكل"+
+				// carDetails.getNumDoor()==null?
+				// "":carDetails.getNumDoor()+"رقم الباب "+
+				// carDetails.getMatricule()==null?
+				// "":carDetails.getMatricule()+"رقم اللوحة ";
+				//
+				String str = "رقم الهيكل || " + carDetails.get(0).getChassisNumber() + "  رقم الباب || "
+						+ carDetails.get(0).getNumDoor() + "رقم اللوحة || " + carDetails.get(0).getMatricule();
+				this.setNotes(str);
+				System.out.println("nootes" + notes);
+				Utils.updateUIComponent("includeform:desc");
+
+			}
+		}
 	}
 
 	public void allowAddBtn() {

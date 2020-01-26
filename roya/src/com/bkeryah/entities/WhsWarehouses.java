@@ -4,8 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "WHS_WAREHOUSES")
@@ -16,8 +19,10 @@ public class WhsWarehouses implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "STRNO")
-	private int storeNumber;
+	private Integer storeNumber;
 	@Column(name = "STRNAME")
 	private String storeName;
 	@Column(name = "STRTYPE")
@@ -34,6 +39,8 @@ public class WhsWarehouses implements Serializable {
 	private Integer invIsBlocked;
 	@Column(name = "STORE_BOSS_ID")
 	private Integer storeBossId;
+	@Column(name = "STORE_DEAN_ID")
+	private Integer storeDeanId;
 	@Column(name = "STORE_TYPE")
 	private Integer strType;
 
@@ -45,14 +52,11 @@ public class WhsWarehouses implements Serializable {
 		this.invIsBlocked = invIsBlocked;
 	}
 
-	@Column(name = "store_dean_id")
-	private Integer storeUserId;
-
-	public int getStoreNumber() {
+	public Integer getStoreNumber() {
 		return storeNumber;
 	}
 
-	public void setStoreNumber(int storeNumber) {
+	public void setStoreNumber(Integer storeNumber) {
 		this.storeNumber = storeNumber;
 	}
 
@@ -104,14 +108,6 @@ public class WhsWarehouses implements Serializable {
 		this.hejriDate = hejriDate;
 	}
 
-	public Integer getStoreUserId() {
-		return storeUserId;
-	}
-
-	public void setStoreUserId(Integer storeUserId) {
-		this.storeUserId = storeUserId;
-	}
-
 	public Integer getStoreBossId() {
 		return storeBossId;
 	}
@@ -126,6 +122,14 @@ public class WhsWarehouses implements Serializable {
 
 	public void setStrType(Integer strType) {
 		this.strType = strType;
+	}
+
+	public Integer getStoreDeanId() {
+		return storeDeanId;
+	}
+
+	public void setStoreDeanId(Integer storeDeanId) {
+		this.storeDeanId = storeDeanId;
 	}
 
 }

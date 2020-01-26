@@ -7,9 +7,12 @@ public class ReturnStoreDetailsModel {
 	private Integer qty;
 	private String notes;
 	private String articleName;
+	private String articleCode;
 	private String articleUnit;
 	private String reason;
 	private Integer retrunReason;
+	private Integer exchMasterId;
+	private String exchMasterDate;
 
 	public Integer getReturnStoreId() {
 		return returnStoreId;
@@ -73,6 +76,30 @@ public class ReturnStoreDetailsModel {
 
 	public void setRetrunReason(Integer retrunReason) {
 		this.retrunReason = retrunReason;
+	}
+
+	public Integer getExchMasterId() {
+		return exchMasterId;
+	}
+
+	public void setExchMasterId(Integer exchMasterId) {
+		this.exchMasterId = exchMasterId;
+	}
+
+	public String getExchMasterDate() {
+		return exchMasterDate;
+	}
+
+	public void setExchMasterDate(String exchMasterDate) {
+		this.exchMasterDate = exchMasterDate;
+	}
+
+	public String getArticleCode() {
+		return articleCode;
+	}
+
+	public void setArticleCode(String articleCode) {
+		this.articleCode = articleCode;
 	}
 
 }

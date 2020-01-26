@@ -130,8 +130,8 @@
 
 									<p:column width="7%" style="text-align:center"
 										headerText="الفاتورة">
-										<p:commandButton ajax="false"
-											icon="ui-icon-print" onclick="this.form.target='_blank'"
+										<p:commandButton ajax="false" icon="ui-icon-print"
+											onclick="this.form.target='_blank'"
 											action="#{fuelBean.printBillReport}">
 											<f:setPropertyActionListener value="#{carItem}"
 												target="#{fuelBean.fuelTransaction}" />

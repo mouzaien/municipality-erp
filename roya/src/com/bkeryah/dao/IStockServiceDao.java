@@ -62,6 +62,6 @@ public interface IStockServiceDao {
 	public List<WhsWarehouses> getStoreDeanWharehouses(Integer userId);
 
 	// تجيب مستودعات الرجيع فقط
-	public List<WhsWarehouses> getStoreDeanWharehouses();
+	public List<WhsWarehouses> getStoreWharehouses(Integer strType);
 
 }

@@ -81,9 +81,11 @@ import com.bkeryah.entities.VacationsType;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkApplicationId;
+import com.bkeryah.entities.WrkArchiveRcipent;
 import com.bkeryah.entities.WrkComment;
 import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
+import com.bkeryah.entities.WrkDept2;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
 import com.bkeryah.entities.WrkLetterFrom;
@@ -509,8 +511,6 @@ public interface ICommonDao {
 	ArcUsers getUserByLoginName(String userName);
 
 	int getWrkAppFromID(int arcRecord);
-
-	public List<WrkDept> findAllDepartments();
 
 	void addNewArticleGroup(ArticleGroup articleGroup);
 
@@ -1010,22 +1010,27 @@ public interface ICommonDao {
 	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id);
 
 	WrkApplication getWrkAppliquationByArcId(int arcRecordId);
+
 	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id);
 
 	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id);
+
 	HrsSigns getHrsSignsByArcId(int arcRecordId);
-	
-//	List<DeputationTraining> loadStatus(Integer emp_number);
-//
-//	List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year);
-//
-//	void saveReward(RewardInfo rewardinfo);
-//
-//	List<RewardInfo> loadRewards(Integer emp_number);
-	
-//	public List<RewardInfo> loadRewards(Integer emp_number,Integer month,Integer year);
-	
-	public List<String> loadReward(Integer emp_no,Integer month,Integer year);
+
+	// List<DeputationTraining> loadStatus(Integer emp_number);
+	//
+	// List<DeputationTraining> loadStatus(Integer emp_number, Integer month,
+	// Integer year);
+	//
+	// void saveReward(RewardInfo rewardinfo);
+	//
+	// List<RewardInfo> loadRewards(Integer emp_number);
+
+	// public List<RewardInfo> loadRewards(Integer emp_number,Integer
+	// month,Integer year);
+
+	public List<String> loadReward(Integer emp_no, Integer month, Integer year);
+
 	public Integer getIdFromWorkAppByAppId(Integer appId);
 
 	List<WrkLetterFrom> loadAllWrkLetterFrom();
@@ -1043,4 +1048,45 @@ public interface ICommonDao {
 	List<WrkPurpose> loadAllPurposes();
 
 	List<WrkLetterTo> loadAllWrkLetterTo();
+
+	List<WhsWarehouses> getAllWhsWarehouses();
+
+	//// thapet////
+
+	// public List<ItemUnite> findAllAllUnite();
+
+	public List<HrsUserAbsent> findAllAllProm();
+
+	// public List<WrkArchiveRcipent> findAllMang();
+
+	List<WrkDept2> loadAllDepList();
+
+	public List<WrkArchiveRcipent> loadAllWrkList();
+
+	public List<ItemUnite> loadAllUniteList();
+
+	public List<HrsUserAbsent> loadAllPromList();
+
+	// public List<WrkArchiveRcipent> saveMang();
+
+	// public List<WrkDept2> findAllAllDema();
+
+	public List<WrkSection> findAllAllSec();
+
+	public List<WrkDept> findAllDepartments();
+
+	// List<WrkDept2> findAllDepartments2();
+
+	List<WrkSection> loadwrksectionByDepId(Integer selectdDeptId);
+
+	List<WrkDept> loadAllDemaList();
+
+	List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber);
+
+	public Car getCarByArticleId(int id);
+
+	public List<Car> getCarDetailsByArtId(Integer carArtId);
+//	List<WrkDept2> findAllAllDema();
+
+	List<Article> getArticlesBySubGroupId(Integer carArtId);
 }

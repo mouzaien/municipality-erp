@@ -31,6 +31,7 @@ import com.bkeryah.entities.TechnicalUsers;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
+import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.service.IDataAccessService;
 
@@ -96,8 +97,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private List<StoreRequestModel> articlesStockList;
 	private StoreRequestModel articleStore;
 	// private Integer stockNo;
-	private Integer strNo = 0;
+	private Integer strNo = -1;
 	private List<WhsWarehouses> allWareHouses = new ArrayList<WhsWarehouses>();
+	private List<WhsWarehouses> wareHousesList = new ArrayList<WhsWarehouses>();
 	private boolean stockIsBlocked;
 	private boolean canSave;
 	private Integer selectedItemId;
@@ -105,9 +107,11 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	@ManagedProperty(value = "#{stockServiceDao}")
 	private IStockServiceDao stockServiceDao;
 
-	private boolean checkType = false;
+	private boolean checkType;
 	private Integer artType = 0;
 	private Integer employerId;
+	private boolean chckRtrnArt;
+	private WhsWarehouses wrHouse = new WhsWarehouses();
 
 	@PostConstruct
 	public void init() {
@@ -115,30 +119,33 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		currentUser = Utils.findCurrentUser();
 		employerId = currentUser.getUserId();
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
-
+		wareHousesList = stockServiceDao.getStoreWharehouses(null);
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 		HttpSession httpSession = HttpRequest.getSession(false);
 		String arcRecordId = (String) httpSession.getAttribute("arcRecord");
 		httpSession.removeAttribute("arcRecord");
 		// test if in view mode or insert mode
-
+		if (allWareHouses != null && allWareHouses.size() >= 1) {
+			strNo = allWareHouses.get(0).getStoreNumber();
+		}
 		if (arcRecordId != null) {
 			selectedInbox = (UserMailObj) httpSession.getAttribute("selectedMail");
 			setWrkId(new WrkApplicationId(Integer.parseInt(this.selectedInbox.WrkId), selectedInbox.StepId));
 			wrkPurposes = dataAccessService.getAllPurposes();
 			recordId = Integer.parseInt(arcRecordId.trim());
 			request = (ExchangeRequest) dataAccessService.getExchangeRequestByArchRecordId(recordId);
-			int strNo = request.getExchangeRequestDetailsList().get(0).getArticle().getStrNo();
-			request.setStockNo(strNo);
+			// int strNo =
+			// request.getExchangeRequestDetailsList().get(0).getArticle().getStrNo();
+			// request.setStockNo(strNo);
 			String stateExchange = request.getStatus();
-			Integer storeDeanId = dataAccessService.loadStoreIdById(strNo).getStoreUserId();
+			Integer storeDeanId = dataAccessService.loadStoreIdById(request.getStockNo()).getStoreDeanId();
 			int fromId = dataAccessService.getUserIdFromWorkAppByIdAndStepId(recordId, 1);
 			stepNum = dataAccessService.getStepNumberFromHrSign(recordId);
 			ArcUsers fromUser = (ArcUsers) dataAccessService.findEntityById(ArcUsers.class, fromId);
 			Integer mgrId = fromUser.getMgrId();
 
-			updateQtyies(strNo);
+			updateQtyies(request.getStockNo());
 
 			technicalResponseList = dataAccessService.getTechnicalResponsesByRecordId(recordId);
 			getResponseMessage();
@@ -194,7 +201,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 		} else {
 
-			articleList = dataAccessService.getAllArticles();
+			// articleList = dataAccessService.getAllArticles();
 
 		}
 
@@ -244,14 +251,14 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public String accept() {
-        List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
-		
+		List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
+
 		for (ExchangeRequestDetails reqDet : reqDetails) {
 			if (!cheackQtyDetailsOfRequst(reqDet.getCount(), reqDet.getItemId(), request.getStockNo())) {
 				return "";
 			}
 		}
-		strNo = request.getStockNo();
+		// strNo = request.getStockNo();
 		dataAccessService.updateObject(request);
 		if (loadQtyDetailsOfRequst()) {
 			String items = "";
@@ -305,7 +312,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		request.setYearId(5);
 		request.setGeneralRequestState(1);
 		request.setUserId(Utils.findCurrentUser().getUserId());
-
+		// request.setStockNo(strNo);
 		if (exchangeRequestDetails.size() > 0) {
 
 			try {
@@ -413,7 +420,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	public void addTenderItem(AjaxBehaviorEvent event) {
-		strNo = article.getStrNo();
+		// strNo = article.getStrNo();
 		if (requestDetailsRecord.getItemId().equals(0)) {
 			MsgEntry.addErrorMessage(" اختر الصنف اولا	");
 			return;
@@ -445,25 +452,52 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		exchangeRequestDetails.remove(requestDetails);
 		if (exchangeRequestDetails.size() < 12)
 			allowAdd = true;
-		if (exchangeRequestDetails.size() == 0)
+		if (exchangeRequestDetails.size() == 0) {
 			canSave = false;
+			chckRtrnArt = false;
+		}
 	}
 
 	// method for
 	// print exchange_report from search_exchange_request_view
 
 	public void changeType() {
-		isCheckType();
-		System.out.println("الحالة " + artType);
+		// isCheckType();
+		// System.out.println("الحالة " + artType);
 	}
 
 	public String printExchangeReportAction() {
-		String reportName = "/reports/exchange_report.jrxml";
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("exchange_req_no", request.getGeneralrequestNumber());// "259306";
-		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
-				.getRealPath("/reports/sub_exchange_report2.jasper"));
-		Utils.printPdfReport(reportName, parameters);
+		Integer strNo = request.getStockNo();
+		System.out.println("request.getStrNo()" + request.getStockNo());
+		Integer arcstrtype = request.getExchangeRequestDetailsList().get(0).getArticle().getArtType();
+		WhsWarehouses whsWarehouses = new WhsWarehouses();
+		System.out.println(">>>>>><<<<<<>>" + strNo);
+		/// get store to know it's type
+		if (strNo != null) { /// طلب رجيع
+
+			whsWarehouses = dataAccessService.loadStoreIdById(strNo);
+			System.out.println(">>>>>>>>" + whsWarehouses.getStrType());
+
+		}
+
+		if (whsWarehouses.getStrType() == 2) { /// طلب رجيع
+			String reportName = "/reports/exchange_return_items_document.jrxml";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("exchange_req_no", request.getGeneralrequestNumber());
+			parameters.put("STORE_NAME", whsWarehouses.getStoreName());
+			parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
+					.getRealPath("/reports/exchange_return_items_document.jasper"));
+			Utils.printPdfReport(reportName, parameters);
+		}
+
+		else {/// طلب عادي
+			String reportName = "/reports/exchange_report.jrxml";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("exchange_req_no", request.getGeneralrequestNumber());// "259306";
+			parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
+					.getRealPath("/reports/sub_exchange_report2.jasper"));
+			Utils.printPdfReport(reportName, parameters);
+		}
 		return "";
 	}
 
@@ -478,7 +512,18 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	}
 
 	// method for
-	// print artical card from search_exchange_request
+	// print Protection card from search_exchange_request بطاقة عهدة
+	public String printProtectionCardReportAction() {
+		String reportName = "/reports/protection_card.jasper";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("exchange_req_no", request.getGeneralrequestNumber());// "259306";
+		// parameters.put("exchange_req_no", 455);// "259306";
+		Utils.printPdfReport(reportName, parameters);
+		return "";
+	}
+
+	// method for
+	// print artical card from search_exchange_request بطاقة صنف
 	public String printArticalCardReportAction() {
 		String reportName = "/reports/artical_card.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -531,7 +576,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		String reportName = "/reports/search_article.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("articleId", -1);
-		parameters.put("strnumber", strNo);// "259306";
+		parameters.put("strnumber", request.getStockNo());// "259306";
 
 		Utils.printPdfReport(reportName, parameters);
 		return "";
@@ -547,12 +592,40 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		try {
 			if (requestDetailsRecord.getItemId() != null && (requestDetailsRecord.getItemId() > 0)) {
 				article = (Article) dataAccessService.findEntityById(Article.class, requestDetailsRecord.getItemId());
-				if (request.getStockNo() != null && request.getStockNo() != article.getStrNo()) {
-					MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.exchange.request"));
-					return;
+
+				if (request.getStockNo() != null) {
+					stockIsBlocked = true;
+					// load car for رقم الهيكل ورقم البابا ورقم اللوحة ف
+					// الملاحظات
+					System.out.println("article.getId() " + article.getId());
+					List<Car> carDetails = dataAccessService.loadCarDetailsByArtId(article.getId());
+					requestDetailsRecord.setNotes("");
+					Utils.updateUIComponent("includeform:desc");
+					if (carDetails != null && carDetails.size() > 0) {
+
+						// String str=carDetails.getChassisNumber()==null?
+						// "":carDetails.getChassisNumber()+"رقم الهيكل"+
+						// carDetails.getNumDoor()==null?
+						// "":carDetails.getNumDoor()+"رقم الباب "+
+						// carDetails.getMatricule()==null?
+						// "":carDetails.getMatricule()+"رقم اللوحة ";
+						//
+
+						String str = "رقم الهيكل || " + carDetails.get(0).getChassisNumber() + "  رقم الباب || "
+								+ carDetails.get(0).getNumDoor() + "رقم اللوحة || " + carDetails.get(0).getMatricule();
+						requestDetailsRecord.setNotes(str);
+						System.out.println("requestDetailsRecord nootes" + requestDetailsRecord.getNotes());
+						System.out.println("nootes" + str);
+						str = "";
+
+						Utils.updateUIComponent("includeform:desc");
+
+					} else {
+
+					}
 				}
 
-				request.setStockNo(article.getStrNo());
+				// request.setStockNo(article.getStrNo());
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"من فضلك اختر  الصنف المطلوب", "من فضلك اختر  الصنف المطلوب"));
@@ -591,7 +664,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		List<ExchangeRequestDetails> reqDetails = request.getExchangeRequestDetailsList();
 		for (ExchangeRequestDetails exchangeDetail : reqDetails) {
 			StoreRequestModel storeRequestDb = dataAccessService
-					.getTransactionsQty(exchangeDetail.getArticle().getId(), strNo).get(0);
+					.getTransactionsQty(exchangeDetail.getArticle().getId(), request.getStockNo()).get(0);
 			storeRequestModelQty = storeRequestDb;
 
 			if ((exchangeDetail.getExchangeAtcualyCount() > (storeRequestModelQty.getQtyAvailable()
@@ -656,7 +729,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		//
 		// }
 		for (WhsWarehouses whsWarehouses : allWareHouses) {
-			if (whsWarehouses.getStoreNumber() == strNo)
+			if (whsWarehouses.getStoreNumber() == request.getStockNo())
 				stockIsBlocked = whsWarehouses.getInvIsBlocked().equals(1);
 		}
 		searchArticles();
@@ -670,10 +743,11 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		// for (Article article : wha) {
 		//
 		// }
-		for (WhsWarehouses whsWarehouses : allWareHouses) {
-			if (whsWarehouses.getStoreNumber() == strNo)
-				stockIsBlocked = whsWarehouses.getInvIsBlocked().equals(1);
-		}
+		// for (WhsWarehouses whsWarehouses : allWareHouses) {
+		// if (whsWarehouses.getStoreNumber() == strNo)
+		// stockIsBlocked = whsWarehouses.getInvIsBlocked().equals(1);
+		// }
+		isCheckType();
 		exchangeRequestList = dataAccessService.searchExchangeRequests(beginDate, finishDate, strNo, artType,
 				employerId);
 
@@ -694,6 +768,25 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		requestContext.execute("PF('vtWidget').clearFilters()");
 		return "";
 
+	}
+
+	public void updateArticlesList() {
+		// request.setStockNo(request.getStockNo());
+		if (wareHousesList != null) {
+			for (WhsWarehouses whs : wareHousesList) {
+				if (request.getStockNo().equals(whs.getStoreNumber())) {
+					setWrHouse(whs);
+				}
+			}
+			articleList = new ArrayList<Article>();
+			if (wrHouse.getStrType().equals(2)) {
+				articleList = dataAccessService.getAllReturnStoreArticles(request.getStockNo());
+				chckRtrnArt = true;
+			} else {
+				articleList = stockServiceDao.getAllArticlesByStrno(request.getStockNo());
+				chckRtrnArt = false;
+			}
+		}
 	}
 
 	public IDataAccessService getDataAccessService() {
@@ -1099,13 +1192,13 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		this.technicalList = technicalList;
 	}
 
-	public Integer getStrNo() {
-		return strNo;
-	}
-
-	public void setStrNo(Integer strNo) {
-		this.strNo = strNo;
-	}
+	// public Integer getStrNo() {
+	// return strNo;
+	// }
+	//
+	// public void setStrNo(Integer strNo) {
+	// this.strNo = strNo;
+	// }
 
 	public List<WhsWarehouses> getAllWareHouses() {
 		return allWareHouses;
@@ -1149,9 +1242,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public boolean isCheckType() {
 		if (checkType) {
-			artType = 2;
+			setArtType(2);
 		} else {
-			artType = 1;
+			setArtType(1);
 		}
 		return checkType;
 	}
@@ -1174,6 +1267,38 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void setEmployerId(Integer employerId) {
 		this.employerId = employerId;
+	}
+
+	public boolean isChckRtrnArt() {
+		return chckRtrnArt;
+	}
+
+	public void setChckRtrnArt(boolean chckRtrnArt) {
+		this.chckRtrnArt = chckRtrnArt;
+	}
+
+	public List<WhsWarehouses> getWareHousesList() {
+		return wareHousesList;
+	}
+
+	public void setWareHousesList(List<WhsWarehouses> wareHousesList) {
+		this.wareHousesList = wareHousesList;
+	}
+
+	public WhsWarehouses getWrHouse() {
+		return wrHouse;
+	}
+
+	public void setWrHouse(WhsWarehouses wrHouse) {
+		this.wrHouse = wrHouse;
+	}
+
+	public Integer getStrNo() {
+		return strNo;
+	}
+
+	public void setStrNo(Integer strNo) {
+		this.strNo = strNo;
 	}
 
 }

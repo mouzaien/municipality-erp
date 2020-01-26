@@ -1,16 +1,16 @@
 package com.bkeryah.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "WHS_STOCK_IN_DETAILS")
@@ -54,6 +54,12 @@ public class StockInDetails {
 	private String uniteName;
 	@javax.persistence.Transient
 	private String articleStatusName;
+	@Transient
+	private String articleCode;
+	@Transient
+	private String articleUnit;
+	@Transient
+	private Float sum = 0.00f;
 
 	public StockInDetails(Integer stockInDetailsId, Integer articleId, Integer qty, Float price, Float total,
 			String notes, Integer articleStatus, Integer stockmasterIn) {
@@ -98,6 +104,10 @@ public class StockInDetails {
 
 	public void setPrice(Float price) {
 		this.price = price;
+		if (price != null && qty != null) {
+			total = price * qty;
+			sum = sum + total;
+		}
 	}
 
 	public Float getTotal() {
@@ -105,9 +115,6 @@ public class StockInDetails {
 	}
 
 	public void setTotal(Float total) {
-		if (price != null && qty != null) {
-			total = price * qty;
-		}
 		this.total = total;
 	}
 
@@ -165,6 +172,52 @@ public class StockInDetails {
 
 	public void setArticleStatusName(String articleStatusName) {
 		this.articleStatusName = articleStatusName;
+		if (articleStatusName != null) {
+			switch (articleStatusName) {
+			case "1":
+				articleUnit = "جديد";
+				break;
+			case "2":
+				articleUnit = "مستعمل";
+				break;
+			case "3":
+				articleUnit = "تالف";
+				break;
+			case "4":
+				articleUnit = "منح";
+				break;
+			case "5":
+				articleUnit = "تالف";
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+	public String getArticleCode() {
+		return articleCode;
+	}
+
+	public void setArticleCode(String articleCode) {
+		this.articleCode = articleCode;
+	}
+
+	public Float getSum() {
+		return sum;
+	}
+
+	public void setSum(Float sum) {
+		this.sum = sum;
+	}
+
+	public String getArticleUnit() {
+		return articleUnit;
+	}
+
+	public void setArticleUnit(String articleUnit) {
+		this.articleUnit = articleUnit;
 	}
 
 }

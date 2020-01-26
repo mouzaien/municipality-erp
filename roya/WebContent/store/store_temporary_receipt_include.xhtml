@@ -102,7 +102,7 @@
 								disabled="#{(storeTemporaryReceipt.blockSupplier)}"
 								style="direction: rtl;height: 39px;" filter="true"
 								filterMatchMode="contains">
-								<f:selectItem itemLabel="إختر مستودع" itemValue="" />
+								<f:selectItem itemLabel="إختر مستودع" itemValue=""  noSelectionOption="true"/>
 								<f:selectItems value="#{storeTemporaryReceipt.allWareHouses}"
 									var="s" itemLabel="#{s.storeName}" itemValue="#{s.storeNumber}" />
 								<f:ajax event="change" execute="@this"
@@ -142,24 +142,24 @@
 					<h2 style="text-align: right;">أصناف الإشعار</h2>
 					<br />
 					<div class="ui-g">
-						<div class="ui-g-2">
+						<div class="ui-g-1">
 							<label class="btxt">الصنف</label>
 						</div>
-						<div class="ui-g-2">
+						<div class="ui-g-3">
 							<h:panelGroup id="articles">
 								<p:selectOneMenu styleClass="form-control" id="stockArticles"
 									value="#{storeTemporaryReceipt.articleId}" filter="true"
 									filterMatchMode="contains" style="direction: rtl;height: 39px;">
-									<f:selectItem itemLabel="إختر صنف" itemValue="" />
+									<f:selectItem itemLabel="إختر صنف" itemValue="" noSelectionOption="true"/>
 									<f:selectItems value="#{storeTemporaryReceipt.articleList}"
-										var="c" itemLabel="#{c.name}" itemValue="#{c.id}" />
+										var="c" itemLabel="#{c.name} - #{c.code}" itemValue="#{c.id}" />
 									<f:ajax event="change" execute="@this"
 										listener="#{storeTemporaryReceipt.loadArticle}"
 										render="addBtn"></f:ajax>
 								</p:selectOneMenu>
 							</h:panelGroup>
 						</div>
-						<div class="ui-g-2">
+						<div class="ui-g-1">
 							<h:outputLabel styleClass="btxt" value="الكمية"></h:outputLabel>
 						</div>
 						<div class="ui-g-2">
@@ -173,10 +173,10 @@
 
 					</div>
 					<div class="ui-g">
-						<div class="ui-g-2">
+						<div class="ui-g-1">
 							<label class="btxt">حالة الصنف</label>
 						</div>
-						<div class="ui-g-2">
+						<div class="ui-g-3">
 							<p:selectOneMenu filter="true" filterMatchMode="contains"
 								value="#{storeTemporaryReceipt.selectedStatus}" id="status">
 								<f:selectItem itemLabel="إختر الحالة" itemValue=""></f:selectItem>
@@ -188,16 +188,16 @@
 								<f:ajax execute="@this"></f:ajax>
 							</p:selectOneMenu>
 						</div>
-						<div class="ui-g-2">
+						<div class="ui-g-1">
 							<h:outputLabel styleClass="btxt" value="الملاحظات"></h:outputLabel>
 						</div>
-						<div class="ui-g-2">
-							<p:inputText id="desc" styleClass="form-control"
+						<div class="ui-g-4 ui-lg-4">
+							<p:inputTextarea id="desc" styleClass="form-control" cols="60" rows="2"
 								value="#{storeTemporaryReceipt.notes}">
 								<f:ajax execute="@this"></f:ajax>
-							</p:inputText>
+							</p:inputTextarea>
 						</div>
-						<div class="ui-g-2">
+						<div class=" ui-g-1 ">
 							<p:commandButton id="addBtn" styleClass="cyan-btn"
 								immediate="false" icon="ui-icon ui-icon-add"
 								disabled="#{!stockEntryBean.allowAdd}" value="اضافة">

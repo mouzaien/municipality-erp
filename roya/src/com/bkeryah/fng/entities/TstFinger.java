@@ -403,7 +403,10 @@ public class TstFinger extends Object {
 	}
 
 	public String getTimeFinger() {
-		return timeFinger;
+		if(timeFinger != null)
+		  return timeFinger;
+		else
+			return clockin;
 	}
 
 	public void setTimeFinger(String timeFinger) {

@@ -1,23 +1,36 @@
 package com.bkeryah.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "HRS_EMP_HISTORICAL")
-public class HrsEmpHistorical {
+public class HrsEmpHistorical  implements Serializable{
 
-	// @Id
-	// @GenericGenerator(name = "generator", strategy = "increment")
-	// @GeneratedValue(generator = "generator")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+//	 @Id
+//	 @GenericGenerator(name = "generator", strategy = "increment")
+//	 @GeneratedValue(generator = "generator")
 	@EmbeddedId
 	private HrsEmpHistoricalId id;
 
@@ -25,6 +38,7 @@ public class HrsEmpHistorical {
 	// @Id
 	// @Column(name = "SERIAL")
 	// private Integer stepId;
+	
 	@Column(name = "CATCOD")
 	private Integer CATegoryId;
 	@Column(name = "INCOMENO")
@@ -54,22 +68,30 @@ public class HrsEmpHistorical {
 	// نقل/ترقيه/كف يد/نقل بين الادارات...........
 	@Column(name = "RECTYPE")
 	private Integer RecordType;
+	
 	@Column(name = "CBY")
 	private Integer createdBy;
+	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CBY", referencedColumnName = "USER_ID", insertable = false, updatable = false)
 	private ArcUsers arcUser;
+	
 	@Column(name = "CIN")
 	private Date createDate;
 	@Column(name = "OLDRANKCOD")
 	private Integer oldRanknumber;
 	@Column(name = "OLDCLSSCOD")
 	private Integer oldClassnumber;
+	
 	@Column(name = "JOBCOD")
 	private String jobcode;
+	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne
 	@JoinColumn(name = "JOBCOD", referencedColumnName = "ID", insertable = false, updatable = false)
 	private HrsGovJob4 govJob4;
+	
 	@Column(name = "OLDJOBCOD")
 	private String oldJobCode;
 	@Column(name = "DEPTCOD")
@@ -115,6 +137,10 @@ public class HrsEmpHistorical {
 	private String incomDateStringSort;
 	@Transient
 	private String executeDateStringSort;
+	
+	// Nationalities
+	@Formula("(select n.NAME from SYS002 n where  n.ID = CATCOD)")
+	private String CATegoryName;
 	// public Integer getEmpno() {
 	// return empno;
 	// }
@@ -481,6 +507,14 @@ public class HrsEmpHistorical {
 
 	public void setExecuteDateStringSort(String executeDateStringSort) {
 		this.executeDateStringSort = executeDateStringSort;
+	}
+
+	public String getCATegoryName() {
+		return CATegoryName;
+	}
+
+	public void setCATegoryName(String cATegoryName) {
+		CATegoryName = cATegoryName;
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.bkeryah.entities;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,28 +10,43 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "WRK_SECTION")
-public class WrkSection implements Serializable{
+public class WrkSection {
+	/**
+	 * 
+	 */
+	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
+	
 	@Column(name = "SEC_NAME")
 	private String sectionName;
+	
 	@Column(name = "DEPT_ID")
 	private Integer deptId;
+	
 	@Column(name = "REMARKS")
 	private String remarks;
+	
 	@Column(name = "DEFAULT_STRUCT")
 	private Integer defaultStruct;
+	
 	@Column(name = "LETTER_FROM")
 	private Integer letterFrom;
-	@OneToMany(fetch= FetchType.LAZY)
-	private Set<ArcUsers> users;
+	
+//	@OneToMany(fetch= FetchType.LAZY)
+	//private Set<ArcUsers> users;
+	
+//	 @Formula("(select u.DEPT_NAME from WRK_DEPT u where u.ID = DEPT_ID )")
+//	 private String secName;
+//	
 	public Integer getId() {
 		return id;
 	}
@@ -69,12 +83,12 @@ public class WrkSection implements Serializable{
 	public void setLetterFrom(Integer letterFrom) {
 		this.letterFrom = letterFrom;
 	}
-	public Set<ArcUsers> getUsers() {
-		return users;
-	}
-	public void setUsers(Set<ArcUsers> users) {
-		this.users = users;
-	}
+//	public Set<ArcUsers> getUsers() {
+//		return users;
+//	}
+//	public void setUsers(Set<ArcUsers> users) {
+//		this.users = users;
+//	}
 	
 	
 }

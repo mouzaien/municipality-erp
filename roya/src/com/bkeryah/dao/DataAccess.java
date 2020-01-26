@@ -51,6 +51,7 @@ import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.fng.entities.TstFinger;
+import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.hr.entities.HrsCompactFloors;
 import com.bkeryah.hr.managedBeans.Employer;
 import com.bkeryah.licences.models.BldLicNewModel;
@@ -537,7 +538,8 @@ public interface DataAccess {
 
 	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId);
 
-	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,Integer artType,Integer employerId);
+	public List<ExchangeRequest> searchExchangeRequests(String beginDate, String finishDate, Integer strNo,
+			Integer artType, Integer employerId);
 
 	List<StoreRequestModel> getTransactionsQty(int articleId, int strNo);
 
@@ -597,4 +599,8 @@ public interface DataAccess {
 	public List<StockEntryMaster> searchMemoReceipts(String beginDate, String finishDate, Integer strNo);
 
 	public List<Article> getArticlesByUserId(Integer userId);
+
+	public List<Article> getAllReturnStoreArticles(Integer strNo);
+
+	List<Car> getCarsDetailsBySubGroupId(Integer subGroupId);
 }

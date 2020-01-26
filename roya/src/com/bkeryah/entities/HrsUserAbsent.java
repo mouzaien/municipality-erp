@@ -1,5 +1,7 @@
 package com.bkeryah.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -19,26 +22,49 @@ public class HrsUserAbsent {
 	@Column(name = "ID")
 	private int id;
 	@Column(name = "USER_ID", nullable = false)
-	private int userId;
+	private Integer userId;
+
 	@Column(name = "empno")
 	private Integer empNo;
+
 	@Column(name = "ABSDATE")
 	private String abseDate;
+
 	@Column(name = "ABSFROM")
 	private String absForm;
+
 	@Column(name = "ABSTO")
 	private String absTo;
+
 	@Column(name = "ABSTYPE")
 	private String absType;
+
 	@Column(name = "JABSDATE")
 	private String jabsDate;
+
 	@Column(name = "ACCEPT_Y_N")
 	private String accept;
+
 	@Column(name = "REASON")
 	private String reason;
 
+	@Formula("(select u.FNAME from ARC_USERS u where u.EMPNO=empNo)")
+	private String employeeName;
+
 	@Transient
 	private String userName;
+
+	@Transient
+	private Integer userIdT;
+
+	@Transient
+	private Date absFormT;
+
+	@Transient
+	private Date absToT;
+
+	@Transient
+	private Date jabsDateT;
 
 	public HrsUserAbsent() {
 		super();
@@ -79,11 +105,11 @@ public class HrsUserAbsent {
 		this.id = id;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -157,6 +183,46 @@ public class HrsUserAbsent {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	public Date getAbsFormT() {
+		return absFormT;
+	}
+
+	public void setAbsFormT(Date absFormT) {
+		this.absFormT = absFormT;
+	}
+
+	public Date getAbsToT() {
+		return absToT;
+	}
+
+	public void setAbsToT(Date absToT) {
+		this.absToT = absToT;
+	}
+
+	public Date getJabsDateT() {
+		return jabsDateT;
+	}
+
+	public void setJabsDateT(Date jabsDateT) {
+		this.jabsDateT = jabsDateT;
+	}
+
+	public Integer getUserIdT() {
+		return userIdT;
+	}
+
+	public void setUserIdT(Integer userIdT) {
+		this.userIdT = userIdT;
 	}
 
 }

@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,119 +18,112 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "ARTICLE")
 public class Article {
+
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	private int id;
+	
 	@Column(name = "sub_group_id")
 	private Integer subGroupId;
-	@Column(name = "item_Unite_Id")
+
+	@Column(name = "GROUP_ID")
+	private Integer groupId;
+
+	@Column(name = "Item_Unite_Id")
 	private int itemUniteId;
+
+	@Column(name = "NAME")
+	private String name;
+
+	@Column(name = "CODE")
+	private String code;
+
+	@Column(name = "STRNO")
+	private int strNo;
+
+	@Column(name = "art_type")
+	private Integer artType;
+
 	@JoinColumn(insertable = false, updatable = false, name = "Item_Unite_Id")
 	@ManyToOne
 	private ItemUnite itemUnite;
-	private String name;
-	private String code;
 
-	// @JoinColumn(insertable=false,updatable=false,name="group_id")
-	// @ManyToOne
-	// private ArticleGroup articleGroup;
+	@JoinColumn(insertable = false, updatable = false, name = "GROUP_ID")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private ArticleGroup articleGroup;
 
 	@JoinColumn(insertable = false, updatable = false, name = "sub_group_id")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ArticleSubGroup articleSubGroup;// = new ArticleSubGroup();
+
 	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
 	private Set<ExchangeRequestDetails> exchangeRequestDetailsList;
 
-	private int strNo;
 	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private WhsWarehouses whsWarehouses;
-
-	@Column(name = "art_type")
-	private Integer artType = 1;
 
 	@Transient
 	private String unitName;
+	
+	@Transient
+	private Integer qty;
+	
+	@Transient
+	private Integer exchMasterId;
+	
+	@Transient
+	private String exchMasterDate;
+	
+
 
 	public int getId() {
 		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getCode() {
-		return code;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public Integer getSubGroupId() {
 		return subGroupId;
-	}
-
-	// public ArticleGroup getArticleGroup() {
-	// return articleGroup;
-	// }
-
-	public ArticleSubGroup getArticleSubGroup() {
-		return articleSubGroup;
-	}
-
-	public WhsWarehouses getWhsWarehouses() {
-		return whsWarehouses;
-	}
-
-	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
-		this.whsWarehouses = whsWarehouses;
 	}
 
 	public void setSubGroupId(Integer subGroupId) {
 		this.subGroupId = subGroupId;
 	}
 
-	// public void setArticleGroup(ArticleGroup articleGroup) {
-	// this.articleGroup = articleGroup;
-	// }
+	public Integer getGroupId() {
+		return groupId;
+	}
 
-	public void setArticleSubGroup(ArticleSubGroup articleSubGroup) {
-		this.articleSubGroup = articleSubGroup;
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 
 	public int getItemUniteId() {
 		return itemUniteId;
 	}
 
-	public ItemUnite getItemUnite() {
-		return itemUnite;
-	}
-
 	public void setItemUniteId(int itemUniteId) {
 		this.itemUniteId = itemUniteId;
 	}
 
-	public void setItemUnite(ItemUnite itemUnite) {
-		this.itemUnite = itemUnite;
+	public String getName() {
+		return name;
 	}
 
-	public Set<ExchangeRequestDetails> getExchangeRequestDetailsList() {
-		return exchangeRequestDetailsList;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setExchangeRequestDetailsList(Set<ExchangeRequestDetails> exchangeRequestDetailsList) {
-		this.exchangeRequestDetailsList = exchangeRequestDetailsList;
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public int getStrNo() {
@@ -150,6 +142,46 @@ public class Article {
 		this.artType = artType;
 	}
 
+	public ItemUnite getItemUnite() {
+		return itemUnite;
+	}
+
+	public void setItemUnite(ItemUnite itemUnite) {
+		this.itemUnite = itemUnite;
+	}
+
+	public ArticleGroup getArticleGroup() {
+		return articleGroup;
+	}
+
+	public void setArticleGroup(ArticleGroup articleGroup) {
+		this.articleGroup = articleGroup;
+	}
+
+	public ArticleSubGroup getArticleSubGroup() {
+		return articleSubGroup;
+	}
+
+	public void setArticleSubGroup(ArticleSubGroup articleSubGroup) {
+		this.articleSubGroup = articleSubGroup;
+	}
+
+	public Set<ExchangeRequestDetails> getExchangeRequestDetailsList() {
+		return exchangeRequestDetailsList;
+	}
+
+	public void setExchangeRequestDetailsList(Set<ExchangeRequestDetails> exchangeRequestDetailsList) {
+		this.exchangeRequestDetailsList = exchangeRequestDetailsList;
+	}
+
+	public WhsWarehouses getWhsWarehouses() {
+		return whsWarehouses;
+	}
+
+	public void setWhsWarehouses(WhsWarehouses whsWarehouses) {
+		this.whsWarehouses = whsWarehouses;
+	}
+
 	public String getUnitName() {
 		return unitName;
 	}
@@ -157,5 +189,30 @@ public class Article {
 	public void setUnitName(String unitName) {
 		this.unitName = unitName;
 	}
+
+	public Integer getQty() {
+		return qty;
+	}
+
+	public void setQty(Integer qty) {
+		this.qty = qty;
+	}
+
+	public Integer getExchMasterId() {
+		return exchMasterId;
+	}
+
+	public void setExchMasterId(Integer exchMasterId) {
+		this.exchMasterId = exchMasterId;
+	}
+
+	public String getExchMasterDate() {
+		return exchMasterDate;
+	}
+
+	public void setExchMasterDate(String exchMasterDate) {
+		this.exchMasterDate = exchMasterDate;
+	}
+
 
 }

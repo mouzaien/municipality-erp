@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+	</h:head>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div class="image-box-footer">
+
+						<p:commandButton value="إضــافة" onclick=" PF('Mo_ww').show()"
+							styleClass="cyan-btn">
+						</p:commandButton>
+					</div>
+
+					<br />
+					<div class="card card-w-title" dir="rtl">
+
+						<h1 style="color: #7CB342; text-align: center;">
+							المديرين<span class="fa fa-street-view"></span>
+						</h1>
+						<br></br>
+
+
+						<p:dataTable var="mang" id="inboxdt" widgetVar="wrkCell"
+							value="#{mangementBean.wrkList}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{mangementBean.filteredwrkList}" paginator="true"
+							rows="13">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('wrkCell').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="التسلسل" width="10%">										
+								#{rowIndex+1}							
+																</p:column>
+							<p:column style="white-space: nowrap;" headerText="اللقب الوظيفي"
+								width="40%" filterBy="#{mang.title}" filterMatchMode="contains">										
+										#{mang.title}									
+							</p:column>
+							<!-- 							<p:column style="white-space: nowrap;" headerText="الإسم" -->
+							<!-- 								width="40%" filterBy="#{mang.managerName}" -->
+							<!-- 								filterMatchMode="contains">										 -->
+							<!--                                          #{mang.managerName}					 -->
+							<!--                    		       </p:column> -->
+
+							<p:column headerText="تعديل" width="10%"
+								style="text-align:center">
+								<p:commandButton onclick="PF('job_dlg').show()" process="@this"
+									icon="ui-icon-create" update="includeform:myDialog">
+									<f:setPropertyActionListener value="#{mang}"
+										target="#{mangementBean.mang}" />
+								</p:commandButton>
+							</p:column>
+							<p:column width="10%" style="text-align:center" headerText="حذف">
+								<p:commandButton style="background:red"
+									onclick="PF('Mo_tt').show()" process="@this"
+									icon="ui-icon-delete">
+									<f:setPropertyActionListener value="#{mang}"
+										target="#{mangementBean.mang}" />
+
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:dialog header="تأكيـد الحذف" widgetVar="Mo_tt" id="H_tt"
+							width="20%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true" resizable="false">
+							<h:panelGroup id="mydeleteDialog">
+								<div style="width: 100%">
+									<h:outputLabel styleClass="btxt" value="هل انت متأكد من الحذف؟" />
+									<br /> <br />
+									<div align="left" class="image-box-footer">
+										<p:commandButton value="نعــم"
+											action="#{mangementBean.deleteMang}"
+											onclick="PF('Mo_tt').hide()" update="includeform:inboxdt">
+										</p:commandButton>
+
+										<p:spacer width="10px" height="10px"></p:spacer>
+										<p:commandButton styleClass="red-btn" value="لا"
+											immediate="true" onclick="PF('Mo_tt').hide()" />
+									</div>
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ************************************INSERT***************************************** -->
+
+						<p:dialog header="إضافة مدير" widgetVar="Mo_ww" id="M_id" width="70%"
+							hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+							resizable="false">
+							<h:panelGroup id="myaddDialog">
+								<div style="width: 100%">
+									<div class="ui-g">
+
+										<div class="ui-g-2">
+											<p:outputLabel value="اللقب الوظيفي" styleClass="btxt" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText value="#{mangementBean.title}"
+												style="width: 100%" id="newloginname" />
+										</div>
+
+										<div class="ui-g-2">
+											<p:outputLabel value="الموظف" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu value="#{mangementBean.id}"
+												style="width: 100%" filter="true" id="newmgr">
+												<f:selectItem itemLabel="أختر الموظف" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{mangementBean.usersList}"
+													itemValue="#{mgr.userId}"
+													itemLabel="#{mgr.userId} | #{mgr.employeeName}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center">
+									<p:commandButton value="حفظ" action="#{mangementBean.saveMang}"
+										onclick="PF('Mo_ww').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('Mo_ww').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+						<!-- ************************************UPDATE***************************************** -->
+						<p:dialog header="بيانات المديرين" widgetVar="job_dlg"
+							id="job_dlgId" width="70%" hideEffect="fade" showEffect="explode"
+							dir="rtl" modal="true" resizable="false">
+							<h:panelGroup id="myDialog">
+								<div style="width: 100%">
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="اللقب" />
+										</div>
+										<div class="ui-g-3">
+											<p:inputText style="width:100%"
+												value="#{mangementBean.mang.title}"></p:inputText>
+										</div>
+										<div class="ui-g-2">
+											<h:outputLabel styleClass="btxt" value="الموظف" />
+										</div>
+										<div class="ui-g-3">
+											<p:selectOneMenu value="#{mangementBean.mang.id}"
+												style="width: 100%" filter="true" id="updatemgr">
+												<f:selectItem itemLabel="أختر الموظف" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{mangementBean.usersList}"
+													itemValue="#{mgr.userId}"
+													itemLabel="#{mgr.userId} | #{mgr.employeeName}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<br />
+								<br />
+								<div align="left" class="image-box-footer"
+									style="text-align: center">
+									<p:commandButton value="تعديل"
+										action="#{mangementBean.updateMang}"
+										onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+										styleClass="cyan-btn">
+									</p:commandButton>
+
+									<p:spacer width="10px" height="10px"></p:spacer>
+									<p:commandButton value="رجوع" immediate="true"
+										onclick="PF('job_dlg').hide()" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
+					</div>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+
+	</h:body>
+</f:view>
+</html>

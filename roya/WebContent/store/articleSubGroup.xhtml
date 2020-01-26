@@ -86,9 +86,11 @@
 							<p:selectOneMenu required="true"
 								requiredMessage="اختر المجموعة الرئيسية" class="form-control"
 								value="#{articleSubGroupBean.articleSubGroup.groupId}">
-								<f:selectItem itemLabel="إختر المجموعة الرئيسية" itemValue=""></f:selectItem>
+								<f:selectItem itemLabel="إختر المجموعة الرئيسية" itemValue="" noSelectionOption="true"></f:selectItem>
 								<f:selectItems value="#{articleSubGroupBean.articleGroups}"
 									var="x" itemLabel="#{x.name}" itemValue="#{x.id}"></f:selectItems>
+									<p:ajax listener="#{articleSubGroupBean.updateSubGroups}"
+								 process="@this" event="change" update="includeform:myTable" ></p:ajax>
 							</p:selectOneMenu>
 
 						</div>

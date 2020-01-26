@@ -8,7 +8,6 @@
 		        http://www.springframework.org/schema/context 
 		        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-
 	<context:component-scan base-package="com.bkeryah,common.Util" />
 	<!-- Beans Declaration -->
 	<bean id="springContext" class="com.bkeryah.licences.SpringContext" />
@@ -30,13 +29,14 @@
 
 	</bean>
 
+
 	<!-- Data Source Declaration -->
 	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
-		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+	<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:orcl" />
-		<property name="user" value="project" />
-		<property name="password" value="oraserverdb201" />
+		<property name="user" value="roya" />
+		<property name="password" value="123"/>
 		<property name="initialPoolSize" value="1" />
 		<property name="maxPoolSize" value="20" />
 		<property name="maxStatements" value="20" />
@@ -251,7 +251,6 @@
 				<value>com.bkeryah.entities.investment.Tender</value>
 				<value>com.bkeryah.entities.investment.Contract</value>
 				<value>com.bkeryah.entities.investment.ContractDirect</value>
-
 				<value>com.bkeryah.entities.investment.AnnoucementDetails</value>
 				<value>com.bkeryah.entities.investment.SiteType</value>
 				<value>com.bkeryah.entities.investment.ContractType</value>
@@ -279,7 +278,6 @@
 				<value>com.bkeryah.hr.entities.EmpMoveType</value>
 				<value>com.bkeryah.entities.DocumentsType</value>
 				<value>com.bkeryah.penalties.WrkFinesEntity</value>
-
 				<value>com.bkeryah.entities.investment.ContractStatus</value>
 				<value>com.bkeryah.entities.investment.InvestorType</value>
 				<value>com.bkeryah.entities.investment.InvestorIdentityType</value>
@@ -294,6 +292,8 @@
 				<value>com.bkeryah.entities.StoreTemporeryReceiptMaster</value>
 				<value>com.bkeryah.entities.StoreTemporeryReceiptDetails</value>
 				<value>com.bkeryah.entities.DocumentType</value>
+				<value>com.bkeryah.entities.WrkArchiveRcipent</value>
+				<value>com.bkeryah.entities.WrkDept2</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

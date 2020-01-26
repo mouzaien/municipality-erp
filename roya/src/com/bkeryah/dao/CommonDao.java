@@ -141,9 +141,11 @@ import com.bkeryah.entities.VacationsType;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkApplicationId;
+import com.bkeryah.entities.WrkArchiveRcipent;
 import com.bkeryah.entities.WrkComment;
 import com.bkeryah.entities.WrkCommentType;
 import com.bkeryah.entities.WrkDept;
+import com.bkeryah.entities.WrkDept2;
 import com.bkeryah.entities.WrkInboxFolder;
 import com.bkeryah.entities.WrkJobs;
 import com.bkeryah.entities.WrkLetterFrom;
@@ -1090,7 +1092,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.setProjection(Projections.property("executedDate"));
 		criteria.add(Restrictions.eq("employeNumber", employerNumber));
 		String executedDateTerminate = (String) criteria.uniqueResult();
-//		return executedDateTerminate;
+		// return executedDateTerminate;
 		if (executedDateTerminate != null) {
 			Integer status = getActifEmployer(employerNumber);
 			if (status > 0)
@@ -2148,11 +2150,6 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 		return ids;
 
-	}
-
-	@Override
-	public List<WrkDept> findAllDepartments() {
-		return loadAll(WrkDept.class);
 	}
 
 	@Override
@@ -4039,8 +4036,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<LicTrdMasterFile> loadLicences() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class)
 				.setProjection(Projections.projectionList().add(Projections.property("licNo"), "licNo")
-						.add(Projections.property("trdName"), "trdName")
-						.add(Projections.property("aplOwner"), "aplOwner"))
+						.add(Projections.property("trdName"), "trdName").add(Projections.property("aplOwner"),
+								"aplOwner"))
 				.setResultTransformer(Transformers.aliasToBean(LicTrdMasterFile.class));
 		return criteria.list();
 	}
@@ -4106,6 +4103,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return true;
 	}
+
 	@Transactional
 	@Override
 	public Integer getInitUserVacSold(int findCurrentYear, int empno) {
@@ -4119,16 +4117,18 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			/*
 			 * String hql =
 			 * " select w.oldSold + w.currentYearSold from HrsVacSold w where w.employeeNumber=:empno AND w.currentYear=:curryear "
-			 * ; Query query = sessionFactory.getCurrentSession().createQuery(hql);
-			 * query.setParameter("empno", empno); query.setParameter("curryear",
-			 * findCurrentYear);
+			 * ; Query query =
+			 * sessionFactory.getCurrentSession().createQuery(hql);
+			 * query.setParameter("empno", empno);
+			 * query.setParameter("curryear", findCurrentYear);
 			 */
 			return (Integer) criteria.uniqueResult();
-//			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
-//			criteria.setProjection(Projections.property("VAC_CURR_YEAR_SOLD"));
-//			criteria.setProjection(Projections.property("VAC_OLD_SOLD"));
-//			criteria.add(Restrictions.eq("VAC_CURR_YEAR", findCurrentYear));
-//			criteria.add(Restrictions.eq("empno", empno));
+			// Criteria criteria =
+			// sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
+			// criteria.setProjection(Projections.property("VAC_CURR_YEAR_SOLD"));
+			// criteria.setProjection(Projections.property("VAC_OLD_SOLD"));
+			// criteria.add(Restrictions.eq("VAC_CURR_YEAR", findCurrentYear));
+			// criteria.add(Restrictions.eq("empno", empno));
 			// return (Integer) criteria.uniqueResult();
 		} catch (Exception e) {
 			logger.error("getInitUserVacSold" + e.getMessage());
@@ -4404,6 +4404,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("stepId", 1));
 		return (HrsSigns) criteria.uniqueResult();
 	}
+
 	@Transactional
 	public void addOperation(Object dep_tr) {
 
@@ -4411,114 +4412,121 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	}
 
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	public List<String> loadDepTrain(Integer emp_no, Integer month, Integer year) {
-//
-//		List<String> list = new ArrayList<String>();
-//		String sql;
-//		try {
-//
-//			sql = Utils.readSqlRequest("DeptTrainRequest");
-//
-//			System.out.println(sql);
-//			Session currentSession = sessionFactory.getCurrentSession();
-//
-//			Query salaryQuery = currentSession.createSQLQuery(sql);
-//
-//			salaryQuery.setParameter("year", year);
-//
-//			salaryQuery.setParameter("month", month);
-//
-//			list = salaryQuery.list();
-//
-//			return list;
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		} finally {
-//		}
-//		return list;
-//	}
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public List<String> loadDepTrain(Integer emp_no, Integer month, Integer
+	// year) {
+	//
+	// List<String> list = new ArrayList<String>();
+	// String sql;
+	// try {
+	//
+	// sql = Utils.readSqlRequest("DeptTrainRequest");
+	//
+	// System.out.println(sql);
+	// Session currentSession = sessionFactory.getCurrentSession();
+	//
+	// Query salaryQuery = currentSession.createSQLQuery(sql);
+	//
+	// salaryQuery.setParameter("year", year);
+	//
+	// salaryQuery.setParameter("month", month);
+	//
+	// list = salaryQuery.list();
+	//
+	// return list;
+	// } catch (IOException e1) {
+	// e1.printStackTrace();
+	// } finally {
+	// }
+	// return list;
+	// }
 
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	@Transactional
-//	public List<DeputationTraining> loadStatus(Integer emp_number) {
-//		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
-//
-//		if (emp_number != 0) {
-//			criteria.add(Restrictions.eq("emp_no", emp_number));
-//			return criteria.list();
-//		} else {
-//
-//			return criteria.list();
-//		}
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	@Transactional
-//	public List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year) {
-//		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
-//
-//		if (emp_number != 0) {
-//			criteria.add(Restrictions.eq("emp_no", emp_number));
-//
-//			if (month != null)
-//				criteria.add(Restrictions.eq("month", month));
-//			if (year != null)
-//				criteria.add(Restrictions.eq("year", year));
-//
-//			return criteria.list();
-//
-//		} else {
-//			if (month != null)
-//				criteria.add(Restrictions.eq("month", month));
-//			if (year != null)
-//				criteria.add(Restrictions.eq("year", year));
-//			return criteria.list();
-//		}
-//	}
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<DeputationTraining> loadStatus(Integer emp_number) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	// return criteria.list();
+	// } else {
+	//
+	// return criteria.list();
+	// }
+	// }
+	//
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<DeputationTraining> loadStatus(Integer emp_number, Integer
+	// month, Integer year) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	//
+	// return criteria.list();
+	//
+	// } else {
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	// return criteria.list();
+	// }
+	// }
 
-//	@Override
-//	@Transactional
-//	public void saveReward(RewardInfo rewardinfo) {
-//
-//		sessionFactory.getCurrentSession().save(rewardinfo);
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	@Transactional
-//	public List<RewardInfo> loadRewards(Integer emp_number) {
-//		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
-//		if (emp_number != 0)
-//			criteria.add(Restrictions.eq("emp_no", emp_number));
-//
-//		return criteria.list();
-//	}
-//
-//	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
-//		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
-//
-//		if (emp_number != 0) {
-//			criteria.add(Restrictions.eq("emp_no", emp_number));
-//
-//			if (month != null)
-//				criteria.add(Restrictions.eq("month", month));
-//			if (year != null)
-//				criteria.add(Restrictions.eq("year", year));
-//
-//			return criteria.list();
-//
-//		} else {
-//			if (month != null)
-//				criteria.add(Restrictions.eq("month", month));
-//			if (year != null)
-//				criteria.add(Restrictions.eq("year", year));
-//			return criteria.list();
-//		}
-//	}
+	// @Override
+	// @Transactional
+	// public void saveReward(RewardInfo rewardinfo) {
+	//
+	// sessionFactory.getCurrentSession().save(rewardinfo);
+	// }
+	//
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<RewardInfo> loadRewards(Integer emp_number) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+	// if (emp_number != 0)
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// return criteria.list();
+	// }
+	//
+	// public List<RewardInfo> loadRewards(Integer emp_number, Integer month,
+	// Integer year) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	//
+	// return criteria.list();
+	//
+	// } else {
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	// return criteria.list();
+	// }
+	// }
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -4612,5 +4620,122 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<FngTypeAbsence> loadAllAbsenceTypes() {
 		return loadAll(FngTypeAbsence.class);
 
+	}
+
+	@Override
+	public List<WhsWarehouses> getAllWhsWarehouses() {
+		return loadAll(WhsWarehouses.class);
+	}
+
+	// thapet
+	@Transactional
+	@Override
+	public List<WrkDept2> loadAllDepList() {
+		List<WrkDept2> depList = new ArrayList<WrkDept2>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept2.class);
+		depList = criteria.list();
+		return depList;
+	}
+
+	@Transactional
+	@Override
+	public List<WrkArchiveRcipent> loadAllWrkList() {
+		List<WrkArchiveRcipent> wrkList = new ArrayList<WrkArchiveRcipent>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkArchiveRcipent.class);
+		wrkList = criteria.list();
+		return wrkList;
+	}
+
+	@Override
+	public List<HrsUserAbsent> loadAllPromList() {
+		List<HrsUserAbsent> promList = new ArrayList<HrsUserAbsent>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsUserAbsent.class);
+		promList = criteria.list();
+		return promList;
+	}
+
+	@Override
+	public List<ItemUnite> loadAllUniteList() {
+		List<ItemUnite> uniteList = new ArrayList<ItemUnite>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ItemUnite.class);
+		uniteList = criteria.list();
+		return uniteList;
+	}
+
+	@Override
+	public List<HrsUserAbsent> findAllAllProm() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// @Override
+	// public List<WrkDept2> findAllAllDema() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+
+	@Override
+	public List<WrkDept> findAllDepartments() {
+		return loadAll(WrkDept.class);
+	}
+
+	@Transactional
+	@Override
+	public List<WrkDept> loadAllDemaList() {
+		List<WrkDept> demaList = new ArrayList<WrkDept>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept.class);
+		demaList = criteria.list();
+		return demaList;
+	}
+
+	@Override
+	public List<WrkSection> findAllAllSec() {
+		List<WrkSection> secList = new ArrayList<WrkSection>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
+		secList = criteria.list();
+		return secList;
+	}
+
+	@Transactional
+	@Override
+	public List<WrkSection> loadwrksectionByDepId(Integer selectdDeptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
+		criteria.add(Restrictions.eq("deptId", selectdDeptId));
+		return criteria.list();
+	}
+
+	// AMR load emp History By EmpNo
+	@Override
+	@Transactional
+	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public Car getCarByArticleId(int artId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Car.class);
+		criteria.add(Restrictions.eq("artId", new Integer(artId)));
+		return (Car) criteria.uniqueResult();
+	}
+
+	@Override
+	@Transactional
+	public List<Car> getCarDetailsByArtId(Integer carArtId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Car.class);
+		criteria.add(Restrictions.eq("artId", carArtId));
+
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getArticlesBySubGroupId(Integer carArtId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
+		criteria.add(Restrictions.eq("subGroupId", carArtId));
+
+		return criteria.list();
 	}
 }
