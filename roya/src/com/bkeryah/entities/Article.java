@@ -57,11 +57,11 @@ public class Article {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ArticleSubGroup articleSubGroup;// = new ArticleSubGroup();
 
-	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
 	private Set<ExchangeRequestDetails> exchangeRequestDetailsList;
 
 	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private WhsWarehouses whsWarehouses;
 
 	@Transient

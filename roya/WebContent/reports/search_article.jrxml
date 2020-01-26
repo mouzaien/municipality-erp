@@ -11,7 +11,7 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebContent\reports\DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
 	<parameter name="articleId" class="java.lang.Integer">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
@@ -19,38 +19,65 @@
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
 	<queryString>
-		<![CDATA[select rownum num, art.id,art.code, art.name,nvl(A.qty,0) input, nvl(B.qty,0) output, nvl((A.qty - nvl(B.qty,0) ),0)available, nvl(C.qty,0) reserved,unit.ITEMUNITNAME ,store.STRNAME
+		<![CDATA[select rownum num,art.id,art.code, art.name,0 input, 0 OUTPUT,nvl(A.qty,0) available,
+		 nvl(C.qty,0) reserved,unit.ITEMUNITNAME, WHS_WAREHOUSES.STRNAME STRNAME
 from
-article art,WHS_WAREHOUSES store,TDR_ITEMUNIT unit,
-(select artid, sum(qty) qty 
-    from
-    (--gard
-     select TENDERITEMID artID,sum(nvl(GARD_ACTUAL,0)) qty from WHS_GARD_DETAIL g 
-    where tenderitemId=$P{articleId} or $P{articleId} = -1
-    group by TENDERITEMID
-    union
-    --input
-    select  indetails.ARTICLE_ID artId ,sum(nvl(indetails.QTY,0))qty FROM WHS_STOCK_ENTRY_MASTER inMaster,WHS_STOCK_IN_DETAILS indetails 
+article art,TDR_ITEMUNIT unit, WHS_WAREHOUSES,
+
+(
+SELECT artId, sum(qty)qty
+FROM
+(
+    SELECT max(TO_DATE(gm.GARD_DATE,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']'))lastGarDate 
+    FROM WHS_GARD_MASTER gm 
+    WHERE  gm.INVENTORY_BLOCKED = 1 AND gm.STRNO = $P{strnumber}    
+     ),
+  (
+     --input
+    select 2 tr,  'مذكرة' trType,indetails.ARTICLE_ID artId ,nvl(inMaster.STOCK_FIN_ENTRY_NO,-1)SPECIAL_NO,nvl(indetails.QTY,0)qty,
+    inMaster.STOCK_FIN_ENTRY_hDATE datetransaction 
+    FROM WHS_STOCK_ENTRY_MASTER inMaster,WHS_STOCK_IN_DETAILS indetails
+   
     where inMaster.ID= indetails.STOCKMASTER_IN  
-    and  (indetails.ARTICLE_ID = $P{articleId} or $P{articleId} =-1) and inMASTER.STOCKENTRYSTATUS = 'Y'
-    group by indetails.ARTICLE_ID
-)
-group by artId
-)A,
---ensemble des output
-(   select  exdetails.itemId artID ,sum(nvl(exdetails.INIT_COUNT,0)) qty 
+    and inMASTER.STOCKENTRYSTATUS = 'Y' AND (indetails.ARTICLE_ID =$P{articleId} or $P{articleId} =-1) 
+ union
+    ----last inventory
+    select 1 tr,'جرد' trType, TENDERITEMID artID,nvl(to_number(gm.SPECIAL_NO),-1) SPECIAL_NO,nvl(gdet.GARD_ACTUAL,0) qty,
+     gm.GARD_DATE datetransaction 
+    from WHS_GARD_DETAIL gdet ,WHS_GARD_MASTER gm,(
+    												SELECT  max(to_date(gm.GARD_DATE,'dd/mm/yyyy') )lastGarDate 
+    												FROM WHS_GARD_MASTER gm
+    												WHERE  gm.INVENTORY_BLOCKED = 1 AND gm.STRNO = $P{strnumber}    
+    												)lstg
+    where 
+       gm.GARDID = gdet.GARDID 
+    AND gm.STRNO = $P{strnumber} AND (TENDERITEMID =$P{articleId} OR $P{articleId} =-1)
+    AND gm.inventory_blocked = 1 
+    AND to_date(gm.GARD_DATE,'dd/mm/yyyy') = lstg.lastGarDate
+   UNION 
+    
+  --ensemble des output
+    select 3 tr, 'صرف' trType,exdetails.itemId artID ,nvl(exMaster.SERIALNUMBER,-1)SPECIAL_NO,-nvl(exdetails.INIT_COUNT,0) qty, exMaster.INV_G_R_DATE datetransaction
     FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails,
-    (select distinct s.doc_id id from arc_records r, hrs_signs s,
+      (select distinct s.doc_id id from arc_records r, hrs_signs s,
     tdr_inv_gnrl_req rq where  rq.INV_G_R_NO = doc_id
     and r.id = s.arc_record_id 
-    and r.app_type = 237 -- app_type (sarf,....)
+    and r.app_type = 237
     and s.sign_step_id = 1
     )ids
-    where exMaster.INV_G_R_NO= exdetails.INV_G_R_NO  
-    and ids.id = exdetails.INV_G_R_NO 
-    and ( exdetails.itemId = $P{articleId} or $P{articleId}  = -1) and EXMASTER.ACCEPT_Y_N = 'Y'
-    group by exdetails.itemId
-)B,
+    where exMaster.INV_G_R_NO= exdetails.INV_G_R_NO
+    and ids.id = exdetails.INV_G_R_NO     
+    and EXMASTER.ACCEPT_Y_N = 'Y' AND (exdetails.itemId =$P{articleId}  or $P{articleId} =-1)  
+    )
+WHERE 
+
+ (-1 =$P{articleId} or $P{articleId} = artId) and
+ (TO_DATE(datetransaction,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']') >= lastGarDate OR    lastGarDate IS NULL)  
+ 
+    GROUP BY artId
+)A,
+
+
 --reserved
 (   select  exdetails.itemId artId ,sum(nvl(exdetails.INIT_COUNT,0))qty 
     FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails,
@@ -67,10 +94,8 @@ group by artId
 )C
 where
   art.id  = A.artId (+) AND  (-1 =$P{strnumber} or $P{strnumber}=art.STRNO ) and
- $P{strnumber} = store.STRNO 
-  and (-1 =$P{articleId} or $P{articleId}=art.id ) and       
-  A.artId = B.artID (+) and
- A.artId = C.artId (+)AND art.ITEM_UNITE_ID = unit.ITEMUNITID]]>
+ 	(-1 =$P{articleId} or $P{articleId} = art.id ) 
+   and  art.id = c.artID (+)  and art.ITEM_UNITE_ID = unit.ITEMUNITID and art.STRNO = WHS_WAREHOUSES.STRNO]]>
 	</queryString>
 	<field name="NUM" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="NUM"/>

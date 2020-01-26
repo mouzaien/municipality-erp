@@ -126,8 +126,9 @@
 							<h:outputLabel value="الرمز"></h:outputLabel>
 						</div>
 						<div class="ui-g-2">
-							<p:inputText id="ser" value="#{storeReturnBean.artSerial}"
-								disabled="true" style="opacity: 1" />
+							<p:inputText id="ser" value="#{storeReturnBean.artSerial}" >
+								 <p:ajax process="@this"  />
+								 </p:inputText>
 						</div>
 					</div>
 				</h:panelGroup>

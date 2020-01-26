@@ -96,7 +96,7 @@ public class VehicleBean{
 			Utils.closeDialog("car_dlg");
 		} catch (Exception e) {
 			e.printStackTrace();
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("CAR_Details_Error"));
 			logger.error("add car: id: " + car.getId());
 		}
 	}

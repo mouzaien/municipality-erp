@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -34,6 +35,12 @@ public class WrkRefrentionalSetting {
 
 	@Column(name = "MGR_ID")
 	private Integer managerId;
+
+	@Formula("(select u.EMPNAME from ARC_USERS u where u.USER_ID = MGR_ID )")
+	private String employeeName;
+
+//	@Formula("(select u.FNAME from ARC_USERS u where u.USER_ID = MGR_ID)")
+//	private String firstName;
 
 	public int getId() {
 		return id;
@@ -90,5 +97,21 @@ public class WrkRefrentionalSetting {
 	public Integer getManagerId() {
 		return managerId;
 	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+//	public String getFirstName() {
+//		return firstName;
+//	}
+//
+//	public void setFirstName(String firstName) {
+//		this.firstName = firstName;
+//	}
 
 }

@@ -576,7 +576,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		String reportName = "/reports/search_article.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("articleId", -1);
-		parameters.put("strnumber", request.getStockNo());// "259306";
+		parameters.put("strnumber", strNo);// "259306";
 
 		Utils.printPdfReport(reportName, parameters);
 		return "";

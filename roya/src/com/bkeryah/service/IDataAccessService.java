@@ -1809,6 +1809,10 @@ public interface IDataAccessService {
 	
 	// thapet
 	List<WrkApplication> findAllSteps();
+
+	List<DocumentsType> findAllDecmount();
+
+	List<WrkRefrentionalSetting> findAllReferral();
 	
 	
 }

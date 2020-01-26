@@ -22,7 +22,7 @@
 					<p:outputLabel value="المجموعة الرئيسية" />
 				</div>
 				<div class="ui-g-3">
-					<p:inputText disabled="true" value="مستودع السيارات"
+					<p:inputText disabled="true" value=" سيارات"
 						style="width: 50% ; opacity: 1" />
 				</div>
 				<div class="ui-g-2">
@@ -31,7 +31,7 @@
 				<div class="ui-g-3">
 					<p:selectOneMenu id="cars_list"
 						value="#{askingVehicleBean.subGroupId}" style="width: 100%">
-						<f:selectItem itemLabel="أختر المركبة" itemValue=""
+						<f:selectItem itemLabel="أختر المجموعة الفرعية" itemValue=""
 							noSelectionOption="true" />
 						<f:selectItems var="subG" itemValue="#{subG.id}"
 							itemLabel="#{subG.name}-#{subG.code}"

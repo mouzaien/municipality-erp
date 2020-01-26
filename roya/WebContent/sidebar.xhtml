@@ -353,6 +353,9 @@
 											<p:menuitem id="sr_steps" value="خطوات المعاملات"
 												icon="fa fa-line-chart" action="wrkApp">
 											</p:menuitem>
+											<p:menuitem id="sr_decumnt" value="المرفقات"
+												icon="fa fa-unlink" action="Attachments">
+											</p:menuitem>
 										</p:submenu>
 
 										<p:submenu id="st_Setting1" label="شئون الموظفين"
@@ -381,13 +384,16 @@
 											<p:menuitem id="sm_absence" value="أنواع الغياب"
 												action="absenceType" icon="fa fa-sitemap" />
 											<p:menuitem id="sr_Autorization" value="#{msg['Permission']}"
-												action="autorization" icon="fa fa-fw fa-tags"></p:menuitem>
+												action="autorization" icon="fa fa-fw fa fa-sitemap"></p:menuitem>
 										</p:submenu>
 
 										<p:submenu id="st_Setting4" label="العامة"
 											icon="fa fa-fw fa-cogs">
 											<p:menuitem id="s_users" value="المستخدمين"
 												icon="ui-icon ui-icon-people" action="emps_list">
+											</p:menuitem>
+											<p:menuitem id="s_referral" value="الإحالات"
+												icon="ui-icon ui-icon-people" action="referral">
 											</p:menuitem>
 											<p:menuitem id="sm_depts" value="الإدارات "
 												action="departments" icon="fa fa-sitemap" />

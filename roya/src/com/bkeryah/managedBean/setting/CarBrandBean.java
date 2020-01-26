@@ -41,7 +41,7 @@ public class CarBrandBean {
 			MsgEntry.addInfoMessage("تم الحذف");
 		} catch (Exception e) {
 
-			MsgEntry.addErrorMessage("ملحوظة:يجب حذف النوع قبل إتمام العملية");
+			MsgEntry.addErrorMessage("ملحوظة:يجب حذف نوع المركبة قبل إتمام العملية");
 		}
 	}
 

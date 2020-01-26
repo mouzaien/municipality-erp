@@ -9063,4 +9063,14 @@ public class DataAccessService implements IDataAccessService {
 		List steps = commonDao.findAll(WrkApplication.class);
 		return steps;
 	}
+	@Override
+	public List<DocumentsType> findAllDecmount() {
+		List decmount = commonDao.findAll(DocumentsType.class);
+		return decmount;
+	}
+	@Override
+	public List<WrkRefrentionalSetting> findAllReferral() {
+		List referral = commonDao.findAll(WrkRefrentionalSetting.class);
+		return referral;
+	}
 }

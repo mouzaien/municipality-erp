@@ -1234,4 +1234,20 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>Attachments</from-outcome>
+			<to-view-id>/setting/Attachments.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>referral</from-outcome>
+			<to-view-id>/setting/referral.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

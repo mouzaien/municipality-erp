@@ -504,26 +504,26 @@ public class LoadingDataBean {
 			Integer userSectionId = user.getWrkSectionId();
 			if (!(userSectionId == null) && userSectionId.equals(secId) && currUserId != user.getUserId())
 				usersDeptList.add(user);
-//			if (!(userSectionId == null)) {
-//				switch (userSectionId) {
-//				case MyConstants.DEV_SEC_BOSS:
-//					if (currUserId != user.getUserId()) {
-//						usersDeptList.add(user);
-//						break;
-//					}
-//				case MyConstants.NETWORK_SEC_BOSS:
-//					if (currUserId != user.getUserId()) {
-//						usersDeptList.add(user);
-//						break;
-//					}
-//				case MyConstants.IT_SEC_BOSS:
-//					if (currUserId != user.getUserId()) {
-//						usersDeptList.add(user);
-//						break;
-//					}
-//
-//				}
-//			}
+			// if (!(userSectionId == null)) {
+			// switch (userSectionId) {
+			// case MyConstants.DEV_SEC_BOSS:
+			// if (currUserId != user.getUserId()) {
+			// usersDeptList.add(user);
+			// break;
+			// }
+			// case MyConstants.NETWORK_SEC_BOSS:
+			// if (currUserId != user.getUserId()) {
+			// usersDeptList.add(user);
+			// break;
+			// }
+			// case MyConstants.IT_SEC_BOSS:
+			// if (currUserId != user.getUserId()) {
+			// usersDeptList.add(user);
+			// break;
+			// }
+			//
+			// }
+			// }
 		}
 		return usersDeptList;
 	}
@@ -607,7 +607,7 @@ public class LoadingDataBean {
 	}
 
 	public List<RealEstate> getRealEstateList() {
-//		if ((realEstateList == null) || (realEstateList.isEmpty()))
+		// if ((realEstateList == null) || (realEstateList.isEmpty()))
 		realEstateList = dataAccessService.loadAllRealEstates();
 		return realEstateList;
 	}

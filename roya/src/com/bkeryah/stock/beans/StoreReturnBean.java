@@ -95,13 +95,14 @@ public class StoreReturnBean {
 			int i = 0;
 			for (ReturnStoreDetails returnItemDetails : returnitemsDetailsList) {
 				returnStoreModelRecord = new ReturnStoreDetailsModel();
+				returnStoreModelRecord.setArticleCode(returnItemDetails.getArticleCode());
 				returnStoreModelRecord.setArticleId(returnItemDetails.getArticleId());
 				returnStoreModelRecord.setArticleName(returnItemDetails.getArticleName());
 				System.out.println(articleId);
 				Article art = (Article) dataAccessService.findEntityById(Article.class,
 						returnItemDetails.getArticleId());
 				if (art != null)
-					returnStoreModelRecord.setArticleCode(art.getCode());
+				//	returnStoreModelRecord.setArticleCode(art.getCode());
 				returnStoreModelRecord.setQty(returnItemDetails.getQty());
 				returnStoreModelRecord.setNotes(returnItemDetails.getNotes());
 				returnStoreModelRecord.setRetrunReason(returnReason);

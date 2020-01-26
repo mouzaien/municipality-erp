@@ -31,9 +31,14 @@ public class ReturnStoreDetails {
 	private String notes;
 	@Formula("(select a.name from ARTICLE a where a.id = ART_ID)")
 	private String articleName;
-	@Formula("(select a.code from ARTICLE a where a.id = ART_ID)")
+	
+	@Column(name = "ART_CODE")
 	private String articleCode;
-
+	
+	
+	@Formula("(select a.code from ARTICLE a where a.id = ART_ID)")
+	private String artCode;
+	
 	public Integer getId() {
 		return Id;
 	}
@@ -96,6 +101,14 @@ public class ReturnStoreDetails {
 
 	public void setArticleCode(String articleCode) {
 		this.articleCode = articleCode;
+	}
+
+	public String getArtCode() {
+		return artCode;
+	}
+
+	public void setArtCode(String artCode) {
+		this.artCode = artCode;
 	}
 
 	// public String getArticleCode() {
