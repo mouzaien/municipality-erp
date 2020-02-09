@@ -25,21 +25,21 @@
 					<p:inputText disabled="true" value=" سيارات"
 						style="width: 50% ; opacity: 1" />
 				</div>
-				<div class="ui-g-2">
-					<p:outputLabel value="المجموعة الفرعية" />
-				</div>
-				<div class="ui-g-3">
-					<p:selectOneMenu id="cars_list"
-						value="#{askingVehicleBean.subGroupId}" style="width: 100%">
-						<f:selectItem itemLabel="أختر المجموعة الفرعية" itemValue=""
-							noSelectionOption="true" />
-						<f:selectItems var="subG" itemValue="#{subG.id}"
-							itemLabel="#{subG.name}-#{subG.code}"
-							value="#{askingVehicleBean.articleSubGroups}" />
-						<p:ajax event="change" update="includeform:carTable"
-							process="@this" listener="#{askingVehicleBean.loadCarDetails}" />
-					</p:selectOneMenu>
-				</div>
+<!-- 				<div class="ui-g-2"> -->
+<!-- 					<p:outputLabel value="المجموعة الفرعية" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-3"> -->
+<!-- 					<p:selectOneMenu id="cars_list" -->
+<!-- 						value="#{askingVehicleBean.subGroupId}" style="width: 100%"> -->
+<!-- 						<f:selectItem itemLabel="أختر المجموعة الفرعية" itemValue="" -->
+<!-- 							noSelectionOption="true" /> -->
+<!-- 						<f:selectItems var="subG" itemValue="#{subG.id}" -->
+<!-- 							itemLabel="#{subG.name}-#{subG.code}" -->
+<!-- 							value="#{askingVehicleBean.articleSubGroups}" /> -->
+<!-- 						<p:ajax event="change" update="includeform:carTable" -->
+<!-- 							process="@this" listener="#{askingVehicleBean.loadCarDetails}" /> -->
+<!-- 					</p:selectOneMenu> -->
+<!-- 				</div> -->
 			</div>
 			<div class="col-md-12">
 				<p:dataTable var="carItem" id="carTable"

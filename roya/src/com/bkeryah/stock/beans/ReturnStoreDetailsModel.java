@@ -47,6 +47,23 @@ public class ReturnStoreDetailsModel {
 	}
 
 	public String getReason() {
+		switch (retrunReason) {
+		case 1:
+			reason = "إنتهاء الغرض";
+			break;
+		case 2:
+			reason = "فائض";
+			break;
+		case 3:
+			reason = "عدم الصلاحية";
+			break;
+		case 4:
+			reason = "تالف";
+			break;
+
+		default:
+			break;
+		}
 		return reason;
 	}
 

@@ -102,10 +102,11 @@ public class StoreReturnBean {
 				Article art = (Article) dataAccessService.findEntityById(Article.class,
 						returnItemDetails.getArticleId());
 				if (art != null)
-				//	returnStoreModelRecord.setArticleCode(art.getCode());
-				returnStoreModelRecord.setQty(returnItemDetails.getQty());
+					// returnStoreModelRecord.setArticleCode(art.getCode());
+					returnStoreModelRecord.setQty(returnItemDetails.getQty());
 				returnStoreModelRecord.setNotes(returnItemDetails.getNotes());
-				returnStoreModelRecord.setRetrunReason(returnReason);
+				returnStoreModelRecord.setRetrunReason(returnStore.getReason());
+				// returnStoreModelRecord.setArticleUnit(returnItemDetails.getArticleUnit());
 				returnModelDetailsList.add(i, returnStoreModelRecord);
 				i++;
 			}
@@ -131,11 +132,16 @@ public class StoreReturnBean {
 	}
 
 	public String accept() {
-		wrkAppComment = "";
-		applicationPurpose = "1";
-		dataAccessService.acceptReturnStore(returnStore, recordId, MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue(),
-				wrkAppComment, Integer.parseInt(applicationPurpose.trim()));
-		return "mails";
+		if (serialNum != null) {
+			wrkAppComment = "";
+			applicationPurpose = "1";
+			dataAccessService.acceptReturnStore(returnStore, recordId, MailTypeEnum.RETURNED_ITEMS_INVENTORY.getValue(),
+					wrkAppComment, Integer.parseInt(applicationPurpose.trim()));
+			return "mails";
+		} else {
+			MsgEntry.addErrorMessage("يجب أدخال االرقم التسلسلي بشكل صحيح");
+			return "";
+		}
 	}
 
 	public void loadArticle(AjaxBehaviorEvent event) {
@@ -177,12 +183,14 @@ public class StoreReturnBean {
 			returnStoreModelRecord.setArticleId(articleId);
 			returnStoreModelRecord.setQty(qty);
 			returnStoreModelRecord.setNotes(notes);
+			returnStoreModelRecord.setRetrunReason(returnReason);
 			returnStoreModelRecord.setArticleName(articleName);
 			returnStoreModelRecord.setArticleUnit(articleUnit);
 			returnStoreModelRecord.setExchMasterId(exchMasterId);
 			returnModelDetailsList.add(returnStoreModelRecord);
 			canSave = true;
 			returnStoreModelRecord = new ReturnStoreDetailsModel();
+
 		}
 
 	}

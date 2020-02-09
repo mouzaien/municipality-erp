@@ -46,7 +46,7 @@ public class Article {
 	private Integer artType;
 
 	@JoinColumn(insertable = false, updatable = false, name = "Item_Unite_Id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private ItemUnite itemUnite;
 
 	@JoinColumn(insertable = false, updatable = false, name = "GROUP_ID")

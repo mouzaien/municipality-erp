@@ -18,7 +18,7 @@
 
 			<ui:define name="content">
 				<h:form id="includeform">
-<!-- 					<p:growl autoUpdate="true" showDetail="false" /> -->
+					<!-- 					<p:growl autoUpdate="true" showDetail="false" /> -->
 					<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
 					<div class="card card-w-title" dir="rtl">
 
@@ -27,8 +27,43 @@
 						</h1>
 						<br></br>
 
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="المستودع"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="store_menu" filter="true" style="width:90%"
+									filterMatchMode="contains" value="#{inventoryGardBean.strNo}">
+									<f:selectItem itemLabel="اختر المستودع" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{inventoryGardBean.allWareHouses}"
+										var="s" itemLabel="#{s.storeName}"
+										itemValue="#{s.storeNumber}" />
+									<p:ajax process="@this" update="gard_menu,inboxdt"
+										listener="#{inventoryGardBean.loadInventories()}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="الجرد"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="gard_menu" filter="true" style="width:90%"
+									disabled="#{!(inventoryGardBean.blockGard)}"
+									filterMatchMode="contains" value="#{inventoryGardBean.gardId}">
+									<f:selectItem itemLabel="إختر الجرد" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems var="g"
+										value="#{inventoryGardBean.inventoriesList}"
+										itemLabel="#{g.inventoryDate}" itemValue="#{g.inventoryId}" />
+									<p:ajax process="@this" update="inboxdt"
+										listener="#{inventoryGardBean.loadTableInventoriesData()}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br></br>
+
 						<p:dataTable var="invG" id="inboxdt" widgetVar="unitCell"
-							value="#{inventoryGardBean.inventoriesList}"
+							value="#{inventoryGardBean.inventoriesTableList}"
 							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
 							paginatorPosition="bottom" editable="true"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"

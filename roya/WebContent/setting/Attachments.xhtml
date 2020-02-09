@@ -54,7 +54,7 @@
 								headerText="التسلسل" width="10%">										
 								#{rowIndex+1}							
 																</p:column>
-							<p:column style="white-space: nowrap;" headerText="الإدارات"
+							<p:column style="white-space: nowrap;" headerText="المرفقات"
 								width="40%" filterBy="#{documnt.name}"
 								filterMatchMode="contains">										
                                 #{documnt.name}	 
@@ -100,7 +100,7 @@
 							</h:panelGroup>
 						</p:dialog>
 						<!-- *********************************Add******************************************** -->
-						<p:dialog header="بيانات الإحالة" widgetVar="Mo_dd" id="H_id"
+						<p:dialog header="بيانات المرفقات" widgetVar="Mo_dd" id="H_id"
 							width="50%" hideEffect="fade" showEffect="explode" dir="rtl"
 							modal="true" resizable="false">
 							<h:panelGroup id="myaddDialog">
@@ -131,7 +131,7 @@
 							</h:panelGroup>
 						</p:dialog>
 						<!-- ***********************************Edite****************************************** -->
-						<p:dialog header="بيانات الإحالة" widgetVar="job_dlg"
+						<p:dialog header="بيانات المرفقات" widgetVar="job_dlg"
 							id="job_dlgId" width="40%" hideEffect="fade" showEffect="explode"
 							dir="rtl" modal="true" resizable="false">
 							<h:panelGroup id="myDialog">
@@ -139,7 +139,7 @@
 
 									<div class="ui-g">
 										<div class="ui-g-1">
-											<h:outputLabel value="الإدارة" styleClass="btxt" />
+											<h:outputLabel value="المرفقات" styleClass="btxt" />
 										</div>
 										<div class="ui-g-5">
 											<p:inputText value="#{attachmentsBean.documnt.name}"

@@ -18,7 +18,10 @@
 	<script type="text/javascript">
 		window.onload = window.history.forward(0);
 	</script>
-	<br />
+<!-- 	<f:verbatim> -->
+<!-- 		<marquee style="color: blue;">-:مرحبا بكم في -->
+<!-- 		بلدية محافظة المذنب للشكاوي والاستفسار يرجي الاتصال علي الرقم التالي </marquee> -->
+<!-- 	</f:verbatim> -->
 	<h:body>
 		<ui:composition template="/template.xhtml">
 			<p:growl autoUpdate="true" showDetail="true" />
@@ -48,7 +51,7 @@
 							<div class="ui-g-2">
 								<p:selectOneMenu value="#{mangDepartments.selectdDeptId}"
 									update="addbtn" style="width: 100%" filter="true"
-									id="updatedem">
+									filterMatchMode="contains" id="updatedem">
 									<f:selectItem itemLabel="أخترالإدارة" itemValue=""
 										noSelectionOption="true" />
 									<f:selectItems value="#{mangDepartments.demaList}" var="dem"
@@ -133,7 +136,7 @@
 								</h:panelGroup>
 							</p:dialog>
 						</div>
-						<!-- ************************************************************************************************************** -->
+						<!-- *****************************************************Add********************************************************* -->
 						<p:dialog header="إضافة قسم لإدارة" widgetVar="Mo_ww" id="M_id"
 							width="50%" dir="rtl">
 							<h:panelGroup id="myaddDialog">
@@ -144,7 +147,8 @@
 									<div class="ui-g-3">
 										<p:selectOneMenu disabled="true"
 											value="#{mangDepartments.selectdDeptId}"
-											style="width: 100% ;opacity:1;" filter="true" id="updatemgr">
+											style="width: 100% ;opacity:1;" filter="true"
+											filterMatchMode="contains" id="updatemgr">
 											<f:selectItem itemLabel="أخترالإدارة" itemValue="" />
 											<f:selectItems var="mgr" value="#{mangDepartments.demaList}"
 												itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
@@ -155,7 +159,8 @@
 									</div>
 									<div class="ui-g-3">
 										<p:selectOneMenu value="#{mangDepartments.sectionId}"
-											style="width: 100%" filter="true" id="updateden">
+											style="width: 100%" filter="true" filterMatchMode="contains"
+											id="updateden">
 											<f:selectItem itemLabel="أختر القسم" itemValue="" />
 											<f:selectItems var="den" value="#{mangDepartments.secList}"
 												itemValue="#{den.id}" itemLabel="#{den.sectionName}" />

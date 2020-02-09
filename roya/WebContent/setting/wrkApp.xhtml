@@ -102,7 +102,7 @@
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mgr"
 												value="#{transactionStepsBean.steps.fromUserId}"
-												style="width: 80%" filter="true">
+												style="width: 80%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  الأسم" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr"
@@ -116,7 +116,7 @@
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mgn"
 												value="#{transactionStepsBean.steps.toUserId}"
-												style="width: 80%" filter="true">
+												style="width: 80%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  الأسم" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgn"
@@ -146,7 +146,7 @@
 										<div class="ui-g-5">
 											<p:selectOneMenu id="trl"
 												value="#{transactionStepsBean.steps.applicationIsVisible}"
-												style="width:70%" filter="true" dir="rtl">
+												style="width:70%" filter="true"  filterMatchMode="contains" dir="rtl">
 												<f:selectItem itemLabel="غير نشط" itemValue="0" />
 												<f:selectItem itemLabel="نشط" itemValue="1" />
 											</p:selectOneMenu>

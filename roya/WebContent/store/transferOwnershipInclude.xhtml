@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<f:view>
+
+	<h:head>
+	</h:head>
+	<body>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="card card-w-title" dir="rtl">
+				<div>
+					<h1 style="color: #7CB342; text-align: center;">
+						#{msg['transferOwnership.sample']}</h1>
+					<!-- 					<h:outputText id="can" value="#{transferBean.hideInputs}" /> -->
+				</div>
+				<h:panelGroup id="panalData"
+					rendered="#{!(transferBean.hideInputs)}">
+					<!-- 			<div class="image-box-footer" align="left"> -->
+					<!-- 								<p:commandButton value="طباعة" icon="ui-icon ui-icon-print " -->
+					<!-- 									onclick="this.form.target='_blank'" ajax="false" -->
+					<!-- 									action="#{storeReturnBean.print_documents_return}" -->
+					<!-- 									rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton> -->
+
+
+					<!-- 			</div> -->
+
+
+					<div align="left">
+						<!-- 				rendered="#{!transferBean.canSave}" -->
+
+						<p:commandButton value="حفظ" id="saveBn"
+							icon="ui-icon ui-icon-assignment-return"
+							action="#{transferBean.save}" disabled="#{!transferBean.canSave}">
+
+						</p:commandButton>
+
+					</div>
+
+
+					<div class="ui-g">
+						<div class="ui-g-1 ">
+							<h:outputLabel value="من الموظف" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value=" #{transferBean.curUserName}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="الي الموظف" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="empList" filterMatchMode="contains"
+								style="width:100%" filter="true"
+								value="#{transferBean.employerId}">
+								<f:selectItem itemLabel="من فضلك اختر الموظف" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{loadingDataBean.employersList}"
+									var="emp" itemLabel="#{emp.employeeName}"
+									itemValue="#{emp.userId}" />
+								<p:ajax listener="#{transferBean.allowAddBtn}" update="addBtn"
+									event="change" process="@this" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br />
+					<h:panelGroup>
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="التاريخ"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="hiri1" value="#{transferBean.returnHDate}"
+									required="true" requiredMessage="ادخل التاريخ"
+									onfocus="loadCalendar();"
+									styleClass="form-control form-controlCal">
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="اختر الصنف" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneMenu id="articles"
+									value="#{transferBean.selectedArticleId}" required="true"
+									requiredMessage="من فضلك إختر الصنف" filterMatchMode="contains"
+									filter="true">
+									<f:selectItem itemLabel="من فضلك إختر الصنف" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{transferBean.articleList}" var="item"
+										itemValue="#{item.id}" itemLabel="#{item.name} - #{item.code}"></f:selectItems>
+									<p:ajax listener="#{transferBean.allowAddBtn}" update="addBtn"
+										event="change" process="@this addBtn" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel styleClass="btxt" value="الكمية" />
+							</div>
+							<div class="ui-g-1">
+								<p:inputText id="qty" style="width:100%; opacity: 1"
+									disabled="true" value="1" />
+							</div>
+
+						</div>
+					</h:panelGroup>
+					<br />
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel styleClass="btxt" value="الملاحظات" />
+						</div>
+						<div class="ui-g-4">
+							<p:inputText id="desc" style="width:100%"
+								value="#{transferBean.notes}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel styleClass="btxt" value="الرمز" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="serial" style="width:100%" type="number"
+								value="#{transferBean.serialNum}" />
+						</div>
+
+						<div class="ui-g-2">
+							<p:commandButton id="addBtn" icon="ui-icon ui-icon-add-to-photos"
+								style="float:left;" styleClass="cyan-btn"
+								disabled="#{transferBean.allowAdd}" value="إضافة">
+								<p:ajax listener="#{transferBean.addItem}"
+									update="itemsTable saveBn" process="@this articles empList " />
+
+								<!-- 								 process="desc articles hiri1 empList" -->
+							</p:commandButton>
+						</div>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{(transferBean.hideInputs)}">
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="مقدم الطلب" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputText value="#{transferBean.transModel.fromUserName}" />
+						</div>
+					</div>
+
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputText value="التاريخ" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputText
+								value="#{transferBean.transOwnership.transferHDate}" />
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputText value="حالة الطلب" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputText rendered="#{!(transferBean.enablePrint)}"
+								value="#{transferBean.transOwnership.status == 'Y' ? 'جارية':'تم الرفض '}" />
+
+
+							<h:outputText rendered="#{(transferBean.enablePrint)}"
+								value="#{transferBean.transOwnership.status == 'Y' ? 'تمت الموافقة عليها ':'تم الرفض '}" />
+						</div>
+
+					</div>
+				</h:panelGroup>
+				<!-- 				<h:outputText id="can" value="#{transferBean.hideInputs}" /> -->
+				<br /> <br /> <br /> <br /> <br /> <br />
+				<h:panelGroup id="details">
+					<p:dataTable value="#{transferBean.transModelList}" id="itemsTable"
+						emptyMessage="لايوجد بيانات" var="transItem"
+						rowIndexVar="rowIndex">
+
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="رقم" width="5%">
+							<h:outputText value="#{rowIndex+1}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="اسم الصنف" width="20%">
+							<h:outputText
+								value="#{transItem.articleCode} - #{transItem.articleName}"></h:outputText>
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الرمز" width="10%">
+							<h:outputText value="#{transItem.serialNumber}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الكمية" width="5%">
+							<h:outputText value="#{transItem.qty}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="من الموظف " width="20%">
+							<h:outputText value="#{transItem.fromUserName}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText=" الي الموظف" width="20%">
+							<h:outputText value="#{transItem.toUserName}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="الملاحظات" width="10%">
+							<h:outputText value="#{transItem.notes}" />
+						</p:column>
+						<p:column style="white-space: nowrap;text-align: center;"
+							rendered="#{!(transferBean.hideInputs)}" headerText="حذف"
+							width="5%">
+							<p:commandButton id="delete" icon="fa fa-fw fa-times"
+								process="@this" styleClass="red-btn" update="itemsTable "
+								action="#{transferBean.removeRecord(transItem)}">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</div>
+			<!-- 			<p:dialog header="تعديل الرقم التسلسلي" widgetVar="dlgditSerial" -->
+			<!-- 				width="30%" dir="rtl"> -->
+			<!-- 				<h:panelGroup id="editSerialPopup"> -->
+			<!-- 					<h:outputLabel value="هل تريد حفظ الرقم التسلسلي الجديد ؟"></h:outputLabel> -->
+			<!-- 					<br /> -->
+			<!-- 					<br /> -->
+			<!-- 					<div align="center"> -->
+			<!-- 						<p:commandButton id="yesBtn" value="نعم " styleClass="cyan-btn" -->
+			<!-- 							oncomplete="PF('dlgditSerial').hide();"> -->
+			<!-- 							<p:ajax listener="#{storeReturnBean.updateSerialNum}" -->
+			<!-- 								process="@this" /> -->
+			<!-- 						</p:commandButton> -->
+
+			<!-- 						<p:spacer height="10px"></p:spacer> -->
+
+			<!-- 						<p:commandButton id="noBtn" value="لا " styleClass="red-btn" -->
+			<!-- 							oncomplete="PF('dlgditSerial').hide();"> -->
+			<!-- 							<p:ajax listener="#{storeReturnBean.cancleUpdateSerialNum}" -->
+			<!-- 								process="@this" /> -->
+			<!-- 						</p:commandButton> -->
+			<!-- 					</div> -->
+			<!-- 				</h:panelGroup> -->
+			<!-- 			</p:dialog> -->
+
+		</h:form>
+
+	</body>
+</f:view>
+</html>

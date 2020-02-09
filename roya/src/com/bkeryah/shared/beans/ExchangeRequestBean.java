@@ -112,6 +112,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private Integer employerId;
 	private boolean chckRtrnArt;
 	private WhsWarehouses wrHouse = new WhsWarehouses();
+	private boolean serialPrintFlag;
 
 	@PostConstruct
 	public void init() {
@@ -204,7 +205,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			// articleList = dataAccessService.getAllArticles();
 
 		}
-
+		if (request.getSerialNumber() != null) {
+			serialPrintFlag = true;
+		}
 	}
 
 	private void getResponseMessage() {
@@ -546,13 +549,13 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			requestModel.setSupplierName(requestdets.getSupplierName());
 			requestModel.setRequesterName(requestdets.getRequesterName());
 			switch (requestModel.getTransactionCode()) {
-			case 2://// memoRecript
+			case 2: case  5://// memoRecript
 				requestModel.setQtyInput(requestdets.getQtyOutput());
 				availablebQty += requestdets.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);
 				break;
-			case 3:// requestChange
+			case 3: case 6 :// requestChange
 				requestModel.setQtyOutput(requestdets.getQtyOutput());
 				availablebQty = availablebQty - requestModel.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
@@ -713,6 +716,8 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 		request.setSerialNumber(SerialNum);
 		dataAccessService.updateObject(request);
+		serialPrintFlag = true;
+
 	}
 
 	public void cancleUpdateSerialNum() {
@@ -760,7 +765,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		articleStore.setArticleCode(articleItem.getArticleCode());
 		articleStore.setArticleName(articleItem.getArticleName());
 		articleStore.setArticleUnite(articleItem.getArticleUnite());
-		articleStore.setHistoryList(dataAccessService.getArticleHistory(articleItem.getArticleId()));
+		articleStore.setHistoryList(dataAccessService.getArticleHistory(articleItem.getArticleId(),strNo));
 	}
 
 	public String refreshPage() {
@@ -1299,6 +1304,14 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void setStrNo(Integer strNo) {
 		this.strNo = strNo;
+	}
+
+	public boolean isSerialPrintFlag() {
+		return serialPrintFlag;
+	}
+
+	public void setSerialPrintFlag(boolean serialPrintFlag) {
+		this.serialPrintFlag = serialPrintFlag;
 	}
 
 }

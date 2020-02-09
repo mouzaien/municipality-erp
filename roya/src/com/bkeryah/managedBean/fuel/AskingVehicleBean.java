@@ -48,8 +48,8 @@ public class AskingVehicleBean {
 	@PostConstruct
 	public void init() {
 		car = new Car();
-		// carsList = dataAccessService.loadAllCars();
-		// Collections.sort(carsList);
+		 carsList = dataAccessService.loadAllCars();
+		 Collections.sort(carsList);
 		// getAll Sub groups meaning All Type of Cars
 		articleSubGroups = dataAccessService.getAllArticleSubGroupsByGroupId(9);
 		// carsArticle = dataAccessService.getAllArticles(13);
@@ -115,7 +115,7 @@ public class AskingVehicleBean {
 			articleStore.setArticleName(car.getArtName());
 			System.out.println("artId" + car.getArtId());
 			// articleStore.setArticleUnite(articleItem.getArticleUnite());
-			articleStore.setHistoryList(dataAccessService.getArticleHistory(car.getArtId()));
+//			articleStore.setHistoryList(dataAccessService.getArticleHistory(car.getArtId()),car.get);
 			Utils.updateUIComponent("includeform:exchange_dlgId");
 			Utils.openDialog("exchange_dlg");
 		}

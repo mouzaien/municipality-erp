@@ -31,7 +31,7 @@
 	m.RET_HDATE RETURN_DATE,
 	dep.DEPT_NAME DEPT_RETRUNED_FROM,
 	us.EMPNAME RETURN_EMP_NAME,
-	art.CODE ART_CODE,
+	det.ART_CODE ART_CODE,
 	art.NAME ART_NAME,
 	unit.ITEMUNITNAME UNIT,
 	NVL(det.QTY, 0)QTY,
@@ -61,8 +61,8 @@ FROM
 		AND r.id = s.arc_record_id
 		AND r.app_type = 250
 		AND s.SIGN_STEP_ID = 1
-		AND s.doc_id = 19
-		AND s.doc_id = 19 )st_user ,
+		AND s.doc_id = $P{docId}
+		AND s.doc_id = $P{docId} )st_user ,
 	(
 	SELECT
 		s.doc_id id,
@@ -78,7 +78,7 @@ FROM
 		AND r.id = s.arc_record_id
 		AND r.app_type = 250
 		AND s.SIGN_STEP_ID = 3
-		AND s.doc_id = 19 )st_boss ,
+		AND s.doc_id = $P{docId} )st_boss ,
 	(
 	SELECT
 		s.doc_id id,
@@ -93,7 +93,7 @@ FROM
 		AND r.id = s.arc_record_id
 		AND r.app_type = 250
 		AND s.SIGN_STEP_ID = 4
-		AND s.doc_id = 19 )st_dean,
+		AND s.doc_id = $P{docId} )st_dean,
 	(
 	SELECT
 		s.doc_id id,
@@ -109,7 +109,7 @@ FROM
 		AND r.id = s.arc_record_id
 		AND r.app_type = 250
 		AND s.SIGN_STEP_ID = 5
-		AND s.doc_id = 19 )privld
+		AND s.doc_id = $P{docId} )privld
 WHERE
 	m.ID = det.ret_id
 	AND art.STRNO = st.STRNO
@@ -117,7 +117,7 @@ WHERE
 	AND art.ITEM_UNITE_ID = unit.ITEMUNITID
 	AND st_boss.id = m.id
 	AND st_dean.id = m.id
-	AND m.ID = 19
+	AND m.ID = $P{docId}
 	AND st_user.SIGN_USER_ID = us.user_id
 	AND dep.id = us.dept_id
 	AND boss.user_id = st_boss.SIGN_USER_ID
@@ -125,7 +125,8 @@ WHERE
 	</queryString>
 	<field name="NUM" class="java.lang.Integer"/>
 	<field name="DEPT_RETRUNED_FROM" class="java.lang.String"/>
-	<field name="ART_CODE" class="java.lang.Integer"/>
+	<field name="RETURN_REASON" class="java.lang.String"/>
+	<field name="ART_CODE" class="java.lang.String"/>
 	<field name="ART_NAME" class="java.lang.String"/>
 	<field name="UNIT" class="java.lang.String"/>
 	<field name="QTY" class="java.lang.Integer"/>

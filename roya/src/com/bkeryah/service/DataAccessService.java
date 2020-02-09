@@ -3107,6 +3107,12 @@ public class DataAccessService implements IDataAccessService {
 					case MyConstants.PRINT_STORE_DEAN:// "":
 						propertiesValueById = getPropertiesValueById(222);
 						break;
+					case MyConstants.SUSTAINABLE_RETURN_STORE_DEAN:// "":
+						propertiesValueById = getPropertiesValueById(223);
+						break;
+					case MyConstants.RETURNED_CARS_STORE_DEAN:// "":
+						propertiesValueById = getPropertiesValueById(224);
+						break;
 					default:
 						propertiesValueById = getPropertiesValueById(146);
 						break;
@@ -5555,8 +5561,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<StoreRequestModel> getArticleHistory(Integer articleId) {
-		return dataAccessDAO.getArticleHistory(articleId);
+	public List<StoreRequestModel> getArticleHistory(Integer articleId , Integer strNO) {
+		return dataAccessDAO.getArticleHistory(articleId,strNO);
 	}
 
 	@Override
@@ -8652,6 +8658,51 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
+	@Transactional
+	public Integer addTransferOnwerShipItems(TransferOwnership saveTransfer) {
+		if (saveTransfer != null) {
+			Integer docId = (Integer) saveObject(saveTransfer);
+
+			ArcUsers sender = loadUserById(saveTransfer.getFromUser()); // from
+																		// user
+			ArcUsers toUser = loadUserById(saveTransfer.getToUser());// to user
+			Integer toId = sender.getMgrId();
+			Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
+
+			ArcRecords arcRecord = new ArcRecords();
+			arcRecord.setApplicationType(MailTypeEnum.TRANSFER_OWNERSHIP.getValue());
+			String empNameFrom = sender.getEmployeeName();
+			String empNameTO = toUser.getEmployeeName();
+			String subject = Utils.loadMessagesFromFile("subject.transfer");
+			if (empNameFrom == null || empNameTO == null) {
+				subject = subject + sender.getFirstName();
+			} else {
+
+				subject = subject + empNameFrom;
+			}
+
+			arcRecord.setRecTitle(subject);
+			int recordId = createNewArcRecord(arcRecord, false, toId);
+
+			WrkApplication application = new WrkApplication();
+			application.setToUserId(toId);
+
+			application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+			application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+
+			String userComment = Utils.loadMessagesFromFile("subject.transfer") + " " + empNameFrom + " " + "الى : "
+					+ empNameTO + " صنف " + saveTransfer.getArtName() + "  الرمز  -" + saveTransfer.getArticleCode();
+
+			createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
+
+			saveHrsSigns(recordId, docId == null ? null : docId, false, null, sender.getUserId(),
+					MailTypeEnum.TRANSFER_OWNERSHIP.getValue());
+			return docId;
+		}
+		return new Integer(0);
+	}
+
+	@Override
 	@Transactional(propagation = Propagation.MANDATORY)
 	public Integer addNewRturnedStoreItemsDetailsRecors(ReturnStoreDetails returnStoreDetailsList) {
 		return save(returnStoreDetailsList);
@@ -8692,7 +8743,7 @@ public class DataAccessService implements IDataAccessService {
 		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
 		if (visible) {
 			commonDao.update(returnStore);
-			updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
 
 	}
@@ -8795,7 +8846,7 @@ public class DataAccessService implements IDataAccessService {
 		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
 		if (visible) {
 			commonDao.update(storeTemporeryReceiptMaster);
-			updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
 
 	}
@@ -9050,27 +9101,94 @@ public class DataAccessService implements IDataAccessService {
 		List<Car> carDets = commonDao.getCarDetailsByArtId(carArtId);
 		return carDets;
 	}
-	
+
 	@Override
 	public List<Car> loadCarDetailsBySubGroupId(Integer subGroupId) {
 		return dataAccessDAO.getCarsDetailsBySubGroupId(subGroupId);
-		
-		}
-	
-	//thapet
+
+	}
+
+	// thapet
 	@Override
 	public List<WrkApplication> findAllSteps() {
 		List steps = commonDao.findAll(WrkApplication.class);
 		return steps;
 	}
+
 	@Override
 	public List<DocumentsType> findAllDecmount() {
 		List decmount = commonDao.findAll(DocumentsType.class);
 		return decmount;
 	}
+
 	@Override
 	public List<WrkRefrentionalSetting> findAllReferral() {
 		List referral = commonDao.findAll(WrkRefrentionalSetting.class);
 		return referral;
 	}
+
+	@Override
+	public List<HrsSigns> findAllSigns() {
+		List signs = commonDao.findAll(HrsSigns.class);
+		return signs;
+	}
+
+	@Override
+	@Transactional
+	public TransferOwnership findTransferOwnershipByArchRecordId(Integer recordId) {
+		Integer DocId = commonDao.getDocIdHrsSignByRecId(recordId);
+		return (TransferOwnership) commonDao.findEntityById(TransferOwnership.class, DocId);
+	}
+
+	@Override
+	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo) {
+		return commonDao.findInventoryMasterByGard_strNO(gardId, strNo);
+	}
+
+	@Override
+	@Transactional
+	public void acceptTransOwnership(TransferOwnership transOwnership, Integer recordId, int modelType,
+			String usercomment, int applicationPurpose) {
+		WrkApplication app = getWrkApplicationRecordById(recordId);
+		WrkApplication application = new WrkApplication(app);
+		commonDao.updateWrkApplicationVisible(app.getId());
+		application.setId(app.getId());
+		application.setApplicationPurpose(applicationPurpose);
+		application.getId().setStepId(application.getId().getStepId() + 1);
+		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
+		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
+				transOwnership.getStrNo());
+		application.setToUserId(userTo);
+		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
+
+		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
+		saveHrsSigns(application.getArcRecordId(), transOwnership.getId(), visible, null,
+				Utils.findCurrentUser().getUserId(), modelType);
+		if (visible) {
+			commonDao.update(transOwnership);
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void refuseTransOwnership(WrkApplicationId wrkId, Integer recordId, TransferOwnership transOwnership,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, transOwnership,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
+
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getArticlesByUserIdWithoutCars(Integer userId) {
+		return dataAccessDAO.getArticlesByUserIdWithoutCars(userId);
+	}
+
 }

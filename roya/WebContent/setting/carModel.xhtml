@@ -125,7 +125,7 @@
 										</div>
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mgr" value="#{carModelBean.brandId}"
-												style="width: 100%" filter="true">
+												style="width: 100%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  النوع" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr" value="#{carModelBean.brandList}"
@@ -171,9 +171,9 @@
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mdl"
 												value="#{carModelBean.model.brandId}" style="width: 100%"
-												filter="true">
+												filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  النوع" itemValue=""
-													noSelectionOption="true" />
+													noSelectionOption="true"  />
 												<f:selectItems var="mdl" value="#{carModelBean.brandList}"
 													itemValue="#{mdl.id}" itemLabel="#{mdl.name}" />
 											</p:selectOneMenu>

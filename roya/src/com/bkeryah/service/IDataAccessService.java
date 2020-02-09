@@ -1051,7 +1051,7 @@ public interface IDataAccessService {
 
 	public int nationalIsFound(Long nationalNumber, Integer integer);
 
-	public List<StoreRequestModel> getArticleHistory(Integer articleId);
+	public List<StoreRequestModel> getArticleHistory(Integer articleId, Integer strNo);
 
 	List<UserRoles> loadAllRoles();
 
@@ -1804,15 +1804,29 @@ public interface IDataAccessService {
 
 	List<Car> loadCarDetailsByArtId(Integer carArtId);
 
-    List<Car> loadCarDetailsBySubGroupId(Integer subGroupId);
-	
-	
+	List<Car> loadCarDetailsBySubGroupId(Integer subGroupId);
+
 	// thapet
 	List<WrkApplication> findAllSteps();
 
 	List<DocumentsType> findAllDecmount();
 
 	List<WrkRefrentionalSetting> findAllReferral();
-	
-	
+
+	List<HrsSigns> findAllSigns();
+
+	TransferOwnership findTransferOwnershipByArchRecordId(Integer recordId);
+
+	Integer addTransferOnwerShipItems(TransferOwnership saveTransfer);
+
+	List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
+
+	void acceptTransOwnership(TransferOwnership transOwnership, Integer recordId, int value, String wrkAppComment,
+			int parseInt);
+
+	List<Article> getArticlesByUserIdWithoutCars(Integer userId);
+
+	void refuseTransOwnership(WrkApplicationId wrkId, Integer recordId, TransferOwnership transOwnership,
+			String wrkAppComment, int applicationPurpose);
+
 }

@@ -112,6 +112,7 @@ public class StockEntryBean {
 	private float total = 0f;
 	private SysProperties prop;
 	private boolean enableEditMgr;
+	private boolean serialPrintFlag;
 
 	@PostConstruct
 	public void init() {
@@ -162,6 +163,7 @@ public class StockEntryBean {
 			} else {
 				allPrint = false;
 			}
+
 		}
 		// forRealPage
 		setAllfinYears(stockServiceDao.getAllFinancialYear());
@@ -200,7 +202,9 @@ public class StockEntryBean {
 			}
 
 		}
-
+		if (stockEntryMaster.getStockFinEntryNo() != null) {
+			serialPrintFlag = true;
+		}
 	}
 
 	public void getMemoReceiptDetails() {
@@ -388,6 +392,7 @@ public class StockEntryBean {
 				stockEntryModel.setSTORE_DEAN_SIGN_DATE(memoReceiptModel.getStoreDeanSignDate());
 				stockEntryModel.setStoreMgr(memoReceiptModel.getStoreMgr());
 				stockEntryModel.setSTORE_DEAN_SIGN_DATE(memoReceiptModel.getStoreDeanSignDate());
+				stockEntryModel.setNotes(entryDet.getNotes());
 				stockEntryModelSub.setIndex(ndx++);
 				stockEntryDetails.add(stockEntryModelSub);
 				eleNbr = 1;
@@ -418,7 +423,7 @@ public class StockEntryBean {
 			stockEntryModel.setSTORE_DEAN_SIGN_DATE(memoReceiptModel.getStoreDeanSignDate());
 			stockEntryModel.setStoreMgr(memoReceiptModel.getStoreMgr());
 			stockEntryModel.setSTORE_DEAN_SIGN_DATE(memoReceiptModel.getStoreDeanSignDate());
-
+			stockEntryModel.setNotes(entryDet.getNotes());
 			stockEntryModel.setAmountInLetters(dataAccessService.getAmountInLetters(detTotal + ""));
 			stockEntryModel.setIndex(ndx++);
 
@@ -546,12 +551,19 @@ public class StockEntryBean {
 			if (StockInDetailList.size() > 0) {
 
 				try {
-					stockInMasterId = stockServiceDao.addStockIn(stockEntryMaster, currentUser.getUserId(),
-							StockInDetailList);
-					stockInDetails = new StockInDetails();
-					StockInDetailList = new ArrayList<>();
-					article = new Article();
-					MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
+					if (StockInDetailList.get(0).getPrice() != null
+							&& StockInDetailList.get(StockInDetailList.size() - 1) != null) {
+						stockInMasterId = stockServiceDao.addStockIn(stockEntryMaster, currentUser.getUserId(),
+								StockInDetailList);
+						stockInDetails = new StockInDetails();
+						StockInDetailList = new ArrayList<>();
+						article = new Article();
+						MsgEntry.addAcceptFlashInfoMessage("تم ارسال طلبك بنجاح");
+					} else {
+						MsgEntry.addErrorMessage("يجب تعديل أسعار الأصناف");
+
+						return "";
+					}
 				} catch (Exception e) {
 					MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 					e.printStackTrace();
@@ -609,8 +621,9 @@ public class StockEntryBean {
 		// stockEntryMaster.setSerialNumber(SerialNum);
 		// dataAccessService.save(stockEntryMaster);
 		// } else {
-		stockEntryMaster.setSerialNumber(SerialNum);
+		// stockEntryMaster.setSerialNumber(SerialNum);
 		dataAccessService.updateObject(stockEntryMaster);
+		serialPrintFlag = true;
 		// }
 		// MsgEntry.addInfoMessage("تم الحفظ");
 		System.out.println("New serial number is:---  " + stockEntryMaster.getSerialNumber() + " ---");
@@ -1032,6 +1045,14 @@ public class StockEntryBean {
 
 	public void setEnableEditMgr(boolean enableEditMgr) {
 		this.enableEditMgr = enableEditMgr;
+	}
+
+	public boolean isSerialPrintFlag() {
+		return serialPrintFlag;
+	}
+
+	public void setSerialPrintFlag(boolean serialPrintFlag) {
+		this.serialPrintFlag = serialPrintFlag;
 	}
 
 }

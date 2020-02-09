@@ -12,13 +12,14 @@
 			<h:form id="includeform">
 				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
-
-					<p:commandButton value="حفظ" icon="ui-icon-save"
-						action="#{stockEntryBean.save}" styleClass="cyan-btn">
-						<!-- 						<f:ajax listener="#{stockEntryBean.save}" -->
-						<!-- 							execute="finEntryNo noticeNo noticeDate buyno buyDate stockNO" -->
-						<!-- 							render="@form"></f:ajax> -->
-					</p:commandButton>
+					<h:panelGroup id="save_grb">
+						<p:commandButton id="save_btn" value="حفظ" icon="ui-icon-save"
+							action="#{stockEntryBean.save}" styleClass="cyan-btn">
+							<!-- 						<f:ajax listener="#{stockEntryBean.save}" -->
+							<!-- 							execute="finEntryNo noticeNo noticeDate buyno buyDate stockNO" -->
+							<!-- 							render="@form"></f:ajax> -->
+						</p:commandButton>
+					</h:panelGroup>
 				</div>
 				<br />
 				<div class="card card-w-title" dir="rtl">
@@ -288,7 +289,8 @@
 										<h:outputText value="#{storeItem.price}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{storeItem.price}" style="width:100%">
+										<p:inputText value="#{storeItem.price}" style="width:100%"
+											required="true" requiredMessage="أدخل السعر">
 											<p:ajax update="art_table status" />
 										</p:inputText>
 									</f:facet>

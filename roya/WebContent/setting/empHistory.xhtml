@@ -102,15 +102,49 @@
 								filterMatchMode="contains">										
 										#{empH.transferSalary}									
 							</p:column>
-
 							<p:column style="white-space: nowrap;" headerText="الجنسية"
 								width="15%" filterBy="#{empH.CATegoryName}"
-								filterMatchMode="contains">										
-										#{empH.CATegoryName}									
-							</p:column>
+								filterMatchMode="contains">
+																#{empH.CATegoryName}
+<!-- 								<p:cellEditor> -->
+<!-- 									<f:facet name="output"> -->
+<!-- 									</f:facet> -->
+<!-- 									<f:facet name="input"> -->
+<!-- 										<p:selectOneMenu value="#{empHistoryBean.CATegoryName}" -->
+<!-- 											style="width: 100%" filter="true" filterMatchMode="contains" -->
+<!-- 											id="newmgr"> -->
+<!-- 											<f:selectItem itemLabel="أختر الجنسية" itemValue="" -->
+<!-- 												noSelectionOption="true" /> -->
+<!-- 											<f:selectItems var="mgr" value="#{empHistoryBean.sysList}" -->
+<!-- 												itemValue="#{mgr.id}" itemLabel="#{mgr.nationalityName}" /> -->
+<!-- 										</p:selectOneMenu> -->
+<!-- 									</f:facet> -->
+<!-- 								</p:cellEditor> -->
 
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText=" المرتبة "
+								width="15%" filterBy="#{empH.classNumber}"
+								filterMatchMode="contains">
+								<h:outputText value="#{empH.classNumber}"></h:outputText>
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText=" الدرجة "
+								width="15%" filterBy="#{empH.rankNumber}"
+								filterMatchMode="contains">
+								<h:outputText value="#{empH.rankNumber}"></h:outputText>
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText=" رقم القرار "
+								width="15%" filterBy="#{empH.executeNo}"
+								filterMatchMode="contains">
+								#{empH.executeNo}
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText=" تاريخ القرار " width="15%"
+								filterBy="#{empH.executeDate}" filterMatchMode="contains">
+								#{empH.executeDate}
+							</p:column>
 							<p:column style="white-space: nowrap;" headerText="حالة الموظف"
-								width="15%" filterBy="#{empH.flag}" filterMatchMode="contains">
+								width="15%" filterBy="#{empH.flag == 1 ? 'غير نشط':'نشط'}"
+								filterMatchMode="contains">
 
 								<p:cellEditor>
 									<f:facet name="output">

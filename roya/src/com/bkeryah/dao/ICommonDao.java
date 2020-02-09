@@ -1086,7 +1086,10 @@ public interface ICommonDao {
 	public Car getCarByArticleId(int id);
 
 	public List<Car> getCarDetailsByArtId(Integer carArtId);
-//	List<WrkDept2> findAllAllDema();
+	// List<WrkDept2> findAllAllDema();
 
 	List<Article> getArticlesBySubGroupId(Integer carArtId);
+
+	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
+
 }

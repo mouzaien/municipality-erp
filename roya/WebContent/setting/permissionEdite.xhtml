@@ -150,12 +150,12 @@
 											</div>
 											<div class="ui-g-5">
 												<p:selectOneMenu value="#{promotionAskedBean.prom.userIdT}"
-													filter="true" id="updatemgr">
+												filter="true" filterMatchMode="contains" id="updatemgr">
 													<f:selectItem itemLabel="أختر الموظف" itemValue="" />
 													<f:selectItems var="mgr"
 														value="#{promotionAskedBean.empList}"
 														itemValue="#{mgr.userId}"
-														itemLabel="#{mgr.userId} || #{mgr.employeeName}" />
+														itemLabel="#{mgr.employeeName}" />
 												</p:selectOneMenu>
 											</div>
 											<div class="ui-g-1">
@@ -234,12 +234,12 @@
 									</div>
 									<div class="ui-g-5">
 										<p:selectOneMenu value="#{promotionAskedBean.prom.userId}"
-											style="width: 80%" filter="true" id="aupdatemgr">
+											style="width: 80%" filter="true" filterMatchMode="contains" id="aupdatemgr">
 											<f:selectItem itemLabel="أختر الموظف" itemValue="" />
 											<f:selectItems var="mgr"
 												value="#{promotionAskedBean.empList}"
 												itemValue="#{mgr.userId}"
-												itemLabel="#{mgr.userId} || #{mgr.employeeName}" />
+												itemLabel="#{mgr.employeeName}" />
 										</p:selectOneMenu>
 									</div>
 

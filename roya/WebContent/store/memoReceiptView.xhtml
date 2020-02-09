@@ -146,8 +146,13 @@ body .ui-dialog .ui-dialog-titlebar {
 			<p:outputLabel value="ملحوظة: يجب إدخل الرقم التسلسلي قبل الطباعة"
 				rendered="#{(stockEntryBean.enablePrint)}"></p:outputLabel>
 			<p:spacer height="10xp"></p:spacer>
+			<!-- 			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print " -->
+			<!-- 				ajax="false" -->
+			<!-- 				rendered="#{(stockEntryBean.enablePrint) and !(stockEntryBean.serialPrintFlag)}" -->
+			<!-- 				action="#{stockEntryBean.printMemoReport}" styleClass="purple-btn"></p:commandButton> -->
 			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
 				onclick="this.form.target='_blank'" ajax="false"
+				disabled="#{!(stockEntryBean.serialPrintFlag)}"
 				rendered="#{(stockEntryBean.enablePrint)}"
 				action="#{stockEntryBean.printMemoReport}" styleClass="purple-btn"></p:commandButton>
 		</h:panelGroup>
@@ -330,7 +335,7 @@ body .ui-dialog .ui-dialog-titlebar {
 							<p:commandButton id="noBtn" value="لا " styleClass="red-btn"
 								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{stockEntryBean.cancleUpdateSerialNum}"
-									process="@this" update="serialNumId" />
+									process="@this" update="serialNumId,printBtnGrp" />
 							</p:commandButton>
 						</div>
 					</h:panelGroup>

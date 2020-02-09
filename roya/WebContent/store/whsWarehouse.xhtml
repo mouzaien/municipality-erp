@@ -39,7 +39,6 @@
 					value="#{whsWarehouseBean.warehousesList}" widgetVar="cellemp"
 					rows="10" paginator="true" paginatorPosition="bottom"
 					emptyMessage="الجدول فارغ" rowIndexVar="index"
-					
 					selection="#{whsWarehouseBean.selectedWhsWarehouses}"
 					rowKey="#{wareh.storeNumber}"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -85,7 +84,7 @@
 					<p:column width="10%" headerText="تعديل" style="text-align: center">
 
 						<p:commandButton id="cBedit" value="تعديل" icon="fa fa-edit"
-							update="form:panelGroupEdit" 
+							update="form:panelGroupEdit"
 							action="#{whsWarehouseBean.showdledit(wareh)}">
 							<f:setPropertyActionListener value="#{wareh}"
 								target="#{whsWarehouseBean.selectedWhsWarehouses}" />
@@ -94,7 +93,7 @@
 					<p:column width="10%" headerText="حذف" style="text-align: center">
 
 						<p:commandButton id="cBdelete" value="حذف" icon="fa fa-delete"
-							styleClass="red-btn" update="@form"  immediate="true"
+							styleClass="red-btn" update="@form" immediate="true"
 							action="#{whsWarehouseBean.showdlDelete(wareh)}">
 							<f:setPropertyActionListener value="#{wareh}"
 								target="#{whsWarehouseBean.selectedWhsWarehouses}" />
@@ -154,28 +153,29 @@
 							<h:panelGrid columns="4" cellpadding="10" cellspacing="20"
 								style="margin-bottom:10px">
 								<h:outputLabel value="اسم المستودع  " />
-								<p:inputText id="name" width="100%" 
+								<p:inputText id="name" width="100%"
 									value="#{whsWarehouseBean.addEditWhsWarehouses.storeName}">
 								</p:inputText>
 								<!-- 							 -->
 								<h:outputLabel value="مدير المستودع " />
-								<p:selectOneMenu id="boss" required="true"
+								<p:selectOneMenu id="boss" required="true" filter="true"
+									filterMatchMode="contains"
 									value="#{whsWarehouseBean.addEditWhsWarehouses.storeBossId}">
 									<f:selectItems value="#{whsWarehouseBean.usersList}" var="user"
 										itemLabel="#{user.firstName}" itemValue="#{user.userId}" />
 								</p:selectOneMenu>
 								<h:outputLabel value="امين المستودع " />
-								<p:selectOneMenu id="dean" required="true"
+								<p:selectOneMenu id="dean" required="true" filter="true"
+									filterMatchMode="contains"
 									value="#{whsWarehouseBean.addEditWhsWarehouses.storeDeanId}">
 									<f:selectItems value="#{whsWarehouseBean.usersList}" var="user"
 										itemLabel="#{user.firstName}" itemValue="#{user.userId}" />
 								</p:selectOneMenu>
 								<h:outputLabel value="نوع المستودع " />
-								<p:selectOneRadio id="console" columns="1" 
-									value="#{whsWarehouseBean.addEditWhsWarehouses.strType}"
-									>
-									<f:selectItem itemLabel="رجيع" itemValue="1" />
-									<f:selectItem itemLabel="عادي" itemValue="2" />
+								<p:selectOneRadio id="console" columns="1"
+									value="#{whsWarehouseBean.addEditWhsWarehouses.strType}">
+									<f:selectItem itemLabel="رجيع" itemValue="2" />
+									<f:selectItem itemLabel="عادي" itemValue="1" />
 								</p:selectOneRadio>
 								<!-- 							<h:outputLabel value="محظور ؟ " /> -->
 								<!-- 							<p:selectBooleanCheckbox value="#{whsWarehouseBean.storeBlock}" /> -->

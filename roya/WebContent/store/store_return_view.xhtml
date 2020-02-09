@@ -8,11 +8,12 @@
 <body>
 
 	<h:panelGroup  rendered="#{(storeReturnBean.enableAccept)}">
+	<p:growl id="grwl" autoUpdate="true"></p:growl>
 		<div class="image-box-footer" align="left">
 			<p:commandButton value="#{msg['accept']}" immediate="true"
-				id="accpt_btn" disabled="#{!storeReturnBean.allowAccept}"
-				
+				id="accpt_btn" 
 				action="#{storeReturnBean.accept}" icon="ui-icon ui-icon-check">
+				<!-- 				disabled="#{!storeReturnBean.allowAccept}" -->
 			</p:commandButton>
 <!-- 			rendered="#{!storeReturnBean.allowAccept}" -->
 			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "

@@ -384,6 +384,11 @@
 			<redirect></redirect>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>transferOwnership</from-outcome>
+			<to-view-id>/store/transferOwnership.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>store_temporary_receipt</from-outcome>
 			<to-view-id>/store/store_temporary_receipt.xhtml</to-view-id>
 			<redirect></redirect>
@@ -450,6 +455,14 @@
 		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>user_roles</from-outcome>
+			<to-view-id>/setting/user_roles.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>roles</from-outcome>
 			<to-view-id>/setting/roles.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
@@ -1234,6 +1247,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -1247,6 +1261,14 @@
 		<navigation-case>
 			<from-outcome>referral</from-outcome>
 			<to-view-id>/setting/referral.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>userSigns</from-outcome>
+			<to-view-id>/setting/userSigns.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>

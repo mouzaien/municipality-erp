@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<style type="text/css">
+.ui-selectonemenu-filter-container {
+	Width: 100% !important;
+	direction: rtl;
+}
+
+.ui-selectonemenu-items-wrapper {
+	direction: rtl;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	padding-right: 35px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	text-align: right !important;
+}
+
+.card h1:first-child {
+	float: right;;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+h1 .fa {
+	color: #7CB342;
+}
+
+.card h1:first-child {
+	margin-top: 26px;
+	margin-right: 45px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align: right !important;
+	border-bottom: 1px solid #333;
+}
+
+.ui-datatable th.ui-state-default {
+	background: #607D8B !important;
+	color: #ffffff !important;
+	border-color: #607D8B;
+	height: 40px;
+}
+
+.outputText-Bold {
+	font-weight: bold;
+	font-size: 16px;
+	float: right;
+	padding-top: 5px;
+	margin-left: 32px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 250px;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	float: right;
+	width: 97%;
+	background-color: #472d985c;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	float: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+	float: right;;
+}
+
+.dashboard .user-card .user-card-content .user-detail ul li {
+	padding: 26px 24px !important;
+}
+</style>
+		<h:form id="includeform">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<!-- 			 <p:growl id="msgs" showDetail="true" /> -->
+			<br />
+
+			<br />
+			<br />
+
+			<div class="card card-w-title">
+				<h1 style="color: #7CB342; float: unset; text-align: center;">
+					إستعلام <span class="fa fa-search"></span>
+				</h1>
+				<br />
+				<p:dataTable id="emp" var="signs" dir="rtl"
+					value="#{signsBean.signsList}" widgetVar="cellemp" rows="13"
+					paginator="true" paginatorPosition="bottom"
+					emptyMessage="الجدول فارغ"
+					filteredValue="#{signsBean.filteredsignsList}"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<f:facet name="header">
+						<p:commandButton styleClass="Yellow" id="toggler" type="button"
+							value="إخفاء عمود" style="float:left;" icon="pi pi-align-justify" />
+						<p:columnToggler datasource="emp" trigger="toggler" />
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+					<p:column style="white-space: nowrap;" headerText="رقم" width="10%"
+						filterBy="#{signs.docId}" filterMatchMode="contains">										
+								#{signs.docId}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="رقم" width="10%"
+						filterBy="#{signs.arcRecordId}" filterMatchMode="contains">										
+								#{signs.arcRecordId}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="رقم" width="10%"
+						filterBy="#{signs.id}" filterMatchMode="contains">										
+								#{signs.id}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="الرقم الوظيفي"
+						width="10%" filterBy="#{signs.userId}" filterMatchMode="contains">										
+								#{signs.userId}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="التاريخ"
+						width="10%" filterBy="#{signs.date}" filterMatchMode="contains">										
+								#{signs.date}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="الوقت"
+						width="10%" filterBy="#{signs.signTime}"
+						filterMatchMode="contains">										
+								#{signs.signTime}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="رقم" width="10%"
+						filterBy="#{signs.stepId}" filterMatchMode="contains">										
+								#{signs.stepId}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="الآسم"
+						width="20%" filterBy="#{signs.jobName}" filterMatchMode="contains">										
+								#{signs.jobName}									
+							</p:column>
+					<p:column style="white-space: nowrap;" headerText="رقم الصنف"
+						width="10%" filterBy="#{signs.modelId}" filterMatchMode="contains">										
+								#{signs.modelId}									
+							</p:column>
+					<!-- 					<p:column style="white-space: nowrap; text-align: center;" -->
+					<!-- 						headerText="النشاط" width="20%" filterBy="#{signs.visible}" -->
+					<!-- 						filterMatchMode="contains"> -->
+					<!-- 						<h:outputText value="#{signs.visible == true ? 'غير نشط':'نشط'}"></h:outputText> -->
+					<!-- 					</p:column> -->
+
+					<p:column style="white-space: nowrap;" headerText="النشاط"
+						width="15%" filterBy="#{signs.visible == true ? 'غير نشط':'نشط'}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{signs.visible == true ? 'غير نشط':'نشط'}"></h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu id="trl" value="#{signs.visible}"
+									style="width:125px" dir="rtl">
+									<f:selectItem itemLabel="غير نشط" itemValue="false" />
+									<f:selectItem itemLabel="نشط" itemValue="true" />
+
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="تفاصيل" style="width:5%;text-align: Right">
+						<p:commandButton process="@this" update=":includeform:signDetail"
+							oncomplete="PF('myDialog').show()" icon="ui-icon-search"
+							title="View" modal="true">
+							<f:setPropertyActionListener value="#{signs}"
+								target="#{signsBean.signs}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<!--**************************************************************   -->
+				<p:dialog width="30%" header="البيانات" dir="rtl"
+					widgetVar="myDialog" modal="true" showEffect="fade"
+					hideEffect="fade" resizable="false">
+					<p:outputPanel id="signDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty signsBean.signsList}"
+							columnClasses="label,value">
+							<h:outputText value="رقم" />
+							<h:outputText value="#{signsBean.signs.docId}" />
+							<h:outputText value="رقم" />
+							<h:outputText value="#{signsBean.signs.arcRecordId}" />
+							<h:outputText value="رقم" />
+							<h:outputText value="#{signsBean.signs.id}" />
+							<h:outputText value="التاريخ" />
+							<h:outputText value="#{signsBean.signs.date}" />
+							<h:outputText value="الوقت" />
+							<h:outputText value="#{signsBean.signs.signTime}" />
+							<h:outputText value="رقم" />
+							<h:outputText value="#{signsBean.signs.stepId}" />
+							<h:outputText value="آسم الموظف  " />
+							<h:outputText value="#{signsBean.signs.jobName}" />
+							<h:outputText value="رقم الصنف" />
+							<h:outputText value="#{signsBean.signs.modelId}" />
+							<h:outputText value="النشاط" />
+							<h:outputText value="#{signs.visible == true ? 'غير نشط':'نشط'}" />
+							<h:outputText value="رقم" />
+							<h:outputText value="#{signsBean.signs.arcRecordId}" />
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

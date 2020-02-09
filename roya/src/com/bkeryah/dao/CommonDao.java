@@ -4738,4 +4738,16 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 		return criteria.list();
 	}
+
+	@Override
+	@Transactional
+	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo) {
+		List<InventoryMaster> mstrGardList = new ArrayList<InventoryMaster>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(InventoryMaster.class);
+		criteria.add(Restrictions.eq("inventoryId", gardId));
+		criteria.add(Restrictions.eq("strno", strNo));
+		mstrGardList = criteria.list();
+		return mstrGardList;
+	}
+
 }

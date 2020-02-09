@@ -34,6 +34,10 @@ public class ReturnStoreDetails {
 	
 	@Column(name = "ART_CODE")
 	private String articleCode;
+//	@Formula("(select a.Item_Unite_Id from ARTICLE a where a.id = ART_ID)")
+//	private Integer item_Unite_Id;
+//	@Formula("(select i.name from TDR_ITEMUNIT i where i.id = item_Unite_Id)")
+//	private String articleUnit;
 	
 	
 	@Formula("(select a.code from ARTICLE a where a.id = ART_ID)")
@@ -110,6 +114,22 @@ public class ReturnStoreDetails {
 	public void setArtCode(String artCode) {
 		this.artCode = artCode;
 	}
+
+//	public String getArticleUnit() {
+//		return articleUnit;
+//	}
+//
+//	public void setArticleUnit(String articleUnit) {
+//		this.articleUnit = articleUnit;
+//	}
+//
+//	public Integer getItem_Unite_Id() {
+//		return item_Unite_Id;
+//	}
+//
+//	public void setItem_Unite_Id(Integer item_Unite_Id) {
+//		this.item_Unite_Id = item_Unite_Id;
+//	}
 
 	// public String getArticleCode() {
 	// return articleCode;

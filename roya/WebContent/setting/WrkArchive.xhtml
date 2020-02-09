@@ -104,11 +104,11 @@
 								</div>
 							</h:panelGroup>
 						</p:dialog>
-						<!-- ************************************INSERT***************************************** -->
+						<!-- ************************************INSERT********************************************************** -->
 
-						<p:dialog header="إضافة مدير" widgetVar="Mo_ww" id="M_id" width="70%"
-							hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
-							resizable="false">
+						<p:dialog header="إضافة مدير" widgetVar="Mo_ww" id="M_id"
+							width="70%" hideEffect="fade" showEffect="explode" dir="rtl"
+							modal="true" resizable="false">
 							<h:panelGroup id="myaddDialog">
 								<div style="width: 100%">
 									<div class="ui-g">
@@ -126,12 +126,12 @@
 										</div>
 										<div class="ui-g-3">
 											<p:selectOneMenu value="#{mangementBean.id}"
-												style="width: 100%" filter="true" id="newmgr">
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="newmgr">
 												<f:selectItem itemLabel="أختر الموظف" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr" value="#{mangementBean.usersList}"
-													itemValue="#{mgr.userId}"
-													itemLabel="#{mgr.userId} | #{mgr.employeeName}" />
+													itemValue="#{mgr.userId}" itemLabel="#{mgr.employeeName}" />
 											</p:selectOneMenu>
 										</div>
 									</div>
@@ -171,12 +171,12 @@
 										</div>
 										<div class="ui-g-3">
 											<p:selectOneMenu value="#{mangementBean.mang.id}"
-												style="width: 100%" filter="true" id="updatemgr">
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="updatemgr">
 												<f:selectItem itemLabel="أختر الموظف" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr" value="#{mangementBean.usersList}"
-													itemValue="#{mgr.userId}"
-													itemLabel="#{mgr.userId} | #{mgr.employeeName}" />
+													itemValue="#{mgr.userId}" itemLabel="#{mgr.employeeName}" />
 											</p:selectOneMenu>
 										</div>
 									</div>

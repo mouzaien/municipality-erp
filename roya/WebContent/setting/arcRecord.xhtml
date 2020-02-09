@@ -144,7 +144,7 @@
 										</div>
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mgr" value="#{recordBean.record.applicationType}"
-												style="width: 100%" filter="true">
+												style="width: 100%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  المعاملة" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr" value="#{recordBean.typeList}"

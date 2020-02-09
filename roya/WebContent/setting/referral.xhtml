@@ -115,27 +115,27 @@
 							<h:panelGroup id="myaddDialog">
 								<div style="width: 100%">
 									<div class="ui-g">
-										<div class="ui-g-2">
+										<div class="ui-g-1">
 											<h:outputLabel styleClass="btxt" value="الإدارة" />
 										</div>
-										<div class="ui-g-3">
+										<div class="ui-g-5">
 											<p:inputText value="#{referralBean.deptName}"
 												style="width: 60%"></p:inputText>
 										</div>
-										<div class="ui-g-2">
+										<div class="ui-g-1">
 											<h:outputLabel styleClass="btxt" value="الإدارة" />
 										</div>
-										<div class="ui-g-3">
+										<div class="ui-g-5">
 											<p:inputText value="#{referralBean.deptTitle}"
 												style="width: 60%"></p:inputText>
 										</div>
-										<div class="ui-g-2">
+										<div class="ui-g-1">
 											<h:outputLabel styleClass="btxt" value="الموظف" />
 										</div>
-										<div class="ui-g-3">
+										<div class="ui-g-5">
 											<p:selectOneMenu id="mgr"
 												value="#{referralBean.referral.managerId}"
-												style="width: 80%" filter="true">
+												style="width: 80%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  الأسم" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgr" value="#{referralBean.userList}"
@@ -187,7 +187,7 @@
 										<div class="ui-g-5">
 											<p:selectOneMenu id="mgs"
 												value="#{referralBean.referral.managerId}"
-												style="width: 80%" filter="true">
+												style="width: 80%" filter="true" filterMatchMode="contains">
 												<f:selectItem itemLabel="أختر  الأسم" itemValue=""
 													noSelectionOption="true" />
 												<f:selectItems var="mgs" value="#{referralBean.userList}"

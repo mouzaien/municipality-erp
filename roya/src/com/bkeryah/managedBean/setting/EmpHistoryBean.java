@@ -46,19 +46,20 @@ public class EmpHistoryBean {
 	}
 
 	public void loadAllEmpsHis(AjaxBehaviorEvent E) {
-		System.out.println("empNo >>>>>> " + empNo);
-		if ("-1".equalsIgnoreCase(empNo)) {
-			empHistoryList = dataAccessService.findAllHrsEmpHistorical();
-		} else {
-			if (empNo != null && !empNo.isEmpty() && empNo.length() < 10) {
-				empHistoryList = dataAccessService.findEmpHistoricalByEmpNo(Integer.parseInt(empNo));
+		try {
+			System.out.println("empNo >>>>>> " + empNo);
+			if ("-1".equalsIgnoreCase(empNo)) {
+				empHistoryList = dataAccessService.findAllHrsEmpHistorical();
+			} else {
+				if (empNo != null && !empNo.isEmpty() && empNo.length() < 10) {
+					empHistoryList = dataAccessService.findEmpHistoricalByEmpNo(Integer.parseInt(empNo));
+				} else {
+					empHistoryList = new ArrayList<>();
+				}
 			}
-			else
-			{
-				empHistoryList = new ArrayList<>();
-			}
-		}
+		} catch (Exception e) {
 
+		}
 	}
 
 	public IDataAccessService getDataAccessService() {

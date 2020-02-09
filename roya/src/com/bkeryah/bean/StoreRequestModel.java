@@ -21,7 +21,7 @@ public class StoreRequestModel implements Serializable {
 
 	private String supplierName;
 	private String requesterName;
-
+	private Integer storeNo;
 	private List<StoreRequestModel> historyList;
 
 	public StoreRequestModel() {
@@ -168,6 +168,14 @@ public class StoreRequestModel implements Serializable {
 
 	public void setRequesterName(String requesterName) {
 		this.requesterName = requesterName;
+	}
+
+	public Integer getStoreNo() {
+		return storeNo;
+	}
+
+	public void setStoreNo(Integer storeNo) {
+		this.storeNo = storeNo;
 	}
 
 }

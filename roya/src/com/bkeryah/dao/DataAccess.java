@@ -545,7 +545,7 @@ public interface DataAccess {
 
 	List<InventoryModel> ListInventories(int strNo, Integer inventoryId, String inventoryDate);
 
-	List<StoreRequestModel> getArticleHistory(int articleId);
+	List<StoreRequestModel> getArticleHistory(int articleId, Integer strNO);
 
 	List<LicTrdMasterFile> getTrdMasterFileList();
 
@@ -603,4 +603,6 @@ public interface DataAccess {
 	public List<Article> getAllReturnStoreArticles(Integer strNo);
 
 	List<Car> getCarsDetailsBySubGroupId(Integer subGroupId);
+
+	List<Article> getArticlesByUserIdWithoutCars(Integer userId);
 }

@@ -117,7 +117,11 @@
 											action="projectExtract"></p:menuitem>
 									</secc:authorize>
 									<p:menuitem id="menu9_return" value="طلب إرجاع"
-										icon="ui-icon ui-icon-redo" action="store_return"></p:menuitem>
+										icon="ui-icon ui-icon-redo"  action="return"></p:menuitem>
+ 
+									<p:menuitem id="menu9_transfer" value="#{msg['transferOwnership']} "
+										icon="ui-icon ui-icon-redo" action="transferOwnership"></p:menuitem>
+
 									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
 
@@ -184,6 +188,12 @@
 								ifAnyGranted="ROLE_SUPPORT,ROLE_STOCK,ROLE_STORE,ROLE_ARTICLES">
 								<p:submenu id="store_menu" label="المستودع"
 									icon="ui-icon ui-icon-store">
+									<p:menuitem id="m_cars" value="#{msg['vehicles']} "
+										icon="ui-icon ui-icon-directions-car" action="vehicles">
+									</p:menuitem>
+									<p:menuitem id="ask_cars" value="#{msg['askvehicles']} "
+										icon="ui-icon ui-icon-directions-car" action="ask_vehicles">
+									</p:menuitem>
 									<secc:authorize
 										ifAnyGranted="ROLE_SUPPORT,ROLE_STOCK,ROLE_STORE">
 										<p:menuitem id="st_sm_inv" value="عرض الجرد"
@@ -315,12 +325,7 @@
 
 										<p:submenu id="st_Settingc" label="المركبات"
 											icon=" ui-icon ui-icon-directions-car">
-											<p:menuitem id="m_cars" value="#{msg['vehicles']} "
-												icon="ui-icon ui-icon-directions-car" action="vehicles">
-											</p:menuitem>
-											<p:menuitem id="ask_cars" value="#{msg['askvehicles']} "
-												icon="ui-icon ui-icon-directions-car" action="ask_vehicles">
-											</p:menuitem>
+
 											<p:menuitem id="sr_brand" value="المصنع"
 												icon="fa fa-building" action="carBrand">
 											</p:menuitem>
@@ -390,10 +395,13 @@
 										<p:submenu id="st_Setting4" label="العامة"
 											icon="fa fa-fw fa-cogs">
 											<p:menuitem id="s_users" value="المستخدمين"
-												icon="ui-icon ui-icon-people" action="emps_list">
+												icon="fa fa-search" action="emps_list">
 											</p:menuitem>
 											<p:menuitem id="s_referral" value="الإحالات"
 												icon="ui-icon ui-icon-people" action="referral">
+											</p:menuitem>
+											<p:menuitem id="s_sign" value="إستعلام" icon="fa fa-search"
+												action="userSigns">
 											</p:menuitem>
 											<p:menuitem id="sm_depts" value="الإدارات "
 												action="departments" icon="fa fa-sitemap" />

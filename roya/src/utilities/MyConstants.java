@@ -11,6 +11,8 @@ public class MyConstants {
 	public static final int CLEAN_STORE_DEAN = 17;
 	public static final int ELECTRIC_STORE_DEAN = 18;
 	public static final int PRINT_STORE_DEAN = 19;
+	public static final int SUSTAINABLE_RETURN_STORE_DEAN = 26;
+	public static final int RETURNED_CARS_STORE_DEAN = 24;
 	// models
 	public static final String PERMISSION = "P";
 	public static final String SPECIAL = "E";

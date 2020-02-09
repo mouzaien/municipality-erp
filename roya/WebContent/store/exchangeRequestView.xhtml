@@ -232,23 +232,27 @@ body .ui-dialog .ui-dialog-titlebar {
 			style="float: left; margin-bottom: 19px; margin-left: 3px"
 			styleClass="Deep-Orange-btn">
 		</p:commandButton>
-		<p:commandButton value="طباعة  الطلب" immediate="true" ajax="false"
-			icon="ui-icon ui-icon-print "
-			rendered="#{exchangeRequestBean.request.status=='Y'}"
-			action="#{exchangeRequestBean.printExchangeReportAction}"
-			onclick="this.form.target='_blank'"
-			style="float: left; margin-bottom: 19px; margin-left: 3px"
-			styleClass="purple-btn">
-		</p:commandButton>
-		<p:commandButton value="تسليم" immediate="true"
-			icon="ui-icon ui-icon-airport-shuttle"
-			rendered="#{exchangeRequestBean.enableRecive}"
-			action="#{exchangeRequestBean.deliverRequestAction}"
-			style="float: left; margin-bottom: 19px; margin-left: 3px"
-			styleClass="teal-btn">
-			<f:ajax execute="trans_TV:serialNumId"></f:ajax>
+		<h:panelGroup id="btn_grp">
+			<p:commandButton id="print" value="طباعة  الطلب" immediate="true"
+				ajax="false" icon="ui-icon ui-icon-print "
+				disabled="#{!(exchangeRequestBean.serialPrintFlag)}"
+				rendered="#{exchangeRequestBean.request.status=='Y'}"
+				action="#{exchangeRequestBean.printExchangeReportAction}"
+				onclick="this.form.target='_blank'"
+				style="float: left; margin-bottom: 19px; margin-left: 3px"
+				styleClass="purple-btn">
+			</p:commandButton>
+			<p:commandButton id="recive" value="تسليم" immediate="true"
+				icon="ui-icon ui-icon-airport-shuttle"
+				disabled="#{!(exchangeRequestBean.serialPrintFlag)}"
+				rendered="#{exchangeRequestBean.enableRecive}"
+				action="#{exchangeRequestBean.deliverRequestAction}"
+				style="float: left; margin-bottom: 19px; margin-left: 3px"
+				styleClass="teal-btn">
+				<f:ajax execute="trans_TV:serialNumId"></f:ajax>
 
-		</p:commandButton>
+			</p:commandButton>
+		</h:panelGroup>
 
 
 
@@ -626,7 +630,7 @@ body .ui-dialog .ui-dialog-titlebar {
 								styleClass="cyan-btn" immediate="true"
 								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{exchangeRequestBean.updateSerialNum}"
-									update="serialNumId" process="@this" />
+									update="serialNumId btn_grp" process="@this" />
 							</p:commandButton>
 
 							<p:spacer height="10px"></p:spacer>
@@ -634,7 +638,7 @@ body .ui-dialog .ui-dialog-titlebar {
 							<p:commandButton id="noBtn" value="لا " styleClass="red-btn"
 								onclick="PF('dlgditSerial').hide();">
 								<p:ajax listener="#{exchangeRequestBean.cancleUpdateSerialNum}"
-									process="@this" update="serialNumId" />
+									process="@this" update="serialNumId btn_grp" />
 							</p:commandButton>
 						</div>
 					</h:panelGroup>
