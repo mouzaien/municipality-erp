@@ -1092,4 +1092,6 @@ public interface ICommonDao {
 
 	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
 
+	public List<SysProperties> getDeansIdInSysProperties();
+
 }

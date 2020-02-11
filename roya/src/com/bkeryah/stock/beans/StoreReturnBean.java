@@ -21,12 +21,14 @@ import com.bkeryah.entities.HrScenario;
 import com.bkeryah.entities.HrsSigns;
 import com.bkeryah.entities.ReturnStore;
 import com.bkeryah.entities.ReturnStoreDetails;
+import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
+import utilities.MyConstants;
 import utilities.Utils;
 
 @ManagedBean
@@ -71,6 +73,9 @@ public class StoreReturnBean {
 	private Integer strNo = 0;
 	private Integer exchMasterId;
 	private boolean allowAccept;
+	private SysProperties prop;
+	private List<SysProperties> propsList = new ArrayList<SysProperties>();
+	private boolean enableEmpsList;
 
 	@PostConstruct
 	public void init() {
@@ -78,6 +83,16 @@ public class StoreReturnBean {
 		employerId = currentUser.getUserId();
 		articleList = dataAccessService.getArticlesByUserId(employerId);
 		setAllWareHouses(stockServiceDao.getStoreWharehouses(2));
+		// prop = (SysProperties)
+		// dataAccessService.findEntityById(SysProperties.class,
+		// MyConstants.WAREHOUSE_MANAGER);
+		propsList = dataAccessService.getDeansIdInSysProperties();
+		for (SysProperties sysProp : propsList) {
+			System.out.println(sysProp.getValue());
+			if (sysProp.getValue().equals(currentUser.getUserId().toString())) {
+				enableEmpsList = true;
+			}
+		}
 		// forPageView
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -544,5 +559,13 @@ public class StoreReturnBean {
 
 	public void setAllowAccept(boolean allowAccept) {
 		this.allowAccept = allowAccept;
+	}
+
+	public boolean isEnableEmpsList() {
+		return enableEmpsList;
+	}
+
+	public void setEnableEmpsList(boolean enableEmpsList) {
+		this.enableEmpsList = enableEmpsList;
 	}
 }

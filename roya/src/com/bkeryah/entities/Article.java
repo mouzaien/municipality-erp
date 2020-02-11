@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -50,18 +51,18 @@ public class Article {
 	private ItemUnite itemUnite;
 
 	@JoinColumn(insertable = false, updatable = false, name = "GROUP_ID")
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ArticleGroup articleGroup;
 
 	@JoinColumn(insertable = false, updatable = false, name = "sub_group_id")
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ArticleSubGroup articleSubGroup;// = new ArticleSubGroup();
 
-	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
 	private Set<ExchangeRequestDetails> exchangeRequestDetailsList;
 
 	@JoinColumn(insertable = false, updatable = false, name = "STRNO")
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private WhsWarehouses whsWarehouses;
 
 	@Transient
@@ -76,7 +77,8 @@ public class Article {
 	@Transient
 	private String exchMasterDate;
 	
-
+	@Formula("(select n.STRNAME from WHS_WAREHOUSES n where  n.STRNO = STRNO)")
+	private String strName;
 
 	public int getId() {
 		return id;
@@ -212,6 +214,14 @@ public class Article {
 
 	public void setExchMasterDate(String exchMasterDate) {
 		this.exchMasterDate = exchMasterDate;
+	}
+
+	public String getStrName() {
+		return strName;
+	}
+
+	public void setStrName(String strName) {
+		this.strName = strName;
 	}
 
 

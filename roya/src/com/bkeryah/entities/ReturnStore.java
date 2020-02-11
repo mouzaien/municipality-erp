@@ -30,6 +30,8 @@ public class ReturnStore {
 	private Integer serialNumber;
 	@Column(name = "STR_NO")
 	private Integer strNo;
+	@Column(name = "STATUS_Y_N")
+	private Integer status;
 
 	public Integer getStoreId() {
 		return storeId;
@@ -85,6 +87,14 @@ public class ReturnStore {
 
 	public void setStrNo(Integer strNo) {
 		this.strNo = strNo;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

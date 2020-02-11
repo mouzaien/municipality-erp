@@ -7,15 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -64,11 +61,10 @@ public class HrsEmpHistorical implements Serializable {
 	@Column(name = "MANDIN")
 	private Integer mandateInner;
 	@Column(name = "MANDout")
-	private Integer mandateOuter;
 	// نقل/ترقيه/كف يد/نقل بين الادارات...........
+	private Integer mandateOuter;
 	@Column(name = "RECTYPE")
 	private Integer RecordType;
-
 	@Column(name = "CBY")
 	private Integer createdBy;
 
@@ -141,9 +137,12 @@ public class HrsEmpHistorical implements Serializable {
 	// Nationalities
 	@Formula("(select n.NAME from SYS002 n where  n.ID = CATCOD)")
 	private String CATegoryName;
-	
-//	@Formula("(select u.DEPT_NAME from WRK_DEPT u where u.ID = DEPT_ID )")
-//	private String deptName;
+	// rankNumber
+//	@Formula("(select n.ID from SYS038 n where  n.EXCSRC = NAME)")
+//	private String exeCuteNum;
+
+	// @Formula("(select u.DEPT_NAME from WRK_DEPT u where u.EMPNO = DEPT_ID )")
+	// private String deptName;
 	// public Integer getEmpno() {
 	// return empno;
 	// }
@@ -519,5 +518,13 @@ public class HrsEmpHistorical implements Serializable {
 	public void setCATegoryName(String cATegoryName) {
 		CATegoryName = cATegoryName;
 	}
+
+//	public String getExeCuteNum() {
+//		return exeCuteNum;
+//	}
+//
+//	public void setExeCuteNum(String exeCuteNum) {
+//		this.exeCuteNum = exeCuteNum;
+//	}
 
 }

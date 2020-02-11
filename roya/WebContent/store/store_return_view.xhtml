@@ -7,22 +7,62 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <body>
 
-	<h:panelGroup  rendered="#{(storeReturnBean.enableAccept)}">
-	<p:growl id="grwl" autoUpdate="true"></p:growl>
+	<h:panelGroup rendered="#{(storeReturnBean.enableAccept)}">
+		<p:growl id="grwl" autoUpdate="true"></p:growl>
 		<div class="image-box-footer" align="left">
 			<p:commandButton value="#{msg['accept']}" immediate="true"
-				id="accpt_btn" 
-				action="#{storeReturnBean.accept}" icon="ui-icon ui-icon-check">
+				id="accpt_btn" action="#{storeReturnBean.accept}"
+				icon="ui-icon ui-icon-check">
 				<!-- 				disabled="#{!storeReturnBean.allowAccept}" -->
 			</p:commandButton>
-<!-- 			rendered="#{!storeReturnBean.allowAccept}" -->
+			<!-- 			rendered="#{!storeReturnBean.allowAccept}" -->
 			<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
 				onclick="this.form.target='_blank'" ajax="false"
 				action="#{storeReturnBean.print_documents_return}"
-				rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton>
+				rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn">
+			</p:commandButton>
+			<p:commandButton value="#{msg['refuse']}"
+				rendered="#{(storeReturnBean.enableAccept)}"
+				onclick="PF('dlgRefuse').show();" immediate="true"
+				styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+			</p:commandButton>
 		</div>
 	</h:panelGroup>
 	<ui:include src="store_return_include.xhtml"></ui:include>
+	
+	<p:dialog header="#{msg['add.explanation.confirmation']}"
+		widgetVar="dlgRefuse" height="300" width="500">
+
+		<h:panelGroup id="refPopup">
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-12"
+				layout="grid" styleClass="ui-panelgrid-blank form-group"
+				style="border:0px none; background-color:transparent; direction:rtl">
+				
+				<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+				<p:inputTextarea cols="30" rows="5" style="width:100%"
+					value="#{transferBean.wrkAppComment}">
+				</p:inputTextarea>
+			</p:panelGrid>
+			<br></br>
+			<br></br>
+			<div style="direction: initial;">
+
+				<p:commandButton value="#{msg['back']}" immediate="true"
+					icon="ui-icon ui-icon-keyboard-arrow-left"
+					onclick="PF('dlgRefuse').hide();" styleClass=" orange-btn">
+				</p:commandButton>
+				<p:spacer width="4"></p:spacer>
+				<!-- 	<button type="button" class="btn btn-green" -->
+				<!-- 	data-dismiss="modal">#{msg['back']}</button> -->
+				<p:commandButton value="#{msg['confirmation']}"
+					icon="ui-icon ui-icon-check" immediate="true"
+					action="#{transferBean.refuseAction}">
+					<f:ajax execute="refPopup"></f:ajax>
+				</p:commandButton>
+
+			</div>
+		</h:panelGroup>
+	</p:dialog>
 
 </body>
 

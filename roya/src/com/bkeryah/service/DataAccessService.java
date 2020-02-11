@@ -5561,8 +5561,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<StoreRequestModel> getArticleHistory(Integer articleId , Integer strNO) {
-		return dataAccessDAO.getArticleHistory(articleId,strNO);
+	public List<StoreRequestModel> getArticleHistory(Integer articleId, Integer strNO) {
+		return dataAccessDAO.getArticleHistory(articleId, strNO);
 	}
 
 	@Override
@@ -9155,9 +9155,19 @@ public class DataAccessService implements IDataAccessService {
 		application.setId(app.getId());
 		application.setApplicationPurpose(applicationPurpose);
 		application.getId().setStepId(application.getId().getStepId() + 1);
+		// IF()
+		Integer userTo;
 		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
-		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
-				transOwnership.getStrNo());
+		if (acceptCount == 3) {
+			ArcUsers user = (ArcUsers) commonDao.findEntityById(ArcUsers.class, transOwnership.getToUser());
+			userTo = user.getMgrId();
+		} else if (acceptCount == 5) {
+
+			userTo = transOwnership.getToUser();
+		} else {
+			userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
+					transOwnership.getStrNo());
+		}
 		application.setToUserId(userTo);
 		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
 
@@ -9189,6 +9199,18 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public List<Article> getArticlesByUserIdWithoutCars(Integer userId) {
 		return dataAccessDAO.getArticlesByUserIdWithoutCars(userId);
+	}
+
+	@Override
+	@Transactional
+	public List<Article> find3ohadByUserId(Integer userId) {
+		return dataAccessDAO.get3ohadByUserId(userId);
+	}
+
+	@Override
+	@Transactional
+	public List<SysProperties> getDeansIdInSysProperties() {
+		return commonDao.getDeansIdInSysProperties();
 	}
 
 }

@@ -50,6 +50,7 @@ public class CarModelBean {
 	}
 
 	// add الاضافة
+	//INSERT
 	public void saveModel() {
 		try {
 			if (model != null) {

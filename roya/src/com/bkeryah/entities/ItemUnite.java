@@ -22,7 +22,7 @@ public class ItemUnite {
 	private Integer id;
 	@Column(name = "ITEMUNITNAME")
 	private String name;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="itemUnite")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="itemUnite")
 	private List<Article> articles;
 	
 	public Integer getId() {

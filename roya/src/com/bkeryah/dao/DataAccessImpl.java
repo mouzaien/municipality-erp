@@ -7540,7 +7540,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		}
 		return memoReceiptList;
 	}
-	
+
 	@Override
 	public List<Article> getArticlesByUserId(Integer userId) {
 		System.out.println("user id " + userId);
@@ -7564,7 +7564,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				article.setUnitName(rs.getString("unit_name"));
 				article.setExchMasterId(rs.getInt("exmaster_id"));
 				article.setStrNo(rs.getInt("STRNO"));
-				
+
 				// article.setExchMasterDate(rs.getString("exmaster_date"));
 				articlesList.add(article);
 			}
@@ -7608,7 +7608,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				article.setUnitName(rs.getString("unit_name"));
 				article.setExchMasterId(rs.getInt("exmaster_id"));
 				article.setStrNo(rs.getInt("STRNO"));
-				
+
 				// article.setExchMasterDate(rs.getString("exmaster_date"));
 				articlesList.add(article);
 			}
@@ -7628,6 +7628,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		}
 		return articlesList;
 	}
+
 	@Override
 	public List<Article> getAllReturnStoreArticles(Integer strNo) {
 		ResultSet rs = null;
@@ -7721,4 +7722,47 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		return carsList;
 	}
 
+	@Override
+	public List<Article> get3ohadByUserId(Integer userId) {
+		System.out.println("user id " + userId);
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		List<Article> articlesList = new ArrayList<Article>();
+		Article article = new Article();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_all3ohad(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, userId);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+				article = new Article();
+				article.setId(rs.getInt("art_id"));
+				article.setName(rs.getString("art_name"));
+				article.setCode(rs.getString("art_code"));
+				article.setUnitName(rs.getString("unit_name"));
+				article.setExchMasterId(rs.getInt("exmaster_id"));
+				article.setStrNo(rs.getInt("STRNO"));
+
+				// article.setExchMasterDate(rs.getString("exmaster_date"));
+				articlesList.add(article);
+			}
+		} catch (Exception e) {
+			logger.error("get3ohadByUserId" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return articlesList;
+	}
 }

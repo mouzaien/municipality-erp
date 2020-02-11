@@ -14,6 +14,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.HrsEmpHistorical;
+import com.bkeryah.entities.Nationality;
+import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
@@ -25,15 +27,22 @@ public class EmpHistoryBean {
 	private IDataAccessService dataAccessService;
 	private List<HrsEmpHistorical> empHistoryList = new ArrayList<HrsEmpHistorical>();
 	private HrsEmpHistorical empHistory;
+	private List<Nationality> sysList = new ArrayList<Nationality>();
+	private Nationality sys;
+	private List<Sys038> rankList = new ArrayList<Sys038>();
 	private String empNo;
+	private Integer RecordType;
 	private List<User> usrsList;
+	private String CATegoryName;
 
 	@PostConstruct
 	public void init() {
 		usrsList = dataAccessService.getAllUsers();
+		sysList = dataAccessService.getallNationalities();
 	}
 
 	public void onRowEdit(RowEditEvent event) {
+
 		HrsEmpHistorical selectedItem = (HrsEmpHistorical) event.getObject();
 		FacesMessage msg = new FacesMessage("تم حفظ التعديل");
 		dataAccessService.updateObject(selectedItem);
@@ -100,6 +109,46 @@ public class EmpHistoryBean {
 
 	public void setUsrsList(List<User> usrsList) {
 		this.usrsList = usrsList;
+	}
+
+	public List<Nationality> getSysList() {
+		return sysList;
+	}
+
+	public void setSysList(List<Nationality> sysList) {
+		this.sysList = sysList;
+	}
+
+	public Nationality getSys() {
+		return sys;
+	}
+
+	public void setSys(Nationality sys) {
+		this.sys = sys;
+	}
+
+	public String getCATegoryName() {
+		return CATegoryName;
+	}
+
+	public void setCATegoryName(String cATegoryName) {
+		CATegoryName = cATegoryName;
+	}
+
+	public List<Sys038> getRankList() {
+		return rankList;
+	}
+
+	public void setRankList(List<Sys038> rankList) {
+		this.rankList = rankList;
+	}
+
+	public Integer getRecordType() {
+		return RecordType;
+	}
+
+	public void setRecordType(Integer recordType) {
+		RecordType = recordType;
 	}
 
 }

@@ -40,7 +40,7 @@
 						<div class="ui-g-2">
 
 							<p:selectBooleanCheckbox value="#{exchangeRequestBean.checkType}">
-								<p:ajax update="exchangeTable" process="@this "
+								<p:ajax update="exchangeTable,title" process="@this"
 									listener="#{exchangeRequestBean.loadAllexchangeRequestList}" />
 							</p:selectBooleanCheckbox>
 							<h:outputText value=" إظهار العُهد"></h:outputText>
@@ -269,8 +269,11 @@
 									<th style="width: 8%; text-align: center">العدد</th>
 									<th style="width: 8%; text-align: center">الوحدة</th>
 									<th style="width: 25%; text-align: center">المواصفات</th>
+									<!-- 									<h:panelGroup id="quantaties" -->
+									<!-- 										rendered="#{!(exchangeRequestBean.checkType)}"> -->
 									<th style="width: 8%; text-align: center">المتوفر</th>
 									<th style="width: 8%; text-align: center">المحجوز</th>
+									<!-- 									</h:panelGroup> -->
 									<th style="width: 8%; text-align: center">العدد النهائى
 										للصرف</th>
 									<!--	<th style="width: 8%;">العدد النهائى للتامين</th> -->
@@ -286,9 +289,13 @@
 										<td style="width: 8%; text-align: center">#{det.count}</td>
 										<td style="width: 8%; text-align: center">#{det.article.itemUnite.name}</td>
 										<td style="width: 25%; text-align: center">#{det.notes}</td>
+										<!-- 										<h:panelGroup id="qty-data" -->
+										<!-- 											rendered="#{!(exchangeRequestBean.checkType)}"> -->
 										<td style="width: 8%; text-align: center">#{det.qtyAvailable}</td>
 										<td style="width: 8%; text-align: center">#{det.qtyReserved}</td>
-										<td style="width: 8%; text-align: center">#{det.exchangeAtcualyCount}</td>
+										<!-- 										</h:panelGroup> -->
+
+										<td style="width: 8%; text-align: center;">#{det.exchangeAtcualyCount}</td>
 									</tr>
 								</ui:repeat>
 							</tbody>

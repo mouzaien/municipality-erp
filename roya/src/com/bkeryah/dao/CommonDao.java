@@ -4750,4 +4750,13 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return mstrGardList;
 	}
 
+	@Override
+	public List<SysProperties> getDeansIdInSysProperties() {
+		List<SysProperties> propsList = new ArrayList<SysProperties>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SysProperties.class);
+		criteria.add(Restrictions.like("name", "%DEAN%"));
+		propsList = criteria.list();
+		return propsList;
+	}
+
 }

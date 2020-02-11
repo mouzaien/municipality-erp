@@ -116,6 +116,7 @@ public class TransferOwnershipBean {
 		HrScenario scenario = (HrScenario) dataAccessService.findEntityById(HrScenario.class,
 				MailTypeEnum.TRANSFER_OWNERSHIP.getValue());
 
+		System.out.println("stepNum >> "+stepNum);
 		if (stepNum > 1) {
 			hideInputs = true;
 		}

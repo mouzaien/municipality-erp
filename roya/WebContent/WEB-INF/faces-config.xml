@@ -384,6 +384,12 @@
 			<redirect></redirect>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>el3ohad</from-outcome>
+			<to-view-id>/store/el3ohad.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>transferOwnership</from-outcome>
 			<to-view-id>/store/transferOwnership.xhtml</to-view-id>
 			<redirect></redirect>

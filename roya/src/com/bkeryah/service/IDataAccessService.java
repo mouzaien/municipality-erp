@@ -1829,4 +1829,8 @@ public interface IDataAccessService {
 	void refuseTransOwnership(WrkApplicationId wrkId, Integer recordId, TransferOwnership transOwnership,
 			String wrkAppComment, int applicationPurpose);
 
+	public List<SysProperties> getDeansIdInSysProperties();
+
+	List<Article> find3ohadByUserId(Integer userId);
+
 }

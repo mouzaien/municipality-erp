@@ -605,4 +605,6 @@ public interface DataAccess {
 	List<Car> getCarsDetailsBySubGroupId(Integer subGroupId);
 
 	List<Article> getArticlesByUserIdWithoutCars(Integer userId);
+
+	List<Article> get3ohadByUserId(Integer userId);
 }

@@ -3,99 +3,96 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="protection_card" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="878d7470-c189-4e4d-ad42-eadf044e8c65">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
-	<parameter name="exchange_req_no" class="java.lang.Integer"/>
+	<parameter name="artId" class="java.lang.Integer"/>
+	<parameter name="userId" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT
-	A.num,
-	A.name ,
-	A.code,
-	A.itemUnit ,
-	A.qtySarf ,
-	A.countS ,
-	A.notes ,
-	A.EXSPECIAL_NO,
-	A.sarfDate ,
-	A.usrName,
-	A.deptName,
-	A.R_SPECIAL_NO,
-	A.RETURN_QTY ,
-	A.R_datetransaction
+		<![CDATA[SELECT 
+reqs.artCode code ,reqs.artName name , reqs.UnitName itemUnit, reqs.srfQ qtySarf ,  reqs.srfDate sarfDate, reqs.SERIALNUMBER EXSPECIAL_NO ,reqs.strName strName,NVL(reqs.NOTES, '')  notes , reqs.EMPNAME usrName, reqs.DEPT_NAME deptName ,
+TRANSFER_OWNERSHIP.QTY transferQ , (reqs.srfQ - NVL(RETURN_STORE_DETAILS.QTY, 0) - NVL(TRANSFER_OWNERSHIP.QTY, 0) ) a3ohad ,
+RETURN_STORE_DETAILS.QTY RETURN_QTY , RETURN_STORE.RET_HDATE R_datetransaction,RETURN_STORE.SERIAL_NUMBER R_SPECIAL_NO
+from
+RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE, (SELECT * from TRANSFER_OWNERSHIP WHERE nvl(TRANSFER_OWNERSHIP.STATUS ,'N')='Y')TRANSFER_OWNERSHIP,
+(
+
+SELECT
+	TDR_INV_GNRL_REQ.INV_G_R_NO,
+	NVL(SERIALNUMBER, 0)SERIALNUMBER,
+	INV_G_R_DATE srfDate,
+	NOTES,
+	EMPNAME ,
+	NVL(ACCEPT_Y_N, 'P')status ,
+	art.NAME artName ,
+	art.code  artCode ,
+	DEPT_NAME,
+    reqdet.INIT_COUNT srfQ ,
+    TDR_ITEMUNIT.ITEMUNITNAME UnitName,
+    WHS_WAREHOUSES.STRNAME strName
+    
+
 FROM
+	TDR_INV_GNRL_REQ,
+	ARC_USERS ,
+	article art,
+	WHS_WAREHOUSES ,
+	TDR_ITEMUNIT,
+	WRK_DEPT ,
 	(
 	SELECT
-		rownum num ,
-		ar.code code ,
-		ar.name name ,
-		un.ITEMUNITNAME itemUnit,
-		det.init_count qtySarf ,
-		det.count countS,
-		det.notes notes,
-		GEN.SERIALNUMBER exSPECIAL_NO,
-		gen.INV_G_R_DATE sarfDate,
-		usr.FNAME usrName,
-		dept.DEPT_NAME deptName,
-		0 R_SPECIAL_NO,
-		0 RETURN_QTY ,
-		'_' R_datetransaction
+		DISTINCT s.doc_id id
 	FROM
-		ARTICLE ar,
-		TDR_ITEMUNIT un,
-		TDR_INV_REQ_DET det,
-		TDR_INV_GNRL_REQ gen,
-		ARC_USERS usr,
-		WRK_DEPT dept
+		arc_records r,
+		hrs_signs s,
+		tdr_inv_gnrl_req rq
 	WHERE
-		GEN.INV_G_R_NO = DET.INV_G_R_NO
-		AND DET.ITEMID = AR.ID
-		AND AR.ITEM_UNITE_ID = UN.ITEMUNITID
-		AND GEN.INV_G_R_NO = $P{exchange_req_no}
-		AND USR.USER_ID = GEN.USERID
-		AND DEPT.ID = USR.DEPT_ID
-UNION
+		rq.INV_G_R_NO = doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 237
+		-- app_type (sarf,....)
+		AND s.sign_step_id = 1 )ids,
+	(
 	SELECT
-		rownum+1 num ,
-		art.CODE code ,
-		art.NAME name,
-		un.ITEMUNITNAME itemUnit ,
-		0 qtySarf ,
-		0 countS ,
-		rsd.NOTES notes,
-		0 SPECIAL_NO,
-		'_' sarfDate ,
-		'_' usrName,
-		'_' detpName,
-		NVL(rs.SERIAL_NUMBER,-1) R_SPECIAL_NO,
-		NVL(rsd.QTY, 0) RETURN_QTY ,
-		rs.RET_HDATE R_datetransaction
+		INV_G_R_NO, INIT_COUNT ,
+		MIN(itemid)itemid
 	FROM
-		RETURN_STORE_DETAILS rsd ,
-		RETURN_STORE rs ,
-		TDR_ITEMUNIT un,
-		ARTICLE art
-	WHERE
-		rsd.EXCH_MASTER_ID = $P{exchange_req_no}
-		AND rsd.RET_ID = rs.ID
-		AND art.ITEM_UNITE_ID = UN.ITEMUNITID
-		AND rsd.ART_ID = art.ID)A
-ORDER BY
-	A.sarfDate]]>
+		TDR_INV_REQ_DET
+	GROUP BY
+		INV_G_R_NO , INIT_COUNT)reqdet
+WHERE
+	reqdet.INV_G_R_NO = ids.id
+	AND reqdet.itemid = art.ID
+	AND (art.ID =$P{artId} OR $P{artId} = -1)
+	AND WHS_WAREHOUSES.STRNO =TDR_INV_GNRL_REQ.STORE_NUMBER
+	AND  art.ITEM_UNITE_ID= TDR_ITEMUNIT.ITEMUNITID  
+	AND art.ART_TYPE = 2 	
+	AND ARC_USERS.DEPT_ID = WRK_DEPT.ID
+	AND (ARC_USERS.USER_ID = $P{userId} OR $P{userId} = -1 )
+	AND ids.id = TDR_INV_GNRL_REQ.INV_G_R_NO
+	AND TDR_INV_GNRL_REQ.USERID = ARC_USERS.USER_ID
+	AND TDR_INV_GNRL_REQ.ACCEPT_Y_N ='Y'
+ )reqs
+where
+reqs.INV_G_R_NO = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
+AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID 
+AND reqs.INV_G_R_NO = TRANSFER_OWNERSHIP.EXCH_MASTER_ID (+)
+ORDER BY reqs.artCode  ,  reqs.srfDate]]>
 	</queryString>
-	<field name="num" class="java.lang.Integer"/>
 	<field name="code" class="java.lang.Integer"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="itemUnit" class="java.lang.String"/>
 	<field name="qtySarf" class="java.lang.Integer"/>
+	<field name="a3ohad" class="java.lang.Integer"/>
 	<field name="RETURN_QTY" class="java.lang.Integer"/>
-	<field name="countS" class="java.lang.Integer"/>
+	<field name="transferQ" class="java.lang.Integer"/>
 	<field name="EXSPECIAL_NO" class="java.lang.Integer"/>
 	<field name="R_SPECIAL_NO" class="java.lang.Integer"/>
 	<field name="sarfDate" class="java.lang.String"/>
 	<field name="R_datetransaction" class="java.lang.String"/>
 	<field name="notes" class="java.lang.String"/>
+	<field name="strName" class="java.lang.String"/>
 	<field name="usrName" class="java.lang.String"/>
 	<field name="deptName" class="java.lang.String"/>
 	<variable name="total_count" class="java.lang.Integer" resetType="Column" incrementType="Column" calculation="Sum">
-		<variableExpression><![CDATA[$V{total_count}.sum( $F{qtySarf}, $F{RETURN_QTY} )]]></variableExpression>
+		<variableExpression><![CDATA[($F{qtySarf} - $F{RETURN_QTY} )- $F{transferQ}]]></variableExpression>
 	</variable>
 	<variable name="sum" class="java.lang.Integer"/>
 	<background>
@@ -444,7 +441,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{num}== null)?"":(""+$F{num}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($V{COLUMN_COUNT}== null)?"":(""+$V{COLUMN_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -466,7 +463,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{qtySarf}== null)?"":(""+$F{qtySarf}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{qtySarf}== null)?"۰":(""+$F{qtySarf}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -478,7 +475,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{RETURN_QTY}== null)?"":(""+$F{RETURN_QTY}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{RETURN_QTY}== null)?"۰":(""+$F{RETURN_QTY}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -490,6 +487,9 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
+				<textFieldExpression><![CDATA[($F{transferQ}== null)?"۰":(""+$F{transferQ}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="360" y="0" width="50" height="28" uuid="7ea48017-c609-402c-8edd-1690bae69395"/>
@@ -499,7 +499,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{countS}== null)?"":(""+$F{countS}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{a3ohad}== null)?"۰":(""+$F{a3ohad}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -511,7 +511,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{EXSPECIAL_NO}== null)?"":(""+$F{EXSPECIAL_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{EXSPECIAL_NO}== null)?"__":(""+$F{EXSPECIAL_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -523,7 +523,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{sarfDate}== null)?"":(""+$F{sarfDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{sarfDate}== null)?"__":(""+$F{sarfDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -535,7 +535,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{R_SPECIAL_NO}== null)?"":(""+$F{R_SPECIAL_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{R_SPECIAL_NO}== null)?"__":(""+$F{R_SPECIAL_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -547,7 +547,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{R_datetransaction}== null)?"":(""+$F{R_datetransaction}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{R_datetransaction}== null)?"__":(""+$F{R_datetransaction}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -577,7 +577,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(TRIM($F{notes} )==null ?"_":$F{notes}) + " "+$F{strName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -15,7 +15,6 @@
 
 		<ui:composition template="/template.xhtml">
 
-
 			<ui:define name="content">
 				<h:form id="includeform">
 					<!-- 					<p:growl autoUpdate="true" showDetail="false" /> -->
@@ -72,8 +71,6 @@
 								filterMatchMode="contains">										
 										#{empH.id.empno}									
 							</p:column>
-
-
 							<!-- 							<p:column style="white-space: nowrap;" headerText="المستودع" -->
 							<!-- 								width="15%" -->
 							<!-- 								filterBy="#{inventoryGardBean.getStoreById(invG.strno)}" -->
@@ -92,6 +89,25 @@
 								filterMatchMode="contains">										
 										#{empH.EXeCuteSouRCe}									
 							</p:column>
+							<p:column style="white-space: nowrap;" headerText="رقم الحركة "
+								width="15%" filterBy="#{empH.recordType}"
+								filterMatchMode="contains">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{empH.recordType}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu value="#{empH.recordType}"
+											style="width: 100%" filter="true" filterMatchMode="contains"
+											id="newmgs">
+											<f:selectItem itemLabel="أختر رقم الحركة"
+												noSelectionOption="true" />
+											<f:selectItems var="mgs" value="#{empHistoryBean.rankList}"
+												itemValue="#{mgs.id}" itemLabel="#{mgs.id}" />
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
 							<p:column style="white-space: nowrap;" headerText="تاريخ الحركة "
 								width="15%" filterBy="#{empH.executeDate}"
 								filterMatchMode="contains">										
@@ -105,22 +121,22 @@
 							<p:column style="white-space: nowrap;" headerText="الجنسية"
 								width="15%" filterBy="#{empH.CATegoryName}"
 								filterMatchMode="contains">
-																#{empH.CATegoryName}
-<!-- 								<p:cellEditor> -->
-<!-- 									<f:facet name="output"> -->
-<!-- 									</f:facet> -->
-<!-- 									<f:facet name="input"> -->
-<!-- 										<p:selectOneMenu value="#{empHistoryBean.CATegoryName}" -->
-<!-- 											style="width: 100%" filter="true" filterMatchMode="contains" -->
-<!-- 											id="newmgr"> -->
-<!-- 											<f:selectItem itemLabel="أختر الجنسية" itemValue="" -->
-<!-- 												noSelectionOption="true" /> -->
-<!-- 											<f:selectItems var="mgr" value="#{empHistoryBean.sysList}" -->
-<!-- 												itemValue="#{mgr.id}" itemLabel="#{mgr.nationalityName}" /> -->
-<!-- 										</p:selectOneMenu> -->
-<!-- 									</f:facet> -->
-<!-- 								</p:cellEditor> -->
-
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{empH.CATegoryName}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu value="#{empH.CATegoryId}"
+											style="width: 100%" filter="true" filterMatchMode="contains"
+											id="newmgr">
+											<f:selectItem itemLabel="أختر الجنسية"
+												noSelectionOption="true" />
+											<f:selectItems var="mgr" value="#{empHistoryBean.sysList}"
+												itemValue="#{mgr.nationalityId}"
+												itemLabel="#{mgr.nationalityName}" />
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column style="white-space: nowrap;" headerText=" المرتبة "
 								width="15%" filterBy="#{empH.classNumber}"
@@ -130,7 +146,22 @@
 							<p:column style="white-space: nowrap;" headerText=" الدرجة "
 								width="15%" filterBy="#{empH.rankNumber}"
 								filterMatchMode="contains">
-								<h:outputText value="#{empH.rankNumber}"></h:outputText>
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{empH.rankNumber}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu value="#{empH.rankNumber}"
+											style="width: 100%" filter="true" filterMatchMode="contains"
+											id="newrank">
+											<f:selectItem noSelectionOption="true" />
+											<f:selectItems var="rank"
+												value="#{empHistoryBean.empHistoryList}"
+												itemValue="#{rank.rankNumber}"
+												itemLabel="#{rank.rankNumber}" />
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column style="white-space: nowrap;" headerText=" رقم القرار "
 								width="15%" filterBy="#{empH.executeNo}"
@@ -145,18 +176,15 @@
 							<p:column style="white-space: nowrap;" headerText="حالة الموظف"
 								width="15%" filterBy="#{empH.flag == 1 ? 'غير نشط':'نشط'}"
 								filterMatchMode="contains">
-
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{empH.flag == 1 ? 'غير نشط':'نشط'}"></h:outputText>
-
 									</f:facet>
 									<f:facet name="input">
 										<p:selectOneMenu id="trl" value="#{empH.flag}"
 											style="width:125px" dir="rtl">
 											<f:selectItem itemLabel="غير نشط" itemValue="1" />
 											<f:selectItem itemLabel="نشط" itemValue="0" />
-
 										</p:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
