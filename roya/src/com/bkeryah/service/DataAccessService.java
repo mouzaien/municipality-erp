@@ -8972,5 +8972,16 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getAllReligions();
 
 	}
-	
+
+	@Override
+	public List<HrsEmpHistorical> findAllHrsEmpHistorical() {
+		List empHisList = commonDao.findAll(HrsEmpHistorical.class);
+		return empHisList;
+	}
+
+	@Override
+	public List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO) {
+		List empHisList = commonDao.getEmpHistoricalByEmpNo(empNO);
+		return empHisList;
+	}
 }

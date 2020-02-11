@@ -4729,4 +4729,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return loadAll(HRReligion.class);
 
 	}
+	
+	@Override
+	@Transactional
+	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		return criteria.list();
+	}
 }
