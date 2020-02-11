@@ -1136,5 +1136,13 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>retirement</from-outcome>
+			<to-view-id>/pages/models/retirement.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>
