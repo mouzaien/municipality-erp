@@ -8840,4 +8840,137 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.loadRetirement();
 	}
 	
+	@Override
+	@Transactional
+	public List<HRCountry> getAllCountry() {
+		return commonDao.getAllCountry();
+
+	}
+	@Override
+	@Transactional
+	public List<HRAbsence> getAllAbsence() {
+		return commonDao.getAllAbsence();
+
+	}
+	@Override
+	@Transactional
+	public List<HRStudyType> getAllStudyType() {
+		return commonDao.getAllStudyType();
+
+	}
+	@Override
+	@Transactional
+	public List<HRPhoneType> getAllPhoneType() {
+		return commonDao.getAllPhoneType();
+
+	}
+	@Override
+	@Transactional
+	public List<HREmpRanks> getAllEmpRanks() {
+		return commonDao.getAllEmpRanks();
+
+	}
+	@Override
+	@Transactional
+	public List<HREmpCat> getAllEmpCat() {
+		return commonDao.getAllEmpCat();
+
+	}
+	@Override
+	@Transactional
+	public List<HRLawSentence> getAllLawSentence() {
+		return commonDao.getAllLawSentence();
+
+	}
+	@Override
+	@Transactional
+	public List<HRCourse> getAllCourseTypes() {
+		return commonDao.getAllCourseTypes();
+
+	}
+	@Override
+	@Transactional
+	public List<HRSubjectStatus> getAllSubjectStatus() {
+		return commonDao.getAllSubjectStatus();
+
+	}
+	@Override
+	@Transactional
+	public List<HRBlood> getAllBloodTypes() {
+		return commonDao.getAllBloodTypes();
+
+	}
+	@Override
+	@Transactional
+	public List<HRNationality> getAllNationalities() {
+		return commonDao.getAllNationalities();
+
+	}
+	@Override
+	@Transactional
+	public List<HRMarStatus> getAllMarStatus() {
+		return commonDao.getAllMarStatus();
+
+	}
+	@Override
+	@Transactional
+	public List<HRPositionAction> getAllPositionAction() {
+		return commonDao.getAllPositionAction();
+
+	}
+	@Override
+	@Transactional
+	public List<HRTitles> getAllTitles() {
+		return commonDao.getAllTitles();
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfSpeciality> getAllQlfSpeciality() {
+		return commonDao.getAllQlfSpeciality();
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfMajors> getAllQlfMajors() {
+		return commonDao.getAllQlfMajors();
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfTypes> getAllQlfTypes() {
+		return commonDao.getAllQlfTypes();
+
+	}
+	@Override
+	@Transactional
+	public List<HROrgTypes> getAllOrgTypes() {
+		return commonDao.getAllOrgTypes();
+
+	}
+	@Override
+	@Transactional
+	public List<HRCity> getAllCities() {
+		return commonDao.getAllCities();
+
+	}
+	@Override
+	@Transactional
+	public List<HRArea> getAllAreas() {
+		return commonDao.getAllAreas();
+
+	}
+	@Override
+	@Transactional
+	public List<HRContacts> getAllContacts() {
+		return commonDao.getAllContacts();
+
+	}
+	@Override
+	@Transactional
+	public List<HRReligion> getAllReligions() {
+		return commonDao.getAllReligions();
+
+	}
+	
 }

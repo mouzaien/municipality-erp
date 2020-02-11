@@ -1,5 +1,7 @@
 package com.bkeryah.hr.managedBeans;
 
+import java.util.ArrayList;
+
 /**
  * @author Haitham
  *
@@ -29,9 +31,10 @@ public class RetirementLoanBean {
 	private Integer month;
 	private Integer bankType;
 	private List<HrsLoanType> banksType;
-	private List<LoanModel> usersLoan;
+	private List<LoanModel> usersLoan=new ArrayList<LoanModel>();
 	private List<RetirementModel> usersRetirement;
 	private Integer flag=0;
+	private int total;
 	
 	
 	@PostConstruct
@@ -44,13 +47,22 @@ public class RetirementLoanBean {
 	
 	
 	public void loanAction(){
+		usersLoan.clear();
 		flag = 1;
 		usersLoan=dataAccessService.loadUsersLoan(Integer.parseInt(year), month, bankType);
-		
+			for(int i=0;i<usersLoan.size();i++) {
+						total+=usersLoan.get(i).getPaidMonthly();
+					}
+			LoanModel totalNoead=new LoanModel();
+			totalNoead.setPaidMonthly(total);
+			totalNoead.setBankName("المجموع ");
+			usersLoan.add(totalNoead);
 	}
 	public void RetirementAction(){
 		flag=2;
 		usersRetirement=dataAccessService.loadRetirement();
+		
+		
 		
 	}
 	
@@ -165,5 +177,19 @@ public class RetirementLoanBean {
 
 	public void setFlag(Integer flag) {
 		this.flag = flag;
+	}
+
+
+
+
+	public int getTotal() {
+		return total;
+	}
+
+
+
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 }

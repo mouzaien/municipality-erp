@@ -33,7 +33,7 @@
 	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.27.9.24:1521:orcltest" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.27.9.4:1521:orcl" />
 		<property name="user" value="project" />
 		<property name="password" value="oraserverdb200" />
 		<property name="initialPoolSize" value="1" />
@@ -288,7 +288,29 @@
 				<value>com.bkeryah.entities.investment.ContractSubcategory</value>
 				<value>com.bkeryah.hr.entities.HrsVacSold</value>
 				<value>com.bkeryah.fng.entities.AutorizationSettings</value>
-
+				<value>com.bkeryah.entities.HRCountry</value>
+				<value>com.bkeryah.entities.HRAbsence</value>
+				<value>com.bkeryah.entities.HRStudyType</value>
+				<value>com.bkeryah.entities.HRPhoneType</value>
+				<value>com.bkeryah.entities.HREmpRanks</value>
+				<value>com.bkeryah.entities.HREmpCat</value>
+				<value>com.bkeryah.entities.HRLawSentence</value>
+				<value>com.bkeryah.entities.HRCourse</value>
+				<value>com.bkeryah.entities.HRSubjectStatus</value>
+				<value>com.bkeryah.entities.HRBlood</value>
+				<value>com.bkeryah.entities.HRNationality</value>
+				<value>com.bkeryah.entities.HRMarStatus</value>
+				<value>com.bkeryah.entities.HRPositionAction</value>
+				<value>com.bkeryah.entities.HRTitles</value>
+				<value>com.bkeryah.entities.HRQlfSpeciality</value>
+				<value>com.bkeryah.entities.HRQlfMajors</value>
+				<value>com.bkeryah.entities.HRQlfTypes</value>
+				<value>com.bkeryah.entities.HROrgTypes</value>
+				<value>com.bkeryah.entities.HRCity</value>
+				<value>com.bkeryah.entities.HRArea</value>
+				<value>com.bkeryah.entities.HRContacts</value>
+				<value>com.bkeryah.entities.HRReligion</value>
+				
 			</list>
 		</property>
 		<property name="hibernateProperties">

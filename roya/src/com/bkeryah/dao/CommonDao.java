@@ -65,96 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.bkeryah.bean.UserContactClass;
-import com.bkeryah.entities.ArcApplicationType;
-import com.bkeryah.entities.ArcAttach;
-import com.bkeryah.entities.ArcDocumentStruct;
-import com.bkeryah.entities.ArcPeople;
-import com.bkeryah.entities.ArcPeopleModel;
-import com.bkeryah.entities.ArcPeoplePic;
-import com.bkeryah.entities.ArcRecAtt;
-import com.bkeryah.entities.ArcRecordLinking;
-import com.bkeryah.entities.ArcRecords;
-import com.bkeryah.entities.ArcRecordsLink;
-import com.bkeryah.entities.ArcUsers;
-import com.bkeryah.entities.ArcUsersExtension;
-import com.bkeryah.entities.Article;
-import com.bkeryah.entities.ArticleGroup;
-import com.bkeryah.entities.ArticleSubGroup;
-import com.bkeryah.entities.BillIssueCash;
-import com.bkeryah.entities.BillIssueDetail;
-import com.bkeryah.entities.BillIssueDig;
-import com.bkeryah.entities.BillIssueDigCash;
-import com.bkeryah.entities.BillIssueDigDetail;
-import com.bkeryah.entities.BillIssueRubish;
-import com.bkeryah.entities.Charging;
-import com.bkeryah.entities.DepartmentArcRecords;
-import com.bkeryah.entities.DeptArcRecords;
-import com.bkeryah.entities.DeputationTraining;
-import com.bkeryah.entities.DocumentScenario;
-import com.bkeryah.entities.DocumentsType;
-import com.bkeryah.entities.EmployeeInitiation;
-import com.bkeryah.entities.FinEntity;
-import com.bkeryah.entities.FinFinancialYear;
-import com.bkeryah.entities.HrEmployeeVacation;
-import com.bkeryah.entities.HrScenario;
-import com.bkeryah.entities.HrsEmpHistorical;
-import com.bkeryah.entities.HrsEmpTerminate;
-import com.bkeryah.entities.HrsEmployeeTraining;
-import com.bkeryah.entities.HrsGovJob4;
-import com.bkeryah.entities.HrsJobHistorical;
-import com.bkeryah.entities.HrsMasterFile;
-import com.bkeryah.entities.HrsSalaryScale;
-import com.bkeryah.entities.HrsSalaryScaleDgrs;
-import com.bkeryah.entities.HrsSalaryScaleId;
-import com.bkeryah.entities.HrsScenarioDocument;
-import com.bkeryah.entities.HrsSigns;
-import com.bkeryah.entities.HrsTrainingMandate;
-import com.bkeryah.entities.HrsTrainingPlace;
-import com.bkeryah.entities.HrsUserAbsent;
-import com.bkeryah.entities.InventoryMaster;
-import com.bkeryah.entities.InventoryRecord;
-import com.bkeryah.entities.ItemUnite;
-import com.bkeryah.entities.LicTrdArchive;
-import com.bkeryah.entities.MainMenu;
-import com.bkeryah.entities.MasterFile;
-import com.bkeryah.entities.NationalIdPlaces;
-import com.bkeryah.entities.NationalIdType;
-import com.bkeryah.entities.Nationality;
-import com.bkeryah.entities.PayBank;
-import com.bkeryah.entities.PayBillDetails;
-import com.bkeryah.entities.PayLicBills;
-import com.bkeryah.entities.PayMaster;
-import com.bkeryah.entities.Project;
-import com.bkeryah.entities.ProjectContract;
-import com.bkeryah.entities.RecDepts;
-import com.bkeryah.entities.RewardInfo;
-import com.bkeryah.entities.SubMenu;
-import com.bkeryah.entities.SysCategoryEmployer;
-import com.bkeryah.entities.SysProperties;
-import com.bkeryah.entities.SysTitle;
-import com.bkeryah.entities.TechnicalResponse;
-import com.bkeryah.entities.TechnicalUsers;
-import com.bkeryah.entities.TenderItems;
-import com.bkeryah.entities.TradIssueType;
-import com.bkeryah.entities.UserRoles;
-import com.bkeryah.entities.VacationsType;
-import com.bkeryah.entities.WhsWarehouses;
-import com.bkeryah.entities.WrkApplication;
-import com.bkeryah.entities.WrkApplicationId;
-import com.bkeryah.entities.WrkComment;
-import com.bkeryah.entities.WrkCommentType;
-import com.bkeryah.entities.WrkDept;
-import com.bkeryah.entities.WrkInboxFolder;
-import com.bkeryah.entities.WrkJobs;
-import com.bkeryah.entities.WrkLetterFrom;
-import com.bkeryah.entities.WrkLetterTo;
-import com.bkeryah.entities.WrkProfile;
-import com.bkeryah.entities.WrkPurpose;
-import com.bkeryah.entities.WrkRefrentionalSetting;
-import com.bkeryah.entities.WrkRoles;
-import com.bkeryah.entities.WrkSection;
-import com.bkeryah.entities.WrkSpecialAddress;
-import com.bkeryah.entities.WrkUserFolderMail;
+import com.bkeryah.entities.*;
 import com.bkeryah.entities.investment.AnnoucementDetails;
 import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
@@ -4685,5 +4596,137 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return list;
 		
+	}
+	@Override
+	@Transactional
+	public List<HRCountry> getAllCountry() {
+		return loadAll(HRCountry.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRAbsence> getAllAbsence() {
+		return loadAll(HRAbsence.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRStudyType> getAllStudyType() {
+		return loadAll(HRStudyType.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRPhoneType> getAllPhoneType() {
+		return loadAll(HRPhoneType.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HREmpRanks> getAllEmpRanks() {
+		return loadAll(HREmpRanks.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HREmpCat> getAllEmpCat() {
+		return loadAll(HREmpCat.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRLawSentence> getAllLawSentence() {
+		return loadAll(HRLawSentence.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRCourse> getAllCourseTypes() {
+		return loadAll(HRCourse.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRSubjectStatus> getAllSubjectStatus() {
+		return loadAll(HRSubjectStatus.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRBlood> getAllBloodTypes() {
+		return loadAll(HRBlood.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRNationality> getAllNationalities() {
+		return loadAll(HRNationality.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRMarStatus> getAllMarStatus() {
+		return loadAll(HRMarStatus.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRPositionAction> getAllPositionAction() {
+		return loadAll(HRPositionAction.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRTitles> getAllTitles() {
+		return loadAll(HRTitles.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfSpeciality> getAllQlfSpeciality() {
+		return loadAll(HRQlfSpeciality.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfMajors> getAllQlfMajors() {
+		return loadAll(HRQlfMajors.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRQlfTypes> getAllQlfTypes() {
+		return loadAll(HRQlfTypes.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HROrgTypes> getAllOrgTypes() {
+		return loadAll(HROrgTypes.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRCity> getAllCities() {
+		return loadAll(HRCity.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRArea> getAllAreas() {
+		return loadAll(HRArea.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRContacts> getAllContacts() {
+		return loadAll(HRContacts.class);
+
+	}
+	@Override
+	@Transactional
+	public List<HRReligion> getAllReligions() {
+		return loadAll(HRReligion.class);
+
 	}
 }
