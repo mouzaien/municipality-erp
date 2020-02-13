@@ -104,35 +104,59 @@
 					width="70%" id="inputData2" closable="true" dir="rtl"
 					resizable="true" modal="true">
 					<h:panelGroup id="panelGroupEdit">
-						<p:fieldset width="70%" legend=" مستودع ">
-							<h:panelGrid columns="4" width="70%" cellpadding="10"
-								cellspacing="15" style="margin-bottom:10px">
-								<h:outputLabel value="اسم المستودع  " />
-								<p:inputText id="nameedit" width="100%"
-									value="#{whsWarehouseBean.stName}">
-								</p:inputText>
-								<h:outputLabel value="مدير المستودع " />
-								<p:selectOneMenu id="bossEdit" required="true"
-									value="#{whsWarehouseBean.stBossId}">
-									<f:selectItems value="#{whsWarehouseBean.usersList}" var="user"
-										itemLabel="#{user.firstName}" itemValue="#{user.userId}" />
-								</p:selectOneMenu>
-								<h:outputLabel value="امين المستودع " />
-								<p:selectOneMenu id="deanEdit" required="true"
-									value="#{whsWarehouseBean.stDeanId}">
-									<f:selectItems value="#{whsWarehouseBean.usersList}" var="user"
-										itemLabel="#{user.firstName}" itemValue="#{user.userId}" />
-								</p:selectOneMenu>
-								<h:outputLabel value="نوع المستودع " />
-								<p:selectOneRadio id="consoleEdit" columns="1"
-									value="#{whsWarehouseBean.stType}" unselectable="true">
-									<f:selectItem itemLabel="رجيع" itemValue="2" />
-									<f:selectItem itemLabel="عادي" itemValue="1" />
-								</p:selectOneRadio>
+						<p:fieldset width="100%" legend=" مستودع ">
+							<!-- 						<h:panelGrid columns="4" width="100%" cellpadding="10" -->
+							<!-- 							cellspacing="15" style="margin-bottom:10px"> -->
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="اسم المستودع  " />
+								</div>
+								<div class="ui-g-4">
+									<p:inputText id="nameedit" disabled="true"
+										style="width:55%;opacity:1;"
+										value="#{whsWarehouseBean.stName}">
+									</p:inputText>
+								</div>
+								<div class="ui-g-2">
+									<h:outputLabel value="مدير المستودع " />
+								</div>
+								<div class="ui-g-4">
+									<p:selectOneMenu id="bossEdit" required="true"
+										value="#{whsWarehouseBean.stBossId}">
+										<f:selectItems value="#{whsWarehouseBean.usersList}"
+											var="user" itemLabel="#{user.firstName}"
+											itemValue="#{user.userId}" />
+									</p:selectOneMenu>
+								</div>
+							</div>
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="امين المستودع " />
+								</div>
+								<div class="ui-g-4">
+									<p:selectOneMenu id="deanEdit" required="true"
+										value="#{whsWarehouseBean.stDeanId}">
+										<f:selectItems value="#{whsWarehouseBean.usersList}"
+											var="user" itemLabel="#{user.firstName}"
+											itemValue="#{user.userId}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<h:outputLabel value="نوع المستودع " />
+								</div>
+								<div class="ui-g-4">
+									<p:selectOneRadio id="consoleEdit" columns="1"
+										value="#{whsWarehouseBean.stType}" unselectable="true">
+										<f:selectItem itemLabel="رجيع" itemValue="2" />
+										<f:selectItem itemLabel="عادي" itemValue="1" />
+									</p:selectOneRadio>
+								</div>
 								<!-- 							<h:outputLabel value="محظور ؟ " /> -->
 								<!-- 							<p:selectBooleanCheckbox value="#{whsWarehouseBean.storeBlock}" /> -->
 
-							</h:panelGrid>
+								<!-- 						</h:panelGrid> -->
+							</div>
 							<div class="iamge-box-footer" align="left">
 								<p:commandButton value="#{msg['save']}" icon="fa fa-save"
 									action="#{whsWarehouseBean.savewhs}" update="whsDT">
@@ -144,6 +168,19 @@
 							</div>
 						</p:fieldset>
 					</h:panelGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+
 				</p:dialog>
 
 				<p:dialog position="center" widgetVar="whsdlAdd" responsive="true"

@@ -113,7 +113,7 @@ public class MyConstants {
 	public static final int IT_USERREQUEST_SUPP = 277;
 	public static final int SUPPORT_SECTIONID = 31;
 	public static final int SUPPORT_SEC_BOSS = 277;
-	public static final int SUPPORT_USER_ID = 118;
+	public static final int SUPPORT_USER_ID = 999;
 	public static final int ARCHIVE_USER_ID = 264;
 	public static final int TT_DIRECTOR_ID = 3;
 	public static final String CONTRACT_TYPE = "C";

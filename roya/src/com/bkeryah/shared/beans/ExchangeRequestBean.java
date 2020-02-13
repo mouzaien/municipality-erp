@@ -161,7 +161,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				}
 			}
 
-			if (mgrId.equals(currentUser.getUserId())) {
+			if (mgrId.equals(currentUser.getUserId()) && stepNum == 1) {
 				enableAccept = true;
 				enableRefuse = true;
 			} else if (currentUser.getUserId().equals(dataAccessService.getPropertiesValue(MyConstants.WAREHOUSE_MGR))
@@ -519,7 +519,10 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	public String printProtectionCardReportAction() {
 		String reportName = "/reports/protection_card.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("exchange_req_no", request.getGeneralrequestNumber());// "259306";
+		parameters.put("userId", request.getUserId());
+		parameters.put("artId", -1);
+		// parameters.put("exchange_req_no",
+		// request.getGeneralrequestNumber());// "259306";
 		// parameters.put("exchange_req_no", 455);// "259306";
 		Utils.printPdfReport(reportName, parameters);
 		return "";
@@ -549,13 +552,15 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			requestModel.setSupplierName(requestdets.getSupplierName());
 			requestModel.setRequesterName(requestdets.getRequesterName());
 			switch (requestModel.getTransactionCode()) {
-			case 2: case  5://// memoRecript
+			case 2:
+			case 5://// memoRecript
 				requestModel.setQtyInput(requestdets.getQtyOutput());
 				availablebQty += requestdets.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);
 				break;
-			case 3: case 6 :// requestChange
+			case 3:
+			case 6:// requestChange
 				requestModel.setQtyOutput(requestdets.getQtyOutput());
 				availablebQty = availablebQty - requestModel.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
@@ -765,7 +770,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		articleStore.setArticleCode(articleItem.getArticleCode());
 		articleStore.setArticleName(articleItem.getArticleName());
 		articleStore.setArticleUnite(articleItem.getArticleUnite());
-		articleStore.setHistoryList(dataAccessService.getArticleHistory(articleItem.getArticleId(),strNo));
+		articleStore.setHistoryList(dataAccessService.getArticleHistory(articleItem.getArticleId(), strNo));
 	}
 
 	public String refreshPage() {

@@ -12,10 +12,10 @@
 		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select num, a.code, a.name, a.ITEMUNITNAME, a.init_count, a.count, a.notes, a.SERIALNUMBER
+		<![CDATA[select num, a.code, a.name, a.ITEMUNITNAME, a.init_count, a.count,a.notes, a.SERIALNUMBER
 from
 (
-SELECT rownum num ,ar.code code, ar.name name, un.ITEMUNITNAME ITEMUNITNAME, det.init_count, det.count, det.notes notes, GEN.SERIALNUMBER SERIALNUMBER
+SELECT rownum num ,ar.code code, ar.name name, un.ITEMUNITNAME ITEMUNITNAME, det.init_count, det.count, nvl(det.notes ,' ') notes, GEN.SERIALNUMBER SERIALNUMBER
 
 
 FROM  ARTICLE ar, TDR_ITEMUNIT un, TDR_INV_REQ_DET det, TDR_INV_GNRL_REQ gen

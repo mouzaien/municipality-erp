@@ -67,10 +67,16 @@
 
 					</p:column>
 					
+					<p:column headerText="كيف حصلت عليها" width="20%"
+						filterBy="#{article.reqType}" filterMatchMode="contains">
+						<h:outputText value="#{article.reqType == 1 ?'صرف':'مناقلة'}"></h:outputText>
+					</p:column>
+					
 					<p:column headerText="المستودع " width="20%"
 						filterBy=" #{el3ohadBean.getStoreName(article.strNo)}" filterMatchMode="contains">
 					  #{el3ohadBean.getStoreName(article.strNo)}
 					</p:column>
+					
 					
 					<p:column width="10%" headerText="حذف" style="text-align: center">
 

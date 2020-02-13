@@ -61,12 +61,14 @@ public class HrsEmpHistorical implements Serializable {
 	@Column(name = "MANDIN")
 	private Integer mandateInner;
 	@Column(name = "MANDout")
-	// نقل/ترقيه/كف يد/نقل بين الادارات...........
 	private Integer mandateOuter;
+	// نقل/ترقيه/كف يد/نقل بين الادارات...........
 	@Column(name = "RECTYPE")
 	private Integer RecordType;
 	@Column(name = "CBY")
 	private Integer createdBy;
+	@Column(name = "USER_DEPT_ID")
+	private Integer userDept;
 
 	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -137,9 +139,17 @@ public class HrsEmpHistorical implements Serializable {
 	// Nationalities
 	@Formula("(select n.NAME from SYS002 n where  n.ID = CATCOD)")
 	private String CATegoryName;
+
+	///// name
+	@Formula("(select n.name from SYS038 n where  n.ID = RECTYPE)")
+	private String recNum; 
+	//ربط wrkdept>>
+//	@Formula("(select u.DEPT_NAME from WRK_DEPT u where u.EMPNO = DEPT_ID )")
+//	private String deptName;
+	
 	// rankNumber
-//	@Formula("(select n.ID from SYS038 n where  n.EXCSRC = NAME)")
-//	private String exeCuteNum;
+	// @Formula("(select n.ID from SYS038 n where n.EXCSRC = NAME)")
+	// private String exeCuteNum;
 
 	// @Formula("(select u.DEPT_NAME from WRK_DEPT u where u.EMPNO = DEPT_ID )")
 	// private String deptName;
@@ -519,12 +529,28 @@ public class HrsEmpHistorical implements Serializable {
 		CATegoryName = cATegoryName;
 	}
 
-//	public String getExeCuteNum() {
-//		return exeCuteNum;
-//	}
-//
-//	public void setExeCuteNum(String exeCuteNum) {
-//		this.exeCuteNum = exeCuteNum;
-//	}
+	public String getRecNum() {
+		return recNum;
+	}
+
+	public void setRecNum(String recNum) {
+		this.recNum = recNum;
+	}
+
+	public Integer getUserDept() {
+		return userDept;
+	}
+
+	public void setUserDept(Integer userDept) {
+		this.userDept = userDept;
+	}
+
+	// public String getExeCuteNum() {
+	// return exeCuteNum;
+	// }
+	//
+	// public void setExeCuteNum(String exeCuteNum) {
+	// this.exeCuteNum = exeCuteNum;
+	// }
 
 }

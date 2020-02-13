@@ -14,9 +14,13 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.HrsEmpHistorical;
+import com.bkeryah.entities.HrsGovJob4;
+import com.bkeryah.entities.HrsMasterFile;
 import com.bkeryah.entities.Nationality;
-import com.bkeryah.hr.entities.Sys038;
-import com.bkeryah.model.User;
+import com.bkeryah.entities.WrkDept;
+import com.bkeryah.entities.HrsSalaryScale;
+import com.bkeryah.entities.HrsSalaryScaleDgrs;
+import com.bkeryah.hr.entities.Sys035;
 import com.bkeryah.service.IDataAccessService;
 
 @ManagedBean(name = "empHistoryBean")
@@ -28,17 +32,27 @@ public class EmpHistoryBean {
 	private List<HrsEmpHistorical> empHistoryList = new ArrayList<HrsEmpHistorical>();
 	private HrsEmpHistorical empHistory;
 	private List<Nationality> sysList = new ArrayList<Nationality>();
+	private List<HrsGovJob4> jobCreationList = new ArrayList<HrsGovJob4>();
+	private List<WrkDept> deptList = new ArrayList<WrkDept>();
+	private List<HrsSalaryScale> rankList = new ArrayList<HrsSalaryScale>();
+	private List<HrsSalaryScaleDgrs> ranNumList = new ArrayList<HrsSalaryScaleDgrs>();
 	private Nationality sys;
-	private List<Sys038> rankList = new ArrayList<Sys038>();
+	private List<Sys035> recoList = new ArrayList<Sys035>();
 	private String empNo;
 	private Integer RecordType;
-	private List<User> usrsList;
+
+	private List<HrsMasterFile> usrsList;
 	private String CATegoryName;
 
 	@PostConstruct
 	public void init() {
-		usrsList = dataAccessService.getAllUsers();
+		usrsList = dataAccessService.getAllEmployeesList();
 		sysList = dataAccessService.getallNationalities();
+		recoList = dataAccessService.loadAllJobRec();
+		jobCreationList = dataAccessService.findAllJobCreat();
+		deptList = dataAccessService.findAllDema();
+		rankList = dataAccessService.loadJobRanks();    // المرتبة >> classNumber
+		ranNumList = dataAccessService.loadJobRaNum(); // الدرجة >> RankNumber
 	}
 
 	public void onRowEdit(RowEditEvent event) {
@@ -103,11 +117,11 @@ public class EmpHistoryBean {
 		this.empNo = empNo;
 	}
 
-	public List<User> getUsrsList() {
+	public List<HrsMasterFile> getUsrsList() {
 		return usrsList;
 	}
 
-	public void setUsrsList(List<User> usrsList) {
+	public void setUsrsList(List<HrsMasterFile> usrsList) {
 		this.usrsList = usrsList;
 	}
 
@@ -135,20 +149,52 @@ public class EmpHistoryBean {
 		CATegoryName = cATegoryName;
 	}
 
-	public List<Sys038> getRankList() {
-		return rankList;
-	}
-
-	public void setRankList(List<Sys038> rankList) {
-		this.rankList = rankList;
-	}
-
 	public Integer getRecordType() {
 		return RecordType;
 	}
 
 	public void setRecordType(Integer recordType) {
 		RecordType = recordType;
+	}
+
+	public List<Sys035> getRecoList() {
+		return recoList;
+	}
+
+	public void setRecoList(List<Sys035> recoList) {
+		this.recoList = recoList;
+	}
+
+	public List<HrsGovJob4> getJobCreationList() {
+		return jobCreationList;
+	}
+
+	public void setJobCreationList(List<HrsGovJob4> jobCreationList) {
+		this.jobCreationList = jobCreationList;
+	}
+
+	public List<WrkDept> getDeptList() {
+		return deptList;
+	}
+
+	public void setDeptList(List<WrkDept> deptList) {
+		this.deptList = deptList;
+	}
+
+	public List<HrsSalaryScale> getRankList() {
+		return rankList;
+	}
+
+	public void setRankList(List<HrsSalaryScale> rankList) {
+		this.rankList = rankList;
+	}
+
+	public List<HrsSalaryScaleDgrs> getRanNumList() {
+		return ranNumList;
+	}
+
+	public void setRanNumList(List<HrsSalaryScaleDgrs> ranNumList) {
+		this.ranNumList = ranNumList;
 	}
 
 }

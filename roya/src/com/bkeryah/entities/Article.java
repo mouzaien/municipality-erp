@@ -77,6 +77,9 @@ public class Article {
 	@Transient
 	private String exchMasterDate;
 	
+	@Transient
+	private Integer reqType;
+	
 	@Formula("(select n.STRNAME from WHS_WAREHOUSES n where  n.STRNO = STRNO)")
 	private String strName;
 
@@ -222,6 +225,14 @@ public class Article {
 
 	public void setStrName(String strName) {
 		this.strName = strName;
+	}
+
+	public Integer getReqType() {
+		return reqType;
+	}
+
+	public void setReqType(Integer reqType) {
+		this.reqType = reqType;
 	}
 
 

@@ -117,7 +117,7 @@
 											action="projectExtract"></p:menuitem>
 									</secc:authorize>
 									<p:menuitem id="menu9_return" value="طلب إرجاع"
-										icon="ui-icon ui-icon-redo" action="return"></p:menuitem>
+										icon="ui-icon ui-icon-redo" action="store_return"></p:menuitem>
 
 									<p:menuitem id="menu9_transfer"
 										value="#{msg['transferOwnership']} "
@@ -125,7 +125,7 @@
 
 									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
-
+									<p:menuitem id="el3ohad" value="العهد" action="el3ohad" />
 								</p:submenu>
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR">
@@ -227,7 +227,7 @@
 											<p:menuitem id="st_sm_exreq" value=" صرف المواد"
 												action="search_exchange_request"
 												icon="fa fa-fw fa-search-plus " />
-											<p:menuitem id="el3ohad" value="العهد" action="el3ohad" />
+
 											<p:menuitem id="st_sm_searchMemo" value="مذكرة استلام"
 												action="searchMemo" icon="fa fa-fw fa-search-plus " />
 											<p:menuitem id="st_sm_art" value="الاصناف"
@@ -422,8 +422,8 @@
 												action="role_desc" icon="ui-icon ui-icon-location-city" />
 											<p:menuitem id="sm_scenario" value="السيناريو"
 												action="scenario" icon="ui-icon ui-icon-library-books" />
-<!-- 											<p:menuitem id="sr_Roles" value="#{msg['roles']}" -->
-<!-- 												action="user_roles" icon="ui-icon ui-icon-vpn-key"></p:menuitem> -->
+											<!-- 											<p:menuitem id="sr_Roles" value="#{msg['roles']}" -->
+											<!-- 												action="user_roles" icon="ui-icon ui-icon-vpn-key"></p:menuitem> -->
 
 											<p:menuitem id="s_projects" value="المشاريع"
 												icon="ui-icon ui-icon-location-city"

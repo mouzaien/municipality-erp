@@ -7731,7 +7731,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		List<Article> articlesList = new ArrayList<Article>();
 		Article article = new Article();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_all3ohad(?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_alouhad(?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setInt(1, userId);
 			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
@@ -7739,6 +7739,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			rs = (ResultSet) callableStatement.getObject(2);
 			while (rs.next()) {
 				article = new Article();
+				article.setReqType(rs.getInt("reqtYPE"));
 				article.setId(rs.getInt("art_id"));
 				article.setName(rs.getString("art_name"));
 				article.setCode(rs.getString("art_code"));

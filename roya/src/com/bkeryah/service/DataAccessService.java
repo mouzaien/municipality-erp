@@ -134,6 +134,7 @@ import com.bkeryah.hr.entities.HrsVacSold;
 import com.bkeryah.hr.entities.HrsYearsPrime;
 import com.bkeryah.hr.entities.Sys012;
 import com.bkeryah.hr.entities.Sys018;
+import com.bkeryah.hr.entities.Sys035;
 import com.bkeryah.hr.entities.Sys037;
 import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.hr.entities.Sys051;
@@ -9211,6 +9212,37 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public List<SysProperties> getDeansIdInSysProperties() {
 		return commonDao.getDeansIdInSysProperties();
+	}
+
+	// thapet
+	@Override
+	public List<Sys035> loadAllJobRec() {
+		List jobRec = commonDao.findAll(Sys035.class);
+		return jobRec;
+	}
+
+	@Override
+	public List<HrsMasterFile> getAllEmployeesList() {
+		List employees = commonDao.findAll(HrsMasterFile.class);
+		return employees;
+	}
+
+	@Override
+	public List<HrsGovJob4> findAllJobCreat() {
+		List jobCreat = commonDao.findAll(HrsGovJob4.class);
+		return jobCreat;
+	}
+
+	@Override
+	public List<HrsSalaryScale> loadJobRanks() {
+		List jobRanks = commonDao.findAll(HrsSalaryScale.class);
+		return jobRanks;
+	}
+
+	@Override
+	public List<HrsSalaryScaleDgrs> loadJobRaNum() {
+		List jobRaNum = commonDao.findAll(HrsSalaryScaleDgrs.class);
+		return jobRaNum;
 	}
 
 }

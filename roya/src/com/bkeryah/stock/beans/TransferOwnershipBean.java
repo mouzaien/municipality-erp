@@ -247,7 +247,7 @@ public class TransferOwnershipBean {
 
 	public String accept() {
 
-		wrkAppComment = "accept from user "+currentUser.getEmployeeName();
+		wrkAppComment = Utils.loadMessagesFromFile("accept.operation")+currentUser.getEmployeeName();
 		applicationPurpose = "1";
 		dataAccessService.acceptTransOwnership(transOwnership, recordId, MailTypeEnum.TRANSFER_OWNERSHIP.getValue(),
 				wrkAppComment, Integer.parseInt(applicationPurpose.trim()));
