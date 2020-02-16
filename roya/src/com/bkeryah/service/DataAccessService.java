@@ -7786,6 +7786,11 @@ public class DataAccessService implements IDataAccessService {
 	public User getUserById(Integer userId) {
 		return (User) commonDao.findEntityById(User.class, userId);
 	}
+	@Override
+	@Transactional
+	public EstablishmentId getEstablishIdBySchool(String school) {
+		return (EstablishmentId) commonDao.getEstablishIdBySchool(EstablishmentId.class, school);
+	}
 
 	@Override
 	@Transactional
@@ -8971,6 +8976,21 @@ public class DataAccessService implements IDataAccessService {
 	public List<HRReligion> getAllReligions() {
 		return commonDao.getAllReligions();
 
+	}
+	@Override
+	@Transactional
+	public List<HrQualification> getAllQualification(){
+		return commonDao.getAllQualification();
+	}
+	@Override
+	@Transactional
+	public List<Establishment> getAllEstablishment(){
+		return commonDao.getAllEstablishment();
+	}
+	@Override
+	@Transactional
+	public Establishment getEstablishmentById(Integer id) {
+		return commonDao.getEstablishmentById(id);
 	}
 	
 }

@@ -1759,5 +1759,9 @@ public interface IDataAccessService {
 	public List<HRArea> getAllAreas();
 	public List<HRContacts> getAllContacts();
 	public List<HRReligion> getAllReligions();
+	public List<HrQualification> getAllQualification();
+	public List<Establishment> getAllEstablishment();
+	public EstablishmentId getEstablishIdBySchool(String school);
+	public Establishment getEstablishmentById(Integer id);
 	
 }

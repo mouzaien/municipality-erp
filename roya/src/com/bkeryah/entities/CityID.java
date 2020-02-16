@@ -19,10 +19,12 @@ public class CityID implements Serializable {
 	private String cityCode;
 	
 	public CityID(String countryCode,String areaCode,String cityCode) {
+		
 		this.countryCode=countryCode;
 		this.areaCode=areaCode;
 		this.cityCode=cityCode;
 	}
+	public CityID() {}
 
 	public String getCountryCode() {
 		return countryCode;

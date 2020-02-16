@@ -14,6 +14,15 @@ import javax.faces.context.Flash;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import com.bkeryah.entities.ArcPeople;
+import com.bkeryah.entities.Establishment;
+import com.bkeryah.entities.EstablishmentId;
+import com.bkeryah.entities.HRArea;
+import com.bkeryah.entities.HRCity;
+import com.bkeryah.entities.HRCountry;
+import com.bkeryah.entities.HRNationality;
+import com.bkeryah.entities.HRReligion;
+import com.bkeryah.entities.HRTitles;
+import com.bkeryah.entities.HrQualification;
 import com.bkeryah.entities.HrsEmpHistorical;
 import com.bkeryah.entities.HrsMasterFile;
 import com.bkeryah.entities.HrsSalaryScaleDgrs;
@@ -76,11 +85,20 @@ public class RecruitEmployer {
 	private Date firstServiceDate_G;
 	private String incomDate;
 	private Date incomDate_G;
-
+	private List<HRTitles> titles;
+	private List<HRCountry> countries;
+	private List<HRCity> cities;
+	private List<HrQualification> qualific;
+	private List<Establishment> establishment;
+	private Integer establishid;
+	private List<HRReligion> religions;
+	private List<HRNationality> nationalities;
+	private Establishment establish;
+	
 	@PostConstruct
 	public void init() {
 		try {
-
+			
 			listCategory = dataAccessService.loadCategoryEmployer();
 			listReligion = dataAccessService.loadReligionEmployer();
 			listQualified = dataAccessService.loadQualifiedemployer();
@@ -101,6 +119,13 @@ public class RecruitEmployer {
 			}
 			listScaleDgree = dataAccessService.loadScaleDgree(EmpHistoric.getRankNumber());
 			loadDetailClass();
+			titles=dataAccessService.getAllTitles();
+			countries=dataAccessService.getAllCountry();
+			cities=dataAccessService.getAllCities();
+			qualific=dataAccessService.getAllQualification();
+			establishment=dataAccessService.getAllEstablishment();
+			religions=dataAccessService.getAllReligions();
+			nationalities=dataAccessService.getAllNationalities();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -216,6 +241,9 @@ public class RecruitEmployer {
 	}
 
 	public String saveEmployer() throws ParseException {
+		establish=dataAccessService.getEstablishmentById(establishid);
+		hrmasfile.setSchool(establish.getSchool());
+		hrmasfile.setSchoolLoc(establish.getLocation());
 		EmpHistoric.setCATegoryId(hrmasfile.getCactegoryId());
 		EmpHistoric.setJobNumber(selectJob.getJobNumber());
 		EmpHistoric.setJobcode(selectJob.getJobCode());
@@ -691,6 +719,82 @@ public class RecruitEmployer {
 
 	public void setHigriMode2(boolean higriMode2) {
 		this.higriMode2 = higriMode2;
+	}
+
+	public List<HRTitles> getTitles() {
+		return titles;
+	}
+
+	public void setTitles(List<HRTitles> titles) {
+		this.titles = titles;
+	}
+
+	public List<HRCountry> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(List<HRCountry> countries) {
+		this.countries = countries;
+	}
+
+	public List<HRCity> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<HRCity> cities) {
+		this.cities = cities;
+	}
+
+	public List<HrQualification> getQualific() {
+		return qualific;
+	}
+
+	public void setQualific(List<HrQualification> qualific) {
+		this.qualific = qualific;
+	}
+
+	public List<Establishment> getEstablishment() {
+		return establishment;
+	}
+
+	public void setEstablishment(List<Establishment> establishment) {
+		this.establishment = establishment;
+	}
+
+	
+
+	
+
+	public List<HRReligion> getReligions() {
+		return religions;
+	}
+
+	public void setReligions(List<HRReligion> religions) {
+		this.religions = religions;
+	}
+
+	public List<HRNationality> getNationalities() {
+		return nationalities;
+	}
+
+	public void setNationalities(List<HRNationality> nationalities) {
+		this.nationalities = nationalities;
+	}
+
+	public Integer getEstablishid() {
+		return establishid;
+	}
+
+	public void setEstablishid(Integer establishid) {
+		this.establishid = establishid;
+	}
+
+	public Establishment getEstablish() {
+		return establish;
+	}
+
+	public void setEstablish(Establishment establish) {
+		this.establish = establish;
 	}
 
 }

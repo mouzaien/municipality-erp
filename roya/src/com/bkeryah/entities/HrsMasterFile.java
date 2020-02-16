@@ -37,10 +37,47 @@ public class HrsMasterFile {
 	private String thirdName;
 	@Column(name = "FTH_NAME_AR")
 	private String forthName;
+	@Column(name = "FST_NAME_EN")
+	private String firstNameAr;
+	@Column(name = "SND_NAME_EN")
+	private String secondNameAr;
+	@Column(name = "TRD_NAME_EN")
+	private String thirdNameAr;
+	@Column(name = "FTH_NAME_EN")
+	private String forthNameAr;
 	@Column(name = "BDAY_H")
 	private String birthDateHij;
 	@Column(name = "BDAY_G")
 	private String birthDateGrig;
+	@Column(name = "country_of_birth")
+	private String birthCountry;
+	@Column(name = "town_of_birth")
+	private String birthTown;
+	@Column(name = "school")
+	private String school;
+	@Column(name = "school_location")
+	private String schoolLoc;
+	@Column(name = "religions")
+	private String religion;
+	@Column(name = "CURR_INITIAL_BALANCE_REMAINING")
+	private Integer curInitBal;
+	@Column(name = "PRV_INITIAL_BALANCE_REMAINING")
+	private Integer PrvInitBal;
+	@Column(name = "INTIAL_BALANCE_USED_DAYS")
+	private Integer initBalUsdDays;
+	@Column(name = "DATE_FROM")
+	private String dateFrom;
+	@Column(name = "INITIAL_BALANCE_REMAINING")
+	private Integer initBalRemain;
+	@Column(name = "recruit_date_ministry")
+	private String recDateMinistry;
+	
+	@Column(name = "recruit_reason")
+	private String recruitReason;
+	@Column(name = "deputation_credit")
+	private Integer depCredit;
+	@Column(name = "SALARY_DATE")
+	private String salaryDate;
 
 	@Column(name = "RLGN")
 	private Integer employeReligion;
@@ -74,7 +111,8 @@ public class HrsMasterFile {
 
 	@Column(name = "CHILDS")
 	private Integer childsNumber;
-
+	@Column(name = "qualification")
+	private String qualific;
 	@Column(name = "NATCOD")
 	private Integer nationality;
 	@Column(name = "GRADPLACE")
@@ -83,6 +121,9 @@ public class HrsMasterFile {
 	private Integer specialization;
 	@Column(name = "GRADDRGREE")
 	private Integer qualification;
+	@Column(name = "NATIONALITY")
+	private String natNo;
+	
 
 	@Column(name = "WORK_TEL")
 	private String workPhone;
@@ -98,6 +139,8 @@ public class HrsMasterFile {
 	private Integer bankId;
 	@Column(name = "SAL_STP")
 	private Integer salaryStop;
+	@Column(name = "title")
+	private String title;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "BNKCOD", referencedColumnName = "ID", insertable = false, updatable = false)
 	private PayBank bank;
@@ -441,6 +484,174 @@ public class HrsMasterFile {
 
 	public void setFirstServiceDateStringSort(String firstServiceDateStringSort) {
 		this.firstServiceDateStringSort = firstServiceDateStringSort;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getFirstNameAr() {
+		return firstNameAr;
+	}
+
+	public void setFirstNameAr(String firstNameAr) {
+		this.firstNameAr = firstNameAr;
+	}
+
+	public String getSecondNameAr() {
+		return secondNameAr;
+	}
+
+	public void setSecondNameAr(String secondNameAr) {
+		this.secondNameAr = secondNameAr;
+	}
+
+	public String getThirdNameAr() {
+		return thirdNameAr;
+	}
+
+	public void setThirdNameAr(String thirdNameAr) {
+		this.thirdNameAr = thirdNameAr;
+	}
+
+	public String getForthNameAr() {
+		return forthNameAr;
+	}
+
+	public void setForthNameAr(String forthNameAr) {
+		this.forthNameAr = forthNameAr;
+	}
+
+	public String getBirthCountry() {
+		return birthCountry;
+	}
+
+	public void setBirthCountry(String birthCountry) {
+		this.birthCountry = birthCountry;
+	}
+
+	public String getBirthTown() {
+		return birthTown;
+	}
+
+	public void setBirthTown(String birthTown) {
+		this.birthTown = birthTown;
+	}
+
+	public String getQualific() {
+		return qualific;
+	}
+
+	public void setQualific(String qualific) {
+		this.qualific = qualific;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
+	}
+
+	public String getSchoolLoc() {
+		return schoolLoc;
+	}
+
+	public void setSchoolLoc(String schoolLoc) {
+		this.schoolLoc = schoolLoc;
+	}
+
+	public String getReligion() {
+		return religion;
+	}
+
+	public void setReligion(String religion) {
+		this.religion = religion;
+	}
+
+	public Integer getCurInitBal() {
+		return curInitBal;
+	}
+
+	public void setCurInitBal(Integer curInitBal) {
+		this.curInitBal = curInitBal;
+	}
+
+	public Integer getPrvInitBal() {
+		return PrvInitBal;
+	}
+
+	public void setPrvInitBal(Integer prvInitBal) {
+		PrvInitBal = prvInitBal;
+	}
+
+	public Integer getInitBalUsdDays() {
+		return initBalUsdDays;
+	}
+
+	public void setInitBalUsdDays(Integer initBalUsdDays) {
+		this.initBalUsdDays = initBalUsdDays;
+	}
+
+	public String getDateFrom() {
+		return dateFrom;
+	}
+
+	public void setDateFrom(String dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+
+	public Integer getInitBalRemain() {
+		return initBalRemain;
+	}
+
+	public void setInitBalRemain(Integer initBalRemain) {
+		this.initBalRemain = initBalRemain;
+	}
+
+	public String getRecruitReason() {
+		return recruitReason;
+	}
+
+	public void setRecruitReason(String recruitReason) {
+		this.recruitReason = recruitReason;
+	}
+
+	public Integer getDepCredit() {
+		return depCredit;
+	}
+
+	public void setDepCredit(Integer depCredit) {
+		this.depCredit = depCredit;
+	}
+
+	public String getSalaryDate() {
+		return salaryDate;
+	}
+
+	public void setSalaryDate(String salaryDate) {
+		this.salaryDate = salaryDate;
+	}
+
+	public String getRecDateMinistry() {
+		return recDateMinistry;
+	}
+
+	public void setRecDateMinistry(String recDateMinistry) {
+		this.recDateMinistry = recDateMinistry;
+	}
+
+	public String getNatNo() {
+		return natNo;
+	}
+
+	public void setNatNo(String natNo) {
+		this.natNo = natNo;
 	}
 
 }

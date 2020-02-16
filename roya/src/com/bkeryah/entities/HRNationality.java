@@ -9,27 +9,27 @@ import javax.persistence.Table;
 @Table(name ="XXX_HR_NATIONALITY")
 public class HRNationality {
 
-	
+																								
 	@Id
 	@Column(name ="NATIONALITY_CODE")
-	private String natCode;
-		
+	private String natCode;										
+	
 	@Column(name ="NATIONALITY_EN_NAME")
-	private String natEnName;
-		
+	private String natEnName;												
+	
 	@Column(name ="NATIONALITY_AR_NAME")
-	private String natArName;
-
-	public String getNatCode() {
-		return natCode;
+	private String natArName;									
+	
+	public String getNatCode() {													
+		return natCode;																
 	}
 
-	public void setNatCode(String natCode) {
-		this.natCode = natCode;
+	public void setNatCode(String natCode) {						
+		this.natCode = natCode;														
 	}
 
-	public String getNatEnName() {
-		return natEnName;
+	public String getNatEnName() {								
+		return natEnName;										
 	}
 
 	public void setNatEnName(String natEnName) {
