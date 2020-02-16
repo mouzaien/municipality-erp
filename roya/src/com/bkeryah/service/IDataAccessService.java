@@ -109,6 +109,7 @@ import com.bkeryah.hr.entities.HrsVacSold;
 import com.bkeryah.hr.entities.HrsYearsPrime;
 import com.bkeryah.hr.entities.Sys012;
 import com.bkeryah.hr.entities.Sys018;
+import com.bkeryah.hr.entities.Sys035;
 import com.bkeryah.hr.entities.Sys037;
 import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.hr.entities.Sys051;
@@ -1787,4 +1788,16 @@ public interface IDataAccessService {
 
 	public List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO);
 	
+	// thapet
+	
+	List<Sys035> loadAllJobRec();
+
+	List<HrsMasterFile> getAllEmployeesList();
+
+	List<HrsGovJob4> findAllJobCreat();
+
+	List<HrsSalaryScale> loadJobRanks();
+
+	 List<HrsSalaryScaleDgrs> loadJobRaNum();
+
 }

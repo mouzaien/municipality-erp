@@ -134,6 +134,7 @@ import com.bkeryah.hr.entities.HrsVacSold;
 import com.bkeryah.hr.entities.HrsYearsPrime;
 import com.bkeryah.hr.entities.Sys012;
 import com.bkeryah.hr.entities.Sys018;
+import com.bkeryah.hr.entities.Sys035;
 import com.bkeryah.hr.entities.Sys037;
 import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.hr.entities.Sys051;
@@ -180,7 +181,7 @@ import utilities.Utils;
 public class DataAccessService implements IDataAccessService {
 
 	private DataAccess dataAccessDAO;
-	
+
 	private ICommonDao commonDao;
 	// private HijriCalendarUtil hijri = new HijriCalendarUtil();
 
@@ -1229,7 +1230,7 @@ public class DataAccessService implements IDataAccessService {
 		}
 
 		int applicationId = commonDao.saveWrkApp(application, recordId).getApplicationId();
-		System.out.println("setwrkappid  "+applicationId);
+		System.out.println("setwrkappid  " + applicationId);
 		comment.setWRKAPPID(applicationId);
 		comment.setAppHdate(HijriCalendarUtil.findCurrentHijriDate());
 		comment.setWroteBy(Utils.findCurrentUser().getUserId());
@@ -1237,7 +1238,7 @@ public class DataAccessService implements IDataAccessService {
 		comment.setMarkedIn(HijriCalendarUtil.findCurrentHijriDate());
 		// comment.setFontSize(14);
 		comment.setSignType("S");
-		comment.setAppNo(arcRecord.getIncomeNo());   //?????
+		comment.setAppNo(arcRecord.getIncomeNo()); // ?????
 		comment.setWroteIn(hutil.findCurrentHijriDate());
 		// comment.setCommentType(1);
 		Integer commentId = save(comment);
@@ -1795,8 +1796,9 @@ public class DataAccessService implements IDataAccessService {
 
 		Integer fromId = user.getUserId();
 		Integer toId = user.getMgrId();
-		//SysProperties paramRecord = (SysProperties) findEntityById(SysProperties.class, 203);
-		//Integer toId = Integer.parseInt(paramRecord.getValue());
+		// SysProperties paramRecord = (SysProperties)
+		// findEntityById(SysProperties.class, 203);
+		// Integer toId = Integer.parseInt(paramRecord.getValue());
 		// Integer toId = Integer.parseInt(paramRecord.getValue());
 		if ((applicationType == MailTypeEnum.VACATION.getValue()) && (employer.getId() != fromId))
 			toId = (loadUserById(employer.getId())).getMgrId();
@@ -2062,7 +2064,7 @@ public class DataAccessService implements IDataAccessService {
 		if (visible) {
 			stockEntryMaster.setStockEntryStatus(MyConstants.YES);
 			updateStockEntry(stockEntryMaster);
-			//updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
 	}
 
@@ -2306,8 +2308,9 @@ public class DataAccessService implements IDataAccessService {
 	public void addBankAccountRequest(List<ArcAttach> attachs, int appType, HrLetterRequest request) {
 		Integer hrEmployeeIdInteger = getHrResponsibleId();
 		ArcRecords arcRecord = new ArcRecords();
-		arcRecord.setRecTitle(" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + " Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
-				+ Utils.findCurrentUser().getEmployeeName());
+		arcRecord.setRecTitle(
+				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ "
+						+ " Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  " + Utils.findCurrentUser().getEmployeeName());
 		arcRecord.setApplicationType(appType);
 		Integer recordId = createNewArcRecord(arcRecord, false, hrEmployeeIdInteger);
 		// Integer cc = getNextScenarioUserId(appType, WrkId, recordId,
@@ -2321,8 +2324,8 @@ public class DataAccessService implements IDataAccessService {
 		application.setToUserId(hrEmployeeIdInteger);
 
 		WrkApplicationId applicationId = createNewWrkApplication(recordId, application,
-				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ " + "  Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  "
-						+ Utils.findCurrentUser().getEmployeeName(),
+				" Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨ Ã˜Â§Ã™â€žÃ™â€° Ã˜Â­Ã˜Â³Ã˜Â§Ã˜Â¨ Ã˜Â¨Ã™â€ Ã™Æ’ "
+						+ "  Ã™â€¦Ã™â€šÃ˜Â¯Ã™â€¦ Ã™â€¦Ã™â€  " + Utils.findCurrentUser().getEmployeeName(),
 				true, null);
 
 		List<Integer> attachmentIds = addAttachments(attachs);
@@ -2397,22 +2400,22 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId,List<String> commentCopyReciever) {
-		System.out.println("00000000"+wrkApplication.getId().getApplicationId());
-		System.out.println("11111111"+wrkApplication.getId().getStepId());
+	public WrkComment signComment(WrkApplication wrkApplication, String signType, Integer recieverUserId,
+			List<String> commentCopyReciever) {
+		System.out.println("00000000" + wrkApplication.getId().getApplicationId());
+		System.out.println("11111111" + wrkApplication.getId().getStepId());
 		ArcRecords arcRecords = (ArcRecords) commonDao.findEntityById(ArcRecords.class,
 				wrkApplication.getArcRecordId());
 		arcRecords.setIncomeHDate(HijriCalendarUtil.findCurrentHijriDate());
 		if (arcRecords.getIncomeNo() == null)
 			arcRecords.setIncomeNo(commonDao.createIncomeNo());
-		
+
 		commonDao.update(arcRecords);
 
-		
 //		sendWrkApplication(wrkId, application, secretFlag, WrkCopyEmpRecievers,
 //				WrkCopyMngRecievers);
-	//	redirectWrkAppCopies(wrkId, WrkCopyEmpRecievers, WrkCopyMngRecievers);
-		
+		// redirectWrkAppCopies(wrkId, WrkCopyEmpRecievers, WrkCopyMngRecievers);
+
 		WrkComment wrkComment = (WrkComment) commonDao.findEntityById(WrkComment.class,
 				wrkApplication.getId().getApplicationId());
 		if ((wrkComment.getMarkedBy() != null) && (wrkComment.getMarkedBy() <= 0)) {
@@ -2440,7 +2443,7 @@ public class DataAccessService implements IDataAccessService {
 			recieverUserId = wrkComment.getMarkedBy();
 		newWrkApp.setToUserId(recieverUserId);
 		newWrkApp.setApplicationUsercomment("تم توقيع الخطاب بتاريخ " + HijriCalendarUtil.findCurrentHijriDate()
-		+ " بواسطة  " + Utils.findCurrentUser().getFirstName() + " يرجي تصدير المعاملة  ");
+				+ " بواسطة  " + Utils.findCurrentUser().getFirstName() + " يرجي تصدير المعاملة  ");
 		newWrkApp.setApplicationCreateDate(new Date());
 		newWrkApp.setApplicationCreateTime(HijriCalendarUtil.findCurrentTime());
 		newWrkApp.setHijriDate(HijriCalendarUtil.findCurrentHijriDate());
@@ -2449,20 +2452,22 @@ public class DataAccessService implements IDataAccessService {
 		newWrkApp.setApplicationIsVisible(1);
 		newWrkApp.setApplicationIsReply(1);
 		newWrkApp.setArcRecordId(wrkApplication.getArcRecordId());
-		List<Integer> commentCopyRec=new ArrayList<Integer>();
+		List<Integer> commentCopyRec = new ArrayList<Integer>();
 		for (String userid : commentCopyReciever) {
 			commentCopyRec.add(Integer.parseInt(userid));
 		}
-	
-		if (commentCopyReciever != null) {
-		//	for (String userid : commentCopyReciever) {
-				redirectWrkAppCopies(wrkApplication, commentCopyRec,null);
-		//		sendCommentCopy(Utils.findCurrentUser().getUserId(), Integer.parseInt(userid),
-			//			wrkComment.getWRKAPPID().toString(), wrkApplication.getId().getApplicationId().toString());
 
-	//		}
+		if (commentCopyReciever != null) {
+			// for (String userid : commentCopyReciever) {
+			redirectWrkAppCopies(wrkApplication, commentCopyRec, null);
+			// sendCommentCopy(Utils.findCurrentUser().getUserId(),
+			// Integer.parseInt(userid),
+			// wrkComment.getWRKAPPID().toString(),
+			// wrkApplication.getId().getApplicationId().toString());
+
+			// }
 		}
-		//redirectWrkAppCopies(newWrkApp, commentCopyReciever, null);
+		// redirectWrkAppCopies(newWrkApp, commentCopyReciever, null);
 		saveObject(newWrkApp);
 		return wrkComment;
 
@@ -2488,8 +2493,9 @@ public class DataAccessService implements IDataAccessService {
 		employeeVacation.setUsedNormalYearlyPeriod(commonDao.getUsedNormalYearlyPeriod(empNB));
 		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		employeeVacation.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
-				employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
+		employeeVacation.setRemainNormalYearlyPeriod(
+				getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
+						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		// .setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(employeeVacation.getVacationPeriodThisYear(),
 		// employeeVacation.getUsedNormalYearlyPeriod(),
@@ -2584,7 +2590,7 @@ public class DataAccessService implements IDataAccessService {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date now = new Date();
 		// String finishDate = sdf.format(now);
-		 String finishDate = "21/09/2017";
+		String finishDate = "21/09/2017";
 		try {
 			if (terminateDate != null)
 				finishDate = HijriCalendarUtil.ConvertHijriTogeorgianDate(terminateDate);
@@ -3015,8 +3021,8 @@ public class DataAccessService implements IDataAccessService {
 			updateObject(currentInfoForRequest);
 			saveHrsSigns(archRecordId, docId, true, "", Utils.findCurrentUser().getUserId(), docType);
 			copyOfHrDocumentAndSendReport(docId,
-					" Ã˜ÂªÃ™â€¦Ã˜Âª Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â© Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’ Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â§Ã™â€žÃ˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨  ", ownerOfDemand,
-					MyConstants.REPORT_SALARY);
+					" Ã˜ÂªÃ™â€¦Ã˜Âª Ã˜Â§Ã™â€žÃ™â€¦Ã™Ë†Ã˜Â§Ã™ï¿½Ã™â€šÃ˜Â© Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨Ã™Æ’ Ã˜Â§Ã™â€žÃ˜Â®Ã˜Â§Ã˜Âµ Ã˜Â¨Ã˜ÂªÃ˜Â­Ã™Ë†Ã™Å Ã™â€ž Ã˜Â§Ã™â€žÃ˜Â±Ã˜Â§Ã˜ÂªÃ˜Â¨  ",
+					ownerOfDemand, MyConstants.REPORT_SALARY);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
 
 		} else {
@@ -3660,7 +3666,7 @@ public class DataAccessService implements IDataAccessService {
 		arcRecord.setApplicationType(MailTypeEnum.PROJECTeXTRACT.getValue());
 
 		arcRecord.setRecTitle(Utils.loadMessagesFromFile("payment.number") + " " + projectExtract.getNumber()
-		+ "من  مشروع " + contract.getProject().getName() + " مقدم من  " + user.getEmployeeName());
+				+ "من  مشروع " + contract.getProject().getName() + " مقدم من  " + user.getEmployeeName());
 
 		int recordId = createNewArcRecord(arcRecord, false, toId);
 
@@ -3836,8 +3842,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	public Integer save(Object myObject) {
-		 if (myObject instanceof ArcRecords)
-		 ((ArcRecords) myObject).setId(createArcRecordsId());
+		if (myObject instanceof ArcRecords)
+			((ArcRecords) myObject).setId(createArcRecordsId());
 		return commonDao.save(myObject);
 	}
 
@@ -3983,8 +3989,9 @@ public class DataAccessService implements IDataAccessService {
 
 		ArcRecords arcRecord = new ArcRecords();
 		arcRecord.setApplicationType(MailTypeEnum.ACTUALEXCHANGE.getValue());
-		arcRecord.setRecTitle("  Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜Â§Ã™â€¦Ã˜Â± Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™ï¿½Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â¨Ã™â€ Ã˜Â§Ã˜Â¡ Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™â€¦Ã™Ë†Ã˜Â§Ã˜Â¯ Ã˜Â±Ã™â€šÃ™â€¦     "
-				+ actualDisbursement.getGeneralrequestNumber());
+		arcRecord.setRecTitle(
+				"  Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜Â§Ã™â€¦Ã˜Â± Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™ï¿½Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â¨Ã™â€ Ã˜Â§Ã˜Â¡ Ã˜Â¹Ã™â€žÃ™â€° Ã˜Â·Ã™â€žÃ˜Â¨ Ã˜ÂµÃ˜Â±Ã™ï¿½ Ã™â€¦Ã™Ë†Ã˜Â§Ã˜Â¯ Ã˜Â±Ã™â€šÃ™â€¦     "
+						+ actualDisbursement.getGeneralrequestNumber());
 		int recordId = createNewArcRecord(arcRecord, false, 280);
 
 		WrkApplication application = new WrkApplication();
@@ -4213,24 +4220,24 @@ public class DataAccessService implements IDataAccessService {
 			newRecordId = saveNewArcRecords(arcRecords, au);
 			wrkApplication.setApplicationIsVisible(0);
 			wrkApplication.setApplicationIsRead(1);
-	//		if (!isForSave) {
+			// if (!isForSave) {
 
-	//			List<WrkApplication> allRecordWrkApplications = commonDao
-	//					.findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
-	//			for (WrkApplication wrkApp : allRecordWrkApplications) {
-	//				wrkApp.setApplicationIsVisible(0);
-	//				wrkApp.setApplicationIsRead(1);
-	//				commonDao.update(wrkApp);
-	//			}
-				// updateWrkApplication(wrkApplication);
+			// List<WrkApplication> allRecordWrkApplications = commonDao
+			// .findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
+			// for (WrkApplication wrkApp : allRecordWrkApplications) {
+			// wrkApp.setApplicationIsVisible(0);
+			// wrkApp.setApplicationIsRead(1);
+			// commonDao.update(wrkApp);
+			// }
+			// updateWrkApplication(wrkApplication);
 
-			//	wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
+			// wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
 
-	//		}
-	//		Integer newRecordId = arcRecords.getId();
-	//		if (isForSave) {
-	//			newRecordId = saveNewArcRecords(arcRecords, au);
-	//		}
+			// }
+			// Integer newRecordId = arcRecords.getId();
+			// if (isForSave) {
+			// newRecordId = saveNewArcRecords(arcRecords, au);
+			// }
 			result = Integer.parseInt(arcRecords.getIncomeNo());
 
 			wrkApplication.setApplicationCreateDate(new Date());
@@ -4345,19 +4352,19 @@ public class DataAccessService implements IDataAccessService {
 		List<Integer> attachmentIds = addAttachments(attachs);
 
 //		if (!isForSave) {
-			if (wrkApplication.getId() != null) {
+		if (wrkApplication.getId() != null) {
 
-				List<WrkApplication> allRecordWrkApplications = commonDao
-						.findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
+			List<WrkApplication> allRecordWrkApplications = commonDao
+					.findAllWrkApplicationById(wrkApplication.getId().getApplicationId());
 
-				if (allRecordWrkApplications != null && allRecordWrkApplications.size() > 0)
-					for (WrkApplication wrkApp : allRecordWrkApplications) {
-						wrkApp.setApplicationIsVisible(0);
-						wrkApp.setApplicationIsRead(1);
-						commonDao.update(wrkApp);
-					}
-				wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
-			}
+			if (allRecordWrkApplications != null && allRecordWrkApplications.size() > 0)
+				for (WrkApplication wrkApp : allRecordWrkApplications) {
+					wrkApp.setApplicationIsVisible(0);
+					wrkApp.setApplicationIsRead(1);
+					commonDao.update(wrkApp);
+				}
+			wrkApplication.getId().setStepId(wrkApplication.getId().getStepId() + 1);
+		}
 
 //		}
 		AddNewInternalMemo(wrkApplication, arcRecord, attachmentIds);
@@ -4421,16 +4428,17 @@ public class DataAccessService implements IDataAccessService {
 	public void sendInternalMemoryForCopyInCharging(Charging charging) {
 		WrkApplication wrkApplication = new WrkApplication();
 		ArcRecords arcRecord = new ArcRecords();
-		wrkApplication.setApplicationUsercomment(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
-				+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
-				+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
+		wrkApplication
+				.setApplicationUsercomment(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
+						+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+						+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
-		);
+				);
 		wrkApplication.setApplicationPurpose(12);
 		wrkApplication.setToUserId(charging.getEmployeInChargingId());
-		arcRecord.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�      " + charging.getEmployeInChargingNameBefore() + "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  "
-				+ charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   " + charging.getChargingStratDate()
-				+ " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
+		arcRecord.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�      " + charging.getEmployeInChargingNameBefore()
+				+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+				+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 		);
 		List<Integer> attachmentIds = new ArrayList<>();
@@ -4455,16 +4463,16 @@ public class DataAccessService implements IDataAccessService {
 			else {
 				arcRecordCopy.setOutcomingNumFlag(false);
 			}
-			arcRecordCopy.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore() + "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  "
-					+ charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   " + charging.getChargingStratDate()
-					+ " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
+			arcRecordCopy.setRecTitle(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
+					+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+					+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 			);
 
 			WrkApplication wrkApplicationCopy = new WrkApplication(wrkApplication);
-			wrkApplicationCopy
-					.setApplicationUsercomment(" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore()
-							+ "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  " + charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
+			wrkApplicationCopy.setApplicationUsercomment(
+					" " + "  ØªÙ… ØªÙƒÙ„ÙŠÙ�    " + charging.getEmployeInChargingNameBefore() + "  Ø¨Ø¯Ù„Ø§ Ù…Ù†  "
+							+ charging.getEmployeInChargingNameAfter() + "  Ù�ÙŠ Ø§Ù„Ù�ØªØ±Ø© Ù…Ù†   "
 							+ charging.getChargingStratDate() + " Ø¥Ù„Ù‰ " + charging.getChargingEndDate()
 
 			);
@@ -4519,7 +4527,7 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public boolean redirectWrkAppCopies(WrkApplication application, List<Integer> WrkCopyEmpRecievers,
 			List<Integer> WrkCopyMngRecievers) {
-		
+
 		Integer newRecId = null;
 		try {
 			ArcRecords applicationRecord = (ArcRecords) findEntityById(ArcRecords.class, application.getArcRecordId());
@@ -4545,7 +4553,7 @@ public class DataAccessService implements IDataAccessService {
 
 				saveObject(arcRecAtt);
 			}
-			if (WrkCopyEmpRecievers.size() > 0 | (WrkCopyMngRecievers!=null&&WrkCopyMngRecievers.size() > 0)) {
+			if (WrkCopyEmpRecievers.size() > 0 | (WrkCopyMngRecievers != null && WrkCopyMngRecievers.size() > 0)) {
 				ArcRecordsLink arcRecordLink = new ArcRecordsLink();
 				arcRecordLink.setArcRecordParentId(newRecId);
 				arcRecordLink.setArcRrecordChildId(application.getArcRecordId());
@@ -4564,7 +4572,7 @@ public class DataAccessService implements IDataAccessService {
 					}
 
 				}
-			if (WrkCopyMngRecievers!=null&&WrkCopyMngRecievers.size() > 0)
+			if (WrkCopyMngRecievers != null && WrkCopyMngRecievers.size() > 0)
 				for (Object mgrid : WrkCopyMngRecievers) {
 					WrkApplication newApplication = new WrkApplication(application);
 					int ManagerId = Integer.parseInt(String.valueOf(mgrid));
@@ -4740,7 +4748,7 @@ public class DataAccessService implements IDataAccessService {
 	public void addChargingProcess(Charging charging) {
 		charging.setEmployeInChargingNameAfter(charging.getEmployeInChargingNameAfter() + " Ø§Ù„Ù…ÙƒÙ„Ù�");
 		save(charging);
-	//	sendInternalMemoryForCopyInCharging(charging);
+		// sendInternalMemoryForCopyInCharging(charging);
 		chargingEmp(charging.getEmployeInChargingId());
 
 	}
@@ -5348,8 +5356,8 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
-	public List<WrkCommentsClass> findCommentsByArcId(Integer wrkId,Integer stepId) {
-		return dataAccessDAO.findCommentsByArcId(wrkId,stepId);
+	public List<WrkCommentsClass> findCommentsByArcId(Integer wrkId, Integer stepId) {
+		return dataAccessDAO.findCommentsByArcId(wrkId, stepId);
 	}
 
 	@Override
@@ -7331,7 +7339,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public void saveLeavingEmployer(HrsEmpTerminate empTerminate, HrsEmpHistorical empHistorical, HrsJobHistorical jobHistorical) {
+	public void saveLeavingEmployer(HrsEmpTerminate empTerminate, HrsEmpHistorical empHistorical,
+			HrsJobHistorical jobHistorical) {
 		HrsEmpHistorical hrsNewEmpHistorical = new HrsEmpHistorical();
 		HrsJobCreation creation = commonDao.loadJobCreation(empHistorical.getJobNumber(), empHistorical.getJobcode());
 		creation.setJobstatus(1);
@@ -7343,9 +7352,9 @@ public class DataAccessService implements IDataAccessService {
 //		hrsNewJobHistorical = jobHistorical;
 		empHistorical.setFlag(0);
 		empHistoricalId.setEmpno(empHistorical.getId().getEmpno());
-		empHistoricalId.setStepId((empHistorical.getId().getStepId()+1));
+		empHistoricalId.setStepId((empHistorical.getId().getStepId() + 1));
 		hrsNewEmpHistorical.setId(empHistoricalId);
-		
+
 //		hrsNewEmpHistorical.setCATegoryId(empHistorical.getCATegoryId());
 		hrsNewEmpHistorical.setIncomNo(empTerminate.getIncomeNumber());
 		hrsNewEmpHistorical.setIncomDate(empTerminate.getIncomeDateHijri());
@@ -7365,14 +7374,14 @@ public class DataAccessService implements IDataAccessService {
 //		hrsNewEmpHistorical.setRankNumber(empHistorical.getRankNumber());
 //		hrsNewEmpHistorical.setClassNumber(empHistorical.getClassNumber());
 		jobHistorical.setEmployerNumber(null);
-		jobHistorical.setSerial(jobHistorical.getSerial()+1);
+		jobHistorical.setSerial(jobHistorical.getSerial() + 1);
 		jobHistorical.setClassCode(null);
 		jobHistorical.setIncomeNumber(empTerminate.getIncomeNumber());
 		jobHistorical.setExecuteNumber(empTerminate.getExecutedNumber().toString());
 		jobHistorical.setExecutedate(empTerminate.getExecutedDate());
 		jobHistorical.setJobStatus(1);
 		jobHistorical.setJobAction(9);
-		
+
 		commonDao.saveObject(empTerminate);
 		commonDao.saveObject(hrsNewEmpHistorical);
 		commonDao.saveObject(jobHistorical);
@@ -7478,7 +7487,8 @@ public class DataAccessService implements IDataAccessService {
 		}
 		if ((tradType == 1 || tradType == 2)
 				&& (marketArea == 0 || advArea == 0 || issueYears == 0 || activityType == 0)) {
-			MsgEntry.addErrorMessage("Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª  Ø§Ù„Ù†Ø´Ø§Ø·  / Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø© / Ø§Ù„Ù…Ø­Ù„  / Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± ");
+			MsgEntry.addErrorMessage(
+					"Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª  Ø§Ù„Ù†Ø´Ø§Ø·  / Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø© / Ø§Ù„Ù…Ø­Ù„  / Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± ");
 			return null;
 		}
 
@@ -7561,7 +7571,8 @@ public class DataAccessService implements IDataAccessService {
 			return null;
 		}
 		if ((issueType == 2) && (advArea == 0 || issueYears == 0 || area == 0)) {
-			MsgEntry.addErrorMessage("Ø£Ø¯Ø®Ù„ Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù…Ø­Ø·Ø© - Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± - Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø©");
+			MsgEntry.addErrorMessage(
+					"Ø£Ø¯Ø®Ù„ Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù…Ø­Ø·Ø© - Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø¥ØµØ¯Ø§Ø± - Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ù„ÙˆØ­Ø©");
 			return null;
 		}
 		List<BillIssueRubish> billCashRubish = new ArrayList<>();
@@ -7704,9 +7715,7 @@ public class DataAccessService implements IDataAccessService {
 			int currentDebit, HrEmployeeVacation employeeVacation) {
 		// HrsSumVacation hrsSumVacation = commonDao.listsumbyEmp(empNB);
 		// /* Ø±ØµÙŠØ¯ Ø§Ù„Ø§Ø¬Ø§Ø²Ø§Øª Ù…Ù†Ø° Ø¨Ø¯Ø¡ Ø§Ù„ØªØ¹ÙŠÙ† */
-		 employeeVacation
-		 .setTotalVacationPeriod(getTotalVacationPeriod(empNB,
-		 firstApplicationDate));
+		employeeVacation.setTotalVacationPeriod(getTotalVacationPeriod(empNB, firstApplicationDate));
 //		employeeVacation.setTotalVacationPeriod(getTotalVacationSold((empNB)));
 		// employeeVacation.setTotalVacationPeriod(hrsSumVacation.getVACOLDYEAR37());
 		/* Ø§Ø¬Ù…Ø§Ù„Ù‰ Ù…Ø§ØªÙ…ØªØ¹ Ø¨Ù‡ Ø®Ù„Ø§Ù„ Ø§Ù„Ø¹Ø§Ù… */ employeeVacation
@@ -7716,12 +7725,10 @@ public class DataAccessService implements IDataAccessService {
 //		/* Ø¬Ù…Ù„Ù‡ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ */employeeVacation
 //				.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
 //						.getUsedNormalYearlyPeriod()
-						employeeVacation
-						.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod() - (employeeVacation
-								.getUsedTotalVacationPeriod()/*
-													 * + hrsSumVacation.
-													 * getVACSUMYEARSOLD()
-													 */));
+		employeeVacation.setRemainTotalVacationPeriod((int) employeeVacation.getTotalVacationPeriod()
+				- (employeeVacation.getUsedTotalVacationPeriod()/*
+																 * + hrsSumVacation. getVACSUMYEARSOLD()
+																 */));
 		// /*Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„Ù‰ Ù„Ù„Ø³Ù†Ù‡ */ currentDebit
 		// int x = commonDao.loadVacationSumLastYear(empNB);
 
@@ -7729,8 +7736,9 @@ public class DataAccessService implements IDataAccessService {
 		// + employeeVacation.getVacationPeriodThisYear()));
 		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */  
-		employeeVacation.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
+		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */
+		employeeVacation.setRemainNormalYearlyPeriod(
+				getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		employeeVacation.setVacationType(MyConstants.NORMAL_VACATION);
@@ -8315,9 +8323,9 @@ public class DataAccessService implements IDataAccessService {
 	public int getTotalVacationSold(int empNB) {
 		Integer totalVacation = 0;
 		int currYear = Integer.parseInt(utilities.HijriCalendarUtil.findCurrentYear());
-	//	totalVacation = commonDao.getNewVacPeriod(currYear);
+		// totalVacation = commonDao.getNewVacPeriod(currYear);
 		totalVacation = commonDao.getInitUserVacSold(currYear, empNB);
-	//	totalVacation = sold_curr_year + init_sold;
+		// totalVacation = sold_curr_year + init_sold;
 		return totalVacation;
 	}
 
@@ -8511,8 +8519,8 @@ public class DataAccessService implements IDataAccessService {
 		// + employeeVacation.getVacationPeriodThisYear()));
 		int maxYearlyPeriod = 144;
 		// getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate);
-		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation
-				.setRemainNormalYearlyPeriod(getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
+		/* Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡ Ø§Ù‚Ù„ Ù…Ù† 120 */ employeeVacation.setRemainNormalYearlyPeriod(
+				getRemainNormalYearlyPeriod(getMaxYearlyNormalYearlyPeriod(firstApplicationDate, gregBirthDate),
 						employeeVacation.getUsedNormalYearlyPeriod(), employeeVacation.getRemainTotalVacationPeriod()));
 		// employeeVacation
 		employeeVacation.setVacationType(MyConstants.NORMAL_VACATION);
@@ -8561,7 +8569,7 @@ public class DataAccessService implements IDataAccessService {
 		if (visible) {
 			employeeVacation.setVacationStatus(MyConstants.YES);
 
-			//updateArcRecordsIncomeNo(app.getArcRecordId());
+			// updateArcRecordsIncomeNo(app.getArcRecordId());
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			try {
 				employeeVacation
@@ -8574,7 +8582,7 @@ public class DataAccessService implements IDataAccessService {
 				logger.error(
 						"acceptVacation wrkID" + " " + application.getId().getApplicationId() + " " + e.getMessage());
 			}
-			//employeeVacation.setExcuseNumber(commonDao.createOutcomeNo().toString());
+			// employeeVacation.setExcuseNumber(commonDao.createOutcomeNo().toString());
 			String period = MessageFormat.format(Utils.loadMessagesFromFile("wrk.period"),
 					employeeVacation.getHigriVacationStart(), employeeVacation.getHigriVacationEnd());
 			commonDao.update(employeeVacation);
@@ -8690,6 +8698,7 @@ public class DataAccessService implements IDataAccessService {
 	public List<InventoryMaster> getInventoriesByStrNo(Integer strNo) {
 		return commonDao.getInventoriesByStrNo(strNo);
 	}
+
 	@Override
 	public List<Article> getAllArticles() {
 		// TODO Auto-generated method stub
@@ -8703,44 +8712,47 @@ public class DataAccessService implements IDataAccessService {
 //	}
 	@Override
 	@Transactional
-	public HrsJobHistorical	loadLastHistoricalJob(Integer jobNumber, String jobCode) {
-	return commonDao.loadLastHistoricalJob(jobNumber, jobCode);
-}
+	public HrsJobHistorical loadLastHistoricalJob(Integer jobNumber, String jobCode) {
+		return commonDao.loadLastHistoricalJob(jobNumber, jobCode);
+	}
 
 	@Override
 	@Transactional
-	public HrsJobCreation	loadJobCreation(Integer jobNumber, String jobCode) {
-	return commonDao.loadJobCreation(jobNumber, jobCode);
-}
+	public HrsJobCreation loadJobCreation(Integer jobNumber, String jobCode) {
+		return commonDao.loadJobCreation(jobNumber, jobCode);
+	}
+
 	@Override
 	@Transactional
 	public void saveOperation(DeputationTraining dep_tr) {
-		 commonDao.addOperation(dep_tr);
+		commonDao.addOperation(dep_tr);
 	}
+
 	@Override
 	@Transactional
-	public void exportDepTrainFile(Integer emp_no,Integer month,Integer year) {
-		
+	public void exportDepTrainFile(Integer emp_no, Integer month, Integer year) {
+
 		List<String> fileList = commonDao.loadDepTrain(emp_no, month, year);
-		
+
 		String fileName = "xx.txt";
-		
-			fileName = MyConstants.deputation_training;
-		
+
+		fileName = MyConstants.deputation_training;
 
 		createFileInServer(fileList, fileName);
 	}
+
 	@Override
 	@Transactional
 	public List<DeputationTraining> loadStatus(Integer emp_number) {
 		return commonDao.loadStatus(emp_number);
-		
+
 	}
+
 	@Override
 	@Transactional
-	public List<DeputationTraining> loadStatus(Integer emp_number,Integer month,Integer year) {
-		return commonDao.loadStatus(emp_number,month,year);
-		
+	public List<DeputationTraining> loadStatus(Integer emp_number, Integer month, Integer year) {
+		return commonDao.loadStatus(emp_number, month, year);
+
 	}
 
 	@Override
@@ -8753,20 +8765,21 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public List<RewardInfo> loadRewards(Integer emp_number) {
 		return commonDao.loadRewards(emp_number);
-		
+
 	}
+
 	@Override
 	@Transactional
-	public void exportRewardFile(Integer emp_no,Integer month,Integer year) {
+	public void exportRewardFile(Integer emp_no, Integer month, Integer year) {
 
 		List<String> fileList = commonDao.loadReward(emp_no, month, year);
 		String fileName = "xx.txt";
-		
-			fileName = MyConstants.reward;
-		
+
+		fileName = MyConstants.reward;
 
 		createFileInServer(fileList, fileName);
 	}
+
 	@Override
 	@Transactional
 	public List<RewardInfo> loadRewards(Integer emp_number, Integer month, Integer year) {
@@ -8827,145 +8840,169 @@ public class DataAccessService implements IDataAccessService {
 	public List<FngTypeAbsence> loadAllAbsenceTypes() {
 		return commonDao.loadAllAbsenceTypes();
 	}
+
 	@Override
 	@Transactional
-	public List<WrkDept> findDepartmentById(Integer deptId){
+	public List<WrkDept> findDepartmentById(Integer deptId) {
 		return commonDao.findDepartmentById(deptId);
 	}
-	public List<LoanModel> loadUsersLoan(Integer year,Integer month,Integer type){
-		
-		return commonDao.loadUsersLoan(year,month,type);
+
+	public List<LoanModel> loadUsersLoan(Integer year, Integer month, Integer type) {
+
+		return commonDao.loadUsersLoan(year, month, type);
 	}
-	public List<RetirementModel> loadRetirement(){
+
+	public List<RetirementModel> loadRetirement() {
 		return commonDao.loadRetirement();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<HRCountry> getAllCountry() {
 		return commonDao.getAllCountry();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRAbsence> getAllAbsence() {
 		return commonDao.getAllAbsence();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRStudyType> getAllStudyType() {
 		return commonDao.getAllStudyType();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRPhoneType> getAllPhoneType() {
 		return commonDao.getAllPhoneType();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HREmpRanks> getAllEmpRanks() {
 		return commonDao.getAllEmpRanks();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HREmpCat> getAllEmpCat() {
 		return commonDao.getAllEmpCat();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRLawSentence> getAllLawSentence() {
 		return commonDao.getAllLawSentence();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRCourse> getAllCourseTypes() {
 		return commonDao.getAllCourseTypes();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRSubjectStatus> getAllSubjectStatus() {
 		return commonDao.getAllSubjectStatus();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRBlood> getAllBloodTypes() {
 		return commonDao.getAllBloodTypes();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRNationality> getAllNationalities() {
 		return commonDao.getAllNationalities();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRMarStatus> getAllMarStatus() {
 		return commonDao.getAllMarStatus();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRPositionAction> getAllPositionAction() {
 		return commonDao.getAllPositionAction();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRTitles> getAllTitles() {
 		return commonDao.getAllTitles();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfSpeciality> getAllQlfSpeciality() {
 		return commonDao.getAllQlfSpeciality();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfMajors> getAllQlfMajors() {
 		return commonDao.getAllQlfMajors();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfTypes> getAllQlfTypes() {
 		return commonDao.getAllQlfTypes();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HROrgTypes> getAllOrgTypes() {
 		return commonDao.getAllOrgTypes();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRCity> getAllCities() {
 		return commonDao.getAllCities();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRArea> getAllAreas() {
 		return commonDao.getAllAreas();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRContacts> getAllContacts() {
 		return commonDao.getAllContacts();
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRReligion> getAllReligions() {
@@ -8984,4 +9021,36 @@ public class DataAccessService implements IDataAccessService {
 		List empHisList = commonDao.getEmpHistoricalByEmpNo(empNO);
 		return empHisList;
 	}
+	// thapet
+
+	@Override
+	public List<Sys035> loadAllJobRec() {
+		List jobRec = commonDao.findAll(Sys035.class);
+		return jobRec;
+	}
+
+	@Override
+	public List<HrsMasterFile> getAllEmployeesList() {
+		List employees = commonDao.findAll(HrsMasterFile.class);
+		return employees;
+	}
+
+	@Override
+	public List<HrsGovJob4> findAllJobCreat() {
+		List jobCreat = commonDao.findAll(HrsGovJob4.class);
+		return jobCreat;
+	}
+
+	@Override
+	public List<HrsSalaryScale> loadJobRanks() {
+		List jobRanks = commonDao.findAll(HrsSalaryScale.class);
+		return jobRanks;
+	}
+
+	@Override
+	public List<HrsSalaryScaleDgrs> loadJobRaNum() {
+		List jobRaNum = commonDao.findAll(HrsSalaryScaleDgrs.class);
+		return jobRaNum;
+	}
+
 }

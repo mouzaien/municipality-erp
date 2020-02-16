@@ -115,6 +115,9 @@ public class HrsMasterFile {
 	@Transient
 	private String firstServiceDateStringSort;
 
+	@Transient
+	private String fullName;
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
@@ -441,6 +444,28 @@ public class HrsMasterFile {
 
 	public void setFirstServiceDateStringSort(String firstServiceDateStringSort) {
 		this.firstServiceDateStringSort = firstServiceDateStringSort;
+	}
+
+	public String getFullName() {
+		String name = "";
+		if (firstName != null) {
+			name = name + firstName+" ";
+		}
+		if (secondName != null) {
+			name = name + secondName+" ";
+		}
+		if (thirdName != null) {
+			name = name + thirdName+" ";
+		}
+
+		if (forthName != null) {
+			name = name + forthName;
+		}
+		return name;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

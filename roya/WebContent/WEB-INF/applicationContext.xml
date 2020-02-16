@@ -310,7 +310,7 @@
 				<value>com.bkeryah.entities.HRArea</value>
 				<value>com.bkeryah.entities.HRContacts</value>
 				<value>com.bkeryah.entities.HRReligion</value>
-				
+				<value>com.bkeryah.hr.entities.Sys035</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
