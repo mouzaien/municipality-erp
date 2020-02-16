@@ -311,6 +311,8 @@
 				<value>com.bkeryah.entities.HRContacts</value>
 				<value>com.bkeryah.entities.HRReligion</value>
 				<value>com.bkeryah.hr.entities.Sys035</value>
+				<value>com.bkeryah.entities.HrQualification</value>
+				<value>com.bkeryah.entities.Establishment</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

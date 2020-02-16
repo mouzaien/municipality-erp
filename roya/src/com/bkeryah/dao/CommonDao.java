@@ -266,6 +266,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public Object findEntityById(Class entityClass, int EntityId) {
 		return get(entityClass, EntityId);
 	}
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public Object getEstablishIdBySchool(Class entityClass, String school) {
+		return get(entityClass, school);
+	}
 
 	@Override
 	@Transactional
@@ -1921,7 +1927,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Override
 	public List<WrkSection> loadArcDocumentStructList() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
-	//	criteria.addOrder(Order.desc("structId"));
+		// criteria.addOrder(Order.desc("structId"));
 		return criteria.list();
 	}
 
@@ -2186,7 +2192,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<HrsJobCreation> loadHrJob(Integer catid, Integer status, Integer rank) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsJobCreation.class);
 		criteria.add(Restrictions.eq("categoryId", catid));
-		criteria.add(Restrictions.eq("jobstatus", status));
+	//	criteria.add(Restrictions.eq("jobstatus", status));
 		if (rank != null)
 			criteria.add(Restrictions.eq("rankCode", rank));
 		List<HrsJobCreation> jobs = criteria.list();
@@ -4054,6 +4060,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<DocumentsType> getAllDocumentsType() {
 		return loadAll(DocumentsType.class);
 	}
+
 	@Transactional
 	@Override
 	public List<WrkFinesEntity> getAllWrkFinesEntity() {
@@ -4501,15 +4508,17 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return loadAll(FngTypeAbsence.class);
 
 	}
+
 	@Override
 	@Transactional
-	public List<WrkDept> findDepartmentById(Integer deptId){
+	public List<WrkDept> findDepartmentById(Integer deptId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept.class);
 		criteria.add(Restrictions.eq("id", deptId));
 		return criteria.list();
-		
+
 	}
-	public List<LoanModel> loadUsersLoan(Integer year,Integer Month,Integer type){
+
+	public List<LoanModel> loadUsersLoan(Integer year, Integer Month, Integer type) {
 		List<LoanModel> list = new ArrayList<LoanModel>();
 		Connection connection = DataBaseConnectionClass.getConnection();
 		ResultSet rs = null;
@@ -4520,7 +4529,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			callableStatement.setInt(1, year);
 			callableStatement.setInt(2, Month);
 			callableStatement.setInt(3, type);
-			
+
 			callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(4);
@@ -4533,12 +4542,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 				loanModel.setBankName(rs.getString("BANK_NAME"));
 				loanModel.setLoanName(rs.getString("LOAN_NAME"));
 				loanModel.setNatNo(rs.getInt("NATNO"));
-				
+
 				list.add(loanModel);
 
 			}
 		} catch (Exception e) {
-			logger.error( e.getMessage());
+			logger.error(e.getMessage());
 		} finally {
 			try {
 				if (rs != null)
@@ -4553,7 +4562,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		}
 		return list;
 	}
-	public List<RetirementModel> loadRetirement(){
+
+	public List<RetirementModel> loadRetirement() {
 		List<RetirementModel> list = new ArrayList<RetirementModel>();
 		Connection connection = DataBaseConnectionClass.getConnection();
 		ResultSet rs = null;
@@ -4561,7 +4571,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		try {
 			String sql = "{call NEW_PKG_WEBKIT.get_users_retirement(?)}";
 			callableStatement = connection.prepareCall(sql);
-			
+
 			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(1);
@@ -4576,12 +4586,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 				retirementModel.setRankCode(rs.getInt("RANKCOD"));
 				retirementModel.setText(rs.getString("text"));
 				retirementModel.setBasicSalary(rs.getInt("BSCSAL"));
-				
+
 				list.add(retirementModel);
 
 			}
 		} catch (Exception e) {
-			logger.error( e.getMessage());
+			logger.error(e.getMessage());
 		} finally {
 			try {
 				if (rs != null)
@@ -4595,141 +4605,184 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			}
 		}
 		return list;
-		
+
 	}
+
 	@Override
 	@Transactional
 	public List<HRCountry> getAllCountry() {
 		return loadAll(HRCountry.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRAbsence> getAllAbsence() {
 		return loadAll(HRAbsence.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRStudyType> getAllStudyType() {
 		return loadAll(HRStudyType.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRPhoneType> getAllPhoneType() {
 		return loadAll(HRPhoneType.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HREmpRanks> getAllEmpRanks() {
 		return loadAll(HREmpRanks.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HREmpCat> getAllEmpCat() {
 		return loadAll(HREmpCat.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRLawSentence> getAllLawSentence() {
 		return loadAll(HRLawSentence.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRCourse> getAllCourseTypes() {
 		return loadAll(HRCourse.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRSubjectStatus> getAllSubjectStatus() {
 		return loadAll(HRSubjectStatus.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRBlood> getAllBloodTypes() {
 		return loadAll(HRBlood.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRNationality> getAllNationalities() {
 		return loadAll(HRNationality.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRMarStatus> getAllMarStatus() {
 		return loadAll(HRMarStatus.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRPositionAction> getAllPositionAction() {
 		return loadAll(HRPositionAction.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRTitles> getAllTitles() {
 		return loadAll(HRTitles.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfSpeciality> getAllQlfSpeciality() {
 		return loadAll(HRQlfSpeciality.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfMajors> getAllQlfMajors() {
 		return loadAll(HRQlfMajors.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRQlfTypes> getAllQlfTypes() {
 		return loadAll(HRQlfTypes.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HROrgTypes> getAllOrgTypes() {
 		return loadAll(HROrgTypes.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRCity> getAllCities() {
 		return loadAll(HRCity.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRArea> getAllAreas() {
 		return loadAll(HRArea.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRContacts> getAllContacts() {
 		return loadAll(HRContacts.class);
 
 	}
+
 	@Override
 	@Transactional
 	public List<HRReligion> getAllReligions() {
 		return loadAll(HRReligion.class);
 
 	}
-	
+
+	@Override
+	@Transactional
+	public List<HrQualification> getAllQualification() {
+		return loadAll(HrQualification.class);
+	}
+
+	@Override
+	@Transactional
+	public List<Establishment> getAllEstablishment() {
+		return loadAll(Establishment.class);
+	}
+
+	@Override
+	@Transactional
+	public Establishment getEstablishmentById(Integer id) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Establishment.class);
+		criteria.add(Restrictions.eq("id", id));
+
+		return (Establishment) criteria.uniqueResult();
+	}
+
 	@Override
 	@Transactional
 	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {

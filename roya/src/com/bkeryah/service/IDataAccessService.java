@@ -1784,6 +1784,14 @@ public interface IDataAccessService {
 
 	public List<HRReligion> getAllReligions();
 
+	public List<HrQualification> getAllQualification();
+
+	public List<Establishment> getAllEstablishment();
+
+	public EstablishmentId getEstablishIdBySchool(String school);
+
+	public Establishment getEstablishmentById(Integer id);
+
 	public List<HrsEmpHistorical> findAllHrsEmpHistorical();
 
 	public List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO);

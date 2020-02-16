@@ -1008,5 +1008,13 @@ public interface ICommonDao {
 
 	public List<HRReligion> getAllReligions();
 
+	public List<HrQualification> getAllQualification();
+
+	public List<Establishment> getAllEstablishment();
+
+	public Object getEstablishIdBySchool(Class entityClass, String school);
+
+	public Establishment getEstablishmentById(Integer id);
+
 	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber);
 }

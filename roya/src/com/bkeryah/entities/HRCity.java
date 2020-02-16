@@ -9,10 +9,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "XXX_HR_CITY")
-public class HRCity  {
-	
+public class HRCity implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@EmbeddedId
-	private CityID Id;
+	private CityID id;
 	@Column(name = "CITY_EN_NAME")
 	private String cityEnName;
 	
@@ -20,11 +20,11 @@ public class HRCity  {
 	private String cityArName;
 
 	public CityID getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(CityID id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getCityEnName() {
