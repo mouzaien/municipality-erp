@@ -70,6 +70,7 @@ public class HrsEmpHistorical implements Serializable {
 	@Column(name = "USER_DEPT_ID")
 	private Integer userDept;
 
+	
 //	@NotFound(action = NotFoundAction.IGNORE)
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "CBY", referencedColumnName = "USER_ID", insertable = false, updatable = false)
@@ -117,6 +118,10 @@ public class HrsEmpHistorical implements Serializable {
 	private Integer oldMandateInner;
 	@Column(name = "oldMANDout")
 	private Integer oldMandateOuter;
+	
+	@Column(name = "REC_DATE")
+	private String recDate;
+	
 	@Transient
 	private String empName;
 	@Transient
@@ -554,6 +559,14 @@ public class HrsEmpHistorical implements Serializable {
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
+	}
+
+	public String getRecDate() {
+		return recDate;
+	}
+
+	public void setRecDate(String recDate) {
+		this.recDate = recDate;
 	}
 
 	// public String getExeCuteNum() {

@@ -79,7 +79,7 @@
 								filterMatchMode="contains">										
 										#{empH.id.empno}									
 							</p:column>
-							
+
 
 							<p:column style="white-space: nowrap;" headerText="رقم الحركة "
 								width="15%" filterBy="#{empH.recordType}"
@@ -89,13 +89,13 @@
 									
 									#{empHistoryBean.movementTitle(empH.recordType)}
 <!-- 										<p:selectOneMenu value="#{empH.recordType}" -->
-<!-- 											style="width: 100% ; opacity:1;" disabled="true" -->
-<!-- 											filter="true" filterMatchMode="contains" id="nmgs"> -->
-<!-- 											<f:selectItem itemLabel="" -->
-<!-- 												noSelectionOption="true" /> -->
-<!-- 											<f:selectItems var="mgs" value="#{empHistoryBean.recoList}" -->
-<!-- 												itemValue="#{mgs.id}" itemLabel="#{mgs.name}" /> -->
-<!-- 										</p:selectOneMenu> -->
+										<!-- 											style="width: 100% ; opacity:1;" disabled="true" -->
+										<!-- 											filter="true" filterMatchMode="contains" id="nmgs"> -->
+										<!-- 											<f:selectItem itemLabel="" -->
+										<!-- 												noSelectionOption="true" /> -->
+										<!-- 											<f:selectItems var="mgs" value="#{empHistoryBean.recoList}" -->
+										<!-- 												itemValue="#{mgs.id}" itemLabel="#{mgs.name}" /> -->
+										<!-- 										</p:selectOneMenu> -->
 									</f:facet>
 									<f:facet name="input">
 										<p:selectOneMenu value="#{empH.recordType}"
@@ -109,7 +109,23 @@
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
-
+							<p:column style="white-space: nowrap;"
+								headerText=" تاريخ الحركة " width="15%"
+								filterBy="#{empH.recDate}" filterMatchMode="contains">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{empH.recDate}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{empH.recDate}"
+											onfocus="loadCalendar();"
+											styleClass="form-control form-controlCal">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+											<f:ajax execute="@this"></f:ajax>
+										</p:inputText>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
 
 							<p:column style="white-space: nowrap;" headerText=" بدل النقل"
 								width="15%" filterBy="#{empH.transferSalary}"
@@ -141,8 +157,8 @@
 								filterBy="#{empH.jobcode}" filterMatchMode="contains">
 								<p:cellEditor>
 									<f:facet name="output">
-									<h:outputText value="#{empH.jobName}" />
- 										
+										<h:outputText value="#{empH.jobName}" />
+
 									</f:facet>
 									<f:facet name="input">
 										<p:selectOneMenu value="#{empH.jobcode}" style="width: 100%"
@@ -239,7 +255,8 @@
 											style="width: 100% ; opacity:1;" disabled="true"
 											filter="true" filterMatchMode="contains" id="amgrs">
 											<f:selectItem itemLabel=" " noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.ranNumListOut}"
+											<f:selectItems var="mgr"
+												value="#{empHistoryBean.ranNumListOut}"
 												itemValue="#{mgr.classCode}" itemLabel="#{mgr.classTitle}" />
 										</p:selectOneMenu>
 									</f:facet>
@@ -279,8 +296,7 @@
 											onfocus="loadCalendar();"
 											styleClass="form-control form-controlCal">
 											<f:validator validatorId="utilities.UmmAlQUraValidator" />
-											<f:ajax execute="@this"
-												></f:ajax>
+											<f:ajax execute="@this"></f:ajax>
 										</p:inputText>
 									</f:facet>
 								</p:cellEditor>
