@@ -1,5 +1,6 @@
 package com.bkeryah.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,9 +12,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "HRS_EMP_HISTORICAL")
-public class HrsEmpHistorical {
+public class HrsEmpHistorical implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	// @Id
 	// @GenericGenerator(name = "generator", strategy = "increment")
@@ -25,6 +35,7 @@ public class HrsEmpHistorical {
 	// @Id
 	// @Column(name = "SERIAL")
 	// private Integer stepId;
+
 	@Column(name = "CATCOD")
 	private Integer CATegoryId;
 	@Column(name = "INCOMENO")
@@ -50,26 +61,33 @@ public class HrsEmpHistorical {
 	@Column(name = "MANDIN")
 	private Integer mandateInner;
 	@Column(name = "MANDout")
-	private Integer mandateOuter;
 	// نقل/ترقيه/كف يد/نقل بين الادارات...........
+	private Integer mandateOuter;
 	@Column(name = "RECTYPE")
 	private Integer RecordType;
 	@Column(name = "CBY")
 	private Integer createdBy;
+
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CBY", referencedColumnName = "USER_ID", insertable = false, updatable = false)
 	private ArcUsers arcUser;
+
 	@Column(name = "CIN")
 	private Date createDate;
 	@Column(name = "OLDRANKCOD")
 	private Integer oldRanknumber;
 	@Column(name = "OLDCLSSCOD")
 	private Integer oldClassnumber;
+
 	@Column(name = "JOBCOD")
 	private String jobcode;
+
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne
 	@JoinColumn(name = "JOBCOD", referencedColumnName = "ID", insertable = false, updatable = false)
 	private HrsGovJob4 govJob4;
+
 	@Column(name = "OLDJOBCOD")
 	private String oldJobCode;
 	@Column(name = "DEPTCOD")
@@ -115,6 +133,16 @@ public class HrsEmpHistorical {
 	private String incomDateStringSort;
 	@Transient
 	private String executeDateStringSort;
+
+	// Nationalities
+	@Formula("(select n.NAME from SYS002 n where  n.ID = CATCOD)")
+	private String CATegoryName;
+	// rankNumber
+//	@Formula("(select n.ID from SYS038 n where  n.EXCSRC = NAME)")
+//	private String exeCuteNum;
+
+	// @Formula("(select u.DEPT_NAME from WRK_DEPT u where u.EMPNO = DEPT_ID )")
+	// private String deptName;
 	// public Integer getEmpno() {
 	// return empno;
 	// }
@@ -482,5 +510,21 @@ public class HrsEmpHistorical {
 	public void setExecuteDateStringSort(String executeDateStringSort) {
 		this.executeDateStringSort = executeDateStringSort;
 	}
+
+	public String getCATegoryName() {
+		return CATegoryName;
+	}
+
+	public void setCATegoryName(String cATegoryName) {
+		CATegoryName = cATegoryName;
+	}
+
+//	public String getExeCuteNum() {
+//		return exeCuteNum;
+//	}
+//
+//	public void setExeCuteNum(String exeCuteNum) {
+//		this.exeCuteNum = exeCuteNum;
+//	}
 
 }

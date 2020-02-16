@@ -4761,22 +4761,33 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return loadAll(HRReligion.class);
 
 	}
+
 	@Override
 	@Transactional
-	public List<HrQualification> getAllQualification(){
+	public List<HrQualification> getAllQualification() {
 		return loadAll(HrQualification.class);
 	}
+
 	@Override
 	@Transactional
-	public List<Establishment> getAllEstablishment(){
+	public List<Establishment> getAllEstablishment() {
 		return loadAll(Establishment.class);
 	}
+
 	@Override
 	@Transactional
-	public Establishment getEstablishmentById(Integer id){
+	public Establishment getEstablishmentById(Integer id) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Establishment.class);
 		criteria.add(Restrictions.eq("id", id));
-		
+
 		return (Establishment) criteria.uniqueResult();
+	}
+
+	@Override
+	@Transactional
+	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		return criteria.list();
 	}
 }

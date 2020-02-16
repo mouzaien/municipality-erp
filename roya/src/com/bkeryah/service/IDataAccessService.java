@@ -1734,34 +1734,65 @@ public interface IDataAccessService {
 	List<VacationsType> loadAllVacationTypes();
 
 	List<WrkCommentType> loadAllCommentTypes();
-	public List<LoanModel> loadUsersLoan(Integer year,Integer month,Integer type);
+
+	public List<LoanModel> loadUsersLoan(Integer year, Integer month, Integer type);
+
 	public List<RetirementModel> loadRetirement();
-	
+
 	public List<HRCountry> getAllCountry();
+
 	public List<HRAbsence> getAllAbsence();
+
 	public List<HRStudyType> getAllStudyType();
+
 	public List<HRPhoneType> getAllPhoneType();
+
 	public List<HREmpRanks> getAllEmpRanks();
+
 	public List<HREmpCat> getAllEmpCat();
+
 	public List<HRLawSentence> getAllLawSentence();
+
 	public List<HRCourse> getAllCourseTypes();
+
 	public List<HRSubjectStatus> getAllSubjectStatus();
+
 	public List<HRBlood> getAllBloodTypes();
+
 	public List<HRNationality> getAllNationalities();
+
 	public List<HRMarStatus> getAllMarStatus();
+
 	public List<HRPositionAction> getAllPositionAction();
-	public List<HRTitles> getAllTitles() ;
+
+	public List<HRTitles> getAllTitles();
+
 	public List<HRQlfSpeciality> getAllQlfSpeciality();
+
 	public List<HRQlfMajors> getAllQlfMajors();
+
 	public List<HRQlfTypes> getAllQlfTypes();
+
 	public List<HROrgTypes> getAllOrgTypes();
+
 	public List<HRCity> getAllCities();
+
 	public List<HRArea> getAllAreas();
+
 	public List<HRContacts> getAllContacts();
+
 	public List<HRReligion> getAllReligions();
+
 	public List<HrQualification> getAllQualification();
+
 	public List<Establishment> getAllEstablishment();
+
 	public EstablishmentId getEstablishIdBySchool(String school);
+
 	public Establishment getEstablishmentById(Integer id);
+
+	public List<HrsEmpHistorical> findAllHrsEmpHistorical();
+
+	public List<HrsEmpHistorical> findEmpHistoricalByEmpNo(Integer empNO);
 	
 }

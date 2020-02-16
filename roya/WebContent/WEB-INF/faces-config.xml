@@ -1144,5 +1144,12 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>empHistory</from-outcome>
+			<to-view-id>/setting/empHistory.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>
