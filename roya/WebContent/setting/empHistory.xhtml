@@ -52,7 +52,7 @@
 						<p:dataTable var="empH" id="inboxdt" widgetVar="unitCell"
 							value="#{empHistoryBean.empHistoryList}"
 							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
-							paginatorPosition="bottom" editable="true"
+							paginatorPosition="bottom"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							paginator="true" rows="10">
 							<f:facet name="header">
@@ -64,13 +64,8 @@
 									</p:inputText>
 								</p:outputPanel>
 							</f:facet>
-							<p:ajax event="rowEdit" listener="#{empHistoryBean.onRowEdit}"
-								update=":includeform:msgs inboxdt" />
-							<p:ajax event="rowEditCancel"
-								listener="#{empHistoryBean.onRowCancel}"
-								update=":includeform:msgs inboxdt" />
 							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="الرقم" width="10%" filterBy="#{rowIndex+1}"
+								headerText="الرقم" width="5%" filterBy="#{rowIndex+1}"
 								filterMatchMode="contains">
 								<h:outputText value="#{rowIndex+1}" />
 							</p:column>
@@ -79,256 +74,244 @@
 								filterMatchMode="contains">										
 										#{empH.id.empno}									
 							</p:column>
-
-
-							<p:column style="white-space: nowrap;" headerText="رقم الحركة "
-								width="15%" filterBy="#{empH.recordType}"
-								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-									
-									#{empHistoryBean.movementTitle(empH.recordType)}
-<!-- 										<p:selectOneMenu value="#{empH.recordType}" -->
-										<!-- 											style="width: 100% ; opacity:1;" disabled="true" -->
-										<!-- 											filter="true" filterMatchMode="contains" id="nmgs"> -->
-										<!-- 											<f:selectItem itemLabel="" -->
-										<!-- 												noSelectionOption="true" /> -->
-										<!-- 											<f:selectItems var="mgs" value="#{empHistoryBean.recoList}" -->
-										<!-- 												itemValue="#{mgs.id}" itemLabel="#{mgs.name}" /> -->
-										<!-- 										</p:selectOneMenu> -->
-									</f:facet>
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.recordType}"
-											style="width: 100%" filter="true" filterMatchMode="contains"
-											id="newmgs">
-											<f:selectItem itemLabel="إختر رقم الحركة"
-												noSelectionOption="true" />
-											<f:selectItems var="mgs" value="#{empHistoryBean.recoList}"
-												itemValue="#{mgs.id}" itemLabel="#{mgs.id}-#{mgs.name}" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
 							<p:column style="white-space: nowrap;"
-								headerText=" تاريخ الحركة " width="15%"
-								filterBy="#{empH.recDate}" filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.recDate}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText value="#{empH.recDate}"
-											onfocus="loadCalendar();"
-											styleClass="form-control form-controlCal">
-											<f:validator validatorId="utilities.UmmAlQUraValidator" />
-											<f:ajax execute="@this"></f:ajax>
-										</p:inputText>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-
-							<p:column style="white-space: nowrap;" headerText=" بدل النقل"
-								width="15%" filterBy="#{empH.transferSalary}"
-								filterMatchMode="contains">
-
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.transferSalary}" />
-										<f:facet name="input">
-											<p:inputText value="#{empH.transferSalary}" />
-										</f:facet>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;"
-								headerText=" الراتب الأساسي" width="15%"
-								filterBy="#{empH.basicSalary}" filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.basicSalary}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText value="#{empH.basicSalary}" style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;"
-								headerText=" الرقم الوظيفي" width="15%"
+								headerText=" الرقم الوظيفي" width="20%"
 								filterBy="#{empH.jobcode}" filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.jobName}" />
 
-									</f:facet>
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.jobcode}" style="width: 100%"
-											filter="true" filterMatchMode="contains" id="amgr1">
-											<f:selectItem itemLabel="أختر الرقم الوظيفي"
-												noSelectionOption="true" />
-											<f:selectItems var="mgr"
-												value="#{empHistoryBean.jobCreationList}"
-												itemValue="#{mgr.jobCode}"
-												itemLabel="#{mgr.jobCode}-#{mgr.jobName}" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
+								<h:outputText value="#{empH.jobName}" />
 							</p:column>
+
 							<p:column style="white-space: nowrap;"
-								headerText=" إدارة المستخد م" width="15%"
+								headerText=" إدارة المستخد م" width="20%"
 								filterBy="#{empH.userDept}" filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<p:selectOneMenu value="#{empH.userDept}"
-											style="width: 100% ; opacity:1;" disabled="true"
-											filter="true" filterMatchMode="contains" id="amgr3">
-											<f:selectItem itemLabel="أختر الإدارة"
-												noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.deptList}"
-												itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
-										</p:selectOneMenu>
-									</f:facet>
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.userDept}" style="width: 100%"
-											filter="true" filterMatchMode="contains" id="amgr2">
-											<f:selectItem itemLabel="أختر الإدارة"
-												noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.deptList}"
-												itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
+								<p:selectOneMenu value="#{empH.userDept}"
+									style="width: 100% ; opacity:1;" disabled="true" filter="true"
+									filterMatchMode="contains" id="amgr3">
+									<f:selectItem itemLabel=" " noSelectionOption="true" />
+									<f:selectItems var="mgr" value="#{empHistoryBean.deptList}"
+										itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
+								</p:selectOneMenu>
 
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;" headerText="الجنسية"
-								width="15%" filterBy="#{empH.CATegoryName}"
-								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.CATegoryName}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.CATegoryId}"
-											style="width: 100%" filter="true" filterMatchMode="contains"
-											id="newmgr">
-											<f:selectItem itemLabel="أختر الجنسية"
-												noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.sysList}"
-												itemValue="#{mgr.nationalityId}"
-												itemLabel="#{mgr.nationalityName}" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;" headerText=" المرتبة "
-								width="15%" filterBy="#{empH.classNumber}"
-								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<p:selectOneMenu value="#{empH.rankNumber}"
-											style="width: 100% ; opacity:1;" disabled="true"
-											filter="true" filterMatchMode="contains" id="amgr5">
-											<f:selectItem itemLabel=" " noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.rankList}"
-												itemValue="#{mgr.id.rankCode}" itemLabel="#{mgr.rankName}" />
-										</p:selectOneMenu>
-									</f:facet>
-
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.rankNumber}"
-											style="width: 100%" filter="true" filterMatchMode="contains"
-											id="nsmgr">
-											<f:selectItem noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.rankList}"
-												itemValue="#{mgr.id.rankCode}" itemLabel="#{mgr.rankName}" />
-											<p:ajax update="nsmgss"
-												listener="#{empHistoryBean.loadAllScaleDgr(empH.rankNumber)}" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;" headerText=" الدرجة "
-								width="15%" filterBy="#{empH.classNumber}"
-								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<p:selectOneMenu value="#{empH.classNumber}"
-											style="width: 100% ; opacity:1;" disabled="true"
-											filter="true" filterMatchMode="contains" id="amgrs">
-											<f:selectItem itemLabel=" " noSelectionOption="true" />
-											<f:selectItems var="mgr"
-												value="#{empHistoryBean.ranNumListOut}"
-												itemValue="#{mgr.classCode}" itemLabel="#{mgr.classTitle}" />
-										</p:selectOneMenu>
-									</f:facet>
-
-									<f:facet name="input">
-										<p:selectOneMenu value="#{empH.classNumber}"
-											style="width: 100%" filter="true" filterMatchMode="contains"
-											id="nsmgss">
-											<f:selectItem noSelectionOption="true" />
-											<f:selectItems var="mgr" value="#{empHistoryBean.ranNumList}"
-												itemValue="#{mgr.classCode}" itemLabel="#{mgr.classTitle}" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;" headerText=" رقم القرار "
-								width="15%" filterBy="#{empH.executeNo}"
-								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.executeNo}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText value="#{empH.executeNo}" style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="white-space: nowrap;"
-								headerText=" تاريخ القرار " width="15%"
-								filterBy="#{empH.executeDate}" filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.executeDate}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText value="#{empH.executeDate}"
-											onfocus="loadCalendar();"
-											styleClass="form-control form-controlCal">
-											<f:validator validatorId="utilities.UmmAlQUraValidator" />
-											<f:ajax execute="@this"></f:ajax>
-										</p:inputText>
-									</f:facet>
-								</p:cellEditor>
 							</p:column>
 							<p:column style="white-space: nowrap;" headerText="حالة الموظف"
-								width="15%" filterBy="#{empH.flag == 1 ? 'غير نشط':'نشط'}"
+								width="20%" filterBy="#{empH.flag == 1 ? 'غير نشط':'نشط'}"
 								filterMatchMode="contains">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{empH.flag == 0 ? 'غير نشط':'نشط'}"></h:outputText>
-									</f:facet>
-									<f:facet name="input">
-										<p:selectOneMenu id="trl" value="#{empH.flag}"
-											style="width:125px" dir="rtl">
-											<f:selectItem itemLabel="غير نشط" itemValue="0" />
-											<f:selectItem itemLabel="نشط" itemValue="1" />
-										</p:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
 
+								<h:outputText value="#{empH.flag == 0 ? 'غير نشط':'نشط'}"></h:outputText>
 							</p:column>
-							<!-- 							<p:column style="white-space: nowrap;" headerText="تاريخ الجرد" -->
-							<!-- 								width="15%" filterBy="#{invG.inventoryDate}" -->
-							<!-- 								filterMatchMode="contains">										 -->
-							<!-- 										#{invG.inventoryDate}									 -->
-							<!-- 							</p:column> -->
-							<p:column headerText="تعديل" style="width:5%">
-								<p:rowEditor />
+
+							<p:column headerText="تفاصيل" width="5%"
+								style="width:50px;text-align: center">
+								<p:commandButton process="@this" update="includeform:panelGroup"
+									oncomplete=" PF('mydialog').show()" icon="ui-icon-search"
+									 action="#{empHistoryBean.loadEmpHistoryData}"
+									title="View" modal="true">
+									<f:setPropertyActionListener value="#{empH}"
+										target="#{empHistoryBean.selectedEmpHistory}" />
+								</p:commandButton>
 							</p:column>
 						</p:dataTable>
 						<br />
 
+
+
+						<p:dialog header="تعديل " position="center" widgetVar="mydialog"
+							width="70%" height="80%" responsive="true" id="inputData2"
+							closable="true" dir="rtl" resizable="true" modal="true">
+							<h:panelGroup id="panelGroup">
+								<p:fieldset legend="تعديل البيانات ">
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputText value=" رقم الحركة "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.recordType}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="newmgs">
+												<f:selectItem itemLabel="إختر رقم الحركة"
+													noSelectionOption="true" />
+												<f:selectItems var="mgs" value="#{empHistoryBean.recoList}"
+													itemValue="#{mgs.id}" itemLabel="#{mgs.id} - #{mgs.name}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-2">
+											<h:outputText value=" تاريخ الحركة "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:inputText 
+												value="#{empHistoryBean.selectedEmpHistory.recDate}"
+												onfocus="loadCalendar();"
+												styleClass="form-control form-controlCal">
+												<f:validator validatorId="utilities.UmmAlQUraValidator" />
+												<f:ajax execute="@this"></f:ajax>
+											</p:inputText>
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputText value=" الراتب الأساسي "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:inputText
+												value="#{empHistoryBean.selectedEmpHistory.basicSalary}"
+												style="width:100%" />
+										</div>
+									</div>
+									<br />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputText value="بدل النقل "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:inputText
+												value="#{empHistoryBean.selectedEmpHistory.transferSalary}" />
+										</div>
+
+
+										<div class="ui-g-2">
+											<h:outputText value=" الرمز الوظيفى "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.jobcode}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="amgr1">
+												<f:selectItem itemLabel="أختر الرقم الوظيفي"
+													noSelectionOption="true" />
+												<f:selectItems var="mgr"
+													value="#{empHistoryBean.jobCreationList}"
+													itemValue="#{mgr.jobCode}"
+													itemLabel="#{mgr.jobCode}-#{mgr.jobName}" />
+											</p:selectOneMenu>
+
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputText value=" الادارة "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.userDept}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="amgr2">
+												<f:selectItem itemLabel="أختر الإدارة"
+													noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{empHistoryBean.deptList}"
+													itemValue="#{mgr.id}" itemLabel="#{mgr.deptName}" />
+
+											</p:selectOneMenu>
+										</div>
+									</div>
+									<br />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputText value="الجنسية"></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.CATegoryId}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="newmgr">
+												<f:selectItem itemLabel="أختر الجنسية"
+													noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{empHistoryBean.sysList}"
+													itemValue="#{mgr.nationalityId}"
+													itemLabel="#{mgr.nationalityName}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputText value=" المرتبة "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.rankNumber}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="nsmgr">
+												<f:selectItem noSelectionOption="true" />
+												<f:selectItems var="mgr" value="#{empHistoryBean.rankList}"
+													itemValue="#{mgr.id.rankCode}" itemLabel="#{mgr.rankName}" />
+												<p:ajax update="nsmgss"
+													listener="#{empHistoryBean.loadAllScaleDgr}" />
+											</p:selectOneMenu>
+
+										</div>
+
+										<div class="ui-g-2">
+											<h:outputText value="الدرجة "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.classNumber}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="nsmgss">
+												<f:selectItem noSelectionOption="true" />
+												<f:selectItems var="mgr"
+													value="#{empHistoryBean.ranNumList}"
+													itemValue="#{mgr.classCode}" itemLabel="#{mgr.classTitle}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+									<br />
+									<div class="ui-g">
+										<div class="ui-g-2">
+											<h:outputText value=" رقم القرار "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:inputText
+												value="#{empHistoryBean.selectedEmpHistory.executeNo}"
+												style="width:100%" />
+										</div>
+										<div class="ui-g-2">
+											<h:outputText value=" تاريخ القرار "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:inputText
+												value="#{empHistoryBean.selectedEmpHistory.executeDate}"
+												onfocus="loadCalendar();"
+												styleClass="form-control form-controlCal">
+												<f:validator validatorId="utilities.UmmAlQUraValidator" />
+												<f:ajax execute="@this"></f:ajax>
+											</p:inputText>
+										</div>
+										<div class="ui-g-2">
+											<h:outputText value="حالة الموظف"></h:outputText>
+										</div>
+										<div class="ui-g-2">
+<!-- 											<p:selectOneMenu id="trl" -->
+<!-- 												value="#{empHistoryBean.flagString} " style="width:125px ;" -->
+<!-- 												dir="rtl"> -->
+<!-- 												<f:selectItem itemLabel="غير نشط" itemValue="0" /> -->
+<!-- 												<f:selectItem itemLabel="نشط" itemValue="1" /> -->
+<!-- 											</p:selectOneMenu> -->
+
+											<h:panelGrid columns="1" style="margin-bottom:10px"
+												cellpadding="5">
+												<p:selectOneRadio id="console" value="#{empHistoryBean.flagString}"
+													unselectable="true">
+													<f:selectItem itemLabel="غير نشط" itemValue="0" />
+													<f:selectItem itemLabel="نشط" itemValue="1" />
+												</p:selectOneRadio>
+											</h:panelGrid>
+										</div>
+
+									</div>
+								</p:fieldset>
+								<div align="center">
+									<div class="iamge-box-footer" align="left">
+										<p:commandButton value="حفظ" icon="fa fa-save"
+											action="#{empHistoryBean.saveEmpHistory}" update="@form"
+											onsuccess="PF('mydialog').hide(); ">
+										</p:commandButton>
+										<p:spacer height="4"></p:spacer>
+										<p:commandButton styleClass=" orange-btn"
+											value="#{msg['back']}"
+											icon="ui-icon ui-icon-keyboard-arrow-left" immediate="true"
+											onsuccess="PF('mydialog').hide();" />
+									</div>
+								</div>
+							</h:panelGroup>
+						</p:dialog>
 					</div>
 				</h:form>
 			</ui:define>

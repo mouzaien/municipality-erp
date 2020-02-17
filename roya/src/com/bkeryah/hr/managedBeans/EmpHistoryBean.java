@@ -30,7 +30,7 @@ public class EmpHistoryBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<HrsEmpHistorical> empHistoryList = new ArrayList<HrsEmpHistorical>();
-	private HrsEmpHistorical empHistory;
+	private HrsEmpHistorical selectedEmpHistory = new HrsEmpHistorical();
 	private List<Nationality> sysList = new ArrayList<Nationality>();
 	private List<HrsGovJob4> jobCreationList = new ArrayList<HrsGovJob4>();
 	private List<WrkDept> deptList = new ArrayList<WrkDept>();
@@ -40,6 +40,7 @@ public class EmpHistoryBean {
 	private Nationality sys;
 	private List<Sys035> recoList = new ArrayList<Sys035>();
 	private String empNo;
+	private String flagString;
 	private Integer RecordType;
 
 	private List<HrsMasterFile> usrsList;
@@ -54,15 +55,30 @@ public class EmpHistoryBean {
 		jobCreationList = dataAccessService.findAllJobCreat();
 		deptList = dataAccessService.findAllDepartments();
 		rankList = dataAccessService.loadAllJobRanks(); // المرتبة >> classNumber
-		ranNumListOut=dataAccessService.loadJobRaNum();
+		ranNumListOut = dataAccessService.loadJobRaNum();
 	}
 
-	public void onRowEdit(RowEditEvent event) {
-
-		HrsEmpHistorical selectedItem = (HrsEmpHistorical) event.getObject();
+	public void saveEmpHistory() {
+		System.out.println(">>>>>>" + flagString);
 		FacesMessage msg = new FacesMessage("تم حفظ التعديل");
-		dataAccessService.updateObject(selectedItem);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		selectedEmpHistory.setFlag(Integer.parseInt(flagString));
+	//	dataAccessService.findEntityById(entityClass, EntityId)
+		try {
+			dataAccessService.updateObject(selectedEmpHistory);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			if (empNo != null && !empNo.isEmpty() && empNo.length() < 10) {
+				empHistoryList = dataAccessService.findEmpHistoricalByEmpNo(Integer.parseInt(empNo));
+			}
+
+		} catch (Exception e) {
+			System.out.print(e.getStackTrace());
+		}
+
+	}
+
+	public void loadEmpHistoryData() {
+
+		flagString = String.valueOf(selectedEmpHistory.getFlag());
 	}
 
 	public void onRowCancel(RowEditEvent event) {
@@ -87,18 +103,18 @@ public class EmpHistoryBean {
 		}
 	}
 
-	public void loadAllScaleDgr(Integer rankNum) {
-		if(rankNum != null)
-		ranNumList = dataAccessService.loadScaleDgree(rankNum); // الدرجة >> RankNumber
+	public void loadAllScaleDgr() {
+		if (selectedEmpHistory.getRankNumber() != null)
+			ranNumList = dataAccessService.loadScaleDgree(selectedEmpHistory.getRankNumber()); // الدرجة >> RankNumber
 	}
-	
+
 	public String movementTitle(Integer id) {
-		if(id != null) {
-		Sys035 move=(Sys035)dataAccessService.findEntityById(Sys035.class, id);
-		return move.getName();
+		if (id != null) {
+			Sys035 move = (Sys035) dataAccessService.findEntityById(Sys035.class, id);
+			return move.getName();
 		}
 		return null;
-		
+
 	}
 //	public String jobName(String id) {
 //		if(id != null) {
@@ -108,7 +124,7 @@ public class EmpHistoryBean {
 //		return null;
 //		
 //	}
-	
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -123,14 +139,6 @@ public class EmpHistoryBean {
 
 	public void setEmpHistoryList(List<HrsEmpHistorical> empHistoryList) {
 		this.empHistoryList = empHistoryList;
-	}
-
-	public HrsEmpHistorical getEmpHistory() {
-		return empHistory;
-	}
-
-	public void setEmpHistory(HrsEmpHistorical empHistory) {
-		this.empHistory = empHistory;
 	}
 
 	public String getEmpNo() {
@@ -220,7 +228,7 @@ public class EmpHistoryBean {
 	public void setRanNumList(List<HrsSalaryScaleDgrs> ranNumList) {
 		this.ranNumList = ranNumList;
 	}
- 
+
 	public String getTransferSalary() {
 		return transferSalary;
 	}
@@ -235,6 +243,22 @@ public class EmpHistoryBean {
 
 	public void setRanNumListOut(List<HrsSalaryScaleDgrs> ranNumListOut) {
 		this.ranNumListOut = ranNumListOut;
+	}
+
+	public HrsEmpHistorical getSelectedEmpHistory() {
+		return selectedEmpHistory;
+	}
+
+	public void setSelectedEmpHistory(HrsEmpHistorical selectedEmpHistory) {
+		this.selectedEmpHistory = selectedEmpHistory;
+	}
+
+	public String getFlagString() {
+		return flagString;
+	}
+
+	public void setFlagString(String flagString) {
+		this.flagString = flagString;
 	}
 
 }
