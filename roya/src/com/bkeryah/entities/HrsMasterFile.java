@@ -71,6 +71,8 @@ public class HrsMasterFile {
 	private Integer initBalRemain;
 	@Column(name = "recruit_date_ministry")
 	private String recDateMinistry;
+	@Column(name = "SCHOOL_ID")
+	private Integer schoolId;
 	
 	@Column(name = "recruit_reason")
 	private String recruitReason;
@@ -677,6 +679,14 @@ public class HrsMasterFile {
 
 	public void setNatNo(String natNo) {
 		this.natNo = natNo;
+	}
+
+	public Integer getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(Integer schoolId) {
+		this.schoolId = schoolId;
 	}
 
 }

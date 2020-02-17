@@ -551,7 +551,7 @@
 							<div class="ui-g-4">
 								<p:selectOneMenu required="true" filter="true"
 									filterMatchMode="contains"
-									value="#{recruitEmployer.establishid}">
+									value="#{recruitEmployer.hrmasfile.schoolId}">
 									<f:selectItem itemLabel="اختر المدرسة" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.establishment}"
 										var="establish" itemLabel="#{establish.school} #{establish.location}"
@@ -848,12 +848,11 @@
 								<p:selectOneMenu id="jobcode" required="true"
 									requiredMessage="رمز الوظيفة مطلوب"
 									value="#{recruitEmployer.empHistoric.jobNumber}" filter="true"
-									filterMatchMode="contains"
-									disabled="#{recruitEmployer.renderJobStatus==3?'true':'false'}">
+									filterMatchMode="contains">
 									<f:selectItem itemLabel="اختر الوظيفة" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.listJob}" var="joblist"
 										itemLabel="#{joblist.jobCode} #{joblist.gov4.jobName}"
-										itemValue="#{joblist.createId}" />
+										itemValue="#{joblist.jobNumber}" />
 									<p:ajax process="@this" update="rank,jobnumber,degree"
 										listener="#{recruitEmployer.loadRankJobNoByCode}" />
 								</p:selectOneMenu>
@@ -934,7 +933,7 @@
 							</div>
 							<div class="ui-g-2">
 								<p:inputText required="true" id="jobnumber"
-									value="#{recruitEmployer.empHistoric.jobNumber}">
+									value="#{recruitEmployer.empHistoric.jobcode}">
 								</p:inputText>
 							</div>
 

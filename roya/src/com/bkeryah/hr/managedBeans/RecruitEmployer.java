@@ -241,12 +241,12 @@ public class RecruitEmployer {
 	}
 
 	public String saveEmployer() throws ParseException {
-		establish=dataAccessService.getEstablishmentById(establishid);
+		establish=dataAccessService.getEstablishmentById(hrmasfile.getSchoolId());
 		hrmasfile.setSchool(establish.getSchool());
 		hrmasfile.setSchoolLoc(establish.getLocation());
 		EmpHistoric.setCATegoryId(hrmasfile.getCactegoryId());
-		EmpHistoric.setJobNumber(selectJob.getJobNumber());
-		EmpHistoric.setJobcode(selectJob.getJobCode());
+//		EmpHistoric.setJobNumber(selectJob.getJobNumber());
+//		EmpHistoric.setJobcode(selectJob.getJobCode());
 		// EmpHistoric.setClassNumber(getDgreeId());
 		// EmpHistoric.setBasicSalary(selectDegree.getFirstSalary());
 		// EmpHistoric.setMandateInner(selectDegree.getMandatorIn());
