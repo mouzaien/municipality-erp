@@ -94,7 +94,7 @@ public class LoginBean implements Serializable {
 		try {
 			Authentication result = null;
 			if (empUserName == "") {
-				setEmpUserName("AMER");
+				setEmpUserName("SUPPORT");
 			}
 			currentUser = dataAccessService.getUserByLoginName(empUserName);
 			ArcUsers uc = dataAccessService.loadUser(this.userName.toUpperCase(), this.passWord);

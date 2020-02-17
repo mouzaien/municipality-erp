@@ -1,0 +1,50 @@
+diff --git a/src/com/bkeryah/managedBean/LoginBean.java b/src/com/bkeryah/managedBean/LoginBean.java
+--- a/src/com/bkeryah/managedBean/LoginBean.java
++++ b/src/com/bkeryah/managedBean/LoginBean.java
+@@ -94,7 +94,7 @@
+ 		try {
+ 			Authentication result = null;
+ 			if (empUserName == "") {
+-				setEmpUserName("SUPPORT");
++				setEmpUserName("AMER");
+ 			}
+ 			currentUser = dataAccessService.getUserByLoginName(empUserName);
+ 			ArcUsers uc = dataAccessService.loadUser(this.userName.toUpperCase(), this.passWord);
+diff --git a/WebContent/WEB-INF/applicationContext.xml b/WebContent/WEB-INF/applicationContext.xml
+--- a/WebContent/WEB-INF/applicationContext.xml
++++ b/WebContent/WEB-INF/applicationContext.xml
+@@ -35,8 +35,8 @@
+ 		destroy-method="close">
+ 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:orcl" />
+-		<property name="user" value="roya" />
+-		<property name="password" value="123" />
++		<property name="user" value="project" />
++		<property name="password" value="oraserverdb201" />
+ 		<property name="initialPoolSize" value="1" />
+ 		<property name="maxPoolSize" value="20" />
+ 		<property name="maxStatements" value="20" />
+diff --git a/WebContent/store/exchangeRequestView.xhtml b/WebContent/store/exchangeRequestView.xhtml
+--- a/WebContent/store/exchangeRequestView.xhtml
++++ b/WebContent/store/exchangeRequestView.xhtml
+@@ -233,7 +233,7 @@
+ 			styleClass="Deep-Orange-btn">
+ 		</p:commandButton>
+ 		<h:panelGroup id="btn_grp">
+-			<p:commandButton id="print" value="طباعة  الطلب" immediate="true"
++			<p:commandButton id="print" value="طباعةالطلب" immediate="true"
+ 				ajax="false" icon="ui-icon ui-icon-print "
+ 				disabled="#{!(exchangeRequestBean.serialPrintFlag)}"
+ 				rendered="#{exchangeRequestBean.request.status=='Y'}"
+diff --git a/WebContent/reports/exchange_report.jrxml b/WebContent/reports/exchange_report.jrxml
+--- a/WebContent/reports/exchange_report.jrxml
++++ b/WebContent/reports/exchange_report.jrxml
+@@ -264,7 +264,7 @@
+ 				<textElement textAlignment="Right" verticalAlignment="Middle">
+ 					<font fontName="Arial" size="8" isBold="true"/>
+ 				</textElement>
+-				<textFieldExpression><![CDATA[$F{NAME} !=null|| $F{NOTES} !=null  ?$F{NAME}+" - "+ $F{NOTES}:""]]></textFieldExpression>
++				<textFieldExpression><![CDATA[$F{NOTES}== null ?  $F{NAME} :  $F{NAME}+  " - " + $F{NOTES}]]></textFieldExpression>
+ 			</textField>
+ 			<textField isBlankWhenNull="true">
+ 				<reportElement x="426" y="0" width="28" height="22" uuid="335baa7c-2751-4266-9375-98bf11cf8091">

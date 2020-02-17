@@ -76,11 +76,12 @@
 								filterMatchMode="contains" filter="true" required="true"
 								requiredMessage="اختر المجموعة الرئيسية"
 								value="#{articlesBean.groupId}">
-								<f:selectItem itemLabel="اختر المجموعة الرئيسية " noSelectionOption="true"></f:selectItem>
+								<f:selectItem itemLabel="اختر المجموعة الرئيسية "
+									noSelectionOption="true"></f:selectItem>
 								<f:selectItems value="#{articlesBean.articleGroups}" var="x"
 									itemLabel="#{x.code} | #{x.name}" itemValue="#{x.id}"></f:selectItems>
 								<p:ajax listener="#{articlesBean.updateSubGroups}"
-								 process="@this" event="change"  ></p:ajax>
+									process="@this" event="change"></p:ajax>
 							</p:selectOneMenu>
 
 						</div>
@@ -92,7 +93,8 @@
 								filterMatchMode="contains" filter="true"
 								requiredMessage="اختر المجموعة الفرعية"
 								value="#{articlesBean.article.subGroupId}">
-								<f:selectItem itemLabel="اختر المجموعة الفرعية " noSelectionOption="true" ></f:selectItem>
+								<f:selectItem itemLabel="اختر المجموعة الفرعية "
+									noSelectionOption="true"></f:selectItem>
 								<f:selectItems value="#{articlesBean.articleSubGroups}" var="x"
 									itemLabel="#{x.code} |#{x.name}" itemValue="#{x.id}"></f:selectItems>
 							</p:selectOneMenu>
@@ -124,7 +126,8 @@
 								requiredMessage="اختر المستودع " style="width:100%"
 								value="#{articlesBean.article.strNo}">
 
-								<f:selectItem itemValue="" itemLabel="اختر المستودع  " noSelectionOption="true" ></f:selectItem>
+								<f:selectItem itemValue="" itemLabel="اختر المستودع  "
+									noSelectionOption="true"></f:selectItem>
 
 								<f:selectItems value="#{inventoryMasterBean.allWareHouses}"
 									var="x" itemLabel="#{x.storeName}" itemValue="#{x.storeNumber}"></f:selectItems>
@@ -200,18 +203,18 @@
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="الرئيسية"
-							filterBy="#{item.articleSubGroup.articleGroup.name}"
+							filterBy="#{articlesBean.getArticleGroup(item.groupId)}"
 							filterMatchMode="contains" style="width: 15%">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="#{item.articleSubGroup.articleGroup.name}" />
+									#{articlesBean.getArticleGroup(item.groupId)}
 								</f:facet>
 								<f:facet name="input">
 									<p:selectOneMenu id="table_groupId" required="true"
 										requiredMessage="اختر المجموعة الرئيسية"
-										value="#{item.articleSubGroup.groupId}">
+										value="#{item.groupId}">
 										<f:ajax
-											listener="#{articlesBean.updateTableSubGroups(item.articleSubGroup.groupId)}"
+											listener="#{articlesBean.updateTableSubGroups(item.groupId)}"
 											execute="table_groupId" event="valueChange"
 											render="table_sub"></f:ajax>
 										<f:selectItems value="#{articlesBean.articleGroups}" var="x"
@@ -221,11 +224,11 @@
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="الفرعية"
-							filterBy="#{item.articleSubGroup.name}"
+							filterBy="#{articlesBean.getSubGroupName(item.subGroupId)}"
 							filterMatchMode="contains" style="width: 15%">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="#{item.articleSubGroup.name}" />
+									#{articlesBean.getSubGroupName(item.subGroupId)}
 								</f:facet>
 								<f:facet name="input">
 									<p:selectOneMenu id="table_sub" class="form-control"
@@ -238,16 +241,15 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column headerText="المستودع"
-							filterBy="#{item.whsWarehouses.storeName}"
+						<p:column headerText="المستودع" filterBy="#{item.strName}"
 							filterMatchMode="contains" style="width: 15%">
 							<secc:authorize ifNotGranted="ROLE_STORE_BOSS">
-								<h:outputText value="#{item.whsWarehouses.storeName}" />
+								<h:outputText value="#{item.strName}" />
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_STORE_BOSS">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{item.whsWarehouses.storeName}" />
+										<h:outputText value="#{item.strName}" />
 									</f:facet>
 									<f:facet name="input">
 										<p:selectOneMenu class="form-control" required="true"

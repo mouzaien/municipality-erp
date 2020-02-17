@@ -161,10 +161,17 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				}
 			}
 
-			if (mgrId.equals(currentUser.getUserId()) && stepNum == 1) {
+			if ((dataAccessService.getUserById(request.getUserId()).getMgrId()).equals(storeDeanId)) {
+				if (mgrId.equals(currentUser.getUserId()) && stepNum == 1) {
+					enableAccept = true;
+					enableRefuse = true;
+				}
+			} else if (mgrId.equals(currentUser.getUserId())) {
 				enableAccept = true;
 				enableRefuse = true;
-			} else if (currentUser.getUserId().equals(dataAccessService.getPropertiesValue(MyConstants.WAREHOUSE_MGR))
+			}
+
+			else if (currentUser.getUserId().equals(dataAccessService.getPropertiesValue(MyConstants.WAREHOUSE_MGR))
 					&& stepNum == scenario.getStepsCount() - 3) {
 				enableAccept = true;
 				enableRefuse = true;

@@ -10,7 +10,7 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "STORE_TEMP_RECEIPT_DETAILS")
+@Table(name = "STORE_TEMPORARY_RECEIPT_DETAILS")
 public class StoreTemporeryReceiptDetails {
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")

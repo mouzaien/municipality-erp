@@ -3076,49 +3076,51 @@ public class DataAccessService implements IDataAccessService {
 			}
 			if (isFunction) {
 				if (storeId.length > 0 && !storeId[0].equals(0) && propertiesValueById.equals("STORE_DEAN")) {// store
-																												// model
-					propertiesValueById = getPropertiesValueById(currentModel.getFromId());
-					switch (storeId[0]) {
-					// 217,216,215,214 ids in sysproperties
-					case MyConstants.ELECT_STORE_DEAN:
-						propertiesValueById = getPropertiesValueById(217);
-						// "ELECT_STORE_DEAN"
-						break;
-					case MyConstants.LIBR_STORE_DEAN: // "":
-						propertiesValueById = getPropertiesValueById(216);
-						break;
-					case MyConstants.CARS_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(215);
-						break;
-					case MyConstants.RETURN_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(214);
-						break;
-					case MyConstants.MAINTENANCE_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(218);
-						break;
-					case MyConstants.PARKSBEAUTY_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(219);
-						break;
-					case MyConstants.CLEAN_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(220);
-						break;
-					case MyConstants.ELECTRIC_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(221);
-						break;
-					case MyConstants.PRINT_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(222);
-						break;
-					case MyConstants.SUSTAINABLE_RETURN_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(223);
-						break;
-					case MyConstants.RETURNED_CARS_STORE_DEAN:// "":
-						propertiesValueById = getPropertiesValueById(224);
-						break;
-					default:
-						propertiesValueById = getPropertiesValueById(146);
-						break;
-					}
-					return Integer.parseInt(propertiesValueById);
+					WhsWarehouses whouse = loadStoreIdById(storeId[0]);		
+					Integer storeDean=whouse.getStoreDeanId();
+					// model
+//					propertiesValueById = getPropertiesValueById(currentModel.getFromId());
+//					switch (storeId[0]) {
+//					// 217,216,215,214 ids in sysproperties
+//					case MyConstants.ELECT_STORE_DEAN:
+//						propertiesValueById = getPropertiesValueById(217);
+//						// "ELECT_STORE_DEAN"
+//						break;
+//					case MyConstants.LIBR_STORE_DEAN: // "":
+//						propertiesValueById = getPropertiesValueById(216);
+//						break;
+//					case MyConstants.CARS_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(215);
+//						break;
+//					case MyConstants.RETURN_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(214);
+//						break;
+//					case MyConstants.MAINTENANCE_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(218);
+//						break;
+//					case MyConstants.PARKSBEAUTY_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(219);
+//						break;
+//					case MyConstants.CLEAN_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(220);
+//						break;
+//					case MyConstants.ELECTRIC_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(221);
+//						break;
+//					case MyConstants.PRINT_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(222);
+//						break;
+//					case MyConstants.SUSTAINABLE_RETURN_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(223);
+//						break;
+//					case MyConstants.RETURNED_CARS_STORE_DEAN:// "":
+//						propertiesValueById = getPropertiesValueById(224);
+//						break;
+//					default:
+//						propertiesValueById = getPropertiesValueById(146);
+//						break;
+//					}
+					return storeDean;
 				}
 
 				if (MailTypeEnum.getValue(modelTypeId) == MailTypeEnum.HEALTH_LICENCE) {

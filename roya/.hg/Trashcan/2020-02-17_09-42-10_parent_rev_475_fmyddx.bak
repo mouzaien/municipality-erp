@@ -1,0 +1,12 @@
+diff --git a/src/com/bkeryah/managedBean/LoginBean.java b/src/com/bkeryah/managedBean/LoginBean.java
+--- a/src/com/bkeryah/managedBean/LoginBean.java
++++ b/src/com/bkeryah/managedBean/LoginBean.java
+@@ -94,7 +94,7 @@
+ 		try {
+ 			Authentication result = null;
+ 			if (empUserName == "") {
+-				setEmpUserName("SUPPORT");
++				setEmpUserName("AMER");
+ 			}
+ 			currentUser = dataAccessService.getUserByLoginName(empUserName);
+ 			ArcUsers uc = dataAccessService.loadUser(this.userName.toUpperCase(), this.passWord);

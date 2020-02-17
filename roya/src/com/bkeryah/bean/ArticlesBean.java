@@ -46,21 +46,20 @@ public class ArticlesBean {
 	@PostConstruct
 	public void init() {
 		articleGroups = dataAccessService.getAllArticleGroups();
-		//articleSubGroups = dataAccessService.getAllArticleSubGroups();
+		// articleSubGroups = dataAccessService.getAllArticleSubGroups();
 		articles = dataAccessService.getAllArticles(article.getStrNo());
 		unites = dataAccessService.getAllUnites();
 		warehouses = dataAccessService.getAllStores();
 	}
 
-	public void updateSubGroups(){
+	public void updateSubGroups() {
 		articleSubGroups = new ArrayList<>();
-		if(groupId != null )
-		{
-		articleSubGroups = dataAccessService.getAllArticleSubGroupsByGroupId(groupId);
-		Utils.updateUIComponent("includeform:sub");
+		if (groupId != null) {
+			articleSubGroups = dataAccessService.getAllArticleSubGroupsByGroupId(groupId);
+			Utils.updateUIComponent("includeform:sub");
 		}
 	}
-	
+
 	public void newArticle() {
 		newFlag = false;
 		article = new Article();
@@ -87,8 +86,8 @@ public class ArticlesBean {
 
 	public void reloadStrArticles(AjaxBehaviorEvent ev) {
 		try {
-			if(article != null)
-			 articles = dataAccessService.getAllArticles(article.getStrNo());
+			if (article != null)
+				articles = dataAccessService.getAllArticles(article.getStrNo());
 
 		} catch (Exception e) {
 			MsgEntry.addErrorMessage("  خطإ  ");
@@ -112,6 +111,7 @@ public class ArticlesBean {
 		selectedItem = (Article) event.getObject();
 		FacesMessage msg = new FacesMessage("تم إلغاء التعديل", selectedItem.getName());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+		articles = dataAccessService.getAllArticles(article.getStrNo());
 	}
 	////////////////////////////// Delete ///////////////////////
 
@@ -129,6 +129,26 @@ public class ArticlesBean {
 
 		}
 		articles = dataAccessService.getAllArticles(article.getStrNo());
+		return null;
+	}
+
+	public String getSubGroupName(Integer subGroupId) {
+
+		ArticleSubGroup subGrp = (ArticleSubGroup) dataAccessService.findEntityById(ArticleSubGroup.class, subGroupId);
+		if (subGrp != null) {
+			return subGrp.getName();
+		}
+
+		return null;
+	}
+
+	public String getArticleGroup(Integer groupId) {
+		if (groupId != null) {
+			ArticleGroup mainGrp = (ArticleGroup) dataAccessService.findEntityById(ArticleGroup.class, groupId);
+			if (mainGrp != null) {
+				return mainGrp.getName();
+			}
+		}
 		return null;
 	}
 
