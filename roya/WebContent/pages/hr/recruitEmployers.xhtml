@@ -377,7 +377,7 @@
 									<p:outputLabel value="رقم التامين الاجتماعى"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText id="socialassurancenumber" required="true"
+									<p:inputText id="socialassurancenumber" 
 										requiredMessage="رقم التامين الاجتماعى مطلوب"
 										value="#{recruitEmployer.hrmasfile.insuranceNumber}">
 									</p:inputText>
@@ -416,7 +416,7 @@
 									<p:outputLabel value=" رقم الجوال"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText id="mobile" required="true"
+									<p:inputText id="mobile" 
 										requiredMessage="رقم الجوال مطلوب"
 										value="#{recruitEmployer.hrmasfile.mobileNumber}">
 									</p:inputText>
@@ -426,7 +426,7 @@
 									<p:outputLabel value=" رقم العمل"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText id="workphone" required="true"
+									<p:inputText id="workphone" 
 										requiredMessage="رقم العمل مطلوب"
 										value="#{recruitEmployer.hrmasfile.workPhone}">
 									</p:inputText>
@@ -436,7 +436,7 @@
 									<p:outputLabel value=" رقم المنزل"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText id="homephone" required="true"
+									<p:inputText id="homephone" 
 										requiredMessage="رقم المنزل مطلوب"
 										value="#{recruitEmployer.hrmasfile.homePhone}">
 									</p:inputText>
@@ -465,7 +465,7 @@
 								<p:outputLabel value="اسم الاول بالانجليزيه"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true" requiredMessage="الإسم الأول مطلوب"
+								<p:inputText  requiredMessage="الإسم الأول مطلوب"
 									value="#{recruitEmployer.hrmasfile.firstNameAr}">
 								</p:inputText>
 							</div>
@@ -617,7 +617,7 @@
 								<p:outputLabel value="الرصيد المتبقي للسنة الحالية"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText 
 									value="#{recruitEmployer.hrmasfile.curInitBal}">
 								</p:inputText>
 							</div>
@@ -625,7 +625,7 @@
 								<p:outputLabel value="الرصيد المتبقي السابق"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText 
 									value="#{recruitEmployer.hrmasfile.prvInitBal}">
 								</p:inputText>
 							</div>
@@ -633,7 +633,7 @@
 								<p:outputLabel value="الرصيد المستمتع به (المخصوم) حتى تاريخ اطلاق النظام"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText  required="true"
+								<p:inputText  
 									value="#{recruitEmployer.hrmasfile.initBalUsdDays}">
 								</p:inputText>
 							</div>
@@ -644,7 +644,7 @@
 								
 									<p:inputText 
 										value="#{recruitEmployer.hrmasfile.dateFrom}"
-										onfocus="loadCalendar();" required="true"
+										onfocus="loadCalendar();" 
 										requiredMessage="يرجى اختيار تاريخ الاستحقاق"
 										
 										styleClass="form-control form-controlCal">
@@ -655,7 +655,7 @@
 								<p:outputLabel value="الرصيد الافتتاحي (المتبقي) حتى تاريخ اطلاق النظام"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText  required="true"
+								<p:inputText  
 									value="#{recruitEmployer.hrmasfile.initBalRemain}">
 								</p:inputText>
 							</div>
@@ -663,7 +663,7 @@
 								<p:outputLabel value="رصيد الانتدابات"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText 
 									value="#{recruitEmployer.hrmasfile.depCredit}">
 								</p:inputText>
 							</div>
@@ -753,7 +753,7 @@
 							<div  class="ui-g-2">
 								<h:panelGroup id="pDates22">
 									<p:inputText id="hiri22" value="#{recruitEmployer.incomDate}"
-										onfocus="loadCalendar();" required="true"
+										onfocus="loadCalendar();" 
 										requiredMessage="يرجى اختيار تاريخ وارد القرار"
 										rendered="#{recruitEmployer.higriMode2}"
 										styleClass="form-control form-controlCal">
@@ -774,7 +774,7 @@
 							<div class="ui-g-2">
 								<p:inputText
 									value="#{recruitEmployer.empHistoric.EXeCuteSouRCe}"
-									required="true" requiredMessage="مصدر القرار مطلوب">
+									 requiredMessage="مصدر القرار مطلوب">
 								</p:inputText>
 							</div>
 
@@ -797,7 +797,7 @@
 							</div>
 							<div class="ui-g-2">
 								<p:inputText value="#{recruitEmployer.empHistoric.incomNo}"
-									required="true" requiredMessage="رقم وارد القرار مطلوب">
+									 requiredMessage="رقم وارد القرار مطلوب">
 								</p:inputText>
 							</div>
 
@@ -1023,7 +1023,7 @@
 							<div class="ui-g-2">
 									
 										<p:inputText   value="#{recruitEmployer.hrmasfile.salaryDate}"
-											onfocus="loadCalendar();" required="true"
+											onfocus="loadCalendar();" 
 											requiredMessage="يرجى اختيار تاريخ الميلاد"
 											rendered="#{recruitEmployer.higriMode}"
 											styleClass="form-control form-controlCal">
