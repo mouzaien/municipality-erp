@@ -64,7 +64,7 @@
 									<p:outputLabel value="تصنيف الموظف"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="empssort"
+									<p:selectOneMenu required="true" requiredMessage="اختر التصنيف" id="empssort"
 										value="#{recruitEmployer.hrmasfile.cactegoryId}">
 										<f:selectItem itemLabel="اختر التصنيف" itemValue="" />
 										<f:selectItems value="#{recruitEmployer.listCategory}"
@@ -115,7 +115,7 @@
 								</div>
 
 								<div class="ui-g-2">
-									<p:inputText required="true" id="secondtname"
+									<p:inputText required="true" requiredMessage="اسم الاب مطلوب" id="secondtname"
 										value="#{recruitEmployer.hrmasfile.secondName}">
 									</p:inputText>
 								</div>
@@ -128,7 +128,7 @@
 									<p:outputLabel value="اسم الجد"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText required="true" id="thirdtname"
+									<p:inputText required="true" requiredMessage="اسم الجد مطلوب" id="thirdtname"
 										value="#{recruitEmployer.hrmasfile.thirdName}">
 									</p:inputText>
 								</div>
@@ -137,7 +137,7 @@
 									<p:outputLabel value="اسم العائلة"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText required="true" id="fourthtname"
+									<p:inputText required="true" requiredMessage="اسم العائلة مطلوب" id="fourthtname"
 										value="#{recruitEmployer.hrmasfile.forthName}">
 									</p:inputText>
 								</div>
@@ -244,11 +244,11 @@
 
 
 								<div class="ui-g-2">
-									<p:outputLabel value="مكان الميلاد"></p:outputLabel>
+									<p:outputLabel value="المدينة"></p:outputLabel>
 								</div>
 
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="birtplace"
+									<p:selectOneMenu required="true" requiredMessage="مكان الميلاد مطلوب" id="birtplace"
 										value="#{recruitEmployer.hrmasfile.birthPlace}" filter="true"
 										filterMatchMode="contains">
 										<f:selectItem itemLabel="اختر مكان الميلاد" itemValue="" />
@@ -262,7 +262,7 @@
 								</div>
 
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="nationality"
+									<p:selectOneMenu required="true" requiredMessage="الجنسيه مطلوبه" id="nationality"
 										value="#{recruitEmployer.hrmasfile.nationality}" filter="true"
 										filterMatchMode="contains">
 										<f:selectItem itemLabel="اختر الجنسية" itemValue="" />
@@ -302,7 +302,7 @@
 								</div>
 
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="gradeplace"
+									<p:selectOneMenu required="true" requiredMessage="جهة التخرج مطلوبة" id="gradeplace"
 										value="#{recruitEmployer.hrmasfile.graduteplace}"
 										filter="true" filterMatchMode="contains">
 										<f:selectItem itemLabel="اختر جهة التخرج" itemValue="" />
@@ -315,7 +315,7 @@
 									<p:outputLabel value=" التخصص"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="specific"
+									<p:selectOneMenu required="true" requiredMessage="التخصص مطلوب" id="specific"
 										value="#{recruitEmployer.hrmasfile.specialization}"
 										filter="true" filterMatchMode="contains">
 										<f:selectItem itemLabel="اختر التخصص" itemValue="" />
@@ -335,7 +335,7 @@
 								</div>
 
 								<div class="ui-g-2">
-									<p:selectOneMenu required="true" id="qualification"
+									<p:selectOneMenu required="true" requiredMessage="المؤهل مطلوب" id="qualification"
 										value="#{recruitEmployer.hrmasfile.qualification}"
 										filter="true" filterMatchMode="contains">
 										<f:selectItem itemLabel="اختر المؤهل" itemValue="" />
@@ -364,7 +364,7 @@
 									<p:outputLabel value=" عدد الاولاد"></p:outputLabel>
 								</div>
 								<div class="ui-g-2">
-									<p:inputText required="true" id="childnumber"
+									<p:inputText required="true" requiredMessage="عدد الاولاد مطلوب" id="childnumber"
 										value="#{recruitEmployer.hrmasfile.childsNumber}">
 									</p:inputText>
 								</div>
@@ -452,7 +452,7 @@
 								<p:outputLabel value="اللقب"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:selectOneMenu required="true"
+								<p:selectOneMenu required="true" requiredMessage="اللقب مطلوب"
 									value="#{recruitEmployer.hrmasfile.title}">
 									<f:selectItem itemLabel="اختر اللقب" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.titles}" var="category"
@@ -475,7 +475,7 @@
 							</div>
 
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText required="true" requiredMessage="اسم الاب مطلوب"
 									value="#{recruitEmployer.hrmasfile.secondNameAr}">
 								</p:inputText>
 							</div>
@@ -488,7 +488,7 @@
 								<p:outputLabel value="اسم الجد بالانجليزيه"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText required="true" requiredMessage="اسم الجد مطلوب"
 									value="#{recruitEmployer.hrmasfile.thirdNameAr}">
 								</p:inputText>
 							</div>
@@ -497,7 +497,7 @@
 								<p:outputLabel value="اسم العائله بالانجليزيه"></p:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText required="true"
+								<p:inputText required="true" requiredMessage="اسم العائلة مطلوب"
 									value="#{recruitEmployer.hrmasfile.forthNameAr}">
 								</p:inputText>
 							</div>
@@ -507,7 +507,7 @@
 							</div>
 							<div class="ui-g-2">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
+									filterMatchMode="contains" requiredMessage="دولة الميلاد مطلوبة"
 									value="#{recruitEmployer.hrmasfile.birthCountry}">
 									<f:selectItem itemLabel="اختر الدوله" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.countries}"
@@ -521,7 +521,7 @@
 							</div>
 							<div class="ui-g-2">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
+									filterMatchMode="contains" requiredMessage="مكان الميلاد مطلوب"
 									value="#{recruitEmployer.hrmasfile.birthTown}">
 									<f:selectItem itemLabel="اختر المكان" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.cities}" var="city"
@@ -533,10 +533,10 @@
 							<div class="ui-g-2">
 								<p:outputLabel value="المؤهل"></p:outputLabel>
 							</div>
-							<div class="ui-g-5">
+							<div class="ui-g-6">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
-									value="#{recruitEmployer.hrmasfile.qualific}">
+									filterMatchMode="contains" requiredMessage="المؤهل مطلوب"
+									value="#{recruitEmployer.hrmasfile.qualifStatus}">
 									<f:selectItem itemLabel="اخترالمؤهل" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.qualific}"
 										var="qualific" itemLabel="#{qualific.qualifName}"
@@ -544,13 +544,27 @@
 
 								</p:selectOneMenu>
 							</div>
+							<div class="ui-g-2">
+								<p:outputLabel value="حالة المؤهل"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu required="true" filter="true"
+									filterMatchMode="contains" requiredMessage="حالة المؤهل مطلوبة"
+									value="#{recruitEmployer.hrmasfile.qualifStatus}">
+									<f:selectItem itemLabel="اختر الحالة" itemValue="" />
+									<f:selectItems value="#{recruitEmployer.hrSubjects}"
+										var="subjects" itemLabel="#{subjects.subjectArName}"
+										itemValue="#{subjects.subjectCode}" />
+
+								</p:selectOneMenu>
+							</div>
 
 							<div class="ui-g-2">
 								<p:outputLabel value="المدرسة"></p:outputLabel>
 							</div>
-							<div class="ui-g-4">
+							<div class="ui-g-6">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
+									filterMatchMode="contains" requiredMessage="المدرسة مطلوبة"
 									value="#{recruitEmployer.hrmasfile.schoolId}">
 									<f:selectItem itemLabel="اختر المدرسة" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.establishment}"
@@ -559,12 +573,12 @@
 
 								</p:selectOneMenu>
 							</div>
-							<div class="ui-g-1">
+							<div class="ui-g-2">
 								<p:outputLabel value="الديانة"></p:outputLabel>
 							</div>
-							<div class="ui-g-4">
+							<div class="ui-g-2">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
+									filterMatchMode="contains" requiredMessage="الديانة مطلوبة"
 									value="#{recruitEmployer.hrmasfile.religion}">
 									<f:selectItem itemLabel="اختر الديانة" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.religions}"
@@ -578,7 +592,7 @@
 							</div>
 							<div class="ui-g-2">
 								<p:selectOneMenu required="true" filter="true"
-									filterMatchMode="contains"
+									filterMatchMode="contains" requiredMessage="الجنسية مطلوبة"
 									value="#{recruitEmployer.hrmasfile.natNo}">
 									<f:selectItem itemLabel="اختر الجنسية" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.nationalities}"
