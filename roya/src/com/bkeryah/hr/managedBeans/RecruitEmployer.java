@@ -21,6 +21,7 @@ import com.bkeryah.entities.HRCity;
 import com.bkeryah.entities.HRCountry;
 import com.bkeryah.entities.HRNationality;
 import com.bkeryah.entities.HRReligion;
+import com.bkeryah.entities.HRSubjectStatus;
 import com.bkeryah.entities.HRTitles;
 import com.bkeryah.entities.HrQualification;
 import com.bkeryah.entities.HrsEmpHistorical;
@@ -94,6 +95,7 @@ public class RecruitEmployer {
 	private List<HRReligion> religions;
 	private List<HRNationality> nationalities;
 	private Establishment establish;
+	private List<HRSubjectStatus> hrSubjects;
 	
 	@PostConstruct
 	public void init() {
@@ -126,6 +128,7 @@ public class RecruitEmployer {
 			establishment=dataAccessService.getAllEstablishment();
 			religions=dataAccessService.getAllReligions();
 			nationalities=dataAccessService.getAllNationalities();
+			hrSubjects=dataAccessService.getAllSubjectStatus();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -242,8 +245,10 @@ public class RecruitEmployer {
 
 	public String saveEmployer() throws ParseException {
 		establish=dataAccessService.getEstablishmentById(hrmasfile.getSchoolId());
+		if(establish!=null) {
 		hrmasfile.setSchool(establish.getSchool());
 		hrmasfile.setSchoolLoc(establish.getLocation());
+		}
 		EmpHistoric.setCATegoryId(hrmasfile.getCactegoryId());
 //		EmpHistoric.setJobNumber(selectJob.getJobNumber());
 //		EmpHistoric.setJobcode(selectJob.getJobCode());
@@ -795,6 +800,14 @@ public class RecruitEmployer {
 
 	public void setEstablish(Establishment establish) {
 		this.establish = establish;
+	}
+
+	public List<HRSubjectStatus> getHrSubjects() {
+		return hrSubjects;
+	}
+
+	public void setHrSubjects(List<HRSubjectStatus> hrSubjects) {
+		this.hrSubjects = hrSubjects;
 	}
 
 }

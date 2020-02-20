@@ -33,6 +33,8 @@ public class HrsMasterFile {
 	private String firstName;
 	@Column(name = "SND_NAME_AR")
 	private String secondName;
+	@Column(name = "QUALIFICATION_STATUS")
+	private String qualifStatus;
 	@Column(name = "TRD_NAME_AR")
 	private String thirdName;
 	@Column(name = "FTH_NAME_AR")
@@ -687,6 +689,14 @@ public class HrsMasterFile {
 
 	public void setSchoolId(Integer schoolId) {
 		this.schoolId = schoolId;
+	}
+
+	public String getQualifStatus() {
+		return qualifStatus;
+	}
+
+	public void setQualifStatus(String qualifStatus) {
+		this.qualifStatus = qualifStatus;
 	}
 
 }
