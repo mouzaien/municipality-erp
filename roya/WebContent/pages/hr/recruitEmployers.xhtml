@@ -525,7 +525,7 @@
 									value="#{recruitEmployer.hrmasfile.birthTown}">
 									<f:selectItem itemLabel="اختر المكان" itemValue="" />
 									<f:selectItems value="#{recruitEmployer.cities}" var="city"
-										itemLabel="#{city.cityArName}" itemValue="#{city.id.cityCode}" />
+										itemLabel="#{city.cityArName} -#{city.id.countryCode}" itemValue="#{city.id.cityCode}" />
 
 								</p:selectOneMenu>
 							</div>
