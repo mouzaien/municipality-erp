@@ -75,14 +75,14 @@
 										#{empH.id.empno}									
 							</p:column>
 							<p:column style="white-space: nowrap;"
-								headerText=" الرقم الوظيفي" width="20%"
+								headerText="الوظيفة" width="20%"
 								filterBy="#{empH.jobcode}" filterMatchMode="contains">
 
 								<h:outputText value="#{empH.jobName}" />
 							</p:column>
 
 							<p:column style="white-space: nowrap;"
-								headerText=" إدارة المستخد م" width="20%"
+								headerText=" إدارة الموظف " width="20%"
 								filterBy="#{empH.userDept}" filterMatchMode="contains">
 								<p:selectOneMenu value="#{empH.userDept}"
 									style="width: 100% ; opacity:1;" disabled="true" filter="true"
@@ -104,8 +104,8 @@
 								style="width:50px;text-align: center">
 								<p:commandButton process="@this" update="includeform:panelGroup"
 									oncomplete=" PF('mydialog').show()" icon="ui-icon-search"
-									 action="#{empHistoryBean.loadEmpHistoryData}"
-									title="View" modal="true">
+									action="#{empHistoryBean.loadEmpHistoryData}" title="View"
+									modal="true">
 									<f:setPropertyActionListener value="#{empH}"
 										target="#{empHistoryBean.selectedEmpHistory}" />
 								</p:commandButton>
@@ -116,7 +116,7 @@
 
 
 						<p:dialog header="تعديل " position="center" widgetVar="mydialog"
-							width="70%" height="80%" responsive="true" id="inputData2"
+							width="70%"  responsive="true" id="inputData2"
 							closable="true" dir="rtl" resizable="true" modal="true">
 							<h:panelGroup id="panelGroup">
 								<p:fieldset legend="تعديل البيانات ">
@@ -139,7 +139,7 @@
 											<h:outputText value=" تاريخ الحركة "></h:outputText>
 										</div>
 										<div class="ui-g-2">
-											<p:inputText 
+											<p:inputText
 												value="#{empHistoryBean.selectedEmpHistory.recDate}"
 												onfocus="loadCalendar();"
 												styleClass="form-control form-controlCal">
@@ -169,14 +169,14 @@
 
 
 										<div class="ui-g-2">
-											<h:outputText value=" الرمز الوظيفى "></h:outputText>
+											<h:outputText value="الوظيفة "></h:outputText>
 										</div>
 										<div class="ui-g-2">
 											<p:selectOneMenu
 												value="#{empHistoryBean.selectedEmpHistory.jobcode}"
 												style="width: 100%" filter="true" filterMatchMode="contains"
 												id="amgr1">
-												<f:selectItem itemLabel="أختر الرقم الوظيفي"
+												<f:selectItem itemLabel="أختر  الوظيفة"
 													noSelectionOption="true" />
 												<f:selectItems var="mgr"
 													value="#{empHistoryBean.jobCreationList}"
@@ -186,6 +186,24 @@
 
 										</div>
 
+										<div class="ui-g-2">
+											<h:outputText value="الرقم الوظيفي "></h:outputText>
+										</div>
+										<div class="ui-g-2">
+											<p:selectOneMenu
+												value="#{empHistoryBean.selectedEmpHistory.jobNumber}"
+												style="width: 100%" filter="true" filterMatchMode="contains"
+												id="amgr54">
+												<f:selectItem itemLabel="أختر الرقم الوظيفي"
+													noSelectionOption="true" />
+												<f:selectItems var="mgr"
+													value="#{empHistoryBean.jobNumList}"
+													itemValue="#{mgr.jobNumber}"
+													itemLabel="#{mgr.jobNumber}" />
+											</p:selectOneMenu>
+
+										</div>
+										<br/>
 										<div class="ui-g-2">
 											<h:outputText value=" الادارة "></h:outputText>
 										</div>
@@ -201,6 +219,7 @@
 
 											</p:selectOneMenu>
 										</div>
+										<br/>
 									</div>
 									<br />
 									<div class="ui-g">
@@ -278,17 +297,10 @@
 											<h:outputText value="حالة الموظف"></h:outputText>
 										</div>
 										<div class="ui-g-2">
-<!-- 											<p:selectOneMenu id="trl" -->
-<!-- 												value="#{empHistoryBean.flagString} " style="width:125px ;" -->
-<!-- 												dir="rtl"> -->
-<!-- 												<f:selectItem itemLabel="غير نشط" itemValue="0" /> -->
-<!-- 												<f:selectItem itemLabel="نشط" itemValue="1" /> -->
-<!-- 											</p:selectOneMenu> -->
-
 											<h:panelGrid columns="1" style="margin-bottom:10px"
 												cellpadding="5">
-												<p:selectOneRadio id="console" value="#{empHistoryBean.flagString}"
-													unselectable="true">
+												<p:selectOneRadio id="console"
+													value="#{empHistoryBean.flagString}" unselectable="true">
 													<f:selectItem itemLabel="غير نشط" itemValue="0" />
 													<f:selectItem itemLabel="نشط" itemValue="1" />
 												</p:selectOneRadio>

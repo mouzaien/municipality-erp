@@ -1808,4 +1808,6 @@ public interface IDataAccessService {
 
 	 List<HrsSalaryScaleDgrs> loadJobRaNum();
 
+	 List<HrsJobCreation> loadAllJobNo();
+
 }

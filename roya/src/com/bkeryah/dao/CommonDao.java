@@ -4788,6 +4788,9 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
 		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		Integer[] values = {200,217,101};
+		criteria.add(Restrictions.in("RecordType", values)
+				);
 		return criteria.list();
 	}
 }

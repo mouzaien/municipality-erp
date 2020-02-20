@@ -9076,4 +9076,11 @@ public class DataAccessService implements IDataAccessService {
 		return jobRaNum;
 	}
 
+	@Override
+	public List<HrsJobCreation> loadAllJobNo() {
+		List jobNum = commonDao.findAll(HrsJobCreation.class);
+		return jobNum;
+	}
+
+	
 }
