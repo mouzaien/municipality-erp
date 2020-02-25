@@ -20,6 +20,7 @@ import com.bkeryah.entities.HRArea;
 import com.bkeryah.entities.HRCity;
 import com.bkeryah.entities.HRCountry;
 import com.bkeryah.entities.HRNationality;
+import com.bkeryah.entities.HRPhoneType;
 import com.bkeryah.entities.HRReligion;
 import com.bkeryah.entities.HRSubjectStatus;
 import com.bkeryah.entities.HRTitles;
@@ -97,6 +98,7 @@ public class RecruitEmployer {
 	private Establishment establish;
 	private List<HRSubjectStatus> hrSubjects;
 	
+	
 	@PostConstruct
 	public void init() {
 		try {
@@ -129,6 +131,7 @@ public class RecruitEmployer {
 			religions=dataAccessService.getAllReligions();
 			nationalities=dataAccessService.getAllNationalities();
 			hrSubjects=dataAccessService.getAllSubjectStatus();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -809,5 +812,7 @@ public class RecruitEmployer {
 	public void setHrSubjects(List<HRSubjectStatus> hrSubjects) {
 		this.hrSubjects = hrSubjects;
 	}
+
+	
 
 }

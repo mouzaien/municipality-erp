@@ -85,6 +85,9 @@ import com.bkeryah.fuel.entities.UserCars;
 import com.bkeryah.fuel.entities.VehicleType;
 import com.bkeryah.hr.entities.CompensatoryVacStock;
 import com.bkeryah.hr.entities.EmpMoveType;
+import com.bkeryah.hr.entities.HrTrain01;
+import com.bkeryah.hr.entities.HrTrainCat02;
+import com.bkeryah.hr.entities.HrTrainCat03;
 import com.bkeryah.hr.entities.HrsAppreciationScale;
 import com.bkeryah.hr.entities.HrsCompactBaseFloor;
 import com.bkeryah.hr.entities.HrsCompactCatFloor;
@@ -1807,5 +1810,17 @@ public interface IDataAccessService {
 	List<HrsSalaryScale> loadJobRanks();
 
 	 List<HrsSalaryScaleDgrs> loadJobRaNum();
+	 
+	 public List<HrTrain01> getAllHrTrain01();
+	
+	 public List<HrTrainCat02> getAllHrTrain02();
+	
+	 public List<HrTrainCat03> getAllHrTrain03();
+	 public Training getTrainingByEmp(Integer empno);
+	 public void saveTraining(Training tr);
+	 public List<Training> loadAllTraining();
+	 
+	 public void saveEmpTraining(EmpTraining emptr);
+	 
 
 }

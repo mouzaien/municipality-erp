@@ -111,6 +111,9 @@ import com.bkeryah.fuel.entities.UserCars;
 import com.bkeryah.fuel.entities.VehicleType;
 import com.bkeryah.hr.entities.CompensatoryVacStock;
 import com.bkeryah.hr.entities.EmpMoveType;
+import com.bkeryah.hr.entities.HrTrain01;
+import com.bkeryah.hr.entities.HrTrainCat02;
+import com.bkeryah.hr.entities.HrTrainCat03;
 import com.bkeryah.hr.entities.HrsAppreciationScale;
 import com.bkeryah.hr.entities.HrsCompactBaseFloor;
 import com.bkeryah.hr.entities.HrsCompactCatFloor;
@@ -3665,17 +3668,31 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("announcementDetailsId", annDetailsId));
 		return criteria.list();
 	}
-
+	@SuppressWarnings("unchecked")
+	@Transactional
 	@Override
 	public List<HrsMasterFile> getAllEmployeesActive() {
 		List<Integer> listCat = new ArrayList<Integer>();
 		listCat.add(1);
 		listCat.add(2);
 		listCat.add(4);
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsMasterFile.class);
-		criteria.add(Restrictions.eq("employerStatus", 1));
-		criteria.add(Restrictions.in("cactegoryId", listCat));
-		return criteria.list();
+		listCat.add(5);
+		
+//		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsMasterFile.class);
+//		criteria.add(Restrictions.eq("employerStatus", 1));
+//		criteria.add(Restrictions.in("cactegoryId", listCat));
+//		return criteria.list();
+		
+	//	String hql = " select M.* FROM  HrsMasterFile M inner join HrsEmpHistorical H on M.employeNumber=H.id.empno where M.employerStatus=1 AND M.cactegoryId IN : listcat";
+	//	Query query = sessionFactory.getCurrentSession().createQuery(hql);
+	//	query.setParameter("listcat", listCat);
+		String hql = "SELECT M FROM HrsMasterFile as M , HrsEmpHistorical as H where M.employeNumber=H.id.empno AND M.employerStatus=1 AND M.cactegoryId IN (1,2,4,5) AND H.flag=1";
+
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		return (List<HrsMasterFile>)query.list();
+		
+	//	return query.list();
+			
 	}
 
 	@Override
@@ -4789,5 +4806,42 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
 		criteria.add(Restrictions.eq("id.empno", employerNumber));
 		return criteria.list();
+	}
+	
+	
+	public List<HrTrain01> getAllHrTrain01(){
+		return loadAll(HrTrain01.class);
+	}
+	
+	public List<HrTrainCat02> getAllHrTrain02(){
+		return loadAll(HrTrainCat02.class);
+	}
+	
+	public List<HrTrainCat03> getAllHrTrain03(){
+		return loadAll(HrTrainCat03.class);
+	}
+	
+	@Override
+	@Transactional
+	public Training getTrainingByEmp(Integer empno){
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Training.class);
+		criteria.add(Restrictions.eq("empNo", empno));
+		return (Training)criteria.uniqueResult();
+	}
+	@Override
+	@Transactional
+	public void saveTraining(Training tr) {
+		sessionFactory.getCurrentSession().save(tr);
+	}
+	
+	@Override
+	@Transactional
+	public List<Training> loadAllTraining() {
+		return loadAll(Training.class);
+	}
+	@Override
+	@Transactional
+	 public void saveEmpTraining(EmpTraining emptr) {
+		sessionFactory.getCurrentSession().save(emptr);
 	}
 }

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="windows-1256" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+<body>
+<ui:composition template="/template.xhtml">
+
+		<ui:define name="content">
+			<h:form id="dd">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="image-box-footer">
+					<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+						styleClass="cyan-btn" action="#{trainingBean.saveTraining}">
+												
+						<f:ajax execute="@form" listener="#{trainingBean.updateTraining}" render="ff"/>
+					</p:commandButton>
+					<p:spacer width="10px" height="10px"></p:spacer>
+<!-- 					<p:commandButton value="رجوع" icon="ui-icon ui-icon-arrow-back" -->
+<!-- 						styleClass="green-btn" action="employers"> -->
+												
+<!-- 						<f:ajax execute="@form" /> -->
+<!-- 					</p:commandButton> -->
+				</div>
+				
+
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						</h1>
+						
+							
+								
+					<p:fieldset id="train" legend="التدريب"
+						toggleable="true" toggleSpeed="500">
+						
+						<div>
+							<h:panelGroup id="mygrb">
+						
+						<div class="ui-g">
+							
+							
+								<div class="ui-g-2">
+									<p:outputLabel value="اسم البرنامج"></p:outputLabel>
+								</div>
+								<div class="ui-g-4">
+									<p:selectOneMenu   requiredMessage="اختر البرنامج" 
+										value="#{trainingBean.tr.courseName}">
+										<f:selectItem itemLabel="اختر البرنامج" itemValue="" />
+										<f:selectItems value="#{trainingBean.train01}"
+											var="tr01" itemLabel="#{tr01.courseName}"
+											itemValue="#{tr01.courseName}" />
+										
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="لغة الفصل الدراسي"></p:outputLabel>
+								</div>
+								<div class="ui-g-4" dir="rtl">
+									<p:selectOneMenu   requiredMessage="اختر اللغة" id="empssort"
+										value="#{trainingBean.tr.offerInLang}">
+										<f:selectItem itemLabel="اختر اللغة"  />
+										<f:selectItem itemLabel="العربية" itemValue="AR" />
+										<f:selectItem itemLabel="الانجليزية" itemValue="EN" />
+										
+									</p:selectOneMenu>
+								</div >
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="اسم الفصل الدراسي"></p:outputLabel>
+								</div> 
+								<div class="ui-g-4">
+								
+									<p:inputText value="#{trainingBean.tr.className}"></p:inputText>
+								</div> 
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="بداية الفصل الدراسي"></p:outputLabel>
+								</div> 
+								<div class="ui-g-4" dir="rtl" >
+								
+									<p:inputText  value="#{trainingBean.tr.classStDate}"
+											onfocus="loadCalendar();"  
+											requiredMessage="يرجى اختيار بداية الفصل الدراسي"
+											styleClass="form-control form-controlCal">
+									</p:inputText>
+								</div> 
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="نهاية الفصل الدراسي"></p:outputLabel>
+								</div> 
+								<div class="ui-g-4" dir="rtl">
+								
+									<p:inputText  value="#{trainingBean.tr.classEndDate}"
+											onfocus="loadCalendar();"  
+											requiredMessage="يرجى اختيارنهاية الفصل الدراسي"
+											styleClass="form-control form-controlCal">
+									</p:inputText>
+								</div> 
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="المدة"></p:outputLabel>
+								</div> 
+								<div class="ui-g-4" dir="rtl">
+								
+									<p:inputText value="#{trainingBean.tr.duration}"></p:inputText>
+								</div> 
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="الوحدة"></p:outputLabel>
+								</div> 
+								
+								
+								<div class="ui-g-4" dir="rtl">
+									<p:selectOneMenu   requiredMessage="اختر الوحدة" 
+										value="#{trainingBean.tr.durationUnit}">
+										<f:selectItem itemLabel="اختر الوحدة" itemValue="" />
+										<f:selectItem itemLabel="يوم" itemValue="DAY" />
+										<f:selectItem itemLabel="اسبوع" itemValue="WEEK" />
+										<f:selectItem itemLabel="شهر" itemValue="MONTH" />
+										<f:selectItem itemLabel="سنة" itemValue="YEAR" />
+										
+									</p:selectOneMenu>
+								</div >
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="مركز التدريب"></p:outputLabel>
+								</div> 
+								
+								
+								<div class="ui-g-4" dir="rtl">
+									<p:selectOneMenu   requiredMessage="مركز التدريب" 
+										value="#{trainingBean.tr.centArName}">
+										<f:selectItem itemLabel="اختر المركز" itemValue="" />
+										<f:selectItems value="#{trainingBean.train03}" var="center"
+										 itemLabel="#{center.cenArName}" itemValue="#{center.cenArName}" />
+									</p:selectOneMenu>
+								</div >
+								<div class="ui-g-2">
+								
+									<p:outputLabel value="مكان التدريب"></p:outputLabel>
+								</div> 
+								
+								
+								<div class="ui-g-4" dir="rtl">
+									<p:selectOneMenu   requiredMessage="مكان التدريب" 
+										value="#{trainingBean.tr.locArName}">
+										<f:selectItem itemLabel="اختر المكان" itemValue="" />
+										<f:selectItems value="#{trainingBean.train02}" var="loc" 
+										 itemLabel="#{loc.locArName}" itemValue="#{loc.locArName}" />
+									</p:selectOneMenu>
+								</div >
+								
+								
+								
+							</div>
+							</h:panelGroup>
+							
+						</div>
+					</p:fieldset>
+					</div>
+					</h:form >
+					<h:form id="ff">
+						<p:fieldset id="empl" 
+						toggleable="true" toggleSpeed="500">
+						<div class="ui-g">
+							<div class="ui-g-2">
+									<p:outputLabel value="اختر الموظف"></p:outputLabel>
+							</div>
+								<div class="ui-g-10">
+									<p:selectOneMenu  filter="true" filterMatchMode="contains"
+										requiredMessage="اختر الموظف" 
+										value="#{trainingBean.emptr.empNo}">
+										<f:selectItem itemLabel="اختر الموظف"  /> 
+										<f:selectItems value="#{trainingBean.employees}"
+											var="emp" 
+											itemLabel="#{emp.firstName} #{emp.secondName} #{emp.thirdName} #{emp.forthName}"
+											itemValue="#{emp.employeNumber}" />
+ 											
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="اختر الفصل الدراسي"></p:outputLabel>
+							</div>
+								<div class="ui-g-10">
+									<p:selectOneMenu  filter="true" filterMatchMode="contains"
+										requiredMessage="اختر الفصل" 
+										value="#{trainingBean.emptr.className}">
+										<f:selectItem itemLabel="اختر الفصل"  /> 
+										<f:selectItems value="#{trainingBean.training}"
+											var="tr" 
+											itemLabel="#{tr.className}"
+											itemValue="#{tr.className}" />
+ 											 
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-2">
+									<p:outputLabel value="حالة التسجيل"></p:outputLabel>
+								</div>
+								<div class="ui-g-4" dir="rtl">
+									<p:selectOneMenu   requiredMessage="اختر حالة التسجيل" 
+										value="#{trainingBean.emptr.ennStatus}">
+										<f:selectItem itemLabel="اختر حالة التسجيل" itemValue="" />
+										<f:selectItem itemLabel="محجوز" itemValue="Placed"/>
+										<f:selectItem itemLabel="حاضر" itemValue="Attended"/>
+										
+									</p:selectOneMenu>
+								</div>
+								<div class="image-box-footer">
+							<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+						styleClass="cyan-btn" action="#{trainingBean.saveEmpTraining}">
+												
+						<f:ajax execute="@form" />
+						</p:commandButton>
+						<p:spacer width="10px" height="10px"></p:spacer>
+<!-- 					<p:commandButton value="رجوع" icon="ui-icon ui-icon-arrow-back" -->
+<!--  						styleClass="green-btn" action="employers"> -->
+												
+<!-- 						<f:ajax execute="@form" /> -->
+<!-- 					</p:commandButton>  -->
+						</div>
+						</div>
+								</p:fieldset>
+								</h:form>
+					
+					</ui:define>
+					</ui:composition>
+					
+</body>
+</html>

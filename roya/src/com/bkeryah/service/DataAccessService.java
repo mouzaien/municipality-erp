@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +111,9 @@ import com.bkeryah.fuel.entities.UserCars;
 import com.bkeryah.fuel.entities.VehicleType;
 import com.bkeryah.hr.entities.CompensatoryVacStock;
 import com.bkeryah.hr.entities.EmpMoveType;
+import com.bkeryah.hr.entities.HrTrain01;
+import com.bkeryah.hr.entities.HrTrainCat02;
+import com.bkeryah.hr.entities.HrTrainCat03;
 import com.bkeryah.hr.entities.HrsAppreciationScale;
 import com.bkeryah.hr.entities.HrsCompactBaseFloor;
 import com.bkeryah.hr.entities.HrsCompactCatFloor;
@@ -9075,5 +9080,42 @@ public class DataAccessService implements IDataAccessService {
 		List jobRaNum = commonDao.findAll(HrsSalaryScaleDgrs.class);
 		return jobRaNum;
 	}
+	
+	public List<HrTrain01> getAllHrTrain01(){
+		return commonDao.getAllHrTrain01();
+	}
+	
+	 public List<HrTrainCat02> getAllHrTrain02(){
+		 return commonDao.getAllHrTrain02();
+	 }
+	
+	 public List<HrTrainCat03> getAllHrTrain03(){
+		 return commonDao.getAllHrTrain03();
+	 }
+	 
+	 @Override
+	 @Transactional
+	 public Training getTrainingByEmp(Integer empno){
+			
+			return commonDao.getTrainingByEmp(empno);
+		}
+	 @Override
+	 @Transactional
+	 public void saveTraining(Training tr) {
+		 commonDao.saveTraining(tr);
+	 }
+	 
+	 @Override
+	 @Transactional
+	 public List<Training> loadAllTraining(){
+		return commonDao.loadAllTraining();
+	 }
+	 @Override
+	 @Transactional
+	 public void saveEmpTraining(EmpTraining emptr) {
+		 commonDao.saveEmpTraining(emptr);
+	 }
+	
+	
 
 }
