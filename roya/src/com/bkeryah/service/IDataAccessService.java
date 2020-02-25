@@ -1823,4 +1823,6 @@ public interface IDataAccessService {
 	 public void saveEmpTraining(EmpTraining emptr);
 	 
 
+	 List<HrsJobCreation> loadAllJobNo();
+
 }

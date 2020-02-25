@@ -9118,4 +9118,11 @@ public class DataAccessService implements IDataAccessService {
 	
 	
 
+	@Override
+	public List<HrsJobCreation> loadAllJobNo() {
+		List jobNum = commonDao.findAll(HrsJobCreation.class);
+		return jobNum;
+	}
+
+	
 }

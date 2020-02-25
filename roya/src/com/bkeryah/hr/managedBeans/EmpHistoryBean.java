@@ -20,6 +20,7 @@ import com.bkeryah.entities.Nationality;
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsSalaryScaleDgrs;
+import com.bkeryah.hr.entities.HrsJobCreation;
 import com.bkeryah.hr.entities.Sys035;
 import com.bkeryah.service.IDataAccessService;
 
@@ -42,7 +43,8 @@ public class EmpHistoryBean {
 	private String empNo;
 	private String flagString;
 	private Integer RecordType;
-
+	private List<HrsJobCreation> jobNumList = new ArrayList<HrsJobCreation>();
+	
 	private List<HrsMasterFile> usrsList;
 	private String CATegoryName;
 	private String transferSalary;
@@ -56,12 +58,17 @@ public class EmpHistoryBean {
 		deptList = dataAccessService.findAllDepartments();
 		rankList = dataAccessService.loadAllJobRanks(); // المرتبة >> classNumber
 		ranNumListOut = dataAccessService.loadJobRaNum();
+		jobNumList =dataAccessService.loadAllJobNo();
 	}
 
 	public void saveEmpHistory() {
 		System.out.println(">>>>>>" + flagString);
 		FacesMessage msg = new FacesMessage("تم حفظ التعديل");
 		selectedEmpHistory.setFlag(Integer.parseInt(flagString));
+		if(selectedEmpHistory.getJobcode() != null && !selectedEmpHistory.getJobcode().isEmpty())
+		{
+		//	dataAccessService.findEntityById(entityClass, EntityId)
+		}
 	//	dataAccessService.findEntityById(entityClass, EntityId)
 		try {
 			dataAccessService.updateObject(selectedEmpHistory);
@@ -259,6 +266,14 @@ public class EmpHistoryBean {
 
 	public void setFlagString(String flagString) {
 		this.flagString = flagString;
+	}
+
+	public List<HrsJobCreation> getJobNumList() {
+		return jobNumList;
+	}
+
+	public void setJobNumList(List<HrsJobCreation> jobNumList) {
+		this.jobNumList = jobNumList;
 	}
 
 }
