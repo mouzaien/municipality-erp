@@ -19,6 +19,7 @@
 				<div class="layout-menu-container">
 					<h:form id="menuform">
 
+
 						<pm:menu>
 							<p:menuitem id="sr_dashboard" value="#{msg['home']}"
 								icon="ui-icon ui-icon-home" outcome="/pages/dashboard" />
@@ -157,6 +158,9 @@
 											action="employers" icon="fa fa-users" />
 										<p:menuitem id="EMPhis" value="تاريخ الموظفين  "
 											icon="fa fa-dashboard" action="empHistory">
+										</p:menuitem>
+										<p:menuitem id="emptraining" value="التدريب"
+											icon="fa fa-dashboard" action="training">
 										</p:menuitem>
 										<p:menuitem id="sm_promotion" value="ترقية موظف"
 											action="promotion" icon="fa fa-line-chart" />
@@ -393,6 +397,10 @@
 								</p:submenu>
 							</secc:authorize>
 						</pm:menu>
+					
+					
+					
+					
 					</h:form>
 				</div>
 			</div>
