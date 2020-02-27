@@ -104,7 +104,7 @@ public class StoreReturnBean {
 			returnStore = (ReturnStore) dataAccessService.getReturnStoreByArchRecordId(recordId);
 			HrsSigns model = dataAccessService.getHrsSignsByArcId(recordId);
 			employerId = model.getUserId();
-			returnitemsDetailsList = dataAccessService.getReturnStoreDetailsById(returnStore.getStoreId());
+			returnitemsDetailsList = dataAccessService.getReturnStoreDetailsById(returnStore.getReturnStoreId());
 			wrkPurposes = dataAccessService.getAllPurposes();
 			stepNum = dataAccessService.getStepNumberFromHrSign(recordId);
 			int i = 0;
@@ -253,9 +253,9 @@ public class StoreReturnBean {
 		String strName = ((WhsWarehouses) dataAccessService.findEntityById(WhsWarehouses.class, returnStore.getStrNo()))
 				.getStoreName();
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("docId", returnStore.getStoreId());
+		parameters.put("docId", returnStore.getReturnStoreId());
 		parameters.put("STORE_NAME", strName);
-		System.out.println(returnStore.getStoreId());
+		System.out.println(returnStore.getReturnStoreId());
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

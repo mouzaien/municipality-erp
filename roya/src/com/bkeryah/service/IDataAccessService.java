@@ -922,7 +922,7 @@ public interface IDataAccessService {
 
 	void addNewArticle(Article article);
 
-	List<Article> getAllArticles(Integer strNo);
+	List<Article> getAllArticles(Integer groupId);
 
 	List<ItemUnite> getAllUnites();
 
@@ -1844,6 +1844,7 @@ public interface IDataAccessService {
 	List<HrsSalaryScale> loadJobRanks();
 
 	 List<HrsSalaryScaleDgrs> loadJobRaNum();
-
+	 
+	 public List<Article> getAllArticlesByGroupId(Integer srtNo);
 
 }

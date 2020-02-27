@@ -37,8 +37,8 @@
 	NVL(det.QTY, 0)QTY,
 	det.NOTES NOTES
 FROM
-	roya.RETURN_STORE m,
-	roya.RETURN_STORE_DETAILS det,
+	RETURN_STORE m,
+	RETURN_STORE_DETAILS det,
 	WHS_WAREHOUSES st,
 	ARTICLE art,
 	TDR_ITEMUNIT unit,
@@ -53,9 +53,9 @@ FROM
 		s.SIGN_JOB_NAME,
 		s.SIGN_DATE
 	FROM
-		roya.arc_records r,
-		roya.hrs_signs s,
-		roya.RETURN_STORE rq
+		arc_records r,
+		hrs_signs s,
+		RETURN_STORE rq
 	WHERE
 		rq.id = s.doc_id
 		AND r.id = s.arc_record_id
@@ -70,9 +70,9 @@ FROM
 		s.SIGN_USER_ID,
 		s.SIGN_DATE
 	FROM
-		roya.arc_records r,
-		roya.hrs_signs s,
-		roya.RETURN_STORE rq
+		arc_records r,
+		hrs_signs s,
+		RETURN_STORE rq
 	WHERE
 		rq.id = s.doc_id
 		AND r.id = s.arc_record_id
@@ -101,9 +101,9 @@ FROM
 		s.SIGN_JOB_NAME SIGN_JOB_NAME,
 		s.SIGN_DATE SIGN_DATE
 	FROM
-		roya.arc_records r,
-		roya.hrs_signs s,
-		roya.RETURN_STORE rq
+		arc_records r,
+		hrs_signs s,
+		RETURN_STORE rq
 	WHERE
 		rq.id = s.doc_id
 		AND r.id = s.arc_record_id
@@ -875,7 +875,7 @@ WHERE
 				<box>
 					<pen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{RETURN_EMP_NAME}]]></textFieldExpression>
@@ -885,7 +885,7 @@ WHERE
 				<box>
 					<pen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PRIV_OWNER_NAME}]]></textFieldExpression>
@@ -913,7 +913,7 @@ WHERE
 				<box>
 					<pen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PRIV_OWNER_SIGN_DATE}== null?"":(""+$F{PRIV_OWNER_SIGN_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")

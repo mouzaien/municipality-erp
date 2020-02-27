@@ -48,7 +48,7 @@ public class El3ohadBean {
 	// method for
 		// print Protection card from search_exchange_request بطاقة عهدة
 		public String printProtectionCardAllArt() {
-			String reportName = "/reports/protection_card.jasper";
+			String reportName = "/reports/protection_A3ohad.jasper";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("artId", -1);
 			parameters.put("userId", employerId);
@@ -57,7 +57,7 @@ public class El3ohadBean {
 		}
 	
 		public String printProtectionCardOneArt(Integer artId) {
-			String reportName = "/reports/protection_card.jasper";
+			String reportName = "/reports/protection_A3ohad.jasper";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("artId", artId);
 			parameters.put("userId", employerId);

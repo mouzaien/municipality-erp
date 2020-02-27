@@ -71,7 +71,8 @@
 						filterMatchMode="contains" style="width:15%;text-align:center;">
 						<h:outputText value="#{carItem.numDoor}" />
 					</p:column>
-					<p:column headerText="صنف المركبة" style="width:13%;text-align:center;"
+					<p:column headerText="صنف المركبة"
+						style="width:13%;text-align:center;"
 						filterBy="#{carItem.vehicleType.name}" filterMatchMode="contains">
 						<h:outputText value="#{carItem.vehicleType.name}" />
 					</p:column>
@@ -113,7 +114,7 @@
 							</div>
 							<div class="ui-g-3">
 								<p:selectOneMenu id="cars_list" value="#{vehicleBean.car.artId}"
-									style="width: 100%">
+									style="width: 100%" filter="true" filterMatchMode="contains">
 									<f:selectItems value="#{vehicleBean.carsArticle}" var="art"
 										itemValue="#{art.id}" itemLabel="#{art.name}- #{art.code}" />
 								</p:selectOneMenu>
@@ -126,7 +127,7 @@
 
 								<p:selectOneMenu value="#{vehicleBean.carBrandId}"
 									required="true" requiredMessage="ادخل المصنع"
-									style="width: 100%">
+									style="width: 100%" filter="true" filterMatchMode="contains">
 									<f:selectItem itemLabel="أختر المصنع" itemValue=""
 										noSelectionOption="true" />
 									<f:selectItems var="cont" itemValue="#{cont.id}"
@@ -144,7 +145,8 @@
 							<div class="ui-g-3">
 								<p:selectOneMenu id="models_list" required="true"
 									requiredMessage="ادخل النوع"
-									value="#{vehicleBean.car.carModel}" style="width: 100%">
+									value="#{vehicleBean.car.carModel}" style="width: 100%"
+									filter="true" filterMatchMode="contains">
 									<!-- 								<f:selectItem itemLabel="أختر نوع المركبة" itemValue="" noSelectionOption="true"  /> -->
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}" value="#{vehicleBean.carModelsList}" />
@@ -158,7 +160,8 @@
 							<div class="ui-g-3">
 								<p:selectOneMenu value="#{vehicleBean.car.vehicleTypeId}"
 									style="width: 100%" required="true"
-									requiredMessage="ادخل صنف المركبة">
+									requiredMessage="ادخل صنف المركبة" filter="true"
+									filterMatchMode="contains">
 									<!-- 								<f:selectItem itemLabel="أختر صنف المركبة" itemValue="" noSelectionOption="true" /> -->
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}"
@@ -172,7 +175,7 @@
 							</div>
 							<div class="ui-g-3">
 								<p:selectOneMenu value="#{vehicleBean.car.fuelTypeId}"
-									style="width: 100%">
+									style="width: 100%" filter="true" filterMatchMode="contains">
 									<!-- 								<f:selectItem itemLabel="أختر نوع المحروقات" itemValue="" noSelectionOption="true" /> -->
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}"

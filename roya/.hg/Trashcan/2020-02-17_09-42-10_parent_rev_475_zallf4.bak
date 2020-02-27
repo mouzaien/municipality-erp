@@ -1,0 +1,57 @@
+diff --git a/WebContent/sidebar.xhtml b/WebContent/sidebar.xhtml
+--- a/WebContent/sidebar.xhtml
++++ b/WebContent/sidebar.xhtml
+@@ -189,12 +189,14 @@
+ 								ifAnyGranted="ROLE_SUPPORT,ROLE_STOCK,ROLE_STORE,ROLE_ARTICLES">
+ 								<p:submenu id="store_menu" label="المستودع"
+ 									icon="ui-icon ui-icon-store">
+-									<p:menuitem id="m_cars" value="#{msg['vehicles']} "
+-										icon="ui-icon ui-icon-directions-car" action="vehicles">
+-									</p:menuitem>
+-									<p:menuitem id="ask_cars" value="#{msg['askvehicles']} "
+-										icon="ui-icon ui-icon-directions-car" action="ask_vehicles">
+-									</p:menuitem>
++									<secc:authorize ifAnyGranted="ROLE_CARS,ROLE_SUPPORT">
++										<p:menuitem id="m_cars" value="#{msg['vehicles']} "
++											icon="ui-icon ui-icon-directions-car" action="vehicles">
++										</p:menuitem>
++										<p:menuitem id="ask_cars" value="#{msg['askvehicles']} "
++											icon="ui-icon ui-icon-directions-car" action="ask_vehicles">
++										</p:menuitem>
++									</secc:authorize>
+ 									<secc:authorize
+ 										ifAnyGranted="ROLE_SUPPORT,ROLE_STOCK,ROLE_STORE">
+ 										<p:menuitem id="st_sm_inv" value="عرض الجرد"
+@@ -219,6 +221,9 @@
+ 											icon="ui-icon ui-icon-content-paste" />
+ 										<p:menuitem id="st_sm_memo" value="مذكرة الإستلام"
+ 											action="memoReceipt" icon="fa fa-fw fa-file" />
++										<p:menuitem id="s_supps1" value="الموردين"
++											icon="ui-icon ui-icon-local-shipping" action="suppliers">
++										</p:menuitem>
+ 									</secc:authorize>
+ 									<secc:authorize
+ 										ifAnyGranted="ROLE_SUPPORT,ROLE_STORE,ROLE_ARTICLES">
+@@ -306,7 +311,7 @@
+ 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_DEAN">
+ 								<p:submenu id="sr_Setting" label="#{msg['setting']}"
+ 									icon="ui-icon ui-icon-settings">
+-									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
++									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_DEAN">
+ 										<p:submenu id="st_Setting" label="المستودعات"
+ 											icon="ui-icon ui-icon-home">
+ 											<p:menuitem id="m_whs" value="المستودعات"
+diff --git a/WebContent/WEB-INF/applicationContext.xml b/WebContent/WEB-INF/applicationContext.xml
+--- a/WebContent/WEB-INF/applicationContext.xml
++++ b/WebContent/WEB-INF/applicationContext.xml
+@@ -35,8 +35,8 @@
+ 		destroy-method="close">
+ 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:orcl" />
+-		<property name="user" value="roya" />
+-		<property name="password" value="123" />
++		<property name="user" value="project" />
++		<property name="password" value="oraserverdb201" />
+ 		<property name="initialPoolSize" value="1" />
+ 		<property name="maxPoolSize" value="20" />
+ 		<property name="maxStatements" value="20" />

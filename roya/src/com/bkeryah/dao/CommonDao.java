@@ -2128,9 +2128,16 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	@Transactional
-	public List<Article> getAllArticles(Integer strNo) {
+	public List<Article> getAllArticles(Integer srtNo) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
-		criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("strNo", srtNo));
+		return criteria.list();
+	}
+	@Override
+	@Transactional
+	public List<Article> getAllArticlesByGroupId(Integer groupId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
+		criteria.add(Restrictions.eq("groupId",groupId ));
 		return criteria.list();
 	}
 

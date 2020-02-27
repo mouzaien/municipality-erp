@@ -39,7 +39,7 @@ public class VehicleBean{
 	public void init() {
 		carsList = dataAccessService.loadAllCars();
 		Collections.sort(carsList);
-		carsArticle =dataAccessService.getAllArticles(13);
+		carsArticle = dataAccessService.getAllArticlesByGroupId(9);
 	
 		//getAllArticles
 	}

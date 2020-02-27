@@ -524,7 +524,7 @@ public interface ICommonDao {
 
 	void addNewPromotion(HrsEmpHistorical oldEmpHistorical, HrsEmpHistorical newEmpHistorical2);
 
-	List<Article> getAllArticles(Integer strNo);
+	List<Article> getAllArticles(Integer groupId);
 
 	List<ItemUnite> getAllUnites();
 
@@ -1093,5 +1093,7 @@ public interface ICommonDao {
 	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
 
 	public List<SysProperties> getDeansIdInSysProperties();
+
+	List<Article> getAllArticlesByGroupId(Integer groupId);
 
 }

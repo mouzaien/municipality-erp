@@ -1,0 +1,72 @@
+diff --git a/WebContent/sidebar.xhtml b/WebContent/sidebar.xhtml
+--- a/WebContent/sidebar.xhtml
++++ b/WebContent/sidebar.xhtml
+@@ -311,23 +311,4 @@
+ 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_DEAN">
+ 								<p:submenu id="sr_Setting" label="#{msg['setting']}"
+ 									icon="ui-icon ui-icon-settings">
+-									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_DEAN">
+-										<p:submenu id="st_Setting" label="المستودعات"
+-											icon="ui-icon ui-icon-home">
+-											<p:menuitem id="m_whs" value="المستودعات"
+-												icon="ui-icon ui-icon-store" action="whs_screen">
+-											</p:menuitem>
+-											<p:menuitem id="m_inventory" value="جرد المستودعات"
+-												icon="fa fa-fw fa-stack-overflow" action="InventoryGard">
+-											</p:menuitem>
+-											<p:menuitem id="m_year" value="السنة المالية"
+-												icon="fa fa-fw fa-calendar" action="yearName">
+-											</p:menuitem>
+-											<p:menuitem id="sr_unite" value="وحدة التصنيف"
+-												icon="fa fa-dashboard" action="ItemUnit">
+-											</p:menuitem>
+-											<p:menuitem id="s_supps" value="الموردين"
+-												icon="ui-icon ui-icon-local-shipping" action="suppliers">
+-											</p:menuitem>
+-										</p:submenu>
+ 
+@@ -333,4 +314,23 @@
+ 
++									<p:submenu id="st_Setting" label="المستودعات"
++										icon="ui-icon ui-icon-home">
++										<p:menuitem id="m_whs" value="المستودعات"
++											icon="ui-icon ui-icon-store" action="whs_screen">
++										</p:menuitem>
++										<p:menuitem id="m_inventory" value="جرد المستودعات"
++											icon="fa fa-fw fa-stack-overflow" action="InventoryGard">
++										</p:menuitem>
++										<p:menuitem id="m_year" value="السنة المالية"
++											icon="fa fa-fw fa-calendar" action="yearName">
++										</p:menuitem>
++										<p:menuitem id="sr_unite" value="وحدة التصنيف"
++											icon="fa fa-dashboard" action="ItemUnit">
++										</p:menuitem>
++										<p:menuitem id="s_supps" value="الموردين"
++											icon="ui-icon ui-icon-local-shipping" action="suppliers">
++										</p:menuitem>
++									</p:submenu>
++									<secc:authorize ifAnyGranted="ROLE_CARS">
+ 										<p:submenu id="st_Settingc" label="المركبات"
+ 											icon=" ui-icon ui-icon-directions-car">
+ 
+@@ -347,6 +347,8 @@
+ 												icon="fa fa-tint " action="fuelType">
+ 											</p:menuitem>
+ 										</p:submenu>
++									</secc:authorize>
++									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+ 										<p:submenu id="st_Setting2" label="المعاملات"
+ 											icon="fa fa-fw fa-exchange">
+ 											<p:menuitem id="sm_Letter" value="نوع الخطاب"
+diff --git a/src/com/bkeryah/managedBean/LoginBean.java b/src/com/bkeryah/managedBean/LoginBean.java
+--- a/src/com/bkeryah/managedBean/LoginBean.java
++++ b/src/com/bkeryah/managedBean/LoginBean.java
+@@ -65,7 +65,7 @@
+ 			result = authenticationManager.authenticate(request);
+ 			SecurityContextHolder.getContext().setAuthentication(result);
+ 			if (result.isAuthenticated()) {
+-				if (uc.getUserId() == MyConstants.SUPPORT_USER_ID) {// support
++				if (uc.getUserId().equals(MyConstants.SUPPORT_USER_ID)) {// support
+ 					RequestContext rc = RequestContext.getCurrentInstance();
+ 					rc.execute("PF('dlg2').show();");
+ 				} else {

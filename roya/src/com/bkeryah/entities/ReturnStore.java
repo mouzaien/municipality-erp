@@ -17,7 +17,7 @@ public class ReturnStore {
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
-	private Integer storeId;
+	private Integer returnStoreId;
 	@Column(name = "RET_DATE")
 	private Date returnGDate;
 	@Column(name = "RET_HDATE")
@@ -31,14 +31,14 @@ public class ReturnStore {
 	@Column(name = "STR_NO")
 	private Integer strNo;
 	@Column(name = "STATUS_Y_N")
-	private Integer status;
+	private String status;
 
-	public Integer getStoreId() {
-		return storeId;
+	public Integer getReturnStoreId() {
+		return returnStoreId;
 	}
 
-	public void setStoreId(Integer storeId) {
-		this.storeId = storeId;
+	public void setReturnStoreId(Integer returnStoreId) {
+		this.returnStoreId = returnStoreId;
 	}
 
 	public Date getReturnGDate() {
@@ -89,11 +89,11 @@ public class ReturnStore {
 		this.strNo = strNo;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

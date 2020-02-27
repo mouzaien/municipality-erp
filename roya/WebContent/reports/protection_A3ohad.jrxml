@@ -5,7 +5,6 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
 	<parameter name="artId" class="java.lang.Integer"/>
 	<parameter name="userId" class="java.lang.Integer"/>
-	<parameter name="reqNum" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
 reqs.artCode code ,
@@ -64,12 +63,11 @@ FROM
 		AND s.sign_step_id = 1 )ids,
 	(
 	SELECT
-		INV_G_R_NO, INIT_COUNT ,
-		MIN(itemid)itemid
+		INV_G_R_NO ,itemid, INIT_COUNT
 	FROM
 		TDR_INV_REQ_DET
 	GROUP BY
-		INV_G_R_NO , INIT_COUNT)reqdet
+		INV_G_R_NO ,itemid, INIT_COUNT)reqdet
 WHERE
 	reqdet.INV_G_R_NO = ids.id
 	AND reqdet.itemid = art.ID
@@ -87,7 +85,7 @@ where
 reqs.INV_G_R_NO = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
 AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID 
 AND reqs.INV_G_R_NO = TRANSFER_OWNERSHIP.EXCH_MASTER_ID (+)
-AND reqs.INV_G_R_NO = $P{reqNum}
+
 UNION
 
 	SELECT
@@ -115,7 +113,6 @@ UNION
 	WHERE 
 	ts.TO_USER = $P{userId}
 	AND ts.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
-	AND ts.EXCH_MASTER_ID = $P{reqNum}
     AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID
 	AND ts.STATUS = 'Y'
 	AND ts.ART_ID  = ar.ID 

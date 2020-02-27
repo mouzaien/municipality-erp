@@ -3076,50 +3076,51 @@ public class DataAccessService implements IDataAccessService {
 			}
 			if (isFunction) {
 				if (storeId.length > 0 && !storeId[0].equals(0) && propertiesValueById.equals("STORE_DEAN")) {// store
-					WhsWarehouses whouse = loadStoreIdById(storeId[0]);		
-					Integer storeDean=whouse.getStoreDeanId();
+					WhsWarehouses whouse = loadStoreIdById(storeId[0]);
+					Integer storeDean = whouse.getStoreDeanId();
 					// model
-//					propertiesValueById = getPropertiesValueById(currentModel.getFromId());
-//					switch (storeId[0]) {
-//					// 217,216,215,214 ids in sysproperties
-//					case MyConstants.ELECT_STORE_DEAN:
-//						propertiesValueById = getPropertiesValueById(217);
-//						// "ELECT_STORE_DEAN"
-//						break;
-//					case MyConstants.LIBR_STORE_DEAN: // "":
-//						propertiesValueById = getPropertiesValueById(216);
-//						break;
-//					case MyConstants.CARS_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(215);
-//						break;
-//					case MyConstants.RETURN_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(214);
-//						break;
-//					case MyConstants.MAINTENANCE_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(218);
-//						break;
-//					case MyConstants.PARKSBEAUTY_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(219);
-//						break;
-//					case MyConstants.CLEAN_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(220);
-//						break;
-//					case MyConstants.ELECTRIC_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(221);
-//						break;
-//					case MyConstants.PRINT_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(222);
-//						break;
-//					case MyConstants.SUSTAINABLE_RETURN_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(223);
-//						break;
-//					case MyConstants.RETURNED_CARS_STORE_DEAN:// "":
-//						propertiesValueById = getPropertiesValueById(224);
-//						break;
-//					default:
-//						propertiesValueById = getPropertiesValueById(146);
-//						break;
-//					}
+					// propertiesValueById =
+					// getPropertiesValueById(currentModel.getFromId());
+					// switch (storeId[0]) {
+					// // 217,216,215,214 ids in sysproperties
+					// case MyConstants.ELECT_STORE_DEAN:
+					// propertiesValueById = getPropertiesValueById(217);
+					// // "ELECT_STORE_DEAN"
+					// break;
+					// case MyConstants.LIBR_STORE_DEAN: // "":
+					// propertiesValueById = getPropertiesValueById(216);
+					// break;
+					// case MyConstants.CARS_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(215);
+					// break;
+					// case MyConstants.RETURN_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(214);
+					// break;
+					// case MyConstants.MAINTENANCE_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(218);
+					// break;
+					// case MyConstants.PARKSBEAUTY_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(219);
+					// break;
+					// case MyConstants.CLEAN_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(220);
+					// break;
+					// case MyConstants.ELECTRIC_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(221);
+					// break;
+					// case MyConstants.PRINT_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(222);
+					// break;
+					// case MyConstants.SUSTAINABLE_RETURN_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(223);
+					// break;
+					// case MyConstants.RETURNED_CARS_STORE_DEAN:// "":
+					// propertiesValueById = getPropertiesValueById(224);
+					// break;
+					// default:
+					// propertiesValueById = getPropertiesValueById(146);
+					// break;
+					// }
 					return storeDean;
 				}
 
@@ -4757,9 +4758,9 @@ public class DataAccessService implements IDataAccessService {
 
 	// get all Articles By storeNumber
 	@Override
-	public List<Article> getAllArticles(Integer strNo) {
+	public List<Article> getAllArticles(Integer strn) {
 		// TODO Auto-generated method stub
-		return commonDao.getAllArticles(strNo);
+		return commonDao.getAllArticles(strn);
 	}
 
 	@Override
@@ -8735,13 +8736,17 @@ public class DataAccessService implements IDataAccessService {
 		application.setId(app.getId());
 		application.setApplicationPurpose(purpose);
 		application.getId().setStepId(application.getId().getStepId() + 1);
+		if (application.getId().getStepId() == 5) {
+			returnStore.setStatus("Y");
+			updateObject(returnStore);
+		}
 		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
 		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
 				returnStore.getWrhouseId());
 		application.setToUserId(userTo);
 		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
 
-		saveHrsSigns(application.getArcRecordId(), returnStore.getStoreId(), true, null,
+		saveHrsSigns(application.getArcRecordId(), returnStore.getReturnStoreId(), true, null,
 				Utils.findCurrentUser().getUserId(), modelType);
 		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
 		if (visible) {
@@ -9245,6 +9250,12 @@ public class DataAccessService implements IDataAccessService {
 	public List<HrsSalaryScaleDgrs> loadJobRaNum() {
 		List jobRaNum = commonDao.findAll(HrsSalaryScaleDgrs.class);
 		return jobRaNum;
+	}
+
+	@Override
+	public List<Article> getAllArticlesByGroupId(Integer groupId) {
+		List artList = commonDao.getAllArticlesByGroupId(groupId);
+		return artList;
 	}
 
 }

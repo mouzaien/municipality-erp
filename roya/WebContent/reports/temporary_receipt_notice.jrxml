@@ -21,46 +21,73 @@
 	<parameter name="SPECIAL_NUMBER" class="java.lang.Integer"/>
 	<parameter name="RECEIPT_H_DATE" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT rownum num, m.id,st_boss.SIGN_JOB_NAME STORE_MGR_NAME ,st_boss.SIGN_DATE STORE_MGR_SIGN_DATE,
-st_dean.SIGN_JOB_NAME STORE_DEAN_NAME ,st_dean.SIGN_DATE STORE_DEAN_SIGN_DATE,
-m.STORE_NO, st.STRNAME,m.SUPPLIERID, sup.RELATEDENTITYNAME SUPPLIER_NAME, dt.DOCUMENT_TYPE_NAME DOCUMENT_TYPE
-, m.DOCUMENT_NUMBER, m.SPECIAL_NUM SPECIAL_NUMBER, m.DOCUMENT_H_DATE, m.DOCUMENT_G_DATE, 
-art.CODE ART_CODE, art.NAME ART_NAME, unit.ITEMUNITNAME UNIT, nvl(det.QTY,0)QTY, det.NOTES NOTES
-FROM 
-	roya.STORE_TEMPORARY_RECEIPT_MASTER m, 
-	roya.STORE_TEMP_RECEIPT_DETAILS  det, WHS_WAREHOUSES st,
-	FIN_ENTITY sup,DOCUMENT_TYPE dt,
-	ARTICLE art, TDR_ITEMUNIT unit
-	,
-	 (
-	 select  s.doc_id id, s.SIGN_JOB_NAME,s.SIGN_DATE 
-	 from roya.arc_records r, roya.hrs_signs s,
-    roya.STORE_TEMPORARY_RECEIPT_MASTER rq 
-    where  rq.id   = s.doc_id
-    and r.id       = s.arc_record_id 
-    and r.app_type = 251 
-    and s.SIGN_IS_VISIBLE = 1
-    )st_boss
-    ,
-    (
-    select  s.doc_id id, s.SIGN_JOB_NAME,s.SIGN_DATE from arc_records r, hrs_signs s,
-    STORE_TEMPORARY_RECEIPT_MASTER rq where  rq.id = doc_id
-    and r.id = s.arc_record_id 
-    and r.app_type = 251 
-    and s.SIGN_STEP_ID = 1
-    )st_dean
-    
-	
-WHERE 
-	m.ID  				= det.TEMP_RECEIPT_MASTER_ID
-AND st.STRNO 			= m.STORE_NO
-AND m.SUPPLIERID 		= sup.RELATEDENTITYID
-AND m.DOCUMENT_TYPE  	= dt.ID
-AND art.ID 				= det.ARTICLE_ID
-AND art.ITEM_UNITE_ID 	= unit.ITEMUNITID
-AND st_boss.id          =  m.id
-AND st_dean.id          =  m.id
-AND M.ID =$P{TEMP_MSTR_ID}]]>
+		<![CDATA[SELECT
+	rownum num,
+	m.id,
+	st_boss.SIGN_JOB_NAME STORE_MGR_NAME ,
+	st_boss.SIGN_DATE STORE_MGR_SIGN_DATE,
+	st_dean.SIGN_JOB_NAME STORE_DEAN_NAME ,
+	st_dean.SIGN_DATE STORE_DEAN_SIGN_DATE,
+	m.STORE_NO,
+	st.STRNAME,
+	m.SUPPLIERID,
+	sup.RELATEDENTITYNAME SUPPLIER_NAME,
+	dt.DOCUMENT_TYPE_NAME DOCUMENT_TYPE ,
+	m.DOCUMENT_NUMBER,
+	m.SPECIAL_NUM SPECIAL_NUMBER,
+	m.DOCUMENT_H_DATE,
+	m.DOCUMENT_G_DATE,
+	art.CODE ART_CODE,
+	art.NAME ART_NAME,
+	unit.ITEMUNITNAME UNIT,
+	NVL(det.QTY, 0)QTY,
+	det.NOTES NOTES
+FROM
+	 STORE_TEMPORARY_RECEIPT_MASTER m,
+	 STORE_TEMPORARY_RECEIPT_DETAILS det,
+	WHS_WAREHOUSES st,
+	FIN_ENTITY sup,
+	DOCUMENT_TYPE dt,
+	ARTICLE art,
+	TDR_ITEMUNIT unit ,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_JOB_NAME,
+		s.SIGN_DATE
+	FROM
+		 arc_records r,
+		 hrs_signs s,
+		 STORE_TEMPORARY_RECEIPT_MASTER rq
+	WHERE
+		rq.id = s.doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 251
+		AND s.SIGN_IS_VISIBLE = 1 )st_boss ,
+	(
+	SELECT
+		s.doc_id id,
+		s.SIGN_JOB_NAME,
+		s.SIGN_DATE
+	FROM
+		arc_records r,
+		hrs_signs s,
+		STORE_TEMPORARY_RECEIPT_MASTER rq
+	WHERE
+		rq.id = doc_id
+		AND r.id = s.arc_record_id
+		AND r.app_type = 251
+		AND s.SIGN_STEP_ID = 1 )st_dean
+WHERE
+	m.ID = det.TEMP_RECEIPT_MASTER_ID
+	AND st.STRNO = m.STORE_NO
+	AND m.SUPPLIERID = sup.RELATEDENTITYID
+	AND m.DOCUMENT_TYPE = dt.ID
+	AND art.ID = det.ARTICLE_ID
+	AND art.ITEM_UNITE_ID = unit.ITEMUNITID
+	AND st_boss.id = m.id
+	AND st_dean.id = m.id
+	AND M.ID = $P{TEMP_MSTR_ID}]]>
 	</queryString>
 	<field name="NUM" class="java.lang.Integer"/>
 	<field name="ART_CODE" class="java.lang.String"/>

@@ -65,7 +65,7 @@ public class LoginBean implements Serializable {
 			result = authenticationManager.authenticate(request);
 			SecurityContextHolder.getContext().setAuthentication(result);
 			if (result.isAuthenticated()) {
-				if (uc.getUserId().equals(MyConstants.SUPPORT_USER_ID)) {// support
+				if (uc.getUserId() == MyConstants.SUPPORT_USER_ID) {// support
 					RequestContext rc = RequestContext.getCurrentInstance();
 					rc.execute("PF('dlg2').show();");
 				} else {

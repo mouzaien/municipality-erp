@@ -528,6 +528,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("userId", request.getUserId());
 		parameters.put("artId", -1);
+		parameters.put("reqNum", request.getGeneralrequestNumber());
 		// parameters.put("exchange_req_no",
 		// request.getGeneralrequestNumber());// "259306";
 		// parameters.put("exchange_req_no", 455);// "259306";

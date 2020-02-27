@@ -727,6 +727,24 @@ public class StoreTemporaryReceipt {
 		case 3:
 			status = "فاتورة";
 			break;
+		case 4:
+			status = "تعميم";
+			break;
+		case 5:
+			status = "لجنة";
+			break;
+		case 6:
+			status = "رجيع";
+			break;
+		case 7:
+			status = "هبة";
+			break;
+		case 8:
+			status = "طلب صرف مواد";
+			break;
+		case 9:
+			status = "بدون مستند";
+			break;
 
 		default:
 			break;
