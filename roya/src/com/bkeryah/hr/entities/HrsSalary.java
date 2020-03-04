@@ -88,18 +88,7 @@ public class HrsSalary {
 	public void setCategoryCode(Integer categoryCode) {
 		this.categoryCode = categoryCode;
 	}
-//	public Integer getSalMonth() {
-//		return salMonth;
-//	}
-//	public void setSalMonth(Integer salMonth) {
-//		this.salMonth = salMonth;
-//	}
-//	public Integer getSalYear() {
-//		return salYear;
-//	}
-//	public void setSalYear(Integer salYear) {
-//		this.salYear = salYear;
-//	}
+
 	public Integer getSalDeserved() {
 		return salDeserved;
 	}
@@ -256,6 +245,18 @@ public class HrsSalary {
 	public void setLife(Integer life) {
 		this.life = life;
 	}
+//	public Integer getSalMonth() {
+//		return salMonth;
+//	}
+//	public void setSalMonth(Integer salMonth) {
+//		this.salMonth = salMonth;
+//	}
+//	public Integer getSalYear() {
+//		return salYear;
+//	}
+//	public void setSalYear(Integer salYear) {
+//		this.salYear = salYear;
+//	}
 	
 	
 }
