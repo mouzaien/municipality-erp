@@ -30,7 +30,7 @@
 					<p:commandButton onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" value="#{msg['save']}" icon="ui-icon ui-icon-save"
 						styleClass="cyan-btn" action="#{trainingBean.saveTraining}">
 												
-						<f:ajax execute="@form" listener="#{trainingBean.updateTraining}" render="ff"/>
+						<f:ajax execute="@form" listener="#{trainingBean.updateTraining}" render="ff dd"/>
 					</p:commandButton>
 					<p:spacer width="10px" height="10px"></p:spacer>
 <!-- 					<p:commandButton value="ÑÌæÚ" icon="ui-icon ui-icon-arrow-back" -->
