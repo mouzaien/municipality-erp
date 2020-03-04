@@ -15,8 +15,19 @@
 			<h:form id="dd">
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 
-				<div class="image-box-footer">
-					<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
+				
+				
+
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						</h1>
+						
+							
+								
+					<p:fieldset id="train" legend="ÇáÊÏÑíÈ"
+						toggleable="true" toggleSpeed="500">
+						<div align="left" class="image-box-footer">
+					<p:commandButton onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" value="#{msg['save']}" icon="ui-icon ui-icon-save"
 						styleClass="cyan-btn" action="#{trainingBean.saveTraining}">
 												
 						<f:ajax execute="@form" listener="#{trainingBean.updateTraining}" render="ff"/>
@@ -28,16 +39,7 @@
 <!-- 						<f:ajax execute="@form" /> -->
 <!-- 					</p:commandButton> -->
 				</div>
-				
-
-				<div class="card card-w-title" dir="rtl">
-					<h1 style="color: #7CB342; text-align: center;">
-						</h1>
 						
-							
-								
-					<p:fieldset id="train" legend="ÇáÊÏÑíÈ"
-						toggleable="true" toggleSpeed="500">
 						
 						<div>
 							<h:panelGroup id="mygrb">
@@ -76,7 +78,7 @@
 								</div> 
 								<div class="ui-g-4">
 								
-									<p:inputText value="#{trainingBean.tr.className}"></p:inputText>
+									<p:inputText required="true" value="#{trainingBean.tr.className}"></p:inputText>
 								</div> 
 								<div class="ui-g-2">
 								
@@ -168,12 +170,25 @@
 					<h:form id="ff">
 						<p:fieldset id="empl" 
 						toggleable="true" toggleSpeed="500">
+						<div align="left" class="image-box-footer" >
+							<p:commandButton onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" value="#{msg['save']}" icon="ui-icon ui-icon-save"
+						styleClass="cyan-btn" action="#{trainingBean.saveEmpTraining}">
+												
+						<f:ajax execute="@form" />
+						</p:commandButton>
+						<p:spacer width="10px" height="10px"></p:spacer>
+<!-- 					<p:commandButton value="ÑÌæÚ" icon="ui-icon ui-icon-arrow-back" -->
+<!--  						styleClass="green-btn" action="employers"> -->
+												
+<!-- 						<f:ajax execute="@form" /> -->
+<!-- 					</p:commandButton>  -->
+						</div>
 						<div class="ui-g">
 							<div class="ui-g-2">
-									<p:outputLabel value="ÇÎÊÑ ÇáãæÙÝ"></p:outputLabel>
+									<p:outputLabel  value="ÇÎÊÑ ÇáãæÙÝ"></p:outputLabel>
 							</div>
 								<div class="ui-g-10">
-									<p:selectOneMenu  filter="true" filterMatchMode="contains"
+									<p:selectOneMenu required="true"  filter="true" filterMatchMode="contains"
 										requiredMessage="ÇÎÊÑ ÇáãæÙÝ" 
 										value="#{trainingBean.emptr.empNo}">
 										<f:selectItem itemLabel="ÇÎÊÑ ÇáãæÙÝ"  /> 
@@ -188,7 +203,7 @@
 									<p:outputLabel value="ÇÎÊÑ ÇáÝÕá ÇáÏÑÇÓí"></p:outputLabel>
 							</div>
 								<div class="ui-g-10">
-									<p:selectOneMenu  filter="true" filterMatchMode="contains"
+									<p:selectOneMenu required="true" filter="true" filterMatchMode="contains"
 										requiredMessage="ÇÎÊÑ ÇáÝÕá" 
 										value="#{trainingBean.emptr.className}">
 										<f:selectItem itemLabel="ÇÎÊÑ ÇáÝÕá"  /> 
@@ -211,19 +226,7 @@
 										
 									</p:selectOneMenu>
 								</div>
-								<div class="image-box-footer">
-							<p:commandButton value="#{msg['save']}" icon="ui-icon ui-icon-save"
-						styleClass="cyan-btn" action="#{trainingBean.saveEmpTraining}">
-												
-						<f:ajax execute="@form" />
-						</p:commandButton>
-						<p:spacer width="10px" height="10px"></p:spacer>
-<!-- 					<p:commandButton value="ÑÌæÚ" icon="ui-icon ui-icon-arrow-back" -->
-<!--  						styleClass="green-btn" action="employers"> -->
-												
-<!-- 						<f:ajax execute="@form" /> -->
-<!-- 					</p:commandButton>  -->
-						</div>
+								
 						</div>
 								</p:fieldset>
 								</h:form>

@@ -99,6 +99,7 @@ public class TrainingBean {
 	public void saveTraining() {
 		dataAccessService.saveTraining(tr);
 		MsgEntry.addInfoMessage("تم الحفظ");
+		tr=new Training();
 	}
 
 	public EmpTraining getEmptr() {
@@ -119,6 +120,7 @@ public class TrainingBean {
 	public void saveEmpTraining() {
 		dataAccessService.saveEmpTraining(emptr);
 		MsgEntry.addInfoMessage("تم الحفظ");
+		emptr=new EmpTraining();
 	}
 	public void updateTraining() {
 		training=dataAccessService.loadAllTraining();
