@@ -3686,7 +3686,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	//	String hql = " select M.* FROM  HrsMasterFile M inner join HrsEmpHistorical H on M.employeNumber=H.id.empno where M.employerStatus=1 AND M.cactegoryId IN : listcat";
 	//	Query query = sessionFactory.getCurrentSession().createQuery(hql);
 	//	query.setParameter("listcat", listCat);
-		String hql = "SELECT M FROM HrsMasterFile as M , HrsEmpHistorical as H  where M.employeNumber=H.id.empno AND M.employerStatus=1 AND M.cactegoryId IN (1,2,4,5) AND H.flag=1";
+		String hql = "SELECT M FROM HrsMasterFile as M , HrsEmpHistorical as H where M.employeNumber=H.id.empno AND M.employerStatus=1 AND M.cactegoryId IN (1,2,4,5) AND H.flag=1";
 
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		return (List<HrsMasterFile>)query.list();
