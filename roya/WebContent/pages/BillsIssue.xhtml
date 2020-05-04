@@ -23,870 +23,898 @@
 <ui:composition template="./menuBar.xhtml">
 	<ui:define name="content">
 		<h:form>
-				<p:ajaxStatus onstart="PF('statusDialog').show()"
-					onsuccess="PF('statusDialog').hide()" />
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
 
-				<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-					closable="false" resizable="false" showHeader="false">
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
 					جاري التحميل  <img
-						src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif"
-						alt="" />
-				</p:dialog>
-				<div class="container box">
-					<div class="panel-group" id="accordion">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse1"> رسوم تراخيص البناء </a>
-								</h4>
-							</div>
-							<div id="collapse1" class="panel-collapse collapse ">
-								<div class="panel-body">
+					src="#{facesContext.externalContext.requestContextPath}/resources/images/ld.gif"
+					alt="" />
+			</p:dialog>
+			<div class="container box">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse1"> رسوم تراخيص البناء </a>
+							</h4>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse ">
+							<div class="panel-body">
 
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-4">
-												<div class="row" style="margin: 4px;">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="row" style="margin: 4px;">
 
-													<p:selectOneMenu id="input001" style="width:100%"
-														value="#{billsIssueBean.buildingLicenseType}">
-														<f:selectItem itemLabel="#{msg['select.license.type']}" itemValue="" />
-														<f:selectItem itemLabel="رخصة بناء " itemValue="1" />
-														<f:selectItem itemLabel="ترميم مبني (جديد -تجديد)"
-															itemValue="2" />
-														<f:selectItem itemLabel="هدم مبني " itemValue="3" />
-														<f:selectItem itemLabel=" شهادة إتمام بناء " itemValue="4" />
-<!-- 														<f:selectItem itemLabel="ملحق علوي" itemValue="5" /> -->
-<!-- 														<f:selectItem itemLabel="ملحق أرضي" itemValue="6" /> -->
-<!-- 														<f:selectItem itemLabel="إضافة دور" itemValue="7" /> -->
-<!-- 														<f:selectItem itemLabel=" تسوير" itemValue="8" /> -->
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input002" style="width:100%"
-														value="#{billsIssueBean.buildingIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}" />
-														<f:selectItem itemLabel="جديد" itemValue="1" />
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input003" style="width:100%"
-														value="#{billsIssueBean.buildingType}">
-														<f:selectItem itemLabel="#{msg['select.building.type']}"></f:selectItem>
-														<f:selectItem itemLabel="سكني" itemValue="1" />
-														<f:selectItem itemLabel="سكني تجاري" itemValue="2" />
-														<f:selectItem itemLabel="تجاري" itemValue="3" />
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.building.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input004" style="width:100%"
-															value="#{billsIssueBean.buildingArea}"
-															placeholder="#{msg['enter.building.area']}" />
-													</div>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.wall.length']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input005" style="width:100%"
-															value="#{billsIssueBean.buildingWallLength}"
-															placeholder="#{msg['enter.wall.length']}" />
-													</div>
-												</div>
-												<p:commandButton style="width:100%"
-													action="#{billsIssueBean.calculateBuildingFees(ae)}"
-													process="@this,input001,input002,input003,input004,input005"
-													
-													update="building-result,msg001,input001,input002,input003,input004,input005" value="#{msg['calculate.fees']}" />
+												<p:selectOneMenu id="input001" style="width:100%"
+													value="#{billsIssueBean.buildingLicenseType}">
+													<f:selectItem itemLabel="#{msg['select.license.type']}"
+														itemValue="" />
+													<f:selectItem itemLabel="رخصة بناء " itemValue="1" />
+													<f:selectItem itemLabel="ترميم مبني (جديد -تجديد)"
+														itemValue="2" />
+													<f:selectItem itemLabel="هدم مبني " itemValue="3" />
+													<f:selectItem itemLabel=" شهادة إتمام بناء " itemValue="4" />
+													<!-- 														<f:selectItem itemLabel="ملحق علوي" itemValue="5" /> -->
+													<!-- 														<f:selectItem itemLabel="ملحق أرضي" itemValue="6" /> -->
+													<!-- 														<f:selectItem itemLabel="إضافة دور" itemValue="7" /> -->
+													<!-- 														<f:selectItem itemLabel=" تسوير" itemValue="8" /> -->
+												</p:selectOneMenu>
 											</div>
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input002" style="width:100%"
+													value="#{billsIssueBean.buildingIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}" />
+													<f:selectItem itemLabel="جديد" itemValue="1" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
 
-											<div class="col-md-7">
-												<div class="row"
-													style="text-align: center; font-size: xx-large;">
-													<h:panelGroup id="building-result">
-														<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-															value="#{billsIssueBean.buildingResult}">
-															<p:column>
-																<p:outputLabel value="#{item.payMaster}" />
-															</p:column>
-															<p:column>
-																<p:outputLabel
-																	value="#{item.payDetails} #{item.detailAccount}" />
-															</p:column>
-															<p:column>
-																<p:outputLabel value="#{item.amount}" />
-															</p:column>
-														</p:dataTable>
-													</h:panelGroup>
+												</p:selectOneMenu>
+											</div>
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input003" style="width:100%"
+													value="#{billsIssueBean.buildingType}">
+													<f:selectItem itemLabel="#{msg['select.building.type']}"></f:selectItem>
+													<f:selectItem itemLabel="سكني" itemValue="1" />
+													<f:selectItem itemLabel="سكني تجاري" itemValue="2" />
+													<f:selectItem itemLabel="تجاري" itemValue="3" />
+												</p:selectOneMenu>
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.building.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input004" style="width:100%"
+														value="#{billsIssueBean.buildingArea}"
+														placeholder="#{msg['enter.building.area']}" />
 												</div>
-												<div class="row"
-													style="text-align: center; font-size: xx-large;">
-													<p:commandButton value="#{msg['add.bill']}" process="@this"
-														action="#{billsIssueBean.openBillDlg1(ae)}"
-														update="growl,AddBillDlg">
-													</p:commandButton>
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.wall.length']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input005" style="width:100%"
+														value="#{billsIssueBean.buildingWallLength}"
+														placeholder="#{msg['enter.wall.length']}" />
 												</div>
+											</div>
+											<p:commandButton style="width:100%"
+												action="#{billsIssueBean.calculateBuildingFees(ae)}"
+												process="@this,input001,input002,input003,input004,input005"
+												update="building-result,msg001,input001,input002,input003,input004,input005"
+												value="#{msg['calculate.fees']}" />
+										</div>
+
+										<div class="col-md-7">
+											<div class="row"
+												style="text-align: center; font-size: xx-large;">
+												<h:panelGroup id="building-result">
+													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+														value="#{billsIssueBean.buildingResult}">
+														<p:column>
+															<p:outputLabel value="#{item.payMaster}" />
+														</p:column>
+														<p:column>
+															<p:outputLabel
+																value="#{item.payDetails} #{item.detailAccount}" />
+														</p:column>
+														<p:column>
+															<p:outputLabel value="#{item.amount}" />
+														</p:column>
+													</p:dataTable>
+												</h:panelGroup>
+											</div>
+											<div class="row"
+												style="text-align: center; font-size: xx-large;">
+												<p:commandButton value="#{msg['add.bill']}" process="@this"
+													action="#{billsIssueBean.openBillDlg1(ae)}"
+													update="growl,AddBillDlg">
+												</p:commandButton>
 											</div>
 										</div>
 									</div>
-									<p:messages id="msg001"></p:messages>
 								</div>
+								<p:messages id="msg001"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse2"> #{msg['tradeMarket.fees']}</a>
-								</h4>
-							</div>
-							<div id="collapse2" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse2"> #{msg['tradeMarket.fees']}</a>
+							</h4>
+						</div>
+						<div id="collapse2" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
 									<div class="row">
-										
-										<div class="col-md-6"> <p:inputText id="trdeId001" style="width:100%" placeholder="أدخل رقم الطلب" value="#{billsIssueBean.tradeLicenseId}" /> </div>
-										<div class="col-md-4"> <p:commandButton value="جلب البيانات" action="#{billsIssueBean.findTradeLicenseInfo(ae)}" process="@this,trdeId001" update="trademarket-result"></p:commandButton> * النشاط التجاري هو النشاط الأفتراضي </div>
+
+										<div class="col-md-6">
+											<p:inputText id="trdeId001" style="width:100%"
+												placeholder="أدخل رقم الطلب"
+												value="#{billsIssueBean.tradeLicenseId}" />
+										</div>
+										<div class="col-md-4">
+											<p:commandButton value="جلب البيانات"
+												action="#{billsIssueBean.findTradeLicenseInfo(ae)}"
+												process="@this,trdeId001" update="trademarket-result"></p:commandButton>
+											* النشاط التجاري هو النشاط الأفتراضي
+										</div>
 									</div>
 									<hr />
 									<div class="row">
-											<div class="col-md-6">
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input006" style="width:100%"
-														value="#{billsIssueBean.tradeMarketIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+										<div class="col-md-6">
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input006" style="width:100%"
+													value="#{billsIssueBean.tradeMarketIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
 
-														<f:selectItem itemLabel="جديد" itemValue="1" />
+													<f:selectItem itemLabel="جديد" itemValue="1" />
 
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
 
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-														<f:selectItem itemLabel="نقل ملكية" itemValue="4" />
-														<f:selectItem itemLabel="نقل موقع" itemValue="5" />
-														<f:selectItem itemLabel="تغيير نشاط" itemValue="6" />
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input006-1" style="width:100%"
-														value="#{billsIssueBean.tradeMarketMainActivity}">
-														<f:selectItem itemLabel="#{msg['select.activity']}"></f:selectItem>
-
-														<f:selectItem itemLabel="المحلات التجارية" itemValue="1" />
-														<f:selectItem
-															itemLabel="محلات تغيير الزيوت و الشحوم و غسيل السيارات"
-															itemValue="2" />
-														<f:selectItem itemLabel="الورش المهنية" itemValue="3" />
-														<f:selectItem itemLabel="قصور الأفراح" itemValue="4" />
-														<f:selectItem itemLabel="الأستراحات" itemValue="5" />
-														<f:selectItem itemLabel="المطابخ و المطاعم و ما في حكمها "
-															itemValue="6" />
-														<f:selectItem itemLabel="ملاهي المدن الترفيهية"
-															itemValue="7" />
-														<f:selectItem itemLabel="الأنشطة الطلابية" itemValue="8" />
-														<f:selectItem itemLabel="الأنشطة التعليمية" itemValue="9" />
-														<f:selectItem itemLabel="المستودعات " itemValue="10" />
-														<f:selectItem itemLabel="الأنشطة الأخري" itemValue="11" />
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input007" style="width:100%"
-															value="#{billsIssueBean.tradeMarketAdvArea}"
-															placeholder="#{msg['enter.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-
-													<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input008" style="width:100%"
-															value="#{billsIssueBean.tradeMarketAddAdvArea}"
-															placeholder="#{msg['enter.add.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-
-													<div class="col-md-6">#{msg['enter.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input009" style="width:100%"
-															value="#{billsIssueBean.tradeMarketArea}"
-															placeholder="#{msg['enter.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input010" style="width:100%"
-															value="#{billsIssueBean.tradeMarketIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
-
-												</div>
-												<p:commandButton style="width:100%"
-													update="trademarket-result,msg002"
-													action="#{billsIssueBean.calculateTradeMarketFees(ae)}"
-													process="@this,input006,input006-1,input007,input008,input009,input010"
-													value="#{msg['calculate.fees']}" />
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+													<f:selectItem itemLabel="نقل ملكية" itemValue="4" />
+													<f:selectItem itemLabel="نقل موقع" itemValue="5" />
+													<f:selectItem itemLabel="تغيير نشاط" itemValue="6" />
+												</p:selectOneMenu>
 											</div>
-											<div class="col-md-6">
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input006-1" style="width:100%"
+													value="#{billsIssueBean.tradeMarketMainActivity}">
+													<f:selectItem itemLabel="#{msg['select.activity']}"></f:selectItem>
 
-												<h:panelGroup id="trademarket-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.tradeMarketResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
+													<f:selectItem itemLabel="المحلات التجارية" itemValue="1" />
+													<f:selectItem
+														itemLabel="محلات تغيير الزيوت و الشحوم و غسيل السيارات"
+														itemValue="2" />
+													<f:selectItem itemLabel="الورش المهنية" itemValue="3" />
+													<f:selectItem itemLabel="قصور الأفراح" itemValue="4" />
+													<f:selectItem itemLabel="الأستراحات" itemValue="5" />
+													<f:selectItem itemLabel="المطابخ و المطاعم و ما في حكمها "
+														itemValue="6" />
+													<f:selectItem itemLabel="ملاهي المدن الترفيهية"
+														itemValue="7" />
+													<f:selectItem itemLabel="الأنشطة الطلابية" itemValue="8" />
+													<f:selectItem itemLabel="الأنشطة التعليمية" itemValue="9" />
+													<f:selectItem itemLabel="المستودعات " itemValue="10" />
+													<f:selectItem itemLabel="الأنشطة الأخري" itemValue="11" />
+												</p:selectOneMenu>
 											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg2(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input007" style="width:100%"
+														value="#{billsIssueBean.tradeMarketAdvArea}"
+														placeholder="#{msg['enter.adv.area']}" />
+												</div>
+
 											</div>
+											<div class="row" style="margin: 4px;">
+
+												<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input008" style="width:100%"
+														value="#{billsIssueBean.tradeMarketAddAdvArea}"
+														placeholder="#{msg['enter.add.adv.area']}" />
+												</div>
+
+											</div>
+											<div class="row" style="margin: 4px;">
+
+												<div class="col-md-6">#{msg['enter.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input009" style="width:100%"
+														value="#{billsIssueBean.tradeMarketArea}"
+														placeholder="#{msg['enter.area']}" />
+												</div>
+
+											</div>
+											<div class="row" style="margin: 4px;">
+
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input010" style="width:100%"
+														value="#{billsIssueBean.tradeMarketIssueYears}"
+														placeholder="#{msg['enter.years']}" />
+												</div>
+
+											</div>
+											<p:commandButton style="width:100%"
+												update="trademarket-result,msg002"
+												action="#{billsIssueBean.calculateTradeMarketFees(ae)}"
+												process="@this,input006,input006-1,input007,input008,input009,input010"
+												value="#{msg['calculate.fees']}" />
+										</div>
+										<div class="col-md-6">
+
+											<h:panelGroup id="trademarket-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.tradeMarketResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg2(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg002"></p:messages>
 								</div>
+								<p:messages id="msg002"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse3"> #{msg['petrolstation.fees']}</a>
-								</h4>
-							</div>
-							<div id="collapse3" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse3"> #{msg['petrolstation.fees']}</a>
+							</h4>
+						</div>
+						<div id="collapse3" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
 
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu style="width:100%" id="input011"
-														value="#{billsIssueBean.petrolStationIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد" itemValue="1" />
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu style="width:100%" id="input011"
+													value="#{billsIssueBean.petrolStationIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد" itemValue="1" />
 
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
 
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input012"
+														value="#{billsIssueBean.petrolStationAdvArea}"
+														placeholder="#{msg['enter.adv.area']}" />
 												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input012"
-															value="#{billsIssueBean.petrolStationAdvArea}"
-															placeholder="#{msg['enter.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input013"
-															value="#{billsIssueBean.petrolStationAddAdvArea}"
-															placeholder="#{msg['enter.add.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.area']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input014"
-															value="#{billsIssueBean.petrolStationArea}"
-															placeholder="#{msg['enter.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input015"
-															value="#{billsIssueBean.petrolStationIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
-
-												</div>
-												<p:commandButton style="width:100%"
-													update="petrol-station-result,msg003"
-													action="#{billsIssueBean.calculateBPetrolStationFees(ae)}"
-													process="@this ,input015,input014,input013,input012,input011"
-													value="#{msg['calculate.fees']}" />
-
 
 											</div>
-											<div class="col-md-6">
-
-												<h:panelGroup id="petrol-station-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.petrolStationResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input013"
+														value="#{billsIssueBean.petrolStationAddAdvArea}"
+														placeholder="#{msg['enter.add.adv.area']}" />
+												</div>
 
 											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg3(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.area']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input014"
+														value="#{billsIssueBean.petrolStationArea}"
+														placeholder="#{msg['enter.area']}" />
+												</div>
+
 											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input015"
+														value="#{billsIssueBean.petrolStationIssueYears}"
+														placeholder="#{msg['enter.years']}" />
+												</div>
+
+											</div>
+											<p:commandButton style="width:100%"
+												update="petrol-station-result,msg003"
+												action="#{billsIssueBean.calculateBPetrolStationFees(ae)}"
+												process="@this ,input015,input014,input013,input012,input011"
+												value="#{msg['calculate.fees']}" />
+
+
+										</div>
+										<div class="col-md-6">
+
+											<h:panelGroup id="petrol-station-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.petrolStationResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg3(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg003"></p:messages>
 								</div>
+								<p:messages id="msg003"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse4"> #{msg['atm.fees']}</a>
-								</h4>
-							</div>
-							<div id="collapse4" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse4"> #{msg['atm.fees']}</a>
+							</h4>
+						</div>
+						<div id="collapse4" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
 
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input016" style="width:100%"
-														value="#{billsIssueBean.ATMIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد" itemValue="1" />
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input016" style="width:100%"
+													value="#{billsIssueBean.ATMIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد" itemValue="1" />
 
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
 
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input017" style="width:100%"
+														value="#{billsIssueBean.ATMAdvArea}"
+														placeholder="#{msg['enter.adv.area']}" />
 												</div>
-
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input017" style="width:100%"
-															value="#{billsIssueBean.ATMAdvArea}"
-															placeholder="#{msg['enter.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input018" style="width:100%"
-															value="#{billsIssueBean.ATMAddAdvArea}"
-															placeholder="#{msg['enter.add.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input019" style="width:100%"
-															value="#{billsIssueBean.ATMIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
-
-												</div>
-												<p:commandButton style="width:100%" update="ATM-result,msg004"
-													action="#{billsIssueBean.calculateATMFees(ae)}"
-													process="@this,input016,input017,input018,input019"
-													value="#{msg['calculate.fees']}" />
-
 
 											</div>
-											<div class="col-md-6">
-												<h:panelGroup id="ATM-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.ATMResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input018" style="width:100%"
+														value="#{billsIssueBean.ATMAddAdvArea}"
+														placeholder="#{msg['enter.add.adv.area']}" />
+												</div>
+
 											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg4(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input019" style="width:100%"
+														value="#{billsIssueBean.ATMIssueYears}"
+														placeholder="#{msg['enter.years']}" />
+												</div>
+
 											</div>
+											<p:commandButton style="width:100%"
+												update="ATM-result,msg004"
+												action="#{billsIssueBean.calculateATMFees(ae)}"
+												process="@this,input016,input017,input018,input019"
+												value="#{msg['calculate.fees']}" />
+
+
+										</div>
+										<div class="col-md-6">
+											<h:panelGroup id="ATM-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.ATMResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg4(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg004"></p:messages>
 								</div>
+								<p:messages id="msg004"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse5"> #{msg['telecom.tower.fees']}</a>
-								</h4>
-							</div>
-							<div id="collapse5" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-4">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse5"> #{msg['telecom.tower.fees']}</a>
+							</h4>
+						</div>
+						<div id="collapse5" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-4">
 
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input020" style="width:100%"
-														value="#{billsIssueBean.telecomTowerIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد" itemValue="1" />
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input020" style="width:100%"
+													value="#{billsIssueBean.telecomTowerIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد" itemValue="1" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
+											</div>
+											<div class="row" style="margin: 4px;">
+
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input021" style="width:100%"
+														value="#{billsIssueBean.telecomTowerIssueYears}"
+														placeholder="#{msg['enter.years']}" />
 												</div>
-												<div class="row" style="margin: 4px;">
 
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input021" style="width:100%"
-															value="#{billsIssueBean.telecomTowerIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
-
-												</div>
-												<p:commandButton style="width:100%" update="tt-result,msg005"
-													action="#{billsIssueBean.calculateTelecomTowerFees(ae)}"
-													process="@this,input021,input020"
-													value="#{msg['calculate.fees']}" />
 											</div>
-											<div class="col-md-7">
-												<h:panelGroup id="tt-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.telecomTowerResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
-											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg5(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
-											</div>
+											<p:commandButton style="width:100%" update="tt-result,msg005"
+												action="#{billsIssueBean.calculateTelecomTowerFees(ae)}"
+												process="@this,input021,input020"
+												value="#{msg['calculate.fees']}" />
+										</div>
+										<div class="col-md-7">
+											<h:panelGroup id="tt-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.telecomTowerResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg5(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg005"></p:messages>
 								</div>
+								<p:messages id="msg005"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse6">#{msg['shelter.houses']}</a>
-								</h4>
-							</div>
-							<div id="collapse6" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse6">#{msg['shelter.houses']}</a>
+							</h4>
+						</div>
+						<div id="collapse6" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
 
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input022" style="width:100%"
-														value="#{billsIssueBean.buildingShelterIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد" itemValue="1" />
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input022" style="width:100%"
+													value="#{billsIssueBean.buildingShelterIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد" itemValue="1" />
 
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
 
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
-												</div>
-
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu id="input023" style="width:100%"
-														value="#{billsIssueBean.buildingShelterClass}">
-														<f:selectItem itemLabel="#{msg['class']}"></f:selectItem>
-
-														<f:selectItem itemLabel="الفئة الأولي " itemValue="1" />
-														<f:selectItem itemLabel="الفئة الثانية" itemValue="2" />
-														<f:selectItem itemLabel="الفئة الثالثة" itemValue="3" />
-														<f:selectItem itemLabel="الفئة الرابعة" itemValue="4" />
-														<f:selectItem itemLabel="الفئة الخامسة" itemValue="5" />
-
-
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input024" style="width:100%"
-															value="#{billsIssueBean.buildingShelterAdvArea}"
-															placeholder="#{msg['enter.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input025" style="width:100%"
-															value="#{billsIssueBean.buildingShelterAddAdvArea}"
-															placeholder="#{msg['enter.add.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input026" style="width:100%"
-															value="#{billsIssueBean.buildingShelterIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['unit.count']}</div>
-													<div class="col-md-6">
-														<p:inputText id="input027" style="width:100%"
-															value="#{billsIssueBean.buildingShelterUnitCount}"
-															placeholder="#{msg['unit.count']}" />
-													</div>
-
-												</div>
-												<p:commandButton style="width:100%" update="bs-result,msg006"
-													action="#{billsIssueBean.calculateBuildingSheltersFees(ae)}"
-													process="@this,input027,input026,input025,input024,input023,input022"
-													value="#{msg['calculate.fees']}" />
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
 											</div>
-											<div class="col-md-6">
 
-												<h:panelGroup id="bs-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.buildingShelterResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu id="input023" style="width:100%"
+													value="#{billsIssueBean.buildingShelterClass}">
+													<f:selectItem itemLabel="#{msg['class']}"></f:selectItem>
+
+													<f:selectItem itemLabel="الفئة الأولي " itemValue="1" />
+													<f:selectItem itemLabel="الفئة الثانية" itemValue="2" />
+													<f:selectItem itemLabel="الفئة الثالثة" itemValue="3" />
+													<f:selectItem itemLabel="الفئة الرابعة" itemValue="4" />
+													<f:selectItem itemLabel="الفئة الخامسة" itemValue="5" />
+
+
+												</p:selectOneMenu>
 											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg6(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input024" style="width:100%"
+														value="#{billsIssueBean.buildingShelterAdvArea}"
+														placeholder="#{msg['enter.adv.area']}" />
+												</div>
+
 											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input025" style="width:100%"
+														value="#{billsIssueBean.buildingShelterAddAdvArea}"
+														placeholder="#{msg['enter.add.adv.area']}" />
+												</div>
+
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input026" style="width:100%"
+														value="#{billsIssueBean.buildingShelterIssueYears}"
+														placeholder="#{msg['enter.years']}" />
+												</div>
+
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['unit.count']}</div>
+												<div class="col-md-6">
+													<p:inputText id="input027" style="width:100%"
+														value="#{billsIssueBean.buildingShelterUnitCount}"
+														placeholder="#{msg['unit.count']}" />
+												</div>
+
+											</div>
+											<p:commandButton style="width:100%" update="bs-result,msg006"
+												action="#{billsIssueBean.calculateBuildingSheltersFees(ae)}"
+												process="@this,input027,input026,input025,input024,input023,input022"
+												value="#{msg['calculate.fees']}" />
+										</div>
+										<div class="col-md-6">
+
+											<h:panelGroup id="bs-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.buildingShelterResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg6(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg006"></p:messages>
 								</div>
+								<p:messages id="msg006"></p:messages>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse7">#{msg['mobile.carts']}</a>
-								</h4>
-							</div>
-							<div id="collapse7" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu style="width:100%" id="input028"
-														value="#{billsIssueBean.mobileCartsIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد" itemValue="1" />
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse7">#{msg['mobile.carts']}</a>
+							</h4>
+						</div>
+						<div id="collapse7" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu style="width:100%" id="input028"
+													value="#{billsIssueBean.mobileCartsIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد" itemValue="1" />
 
-														<f:selectItem itemLabel="تجديد" itemValue="2" />
+													<f:selectItem itemLabel="تجديد" itemValue="2" />
 
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input029"
-															value="#{billsIssueBean.mobileCartsAddAdvArea}"
-															placeholder="#{msg['enter.add.adv.area']}" />
-													</div>
-
-												</div>
-												<div class="row" style="margin: 4px;">
-													<div class="col-md-6">#{msg['enter.years']}</div>
-													<div class="col-md-6">
-														<p:inputText style="width:100%" id="input030"
-															value="#{billsIssueBean.mobileCartsIssueYears}"
-															placeholder="#{msg['enter.years']}" />
-													</div>
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.add.adv.area']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input029"
+														value="#{billsIssueBean.mobileCartsAddAdvArea}"
+														placeholder="#{msg['enter.add.adv.area']}" />
 												</div>
 
-												<p:commandButton style="width:100%" update="mc-result,msg007"
-													action="#{billsIssueBean.calculateMobileCartsFees(ae)}"
-													process="@this,input028,input029,input030"
-													value="#{msg['calculate.fees']}" />
+											</div>
+											<div class="row" style="margin: 4px;">
+												<div class="col-md-6">#{msg['enter.years']}</div>
+												<div class="col-md-6">
+													<p:inputText style="width:100%" id="input030"
+														value="#{billsIssueBean.mobileCartsIssueYears}"
+														placeholder="#{msg['enter.years']}" />
+												</div>
+											</div>
+
+											<p:commandButton style="width:100%" update="mc-result,msg007"
+												action="#{billsIssueBean.calculateMobileCartsFees(ae)}"
+												process="@this,input028,input029,input030"
+												value="#{msg['calculate.fees']}" />
 
 
-											</div>
-											<div class="col-md-6">
-												<h:panelGroup id="mc-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.mobileCartsResult}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
+										</div>
+										<div class="col-md-6">
+											<h:panelGroup id="mc-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.mobileCartsResult}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
 
-											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg7(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
-											</div>
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg7(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg007"></p:messages>
 								</div>
+								<p:messages id="msg007"></p:messages>
 							</div>
 						</div>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse8">#{msg['health.licesnse.sadad']}</a>
-								</h4>
-							</div>
-							<div id="collapse8" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="row" style="margin: 4px;">
-													<p:selectOneMenu style="width:100%" id="input031"
-														value="#{billsIssueBean.healthCertificateIssueType}">
-														<f:selectItem
-															itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
-														<f:selectItem itemLabel="جديد - تجديد " itemValue="1" />
-														<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
-													</p:selectOneMenu>
-												</div>
-												
-												
-												<p:commandButton style="width:100%" update="hc-result,msg008"
-													action="#{billsIssueBean.calculateHealthCertificateFees(ae)}"
-													process="@this,input031"
-													value="#{msg['calculate.fees']}" />
+					</div>
 
 
-											</div>
-											<div class="col-md-6">
-												<h:panelGroup id="hc-result">
-													<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
-														value="#{billsIssueBean.selectedHealthCertificateList}">
-														<p:column>
-															<p:outputLabel value="#{item.payMaster}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel
-																value="#{item.payDetails} #{item.detailAccount}" />
-														</p:column>
-														<p:column>
-															<p:outputLabel value="#{item.amount}" />
-														</p:column>
-													</p:dataTable>
-												</h:panelGroup>
 
+
+
+
+
+
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapse8">#{msg['health.licesnse.sadad']}</a>
+							</h4>
+						</div>
+						<div id="collapse8" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="row" style="margin: 4px;">
+												<p:selectOneMenu style="width:100%" id="input031"
+													value="#{billsIssueBean.healthCertificateIssueType}">
+													<f:selectItem
+														itemLabel="#{msg['select.license.issue.type']}"></f:selectItem>
+													<f:selectItem itemLabel="جديد - تجديد " itemValue="1" />
+													<f:selectItem itemLabel="بدل فاقد" itemValue="3" />
+												</p:selectOneMenu>
 											</div>
-											<div class="row"
-												style="text-align: center; font-size: xx-large;">
-												<p:commandButton value="#{msg['add.bill']}" process="@this"
-													action="#{billsIssueBean.openBillDlg8(ae)}"
-													update="growl,AddBillDlg">
-												</p:commandButton>
-											</div>
+
+
+											<p:commandButton style="width:100%" update="hc-result,msg008"
+												action="#{billsIssueBean.calculateHealthCertificateFees(ae)}"
+												process="@this,input031" value="#{msg['calculate.fees']}" />
+
+
+										</div>
+
+										<div class="col-md-6">
+											<h:panelGroup id="hc-result">
+												<p:dataTable var="item" emptyMessage="#{msg['empty.dt']}"
+													value="#{billsIssueBean.selectedHealthCertificateList}">
+													<p:column>
+														<p:outputLabel value="#{item.payMaster}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel
+															value="#{item.payDetails} #{item.detailAccount}" />
+													</p:column>
+													<p:column>
+														<p:outputLabel value="#{item.amount}" />
+													</p:column>
+												</p:dataTable>
+											</h:panelGroup>
+
+										</div>
+										<div class="row"
+											style="text-align: center; font-size: xx-large;">
+											<p:commandButton value="#{msg['add.bill']}" process="@this"
+												action="#{billsIssueBean.openBillDlg8(ae)}"
+												update="growl,AddBillDlg">
+											</p:commandButton>
 										</div>
 									</div>
-									<p:messages id="msg008"></p:messages>
 								</div>
+								<p:messages id="msg008"></p:messages>
 							</div>
 						</div>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+				</div>
+			</div>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msg['yes']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="#{msg['no']}" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			<p:growl id="growl"></p:growl>
+		</h:form>
+
+		<p:dialog widgetVar="AddBillDlgVar" id="AddBillDlg" modal="true"
+			showEffect="fade" width="50%" resizable="false" responsive="true">
+			<h:form>
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3">
+							<h:outputLabel value="#{msg['national.id']}" />
+						</div>
+						<div class="col-md-3">
+							<p:spinner id="nationalId" required="true"
+								style="width:100% !important;" maxlength="10"
+								requiredMessage="#{msg['required.fields']}"
+								validatorMessage="#{msg['error.NationalId']}"
+								value="#{billsIssueBean.newBill.nationalId}">
+								<f:validator validatorId="validators.nationalIdValidator" />
+								<p:ajax process="@this" />
+							</p:spinner>
+						</div>
+						<br></br>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-3">اسم صاحب الفاتورة</div>
+						<div class="col-md-8">
+							<p:inputText id="o-name" required="true" style="width:100%"
+								value="#{billsIssueBean.newBill.billOwnerName}" />
+						</div>
+					</div>
+					<br></br>
+					<div class="row">
+						<div class="col-md-3">رقم الجوال</div>
+						<div class="col-md-8">
+							<p:inputText style="width:100%" />
+						</div>
+					</div>
+					<br></br>
+					<div class="row">
+
+						<p:dataTable var="item"
+							value="#{billsIssueBean.selectedDetailList}">
+							<p:column>
+								<p:outputLabel value="#{item.payMaster}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="#{item.payDetails} #{item.detailAccount}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="#{item.amount}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+					<div class="row" style="margin: 4px; text-align: left;">
+						<p:commandButton value="#{msg['add.bill']}" process="@this,nationalId,o-name"
+							update="PrintBillDlg" action="#{billsIssueBean.saveBill(ae)}" />
 					</div>
 				</div>
-				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-					<p:commandButton value="#{msg['yes']}" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-					<p:commandButton value="#{msg['no']}" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-				</p:confirmDialog>
-				<p:growl id="growl"></p:growl>
 			</h:form>
+		</p:dialog>
 
-			<p:dialog widgetVar="AddBillDlgVar" id="AddBillDlg" modal="true"
-				showEffect="fade" width="50%" resizable="false" responsive="true">
-				<h:form>
-					<div class="container-fluid">
-						<div class="row" style="margin: 4px;">
-							<div class="col-md-4">اسم صاحب الفاتورة</div>
-							<div class="col-md-8">
-								<p:inputText id="o-name" required="true" style="width:100%"
-									value="#{billsIssueBean.newBill.billOwnerName}" />
-							</div>
-						</div>
-						<div class="row" style="margin: 4px;">
-							<div class="col-md-4">رقم الجوال</div>
-							<div class="col-md-8">
-								<p:inputText style="width:100%" />
-							</div>
-						</div>
-
-						<div class="row" style="margin: 4px;">
-
-							<p:dataTable var="item"
-								value="#{billsIssueBean.selectedDetailList}">
-								<p:column>
-									<p:outputLabel value="#{item.payMaster}" />
-								</p:column>
-								<p:column>
-									<p:outputLabel value="#{item.payDetails} #{item.detailAccount}" />
-								</p:column>
-								<p:column>
-									<p:outputLabel value="#{item.amount}" />
-								</p:column>
-
-							</p:dataTable>
-						</div>
-						<div class="row" style="margin: 4px; text-align: left;">
-							<p:commandButton value="#{msg['add.bill']}"
-								process="@this,o-name" update="PrintBillDlg"
-								action="#{billsIssueBean.saveBill(ae)}" />
-						</div>
-					</div>
-				</h:form>
-			</p:dialog>
-
-			<p:dialog widgetVar="PrintBillDlgVar" id="PrintBillDlg" modal="true"
-				showEffect="explode" width="50%" resizable="false" responsive="true">
-				<h:form>
-					<div class="container-fluid">
-						<div class="row" style="text-align: center;">
-							<div class="alert alert-success" style="font-size: x-large;"> تمت إضافة الفاتورة رقم : 
-								#{billsIssueBean.newBillNmber}</div>
-
-						</div>
-						<div class="row" style="text-align: center;">
-						
-						<h:commandButton style="float:left;margin-left:3px;" 
-						value="طباعة الفاتورة"
-												 immediate="true" styleClass="btn btn-primary"
-												onclick="this.form.target='_blank'"
-												action="#{billsIssueBean.printBarcodeReport}">
-												
-												
-											</h:commandButton>
-											
-						
-						
-							
-						</div>
+		<p:dialog widgetVar="PrintBillDlgVar" id="PrintBillDlg" modal="true"
+			showEffect="explode" width="50%" resizable="false" responsive="true">
+			<h:form>
+				<div class="container-fluid">
+					<div class="row" style="text-align: center;">
+						<div class="alert alert-success" style="font-size: x-large;">
+							تمت إضافة الفاتورة رقم : #{billsIssueBean.newBillNmber}</div>
 
 					</div>
-				</h:form>
-			</p:dialog>
-		
+					<div class="row" style="text-align: center;">
+
+						<h:commandButton style="float:left;margin-left:3px;"
+							value="طباعة الفاتورة" immediate="true"
+							styleClass="btn btn-primary" onclick="this.form.target='_blank'"
+							action="#{billsIssueBean.printBarcodeReport}">
+
+
+						</h:commandButton>
+
+
+
+
+					</div>
+
+				</div>
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 
 </ui:composition>

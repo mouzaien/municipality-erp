@@ -11,6 +11,7 @@
 
 		<sec:intercept-url pattern="/hr/*" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/investment/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/fng/particular_fingerprint.xhtml" access="hasAnyRole('ROLE_FNG')" />
 		<sec:intercept-url pattern="/pages/*" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/Services/*" access="permitAll" />
 		<sec:intercept-url pattern="/javax.faces.resource/*"

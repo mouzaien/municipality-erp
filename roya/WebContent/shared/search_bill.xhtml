@@ -90,6 +90,11 @@
 								filterMatchMode="contains" filterBy="#{billItem.billOwnerName}">										
 										#{billItem.billOwnerName}										
 									</p:column>
+										<p:column style="white-space: nowrap;" headerText="البند"
+												width="10%" filterMatchMode="contains"
+												filterBy="#{billItem.payMaster}">										
+										#{billItem.payMaster}										
+									</p:column>
 							<p:column style="white-space: nowrap;"
 								headerText="#{msg['bill.date']}" width="15%"
 								filterMatchMode="contains" filterBy="#{billItem.billDate}">										

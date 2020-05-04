@@ -319,6 +319,7 @@
 				<value>com.bkeryah.hr.entities.HrTrainCat03</value>
 				<value>com.bkeryah.entities.Training</value>
 				<value>com.bkeryah.entities.EmpTraining</value>
+				<value>com.bkeryah.entities.Supervisor</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

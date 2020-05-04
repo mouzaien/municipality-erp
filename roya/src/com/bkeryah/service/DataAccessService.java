@@ -9123,6 +9123,21 @@ public class DataAccessService implements IDataAccessService {
 		List jobNum = commonDao.findAll(HrsJobCreation.class);
 		return jobNum;
 	}
+	 @Override
+	 @Transactional
+	 public List<ArcUsers> findEmployeesByDept(Integer deptId){
+		return commonDao.findEmployeesByDept(deptId);
+	}
+	 @Override
+	 @Transactional
+	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId){
+		 return commonDao.findAllSupervisorsByDept(deptId);
+	 }
+	 @Override
+	 @Transactional
+	 public Integer addSupervisor(Supervisor supervisor) {
+		 return commonDao.save(supervisor);
+	 }
 
 	
 }

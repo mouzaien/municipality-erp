@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 import utilities.Utils;
 
 @Entity
@@ -59,11 +61,13 @@ public class PayLicBills implements Serializable {
 	private String chequeDate;
 	@Column(name = "PAID_BY")
 	private String paidBy;
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "payLicBill")
+	@OneToMany(fetch = FetchType.EAGER , mappedBy = "payLicBill")
 	private Set<PayBillDetails> payBillDetails;
 
 	@Transient
 	private String sadadStatus;
+	@Formula("(select nvl( max(bdet.PAY_MASTER),0) from PAY_BILL_DETAILS bdet  where bdet.BILL_NO = BILL_NO)")
+	private String payMaster;
 	
 	
 	public PayLicBills(PayLicBills payLicBills) {
@@ -269,6 +273,14 @@ public class PayLicBills implements Serializable {
 
 	public void setSadadStatus(String sadadStatus) {
 		this.sadadStatus = sadadStatus;
+	}
+
+	public String getPayMaster() {
+		return payMaster;
+	}
+
+	public void setPayMaster(String payMaster) {
+		this.payMaster = payMaster;
 	}
 
 }

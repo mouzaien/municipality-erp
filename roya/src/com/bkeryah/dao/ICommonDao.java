@@ -1034,4 +1034,8 @@ public interface ICommonDao {
 	public List<Training> loadAllTraining();
 	
 	public void saveEmpTraining(EmpTraining emptr);
+	
+	 public List<ArcUsers> findEmployeesByDept(Integer deptId);
+	 
+	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
 }

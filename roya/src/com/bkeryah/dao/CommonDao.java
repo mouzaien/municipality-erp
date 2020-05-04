@@ -4847,4 +4847,20 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	 public void saveEmpTraining(EmpTraining emptr) {
 		sessionFactory.getCurrentSession().save(emptr);
 	}
+	@Override
+	@Transactional
+	 public List<ArcUsers> findEmployeesByDept(Integer deptId){
+		 
+		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
+			criteria.add(Restrictions.eq("deptId", deptId));
+			return criteria.list();
+	 }
+	 @Override
+		@Transactional
+	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId){
+		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Supervisor.class);
+			criteria.add(Restrictions.eq("deptId", deptId));
+			return criteria.list();
+		 
+	 }
 }

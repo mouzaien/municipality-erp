@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+
+</h:head>
+
+<h:head>
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+	
+	<h:form id="vcs">
+	<p:messages autoUpdate="true" closable="true"></p:messages>
+	
+	<h1 style="color: #7CB342; text-align: center;">
+				المراقبين<span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+		
+		
+			<div class="image-box-footer">
+						<p:commandButton   value="اضافة"  
+									  onclick="PF('dlg3').show();">
+						</p:commandButton>
+			</div>
+		
+			
+		<div class="card card-w-title" dir="rtl">
+		<p:dialog header="اضافة مراقب" position="center"  widgetVar="dlg3" showEffect="explode" hideEffect="bounce" height="100" width="1000">
+					<h:panelGroup id="addsup">
+					<div class="ui-g">
+					
+					<div class="ui-g-2">
+					<p:outputLabel value="موظفين القسم"></p:outputLabel>
+					</div>
+					
+					<div class="ui-g-4">
+					<p:selectOneMenu value="#{supervisorBean.supervisor.userId}">
+					<f:selectItem itemLabel="اختر الموظف"></f:selectItem>
+					<f:selectItems value="#{supervisorBean.users}" var="user" itemValue="#{user.userId}"
+								itemLabel="#{user.employeeName}"
+					></f:selectItems>
+					</p:selectOneMenu>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="فعال"></p:outputLabel>
+					</div>
+					<div class="ui-g-2">
+					<p:selectBooleanCheckbox value="#{supervisorBean.active}" ></p:selectBooleanCheckbox>
+					</div>
+					<div class="ui-g-2">
+					<p:commandButton process="vcs:addsup" update="super" value="اضافة"   action="#{supervisorBean.addSuperVisor}"></p:commandButton>
+					</div>
+					
+					</div>
+					</h:panelGroup>
+			</p:dialog>
+					
+
+			<p:dataTable  id="super" var="supervisor"
+				value="#{supervisorBean.supervisors}" editable="true"
+				widgetVar="sup" paginatorPosition="bottom"
+				filteredValue="#{employersBean.filtredEmployers}"
+				 rows="13"
+				paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter" onkeyup="PF('sup').filter()"
+							style="width:50%" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
+				<p:ajax event="rowEdit" update="super"
+					listener="#{supervisorBean.onRowEdit}" />
+				
+				<p:column style="text-align: center;" headerText="اسم المراقب"
+					filterBy="#{supervisor.userName}" filterMatchMode="contains">
+					
+							<h:outputText value="#{supervisor.userName}" />
+						
+						
+				</p:column>
+				<p:column style="text-align: center;" headerText="الحالة" width="17%"                    
+					>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supervisor.status=='1'?'فعال':' غير فعال'}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{supervisor.status}">
+							<f:selectItem itemLabel="فعال" itemValue="1"></f:selectItem>
+							<f:selectItem itemLabel="غير فعال" itemValue="0"></f:selectItem>
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+					
+							
+						
+						
+				</p:column>
+				
+				<p:column style="width:100px">
+					<p:rowEditor />
+				</p:column>
+
+			</p:dataTable>
+			
+		</div>
+	</h:form>
+	
+	</ui:define>
+	</ui:composition>
+
+
+</html>

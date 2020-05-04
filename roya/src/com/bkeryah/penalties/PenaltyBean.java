@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
 
+import com.bkeryah.entities.ArcPeople;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
@@ -44,6 +45,8 @@ public class PenaltyBean {
 	private String licenceId;
 	private LicTrdMasterFile trdMasterFile;
 	private boolean fineForLic;
+	private ArcPeople currPeople;
+	private List<ArcPeople> peoplesList = new ArrayList<ArcPeople>();
 
 	public boolean isFineForLic() {
 		return fineForLic;
@@ -71,6 +74,7 @@ public class PenaltyBean {
 
 	@PostConstruct
 	private void init() {
+		peoplesList = dataAccessService.loadArcPeopleFields();
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 		HttpSession httpSession = HttpRequest.getSession(false);
@@ -84,16 +88,16 @@ public class PenaltyBean {
 		activitiesTypes = new ArrayList<ActivityType>();
 		activitiesTypes.add(new ActivityType(0, Utils.loadMessagesFromFile("sihi")));
 		activitiesTypes.add(new ActivityType(1, Utils.loadMessagesFromFile("tijari")));
-	//	supervisors = dataAccessService.getAllUsers();
+		// supervisors = dataAccessService.getAllUsers();
 		supervisors = dataAccessService.getAllActiveEmployeesInDept(Utils.findCurrentUser().getDeptId());
 		codesFines = dataAccessService.getCodesFines();
 		ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
 		codesFinesList.add(reqFinesSetup);
-			
+
 	}
 
 	public void checkLic() {
-		if (selectedPeople != null) {
+		if (currPeople != null) {
 			createtReqFinesMaster();
 		}
 	}
@@ -155,10 +159,12 @@ public class PenaltyBean {
 
 	private void createtReqFinesMaster() {
 		reqFinesMaster = new ReqFinesMaster();
-		reqFinesMaster.setfIdNo(selectedPeople.getAplOwner());
+//		reqFinesMaster.setfIdNo(selectedPeople.getAplOwner());
+		reqFinesMaster.setfIdNo(currPeople.getNationalId().toString());
+		reqFinesMaster.setfName(currPeople.getCompleteName());
 		reqFinesMaster.setfLicenceNo(selectedPeople.getLicNo());
 		reqFinesMaster.setfAddress(selectedPeople.getLicAdress());
-		reqFinesMaster.setfName(selectedPeople.getTrdName());
+//		reqFinesMaster.setfName(selectedPeople.getTrdName());
 		reqFinesMaster.setFineDate(HijriCalendarUtil.findCurrentHijriDate());
 		reqFinesMaster.setfDeptNo(Utils.findCurrentUser().getDeptId().toString());
 		reqFinesMaster.setDeptName(Utils.findCurrentUser().getUserDept().getDeptName());
@@ -314,7 +320,24 @@ public class PenaltyBean {
 	}
 
 	public void onRowSelect(SelectEvent event) {
-		selectedPeople = (LicTrdMasterFile) event.getObject();
+//		selectedPeople = (LicTrdMasterFile) event.getObject();
+		currPeople = (ArcPeople) event.getObject();
+	}
+
+	public ArcPeople getCurrPeople() {
+		return currPeople;
+	}
+
+	public void setCurrPeople(ArcPeople currPeople) {
+		this.currPeople = currPeople;
+	}
+
+	public List<ArcPeople> getPeoplesList() {
+		return peoplesList;
+	}
+
+	public void setPeoplesList(List<ArcPeople> peoplesList) {
+		this.peoplesList = peoplesList;
 	}
 
 }

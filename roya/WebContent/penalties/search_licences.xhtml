@@ -5,7 +5,7 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
+
 
 	<h:head>
 		<f:metadata>
@@ -20,33 +20,47 @@
 		window.onload = window.history.forward(0);
 	</script>
 	<br />
-	<h:body>
+	<body>
 
-		<ui:composition template="/pages/menuBar.xhtml">
-			<p:growl autoUpdate="true" showDetail="false" />
+		<ui:composition template="/template.xhtml">
 
-			<ui:define name="content">
+		<ui:define name="content">
 				<h:form id="includeform">
 					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div class="image-box-footer">
 					
-					<div class="col-lg-12"
-						style="background-color: white; border-top: 5px solid #428BCA">
-							<br></br>
-						<div style="color: color: #428bca">
-						<h3 class="page-header"
-							style="margin: 0px 0 -5px ! important; color: #428bca">#{msg['list.licences']}
-						</h3>
+									<p:commandButton value="طباعة"
+										styleClass="btn btn-primary"
+										onclick="this.form.target='_blank'"
+										action="#{licencesListBean.printReportAction}" ajax="false">
+									</p:commandButton>
+									
+				</div>
+				<br></br><br></br>
 					
-					</div>
+					<div class="card card-w-title" dir="rtl">
+						<h1 style="color: #7CB342; text-align: center;">
+				#{msg['list.licences']}<span class="fa fa-fw fa-clock-o"></span>
+			</h1>
+						
 						<br></br>
-							<div class="row">
-								<p:dataTable var="licenceItem" id="inboxdt"
+							
+								<p:dataTable dir="rtl" var="licenceItem" id="inboxdt"
+								widgetVar="license"
 									value="#{licencesListBean.licencesList}"
 									emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
 									paginatorPosition="bottom"
 									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 									filteredValue="#{licencesListBean.filteredLicences}"
 									paginator="true" rows="17">
+									<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter" onkeyup="PF('license').filter()"
+							style="width:50%" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
 
 									<p:column style="text-align: center;" headerText="رقم الرخصة"
 										filterBy="#{licenceItem.licNo}" filterMatchMode="contains"
@@ -75,20 +89,14 @@
 										headerText="#{msg['details']}">
 										<p:commandButton style="background-color: #3F729B;"
 											action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
-											icon="ui-icon-search">
+											icon="ui-icon-search" ajax="false">
 										</p:commandButton>
 									</p:column>
 								</p:dataTable>
 							</div>
 									<br />
-									<div align="center" class="row">
-									<h:commandButton value="طباعة"
-										styleClass="btn btn-primary"
-										onclick="this.form.target='_blank'"
-										action="#{licencesListBean.printReportAction}">
-									</h:commandButton>
-									</div>
-					</div>
+									
+					
 
 
 
@@ -395,6 +403,6 @@
 			</ui:define>
 		</ui:composition>
 
-	</h:body>
-</f:view>
+	</body>
+
 </html>

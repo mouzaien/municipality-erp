@@ -44,6 +44,8 @@ public class SearchPenaltyBean {
 	private boolean withNationalId;
 	private List<ArcPeopleModel> filteredArcPeoples;
 	private ArcPeopleModel selectedPeople;
+	private List<ReqFinesMaster> filteredList;
+	private List<ReqFinesDetails> filteredDetailList;
 
 	@PostConstruct
 	private void init() {
@@ -102,7 +104,8 @@ public class SearchPenaltyBean {
 
 	}
 
-	public String DetailLic() {
+	public String DetailLic(ReqFinesMaster det) {
+		reqFinesMaster=det;
 		String numberLic = reqFinesMaster.getfLicenceNo();//trdMasterFile.getLicNo();
 		licTrdMasterFile = dataAccessService.findLicByLicId(numberLic);
 		Integer numFine = reqFinesMaster.getFineNo();
@@ -284,6 +287,22 @@ public class SearchPenaltyBean {
 
 	public void setSelectedPeople(ArcPeopleModel selectedPeople) {
 		this.selectedPeople = selectedPeople;
+	}
+
+	public List<ReqFinesMaster> getFilteredList() {
+		return filteredList;
+	}
+
+	public void setFilteredList(List<ReqFinesMaster> filteredList) {
+		this.filteredList = filteredList;
+	}
+
+	public List<ReqFinesDetails> getFilteredDetailList() {
+		return filteredDetailList;
+	}
+
+	public void setFilteredDetailList(List<ReqFinesDetails> filteredDetailList) {
+		this.filteredDetailList = filteredDetailList;
 	}
 
 }

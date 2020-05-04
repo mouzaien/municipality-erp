@@ -1,0 +1,95 @@
+package com.bkeryah.bean;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.RowEditEvent;
+
+import com.bkeryah.entities.ArcUsers;
+import com.bkeryah.entities.HrsMasterFile;
+import com.bkeryah.entities.Supervisor;
+import com.bkeryah.service.IDataAccessService;
+
+import utilities.MsgEntry;
+import utilities.Utils;
+
+@ManagedBean
+@ViewScoped
+public class SupervisorBean {
+	@ManagedProperty(value = "#{dataAccessService}")
+	private IDataAccessService dataAccessService;
+	List<ArcUsers> users;
+	List<Supervisor> supervisors;
+	private Supervisor supervisor=new Supervisor();
+	private boolean active;
+	
+	@PostConstruct
+	public void init() {
+		
+		users = dataAccessService.findEmployeesByDept(Utils.findCurrentUser().getDeptId());
+		supervisors=dataAccessService.findAllSupervisorsByDept(Utils.findCurrentUser().getDeptId());
+		
+	}
+	public void addSuperVisor() {
+		if(active==true)supervisor.setStatus(1);
+		else supervisor.setStatus(0);
+		supervisor.setDeptId(Utils.findCurrentUser().getDeptId());
+		dataAccessService.addSupervisor(supervisor);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Utils.loadMessagesFromFile("تم الاضافة بنجاح"), "تم الاضافة بنجاح"));
+		supervisors=dataAccessService.findAllSupervisorsByDept(Utils.findCurrentUser().getDeptId());
+	}
+	public void onRowEdit(RowEditEvent event) {
+		Supervisor supervisor = (Supervisor) event.getObject();
+		dataAccessService.updateObject(supervisor);
+		MsgEntry.addInfoMessage(MsgEntry.SUCCESS_SAVE);
+
+	}
+
+	public IDataAccessService getDataAccessService() {
+		return dataAccessService;
+	}
+
+	public void setDataAccessService(IDataAccessService dataAccessService) {
+		this.dataAccessService = dataAccessService;
+	}
+
+	public List<ArcUsers> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<ArcUsers> users) {
+		this.users = users;
+	}
+
+	public List<Supervisor> getSupervisors() {
+		return supervisors;
+	}
+
+	public void setSupervisors(List<Supervisor> supervisors) {
+		this.supervisors = supervisors;
+	}
+
+	public Supervisor getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(Supervisor supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+}
