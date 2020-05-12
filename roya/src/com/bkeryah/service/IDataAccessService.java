@@ -1827,5 +1827,7 @@ public interface IDataAccessService {
 	 public List<ArcUsers> findEmployeesByDept(Integer deptId);
 	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
 	 public Integer addSupervisor(Supervisor supervisor);
+	 
+	 public List<LicMainActivity> loadActivities();
 
 }

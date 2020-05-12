@@ -13,8 +13,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import com.bkeryah.bean.ArcAttachmentClass;
+import com.bkeryah.entities.LicMainActivity;
 import com.bkeryah.service.IDataAccessService;
 
+import utilities.MsgEntry;
 import utilities.Utils;
 
 @ManagedBean
@@ -27,12 +29,16 @@ public class LicencesListBean {
 	private LicTrdMasterFile licence;
 	private Integer period;
 	private Integer typeLicence;
+	
 	private List<ArcAttachmentClass> attList = new ArrayList<ArcAttachmentClass>();
+	private LicTrdMasterFile marketLicense=new LicTrdMasterFile();
+	private List<LicMainActivity> activities;
 
 	@PostConstruct
 	private void init() {
 		licencesList = dataAccessService.getTrdMasterFileList();
 		typeLicence = 1;
+		activities=dataAccessService.loadActivities();
 	}
 
 	public void loadLicences() {
@@ -48,6 +54,13 @@ public class LicencesListBean {
 
 	public void searchLicences() {
 		licencesList = dataAccessService.getTrdMasterFileListByPeriodType(typeLicence, period);
+	}
+	public void editLicence() {
+		
+	}
+	public void addLicence() {
+		dataAccessService.save(marketLicense);
+		MsgEntry.addInfoMessage("تم الاضافة");
 	}
 
 	public void resetFields() {
@@ -123,6 +136,22 @@ public class LicencesListBean {
 
 	public void setAttList(List<ArcAttachmentClass> attList) {
 		this.attList = attList;
+	}
+
+	public LicTrdMasterFile getMarketLicense() {
+		return marketLicense;
+	}
+
+	public void setMarketLicense(LicTrdMasterFile marketLicense) {
+		this.marketLicense = marketLicense;
+	}
+
+	public List<LicMainActivity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List<LicMainActivity> activities) {
+		this.activities = activities;
 	}
 
 }

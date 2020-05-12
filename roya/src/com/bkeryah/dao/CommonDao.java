@@ -4863,4 +4863,10 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 			return criteria.list();
 		 
 	 }
+	 @Override
+		@Transactional
+	 public List<LicMainActivity> loadActivities(){
+		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicMainActivity.class);
+		 return criteria.list();
+	 }
 }

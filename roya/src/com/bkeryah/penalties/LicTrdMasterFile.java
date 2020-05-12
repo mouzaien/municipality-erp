@@ -2,15 +2,19 @@ package com.bkeryah.penalties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "lic_trd_master_file")
 public class LicTrdMasterFile {
-
 	@Id
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
 	@Column(name = "LIC_NO")
@@ -29,6 +33,23 @@ public class LicTrdMasterFile {
 	private String aplOwner;
 	@Column(name = "MHL_ID")
 	private String mhlId;
+	@Column(name="MAIN_ACTV")
+	private Integer workActivity;
+	@Column(name="phone_number")
+	private String phoneNumber;
+	@Column(name="market_space")
+	private String marketSpace;
+	@Column(name="longitude")
+	private Integer longitude;
+	@Column(name="latitude")
+	private Integer latitude;
+	@Column(name="street")
+	private String street;
+	@Column(name="district")
+	private String district;
+	@Transient
+	private String activity;
+	
     public String getMhlId() {
 		return mhlId;
 	}
@@ -36,8 +57,7 @@ public class LicTrdMasterFile {
 	public void setMhlId(String mhlId) {
 		this.mhlId = mhlId;
 	}
-	@Transient
-    private String activity;
+	
 	public LicTrdMasterFile() {
 		super();
 
@@ -129,10 +149,73 @@ public class LicTrdMasterFile {
 	public void setAplOwner(String aplOwner) {
 		this.aplOwner = aplOwner;
 	}
+
+	
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getMarketSpace() {
+		return marketSpace;
+	}
+
+	public void setMarketSpace(String marketSpace) {
+		this.marketSpace = marketSpace;
+	}
+
+	public Integer getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Integer longitude) {
+		this.longitude = longitude;
+	}
+
+	public Integer getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Integer latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
 	public String getActivity() {
 		return activity;
 	}
+
 	public void setActivity(String activity) {
 		this.activity = activity;
 	}
+
+	public Integer getWorkActivity() {
+		return workActivity;
+	}
+
+	public void setWorkActivity(Integer workActivity) {
+		this.workActivity = workActivity;
+	}
+
+
+	
 }
