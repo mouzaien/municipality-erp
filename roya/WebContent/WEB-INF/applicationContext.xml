@@ -320,6 +320,7 @@
 				<value>com.bkeryah.entities.Training</value>
 				<value>com.bkeryah.entities.EmpTraining</value>
 				<value>com.bkeryah.entities.Supervisor</value>
+				<value>com.bkeryah.entities.LicMainActivity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

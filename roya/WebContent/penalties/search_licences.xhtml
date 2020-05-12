@@ -29,10 +29,15 @@
 					<p:messages autoUpdate="true" closable="true"></p:messages>
 					<div class="image-box-footer">
 					
-									<p:commandButton value="طباعة"
+									<p:commandButton style="margin-right:10px;" value="طباعة"
 										styleClass="btn btn-primary"
 										onclick="this.form.target='_blank'"
 										action="#{licencesListBean.printReportAction}" ajax="false">
+									</p:commandButton>
+									<p:commandButton value="اضافة رخصة"
+										styleClass="btn btn-primary"
+										onclick="PF('dlg').show();"
+										 >
 									</p:commandButton>
 									
 				</div>
@@ -42,6 +47,79 @@
 						<h1 style="color: #7CB342; text-align: center;">
 				#{msg['list.licences']}<span class="fa fa-fw fa-clock-o"></span>
 			</h1>
+			<p:dialog header="اضافة رخصة" position="center"  widgetVar="dlg" showEffect="explode" hideEffect="bounce" height="250" width="1000">
+					<h:panelGroup id="addlicense">
+					<div class="ui-g">
+					<div class="ui-g-2">
+							<p:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+					</div>
+					<div class="ui-g-4">
+							<p:inputText
+								value="#{licencesListBean.marketLicense.licOwnerName}" ></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="رقم الجوال"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.phoneNumber}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="مساحة المحل"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.marketSpace}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="النشاط"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:selectOneMenu value="#{licencesListBean.marketLicense.workActivity}">
+						<f:selectItem itemLabel="اختر النشاط"></f:selectItem>
+						<f:selectItems value="#{licencesListBean.activities}" var="activity"
+						 itemLabel="#{activity.actvName}" itemValue="#{activity.actvId}"></f:selectItems>
+					
+					</p:selectOneMenu>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="خط الطول"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.longitude}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="خط العرض"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.latitude}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="اسم المنشأة"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.trdName}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="الشارع"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.street}"></p:inputText>
+					</div>
+					<div class="ui-g-2">
+					<p:outputLabel value="الحي"></p:outputLabel>
+					</div>
+					<div class="ui-g-4">
+					<p:inputText value="#{licencesListBean.marketLicense.district}"></p:inputText>
+					</div>
+					
+					
+					<div class="ui-g-12">
+						<p:commandButton style="float:left;" value="اضافة" actionListener="#{licencesListBean.addLicence}">
+						
+						</p:commandButton>
+					</div>
+					</div>
+					</h:panelGroup>
+			</p:dialog>
 						
 						<br></br>
 							

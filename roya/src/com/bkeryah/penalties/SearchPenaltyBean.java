@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 
 import com.bkeryah.entities.ArcPeopleModel;
+import com.bkeryah.entities.LicMainActivity;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -46,6 +47,7 @@ public class SearchPenaltyBean {
 	private ArcPeopleModel selectedPeople;
 	private List<ReqFinesMaster> filteredList;
 	private List<ReqFinesDetails> filteredDetailList;
+	private List<LicMainActivity> activities;
 
 	@PostConstruct
 	private void init() {
@@ -60,6 +62,7 @@ public class SearchPenaltyBean {
 		}else{
 			withNationalId = true;
 		}
+		activities=dataAccessService.loadActivities();
 	}
 
 	public String addLicencePenality() {
@@ -125,6 +128,11 @@ public class SearchPenaltyBean {
 		reqFinesMaster.setfName(selectedPeople.getCompleteName());
 		reqFinesMasterList = dataAccessService.findListFinesMasterByNationalId(reqFinesMaster.getfIdNo());
 		return "";
+	}
+	
+	public void update() {
+		dataAccessService.updateObject(trdMasterFile);
+		MsgEntry.addInfoMessage("تم التعديل");
 	}
 
 	public String getLicenceId() {
@@ -303,6 +311,14 @@ public class SearchPenaltyBean {
 
 	public void setFilteredDetailList(List<ReqFinesDetails> filteredDetailList) {
 		this.filteredDetailList = filteredDetailList;
+	}
+
+	public List<LicMainActivity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List<LicMainActivity> activities) {
+		this.activities = activities;
 	}
 
 }

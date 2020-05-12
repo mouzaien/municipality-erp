@@ -1038,4 +1038,6 @@ public interface ICommonDao {
 	 public List<ArcUsers> findEmployeesByDept(Integer deptId);
 	 
 	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
+	 
+	 public List<LicMainActivity> loadActivities();
 }

@@ -9138,6 +9138,9 @@ public class DataAccessService implements IDataAccessService {
 	 public Integer addSupervisor(Supervisor supervisor) {
 		 return commonDao.save(supervisor);
 	 }
+	 public List<LicMainActivity> loadActivities(){
+		 return commonDao.loadActivities();
+	 }
 
 	 @Override
 	public List<ReqFinesMaster> loadAllPenalities(int notification) {
