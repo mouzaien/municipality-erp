@@ -9139,5 +9139,9 @@ public class DataAccessService implements IDataAccessService {
 		 return commonDao.save(supervisor);
 	 }
 
+	 @Override
+	public List<ReqFinesMaster> loadAllPenalities(int notification) {
+		return dataAccessDAO.loadAllPenalities(notification);
+	}
 	
 }

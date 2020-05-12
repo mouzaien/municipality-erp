@@ -93,6 +93,9 @@ public class ReqFinesMaster {
 	@Transient
 	private Double totalValue;
 	
+	@Transient
+	private Integer billNo;
+	
 	public Integer getFineNo() {
 		return fineNo;
 	}
@@ -376,6 +379,14 @@ public class ReqFinesMaster {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public Integer getBillNo() {
+		return billNo;
+	}
+
+	public void setBillNo(Integer billNo) {
+		this.billNo = billNo;
 	}
 
 }

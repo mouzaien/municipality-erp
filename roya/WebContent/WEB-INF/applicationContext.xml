@@ -34,7 +34,7 @@
 	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.27.9.4:1521:orcl" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.27.9.24:1521:orcltest" />
 		<property name="user" value="project" />
 		<property name="password" value="oraserverdb200" />
 		<property name="initialPoolSize" value="1" />

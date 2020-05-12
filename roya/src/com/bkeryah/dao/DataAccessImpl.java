@@ -7534,5 +7534,52 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		}
 		return memoReceiptList;
 	}
+	
+	
+	@Override
+	public List<ReqFinesMaster> loadAllPenalities(int notification) {
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		List<ReqFinesMaster> reqFinesList = new ArrayList<ReqFinesMaster>();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_fines(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.setInt(1, notification);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+				/*PAY_LIC_BILLS.BILL_NO, REQ_FINES_MASTER.FINE_NO,
+				   REQ_FINES_MASTER.F_ID_NO, REQ_FINES_MASTER.F_TRADE_MARK_NAME,
+				   REQ_FINES_MASTER.F_LICENCE_NO, REQ_FINES_MASTER.F_LIC_END_DATE
+				  ,REQ_FINES_MASTER.F_NAME*/
+				ReqFinesMaster reqFinesMaster = new ReqFinesMaster();
+				reqFinesMaster.setFineNo(rs.getInt("FINE_NO"));
+				reqFinesMaster.setBillNo(rs.getInt("BILL_NO"));
+				reqFinesMaster.setfIdNo(rs.getString("F_ID_NO"));
+				reqFinesMaster.setfFineCase((long) rs.getInt("BILL_STATUS"));
+				reqFinesMaster.setfName(rs.getString("F_NAME"));
+				reqFinesMaster.setfTradeMarkName(rs.getString("F_TRADE_MARK_NAME"));
+				reqFinesMaster.setfLicenceNo(rs.getString("F_LICENCE_NO"));
+				reqFinesMaster.setDeptName(rs.getString("DEPT_NAME"));
+				reqFinesList.add(reqFinesMaster);
+			}
+		} catch (Exception e) {
+			logger.error("loadAllPenalities" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return reqFinesList;
+	}
 
 }

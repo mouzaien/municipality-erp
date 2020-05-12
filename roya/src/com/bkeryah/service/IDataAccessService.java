@@ -1828,4 +1828,6 @@ public interface IDataAccessService {
 	 public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
 	 public Integer addSupervisor(Supervisor supervisor);
 
+	List<ReqFinesMaster> loadAllPenalities(int notification);
+
 }

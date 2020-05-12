@@ -595,4 +595,6 @@ public interface DataAccess {
 
 	public List<StockEntryMaster> searchMemoReceipts(String beginDate, String finishDate, Integer strNo);
 
+	List<ReqFinesMaster> loadAllPenalities(int notification);
+
 }

@@ -4851,7 +4851,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Transactional
 	 public List<ArcUsers> findEmployeesByDept(Integer deptId){
 		 
-		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
+		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
 			criteria.add(Restrictions.eq("deptId", deptId));
 			return criteria.list();
 	 }

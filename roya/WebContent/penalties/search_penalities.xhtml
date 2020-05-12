@@ -34,11 +34,11 @@
 
 							<div class="ui-g">
 								<p:outputLabel value="مخالفات الإشعارات"
-									rendered="#{penalitiesListBean.notification}" />
+									rendered="#{penalitiesListBean.notification ==1}" />
 								<p:spacer width="5" />
 								<p:selectBooleanCheckbox
 									value="#{penalitiesListBean.notifiPenality}"
-									rendered="#{penalitiesListBean.notification}">
+									rendered="#{penalitiesListBean.notification ==1}">
 									<f:ajax render="inboxdt" execute="@this" event="change"
 										listener="#{penalitiesListBean.loadPenalitiesByType}" />
 								</p:selectBooleanCheckbox>
@@ -70,6 +70,12 @@
 									width="10%">
                                     #{penalItem.fineNo}
                                 </p:column>
+								<p:column style="text-align: center;"
+									headerText="الفاتورة"
+									filterBy="#{penalItem.billNo}" filterMatchMode="contains"
+									width="10%">
+                                    #{penalItem.billNo}
+                                </p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="#{msg['register.number']}" width="10%"
 									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">										
@@ -82,12 +88,12 @@
 										#{penalItem.fName}										
 									</p:column>
 
-								<p:column style="white-space: nowrap;"
-									headerText="#{msg['commercial.name']}" width="30%"
-									filterBy="#{penalItem.fTradeMarkName}"
-									filterMatchMode="contains">										
-										#{penalItem.fTradeMarkName}										
-									</p:column>
+<!-- 								<p:column style="white-space: nowrap;" -->
+<!-- 									headerText="#{msg['commercial.name']}" width="30%" -->
+<!-- 									filterBy="#{penalItem.fTradeMarkName}" -->
+<!-- 									filterMatchMode="contains">										 -->
+<!-- 										#{penalItem.fTradeMarkName}										 -->
+<!-- 									</p:column> -->
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="#{msg['licence.number']}" width="7%"
 									filterBy="#{penalItem.fLicenceNo}">										
@@ -98,8 +104,8 @@
 									headerText="#{msg['payment.status']}" width="8%">
 
 									<h:outputLabel
-										value="#{(penalItem.fFineCase==2)? msg['paid'] : msg['not.paid']}"
-										style="color:#{(penalItem.fFineCase==2)? 'green' : 'red'}"></h:outputLabel>
+										value="#{(penalItem.fFineCase==1)? msg['paid'] : msg['not.paid']}"
+										style="color:#{(penalItem.fFineCase==1)? 'green' : 'red'}"></h:outputLabel>
 
 								</p:column>
 
@@ -387,7 +393,7 @@
 
 										<p:commandButton style="float:left;margin-left:3px;"
 											value="موافق" styleClass="btn btn-primary"
-											rendered="#{(penalitiesListBean.notification) and (penalitiesListBean.reqFinesMaster.fFineCase==0)}"
+											rendered="#{(penalitiesListBean.notification==1) and (penalitiesListBean.reqFinesMaster.fFineCase==0)}"
 											action="#{penalitiesListBean.acceptPenality}">
 										</p:commandButton>
 

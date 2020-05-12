@@ -31,21 +31,19 @@ public class PenalitiesListBean {
 	private List<ReqFinesMaster> penalitiesList;
 	private List<ReqFinesMaster> filteredPenalities;
 	private String urlBill;
-	private String urlPenality;
 	private Integer fineNo;
-	private boolean notification;
-	private boolean notifiPenality;
+	private int notification;
 
 	@PostConstruct
 	private void init() {
 		Integer healthCareId = dataAccessService.getPropertiesValue("HEALTH_CONTROL_HEAD");
 		if((Utils.findCurrentUser().getUserId() == healthCareId) || (Utils.findCurrentUser().getUserId() == MyConstants.SUPPORT_USER_ID))
-			notification = true;
+			notification = 1;
 		loadPenalitiesByType();
 	}
 	
 	public void loadPenalitiesByType(){
-		penalitiesList = dataAccessService.loadAllPenalities(notifiPenality);
+		penalitiesList = dataAccessService.loadAllPenalities(notification);
 	}
 
 	public void loadSelectedPenalty() {
@@ -196,9 +194,9 @@ public class PenalitiesListBean {
 		return dataAccessService.printDocument("rq04", reqFinesMaster.getFineNo(), "P1");
 	}
 
-	public void setUrlPenality(String urlPenality) {
-		this.urlPenality = urlPenality;
-	}
+//	public void setUrlPenality(String urlPenality) {
+//		this.urlPenality = urlPenality;
+//	}
 
 	public Integer getFineNo() {
 		return fineNo;
@@ -208,19 +206,11 @@ public class PenalitiesListBean {
 		this.fineNo = fineNo;
 	}
 
-	public boolean isNotification() {
+	public int getNotification() {
 		return notification;
 	}
 
-	public void setNotification(boolean notification) {
+	public void setNotification(int notification) {
 		this.notification = notification;
-	}
-
-	public boolean isNotifiPenality() {
-		return notifiPenality;
-	}
-
-	public void setNotifiPenality(boolean notifiPenality) {
-		this.notifiPenality = notifiPenality;
 	}
 }
