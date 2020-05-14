@@ -33,6 +33,7 @@ public class PenalitiesListBean {
 	private String urlBill;
 	private Integer fineNo;
 	private int notification;
+	List<ReqFinesDetails> reqFinesDetails;
 
 	@PostConstruct
 	private void init() {
@@ -51,7 +52,8 @@ public class PenalitiesListBean {
 				.setDeptName(dataAccessService.findDepartmentNameById(Integer.parseInt(reqFinesMaster.getfDeptNo())));
 		reqFinesMaster.setSupervisorName(dataAccessService
 				.loadUserById(Integer.parseInt(reqFinesMaster.getfSupervisorCode())).getEmployeeName());
-		for (ReqFinesDetails detail : reqFinesMaster.getReqFinesDetailsList()) {
+		 reqFinesDetails=dataAccessService.getReqFinesDetails(reqFinesMaster.getFineNo());
+		for (ReqFinesDetails detail :reqFinesDetails ) {
 			detail.setFineCountNo(
 					dataAccessService.getNumberLicencePenality(detail.getFineCode(), reqFinesMaster.getFineNo()));
 		}
@@ -212,5 +214,13 @@ public class PenalitiesListBean {
 
 	public void setNotification(int notification) {
 		this.notification = notification;
+	}
+
+	public List<ReqFinesDetails> getReqFinesDetails() {
+		return reqFinesDetails;
+	}
+
+	public void setReqFinesDetails(List<ReqFinesDetails> reqFinesDetails) {
+		this.reqFinesDetails = reqFinesDetails;
 	}
 }

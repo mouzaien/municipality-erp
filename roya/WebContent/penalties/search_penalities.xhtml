@@ -70,6 +70,7 @@
 									width="10%">
                                     #{penalItem.fineNo}
                                 </p:column>
+                               
 								<p:column style="text-align: center;"
 									headerText="الفاتورة"
 									filterBy="#{penalItem.billNo}" filterMatchMode="contains"
@@ -385,11 +386,11 @@
 											action="#{penalitiesListBean.printPenalityReport}">
 										</p:commandButton>
 
-										<p:commandButton style="float:left;margin-left:3px;"
-											value="طباعة المحضر" id="bt2" styleClass="btn btn-primary"
-											onclick="this.form.target='_blank'" ajax="false"
-											action="#{penalitiesListBean.printReportPenalityAction}">
-										</p:commandButton>
+<!-- 										<p:commandButton style="float:left;margin-left:3px;" -->
+<!-- 											value="طباعة المحضر" id="bt2" styleClass="btn btn-primary" -->
+<!-- 											onclick="this.form.target='_blank'" ajax="false" -->
+<!-- 											action="#{penalitiesListBean.printReportPenalityAction}"> -->
+<!-- 										</p:commandButton> -->
 
 										<p:commandButton style="float:left;margin-left:3px;"
 											value="موافق" styleClass="btn btn-primary"

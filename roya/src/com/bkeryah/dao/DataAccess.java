@@ -57,6 +57,7 @@ import com.bkeryah.model.DashbordModel;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
+import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
 
 /**
@@ -596,5 +597,7 @@ public interface DataAccess {
 	public List<StockEntryMaster> searchMemoReceipts(String beginDate, String finishDate, Integer strNo);
 
 	List<ReqFinesMaster> loadAllPenalities(int notification);
+	
+	public List<ReqFinesDetails> getReqFinesDetails(Integer fineNo);
 
 }

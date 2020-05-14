@@ -1832,4 +1832,5 @@ public interface IDataAccessService {
 
 	List<ReqFinesMaster> loadAllPenalities(int notification);
 
+	public List<ReqFinesDetails> getReqFinesDetails(Integer fineNo);
 }

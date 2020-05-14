@@ -9146,5 +9146,9 @@ public class DataAccessService implements IDataAccessService {
 	public List<ReqFinesMaster> loadAllPenalities(int notification) {
 		return dataAccessDAO.loadAllPenalities(notification);
 	}
+	 public List<ReqFinesDetails> getReqFinesDetails(Integer fineNo)
+	 {
+		 return dataAccessDAO.getReqFinesDetails(fineNo);
+	 }
 	
 }

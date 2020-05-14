@@ -99,6 +99,7 @@ import com.bkeryah.model.DashbordModel;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
+import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
 
 import oracle.jdbc.OracleTypes;
@@ -566,7 +567,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				mail.setWrkCreateTime(rs.getString("create_time"));
 				mail.setWrkGDate(rs.getString("m_date"));
 				mail.setWrkHdate(rs.getString("h_date"));
-			//	mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
+				// mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
 				outList.add(mail);
 			}
 		} catch (Exception e) {
@@ -783,7 +784,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				mail.setHasComment(rs.getInt("hasCommentx"));
 				mail.setHasComment(rs.getInt("hasCommentx"));
 				mail.setFromId(rs.getInt("from_id"));
-			//	mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
+				// mail.setWrkOutcomeNo(rs.getInt("OUTCOMING_NO"));
 				outList.add(mail);
 			}
 		} catch (Exception e) {
@@ -1411,9 +1412,9 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	@Override
 	public void MakeItRead(String vStepId, String vWrkId) {
 		/*
-		 * procedure PRC_MAKE_IT_READ(stepid number , wrkid number) is begin
-		 * update wrk_application set f_read=1 where id=wrkid and step_id =
-		 * stepid; commit; end;
+		 * procedure PRC_MAKE_IT_READ(stepid number , wrkid number) is begin update
+		 * wrk_application set f_read=1 where id=wrkid and step_id = stepid; commit;
+		 * end;
 		 */
 		Connection connection = DataBaseConnectionClass.getConnection();
 		CallableStatement callableStatement = null;
@@ -2472,11 +2473,10 @@ public class DataAccessImpl implements DataAccess, Serializable {
 
 	/*
 	 * send_New_Internal_Record( ARC_REC_TITLE varchar2, ARC_APP_TYP number,
-	 * ARC_INCOME_NO varchar2, ARC_IS_IMPORTANT number, -- 1 ,0 curr_user_id
-	 * number, toid NUMBER, tocomm VARCHAR2,-- Ø§Ù„Ø´Ø±Ø­ topurp NUMBER,
-	 * WRK_COMM_IS_SECRET number, -- 1,0 CREATE_NEW_INCOME VARCHAR2, ARC_REC_ID
-	 * OUT varchar2 --to decide if procedure create new income or NO .. ('Y'
-	 * ,'N') );
+	 * ARC_INCOME_NO varchar2, ARC_IS_IMPORTANT number, -- 1 ,0 curr_user_id number,
+	 * toid NUMBER, tocomm VARCHAR2,-- Ø§Ù„Ø´Ø±Ø­ topurp NUMBER, WRK_COMM_IS_SECRET
+	 * number, -- 1,0 CREATE_NEW_INCOME VARCHAR2, ARC_REC_ID OUT varchar2 --to
+	 * decide if procedure create new income or NO .. ('Y' ,'N') );
 	 */
 	@Override
 	public String SendNewRecord(String ArcRecTitle, int ArcIsImportant, int UserId, int ToId, String ArcComment,
@@ -2590,13 +2590,13 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	/*
-	 * Add_New_income_Record (curr_user_id NUMBER, ARC_REC_TITLE VARCHAR2,
-	 * Arc_Purp NUMBER, --when sending to recpient contact Arc_Type NUMBER,
-	 * Letter_To NUMBER, -- department that will recieve this record Letter_From
-	 * NUMBER, Arc_Send_To NUMBER, -- when sending to One contant this is his
-	 * USER_ID Letter_From_No VARCHAR2, Letter_From_Date VARCHAR2,
-	 * Refrenced_Letter_No VARCHAR2, Mobile_Number VARCHAR2, tocomm VARCHAR2,
-	 * ARC_RECORD_IS_IMPORTANT NUMBER, New_ARC_RECORD_ID OUT Varchar2);
+	 * Add_New_income_Record (curr_user_id NUMBER, ARC_REC_TITLE VARCHAR2, Arc_Purp
+	 * NUMBER, --when sending to recpient contact Arc_Type NUMBER, Letter_To NUMBER,
+	 * -- department that will recieve this record Letter_From NUMBER, Arc_Send_To
+	 * NUMBER, -- when sending to One contant this is his USER_ID Letter_From_No
+	 * VARCHAR2, Letter_From_Date VARCHAR2, Refrenced_Letter_No VARCHAR2,
+	 * Mobile_Number VARCHAR2, tocomm VARCHAR2, ARC_RECORD_IS_IMPORTANT NUMBER,
+	 * New_ARC_RECORD_ID OUT Varchar2);
 	 */
 	@Override
 	public String CreateNewIncomeRecord(int UserId, String ArcTitle, int ArcPurp, int ArcTyp, int LetterTo,
@@ -2810,9 +2810,9 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 	/*
 	 * PROCEDURE PRC_CREATE_NEW_USER( pLOGIN_NAME VARCHAR2, pPASSWORD VARCHAR2,
-	 * pFNAME VARCHAR2, pLNAME VARCHAR2, pTitLE_Id NUMBER, pJOB_ID NUMBER,
-	 * pDEPT_ID NUMBER, pMGR_ID NUMBER, pWRK_ROLE_ID NUMBER, pSEC_ID NUMBER,
-	 * PMOBILE VARCHAR2, pUSER_ID OUT NUMBER )
+	 * pFNAME VARCHAR2, pLNAME VARCHAR2, pTitLE_Id NUMBER, pJOB_ID NUMBER, pDEPT_ID
+	 * NUMBER, pMGR_ID NUMBER, pWRK_ROLE_ID NUMBER, pSEC_ID NUMBER, PMOBILE
+	 * VARCHAR2, pUSER_ID OUT NUMBER )
 	 */
 
 	@Override
@@ -6397,7 +6397,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId,Integer stepId) {
+	public List<WrkCommentsClass> findCommentsByArcId(Integer arcId, Integer stepId) {
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		List<WrkCommentsClass> comments = new ArrayList<WrkCommentsClass>();
@@ -6509,7 +6509,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				store.setArticleId(rs.getInt("id"));
 				store.setArticleName(rs.getString("name"));
 				store.setArticleCode(rs.getString("code"));
-				//store.setArticleUnite(rs.getString("ITEMUNITNAME"));
+				// store.setArticleUnite(rs.getString("ITEMUNITNAME"));
 				storeRequestModelLst.add(store);
 			}
 		} catch (Exception e) {
@@ -6547,7 +6547,8 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 			callableStatement.setInt(2, strNo);
 			callableStatement.setInt(3, inventoryId);
-			//TODO AMEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRR IMPORTANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNT change null
+			// TODO AMEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRR
+			// IMPORTANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNT change null
 			callableStatement.setString(4, null);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(1);
@@ -7226,10 +7227,10 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				// arcDept.set(rs.getInt("income_no"));
 				arcDept.setAttachNb(rs.getInt("attach_nb"));
 				arcDept.setReceiverDeptId(rs.getInt("receiver_dept_id"));
-		//		arcDept.setWrkId(rs.getInt("wrk_id"));
-		//		arcDept.setStepId(rs.getInt("step_id"));
-		//		arcDept.setLetterFromNo(rs.getString("LETTER_FROM_NO"));
-		//		arcDept.setLetterFromDate(rs.getString("LETTER_FROM_DATE"));
+				// arcDept.setWrkId(rs.getInt("wrk_id"));
+				// arcDept.setStepId(rs.getInt("step_id"));
+				// arcDept.setLetterFromNo(rs.getString("LETTER_FROM_NO"));
+				// arcDept.setLetterFromDate(rs.getString("LETTER_FROM_DATE"));
 				arcDept.setReceiverDepName(rs.getString("receiver_dep_name"));
 				if (status.equals(0)) {
 					arcDept.setDonner(Utils.findCurrentUser().getUserId());
@@ -7513,7 +7514,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				memoReceipt.setStockFinEntryNo(rs.getInt("stock_fin_entry_no"));
 				memoReceipt.setStockFinEntryHdate(rs.getString("stock_fin_entry_hdate"));
 				memoReceipt.setStockBuyDate(rs.getString("stock_buy_date"));
-				//memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
+				// memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
 				memoReceipt.setRecordId(rs.getInt("recordId"));
 
 				memoReceiptList.add(memoReceipt);
@@ -7534,8 +7535,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		}
 		return memoReceiptList;
 	}
-	
-	
+
 	@Override
 	public List<ReqFinesMaster> loadAllPenalities(int notification) {
 		Connection connection = DataBaseConnectionClass.getConnection();
@@ -7550,23 +7550,30 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
 			while (rs.next()) {
-				/*PAY_LIC_BILLS.BILL_NO, REQ_FINES_MASTER.FINE_NO,
-				   REQ_FINES_MASTER.F_ID_NO, REQ_FINES_MASTER.F_TRADE_MARK_NAME,
-				   REQ_FINES_MASTER.F_LICENCE_NO, REQ_FINES_MASTER.F_LIC_END_DATE
-				  ,REQ_FINES_MASTER.F_NAME*/
+				/*
+				 * PAY_LIC_BILLS.BILL_NO, REQ_FINES_MASTER.FINE_NO, REQ_FINES_MASTER.F_ID_NO,
+				 * REQ_FINES_MASTER.F_TRADE_MARK_NAME, REQ_FINES_MASTER.F_LICENCE_NO,
+				 * REQ_FINES_MASTER.F_LIC_END_DATE ,REQ_FINES_MASTER.F_NAME
+				 */
 				ReqFinesMaster reqFinesMaster = new ReqFinesMaster();
 				reqFinesMaster.setFineNo(rs.getInt("FINE_NO"));
 				reqFinesMaster.setBillNo(rs.getInt("BILL_NO"));
 				reqFinesMaster.setfIdNo(rs.getString("F_ID_NO"));
+				reqFinesMaster.setfDeptNo(rs.getString("F_DEPT_NO"));
+				reqFinesMaster.setfSupervisorCode(rs.getString("F_SUPERVISOR_CODE"));
 				reqFinesMaster.setfFineCase((long) rs.getInt("BILL_STATUS"));
 				reqFinesMaster.setfName(rs.getString("F_NAME"));
 				reqFinesMaster.setfTradeMarkName(rs.getString("F_TRADE_MARK_NAME"));
 				reqFinesMaster.setfLicenceNo(rs.getString("F_LICENCE_NO"));
 				reqFinesMaster.setDeptName(rs.getString("DEPT_NAME"));
+
 				reqFinesList.add(reqFinesMaster);
 			}
 		} catch (Exception e) {
 			logger.error("loadAllPenalities" + e.getMessage());
+			e.printStackTrace();
+			e.getMessage();
+		
 		} finally {
 			try {
 				if (rs != null)
@@ -7582,4 +7589,33 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		return reqFinesList;
 	}
 
+	@Override
+	public List<ReqFinesDetails> getReqFinesDetails(Integer fineNo) {
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		List<ReqFinesDetails> reqFinesDetails = new ArrayList<ReqFinesDetails>();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_fines_details(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.setInt(1, fineNo);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+			while (rs.next()) {
+
+				ReqFinesDetails reqFineDetails = new ReqFinesDetails();
+				reqFineDetails.setFineNo(rs.getInt("FINE_NO"));
+				reqFineDetails.setFineCode(rs.getInt("FINE_CODE"));
+				reqFineDetails.setFineCount(rs.getInt("FINE_COUNT"));
+				reqFineDetails.setFineValue(rs.getInt("FINE_VALUE"));
+				reqFinesDetails.add(reqFineDetails);
+
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return reqFinesDetails;
+	}
 }
