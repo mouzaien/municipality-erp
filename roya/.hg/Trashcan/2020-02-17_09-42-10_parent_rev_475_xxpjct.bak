@@ -1,0 +1,21 @@
+diff --git a/WebContent/sidebar.xhtml b/WebContent/sidebar.xhtml
+--- a/WebContent/sidebar.xhtml
++++ b/WebContent/sidebar.xhtml
+@@ -249,7 +249,7 @@
+ 									</secc:authorize>
+ 								</p:submenu>
+ 							</secc:authorize>
+-							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
++							<secc:authorize ifAnyGranted="ROLE_SUPPORT, ROLE_HEALTH">
+ 								<p:submenu id="sr_fines" label="الرقابة"
+ 									icon="ui-icon ui-icon-security">
+ 
+@@ -284,7 +284,7 @@
+ 										action="new_replace_fine" icon="ui-icon ui-icon-replay" />
+ 								</p:submenu>
+ 							</secc:authorize>
+-							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
++							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVEST">
+ 								<p:submenu id="sr_investments" label="الاستثمارات"
+ 									icon="ui-icon ui-icon-landscape">
+ 									<p:menuitem id="sb_announcements" value="المزايدات"

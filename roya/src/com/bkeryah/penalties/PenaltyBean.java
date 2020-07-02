@@ -13,11 +13,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
+import org.springframework.util.CollectionUtils;
 
+import com.bkeryah.entities.LicActivityTypeRy;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.HijriCalendarUtil;
+import utilities.MsgEntry;
 import utilities.Utils;
 
 @ManagedBean
@@ -43,33 +46,14 @@ public class PenaltyBean {
 	private String licenceId;
 	private LicTrdMasterFile trdMasterFile;
 	private boolean fineForLic;
-
-	public boolean isFineForLic() {
-		return fineForLic;
-	}
-
-	public void setFineForLic(boolean fineForLic) {
-		this.fineForLic = fineForLic;
-	}
-
-	public String getLicenceId() {
-		return licenceId;
-	}
-
-	public void setLicenceId(String licenceId) {
-		this.licenceId = licenceId;
-	}
-
-	public LicTrdMasterFile getTrdMasterFile() {
-		return trdMasterFile;
-	}
-
-	public void setTrdMasterFile(LicTrdMasterFile trdMasterFile) {
-		this.trdMasterFile = trdMasterFile;
-	}
+	private boolean canSave = true;
+	private List<LicTrdMasterFile> licencesList;
+	private List<LicActivityTypeRy> activityTypes;
+	private Integer fineSetupId;
 
 	@PostConstruct
 	private void init() {
+		reqFinesMaster = new ReqFinesMaster();
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 		HttpSession httpSession = HttpRequest.getSession(false);
@@ -80,14 +64,17 @@ public class PenaltyBean {
 			trdMasterFile = dataAccessService.findLicByLicId(licenceId);
 			initReqFinesMaster();
 		}
+		activityTypes = dataAccessService.getAllLicActivityTypeList();
+		System.out.println(activityTypes.size());
 		activitiesTypes = new ArrayList<ActivityType>();
 		activitiesTypes.add(new ActivityType(0, Utils.loadMessagesFromFile("sihi")));
 		activitiesTypes.add(new ActivityType(1, Utils.loadMessagesFromFile("tijari")));
-		supervisors = dataAccessService.getAllUsers();
+		// 2 = dept id صحة البيئة
+		supervisors = dataAccessService.getAllSupervisor(2);
 		codesFines = dataAccessService.getCodesFines();
-		ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
-		codesFinesList.add(reqFinesSetup);
-			
+		// ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
+		// codesFinesList.add(reqFinesSetup);
+
 	}
 
 	public void checkLic() {
@@ -119,43 +106,60 @@ public class PenaltyBean {
 	}
 
 	public String save() {
-		try {
-			reqFinesMaster.setTotalValue(FineSum);
-			reqFinesMaster.setActivityType(activityType);
-			reqFinesMaster.setfSupervisorCode(supervisorId.toString());
-			dataAccessService.saveLicencePenalty(reqFinesMaster, reqFinesDetailsList, true);
-			codesFinesList.clear();
-			codesFinesList = new ArrayList<ReqFinesSetup>();
-			reqFinesMaster = new ReqFinesMaster();
-			ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
-			codesFinesList.add(reqFinesSetup);
-			return "";
-		} catch (Exception e) {
-			logger.error("Penalty save " + e.getMessage());
+		if (supervisorId != null && reqFinesMaster.getfIdNo() != null) {
+			try {
+				reqFinesMaster.setTotalValue(FineSum);
+				reqFinesMaster.setfSupervisorCode(supervisorId.toString());
+				reqFinesMaster.setStatus("Y");
+				setDetailsFiner();
+				calcFineSum();
+				// reqFinesMaster.setActivityType(activityType);
+				dataAccessService.saveLicencePenalty(reqFinesMaster, reqFinesDetailsList, true);
+				codesFinesList.clear();
+				codesFinesList = new ArrayList<ReqFinesSetup>();
+				reqFinesMaster = new ReqFinesMaster();
+				// ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
+				// codesFinesList.add(reqFinesSetup);
+				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+
+			} catch (Exception e) {
+				logger.error("Penalty save " + e.getMessage());
+				e.printStackTrace();
+				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			}
+		}
+		else {
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.supervisor"));
 		}
 		return "";
 	}
 
-	public void addFiner(ReqFinesSetup reqFinesSetup) {
-		reqFinesSetup.setFineCode(selectedCodeFiner.getFineCode());
-		reqFinesSetup.setId(selectedCodeFiner.getId());
-		reqFinesSetup.setFineDesc(selectedCodeFiner.getFineDesc());
-		reqFinesSetup.setVisible(false);
-		reqFinesSetup.setFineDesc(reqFinesSetup.getFineDesc());
-		ReqFinesDetails reqFinesDetails = addNewReqFinesDetails(reqFinesSetup);
+	public void addFiner() {
+		// reqFinesSetup.setFineCode(selectedCodeFiner.getFineCode());
+		// reqFinesSetup.setId(selectedCodeFiner.getId());
+		// reqFinesSetup.setFineDesc(selectedCodeFiner.getFineDesc());
+		// reqFinesSetup.setVisible(false);
+		//
+		// reqFinesSetup.setFineDesc(reqFinesSetup.getFineDesc());
+		ReqFinesDetails reqFinesDetails = addNewReqFinesDetails(selectedCodeFiner);
 		reqFinesDetailsList.add(reqFinesDetails);
-
-		ReqFinesSetup newReqFinesSetup = new ReqFinesSetup();
-		codesFinesList.add(newReqFinesSetup);
 	}
 
 	private void createtReqFinesMaster() {
 		reqFinesMaster = new ReqFinesMaster();
 		reqFinesMaster.setfIdNo(selectedPeople.getAplOwner());
-		reqFinesMaster.setfName(selectedPeople.getTrdName());
+		reqFinesMaster.setfName(selectedPeople.getLicOwnerName());
+		reqFinesMaster.setfTradeMarkName(selectedPeople.getTrdName());
+		reqFinesMaster.setfAddress(selectedPeople.getLicAdress());
+		reqFinesMaster.setfLicStartDate(selectedPeople.getLicBeginDate());
+		reqFinesMaster.setfLicEndDate(selectedPeople.getLicEndDate());
+		reqFinesMaster.setfLicenceNo(selectedPeople.getLicNo());
+		reqFinesMaster.setPhoneNumber(selectedPeople.getPhoneNumber());
 		reqFinesMaster.setFineDate(HijriCalendarUtil.findCurrentHijriDate());
 		reqFinesMaster.setfDeptNo(Utils.findCurrentUser().getDeptId().toString());
 		reqFinesMaster.setDeptName(Utils.findCurrentUser().getUserDept().getDeptName());
+		reqFinesMaster.setActivityType(selectedPeople.getActivtyType());
+		System.out.println("active type " + reqFinesMaster.getActivityType());
 		reqFinesMaster.setEntryDate(HijriCalendarUtil.findCurrentHijriDate());
 	}
 
@@ -175,9 +179,30 @@ public class PenaltyBean {
 	}
 
 	public void deleteFiner(ReqFinesSetup reqFinesSetup) {
-		codesFinesList.remove(reqFinesSetup);
-		if (codesFinesList.size() > 1)
-			calcFineSum();
+		if (codesFinesList.size() > 0) {
+			codesFinesList.remove(reqFinesSetup);
+			// System.out.println("size......."+reqFinesDetailsList.size());
+			// ReqFinesDetails reqFinesDetails =
+			// addNewReqFinesDetails(selectedCodeFiner);
+			// reqFinesDetailsList.remove(reqFinesDetails);
+			// System.out.println("removed....."+reqFinesDetailsList.size());
+		}
+		if (codesFinesList.size() < 1) {
+			canSave = true;
+		} else {
+			canSave = false;
+		}
+
+	}
+
+	public void setDetailsFiner() {
+		if (codesFinesList.size() > 0) {
+			for (ReqFinesSetup reqFinesSetup : codesFinesList) {
+				ReqFinesDetails reqFinesDetails = addNewReqFinesDetails(reqFinesSetup);
+				reqFinesDetailsList.add(reqFinesDetails);
+			}
+		}
+
 	}
 
 	public void calcFineValSum(ReqFinesSetup reqFinesSetup) {
@@ -187,6 +212,29 @@ public class PenaltyBean {
 			reqFinesSetup.setFineValSum(fineValue * fineNbr);
 			calcFineSum();
 		}
+	}
+
+	public void calcFineValuesSum() {
+		Integer fineValue = selectedCodeFiner.getFineValue();
+		Integer fineNbr = selectedCodeFiner.getFineNbr();
+		if (fineValue != null && fineNbr != null && fineValue > 0 && fineNbr > 0) {
+			selectedCodeFiner.setFineValSum(fineValue * fineNbr);
+			System.out.println(selectedCodeFiner.getFineValSum());
+			// calcFineSum();
+		}
+	}
+
+	public String addCodeFiner() {
+
+		calcFineValuesSum();
+		codesFinesList.add(selectedCodeFiner);
+
+		if (codesFinesList.size() > 0) {
+			canSave = false;
+		}
+		// addFiner();
+		selectedCodeFiner = new ReqFinesSetup();
+		return "";
 	}
 
 	public String returnToLicence() {
@@ -201,6 +249,14 @@ public class PenaltyBean {
 		for (ReqFinesSetup finer : codesFinesList) {
 			FineSum += finer.getFineValSum();
 		}
+	}
+
+	public void onRowSelect(LicTrdMasterFile people) {
+		selectedPeople = people;
+		if (selectedPeople != null)
+			createtReqFinesMaster();
+		System.out.println(">>>>>>" + selectedPeople.getAplOwner());
+
 	}
 
 	public List<ActivityType> getActivitiesTypes() {
@@ -307,8 +363,73 @@ public class PenaltyBean {
 		this.arcPeople = arcPeople;
 	}
 
-	public void onRowSelect(SelectEvent event) {
-		selectedPeople = (LicTrdMasterFile) event.getObject();
+	public void onRowSelectCancel(SelectEvent event) {
+		// selectedPeople = (LicTrdMasterFile) event.getObject();
 	}
 
+	public boolean isFineForLic() {
+		return fineForLic;
+	}
+
+	public void setFineForLic(boolean fineForLic) {
+		this.fineForLic = fineForLic;
+	}
+
+	public String getLicenceId() {
+		return licenceId;
+	}
+
+	public void setLicenceId(String licenceId) {
+		this.licenceId = licenceId;
+	}
+
+	public LicTrdMasterFile getTrdMasterFile() {
+		return trdMasterFile;
+	}
+
+	public void setTrdMasterFile(LicTrdMasterFile trdMasterFile) {
+		this.trdMasterFile = trdMasterFile;
+	}
+
+	public List<LicTrdMasterFile> getLicencesList() {
+		if (CollectionUtils.isEmpty(licencesList))
+			licencesList = dataAccessService.getAllLicencesList();
+		return licencesList;
+	}
+
+	public void setLicencesList(List<LicTrdMasterFile> licencesList) {
+		this.licencesList = licencesList;
+	}
+
+	public List<LicActivityTypeRy> getActivityTypes() {
+		return activityTypes;
+	}
+
+	public void setActivityTypes(List<LicActivityTypeRy> activityTypes) {
+		this.activityTypes = activityTypes;
+	}
+
+	public List<ReqFinesDetails> getReqFinesDetailsList() {
+		return reqFinesDetailsList;
+	}
+
+	public void setReqFinesDetailsList(List<ReqFinesDetails> reqFinesDetailsList) {
+		this.reqFinesDetailsList = reqFinesDetailsList;
+	}
+
+	public Integer getFineSetupId() {
+		return fineSetupId;
+	}
+
+	public void setFineSetupId(Integer fineSetupId) {
+		this.fineSetupId = fineSetupId;
+	}
+
+	public boolean isCanSave() {
+		return canSave;
+	}
+
+	public void setCanSave(boolean canSave) {
+		this.canSave = canSave;
+	}
 }

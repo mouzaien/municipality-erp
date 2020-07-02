@@ -72,7 +72,6 @@ import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.bean.UserStatisticsClass;
 import com.bkeryah.bean.WrkArchiveRecipentClass;
 import com.bkeryah.bean.WrkChargingClass;
-import com.bkeryah.bean.WrkCommentTypeClass;
 import com.bkeryah.bean.WrkCommentsClass;
 import com.bkeryah.bean.WrkDeptClass;
 import com.bkeryah.bean.WrkJobClass;
@@ -91,6 +90,7 @@ import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsSalaryScaleId;
 import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
 import com.bkeryah.fuel.entities.Car;
@@ -102,6 +102,7 @@ import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.ReqFinesMaster;
+import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
 
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
@@ -7519,7 +7520,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				memoReceipt.setStockFinEntryNo(rs.getInt("stock_fin_entry_no"));
 				memoReceipt.setStockFinEntryHdate(rs.getString("stock_fin_entry_hdate"));
 				memoReceipt.setStockBuyDate(rs.getString("stock_buy_date"));
-				// memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
+				memoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
 				memoReceipt.setRecordId(rs.getInt("recordId"));
 
 				memoReceiptList.add(memoReceipt);
@@ -7765,5 +7766,94 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			}
 		}
 		return articlesList;
+	}
+
+	@Override
+	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo) {
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		List<StoreTemporeryReceiptMaster> tempReceiptList = new ArrayList<StoreTemporeryReceiptMaster>();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_tempReceipts(?,?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+			callableStatement.setString(1, beginDate);
+			callableStatement.setString(2, finishDate);
+			callableStatement.setInt(3, strNo);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(4);
+			while (rs.next()) {
+				StoreTemporeryReceiptMaster tempoReceipt = new StoreTemporeryReceiptMaster();
+				tempoReceipt.setId(rs.getInt("id"));
+				tempoReceipt.setSpecialNumber(rs.getInt("SPECIAL_NUM"));
+				tempoReceipt.setDocumentNumber(rs.getInt("DOCUMENT_NUMBER"));
+				tempoReceipt.setReceiptHDate(rs.getString("RECEIPT_H_DATE"));
+				tempoReceipt.setDocumentHDate(rs.getString("DOCUMENT_H_DATE"));
+				tempoReceipt.setDocument(rs.getInt("DOCUMENT_TYPE"));
+				tempoReceipt.setSupplierName(rs.getString("RELATEDENTITYNAME"));
+				tempoReceipt.setRecordId(rs.getInt("recordId"));
+
+				tempReceiptList.add(tempoReceipt);
+			}
+		} catch (Exception e) {
+			logger.error("searchTempReceipts" + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return tempReceiptList;
+	}
+
+	@Override
+	public List<StoreTemporeryReceiptDetailsModel> getTempReceiptDetailsList(Integer temp_receipt_id) {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		StoreTemporeryReceiptDetailsModel tempReceiptModel = new StoreTemporeryReceiptDetailsModel();
+		List<StoreTemporeryReceiptDetailsModel> tempReceiptModelList = new ArrayList<StoreTemporeryReceiptDetailsModel>();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_tempReceipt_details(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.setInt(1, temp_receipt_id);
+			callableStatement.executeUpdate();
+			rs = (ResultSet) callableStatement.getObject(2);
+		 	while (rs.next()) {
+				tempReceiptModel = new StoreTemporeryReceiptDetailsModel();
+				tempReceiptModel.setArticleId(rs.getInt("ARTICLE_ID"));
+				tempReceiptModel.setQty(rs.getInt("QTY"));
+				tempReceiptModel.setNotes(rs.getString("NOTES"));
+				tempReceiptModel.setUnit(rs.getString("ARTICLE_UNIT"));
+				tempReceiptModel.setArticleStatus(rs.getInt("ARTICLE_STATUS"));
+				tempReceiptModel.setArticleName(rs.getString("ARTICLE_NAME"));
+				tempReceiptModel.setArticleUnit(rs.getString("ARTICLE_UNIT"));
+				tempReceiptModel.setSupplierName(rs.getString("SUPPLIER_NAME"));
+				tempReceiptModelList.add(tempReceiptModel);
+
+			} 
+		} catch (Exception e) {
+			logger.error("getTempReceiptDetailsList " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return tempReceiptModelList;
 	}
 }

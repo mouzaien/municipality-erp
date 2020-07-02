@@ -14,6 +14,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "PAY_BILL_DETAILS")
 public class PayBillDetails implements Serializable {
@@ -24,8 +26,8 @@ public class PayBillDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//PAY_bill_details_seq.nextval
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G1")
-	@SequenceGenerator(name = "G1", sequenceName = "PAY_bill_details_seq" ,allocationSize=1)
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
 	@Column(name = "BILL_NO")

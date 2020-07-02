@@ -1,7 +1,9 @@
 package com.bkeryah.penalties;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,6 +19,7 @@ import org.primefaces.event.SelectEvent;
 
 import com.bkeryah.entities.ArcPeopleModel;
 import com.bkeryah.entities.CodesFines;
+import com.bkeryah.entities.PayMaster;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
@@ -31,30 +34,59 @@ public class PenalitySetupBean {
 	private List<ReqFinesSetup> codesFines;
 	private List<ReqFinesSetup> codesFineSetup;
 	private List<ReqFinesSetup> codesFinesList = new ArrayList<ReqFinesSetup>();
+	private List<PayMaster> itemsList = new ArrayList<PayMaster>();;
+	private ReqFinesSetup finesetup = new ReqFinesSetup();
 
 	@PostConstruct
 	private void init() {
 		codesFines = dataAccessService.getCodesFines();
 		ReqFinesSetup CodesFiner = new ReqFinesSetup();
 		codesFinesList.add(CodesFiner);
+		itemsList = dataAccessService.loadAllPayMasters();
+		
 	}
 
-	public void addRowPenality(ActionEvent actionEvent) {
-		ReqFinesSetup codesFine = new ReqFinesSetup();
-		codesFines.add(codesFine);
+	public String printPenalityReport() {
+		try {
+			String reportName = "/reports/penalityList.jasper";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+	public void addPenality() {
+		try {
+			dataAccessService.save(finesetup);
+			codesFines = dataAccessService.getCodesFines();
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+
+		}
 	}
 
 	public void onRowEdit(RowEditEvent event) {
-		ReqFinesSetup code = new ReqFinesSetup();
-		code = ((ReqFinesSetup) event.getObject());
-		dataAccessService.save(code);
-		MsgEntry.addInfoMessage(MsgEntry.SUCCESS_SAVE);
+		try {
+			ReqFinesSetup code = new ReqFinesSetup();
+			code = ((ReqFinesSetup) event.getObject());
+			dataAccessService.updateObject(code);
+			codesFines = dataAccessService.getCodesFines();
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+			Utils.updateUIComponent("includeform:fines");
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+
+		}
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		dataAccessService.deleteObject(event.getObject());
-		codesFines.remove(event.getObject());
-		MsgEntry.addInfoMessage(MsgEntry.SUCCESS_DELETE);
+		MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("cancel"));
 	}
 
 	public IDataAccessService getDataAccessService() {
@@ -87,5 +119,21 @@ public class PenalitySetupBean {
 
 	public void setCodesFines(List<ReqFinesSetup> codesFines) {
 		this.codesFines = codesFines;
+	}
+
+	public ReqFinesSetup getFinesetup() {
+		return finesetup;
+	}
+
+	public void setFinesetup(ReqFinesSetup finesetup) {
+		this.finesetup = finesetup;
+	}
+
+	public List<PayMaster> getItemsList() {
+		return itemsList;
+	}
+
+	public void setItemsList(List<PayMaster> itemsList) {
+		this.itemsList = itemsList;
 	}
 }

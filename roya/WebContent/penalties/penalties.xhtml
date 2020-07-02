@@ -19,7 +19,7 @@
 				<div class="image-box-footer">
 					<p:commandButton value="#{msg['add']}" immediate="true"
 						onclick="PF('print-barcode-dlg').show()"
-						icon="ui-icon ui-icon-add" styleClass=" orange-btn">
+						icon="ui-icon ui-icon-add" styleClass="green-btn">
 					</p:commandButton>
 					<br /> <br />
 				</div>
@@ -49,26 +49,26 @@
 							<br />
 						</f:facet>
 						<p:ajax event="rowEdit" listener="#{penaltiesBean.onRowEdit}" />
-						<p:ajax event="rowEditCancel"
+						<p:ajax event="rowEditCancel" 
 							listener="#{penaltiesBean.onRowCancel}" />
 						<p:column style="text-align: center;" headerText="رقم " width="3%">
                                    #{rowOutIndex +1}
                                 </p:column>
 						<p:column style="white-space: nowrap;"
 							headerText="#{msg['national.id']}"
-							filterBy="#{wrkFinerItem.fnIdNoStr}" filterMatchMode="contains"
-							width="20%">
+							filterBy="#{wrkFinerItem.fnIdNo}" filterMatchMode="contains"
+							width="15%">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{wrkFinerItem.fnIdNo}" />
 								</f:facet>
 								<f:facet name="input">
 									<p:inputText value="#{wrkFinerItem.fnIdNo}" style="width:100%"
-										label="code" />
+										 />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column width="58%" style="text-align:right"
+						<p:column width="20%" style="text-align:right"
 							headerText="#{msg['name']}" filterBy="#{wrkFinerItem.fnIdName}"
 							filterMatchMode="contains">
 							<p:cellEditor>
@@ -77,7 +77,25 @@
 								</f:facet>
 								<f:facet name="input">
 									<p:inputText value="#{wrkFinerItem.fnIdName}"
-										style="width:100%" label="code" />
+										style="width:100%"  />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="رقم الجوال"
+							style="white-space: nowrap;text-align: center;" width="10%"
+							filterBy="#{wrkFinerItem.fnIdPhone}" filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{wrkFinerItem.fnIdPhone}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" style="width:100%"
+										requiredMessage="رقم الجوال مطلوب"
+										validator="utilities.PhoneNumberValidator"
+										value="#{wrkFinerItem.fnIdPhone}">
+									</p:inputText>
+
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -90,7 +108,7 @@
 								</f:facet>
 								<f:facet name="input">
 									<p:inputText value="#{wrkFinerItem.fnCode}" style="width:100%"
-										label="code" />
+										 />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -107,8 +125,12 @@
 									<h:outputText value="#{wrkFinerItem.fnDate}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{wrkFinerItem.fnDate}" style="width:100%"
-										label="code" />
+									<p:inputText id="hiri1" value="#{wrkFinerItem.fnDate}"
+										onfocus="loadCalendar();" required="true"
+										requiredMessage="يرجى اختيار تاريخ"
+										styleClass="form-control form-controlCal">
+									</p:inputText>
+
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -121,18 +143,26 @@
 								</f:facet>
 								<f:facet name="input">
 									<p:inputText value="#{wrkFinerItem.amount}" style="width:100%"
-										label="code" />
+									 />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="الحالة"
 							style="white-space: nowrap;text-align: center;" width="10%"
 							filterBy="#{wrkFinerItem.billSatatus}" filterMatchMode="contains">
-							<p:selectOneMenu id="typ" style="width:100%"
-								value="#{wrkFinerItem.billSatatus}" var="d">
-								<f:selectItem itemLabel="مسددة" itemValue="1" />
-								<f:selectItem itemLabel="غير مسددة" itemValue="0" />
-							</p:selectOneMenu>
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText
+										value="#{wrkFinerItem.billSatatus == 1 ? 'مسددة':'غير مسددة'}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu id="typ" style="width:100%"
+										value="#{wrkFinerItem.billSatatus}" var="d">
+										<f:selectItem itemLabel="مسددة" itemValue="1" />
+										<f:selectItem itemLabel="غير مسددة" itemValue="0" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
 						</p:column>
 						<p:column style="width:5%" headerText="تعديل">
 							<p:rowEditor />
@@ -140,7 +170,8 @@
 						<p:column headerText="إرسال"
 							style="white-space: nowrap;text-align: center;" width="10%">
 							<p:commandButton icon="ui-icon ui-icon-assignment-return"
-								action="#{penaltiesBean.addpenalty}" value="الأمانة"></p:commandButton>
+								immediate="true" value="الأمانة"></p:commandButton>
+							<!-- 								 action="#{penaltiesBean.addpenalty}" -->
 
 						</p:column>
 					</p:dataTable>
@@ -149,88 +180,151 @@
 
 
 				<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
-					width="60%" hideEffect="fade" showEffect="explode" dir="rtl"
-					modal="true" resizable="false" header="إظافة مخالفة">
-					<br></br>
-					<br></br>
+					width="50%" hideEffect="fade" showEffect="explode" dir="rtl"
+					modal="true" resizable="false">
+					<h:panelGroup>
+						<p:fieldset width="100%" legend="بيانات المخالفة">
+							<!-- 							<div class="ui-g"> -->
+							<!-- 								<div class="ui-g-1"> -->
+							<!-- 									<h:outputLabel value="هجري" /> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="ui-g-2"> -->
+							<!-- 									<p:selectBooleanCheckbox value="#{recordBean.higriMode}"> -->
+							<!-- 										<p:ajax update="pDates1" process="@this"></p:ajax> -->
+							<!-- 									</p:selectBooleanCheckbox> -->
+							<!-- 								</div> -->
+							<!-- 							</div> -->
+							<div class="ui-g" dir="rtl">
+								<div class="ui-g-2">
+									<h:outputLabel value="تاريخ المخالفة" />
+								</div>
+								<div class="ui-g-3">
+									<h:panelGroup id="pDates1" style="width: 30%">
+										<p:inputText id="hiri1"
+											value="#{penaltiesBean.wrkFiner.fnDate}"
+											onfocus="loadCalendar();" required="true"
+											requiredMessage="يرجى اختيار تاريخ"
+											styleClass="form-control form-controlCal">
+										</p:inputText>
+										<!-- 										<p:calendar id="gric1" value="#{recordBean.recGDate}" -->
+										<!-- 											pattern="dd/MM/yyyy" rendered="#{not recordBean.higriMode}"> -->
+										<!-- 										</p:calendar> -->
+									</h:panelGroup>
 
-					<h:panelGroup styleClass="md-inputfield">
-						<div class="ui-g" dir="rtl">
-							<div class="ui-g-12 ui-md-1">
-								<p:inputText id="fnIdNo1" maxlength="10" maxValue="9999999999"
-									dir="rtl" required="true" requiredMessage="رقم المخالف ضروري"
-									minValue="1" style="width:100%"
-									value="#{penaltiesBean.wrkFiner.fnIdNo}">
-									<f:convertNumber type="number"></f:convertNumber>
-								</p:inputText>
-								<label>رقم المخالف</label>
-							</div>
-							<div class="ui-g-12 ui-md-3">
-								<label style="float: right">إسم المخالف</label>
-								<p:inputText id="fnName1" required="true" style="width:100%"
-									value="#{penaltiesBean.wrkFiner.fnIdName}"
-									requiredMessage="إسم المخالف ضروري" />
+									<!-- 									<p:inputText required="true" style="width:100%" maxlength="8" -->
+									<!-- 										requiredMessage="مطلوب تاريخ المخالفة" -->
+									<!-- 										value="#{penaltiesBean.wrkFiner.fnDate}"> -->
+									<!-- 										<f:convertNumber type="number"></f:convertNumber> -->
+									<!-- 									</p:inputText> -->
+								</div>
+
+								<div class="ui-g-2">
+									<h:outputLabel value="رقم السجل" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText id="fnIdNo1" maxlength="10" maxValue="9999999999"
+										dir="rtl" required="true" requiredMessage="رقم السجل مطلوب"
+										validatorMessage="رقم السجل ارقام" minValue="1"
+										style="width:100%" value="#{penaltiesBean.wrkFiner.fnIdNo}">
+										<f:convertNumber type="number"></f:convertNumber>
+									</p:inputText>
+								</div>
 
 							</div>
-						</div>
-					</h:panelGroup>
-					<br></br>
-					<h:panelGroup styleClass="md-inputfield">
-						<div class="ui-g" dir="rtl">
-							<div class="ui-g-12 ui-md-1">
-								<p:inputText maxlength="10" maxValue="9999999999" dir="rtl"
-									required="true" requiredMessage="رقم المخالفة ضروري"
-									value="#{penaltiesBean.wrkFiner.fnCode}" minValue="1"
-									style="width:100%">
-									<f:convertNumber type="number"></f:convertNumber>
-								</p:inputText>
-								<label>رقم المخالفة</label>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="إسم المخالف" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText id="fnName1" required="true" style="width:100%"
+										value="#{penaltiesBean.wrkFiner.fnIdName}"
+										requiredMessage="إسم المخالف مطلوب" />
+
+								</div>
+								<div class="ui-g-2">
+									<h:outputLabel value="رقم المخالفة" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText maxlength="10" maxValue="9999999999"
+										required="true" requiredMessage="رقم المخالفة مطلوب"
+										value="#{penaltiesBean.wrkFiner.fnCode}" minValue="1"
+										style="width:100%">
+										<f:convertNumber type="number"></f:convertNumber>
+									</p:inputText>
+								</div>
+
+
 							</div>
-							<div class="ui-g-12 ui-md-1">
-								<p:inputText required="true" style="width:100%" maxlength="8"
-									requiredMessage="تاريخ المخالفة"
-									value="#{penaltiesBean.wrkFiner.fnDate}">
-									<f:convertNumber type="number"></f:convertNumber>
-								</p:inputText>
-								<label style="float: right">تاريخ المخالفة</label>
+
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="شرح المخالفة" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText required="true" style="width:100%"
+										value="#{penaltiesBean.wrkFiner.notes}"
+										requiredMessage="شرح المخالفة" />
+								</div>
+
+								<div class="ui-g-2">
+									<h:outputLabel value="رقم الفاتورة" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText maxlength="10" maxValue="9999999999" dir="rtl"
+										required="true" requiredMessage="رقم المخالفة مطلوب"
+										value="#{penaltiesBean.wrkFiner.fnBillNo}" minValue="1"
+										style="width:100%">
+										<f:convertNumber type="number"></f:convertNumber>
+									</p:inputText>
+								</div>
 							</div>
-							<div class="ui-g-12 ui-md-10">
-								<p:inputText required="true" style="width:100%"
-									value="#{penaltiesBean.wrkFiner.notes}"
-									requiredMessage="تاريخ المخالفة" />
-								<label style="float: right">شرح المخالفة</label>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="قيمة الفاتورة" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText required="true" style="width:100%"
+										requiredMessage="قيمة الفاتورة مطلوب"
+										value="#{penaltiesBean.wrkFiner.amount}">
+										<f:convertNumber type="number"></f:convertNumber>
+									</p:inputText>
+								</div>
+								<div class="ui-g-2">
+									<h:outputLabel value="رقم الجوال" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputText required="true" style="width:100%"
+										requiredMessage="رقم الجوال مطلوب"
+										validator="utilities.PhoneNumberValidator"
+										value="#{penaltiesBean.wrkFiner.fnIdPhone}">
+										<f:convertNumber type="number"></f:convertNumber>
+									</p:inputText>
+								</div>
 							</div>
-						</div>
-					</h:panelGroup>
-					<h:panelGroup styleClass="md-inputfield">
-						<div class="ui-g" dir="rtl">
-							<div class="ui-g-12 ui-md-1">
-								<p:inputText maxlength="10" maxValue="9999999999" dir="rtl"
-									required="true" requiredMessage="رقم المخالفة ضروري"
-									value="#{penaltiesBean.wrkFiner.fnBillNo}" minValue="1"
-									style="width:100%">
-									<f:convertNumber type="number"></f:convertNumber>
-								</p:inputText>
-								<label>رقم الفاتورة</label>
+							<div class="ui-g">
+								<div class="ui-g-2">
+									<h:outputLabel value="حالة المخالفة" />
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu id="typ" required="true" style="width:100%"
+										requiredMessage="حالة المخالفة مطلوب"
+										value="#{penaltiesBean.wrkFiner.billSatatus}" var="d">
+										<f:selectItem itemLabel="مسددة" itemValue="1" />
+										<f:selectItem itemLabel="غير مسددة" itemValue="0" />
+									</p:selectOneMenu>
+								</div>
 							</div>
-							<div class="ui-g-12 ui-md-1">
-								<p:inputText required="true" style="width:100%"
-									requiredMessage="قيمة الفاتورة"
-									value="#{penaltiesBean.wrkFiner.amount}">
-									<f:convertNumber type="number"></f:convertNumber>
-								</p:inputText>
-								<label style="float: right">قيمة الفاتورة</label>
-							</div>
-						</div>
+						</p:fieldset>
 					</h:panelGroup>
 
 					<div style="float: left;">
 						<p:commandButton value="#{msg['add']}" process="confirmSigndialog"
-							actionListener="#{penaltiesBean.addpenalty}"
+							action="#{penaltiesBean.addpenalty}"
 							update="confirmSigndialog, finesTab">
 						</p:commandButton>
+						<!-- 						actionListener="#{penaltiesBean.addpenalty}" -->
 						<p:spacer width="10" height="10"></p:spacer>
-						<p:commandButton value="#{msg['close']}" immediate="true"
+						<p:commandButton value="رجوع" immediate="true"
 							icon="ui-icon ui-icon-keyboard-arrow-left"
 							styleClass=" orange-btn" onclick="PF('print-barcode-dlg').hide()">
 						</p:commandButton>

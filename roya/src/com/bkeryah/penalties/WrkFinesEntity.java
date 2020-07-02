@@ -17,25 +17,37 @@ public class WrkFinesEntity {
 	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
+	
 	@Column(name = "FN_ID_NO")
-	private Double fnIdNo;
+	private Long fnIdNo;
+	
 	@Column(name = "FN_BILL_NUMBER")
-	private Double fnBillNo;
+	private Long fnBillNo;
+	
 	@Column(name = "FN_CODE")
 	private String fnCode;
+	
 	@Column(name = "FN_ID_NAME")
 	private String fnIdName;
+	
 	@Column(name = "AMOUNT")
 	private String amount;
+	
 	@Column(name = "NOTES")
 	private String notes;
+	
 	@Column(name = "FN_DATE")
-	private Integer fnDate;
+	private String fnDate;
+	
 	@Column(name = "BILL_STATUS")
 	private Integer billSatatus;
+	
 	@Column(name = "FN_SENT_STATUS")
 	private Integer fnSentStatus;
 
+	@Column(name = "FN_ID_PHONE")
+	private String fnIdPhone;
+	
 	@Transient
 	private String fnBillNoStr;
 	@Transient
@@ -49,11 +61,11 @@ public class WrkFinesEntity {
 		this.id = id;
 	}
 
-	public Double getFnIdNo() {
+	public Long getFnIdNo() {
 		return fnIdNo;
 	}
 
-	public void setFnIdNo(Double fnIdNo) {
+	public void setFnIdNo(Long fnIdNo) {
 		this.fnIdNo = fnIdNo;
 	}
 
@@ -81,11 +93,11 @@ public class WrkFinesEntity {
 		this.notes = notes;
 	}
 
-	public Integer getFnDate() {
+	public String getFnDate() {
 		return fnDate;
 	}
 
-	public void setFnDate(Integer fnDate) {
+	public void setFnDate(String fnDate) {
 		this.fnDate = fnDate;
 	}
 
@@ -113,11 +125,11 @@ public class WrkFinesEntity {
 		this.fnIdName = fnIdName;
 	}
 
-	public Double getFnBillNo() {
+	public Long getFnBillNo() {
 		return fnBillNo;
 	}
 
-	public void setFnBillNo(Double fnBillNo) {
+	public void setFnBillNo(Long fnBillNo) {
 		this.fnBillNo = fnBillNo;
 	}
 
@@ -127,6 +139,14 @@ public class WrkFinesEntity {
 
 	public String getFnIdNoStr() {
 		return fnIdNo.toString();
+	}
+
+	public String getFnIdPhone() {
+		return fnIdPhone;
+	}
+
+	public void setFnIdPhone(String fnIdPhone) {
+		this.fnIdPhone = fnIdPhone;
 	}
 
 }

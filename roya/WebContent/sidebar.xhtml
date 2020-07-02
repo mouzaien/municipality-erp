@@ -36,18 +36,21 @@
 
 							<p:submenu id="sr_Transactions" label="#{msg['transactions']}"
 								icon="ui-icon ui-icon-create">
+								
 								<p:menuitem id="menu1" value="#{msg['menu.letter']}"
 									icon="fa fa-fw fa-edit" action="PersonalComment"
 									rendered="#{loginBean.currentUser.mgrId != null}" />
-								<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+									
+									<p:menuitem id="menu3" value="#{msg['menu.memo']}"
+									action="internalMemo" icon="fa fa-fw fa-file-text-o" />
+									
+								<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 									<p:menuitem id="menu2" value="#{msg['menu.personnel.letter']}"
 										icon="fa fa-fw fa-file-text"
 										action="#{mainManagedBean.goToCreatComment}" />
 								</secc:authorize>
-								<p:menuitem id="menu3" value="#{msg['menu.memo']}"
-									action="internalMemo" icon="fa fa-fw fa-file-text-o" />
 								<secc:authorize ifNotGranted="ROLE_PRESIDENT">
-									<secc:authorize ifAnyGranted="ROLE_TELECOM">
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 										<p:menuitem id="menu4" value="#{msg['menu.arrived.mail']}"
 											action="createIncome" icon="fa fa-fw fa-paste" />
 										<p:menuitem id="sb_barcode" value="طباعة باركود "
@@ -233,8 +236,12 @@
 												action="search_exchange_request"
 												icon="fa fa-fw fa-search-plus " />
 
+											<p:menuitem id="st_sm_searchTempReceipt" value="إشعار إستلام"
+												action="searchTempReceipt" icon="fa fa-fw fa-search-plus " />
+
 											<p:menuitem id="st_sm_searchMemo" value="مذكرة استلام"
 												action="searchMemo" icon="fa fa-fw fa-search-plus " />
+
 											<p:menuitem id="st_sm_art" value="الاصناف"
 												action="search_article" icon="fa fa-fw fa-search-plus" />
 										</p:submenu>
@@ -242,22 +249,35 @@
 									</secc:authorize>
 								</p:submenu>
 							</secc:authorize>
-							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT, ROLE_HEALTH">
 								<p:submenu id="sr_fines" label="الرقابة"
 									icon="ui-icon ui-icon-security">
 
 									<!-- 	rendered="false" -->
+									<p:submenu id="sr_shop" label="المحلات"
+										icon="ui-icon ui-icon-shop">
+										<p:menuitem id="sb_add_licences" value="إضافة رخصة"
+											action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
+
+										<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
+											action="health_certificate" icon="ui-icon ui-icon-cheet" />
+
+									</p:submenu>
+									<p:menuitem id="sb_penalty_setup" value="#{msg['fines']}"
+										action="penalty_setup" icon="fa fa-fw fa-leanpub" />
+
+									<p:menuitem id="sb_penalty" value="مخالفة جديدة"
+										rendered="false" action="penalty"
+										icon="fa fa-fw fa-file-text-o" />
+
+									<p:menuitem id="sb_searchPenalities" value="عرض العقوبات"
+										action="searchPenalities" icon="fa fa-fw fa-file-text" />
 									<p:menuitem id="sb_fines" value="المخالفات" action="penalties"
 										icon="ui-icon ui-icon-pan-tool" />
 									<p:menuitem id="sb_notif_penalities" value="إشعارات المخالفات"
 										action="notif_penalities"
 										icon="ui-icon ui-icon-notifications-active" />
-									<p:menuitem id="sb_penalty" value="مخالفة جديدة"
-										action="penalty" icon="fa fa-fw fa-file-text-o" />
-									<p:menuitem id="sb_penalty_setup" value="تعريف العقوبات"
-										action="penalty_setup" icon="fa fa-fw fa-leanpub" />
-									<p:menuitem id="sb_searchPenalities" value="عرض العقوبات"
-										action="searchPenalities" icon="fa fa-fw fa-file-text" />
+
 									<!-- <p:menuitem id="sb_licence_penalities" value="بواسطة السجل" action="licence_penalities" icon="ui-icon ui-icon-"/> -->
 									<p:menuitem id="sb_new_fin_req" value="التقارير"
 										action="new_fin_req" icon="fa fa-fw fa-files-o" />
@@ -265,7 +285,7 @@
 										action="new_replace_fine" icon="ui-icon ui-icon-replay" />
 								</p:submenu>
 							</secc:authorize>
-							<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVEST">
 								<p:submenu id="sr_investments" label="الاستثمارات"
 									icon="ui-icon ui-icon-landscape">
 									<p:menuitem id="sb_announcements" value="المزايدات"
@@ -380,6 +400,9 @@
 											<p:menuitem id="EMPhis" value="تاريخ الموظفين  "
 												icon="fa fa-dashboard" action="empHistory">
 											</p:menuitem>
+											<p:menuitem id="benfit" value="المستفيدين"
+												icon="fa fa-dashboard" action="beneficiaryContent">
+											</p:menuitem>
 											<p:menuitem id="sm_employer" value="تصنيف الموظفين"
 												action="categoryEmployer"
 												icon="ui-icon ui-icon-location-city" />
@@ -406,6 +429,23 @@
 											icon="fa fa-fw fa-cogs">
 											<p:menuitem id="s_users" value="المستخدمين"
 												icon="fa fa-search" action="emps_list">
+											</p:menuitem>
+											<p:menuitem id="s_Cities" value="المدن" icon="fa fa-building"
+												action="liCities">
+											</p:menuitem>
+											<p:menuitem id="s_street" value="الشوارع" icon="fa fa-road"
+												action="licStreet">
+											</p:menuitem>
+											<p:menuitem id="s_district" value="الحي" icon="fa fa-leanpub"
+												action="licDistrict">
+											</p:menuitem>
+
+											<p:menuitem id="s_activity" value="النشاط" icon="fa fa-book"
+												action="licActivtyType">
+											</p:menuitem>
+
+											<p:menuitem id="s_Visits" value="أنواع الزيارات"
+												icon="fa fa-leaf" action="licVisitsTypesView">
 											</p:menuitem>
 											<p:menuitem id="s_referral" value="الإحالات"
 												icon="ui-icon ui-icon-people" action="referral">

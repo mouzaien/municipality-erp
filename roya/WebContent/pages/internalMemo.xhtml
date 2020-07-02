@@ -66,7 +66,7 @@ body .ui-accordion .ui-accordion-header {
 							rendered="#{!internalMemoBean.savedClicked}"
 							value="#{msg['send']}">
 						</p:commandButton>
-						<secc:authorize ifAnyGranted="ROLE_TELECOM">
+						<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 							<p:spacer width="10" height="10"></p:spacer>
 							<p:commandButton icon="ui-icon ui-icon-save"
 								styleClass="cyan-btn"
@@ -146,7 +146,7 @@ body .ui-accordion .ui-accordion-header {
 					</p:panelGrid>
 					<h:panelGroup id="attachP">
 						<div class="ui-g" dir="rtl">
-							<secc:authorize ifAnyGranted="ROLE_TELECOM">
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 								<div class="ui-grid-col-2">
 									<p:outputLabel value="#{msg['outcomiong']}"
 										style="padding-right: 27px" />
@@ -331,7 +331,7 @@ body .ui-accordion .ui-accordion-header {
 			</p:dialog>
 
 		</h:form>
-		<secc:authorize ifAnyGranted="ROLE_TELECOM">
+		<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 			<p:dialog widgetVar="add-from-dlg" id="add-from-dlg-id" modal="true"
 				width="400" height="150" header="#{msg['add.income.source']}"
 				resizable="false" closable="true">

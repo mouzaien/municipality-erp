@@ -66,6 +66,8 @@ import com.bkeryah.entities.licences.BldLicNew;
 import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
+import com.bkeryah.entities.licences.LicVisits;
+import com.bkeryah.entities.licences.LicVisitsTypes;
 import com.bkeryah.fng.entities.AutorizationSettings;
 import com.bkeryah.fng.entities.FngEmpAbsent;
 import com.bkeryah.fng.entities.FngStatusAbsence;
@@ -123,12 +125,15 @@ import com.bkeryah.model.DashbordModel;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.User;
 import com.bkeryah.model.VacationModel;
+import com.bkeryah.penalties.LicDepartment;
+import com.bkeryah.penalties.LicSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.penalties.ReqFinesSetup;
 import com.bkeryah.penalties.WrkFinesEntity;
+import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
 import com.bkeryah.support.entities.RequestStatus;
 import com.bkeryah.support.entities.RequestStep;
 import com.bkeryah.support.entities.UserRequest;
@@ -1843,8 +1848,52 @@ public interface IDataAccessService {
 
 	List<HrsSalaryScale> loadJobRanks();
 
-	 List<HrsSalaryScaleDgrs> loadJobRaNum();
-	 
-	 public List<Article> getAllArticlesByGroupId(Integer srtNo);
+	List<HrsSalaryScaleDgrs> loadJobRaNum();
 
+	public List<Article> getAllArticlesByGroupId(Integer srtNo);
+
+	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo);
+
+	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo);
+
+	public List<StoreTemporeryReceiptDetailsModel> getTempReceiptDetailsList(Integer temp_receipt_id);
+
+	public List<LicTrdMasterFile> getAllLicencesList();
+
+	List<LicVisitsTypes> findAllLicVisits();
+
+	public List<HealthLicenceJob> getAllHealthLicenceJobsList();// مهن الشهادات
+																// الصحية
+																// الصحية
+
+	public List<HealthLicenceCenter> getAllHealthLicenceCentersList();// المراكز
+																		// الصحية
+
+	public List<LicVisits> getAllVisitsByLicId(Integer licNo);
+
+	public List<User> getAllSupervisor(Integer deptId);
+
+	List<LicCities> findAllCities();
+
+	List<LicStreet> findAllStreet();
+
+	List<LicDistrict> findAllDistrict();
+
+	public LicTrdMasterFile getLicencesByLicNo(String licNo);
+
+	public List<LicActivityTypeRy> getAllLicActivityTypeList();
+
+	public Integer penaltyScenario(Integer createdForId, Integer penaltyId);
+
+	ReqFinesMaster findPenaltyByArchRecordId(Integer recordId);
+
+	void refusePenalty(WrkApplicationId wrkId, Integer recordId, ReqFinesMaster finesMaster, String wrkAppComment,
+			int applicationPurpose);
+
+	void acceptPenalty(ReqFinesMaster FinesMaster, Integer recordId, int modelType, String usercomment,
+			int applicationPurpose);
+
+	public List<LicSection> gatAllLicSectionList();
+
+	public List<LicDepartment> gatAllLicDepartmentList();
 }

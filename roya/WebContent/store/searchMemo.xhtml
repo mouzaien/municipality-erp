@@ -7,7 +7,12 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
 	<h:head>
-
+		<style>
+.bodyt {
+	height: 200px;
+	overflow: auto
+}
+</style>
 
 		<!-- 		<link rel="apple-touch-icon" href="apple-touch-icon.png"></link> -->
 
@@ -187,43 +192,44 @@
 									<hr></hr>
 
 
-
-									<table id="tabStore" class="table table-striped table-hover">
-										<thead>
-											<tr>
-
-												<th>رقم</th>
-												<th>اسم الصنف</th>
-												<!--	<th>حالة الصنف</th> -->
-												<th>العدد</th>
-												<th>الوحدة</th>
-												<th>سعر الوحدة</th>
-												<th>القيمة الكلية</th>
-												<!-- 												<th>المواصفات</th> -->
-
-											</tr>
-										</thead>
-										<tbody>
-											<ui:repeat var="det" varStatus="x"
-												value="#{stockEntryBean.memoReceipt.stockInDetailsList}">
-
-
+									<div class="bodyt" style="height: 200px; overflow: auto">
+										<table id="tabStore" class="table table-striped table-hover">
+											<thead>
 												<tr>
 
-													<td>#{x.index+1}</td>
-													<td>#{det.article.name}</td>
-													<!-- <td>#{det.articleStatusName}</td> -->
-													<td>#{det.qty}</td>
-													<td>#{det.uniteName}</td>
-													<td>#{det.price}</td>
-													<td>#{det.total}</td>
-													<!-- 													<td>#{det.notes}</td> -->
+													<th>رقم</th>
+													<th>اسم الصنف</th>
+													<!--	<th>حالة الصنف</th> -->
+													<th>العدد</th>
+													<th>الوحدة</th>
+													<th>سعر الوحدة</th>
+													<th>القيمة الكلية</th>
+													<!-- 												<th>المواصفات</th> -->
 
 												</tr>
+											</thead>
+											<tbody>
+												<ui:repeat var="det" varStatus="x"
+													value="#{stockEntryBean.memoReceipt.stockInDetailsList}">
 
-											</ui:repeat>
-										</tbody>
-									</table>
+
+													<tr>
+
+														<td>#{x.index+1}</td>
+														<td>#{det.article.name}</td>
+														<!-- <td>#{det.articleStatusName}</td> -->
+														<td>#{det.qty}</td>
+														<td>#{det.uniteName}</td>
+														<td>#{det.price}</td>
+														<td>#{det.total}</td>
+														<!-- 													<td>#{det.notes}</td> -->
+
+													</tr>
+
+												</ui:repeat>
+											</tbody>
+										</table>
+									</div>
 								</div>
 
 

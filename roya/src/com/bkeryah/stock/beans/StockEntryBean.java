@@ -90,7 +90,7 @@ public class StockEntryBean {
 	private List<Article> articles;
 
 	private Integer supplierId;
-	private Float articlesTotalPrice = 0.0f;
+	private Float articlesTotalPrice = 0.00f;
 	private MemoReceiptModel memoReceiptModel;
 	public Integer SerialNum;
 	private boolean allPrint;
@@ -117,7 +117,17 @@ public class StockEntryBean {
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
-		tempMstrList = dataAccessService.getAllStrTempRcptMstr();
+		List<WhsWarehouses> deanStores = stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId());
+		for (WhsWarehouses wrs : deanStores) {
+			System.out.println(wrs.getStoreName() + " ---- " + wrs.getStoreNumber());
+			tempMstrList.addAll(dataAccessService.getStrTempRcptMstrByStrNo(wrs.getStoreNumber()));
+
+		}
+		// tempMstrList = dataAccessService.getAllStrTempRcptMstr();
+
+		for (StoreTemporeryReceiptMaster wrs : tempMstrList) {
+			System.out.println(wrs.getDocumentNumber() + "----------" + wrs.getDocumentName());
+		}
 		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
 		prop = (SysProperties) dataAccessService.findEntityById(SysProperties.class, MyConstants.WAREHOUSE_MANAGER);
 		if (prop.getValue().equals(currentUser.getUserId().toString())) {
@@ -281,11 +291,13 @@ public class StockEntryBean {
 	public void onRowEdit(RowEditEvent event) {
 		StockInDetails selectedItem = (StockInDetails) event.getObject();
 		articlesTotalPrice += selectedItem.getTotal();
+		System.out.print("--------------" + articlesTotalPrice);
 	}
 
 	public void onRowCancel(RowEditEvent event) {
 		StockInDetails selectedItem = (StockInDetails) event.getObject();
-		articlesTotalPrice += selectedItem.getTotal();
+		articlesTotalPrice -= selectedItem.getTotal();
+		selectedItem.setPrice(0.00f);
 	}
 
 	public void loadReceiptDetailsList() {
@@ -453,7 +465,7 @@ public class StockEntryBean {
 	public void updateData() {
 		if (tempMstrid != null) {
 			selectedWareHouse = tempMstr.getStrNo();
-			notifDate = tempMstr.getDocumentHDate();
+			notifDate = tempMstr.getReceiptHDate();
 			supplierId = tempMstr.getSupplierId();
 		}
 	}

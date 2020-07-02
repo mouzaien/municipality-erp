@@ -39,12 +39,13 @@ public class PenalitiesListBean {
 	@PostConstruct
 	private void init() {
 		Integer healthCareId = dataAccessService.getPropertiesValue("HEALTH_CONTROL_HEAD");
-		if((Utils.findCurrentUser().getUserId() == healthCareId) || (Utils.findCurrentUser().getUserId() == MyConstants.SUPPORT_USER_ID))
+		if ((Utils.findCurrentUser().getUserId() == healthCareId)
+				|| (Utils.findCurrentUser().getUserId() == MyConstants.SUPPORT_USER_ID))
 			notification = true;
 		loadPenalitiesByType();
 	}
-	
-	public void loadPenalitiesByType(){
+
+	public void loadPenalitiesByType() {
 		penalitiesList = dataAccessService.loadAllPenalities(notifiPenality);
 	}
 
@@ -59,44 +60,67 @@ public class PenalitiesListBean {
 		}
 		fineNo = reqFinesMaster.getFineNo();
 	}
-	
-	public void acceptPenality(){
+
+	public void acceptPenality() {
 		dataAccessService.acceptPenalityAndBill(reqFinesMaster);
 		penalitiesList.remove(reqFinesMaster);
 	}
-	
-	public String printPenalityReport(){
-		String reportName = "/reports/penality.jasper";
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("fineNo", reqFinesMaster.getFineNo());
-		parameters.put("LOGO_DIR",
-				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
-		Utils.printPdfReport(reportName, parameters);
-		return "";
-	}
-	
-	public String printReportPenalityAction(){
-		String reportName = "/reports/penality_report.jasper";
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("fine_no", reqFinesMaster.getFineNo());
-		parameters.put("now", HijriCalendarUtil.findCurrentHijriDate());
-//		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
-//				.getRealPath("/reports/sub_penality_report.jasper"));
-		Utils.printPdfReport(reportName, parameters);
-		return "";
-	}
-	
-	public String printBillReport(){
-		String reportName = "/reports/bill.jasper";
-		PayLicBills payLicBill = dataAccessService.loadBillByLicNo(reqFinesMaster.getFineNo());
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("p1", payLicBill.getBillNumber());
-		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
-				.getRealPath("/reports/bill_detail.jasper"));
-		Utils.printPdfReport(reportName, parameters);
+
+	public String printPenalityReport() {
+		try {
+			String reportName = "/reports/penality.jasper";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("fineNo", reqFinesMaster.getFineNo());
+			parameters.put("supervisor", reqFinesMaster.getSupervisorNameView());
+			parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
+					.getRealPath(Utils.loadMessagesFromFile("report.logo")));
+			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
 		return "";
 	}
 
+	public String printReportPenalityAction() {
+		try {
+			String reportName = "/reports/penality_report.jasper";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("fine_no", reqFinesMaster.getFineNo());
+			parameters.put("now", HijriCalendarUtil.findCurrentHijriDate());
+			// parameters.put("SUBREPORT_DIR",
+			// FacesContext.getCurrentInstance().getExternalContext()
+			// .getRealPath("/reports/sub_penality_report.jasper"));
+			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public String printBillReport() {
+		try {
+			String reportName = "/reports/bill.jasper";
+			PayLicBills payLicBill = dataAccessService.loadBillByLicNo(reqFinesMaster.getFineNo());
+			System.out.println(">>>>"+reqFinesMaster.getFineNo());
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("p1", payLicBill.getBillNumber());
+			parameters.put("SUBREPORT_DIR",
+					FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/bill_detail.jasper"));
+			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public String addPenality(){
+		return "penalty";
+		
+	}
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -132,7 +156,7 @@ public class PenalitiesListBean {
 	public String getUrlBill() {
 		if (reqFinesMaster == null)
 			return "";
-//		urlBill = findUrlBill();
+		// urlBill = findUrlBill();
 		Integer countBill = dataAccessService.getCountBillByFineNo(reqFinesMaster.getFineNo());
 		if (countBill == 0) {
 			Integer billNumber = saveBill();
@@ -144,7 +168,7 @@ public class PenalitiesListBean {
 				billExpireDate = sdf.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(
 						HijriCalendarUtil.addDaysToHijriDate(payLicBill.getBillDate(), 30)));
 				if (new Date().after(billExpireDate)) {
-					urlBill=dataAccessService.printDocument("pay003", payLicBill.getBillNumber(), "billno");
+					urlBill = dataAccessService.printDocument("pay003", payLicBill.getBillNumber(), "billno");
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -152,11 +176,11 @@ public class PenalitiesListBean {
 
 		}
 		return urlBill;
-		
+
 	}
 
 	private void findUrlBill() {
-	
+
 	}
 
 	private Integer saveBill() {

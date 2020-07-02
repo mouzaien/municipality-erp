@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-07-30T09:34:44 -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penality" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -9,6 +8,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="fineNo" class="java.lang.Integer"/>
+	<parameter name="supervisor" class="java.lang.String"/>
 	<parameter name="LOGO_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
@@ -57,7 +57,7 @@ and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة البكيرية"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["المملكة العربية السعودية"+"\n"+"وزارة الشئون البلدية و القروية"+"\n"+"بلدية محافظة المذنب"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="149" height="20" uuid="85ecbd55-df0f-489c-9a9a-8ddeaf53ee19">
@@ -232,6 +232,13 @@ and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
 					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
 				</textElement>
 				<textFieldExpression><![CDATA["المراقب"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="357" y="76" width="187" height="24" uuid="9bf48716-5a1d-4fe9-b344-8bb28d262275"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{supervisor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

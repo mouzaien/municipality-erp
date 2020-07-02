@@ -221,16 +221,16 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>search_bill</from-outcome>
-			<to-view-id>/shared/search_bill.xhtml</to-view-id>
+			<from-outcome>beneficiaryContent</from-outcome>
+			<to-view-id>/shared/beneficiaryContent.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>bill</from-outcome>
-			<to-view-id>/shared/bill.xhtml</to-view-id>
+			<from-outcome>search_bill</from-outcome>
+			<to-view-id>/shared/search_bill.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
@@ -316,14 +316,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	<navigation-rule>
-		<from-view-id>*</from-view-id>
-		<navigation-case>
-			<from-outcome>bill</from-outcome>
-			<to-view-id>/shared/bill.xhtml</to-view-id>
-			<redirect></redirect>
-		</navigation-case>
-	</navigation-rule>
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -388,7 +381,7 @@
 			<to-view-id>/store/el3ohad.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
-		
+
 		<navigation-case>
 			<from-outcome>transferOwnership</from-outcome>
 			<to-view-id>/store/transferOwnership.xhtml</to-view-id>
@@ -402,6 +395,11 @@
 		<navigation-case>
 			<from-outcome>searchMemo</from-outcome>
 			<to-view-id>/store/searchMemo.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>searchTempReceipt</from-outcome>
+			<to-view-id>/store/search_temporary_receipt.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 		<navigation-case>
@@ -552,6 +550,14 @@
 		<navigation-case>
 			<from-outcome>SearchPenality</from-outcome>
 			<to-view-id>/penalties/search_licences.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>visits</from-outcome>
+			<to-view-id>/penalties/visits_for_licences.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
@@ -1253,7 +1259,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -1275,6 +1281,55 @@
 		<navigation-case>
 			<from-outcome>userSigns</from-outcome>
 			<to-view-id>/setting/userSigns.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>health_certificate</from-outcome>
+			<to-view-id>/pages/licences/health_certificate.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>licVisitsTypesView</from-outcome>
+			<to-view-id>/setting/licVisitsTypesView.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>liCities</from-outcome>
+			<to-view-id>/setting/liCities.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>licStreet</from-outcome>
+			<to-view-id>/setting/licStreet.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>licDistrict</from-outcome>
+			<to-view-id>/setting/licDistrict.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>licActivtyType</from-outcome>
+			<to-view-id>/setting/licActivtyType.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>

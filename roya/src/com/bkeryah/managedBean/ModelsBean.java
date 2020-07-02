@@ -55,6 +55,8 @@ public class ModelsBean {
 			pageName = "../store/store_temporary_receipt_view.xhtml";
 		else if (type == 252)
 			pageName = "../store/transferOwnershipView.xhtml";
+		else if (type == 253)
+			pageName = "../penalties/penaltyView.xhtml";
 	}
 
 	public String getPageName() {

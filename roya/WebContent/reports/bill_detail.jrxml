@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-02-28T13:44:08 -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bill_detail" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="46343c2d-d7fd-411a-ac24-a9fda0c1eedb">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -150,7 +149,7 @@ where   bill_no = $P{p1}]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="20" splitType="Stretch">
+		<band height="433" splitType="Stretch">
 			<textField>
 				<reportElement x="1" y="0" width="67" height="20" forecolor="#990000" uuid="f1d67214-667f-4610-8dec-0fa55c8c62ac"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

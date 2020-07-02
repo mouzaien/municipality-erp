@@ -10,6 +10,7 @@ public class StoreTemporeryReceiptDetailsModel {
 	private Integer articleStatus;
 	private String articleName;
 	private String articleUnit;
+	private String supplierName;
 
 	public Integer getId() {
 		return id;
@@ -81,5 +82,13 @@ public class StoreTemporeryReceiptDetailsModel {
 
 	public void setArticleUnit(String articleUnit) {
 		this.articleUnit = articleUnit;
+	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
 	}
 }

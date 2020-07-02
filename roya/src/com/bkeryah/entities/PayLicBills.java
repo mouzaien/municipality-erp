@@ -7,10 +7,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import utilities.Utils;
 
@@ -19,6 +22,8 @@ import utilities.Utils;
 public class PayLicBills implements Serializable {
 
 	@Id
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "BILL_NO")
 	private Integer billNumber;
 	@Column(name = "LIC_NO")
@@ -59,6 +64,10 @@ public class PayLicBills implements Serializable {
 	private String chequeDate;
 	@Column(name = "PAID_BY")
 	private String paidBy;
+	
+	@Column(name = "APL_OWNER")
+	private String aplOwner;
+	
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "payLicBill")
 	private Set<PayBillDetails> payBillDetails;
 
@@ -269,6 +278,14 @@ public class PayLicBills implements Serializable {
 
 	public void setSadadStatus(String sadadStatus) {
 		this.sadadStatus = sadadStatus;
+	}
+
+	public String getAplOwner() {
+		return aplOwner;
+	}
+
+	public void setAplOwner(String aplOwner) {
+		this.aplOwner = aplOwner;
 	}
 
 }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,6 +30,9 @@ public class StoreTemporeryReceiptDetails {
 	private Integer articleStatus;
 	@Formula("(SELECT A.NAME FROM ARTICLE A WHERE A.ID = ARTICLE_ID)")
 	private String articleName;
+
+	@Transient
+	private String articleUnit;
 
 	public Integer getId() {
 		return id;
@@ -84,5 +88,13 @@ public class StoreTemporeryReceiptDetails {
 
 	public void setArticleName(String articleName) {
 		this.articleName = articleName;
+	}
+
+	public String getArticleUnit() {
+		return articleUnit;
+	}
+
+	public void setArticleUnit(String articleUnit) {
+		this.articleUnit = articleUnit;
 	}
 }

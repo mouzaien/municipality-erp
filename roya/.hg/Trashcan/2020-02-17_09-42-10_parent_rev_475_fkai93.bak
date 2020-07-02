@@ -1,0 +1,1733 @@
+diff --git a/WebContent/reports/InventoryForm.jasper b/WebContent/reports/InventoryForm.jasper
+index 739bc83110967eaef1d71efc005d0a1140cb72b4..08205527a7473ca1227a1e7bd5c83d19f98ab9b1
+GIT binary patch
+literal 62410
+zc%1Eh349bq_J38+Ofm^WfCP|3V2lU}gdE(rOp*x<P7X5@SO^#=nNBj&=^17^kRYfi
+z*NXS9_px{&cmW=$c%Z9zAN$i?cav3jy>?x%U3JxU)m{Iux_kPXn#(}k|L0?1s;lbN
+z@w&e6RlTb2s=o6RWQl}P0nZA>k=Eife31|v4zr<PScnv}d|QBLi<gR#^<pFv|0eb@
+z$mB)?T7n&+0LNDP1fPJ0yU*~g^OXdGB_1{$@Nt0+zGjY{=SD;1WHr7H*3;SA8t4*G
+zu9TSb@ogm@Aspb_AmKncVYq_xMIvj_S%~QhqbZ4aYxYHe!TNHz7#W=GLL=)u&W6g`
+zCXch;<#0DGbJlxYwKYu*u1XiOH3tPD*ir2ZLqRTbFI;B_UlHu&1sCCjgghZ%3$Uh8
+zmk0bp`${x8(8dSDY@H8s`h-A`Uy1Spkt#0e6Dq`XRl%UZhDpMRr?aEO7w)cM*F$o4
+zC9*3~%L76?iCe<@{A}34`=hyX0ugUOfcBE|xKK97wh9uX<!C@K9AJ4ttQSZjv4lWd
+zJ8+#v0wRy)K!8RSYQs=8upcG~qPLnQ1Vho%a@M!Ad`*xb=<N=%Zj{~ZYgyA4hGy^!
+zXuKQRz9iCGqHFsSsqIThv-5tyZIIMDm4PtZLf8_}w1gQ2sHvpBQ_bMyJ3F8pTZ^Xk
+z2>fOxPHH4Et`S-Nz;1*UA_6LCOu}NNl$4b2XIp)poZu0<IaWX?CCMlzgKQaoR`3Nl
+znVo@B$P>NMiOEWl5<)q-t-)}IPpI;>2*Gf-D&f%Nfeta3hZO`gNK%YWA;5ti5x%WN
+zNjd>pIe89b6^LNy+G#+CFTl$;o187RRm?nSrCf3bFA9QO;$V%SE%R}m&}LJU!&<9m
+zl2H{!RL83<v<jjiL8`RMRh1>Ls!qux*EAp^wKkFDl$iCX>BS-%QAUKo4uUlynP5fb
+zBQqkYvn-og0^1Sdd;%$>Bv~0!m*tgnKw%bvD8Ae%d3xQH8)ioG+gh&6C*E0C2%!&~
+zp=TTlKP+{UrhFv-kx0e^F-xPNp$JBW$tm`{q#IECU2EcgH=|wbt;BB56XF7bgX4nh
+zSwGybC<KIgXICi9Mk1nyO-j;+YFaXagu+2cBm~$<wJ#)~DM>QdX_J#aBFqY%VM*Kp
+zz`+`2bO$0tU$P>EXGy{aYX-6MZV|v7g)GBWnt~KYvq(sV(X<rX-N~^Xplpkww+^Z8
+z4~lGUX%BGzFv}B38V0w;YElZQC|Q$gQiJ4xB;=7BEhg<y><EW_-J~(PHorRN>Suh{
+zn-F#(b0n~V?Gm|IZzirHaCRJmzq7)qIMH2^hA7rGL{v6&p{y{<5g8yYU2G)64P|<~
+z^-gca5~!stX)VTqM_U$YudxEyHr{%|HM#YKY-_-f`w|TfjmXjrngMcjQnHRf97rL3
+z$QKq;NnZ!)0GZCPoHV}eCKY}8n`eD|!Sh>ZFcL5bi(^l&=#GYPmIzuF+-_-#x9erQ
+zgsK3`X%v50V#OcW91O03o^p+wUB_}@da&z2MZ}T98|Yxm(V%vKC(H%-HD0hzSfLyZ
+zRAa!i5)FecLjV<RX(z^0?K(Ex3Vnwg4fXLY?ZGfHFxBpW+*=+DEowEg_$M3rCAo+G
+zNY7yE{jXD(FFFjeM$Semcjpk<k74~dB>@@k4dh0Yry+;o)?t7J*_oD1c9z8C0`87i
+z%Bp8uS?D=hVq0>QibgQV34u@ohV{L86pBEk98_2&)^u{50Fjy=6bfa1q!-UtWk9w}
+ztWg<|!<iwU0F3i;aEKf<)Cm2?)HK9d?)FrH9+^m>fvHv)pK4U|Nep|SAJpHMix=27
+zv600D5i!9KO#*S^K;#W%Ag}?F_&5g#Qw+ikDSEgYji8WZd7PPC9+&7d%L1vXj@-RS
+z642aqic|8*MP>lNLC#N@E`{3-L|l+4&?1Ki1|oI-R%b^u>-V$KM1w??4y<9l?VxsT
+z?Q*n@M1z6lCsoLC0|Jo--Y?1*D@SD#e|fMgxy9?25)vzs<dJ7~a`O(>M5S)(y46h4
+z`zPI7XGoR@n2v>gZDC)iT|kA&J9H^2VK4-(#J2?fGJ}j1Rb`O2a8NR{<$D+y4a+xB
+zlEM@$s58`utRtpSORV$_k0Ho)Oiy0NGHq64MH;!AoqADvsq0F8h>lV4(J7j$$ARP$
+z+tkHZ1)z^z-VQw#8CS&-Nu+=!&w>f>mn_GXXp|gJy1Ghn$`~E3B4Va`wj;QXB@#qZ
+zh`nMtvW0??Ky*R^GyRA(){&44S=N(@y$j(k_;rJHk%>A?j>(#bY>4{S3ndjK2HJS2
+zcD4&<?z#YIPBO$`Vo1p~&tO0jsTc_iz=W0+86Xi0+{m<s?Usep+!6G%vh-vTzbr75
+zlcQV>siX5bP#~yOWQG)$2_2y(iYS9JS}7xerU~UrQ&^0s)8vYFkCfSnJdO=hNMd_b
+zv_mh>ini1g;}nEM4s9fbiILrES*Z-wbuqbsvB4U#NWHW2sF~y&G<SA_MCs-@4IuXF
+zRB?24qKKx#Zy)i9_cMezlSKPCl#<15Y+Z`Qomb`hSyR2!?eMymIh(w-@V`zpzZ1?u
+z4HG!s;-r}<zS#UQD^oEcGZ%SQWSlH&mtM$punQQ78pv2Qkg<SHXbE=6%tV5%z?#tM
+z4+M)l`G8O?br)U0^$>Nww8R%_hte#WfBf~6!%u(3gqSKYaDqO+v=T&?<JtjS=u-S$
+zp_3O$GxPOUaK#!418xCk27xY?>mu!)&_b8yQF^Q?&7EBXJ)SgYibN+@BDX{W9=Y1|
+zud6z?mcSHdDYAi076GfKtvnz^mZAY2K_%1`+IH<+zB;r!=Z$}SJ*4r4itmWv0Iv?R
+z{7b+aq|VwzBj=BwJa^OU^FRHVLAVN8h?UGj_dQrmRnrO9L3rDpmya3n%eQulvlRz4
+zi702Yliqh6!-R7G85PbNud`l3N~~NqKwq+l&w1^-Z~hKUu8cAn!s$*2WqU&v$pLOM
+z10qY#bv}P|XrD^@aVe4vOo_WkQaYI{2D>0J>6Dv;T@~bZff!Cct1s827R?~GRnW7N
+zDMm@F22G-ot)-em3dJU_C+jm?r8p%`wh#>IQ)G}BncgKfW~vJvz<PPKmDCnRX*?W|
+z8cofMRojv9GZTuMlwwi3axxN65wb`f6`C<pj8F!&;bb*88j<>fkvp12?#abM#dUvD
+z=rq6wph`nB>NKh4?w?3IDa@xhl?1SaeZ9W9-I6S6;UdMf#Fj4gvQdH<SavdG(xym#
+zCI?m5%aWK<-Kj5mK*?TFf>S9slupTt^{<wk4O635Vr&wyT`=vDtnsOC>1mKI#yF#y
+z1$i}5WJ)RvMy@g?(TGQ4>p?R&(RCl9y6f1mMWp&1t@2Vo#0`|=%2{G9MiUCYW)E}*
+zipY}gLyi;SAJ!F$HfLo>{ewYZX3{}`I!mAp0oAU`O1D$Cb;LihhJ<~RSVQdc4s8js
+zrgnK63Zq(hst8zIhza-`QASI9C%*>l#nNQ<qFPD?$wG`gL0qX$WzkB>tFaMt#NkhT
+zSf!bI=BlyvtdCPD;?knMGb}Tjz-%)z+Ogs{e+ry(b3=4}(i}+wHMQx)vNQ{@<<jkw
+zR*+W_fJGBnKZ_mpl}**Ing)+3ZfApCH)O#AJKxE1C+9ac<<Bk1&z~%j=*jWC!eZcv
+z^R=)Jjw{G7%`dX&uUfULvvlUn(tJIwOhYTnFU+<Z{&b0_Y7$R16f{jkn`WR**U+XL
+zXfrgl8Oa!!sYyK3P|z$5ZI*#HTSJ>|pv}?H=HwSD`b-*gbtu~B7g47jZ&9Zm#9Jlj
+zTk->~bdsr>ZgB5Z4Q>)VRZQ!-X>ajy_YS&x_dU-o_O=Xmy{or&#bHY_R*83|a&r>t
+zH0jc;9V#wWoE;LiJ(ikiaMY&Y;$`J21i2ukDR*c(SrQiXy&{QPFXrfm@Clv7w@K8}
+zsESxc6>(HnrlL<ViGR|j{?MlRAlx-ShBn<w)utP=4*mVgM;AC>oBsTPw`Nq_&}VJB
+zQ*mylXp=-uq)plsT)eD2g<#aCo72&ze2O*=kQAiC+u(4gqENK-Kj~C|=~QkyI>m@O
+z#R$lrK&Ql&-oB_EL!y5jRXY-Rf~teRXd1D3-UqJ^KJkOMg}E6Oxqa5b=M?8KMF%Bn
+zA|2GG;NoTFDFmYq9!^IGPy9&-|3BBk^Z!S6@K0JD{4-StZyfpMv|j7Jum0lL^z=3R
+z-Hm<L!M`fb>l7W7sEKq?n}Um%m8TGlI{11zIyhd@L9FPM&E<7gH`KViHI8a$%JT3r
+z6!G-`s62eBm4~mW@^E<MtryMc+;;sfB?lhKePZd<KFh;@6z6k_JV?|;@}Nz@#mmZ5
+z2u6AMJRNyBi6Rd<UT00Evz|yrS`x7sTK}FOWcePS0PgNYMlZHe!9DMiBbQyg<b~W9
+z@5x!YzIoASeFYciDo$1`xH2^XxVjWvysSKhU;r1YPXpWulmXYKg6mSJk%N>G*D&5v
+zlm9f}_Q!xb3DoJ|{j5$Csp@p)zz?!M9n!MktMcEEH9cJ8>$5sdQJnD<b&{xw)JdCy
+zi<gzB5RB?HJ{@(MNKq$KO+$5ZEz+j?NqPE1dG;wFrmH-CTZO^pR1G>fsBl}s=lGQI
+zeBpshy-WA@S%a1+&dC%FlBkI^NSlI-mzAdwj2d)uIvP|!u{JC<wO*$u7FhND7#xis
+z2Uh`^$*TnEydxm*!jV`aPb_j1JxyLoUaze7kzHHIk)0v+Y$VtjZegnfkw}1VBTsD_
+zQAR6yCp(q>E8@%B<aMIf04K1<mye+&vI#7dN=ec8rPZxOjbw|D`bzSo6kcan-b7C0
+z{i)fB%axm#`Vy68Z6_P<PW~?VsU#VB5EhnOyS$V4bIMk%NJ}^n5;#^+_jAF$E3v8E
+zyC<4>9?1!`DjC7#IircAFLROlD;iPOIv=QSv$&0^Fj*nX<h0}+@HkQ>znHKvwT(xV
+z0yI02FzO7;5|!ZbpmbNv{69ZaGwJhC^r7G&P_3dARm-q7A;XOZ_*n@TS;QIr-nW#+
+zj*uMbKN$^a2HP}xcTt^-IbSpM+lhMjHmP{B8D^;XMpK7RXfG}gv{kY#feyJZ$IT&{
+z;d~6(2^#7ld}&_ul6L&6JQ*f-$BL`<F*POOOSb@VthhScP)`z`Vip>Y0ZZHU)ubR*
+zIctUPrWPO9(n)qQ`i~W37eh^_dRH`6INTKtZim-dnF4RptyDUy$Qyshh_Ng6)uh0c
+z{we4&VCh$yI#S@r_?E*l;AoGomK1oBOt53c&i-fxNi=Sd$g{`msP_WA-ecAgJP=z|
+z63zyS$)QI(rhGkStSAXr*`7LQ1u<T0YL695&**AN!VlRUdMrEe->6k2;sm6vP1=CS
+zw1s6}#Ce0}6=Zp@SSXZ=l_c5Si*9b(;Qmk7hw9eO)U71L&f&a7(~okL(<*M_kG{>n
+z5{)MNSj4>$(q{fz-sx*;myW<#iAGYX(kU222#wh05R%^cmJZ7hd|{!6T^}tXM~#y5
+z+19XZ$Qx{9g?4hT#fXl8yt^ji4T>qN!od!2FyunV0ZBR+L#8NYfKkV;W68+@p?05q
+z*o1iYNGI9XBw51(DoEXKj@{Xrr*Em$caB!+@<q47h+?BVK_OQYC2u??6l*lG?r?=%
+zO_V;dY5*&fTHPOrQb~%U6m1Vxnua8nrU6lF0oW-=0|R_ZSlnVH?erzv0=pvu+fm83
+zLQVd1locidBOOvQSd%yPEie^ornq}@a}++5txi**1$Eq|zWL3i%_i45S}BVSYYzj_
+z%p%6cNurxlxY6(c4`SluM1Ep6DQPD+*<#yi?<hxU&D38zua9Q=!7qod|2sK+BBebn
+z2C$+Msd>ZJQc>Gb<5iY$ti~lA=-5Z_?0S1l?^;kMF4vuv<ehSnjTi(ejF@X`Yn<}(
+z6X7H)bxukP#Sy?JLQ~cx-Vqrr-c0Gd1RWr>7Ft|i+fYXxU=(JvDJx$vK7~?z7dp1X
+zqVSPXQ(Ir{a7&d+4|)rf3e`ghMvCL{NZrEeP-Wrt3WS(yxDHYlPVx8sv2e<msSBr<
+zT>eb!hnN21$l&qqzk2D!@+W8ur}i`!PMK`Q!LbXcGBv@%sV)T<FDp+W7#2<$oX*1O
+z0E(;^<oDd%yS4ZH-fi|0d+$~;u%qX0d(WQUEfBo7=XMD0?>Uqo(*4nK#}9&Y`HzA7
+zNGk4EE!cTONpa5fD>@1em7KBU)js1sPH~1)aF?iwaMz~b;$`J21S9Ul)4|<F!QBnG
+z_Z;dyNB!4xf6tzt8|}SYdhYDq)^nRE0pL9+@xPwCd-kU!8=_pGA44{Zsj_iL#W%vl
+zh5qgVOWhyuG}oNlXW5vpIFl)|AyE^_hBgHkFDp+W7-eH}I<hg4A{$ltp!xfI&nMl$
+zZczR`0P<}yJpx4E4t<6wCU^JT3d!${rrFnXd(Xktq#`;}jPGx$sGv&4t#giiJNo-+
+z&Fex9^H#s*uI=k1HpZnmizredQ4>jpHU$?iD^DR9rD9PEQlTNoJ{FC|Y<7QR=A~kG
+zVBwhYSHE!PlHHST*f{Uxij(?`*-FJZm4cZ>O@x^?1s5+XPazmFJN4*e=I(FISo(`|
+zw|#nX&c0WdbX+^}q@|xMTG?mJ)+kOh1v8172s3R8E?!oiLNH?1eDpAb>hPa`jJ|Ol
+z6|<{9dwAUqw~xAN+~HT|ectF?(PzvyDo%ugnM6&5nKlI%FDp+W7%__+ea!m3Z`@AB
+z?EJr9Szr0o^7q$gL>^l;s_I~$F}qN4woovWsEIJsrr_db<tYRsW?POvX8qnbUPZ-h
+z*C9v4k#U*FI}bZPd1hzLj6P#_gW_CH!Azni!c3cji<gzB5R8~zesnQ2{TO}YZB)$m
+z4*%F*`To)m3$F5PY5a}5&o4JJ`xWO_3T6^D5oX#HT)eD2g<!<&)}xA<I1B7|%pRg*
+zcFyyi)isZ-og4h}g_5)XS^o1rWA?b>JV3!rq9(#jn}Um%m8TGlm_2axG3)p7>;<}>
+z-Ew`c=iOg6UNCyrq;s!b)Z1swUQwK9DVRyrM3`w)aPhM86oL`6XODj0*zcIVLB;IC
+z;q7H_KHa-#M%jWl9<@1^^ck~v6sMPhnM6&5nKlI%FDp+W7%}TT`g+#yHpnMb%&wSz
+z%ayyc*q1MGJ#+Q;xr@g48MA*X&W9AtBx)kev?;iFS$PV<h}nlnU(fm-v;R^tyLa_}
+z-@f#=gPUjV4PWq!!%O${6*H4L>M-BNVkT1)V5UpK#mmZ52u94lJ$jf$SE2jc1~Cny
+zuQy(^<G}L``&ZPwoAbo$?&`WeV>V22Y!u8SY9h?EDY$r9c?!XR8B~ANG3)Q~%w(rx
+zwsYm&?_PG?^UqgSZ(^T)anaL##%zM(jG<sAQ4?XNO~J*>%2NnN%*Gsj%=)`;G?h^?
+zyZ-5S-o5GLU5^iM|MP3Te=C2l&zQ|poMH-Q5;YNK+7w*8tUQHa#H{$}VaAJ1_#^a<
+z^zBZ!uXyT%lDgloSp3vm+aL2)?&vdSOB9E)-ASe<!c3cji<gzB5R90mvfU|7%=%r=
+zJaikxenay;|5<7O?(o3thhJL$r#@r0LUHOSm`T(`m}ygR@v`z1f)TU2qmNm?k7s@=
+zX155J%za?<iW4K5|9<-0EtQY;8M8AK$49|Tq9(#jn}Um%m8TGlnE8$#X22WsF6#fc
+z7fhY>XE9$lZW#OIJ*J%pA8L7O{h}}XjM<rr6Q*D$Q4?XNO~J*>%2NnN%)&<>vwrUz
+zw^1>>;2)#k{oqe$G3z(=wx9a+qDmTO_H;12Kyl8aU?x!$VWv&N#mmZ52u94#O93-6
+z2YKTphw{eB;C%5llH19vCcWqP?90~`mkP%H-j`lW#rU>=pWJ=gR`=@{Ra|h_ho3BZ
+zvCkOas5n<qFqWu^FxIBv;$`J21S7^*rGxRH1Q_@3=sg!OK9oMj{ce{YpdVz>IsB>K
+ziqUJi%IDek{jQ;X#`u24xr>6aL`{UTHU$?iD^DR9F}^Duj0aONwn-T8?zy*jD+OO=
+z<3e-vy;U*ic=B3xhV)uBlu^U3ckyJ?M=;#o8J4$JC;F^}vLQVm*)E*)<mo3wx7Q3y
+z^H^`O6zOioW4*;qEmgsAT{zeg5(0c%>|O^q8ZLjlh5lwgWhb-YTWTq7)>gQqey&Wr
+zeISQtfjvKY)4V3(j_LIG1Ym-ifO6`cb+z^0ri$7cuk&Z#sP++3VWP&a7lY(na<)ql
+zbD5rziyS5wS?8#CR6D)SdQVfeqfT4$K=rd1a0B|>!<RZdb<X-GsSpp1v4m2vRE(6^
+zi%|I+sH;I+aLONJ))zQLZNnO8h1XSEqb*eWf@5SYR}9?n(k>u<{=stoYRAu{jR<OX
+z(mj5uPn|2Lu5@@EO`h6@`U+?2_aJ_M)*~JhK<B|zQSYkrx}CaqNw^hhX}zO4B7}V{
+zf^wjOp}pmz-L(}Cw~p7rsvNk3Ek4e`({MRsy;Hi)rt*fGN_`0<)Dr4-=S0x&&g-gn
+zHmxL^Ml@yQs$~#0Tp8q9x<FTv%@lBPRCsIaS7?h!xMM^txk~#DVtw&>QSos*JRWEz
+zN2Rk~Tlg?_6N#wE?jYGu7Uu??)pcZdwntmQQ1u2Yf*eN^!2ure23<~fr7o-H12yFP
+zJ^D-;RW7$z&uhXyLp~OyN<8+2F4W6h^<>|>Yh@b6F0Ee{2n(I$yXVGYhq^pXuEjOA
+z^-k!G7Q1R3M&*qC2u-vA1XS|NX!C{rE`OX%+Fd=GOct^$wKml}qLKunqa?Hv8>=M7
+zU9DORX@F=U4G_@i1QwEjPD(&kKV~kV@k!Dxmkwl1luY@~xqv1nNT&S|d}998@30GK
+zLV|Rf&#fm;sQIis^qEN$${+NI%Ov?Oy4c4H^6@WI5~P!D4C43seIZZ=z2RyT4cEa0
+zQ;0T?*Bo7GK1myxB%sV-xP_bIZzjP)K{O%FCu-B2pbZpg19oj-f;Nz^4QLL4OJjqx
+zczlm)eKDGkX-rObGLD!x`W+4ZN7%(L?@mr;L~06H^ec4Z-yWKNOVo<Ar15DGwHWnA
+z%#=@Cfbk^+*RZ^YC1)=Q<hy{wG+!C5X!nuP5lq@f@+Brn2#t`}s7WE|^*k`j1m?O3
+zOL}O#x4xmKqM!h5!YO5iC1s`d!nSY`go=E{+VfqC?AkEd2~T3Qr<#zk{)`YPLUYCl
+zp=%D%D6(f~WtG~a=T{WjWxsfG1W79%+@NGqPfUoG8a=B3!s<Z*Bp_|n&u#_#JG&s;
+zBi&|pIJh3}%1-Xg53m?GwTl|)XYIOsc6p15k!&~Kctefu&h7eUsC0U@_ifj<LAFAa
+zTEVVu5jA6FrP?q`tk^QzMj{lkmF$vR)ZqgwK5S?nZKS3Z<!DXQ+1rDiAd}kmv#)QD
+zG?9U+$uDlgx5K3<+ef~?!?Dn2McINs+!TPB4e7(|oqSPt_VOj3CW%Rhhuoo5QIQzG
+z+)?jbQrqAGX2r@#YG=LEZr3pBs$5`~Y<2T|MjaRB7?>|^wL5Am2`9x8X+bo%6tvrY
+zyk7)Ci{%2qGT;|U;3IKO1Tkk5kTh_*D#gM<8pM%xf!ZXs*)joaP(Em1pkYxSg;frZ
+z%O>??YlUE8X?CGQJR=HvZ)Fnex%89Y{N?A5yf**w_xJy2O7kgo(CZW?>vfca37Y?U
+z-o~qn9;l4=IaX38{*$r`n}ptl7WAwDAgU!J|0B6(vCm9%Lp7LhVBI*IY8tA`!EO@E
+z{~XGfY$|mMp|U_4q(-Tj*r1Y7G*vXz*E?&-+-<Rwkj)J#WzUtfduzQQvm~=8)!fQm
+z<FxO3U`4IFp}NL+-)2&OoQm;#N_|Ya+t!T?o6_HHu1plkBrj0|Y4|kvl}}6Bd}fQ{
+zq;ly?&Sgelxy($zHD&lEJ{75#VkM4=`_5TmG(YKf`UD5)Mc2%92M;v3-Nbx9lG=Ac
+zYr_FB?h~D<kmZJM%v0g0lMc&K_vRzfxJT+SA?n$ehLp5j{PSauKW$UiUCldFTX#)*
+zID4XHSMw#*W!FnHZhZK(1Jj2&{#$lp^RA`W_w|vN`3l9kFm~BhrY2Z+)urI#W#uUZ
+z!?LUS!gQ8hhfsumYJTt5-Yq?QdhSZLUAy<3o(IXs-9(#n3u3-PbY|KD(6@zm^KSY}
+zJnNR&e~~q*5>Hq&q`JIzcAq8S4#l~NA^{RLkpyT{aPhM86oOF#Zc0Z2aw!rpI$z$0
+zeX#fZp8e83?9Dxgz&$^8sB_bSy8k}JV17tDw|tl?8rPOQ);jy1$1jXrI_9;BMW<ZU
+zXVG{<aVUE^WNISO(5B$xW#uUZqiCeEmqQVayc9))Jb>GuSTyGAMC1H)hJk(*jaRgy
+z@hV+3THczz<C{Nx^<p9O{%`#iZ}eF-dKKqoifBmGM53Wh!NtqUQwT=UcsU)>7)lY1
+z98olScl6xVv%lxI)TAN$#g_j?Y51E~8a|*(!{tX_554{8Ne?Vv^s(>nM=EFaSsFf7
+zoWD?{L82y-25ky1URIt$FiOK;(vgN?6loZjFFm-Gj`TR#yRCP#y>|!v2mj{Y?Wu`J
+z^m`NO+l)W>dlTmG>D!Jz$`9Xg@t`wj-*f&+gQwJv>nqY0OVlxc7mKt^O@Op61s5+X
+zPaznQ{w^J)hsS?Re>aQ+w8!*uppAZ+ryrrU45dTs|Mjm6UV8WN1;5@jI%kgSvOYsQ
+zN^yozpp~eJpw*_};$`J21Ov2CeHzdnM}amkUxHPm#EBGFeaR;J{oafF+19rd(!X_4
+zQ#b9iZGZKSTi19b&*>W6XNXG_X95LciJAyvZ3-@4R-QsILOdZIh)2YKk?J0>;r1jO
+zxApk$`!VocNI#lwz(tqeJbUYRAD;dFeT~0!-_~b*D-~xR1z(Ap2w!aqE?!oiLNMYx
+zFCBbG#_gR!bI(on5G}uqZGX?xE%Z$Qcb)pT*;nlwRnoKka6{hYrPSjV)53Oz;!rjL
+z$kasGYEy9Wvhoyy5!<?SupLFgc9eweX5%4xz2~Ne^cynL>5svEM7o`d^h4Kvf8ze7
+zKmXI8m(QO5MvJS@TXZbE;;<B?C2At1wJErGS$PV<h%}oH(xWLzm*%H-fMUEu6jOiZ
+z>>;bfEnc=u^Kl}qeb_867?;U6kgLejIbhG-M3C-pSvpHVOiPDOkhTsv_~jiJzc*#T
+z(35Nyd!;L`AdxkDv;s)=uEk5d8eO4D(>BF9lOjzLRWD631TG$drx1)nbfy+j0ToNf
+zBa*e+-t(d-Y#sve_rg#v2k-4UM2=S^5u_~3hPbc|>u=aDjfHLJkq_>?t+@BK^RN8m
+z*-5*clM?B_WlIvYu2h_hC}>Gk3R+qM7mvVG2u8Fn(xWvCaJWZv_GQm~J-7Dm=-nm-
+z_QFp@iOi41B{k^8cccK@#QuiurdZf6+FJhF_O++~_o9LSJW{f_;-x;pwpVd}MS)GC
+zQee{(xOfDfLNLPiD?M!Ek{ns8gJ-M)&+nnNM*J9^;k~i&Y}<9i?DOBP*nIV-vrE5g
+zuAt6+9*-SWMan7^7pR96=KuvLiAn)VOW@)WcnZM?)B!zEg=Dn}klCu$v6$hK42?R-
+z25B`4O-I@-dHn?0Q?ZaeI`-+WvNJC(yz#MD|MlfY$47nAs23FH2?|gWl>(HOz{Ml*
+z6oL_`C-guar!E#rAngOh4%+9&fn}xq8{6No{5}?zL)p_-On-Pp_Qk{g@7Gscuq5FV
+z!=$jhp*X*#z#>s8uxJTfJOWQ47-9LX9+t7{b~$^`Ug+L#lvRkRjD(IdffyAt49!Uu
+zo&H<Cx4f@ezPJ31I^no;#I0X$dFJrhzgzp}*NdKYjY$kBaSqWz1^ZfhQQfy*Ag{Ow
+z!+7^`=MBDiS|@`nRVbqs%4_$zkVV`L;|9r!2xzqQ0w!cBX(3rk#Ej%cUv^$2%4!X_
+zHLsJt(7`lTk?(toA;QH!#kac9_u}M1{9HrwFGje*=MlQOxL=I$)Vk%b0xlyYQqMmW
+z=RJ*#ikkYFmH`s+6)h`8fVBkf2NlPso69Kr?`b4ooB;qBCU0$BqDk5Dl#gXZKmDW>
+zwpKfMQmi%>a&P<*thS7Sv7Om3Pk)a2?3LgD;jI~)x4k&2s;V!YSw^1XWXE=9GBs8f
+zbObIQfu|4*h-PH#JF~prZD67uis``;j4$*18<MfHklfSza^dUNG5_$Ld*un=oUrJE
+zK0z{GaYj=hk*E|%v;;05fu|6Rkc`$tG92vX{lt_OpCfGUxl26oKN%`h`Wuy!SXB0X
+zc=a`n2MhCd|EBWI@A=y2`h?01#VMkoB2g)*XbD_A0#6|rQ7O`+GG06C@9y0O2K09E
+zyB%q0&MEzk(V|$4?tkRa<-Zvf{OIoc@)qa4>MZCJMpcTlfP#@krC_8baPbH{g<!;J
+zfgYn=dER+<@8;ffRjpC1F%^+|W$;QDkstg>HRDvOVRiFUGnZ!l=grlt@m-(SE?N2+
+z4G+6GY_CmVRIN=u#Ahs5oSHOE6geveNi88|6GfLRWfLWu%P0di8WA92b0XVhOzeU&
+zZY;=$L6CfX=|In&c6q*4V9%diRyH}`UTDuRECwr)16$L<aRvFM`9=2pRjXEYmd>16
+zYM_;AXl40@*>=O9F7Z@N;;Dv$rfF!?47BMQ+H?bLhK4pH83QvliDw!Lnx&!5GSFsg
+zXtNEpIU3rW{6Z}<ly@9*6op*#{rBJh2c<E2Ri;PDyT~7?v}9_O(INJr#K*_>rPowF
+zpYw<N-+XhxN0%&~#V>k9r@Nulx==xJ&Y*Om5|yHOS^^i3z*7iD^*KY^g(gy+v5M-L
+z6|<iD(O>cqX3&BKcD|G2PR`GtTaceWIcW|&?<XzmyOyb<7GJ|k|Hm|JhoWIWkJYeC
+z7JqTxrf*6!|8dp8Q+91}eDOmx>|({)O3^ThO3^Safs04rDFma2ZB13f#!)nk^6_f%
+zRTO(X1*2#9NxhDmdMUemZdP~qoR#Dgz~Zt}9r?<0ZP?F-<E$%LmpSXbt_p`crF}~B
+zM~V~ed@6U;$nVd@-=nlvy^CZ?5k6)Ul{;nCk1`TQGZQs{pN$0C_~NDY(W7lTLII8?
+zXI4m!K%T^#+$gUl9E?N+U$Z6wsleq%xqj(@i&)C=4qt$;q*8HLNOu!R+5C^X;u1Q;
+zh-oap^Pk6koniI9CGRtxR`~pXA36-=>G<qS#9(xS_VA^qvKe!xmQ9^iHfPSvvRO?t
+zrcR$ZXI3UMV{uD=+}-%C0gfwKS}&he6bxgqrlQ9eHPKGjz)3y`Ef-h?7xk<sj7F=a
+z#+;^u(O{J-ojHQhacY$A=nNf2chZlJqC1mDSAn!!8KY4#iIvl1sKn^WD;Nz@iQ*1q
+zT5{#A9~x0Pga;#goSRV&M#3Q4#{Bw&YG^6+XEW)lp&z<~(eW`!G$#;YG=c`8#Ne1%
+zlIExzTFIJYU@#h{X-@T&8jOat23XGDq}k1lQE{rWS4HxI++|6H)HGCs5J-M?>pezR
+zDXI<Rewd~@)z-u)N6SWKB}RFgi0GJ!QLYrLJ(2*U0dnoNqTFb2NIH4|qk%F{(o#1@
+zL#43(m;|MC?aq27t^Sk*<u=s=3n1k>dGC6YW+OR9WvRBNvh^LnREnZ(DF;0_k~Le#
+zF&eH=bz8fk@fCu03pKR0o^d&Ln6a3cc<pDuG0K=vKIpy>BU3@)GK|a>K|h;~OlY<Z
+zO-D1bz}%f{Ll%@leDiH6Q}QjeA*<wDWJ6h!uiS>RC10ft4Ul|QHe{20OKfPM<XdV3
+zD_ZoqZD^3>tFb}vF8b<hXo%#ix53~m`n)!jC;67y&``<uGaDKv`BvJ{aLKpIhK`eb
+zr`ga5$#=R9jg)-NHZ)4|`E4-R9#4F&HZ(@^wcF5G$#;egjgx$w4cR3hZ$l?YzK{*&
+zOTMrTohbPP8yYY9*4fZWlCR5#CP=;wHZ)Q4ZM2~R$#<3w6-vHyY-p0?JJ*ILqaxzl
+zVnb6T-!>a6mV7&Gs6_IeZ$qV$?*bbtlYAH1&{WBHi49FdMbHtGr*1W!9nEamOJE0O
+zZRv~%!H&QN*6#wyF)A&P9s`miu1czXp?Qgeh0C&`{L5|V3Unn#*+gu_Q7i%~Xe>!e
+zd$kQ+qofskod}7(&W5fh(N+=->Jzb|Ut#)rRRhqC=;lmx6PC`+Q!22bThMNh*)|sL
+zV?u%EJek_&Gr*9WR~Q?WiS}U84oqu&wxZiG<&--sx&ucK0kfjJu;CCZE833@hwWL>
+z-Pmv*oE6=RqlbxD(Lo%0R+|+)fMX9hv!X*-KH<ZP9>%eU=vmRDIQCdOD|!saJ7ds_
+zevRWC_GU#-;y4EzTG3ND-cfZ{^bDpQ*k?u0VdK$@R`dd<o&{$`FJamNX;$<btUI{P
+zie7;T&3KrJew&(kr;LbJ^cqMM^tx8`2as8HD72zpjF>hMh1YS+f{PWs36dNg0j=oI
+z*f3?ZqPH=!X~#Y*dKcgm2R<wMOO$PC)U%@ZvGR1+iavm*(vNpm^br)N9qg>=6G){W
+z>8$7<a0}`%XGNc3-AO5#=$}}eW2H01S<#o6dR&SX{R`6$Lb0NMW5ZD;R`e~_9|mGY
+z|H0a0H>~J;tUutwiZR6K$1SUT_$YL2!wOs!b%!#YT`jD5U}+>1XJF|xN-2%EJsez5
+zZYdL6v2;M4M3B$f$i|sC8%97p0ER>;9=fwv@jx5S!GoY`=yk+HQlZl-pww)|L!eXY
+zxw&_1@A<vk>?QWztzuvY`3||^O+G8mgAwuQeZt;~hr#%JG(LN7#m9kI>5sFv;*m;R
+z^!Q^d9t};c9+zvyW1yQ&_Z$Z+9*5D$xO@Mt_yj6h-v4dICxU=z_W)b*Nnm^@+y`pK
+z6Qhia&nT?85JVwn*O?Vhj^4AfQ^|^_$XTV`Emm9tvw(OzBCNO!OYcml{uX^Eo`$94
+z54FdnS@8^L2HMk=vNC(2-HK;ngiEb>4s>LzdUs{xsd%0Z&&LaZTXjJOquB+qC$PoF
+z6vjqb@ySp_nH4+48g8`W3J6cNVy76s$%+?4c$yWv#PH2ld<ul8TXD4*zQu}RVu5E^
+z@u^~Xw-tlsi)UJKgBZTmikCxpmKCoM!+Wf_5yG>rc(oYbYsF0vo@2#6F$_SoV1zO;
+znfe-;E$<9)exk~LG#eb;Zo>h51`N2qP>AJW;xL8M3bFSr7c-9(!P#&J=Aj1=f)df#
+z1IVRh;t-aO9xdtc3GF52fwoGvCD7sHtQe+KOj8pnO&|<)8u*~tFM2+pL-h#0mNj4n
+zd8Hn#OD8E(0npn=JIGqjPkOI2ZFnQ;y#_$<1yOPbHYA$L84-X#aYB_X9g+(@KMPhb
+zG&Dk}2r*<9Ko*(F96-EU<!hFF&6ckN<f~1-4wSDs@^z4W9V}mm$k$x?nkQd}%GY7?
+zb+~*zPQH$iuOsE_DESJuy?7lXU&qSVaq`tJUr&&)`SSHd`8r;{o+Mu<$k&PTwLrcW
+z%GXKqbuxKM0M{w<wOGEE$k$T&S|(qo%GYV))e0>QGcIsvB82aPc=Dv-?MV-yS(ETV
+zG>16zh_iq=Clkj(oC@MNiL;nEF5;X*oND6K66aLnc!<+LoaMw>L7Yb7tR_wqaeTyS
+zAr4ENHsS<`vxYbw#0e5-EpZ~m=_Jm2;&c<|OyX=J&e_D-Oq}zGvz0j8iSu*f>?F>G
+z#JTuxvSf)a1@|FnFtXli20*g_%p3qR51Mua067Lg%m)A`0(eCLTp5IB0$}q1tVIBn
+z6F^!D)LH<?3&5-ZP)-9tS|D{h0MY?vhXIK70K!Jdy%`#R8#Me*X!1*-(JzP6u0gZV
+zuh49mS<FGVp}A-ulzuOoj~+w|(4%M}dIFt{o`Kq4L=N-{Do4LZ73g(TiQW=lv%3ua
+zLV^xTWW<Ho!ILIGfPOit=mB)qq$v-eYt=i=73p=LP^W^@)Pq8JAP-EdWbpTb$}w=A
+zKWTFA4TsP!20e~$B_c36cdr_p2f^Fb-~tHVsRmDm;663zfZzc&SOLL%)SwfB_o>0f
+z5WHUvx*+(V8axGp52?Xw2tJ|)Yaw`84W0_Y$JL+*f={Ty1_&NegUccKv>IFi!DrQA
+zBLtsUgR3F<q8e<1;LB>zr?&P==r|B+gjQY!QnVVR;WR+C37vvY2bvEBP&4WRN!gD4
+zfB}nkqgHeuYC}(g<h%;hx6v8sQ?v$sk2suzI`A08<02Hq^H2y-x<)~5ri2=L2RQjZ
+znUhzEK26U3of>2z_<J?j2EiUR7=Yj()!-TkzM%#?AowRW7=++kYH%$C-%*1R2)?HV
+zJ0bX2HMkyve^Z0q5d2ULo(aK^)!-%w{#^~8t+s8sxG3KRZQBiPy8+tvOlaGU(6*bP
+zZO?+%I~%CyK-+GHwmlcx_B?3YEzq`Gp>4N8+ir(8yFS{6=pMNZH$aV_$~AsYI+Dq`
+zU#P+JAo!IU+zP?3)!=prexn9|4#Dr#;7$nsR}Ee`X)+k#YFN`BO@Lkqp^M?(E`fWy
+z6z=UZxVK-xz5NpI?Q*!cE8wnybIf4i8k@xjFc@3NomiiTJAr{S<L9_~^zCrnB0o<m
+zfFG&jQTROvzt>1755G^~_iw1$0>2^f8w0;W_|1afLijlm*$auV2YxHz=YwB6{DSaX
+z2ft15gF5g|_+19StKqi`etY1z4}OopNCRauyAd)?f!{%3b^-jJLda4Lzee~4;P)Bu
+z+Wj!jTw#6yXI1a9Jg@N|*7)xsev{<CRTF=WCjKH#{JEO=b(;7yH1VfRx(@~J$F|3D
+zCWPwp@L;&O@^CI(%JcA0xXjDL!{IVL508M$lsr5NE)(+b@o*WJhsVNYL>{)oWk?>*
+zhf8)I9uF5&9-dIW$NXI$E`ZCId3X|B{+@@6;PQSRE{4lndAJlVy}-nJk%_4gdLa)(
+zT{H9W?ECTDJiIUuFA_b#PNnFn%EL=U&(b{X7Ckk2xK8xc=V7ntS(b-?CVE!p;Z>sN
+zv^;z|c%Xtapt?0ub<d!zJlwno2@hlciU)A3O1U4m-H+ECOFm5RKyAUed<6TAkCjl{
+z*<x)$k&m@HK4i-MIC6~nU|xmVI^y!t(QkY#h1y!;^3l>?eBdYkNBEcvwXKb+CoY1}
+zCM7f$LTAR6;WPV7hS3#J8>?w6Js)g;wH3;N+9Go66de%f8ZfZo!w3cqFm)MpBMip7
+zVJNy42EW^3IJyIj+x;*k9Y8%mc^e%>@4?vk37F=eqQfveJ%+wRPr?v&1Y6OwFibs%
+zhoYBYsCpUOVTM_VehY@tA7IGp!E@0YFl@bv9q4Tsy57M{&|hKrdLP%Kk6;M<7%xMg
+z!Z7w3UX8wlq3kP|qkjX#*|!+XEF6R>ei)naI&8t+I16vW+4vlsgSWu+bvw?(JMmC_
+z5gvgr!z1zKcnrQ8kHy#Fe7p;vh;POd@g7`&Z^uP=AD)8m#%1^sJQY8NXX4-CS@>%_
+zn>ilOWX9k*j2$mvR^f%rIrwDe7Vz)Ji<rH*l6en1O;%iGD#DefDR{A|6rW<^u-kMA
+zt~T8V{)4#2^dPP`eStmZ5!h><kL%3~aD#afUSZydSDJU>M)MKyKZRGBpT(zJ%-Cls
+zz|9sn_^WY?r4F}Q8gaYjG|X87xWmHXwU)g&Y<Uq!ET4k^Gb~uXz+D-oxI4p(H)M2y
+zzZ;*Ku@Rr0u^n0fhI=qa=YEIo%f#ykD1QSpjDG{aMW^Tf3xyz=Db?%1fyS6@uxYw~
+zvT%;3g|p#*!NS?lzZTAhxE9WaezkDo@Dc1cK4c4LLtG1IL%&)$aro%yH$G$wCk`Ji
+z{l!Pr!uiqpkS&}IItyom&ccZ!!)NxF3`Z@T4RI};{%NbIg|mTX;owVP$hr*Ohp#}7
+z;w#bP_*$@6u0t=vpz#{M5p0y*V4K{E-ov+}Pw*XJkL*YP#s|=M_&%^Z4q_`lgoogV
+zz}7enHpXMvj-SMZ_z2h)&w?HC9G;6`!VB@s*nwZgPW)TE1pfiMaSyJ=Z(t986EDMW
+z<CXXwyc+)%`|$hNk3Yig_+z{Ve+m}PXJFxc2^P**FtmOH7S6X|;e3y`FbHpF%y=hb
+z!51-E_%bFNU(V#<tC>OgIwlYAVus?InGtvoGZNnpHq1U|EWVq`$B!^4;>VbY_;*YJ
+z{+cOdj%Ow^W0*;dohfEkF(u47Oeu2<_;)j9%wA>&^ByzPWMyWVikKOuDa>qBDKp>1
+zF$+wWFbhrhf&U<Lvgtvl!t@1GX&%8i&GVTG^8%*Iyogz9-pHI{-o?1hN5KCSQ*C~h
+zIn`oj>MaF~$KnQmHRH9^F+a03GAk^nF{>>B<}?e(G+XvEEtVG<zvWZ#f5xzuFPK0^
+zDRV}Kmsyk11^#Y^%h<?-GPW~aKZb>~=_d>4r!}0P)^Ludh4a%I&QEJNKds>$!!;ac
+zGh&$Y(0$By^eD3fJ<eQ!o?|XVFEW>+*O<#t4|4^2o4FFb$6Sj(VXi};GP}^fnH$k}
+z%x-L9ZpBvSc07c+0}o~P<1x$uY-jGnh0H-*#2mu2n1}FO<}hB!Jcb?2li0}|!AqED
+zv731g*D^0*5A!l!#=MGGGQY*EnLl73(}VrY8@Qc$6R%<3#zE#C9A^HC*D>$oZssGr
+ziTN0x!+Z)B&SzlZd<hoLS770M0~XG=VBvg^uQnlkoym-MnJoBbQx@K1%Eq^wa_~OW
+zAbdA;{EwK1;>S!Q@b63`@z<tN%<-lX%ox*X#%>zNtTNe|b4({Nw}5}QDWBPEn!vng
+znrO0`3QR?&38pEgLQ^TYoT=D!iK)bNANUVK%!8)srY}r0%p*)Q&GSvu%?nJk%!^F(
+z%o|Pf&AUts%tyfglxd;)SyQ>iY^tynm?|x9@K>9hmO7Km(r8+0In7jK37BdvoXKO^
+zYw}uNG&NX01^;KJWtJ~YD>F(>jTv6ks*Eo1cbiscY&7{YwwnS!hJ|yMC_IdShEey!
+U2xw|bTZESS*7;iGjXdH12Yhi<aR2}S
+
+diff --git a/WebContent/reports/InventoryForm.jrxml b/WebContent/reports/InventoryForm.jrxml
+--- a/WebContent/reports/InventoryForm.jrxml
++++ b/WebContent/reports/InventoryForm.jrxml
+@@ -20,7 +20,7 @@
+ 	</parameter>
+ 	<parameter name="inventoryDate" class="java.lang.String"/>
+ 	<queryString>
+-		<![CDATA[select num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER, 
++		<![CDATA[select TRUNC((num-1)/10 )gr,num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER, 
+ 		0 GARD_ADD, 0 GARD_MINUS, a.NOTES, a.GARD_START_DATE,a.GARD_END_DATE,a.SPECIAL_NO,a.STRNAME
+ from
+ (
+@@ -36,9 +36,9 @@
+ 
+ WHERE  master.GARDID= $P{gardId} AND det.gardId= master.gardId  and DET.TENDERITEMID=IT.id and IT.ITEM_UNITE_ID=UN.ITEMUNITID AND it.STRNO=house.STRNO
+ AND it.strno =$P{STRNO}
+-)A
+-where
+-a.GARD_ACTUAL >0]]>
++and 
++GARD_ACTUAL >0
++)A]]>
+ 	</queryString>
+ 	<field name="NUM" class="java.math.BigDecimal">
+ 		<property name="com.jaspersoft.studio.field.label" value="NUM"/>
+@@ -82,6 +82,297 @@
+ 	<field name="STRNAME" class="java.lang.String">
+ 		<property name="com.jaspersoft.studio.field.label" value="STRNAME"/>
+ 	</field>
++	<field name="gr" class="java.lang.Integer">
++		<fieldDescription><![CDATA[group]]></fieldDescription>
++	</field>
++	<group name="Group1">
++		<groupExpression><![CDATA[$F{gr}]]></groupExpression>
++		<groupFooter>
++			<band height="98">
++				<textField>
++					<reportElement x="589" y="15" width="150" height="20" uuid="1024689f-cd23-42c2-9095-c766ea9193c4">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["أمين / مأمور المستودع"]]></textFieldExpression>
++				</textField>
++				<textField>
++					<reportElement x="149" y="15" width="440" height="20" uuid="966d28b9-2f6a-48d2-983d-8b9e2f2e0e34">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["أعــــــضاء لجنة الجــــــــــــــــرد"]]></textFieldExpression>
++				</textField>
++				<textField>
++					<reportElement x="0" y="15" width="149" height="20" uuid="0b4a4cec-8b04-4e82-ab43-fa74273e6479">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["مدير إدارة المستودعات / الرئيس المختص"]]></textFieldExpression>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="589" y="36" width="150" height="20" uuid="7670553b-5de0-4c4f-a639-c4fb1bff3362">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="589" y="56" width="150" height="20" uuid="a52a9e7c-3b3f-4325-b03e-1d2499cb7b48">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="589" y="76" width="150" height="20" uuid="6d9b2725-4aed-405a-bea9-f08f0eaed248">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="479" y="36" width="110" height="20" uuid="1fbed13b-f25b-4559-99f1-bb769eaa1a98">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="479" y="56" width="110" height="20" uuid="770673bf-5c1a-46b5-8aee-975244c557e7">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="479" y="76" width="110" height="20" uuid="45be41ed-c78b-4e35-a0b9-4155c41f071c">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="259" y="36" width="110" height="20" uuid="28985384-5bcf-4c61-a816-ec2044e74aea">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="149" y="36" width="110" height="20" uuid="6ff5cb2f-7ff3-4289-80ca-754d4ebc713a">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="149" y="56" width="110" height="20" uuid="8c1b372a-829b-40d9-a8a4-9d4f53e3945b">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="259" y="56" width="110" height="20" uuid="35313ddc-bd0c-4148-8d16-6831ddc6d9a7">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="149" y="76" width="110" height="20" uuid="8c49c799-873a-4024-9634-a497a50965ce">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="259" y="76" width="110" height="20" uuid="37a8728c-93be-4aa7-b35d-fee191a9b581">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="0" y="36" width="149" height="20" uuid="4ee30ec2-db4c-4d50-a69a-88b0ca55af59">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="0" y="56" width="149" height="20" uuid="d15d7d65-c8cc-40c6-8b5a-3afcce41b2f3">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="0" y="76" width="149" height="20" uuid="1668dfd5-d9e8-42e4-9dc6-e2e3a2eca0c0">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="369" y="36" width="110" height="20" uuid="47c5e087-bf61-4488-aa59-c5e92f50d659">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="369" y="76" width="110" height="20" uuid="fcbe0d9d-1691-42de-b320-9e62b2fd5a20">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="369" y="56" width="110" height="20" uuid="7307f9c6-fb84-44bf-a474-903ab7815923">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="739" y="15" width="63" height="20" uuid="8bb5ba63-c577-40f5-99f8-5b7a1ec3b203">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="739" y="76" width="63" height="20" uuid="777dd968-51c6-4044-8cef-1be3e9de7e02">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="739" y="56" width="63" height="20" uuid="8e438cad-eaed-40cc-a9f9-3f795e854cdb">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["التوقيع"]]></textFieldExpression>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="739" y="36" width="63" height="20" uuid="6c44ca65-68af-4914-9775-16c5d9431b71">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="10" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["الإسم"]]></textFieldExpression>
++				</textField>
++			</band>
++		</groupFooter>
++	</group>
+ 	<background>
+ 		<band height="32" splitType="Stretch"/>
+ 	</background>
+@@ -504,289 +795,7 @@
+ 		</band>
+ 	</detail>
+ 	<pageFooter>
+-		<band height="98" splitType="Stretch">
+-			<textField>
+-				<reportElement x="590" y="18" width="150" height="20" uuid="1024689f-cd23-42c2-9095-c766ea9193c4">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["أمين / مأمور المستودع"]]></textFieldExpression>
+-			</textField>
+-			<textField>
+-				<reportElement x="150" y="18" width="440" height="20" uuid="966d28b9-2f6a-48d2-983d-8b9e2f2e0e34">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["أعــــــضاء لجنة الجــــــــــــــــرد"]]></textFieldExpression>
+-			</textField>
+-			<textField>
+-				<reportElement x="1" y="18" width="149" height="20" uuid="0b4a4cec-8b04-4e82-ab43-fa74273e6479">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["مدير إدارة المستودعات / الرئيس المختص"]]></textFieldExpression>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="590" y="38" width="150" height="20" uuid="7670553b-5de0-4c4f-a639-c4fb1bff3362">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="590" y="58" width="150" height="20" uuid="a52a9e7c-3b3f-4325-b03e-1d2499cb7b48">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="590" y="78" width="150" height="20" uuid="6d9b2725-4aed-405a-bea9-f08f0eaed248">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="480" y="38" width="110" height="20" uuid="1fbed13b-f25b-4559-99f1-bb769eaa1a98">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="480" y="58" width="110" height="20" uuid="770673bf-5c1a-46b5-8aee-975244c557e7">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="480" y="78" width="110" height="20" uuid="45be41ed-c78b-4e35-a0b9-4155c41f071c">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="260" y="38" width="110" height="20" uuid="28985384-5bcf-4c61-a816-ec2044e74aea">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="150" y="38" width="110" height="20" uuid="6ff5cb2f-7ff3-4289-80ca-754d4ebc713a">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="150" y="58" width="110" height="20" uuid="8c1b372a-829b-40d9-a8a4-9d4f53e3945b">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="260" y="58" width="110" height="20" uuid="35313ddc-bd0c-4148-8d16-6831ddc6d9a7">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="150" y="78" width="110" height="20" uuid="8c49c799-873a-4024-9634-a497a50965ce">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="260" y="78" width="110" height="20" uuid="37a8728c-93be-4aa7-b35d-fee191a9b581">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="38" width="149" height="20" uuid="4ee30ec2-db4c-4d50-a69a-88b0ca55af59">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="58" width="149" height="20" uuid="d15d7d65-c8cc-40c6-8b5a-3afcce41b2f3">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="78" width="149" height="20" uuid="1668dfd5-d9e8-42e4-9dc6-e2e3a2eca0c0">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="370" y="38" width="110" height="20" uuid="47c5e087-bf61-4488-aa59-c5e92f50d659">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="370" y="78" width="110" height="20" uuid="fcbe0d9d-1691-42de-b320-9e62b2fd5a20">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="370" y="58" width="110" height="20" uuid="7307f9c6-fb84-44bf-a474-903ab7815923">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="740" y="18" width="63" height="20" uuid="8bb5ba63-c577-40f5-99f8-5b7a1ec3b203">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="740" y="78" width="63" height="20" uuid="777dd968-51c6-4044-8cef-1be3e9de7e02">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="740" y="58" width="63" height="20" uuid="8e438cad-eaed-40cc-a9f9-3f795e854cdb">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["التوقيع"]]></textFieldExpression>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="740" y="38" width="63" height="20" uuid="6c44ca65-68af-4914-9775-16c5d9431b71">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="10" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["الإسم"]]></textFieldExpression>
+-			</textField>
+-		</band>
++		<band splitType="Stretch"/>
+ 	</pageFooter>
+ 	<summary>
+ 		<band height="113" splitType="Stretch"/>
+diff --git a/WebContent/reports/NewInventory.jasper b/WebContent/reports/NewInventory.jasper
+index 5f446c1395754ca9fd1d5b35a6d24471a8898237..129ef4bf4b6b88f9790fdafae249a38f876b262f
+GIT binary patch
+literal 63318
+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
+G7x+KvTVVzO
+
+diff --git a/WebContent/reports/NewInventory.jrxml b/WebContent/reports/NewInventory.jrxml
+--- a/WebContent/reports/NewInventory.jrxml
++++ b/WebContent/reports/NewInventory.jrxml
+@@ -20,7 +20,7 @@
+ 	</parameter>
+ 	<parameter name="inventoryDate" class="java.lang.String"/>
+ 	<queryString>
+-		<![CDATA[select num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER,
++		<![CDATA[select TRUNC((num-1)/10 )gr, num,a.TENDERITEMID, a.TENDERITEMNAME, a.ITEMUNITNAME, a.qty_calculated,a.GARD_ACTUAL, a.GARD_DAFTER,
+ 		 0 GARD_ADD, 0 GARD_MINUS, a.NOTES, a.GARD_START_DATE,a.GARD_END_DATE,a.SPECIAL_NO,a.STRNAME
+ from
+ (
+@@ -36,9 +36,8 @@
+ 
+ WHERE  master.GARDID= $P{gardId} AND det.gardId= master.gardId  and DET.TENDERITEMID=IT.id and IT.ITEM_UNITE_ID=UN.ITEMUNITID AND it.STRNO=house.STRNO
+ AND it.strno =$P{STRNO}
+-)A
+-where
+-a.GARD_ACTUAL >0]]>
++and GARD_ACTUAL >0
++)A]]>
+ 	</queryString>
+ 	<field name="NUM" class="java.math.BigDecimal">
+ 		<property name="com.jaspersoft.studio.field.label" value="NUM"/>
+@@ -82,6 +81,9 @@
+ 	<field name="STRNAME" class="java.lang.String">
+ 		<property name="com.jaspersoft.studio.field.label" value="STRNAME"/>
+ 	</field>
++	<field name="gr" class="java.lang.Integer">
++		<fieldDescription><![CDATA[group page]]></fieldDescription>
++	</field>
+ 	<variable name="FORM_NUMBER" class="java.lang.Integer" incrementType="Page">
+ 		<initialValueExpression><![CDATA[7]]></initialValueExpression>
+ 	</variable>
+@@ -85,6 +87,247 @@
+ 	<variable name="FORM_NUMBER" class="java.lang.Integer" incrementType="Page">
+ 		<initialValueExpression><![CDATA[7]]></initialValueExpression>
+ 	</variable>
++	<group name="Group1">
++		<groupExpression><![CDATA[$F{gr}]]></groupExpression>
++	</group>
++	<group name="Group2">
++		<groupExpression><![CDATA[$F{gr}]]></groupExpression>
++		<groupFooter>
++			<band height="126">
++				<textField>
++					<reportElement x="615" y="28" width="190" height="20" uuid="9bd788ef-bf7c-4a27-a289-ecfdaea768a9">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["المسؤول عن السجلات المالية وبطاقة الصنف"]]></textFieldExpression>
++				</textField>
++				<textField>
++					<reportElement x="426" y="28" width="189" height="20" uuid="41c76e92-78bf-4dbb-a338-eb8f228128f1">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["أمين أو مأمور المستودع"]]></textFieldExpression>
++				</textField>
++				<textField>
++					<reportElement x="166" y="28" width="260" height="20" uuid="179f1750-1b56-4c7f-9c29-88fe1c93d429">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["أعضاء لجنة الجرد"]]></textFieldExpression>
++				</textField>
++				<textField>
++					<reportElement x="6" y="28" width="160" height="20" uuid="72b15a5d-ac6b-4da5-adaa-55eb0868b0a1">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++					<textFieldExpression><![CDATA["مدير إدارة المستودعات"]]></textFieldExpression>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="615" y="48" width="190" height="20" uuid="24cfd48a-f50a-468d-9ef2-6126b8c628dc">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="615" y="68" width="190" height="20" uuid="d072ed82-badb-4d39-b47d-3da2c6e54619">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="615" y="88" width="190" height="16" uuid="f5980f61-d33d-4f48-90cf-9ae83182b159">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="426" y="48" width="189" height="20" uuid="adc2d3d2-34d2-401a-8e8a-6bec698f88cc">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="426" y="68" width="189" height="20" uuid="61b2adf6-67bc-4e9e-8af5-afea25740def">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="426" y="88" width="189" height="16" uuid="350e3e70-57bf-4e30-a57e-2685c499ef05">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="295" y="48" width="131" height="20" uuid="9f0a8c60-2418-400f-98f9-1940aa6a26ed">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="166" y="48" width="129" height="20" uuid="dd7d9986-fa30-411e-bcb6-ccd9e4486a5f">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="166" y="68" width="129" height="20" uuid="1fba9c5e-0225-49f6-9919-0b0bf98a9364">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="295" y="68" width="131" height="20" uuid="0e569fff-5c6e-40c2-b41f-72a631a002ba">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="166" y="88" width="129" height="16" uuid="a161a3e7-bb90-4843-8696-aeefbd83cd7d">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="295" y="88" width="131" height="16" uuid="39f660af-9286-4ac7-8bb3-2965ca84c159">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="6" y="48" width="160" height="20" uuid="5f5f5894-2892-4daf-a60b-a113e7e55c0e">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="6" y="68" width="160" height="20" uuid="220589e5-38ee-4a70-89ec-bac32bc0e4be">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<textField isBlankWhenNull="true">
++					<reportElement x="6" y="88" width="160" height="16" uuid="ccecb187-7a7d-4a8d-bc4b-3c5d744eb0b6">
++						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
++					</reportElement>
++					<box>
++						<pen lineWidth="0.5"/>
++					</box>
++					<textElement textAlignment="Center" verticalAlignment="Middle">
++						<font fontName="Arial" size="12" isBold="true"/>
++					</textElement>
++				</textField>
++				<staticText>
++					<reportElement x="86" y="104" width="128" height="18" uuid="1b523477-196f-42dd-be8e-c8147f6e0205">
++						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
++					</reportElement>
++					<textElement textAlignment="Center">
++						<font fontName="Arial" size="12"/>
++					</textElement>
++					<text><![CDATA[الختم الرسمي]]></text>
++				</staticText>
++				<staticText>
++					<reportElement x="70" y="5" width="712" height="18" uuid="a4d9c222-b1c1-4464-a7de-1628ed15089f">
++						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
++					</reportElement>
++					<textElement textAlignment="Right">
++						<font fontName="Arial" size="12"/>
++					</textElement>
++					<text><![CDATA[ تم جرد الأصناف المذكورة بعالية جرد فعليا بمعرفة أعضاء لجنة الجرد وتبين  (تطابق/عدم تطابق) الأرصدة وفقا للايضاح الوارد بتقرير اللجنة المرفق. ]]></text>
++				</staticText>
++			</band>
++		</groupFooter>
++	</group>
+ 	<title>
+ 		<band height="1" splitType="Stretch">
+ 			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+@@ -537,239 +780,7 @@
+ 		</band>
+ 	</detail>
+ 	<pageFooter>
+-		<band height="126" splitType="Stretch">
+-			<textField>
+-				<reportElement x="610" y="32" width="190" height="20" uuid="b1f900e2-38e7-4e6d-9bd9-5e248aef3836">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["المسؤول عن السجلات المالية وبطاقة الصنف"]]></textFieldExpression>
+-			</textField>
+-			<textField>
+-				<reportElement x="421" y="32" width="189" height="20" uuid="d2a721b3-0d75-405b-adb0-084f5e750225">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["أمين أو مأمور المستودع"]]></textFieldExpression>
+-			</textField>
+-			<textField>
+-				<reportElement x="161" y="32" width="260" height="20" uuid="227ef9c4-ba33-427f-8cae-9e658953d6e2">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["أعضاء لجنة الجرد"]]></textFieldExpression>
+-			</textField>
+-			<textField>
+-				<reportElement x="1" y="32" width="160" height="20" uuid="0f9dccf5-d2c0-4119-8822-465768499bc0">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-				<textFieldExpression><![CDATA["مدير إدارة المستودعات"]]></textFieldExpression>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="610" y="52" width="190" height="20" uuid="0506a41e-b272-4567-bd7b-bd36713fc550">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="610" y="72" width="190" height="20" uuid="8603fa84-a73a-43b9-bfa1-fa85f6d978c2">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="610" y="92" width="190" height="16" uuid="adde11cc-bb67-492a-aa6a-2de51ae51bbd">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="421" y="52" width="189" height="20" uuid="662f835b-23c8-4d39-bc03-ddb946ee9554">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="421" y="72" width="189" height="20" uuid="c43c2265-b137-4222-a1ec-753caa82e409">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="421" y="92" width="189" height="16" uuid="c2c45f66-a178-4936-b7f6-e825e2c605ea">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="290" y="52" width="131" height="20" uuid="9534076e-e4d0-4643-9737-4b5bfbe26068">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="161" y="52" width="129" height="20" uuid="1fa3dee7-9bc8-45b3-bb60-b1c1babe8631">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="161" y="72" width="129" height="20" uuid="e9a438ae-9f4c-4f36-8e7e-62085818078e">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="290" y="72" width="131" height="20" uuid="d16a0095-3e54-4617-a664-e0b42e7b09f0">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="161" y="92" width="129" height="16" uuid="0f06643f-6a6e-41d9-b0a3-4dc4344b7314">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="290" y="92" width="131" height="16" uuid="f2101c79-371c-4da5-8e2e-ab737977eab1">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="52" width="160" height="20" uuid="faa39291-6027-4ff5-bc2c-ac967faa1e05">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="72" width="160" height="20" uuid="b7ccca44-298e-4cbf-ad80-a68f2cd291af">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<textField isBlankWhenNull="true">
+-				<reportElement x="1" y="92" width="160" height="16" uuid="842530bc-b37f-4fa7-a1ef-ac9b785a3c5f">
+-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+-				</reportElement>
+-				<box>
+-					<pen lineWidth="0.5"/>
+-				</box>
+-				<textElement textAlignment="Center" verticalAlignment="Middle">
+-					<font fontName="Arial" size="12" isBold="true"/>
+-				</textElement>
+-			</textField>
+-			<staticText>
+-				<reportElement x="81" y="108" width="128" height="18" uuid="930d713f-7dfe-4538-96d1-a350bf218149">
+-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+-				</reportElement>
+-				<textElement textAlignment="Center">
+-					<font fontName="Arial" size="12"/>
+-				</textElement>
+-				<text><![CDATA[الختم الرسمي]]></text>
+-			</staticText>
+-			<staticText>
+-				<reportElement x="65" y="9" width="712" height="18" uuid="e36a44c6-27a4-4490-abac-390647730e95">
+-					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+-				</reportElement>
+-				<textElement textAlignment="Right">
+-					<font fontName="Arial" size="12"/>
+-				</textElement>
+-				<text><![CDATA[ تم جرد الأصناف المذكورة بعالية جرد فعليا بمعرفة أعضاء لجنة الجرد وتبين  (تطابق/عدم تطابق) الأرصدة وفقا للايضاح الوارد بتقرير اللجنة المرفق. ]]></text>
+-			</staticText>
+-		</band>
++		<band splitType="Stretch"/>
+ 	</pageFooter>
+ 	<summary>
+ 		<band height="22" splitType="Stretch"/>
+diff --git a/WebContent/reports/exchange_report.jrxml b/WebContent/reports/exchange_report.jrxml
+--- a/WebContent/reports/exchange_report.jrxml
++++ b/WebContent/reports/exchange_report.jrxml
+@@ -72,7 +72,7 @@
+ select ws.SEC_NAME   FROM hrs_signs,ARC_USERS us, WRK_SECTION ws
+ WHERE
+ us.SEC_ID = ws.ID AND  us.USER_ID = HRS_SIGNS.SIGN_USER_ID and
+-doc_id= $P{exchange_req_no} and   sign_step_id = 6
++doc_id= $P{exchange_req_no} and   sign_step_id = 7
+ )RECIEVER_SEC_NAME,
+ (
+ select  WRK_PROFILE_SIGN.DDD  FROM hrs_signs,WRK_PROFILE_SIGN
+@@ -76,7 +76,7 @@
+ )RECIEVER_SEC_NAME,
+ (
+ select  WRK_PROFILE_SIGN.DDD  FROM hrs_signs,WRK_PROFILE_SIGN
+-where doc_id=$P{exchange_req_no} and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 6
++where doc_id=$P{exchange_req_no} and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id =6
+ )RECIEVER_sign,(
+ select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
+ where doc_id=$P{exchange_req_no} and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id =6

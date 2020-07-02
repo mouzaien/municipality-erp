@@ -20,45 +20,101 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select rownum num,art.id,art.code, art.name,0 input, 0 OUTPUT,nvl(A.qty,0) available,
-		 nvl(C.qty,0) reserved,unit.ITEMUNITNAME, WHS_WAREHOUSES.STRNAME STRNAME
-from
-article art,TDR_ITEMUNIT unit, WHS_WAREHOUSES,
+		 nvl(C.qty,0) reserved,unit.ITEMUNITNAME, st.STRNAME STRNAME
+		 from
+              article art,TDR_ITEMUNIT unit,WHS_WAREHOUSES st,
 
-(
-SELECT artId, sum(qty)qty
-FROM
-(
-    SELECT max(TO_DATE(gm.GARD_DATE,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']'))lastGarDate 
-    FROM WHS_GARD_MASTER gm 
-    WHERE  gm.INVENTORY_BLOCKED = 1 AND gm.STRNO = $P{strnumber}    
-     ),
-  (
-     --input
-    select 2 tr,  'مذكرة' trType,indetails.ARTICLE_ID artId ,nvl(inMaster.STOCK_FIN_ENTRY_NO,-1)SPECIAL_NO,nvl(indetails.QTY,0)qty,
+        (
+             SELECT artId, strno,sum(qty)qty
+              FROM
+      		(
+              
+    			SELECT  TENDERITEMID, max(TO_DATE(gm.GARD_DATE,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']'))lastGarDate 
+    												FROM
+    												 (
+   														SELECT GARD_DATE,det.TENDERITEMID 
+   														FROM WHS_GARD_MASTER , WHS_GARD_DETAIL det 
+   														WHERE
+   	 														WHS_GARD_MASTER.INVENTORY_BLOCKED = 1 AND WHS_GARD_MASTER.STRNO = $P{strnumber}   and
+   															WHS_GARD_MASTER.GARDID = det.GARDID AND (det.TENDERITEMID = $P{articleId}  OR  $P{articleId} =-1)
+   		          										) gm  
+   		          										GROUP BY TENDERITEMID
+    			 ),
+     (
+    
+    SELECT inMaster.STOCK_NO strno, 2 tr,  'مذكرة' trType,indetails.ARTICLE_ID artId ,nvl(inMaster.STOCK_FIN_ENTRY_NO,-1)SPECIAL_NO,nvl(indetails.QTY,0)qty,
     inMaster.STOCK_FIN_ENTRY_hDATE datetransaction 
     FROM WHS_STOCK_ENTRY_MASTER inMaster,WHS_STOCK_IN_DETAILS indetails
    
     where inMaster.ID= indetails.STOCKMASTER_IN  
     and inMASTER.STOCKENTRYSTATUS = 'Y' AND (indetails.ARTICLE_ID =$P{articleId} or $P{articleId} =-1) 
- union
-    ----last inventory
-    select 1 tr,'جرد' trType, TENDERITEMID artID,nvl(to_number(gm.SPECIAL_NO),-1) SPECIAL_NO,nvl(gdet.GARD_ACTUAL,0) qty,
+    AND (inMaster.STOCK_NO = $P{strnumber} OR   $P{strnumber} =-1)
+
+   union
+   
+    select gm.STRNO strno,1 tr,'جرد' trType, gdet.TENDERITEMID artID,nvl(to_number(gm.SPECIAL_NO),-1) SPECIAL_NO,nvl(gdet.GARD_ACTUAL,0) qty,
      gm.GARD_DATE datetransaction 
     from WHS_GARD_DETAIL gdet ,WHS_GARD_MASTER gm,(
-    												SELECT  max(to_date(gm.GARD_DATE,'dd/mm/yyyy') )lastGarDate 
-    												FROM WHS_GARD_MASTER gm
-    												WHERE  gm.INVENTORY_BLOCKED = 1 AND gm.STRNO = $P{strnumber}    
+    												SELECT  TENDERITEMID,max(to_date(gm.GARD_DATE,'dd/mm/yyyy') )lastGarDate 
+    												FROM
+    												 (
+   														SELECT GARD_DATE,det.TENDERITEMID 
+   														FROM WHS_GARD_MASTER , WHS_GARD_DETAIL det 
+   														WHERE
+   	 														WHS_GARD_MASTER.INVENTORY_BLOCKED = 1 AND WHS_GARD_MASTER.STRNO = $P{strnumber}   and
+   															WHS_GARD_MASTER.GARDID = det.GARDID AND (det.TENDERITEMID = $P{articleId}  OR  $P{articleId} =-1)
+   		          										) gm  
+   		          										GROUP BY TENDERITEMID
     												)lstg
     where 
        gm.GARDID = gdet.GARDID 
-    AND gm.STRNO = $P{strnumber} AND (TENDERITEMID =$P{articleId} OR $P{articleId} =-1)
+    AND gm.STRNO = $P{strnumber} AND (gdet.TENDERITEMID =$P{articleId} OR $P{articleId} =-1)
     AND gm.inventory_blocked = 1 
     AND to_date(gm.GARD_DATE,'dd/mm/yyyy') = lstg.lastGarDate
-   UNION 
-    
-  --ensemble des output
-    select 3 tr, 'صرف' trType,exdetails.itemId artID ,nvl(exMaster.SERIALNUMBER,-1)SPECIAL_NO,-nvl(exdetails.INIT_COUNT,0) qty, exMaster.INV_G_R_DATE datetransaction
-    FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails,
+    AND gdet.TENDERITEMID = lstg.TENDERITEMID 
+  
+      UNION 
+      
+  	  SELECT rs.STR_NO strno,5 tr,
+		'ارجاع' trType,
+		rsd.ART_ID artId,
+	    NVL(rs.SERIAL_NUMBER,-1)SPECIAL_NO,
+		NVL(rsd.QTY, 0)qty,	
+		 rs.RET_HDATE datetransaction
+        from RETURN_STORE_DETAILS rsd ,RETURN_STORE rs
+        where 
+           (rsd.ART_ID = $P{articleId} OR $P{articleId}=-1)
+           AND rs.ID = rsd.RET_ID 	
+           AND (rs.STR_NO = $P{strnumber} OR $P{strnumber} = -1)
+  UNION
+      
+     SELECT Master.STORE_NUMBER strno,6 tr,  'صرف رجيع' trType,	details.itemId artID , NVL(Master.SERIALNUMBER,-1)SPECIAL_NO,
+         -NVL(details.INIT_COUNT, 0) qty, Master.INV_G_R_DATE datetransaction 
+		
+	FROM
+		TDR_INV_GNRL_REQ Master,
+		TDR_INV_REQ_DET details, WHS_WAREHOUSES,
+		ARTICLE art ,ARC_USERS us,
+      (select distinct s.doc_id id from arc_records r, hrs_signs s,
+        tdr_inv_gnrl_req rq where 
+        rq.INV_G_R_NO = doc_id
+        and r.id = s.arc_record_id 
+        and r.app_type = 237 
+        and s.sign_step_id = 1
+        )ids
+        where 
+         MASTER.ACCEPT_Y_N = 'Y' AND
+		(details.ITEMID = $P{articleId} OR $P{articleId}=-1)  AND 
+		 Master.STORE_NUMBER = WHS_WAREHOUSES.STRNO
+		 AND WHS_WAREHOUSES.STORE_TYPE = 2
+		 AND details.ITEMID = art.ID AND
+		 ids.id = details.INV_G_R_NO AND
+		 details.INV_G_R_NO =Master.INV_G_R_NO AND
+		 us.USER_ID =  Master.USERID              
+    UNION		   
+  
+    select exMaster.STORE_NUMBER strno,3 tr, 'صرف' trType,exdetails.itemId artID ,nvl(exMaster.SERIALNUMBER,-1)SPECIAL_NO,-nvl(exdetails.INIT_COUNT,0) qty, exMaster.INV_G_R_DATE datetransaction
+    FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails, WHS_WAREHOUSES,
       (select distinct s.doc_id id from arc_records r, hrs_signs s,
     tdr_inv_gnrl_req rq where  rq.INV_G_R_NO = doc_id
     and r.id = s.arc_record_id 
@@ -67,35 +123,42 @@ FROM
     )ids
     where exMaster.INV_G_R_NO= exdetails.INV_G_R_NO
     and ids.id = exdetails.INV_G_R_NO     
-    and EXMASTER.ACCEPT_Y_N = 'Y' AND (exdetails.itemId =$P{articleId}  or $P{articleId} =-1)  
-    )
-WHERE 
+    and EXMASTER.ACCEPT_Y_N = 'Y' AND (exdetails.itemId =$P{articleId}  or $P{articleId} =-1)
+    AND (exMaster.STORE_NUMBER = $P{strnumber} OR $P{strnumber}  = -1 )
+    and  exMaster.STORE_NUMBER = WHS_WAREHOUSES.STRNO
+		 AND WHS_WAREHOUSES.STORE_TYPE = 1
+    )BA
+   WHERE 
 
- (-1 =$P{articleId} or $P{articleId} = artId) and
- (TO_DATE(datetransaction,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']') >= lastGarDate OR    lastGarDate IS NULL)  
+    (-1 =$P{articleId} or $P{articleId} = artId) AND  artId= TENDERITEMID  AND
+    (TO_DATE(datetransaction,'dd/mm/yyyy',q'[nls_calendar='English Hijrah']') >= lastGarDate OR    lastGarDate IS NULL )  
  
-    GROUP BY artId
-)A,
+    GROUP BY artId,strno
+     )A,
 
-
---reserved
-(   select  exdetails.itemId artId ,sum(nvl(exdetails.INIT_COUNT,0))qty 
-    FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails,
+    (  
+    select  exMaster.STORE_NUMBER strno,exdetails.itemId artId ,sum(nvl(exdetails.INIT_COUNT,0))qty 
+    FROM TDR_INV_GNRL_REQ exMaster,TDR_INV_REQ_DET exdetails,WHS_WAREHOUSES,
      (select distinct s.doc_id id from arc_records r, hrs_signs s,
     tdr_inv_gnrl_req rq where  rq.INV_G_R_NO = doc_id
     and r.id = s.arc_record_id 
-    and r.app_type = 237 -- app_type (sarf,....)
+    and r.app_type = 237
     and s.sign_step_id = 1
     )ids
     where exMaster.INV_G_R_NO= exdetails.INV_G_R_NO
     and ids.id = exdetails.INV_G_R_NO   
     and  (exdetails.itemId = $P{articleId}  or $P{articleId} =-1) and EXMASTER.ACCEPT_Y_N = 'R'
-    group by exdetails.itemId
-)C
+    AND (exMaster.STORE_NUMBER = $P{strnumber} OR $P{strnumber}  = -1 )
+    and  exMaster.STORE_NUMBER = WHS_WAREHOUSES.STRNO
+	AND WHS_WAREHOUSES.STORE_TYPE = 1
+    group by exdetails.itemId,exMaster.STORE_NUMBER
+    )C
 where
-  art.id  = A.artId (+) AND  (-1 =$P{strnumber} or $P{strnumber}=art.STRNO ) and
- 	(-1 =$P{articleId} or $P{articleId} = art.id ) 
-   and  art.id = c.artID (+)  and art.ITEM_UNITE_ID = unit.ITEMUNITID and art.STRNO = WHS_WAREHOUSES.STRNO]]>
+ art.id  = A.artId (+) AND ((-1 = $P{strnumber} or ($P{strnumber}  =  art.STRNO AND st.STORE_TYPE = 1) )OR (st.STRNO = $P{strnumber} AND st.STORE_TYPE = 2))
+ AND st.STRNO = a.strno --WHS_WAREHOUSES
+ AND (-1 =$P{articleId} or $P{articleId} = art.id ) 
+ and  art.id = c.artID (+) 
+  and art.ITEM_UNITE_ID = unit.ITEMUNITID]]>
 	</queryString>
 	<field name="NUM" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="NUM"/>

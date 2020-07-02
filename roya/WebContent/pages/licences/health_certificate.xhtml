@@ -4,350 +4,295 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-
-	<h:head>
-		<link href="Css/style.css" rel="stylesheet" type="text/css"></link>
-		<link href="../resources/css/purecss/pure-min.css" rel="stylesheet"
-			type="text/css"></link>
-
-		<link rel="stylesheet" type="text/css"
-			href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-arabic.css" />
-		<link rel="stylesheet" type="text/css"
-			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
-
-		<script type="text/javascript">
-			window.onload = window.history.forward(0);
-		</script>
-		<style>
-body {
-	margin: 0px;
-}
-</style>
-	</h:head>
-	<h:body>
-
-		<ui:composition template="../menuBar.xhtml">
-
-			<ui:define name="content">
-
-				<p class="text-center">
-					<h:outputLabel styleClass="btxt"
-						style="font-weight:bold; font-size:30px;"
-						value="#{msg['record.data']}">
-					</h:outputLabel>
-
-
-				</p>
-
-				<h:form id="includeform">
-
-					<p:messages autoUpdate="true" closable="true"></p:messages>
-					<div class="col-lg-12"
-						style="background-color: white; border-top: 5px solid #428BCA">
-						<br></br>
-						<div style="color: color: #428bca">
-							<h3 class="page-header"
-								style="margin: 0px 0 20px ! important; color: #428bca">#{msg['request.data']}
-							</h3>
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<div align="left" class="image-box-footer">
+					<p:commandButton value="#{msg['back']}" action="mails"
+						immediate="true">
+						<f:ajax execute="@form"></f:ajax>
+					</p:commandButton>
+					<p:spacer height="10px" />
+					<p:commandButton value="#{msg['accept']}" styleClass="cyan-btn"
+						action="#{healthCertificateBean.acceptHealthLicenceAction}">
+						<f:ajax execute="@form"></f:ajax>
+					</p:commandButton>
+					<p:spacer height="10px" />
+					<p:commandButton value=" #{msg['consult']}" styleClass="purple-btn"
+						action="#{healthCertificateBean.printDocumentAction}">
+						<f:ajax execute="@form"></f:ajax>
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center">#{msg['record.data']}</h1>
+					<h3 class="page-header" style="color: #428bca">#{msg['request.data']}
+					</h3>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['record.number']}" />
 						</div>
-
-						<div class="panel-body">
-
-							<div class="row">
-								<div class="col-md-10">
-
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['record.number']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-3">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												validatorMessage="#{msg['error.NationalId']}"
-												value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.id}" />
-
-										</div>
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['income.date']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-3">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												validatorMessage="#{msg['error.NationalId']}"
-												value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.incomeHDate}" />
-
-										</div>
-									</div>
-									<br></br>
-
-
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['proof.type']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-1">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.arcPeople.paperType}" />
-										</div>
-										<div class="col-md-3">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.trdLicenceName}" />
-
-										</div>
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['proof.number']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}" />
-
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['name']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-4">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.arcPeople.completeName}" />
-										</div>
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['her.date']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.arcPeople.idDate}" />
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['work']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-1">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.jobId}" />
-										</div>
-										<div class="col-md-3">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.job.name}" />
-
-										</div>
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['nationality']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.arcPeople.nationality.nationalityName}" />
-
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['licence.number']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-1">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.licenceId}" />
-										</div>
-										<div class="col-md-7">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.trdLicenceName}" />
-
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['address']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-8">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.trdLicenceAddress}" />
-
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['guarantor']}" styleClass="btxt" />
-										</div>
-										<div class="col-md-8">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.kafeelName}" />
-
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['health.center']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-1">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.healthCenter.id}" />
-										</div>
-										<div class="col-md-3">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.healthCenter.name}" />
-
-										</div>
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['consultation.result']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:selectOneMenu id="requestType"
-												value="#{healthCertificateBean.healthCertificate.checkResult}"
-												style="width:100%; dir:rtl;">
-												<f:selectItem itemLabel="#{msg['worthy']}" itemValue="1" />
-												<f:selectItem itemLabel="#{msg['not.worthy']}" itemValue="0" />
-											</h:selectOneMenu>
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['typhoid.date']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.tefodDate}" />
-										</div>
-										<div class="col-md-1" />
-										<div class="col-md-3">
-											<h:outputLabel value="#{msg['meningitis.date']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.hommaDate}" />
-										</div>
-									</div>
-									<br></br>
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['authorization.start.date']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.resultStartDate}" />
-										</div>
-										<div class="col-md-1" />
-										<div class="col-md-3">
-											<h:outputLabel value="#{msg['authorization.end.date']}"
-												styleClass="btxt" />
-										</div>
-										<div class="col-md-2">
-											<h:inputText required="true" styleClass="form-control"
-												requiredMessage="#{msg['required.fields']}"
-												value="#{healthCertificateBean.healthCertificate.resultEndDate}" />
-										</div>
-									</div>
-									<br></br>
-									<!-- 					<h:commandButton value="#{msg['print']}" -->
-									<!-- 						style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
-									<!-- 						styleClass="btn btn-primary" action="#{healthCertificateBean.}"> -->
-									<!-- 						<f:ajax execute="@form"></f:ajax> -->
-									<!-- 					</h:commandButton> -->
-
-
-								</div>
-
-
-
-								<div class="col-md-2">
-
-									<div class="row">
-										<div class="col-md-2">
-											<h:outputLabel value="#{msg['owner.picture']}"
-												styleClass="btxt" />
-										</div>
-										<br/><br/><br/>
-										<div class="col-md-8">
-											<h:form>
-
-												<p:graphicImage style="width:50% ;height:50%;"
-													value="#{healthCertificateBean.streamedcontent}">
-													
-												</p:graphicImage>
-
-												<!-- 								<p:graphicImage value="#{imagesBean.image}"> -->
-												<!-- 									<f:param name="id" -->
-												<!-- 										value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}" /> -->
-												<!-- 								</p:graphicImage> -->
-
-												<!-- 								<img src="/BkeryahArtifact/ImageServlet/?id=2125472791L" /> -->
-												<!-- 								<h:graphicImage id="showphoto" -->
-
-												<!--                                     style="float: left; height:120px;width:100px;" -->
-												<!--                                     value="/ImageServlet/?id=2125472791L"/> -->
-
-											</h:form>
-										</div>
-									</div>
-									<br></br>
-								</div>
-							</div>
-							
-							<h:commandButton value="#{msg['back']}" action="mails"
-								immediate="true"
-								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
-								styleClass="btn btn-primary">
-								<f:ajax execute="@form"></f:ajax>
-							</h:commandButton>
-
-							<h:commandButton value="#{msg['accept']}"
-								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
-								styleClass="btn btn-primary"
-								action="#{healthCertificateBean.acceptHealthLicenceAction}">
-								<f:ajax execute="@form"></f:ajax>
-							</h:commandButton>
-
-							<h:commandButton value=" #{msg['consult']}"
-								style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;"
-								styleClass="btn btn-primary"
-								action="#{healthCertificateBean.printDocumentAction}">
-								<f:ajax execute="@form"></f:ajax>
-							</h:commandButton>
-							dasfasdfasdfasdfasfasdfasdfsadf
-
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								validatorMessage="#{msg['error.NationalId']}"
+								value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.id}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['income.date']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="incomeDate" required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								validatorMessage="#{msg['error.NationalId']}"
+								value="#{healthCertificateBean.healthCertificate.healthArchiveLicence.id.arcRecord.incomeHDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['proof.type']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu required="true" style="width:100%" filter="true"
+								filterMatchMode="contains"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.arcPeople.paperType}">
+								<f:selectItem itemLabel="إختر نوع الإثبات"
+									noSelectionOption="true" />
+								<f:selectItem itemLabel="سجل مدني / هوية" itemValue="0" />
+								<f:selectItem itemLabel="سجل تجاري" itemValue="1" />
+								<f:selectItem itemLabel="إقامة" itemValue="1" />
+								<f:selectItem itemLabel="جواز سفر" itemValue="1" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['proof.number']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.arcPeople.nationalId}" />
 						</div>
 					</div>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['name']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.arcPeople.completeName}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['her.date']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.arcPeople.idDate}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['work']}" />
+						</div>
+						<div class="ui-g-2">
+							<!--   <p:inputText required="true" -->
+							<!-- 	 requiredMessage="#{msg['required.fields']}" -->
+							<!-- 	 value="#{healthCertificateBean.healthCertificate.jobId}" /> -->
+							<p:selectOneMenu required="true" style="width:100%" filter="true"
+								filterMatchMode="contains"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.jobId}">
+								<!-- 								value="#{healthCertificateBean.healthCertificate.healthCenter.id}"> -->
+								<f:selectItem itemLabel="إختر المهنة" noSelectionOption="true" />
+								<f:selectItems var="item"
+									value="#{healthCertificateBean.hlthLicJobsList}"
+									itemLabel="#{item.name}" itemValue="#{item.id}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['job']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.job.name}" />
+						</div>
+					</div>
+					<div class="ui-g">
+
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['nationality']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.arcPeople.nationality.nationalityName}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['guarantor']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.kafeelName}" />
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['licence.number']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}" filter="true"
+								filterMatchMode="contains"
+								value="#{healthCertificateBean.licNo}">
+								<!--  value="#{healthCertificateBean.healthCertificate.licenceId}" -->
+								<f:selectItem itemLabel="إختر الرخصة" noSelectionOption="true" />
+								<f:selectItems var="item"
+									value="#{healthCertificateBean.allLicencesList}"
+									itemLabel="#{item.licOwnerName} - #{item.licNo} "
+									itemValue="#{item.licNo}" />
+								<p:ajax listener="#{healthCertificateBean.updateTrdName}"
+									update="trdLicenceName" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="الإسم التجاري" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								id="trdLicenceName" requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.licTrdName}" />
+							<!--  value="#{healthCertificateBean.healthCertificate.trdLicenceName}" -->
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['typhoid.date']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="tefodDate" required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.tefodDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['meningitis.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hommaDate" required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.hommaDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['health.center']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu required="true" style="width:100%" filter="true"
+								filterMatchMode="contains"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificateID}">
+								<!--value="#{healthCertificateBean.healthCertificate.healthCenter.id}"> -->
+								<f:selectItem itemLabel="إختر المركز" noSelectionOption="true" />
+								<f:selectItems var="item"
+									value="#{healthCertificateBean.hlthLicCenterList}"
+									itemLabel="#{item.name}" itemValue="#{item.id}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['address']}" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText required="true" style="width:100%"
+								requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.trdLicenceAddress}" />
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['authorization.start.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="resultStartDate" required="true"
+								style="width:100%" requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.resultStartDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['authorization.end.date']}"
+								styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="resultEndDate" required="true"
+								style="width:100%" requiredMessage="#{msg['required.fields']}"
+								value="#{healthCertificateBean.healthCertificate.resultEndDate}"
+								onfocus="loadCalendar();"
+								styleClass="form-control form-controlCal">
+								<f:validator validatorId="utilities.UmmAlQUraValidator" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="#{msg['consultation.result']}"
+								styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="requestType" filter="true"
+								filterMatchMode="contains"
+								value="#{healthCertificateBean.healthCertificate.checkResult}"
+								style="width:100%; dir:rtl;">
+								<f:selectItem itemLabel="#{msg['worthy']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msg['not.worthy']}" itemValue="0" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<!-- 					<h:commandButton value="#{msg['print']}" -->
+					<!-- 						style="float:left;font-size: 10px !important;font-family: kufi !important;margin-left: 5px;margin-right: 5px;" -->
+					<!-- 						styleClass="btn btn-primary" action="#{healthCertificateBean.}"> -->
+					<!-- 						<f:ajax execute="@form"></f:ajax> -->
+					<!-- 					</h:commandButton> -->
 
 
-				</h:form>
-			</ui:define>
-		</ui:composition>
-	</h:body>
-</f:view>
+
+
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="#{msg['owner.picture']}" />
+						</div>
+						<br /> <br /> <br />
+						<div class="ui-g-8">
+							<h:form>
+								<!-- 												<p:graphicImage style="width:50% ;height:50%;" -->
+								<!-- 													value="#{healthCertificateBean.streamedcontent}"> -->
+
+								<!-- 												</p:graphicImage> -->
+							</h:form>
+						</div>
+
+					</div>
+
+					<br />
+				</div>
+
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
 </html>

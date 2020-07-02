@@ -1,0 +1,62 @@
+diff --git a/WebContent/store/search_temporary_receipt.xhtml b/WebContent/store/search_temporary_receipt.xhtml
+--- a/WebContent/store/search_temporary_receipt.xhtml
++++ b/WebContent/store/search_temporary_receipt.xhtml
+@@ -250,7 +250,7 @@
+ 
+ 						<br />
+ 						<div class="image-box-footer" align="left">
+-							<p:commandButton value="طباعة" ajax="false"
++							<p:commandButton value="طباعة" ajax="false" rendered="false"
+ 								onclick="this.form.target='_blank'" styleClass="purple-btn"
+ 								icon="ui-icon ui-icon-print"
+ 								action="#{stockEntryBean.printMemoReport_A4_Action()}" />
+diff --git a/src/com/bkeryah/stock/beans/StoreTemporaryReceipt.java b/src/com/bkeryah/stock/beans/StoreTemporaryReceipt.java
+--- a/src/com/bkeryah/stock/beans/StoreTemporaryReceipt.java
++++ b/src/com/bkeryah/stock/beans/StoreTemporaryReceipt.java
+@@ -191,7 +191,6 @@
+ 		if (article != null) {
+ 
+ 			// load car for رقم الهيكل ورقم البابا ورقم اللوحة ف الملاحظات
+-			System.out.println("article.getId() " + article.getId());
+ 			List<Car> carDetails = dataAccessService.loadCarDetailsByArtId(article.getId());
+ 			this.setNotes("");
+ 			Utils.updateUIComponent("includeform:desc");
+@@ -206,7 +205,6 @@
+ 				String str = "رقم الهيكل || " + carDetails.get(0).getChassisNumber() + "  رقم الباب || "
+ 						+ carDetails.get(0).getNumDoor() + "رقم اللوحة || " + carDetails.get(0).getMatricule();
+ 				this.setNotes(str);
+-				System.out.println("nootes" + notes);
+ 				Utils.updateUIComponent("includeform:desc");
+ 
+ 			}
+@@ -222,7 +220,6 @@
+ 	}
+ 
+ 	public String accept() {
+-		System.out.println("accept Step");
+ 		wrkAppComment = "";
+ 		applicationPurpose = "1";
+ 		try {
+@@ -245,7 +242,5 @@
+ 				temporeryReceiptDetails.setNotes(item.getNotes());
+ 				temporeryReceiptDetails.setArticleStatus(item.getArticleStatus());
+ 				temporeryReceiptDetailsList.add(temporeryReceiptDetails);
+-				System.out.println(
+-						"item = " + temporeryReceiptDetails.getQty() + " - " + temporeryReceiptDetails.getArticleId());
+ 				temporeryReceiptDetails = new StoreTemporeryReceiptDetails();
+ 			}
+@@ -250,6 +245,5 @@
+ 				temporeryReceiptDetails = new StoreTemporeryReceiptDetails();
+ 			}
+-			System.out.println("ListSize = " + temporeryReceiptDetailsList.size());
+ 			masterData();
+ 			if (temporeryReceiptDetailsList.size() > 0) {
+ 				storeTemporeryReceiptId = dataAccessService.addStoreTemporeryReceiptItems(storeTemporeryReceiptMaster,
+@@ -267,7 +261,6 @@
+ 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+ 			e.printStackTrace();
+ 		}
+-		System.out.println("ListSize = " + temporeryReceiptDetailsList.size());
+ 
+ 		return "mails";
+ 	}

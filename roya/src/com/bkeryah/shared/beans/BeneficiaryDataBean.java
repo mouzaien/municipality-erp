@@ -1,7 +1,9 @@
 package com.bkeryah.shared.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -9,6 +11,9 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 import com.bkeryah.entities.ArcPeople;
+import com.bkeryah.entities.NationalIdPlaces;
+import com.bkeryah.entities.NationalIdType;
+import com.bkeryah.entities.Nationality;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -21,48 +26,56 @@ public class BeneficiaryDataBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private ArcPeople peopleInfo = new ArcPeople();
-//	private List<NationalIdType> nationalityTypeList = new ArrayList<>();
-//	private List<Nationality> nationalityList = new ArrayList<>();
+	// private List<NationalIdType> nationalityTypeList = new ArrayList<>();
+	// private List<Nationality> nationalityList = new ArrayList<>();
+	private List<NationalIdType> nationalityTypeList = new ArrayList<>();
+	private List<Nationality> nationalityList = new ArrayList<>();
 	private String paperTypId;
 	private String nationalityId;
 	private List<ArcPeople> peoplesList;
-    private List<ArcPeople> filteredPeoples;
-    private boolean addMode;
-//	private List<NationalIdPlaces> nationalIdPlacesList = new ArrayList<>();
+	private List<ArcPeople> filteredPeoples;
+	private boolean addMode;
+	// private List<NationalIdPlaces> nationalIdPlacesList = new ArrayList<>();
 
-//	@PostConstruct
-//	public void init() {
-//		nationalityTypeList = dataAccessService.getAllNationalIdTypes();
-//		nationalityList = dataAccessService.getallNationalities();
-//		nationalIdPlacesList = dataAccessService.getallNationalIdPlaces();
-//
-//	}
-	
-	public void addPeople(){
+	private List<NationalIdPlaces> nationalIdPlacesList = new ArrayList<>();
+	private String idDate;
+	private String dateOfBirth;
+
+	@PostConstruct
+	public void init() {
+		nationalityTypeList = dataAccessService.getAllNationalIdTypes();
+		nationalityList = dataAccessService.getallNationalities();
+		nationalIdPlacesList = dataAccessService.getallNationalIdPlaces();
+
+	}
+
+	public void addPeople() {
 		addMode = true;
 		peopleInfo = new ArcPeople();
-    }
-	
-	public void loadPeople(ArcPeople userItem){
+	}
+
+	public void loadPeople(ArcPeople userItem) {
 		addMode = false;
 		peopleInfo = dataAccessService.loadArcPeople(userItem.getNationalId());
-		paperTypId = ""+peopleInfo.getPaperType();
-//		nationalityId = ""+peopleInfo.getNationalityId();
-    }
+		paperTypId = "" + peopleInfo.getPaperType();
+		// nationalityId = ""+peopleInfo.getNationalityId();
+	}
 
-	public void loadPeoples(){
+	public void loadPeoples() {
 		dataAccessService = null;
 		peoplesList = dataAccessService.loadArcPeopleFields();
 	}
-	
+
 	public void activeFields() {
 		addMode = true;
 	}
 
 	public void save() {
-//		peopleInfo.setPaperType(Integer.parseInt(paperTypId.trim()));
-//		peopleInfo.setNationalityId(Integer.parseInt(nationalityId.trim()));
+		// peopleInfo.setPaperType(Integer.parseInt(paperTypId.trim()));
+		// peopleInfo.setNationalityId(Integer.parseInt(nationalityId.trim()));
 		try {
+			peopleInfo.setIdDate(idDate);
+			peopleInfo.setDateOfBirth(dateOfBirth);
 			dataAccessService.addArcPeople(peopleInfo);
 			nationalityId = "";
 			paperTypId = "";
@@ -74,10 +87,10 @@ public class BeneficiaryDataBean {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 		}
 	}
-	
+
 	public void update() {
-//		peopleInfo.setPaperType(Integer.parseInt(paperTypId.trim()));
-//		peopleInfo.setNationalityId(Integer.parseInt(nationalityId.trim()));
+		// peopleInfo.setPaperType(Integer.parseInt(paperTypId.trim()));
+		// peopleInfo.setNationalityId(Integer.parseInt(nationalityId.trim()));
 		try {
 			dataAccessService.updateObject(peopleInfo);
 			nationalityId = "";
@@ -145,5 +158,45 @@ public class BeneficiaryDataBean {
 
 	public void setAddMode(boolean addMode) {
 		this.addMode = addMode;
+	}
+
+	public String getIdDate() {
+		return idDate;
+	}
+
+	public void setIdDate(String idDate) {
+		this.idDate = idDate;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public List<NationalIdType> getNationalityTypeList() {
+		return nationalityTypeList;
+	}
+
+	public void setNationalityTypeList(List<NationalIdType> nationalityTypeList) {
+		this.nationalityTypeList = nationalityTypeList;
+	}
+
+	public List<Nationality> getNationalityList() {
+		return nationalityList;
+	}
+
+	public void setNationalityList(List<Nationality> nationalityList) {
+		this.nationalityList = nationalityList;
+	}
+
+	public List<NationalIdPlaces> getNationalIdPlacesList() {
+		return nationalIdPlacesList;
+	}
+
+	public void setNationalIdPlacesList(List<NationalIdPlaces> nationalIdPlacesList) {
+		this.nationalIdPlacesList = nationalIdPlacesList;
 	}
 }

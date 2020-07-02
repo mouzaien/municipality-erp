@@ -14,7 +14,7 @@ public enum MailTypeEnum {
 																					246), GENERAL_APPRECIATION(
 																							248), PERFORMANCE_EVALUATION(
 																									247), TEMPORERY_RECEIPT(
-																											251),TRANSFER_OWNERSHIP(252);
+																											251),TRANSFER_OWNERSHIP(252),PENALTY(253);
 	private int value;
 
 	private MailTypeEnum(int value) {
@@ -103,6 +103,8 @@ public enum MailTypeEnum {
 			return MailTypeEnum.TEMPORERY_RECEIPT;
 		case 252:
 			return MailTypeEnum.TRANSFER_OWNERSHIP;
+		case 253:
+			return MailTypeEnum.PENALTY;
 		default:
 			return MailTypeEnum.ERROR;
 		}
@@ -170,6 +172,9 @@ public enum MailTypeEnum {
 			return MailTypeEnum.TEMPORERY_RECEIPT;
 		case "TRANSFER_OWNERSHIP":
 			return MailTypeEnum.TRANSFER_OWNERSHIP;
+		case "PENALTY":
+			return MailTypeEnum.PENALTY;
+			
 		default:
 			return MailTypeEnum.ERROR;
 		}

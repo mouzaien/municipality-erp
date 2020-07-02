@@ -8,7 +8,7 @@
 		        http://www.springframework.org/schema/context 
 		        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<context:component-scan base-package="com.bkeryah,common.Util" />
+	<context:component-scan base-package="com.bkeryah,common.Util,utilies" />
 	<!-- Beans Declaration -->
 	<bean id="springContext" class="com.bkeryah.licences.SpringContext" />
 	<bean id="myUserDetailsService" class="common.Util.MyUserDetailsService" />
@@ -34,9 +34,9 @@
 	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:orcl" />
-		<property name="user" value="project" />
-		<property name="password" value="oraserverdb201" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:ORCL" />
+		<property name="user" value="roya" />
+		<property name="password" value="123" />
 		<property name="initialPoolSize" value="1" />
 		<property name="maxPoolSize" value="20" />
 		<property name="maxStatements" value="20" />
@@ -296,6 +296,14 @@
 				<value>com.bkeryah.entities.WrkDept2</value>
 				<value>com.bkeryah.entities.TransferOwnership</value>
 				<value>com.bkeryah.hr.entities.Sys035</value>
+				<value>com.bkeryah.entities.licences.LicVisitsTypes</value>
+				<value>com.bkeryah.entities.licences.LicVisits</value>
+				<value>com.bkeryah.entities.LicCities</value>
+				<value>com.bkeryah.entities.LicStreet</value>
+				<value>com.bkeryah.entities.LicDistrict</value>
+				<value>com.bkeryah.entities.LicActivityTypeRy</value>
+				<value>com.bkeryah.penalties.LicSection</value>
+				<value>com.bkeryah.penalties.LicDepartment</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

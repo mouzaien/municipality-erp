@@ -24,7 +24,7 @@ public class Article {
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	private int id;
-	
+
 	@Column(name = "sub_group_id")
 	private Integer subGroupId;
 
@@ -67,19 +67,21 @@ public class Article {
 
 	@Transient
 	private String unitName;
-	
+
 	@Transient
 	private Integer qty;
-	
+
 	@Transient
 	private Integer exchMasterId;
-	
+
 	@Transient
 	private String exchMasterDate;
-	
+	@Transient
+	private String typeInString;
+
 	@Transient
 	private Integer reqType;
-	
+
 	@Formula("(select n.STRNAME from WHS_WAREHOUSES n where  n.STRNO = STRNO)")
 	private String strName;
 
@@ -235,5 +237,24 @@ public class Article {
 		this.reqType = reqType;
 	}
 
+	public String getTypeInString() {
+		if (artType != null) {
+			switch (artType) {
+			case 1:
+				typeInString = "مستهلك";
+				break;
+			case 2:
+				typeInString = "مستديمة";
+				break;
+			default:
+				break;
+			}
+		}
+		return typeInString;
+	}
+
+	public void setTypeInString(String typeInString) {
+		this.typeInString = typeInString;
+	}
 
 }

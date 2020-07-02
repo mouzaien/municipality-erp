@@ -185,6 +185,7 @@ import com.bkeryah.entities.licences.BldLicNew;
 import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
+import com.bkeryah.entities.licences.LicVisits;
 import com.bkeryah.fng.entities.AutorizationSettings;
 import com.bkeryah.fng.entities.FngStatusAbsence;
 import com.bkeryah.fng.entities.FngTimeTable;
@@ -769,11 +770,11 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public ArcUsers loadUser(final String username, final String password) throws AuthenticationException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
 		criteria.add(Restrictions.sqlRestriction("UPPER(LOGIN_NAME) = UPPER(?)", username, StringType.INSTANCE));
-		if (password != null) {
-			Object[] params = { username, password };
-			Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
-			criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?, ?)", params, types));
-		}
+//		if (password != null) {
+//			Object[] params = { username, password };
+//			Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
+//			criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?, ?)", params, types));
+//		}
 		List<ArcUsers> result = criteria.list();
 		if (CollectionUtils.isEmpty(result))
 			throw new BadCredentialsException("bad credentials");
@@ -2133,11 +2134,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("strNo", srtNo));
 		return criteria.list();
 	}
+
 	@Override
 	@Transactional
 	public List<Article> getAllArticlesByGroupId(Integer groupId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
-		criteria.add(Restrictions.eq("groupId",groupId ));
+		criteria.add(Restrictions.eq("groupId", groupId));
 		return criteria.list();
 	}
 
@@ -4043,8 +4045,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<LicTrdMasterFile> loadLicences() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class)
 				.setProjection(Projections.projectionList().add(Projections.property("licNo"), "licNo")
-						.add(Projections.property("trdName"), "trdName").add(Projections.property("aplOwner"),
-								"aplOwner"))
+						.add(Projections.property("trdName"), "trdName")
+						.add(Projections.property("phoneNumber"), "phoneNumber")
+						.add(Projections.property("licBeginDate"), "licBeginDate")
+						.add(Projections.property("licEndDate"), "licEndDate")
+						.add(Projections.property("licAdress"), "licAdress")
+						.add(Projections.property("aplOwner"), "aplOwner"))
 				.setResultTransformer(Transformers.aliasToBean(LicTrdMasterFile.class));
 		return criteria.list();
 	}
@@ -4766,4 +4772,38 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return propsList;
 	}
 
+	@Override
+	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo) {
+		List<StoreTemporeryReceiptMaster> strTempList = new ArrayList<StoreTemporeryReceiptMaster>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
+		criteria.add(Restrictions.eq("strNo", strNo));
+		strTempList = criteria.list();
+
+		return strTempList;
+	}
+
+	@Override
+	public LicTrdMasterFile getLicencesByLicNo(String licNo) {
+		LicTrdMasterFile licTrd = new LicTrdMasterFile();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licNo", licNo));
+		licTrd = (LicTrdMasterFile) criteria.uniqueResult();
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisits> findAllVisitsByLicId(Integer licNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicVisits.class);
+		criteria.add(Restrictions.eq("licId", licNo));
+		return criteria.list();
+	}
+	
+	@Override
+	@Transactional
+	public List<User> getAllSupervisor(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+	}
 }

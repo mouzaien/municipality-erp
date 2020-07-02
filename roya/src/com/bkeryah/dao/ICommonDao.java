@@ -123,6 +123,7 @@ import com.bkeryah.entities.licences.BldLicNew;
 import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
+import com.bkeryah.entities.licences.LicVisits;
 import com.bkeryah.fng.entities.AutorizationSettings;
 import com.bkeryah.fng.entities.FngStatusAbsence;
 import com.bkeryah.fng.entities.FngTimeTable;
@@ -1095,5 +1096,13 @@ public interface ICommonDao {
 	public List<SysProperties> getDeansIdInSysProperties();
 
 	List<Article> getAllArticlesByGroupId(Integer groupId);
+
+	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo);
+
+	public LicTrdMasterFile getLicencesByLicNo(String licNo);
+
+	List<LicVisits> findAllVisitsByLicId(Integer licNo);
+
+	List<User> getAllSupervisor(Integer deptId);
 
 }

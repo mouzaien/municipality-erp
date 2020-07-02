@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="licences_report" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5608e1ff-4778-46f0-b5e9-1b2cdebd44a5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<parameter name="licNo" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	ltmf.ID ,
+	AQR_OWNER_NAME ,  
+	TRD_NAME ,
+	APL_OWNER,
+	PHONE_NUMBER,
+	actv.NAME AS ACTIVITY,
+	LIC_NO,
+	LIC_DT_BGN_H,
+	LIC_DT_END_H,
+	MHL_ADDRS,
+	APL_OWNER, 
+	MHL_ID
+FROM
+	lic_trd_master_file ltmf ,
+	LIC_ACTIVITY_TYPE_RY actv
+WHERE
+	LIC_NO = $P{licNo}
+	AND ltmf.MAIN_ACTV = ACTV.ID]]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="TRD_NAME" class="java.lang.String"/>
+	<field name="AQR_OWNER_NAME" class="java.lang.String"/>
+	<field name="APL_OWNER" class="java.lang.String"/>
+	<field name="PHONE_NUMBER" class="java.lang.String"/>
+	<field name="ACTIVITY" class="java.lang.String"/>
+	<field name="LIC_NO" class="java.lang.String"/>
+	<field name="LIC_DT_BGN_H" class="java.lang.String"/>
+	<field name="LIC_DT_END_H" class="java.lang.String"/>
+	<field name="MHL_ADDRS" class="java.lang.String"/>
+	<field name="MHL_ID" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="20" width="212" height="28" uuid="9c5f06ba-3f25-49e8-ad78-54552062789e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بيانات الرخصة"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="20" width="90" height="20" uuid="4ead3215-6f1a-4b2e-af19-5231d5a42fd5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[رقم الرخصة:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="100" height="20" uuid="12a08fa4-11ed-46c8-a1b3-3ea1d2b563c0"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIC_NO}== null?"":(""+$F{LIC_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="5" width="140" height="15" uuid="dc91d202-3c04-4325-939e-6e13d744a67e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="20" width="120" height="15" uuid="942e9910-9483-4bea-bdd7-2f0534b6272a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[أمانة منطقة القصيم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="35" width="120" height="15" uuid="99d9b1f0-0a3a-4dd6-99e7-0ab30f1b7f25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[بلدية محافظة المذنب]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="40" width="90" height="20" uuid="7ca7a75a-2d9e-406b-a5b4-b44d9a568155"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[النشاط :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="40" width="100" height="20" uuid="0996de8f-d564-4ee2-9338-0e93ece63017"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ACTIVITY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="237" splitType="Stretch">
+			<staticText>
+				<reportElement x="460" y="20" width="90" height="30" uuid="6e1c9eba-1f3d-4144-a300-aedc0e377f69">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[إسم المالك :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="20" width="180" height="30" uuid="3b85cf2d-2873-4b73-8798-a0e460cce97b"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AQR_OWNER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="51" width="460" height="30" uuid="1e4a6457-fd15-40d4-bb50-8d9ff29c2648"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TRD_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="51" width="110" height="30" uuid="4c88e907-3baa-4f13-a92b-0268e51ca025">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[إسم المنشئة :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="111" width="100" height="30" uuid="34849fcb-aeeb-4d7f-9da0-c52e9695cdfd">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[السجل المدني :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="111" width="180" height="30" uuid="baadaebe-e9f9-4321-aab4-7f34520f15f3"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APL_OWNER}== null?"":(""+$F{APL_OWNER}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="20" width="90" height="30" uuid="09de34ed-ce37-4f38-a7ca-fb16b4ff921a">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[رقم الجوال :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="111" width="190" height="30" uuid="2a744b71-56c2-4e57-8f46-444609e45a2b"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MHL_ID}== null?"":(""+$F{MHL_ID}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="111" width="100" height="30" uuid="ab5a68f9-f47e-42bf-ac35-70bf895e5a89">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[السجل التجاري :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="190" height="30" uuid="615aaf41-f796-4931-bbf3-a668f93a676b"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHONE_NUMBER}== null?"":(""+$F{PHONE_NUMBER}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="81" width="460" height="30" uuid="d7d2973b-5dc0-4155-95f5-6a1451f65db5"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MHL_ADDRS}== null?"":(""+$F{MHL_ADDRS}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="81" width="110" height="30" uuid="1953de1d-41f1-4e82-aa27-9527cbd252ee">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[العنوان :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="141" width="100" height="30" uuid="b7e1a8f5-3b45-485e-8698-22dd90ed108d">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[تاريخ النهاية :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="141" width="190" height="30" uuid="48c7fc57-36f9-4dc3-9301-dd583b0eb9c6"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIC_DT_END_H}== null?"":(""+$F{LIC_DT_END_H}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="141" width="180" height="30" uuid="faf6b68c-54d2-4543-ab37-7e280d3f6b9c"/>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIC_DT_BGN_H}== null?"":(""+$F{LIC_DT_BGN_H}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="141" width="90" height="30" uuid="96bed5e2-bac9-4d95-b5e4-1c0e028bd166">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[تاريخ البداية :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

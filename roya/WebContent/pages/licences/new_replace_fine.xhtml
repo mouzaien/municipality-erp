@@ -27,12 +27,12 @@
 			<h:form id="includeform">
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer" align="left">
-					<p:commandButton styleClass="cyan-btn" value="#{msg['back']}"
-						action="mails" immediate="true" icon="ui-icon ui-icon-arrow-back">
-					</p:commandButton>
+<!-- 					<p:commandButton styleClass="cyan-btn" value="#{msg['back']}" -->
+<!-- 						action="mails" immediate="true" icon="ui-icon ui-icon-arrow-back"> -->
+<!-- 					</p:commandButton> -->
 					<p:spacer width="10px" height="10px"></p:spacer>
 					<p:commandButton styleClass="orange-btn"
-						value="#{msg['print.report']}"
+						value="#{msg['print.report']}" 
 						action="#{newReplaceFinBean.printt}"
 						onclick="this.form.target='_blank'" icon="ui-icon ui-icon-print">
 					</p:commandButton>
@@ -52,7 +52,7 @@
 							<h:outputLabel value="اصدار فاتوره" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
-							<p:inputText id="fromNumber" value="#{newReplaceFinBean.oldBill}"
+							<p:inputText id="fromNumber" value="#{newReplaceFinBean.oldBill}" 
 								styleClass="form-control">
 							</p:inputText>
 						</div>

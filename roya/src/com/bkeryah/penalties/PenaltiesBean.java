@@ -38,9 +38,17 @@ public class PenaltiesBean {
 		wrkFines = dataAccessService.getAllWrkFinesEntity();
 	}
 
-	public void addpenalty(ActionEvent event) {
-		dataAccessService.save(wrkFiner);
-		wrkFines = dataAccessService.getAllWrkFinesEntity();
+	public void addpenalty() {
+		try {
+			wrkFiner.setFnSentStatus(0);
+			dataAccessService.save(wrkFiner);
+			wrkFines = dataAccessService.getAllWrkFinesEntity();
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+		} catch (Exception e) {
+			e.getStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+
+		}
 
 	}
 
@@ -51,9 +59,17 @@ public class PenaltiesBean {
 	}
 
 	public void onRowEdit(RowEditEvent event) {
-		wrkFiner = ((WrkFinesEntity) event.getObject());
-		dataAccessService.updateObject(wrkFiner);
-		wrkFines = dataAccessService.getAllWrkFinesEntity();
+		try {
+			wrkFiner = ((WrkFinesEntity) event.getObject());
+			dataAccessService.updateObject(wrkFiner);
+			wrkFines = dataAccessService.getAllWrkFinesEntity();
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+		} catch (Exception e) {
+			e.getStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+
+		}
+
 	}
 
 	public void onRowCancel(RowEditEvent event) {

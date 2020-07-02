@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<script type="text/javascript">
+		window.onload = window.history.forward(0);
+	</script>
+
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform" dir="rtl">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+
+					<div align="left" class="image-box-footer">
+
+						<p:commandButton value="إضــافة" onclick=" PF('Uo_dd').show()"
+							icon="fa fa-plus" styleClass="cyan-btn">
+						</p:commandButton>
+					</div>
+					<br />
+					<h1 style="color: #7CB342; float: unset; text-align: center;">
+						أنواع الزيارات <span class="ui-icon ui-icon-location-city"></span>
+					</h1>
+					<br></br>
+					<p:dataTable var="visits" id="inboxdt" widgetVar="visitCell"
+						value="#{licVisitsTypesBean.visitsList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{licVisitsTypesBean.filteredvisitList}"
+						paginator="true" rows="13">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('visitCell').filter()" style="width:150px"
+									placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:column style="white-space: nowrap;text-align: center;"
+							headerText="التسلسل" width="30%">										
+								#{rowIndex+1}							
+								</p:column>
+						<p:column headerText="الأسم" width="80%" filterBy="#{visits.name}">
+							<h:outputText value="#{visits.name}"></h:outputText>
+
+						</p:column>
+						<p:column headerText="الوصف" width="80%"
+							filterBy="#{visits.visitsDesc}">
+							<h:outputText value="#{visits.visitsDesc}"></h:outputText>
+
+						</p:column>
+						<p:column headerText="النوع" width="80%" filterBy="#{visits.type}">
+							<p:selectOneMenu id="customRadio" style="width:100%; opacity:1 "
+								value="#{visits.type}" disabled="true">
+								<f:selectItem itemValue="0" itemLabel="دورية" />
+								<f:selectItem itemValue="1" itemLabel="فجائية" />
+								<f:selectItem itemValue="2" itemLabel="شكوي" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column headerText="عدد الايام" width="80%"
+							filterBy="#{visits.daysNo}">
+							<h:outputText value="#{visits.daysNo}"></h:outputText>
+						</p:column>
+
+						<p:column headerText="تعديل" width="20%" style="text-align:center">
+							<p:commandButton onclick="PF('job_dlg').show()" process="@this"
+								icon="ui-icon-create" update="includeform:myDialog">
+								<f:setPropertyActionListener value="#{visits}"
+									target="#{licVisitsTypesBean.visits}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<br />
+					<!-- ************************************INSERT***************************************** -->
+					<p:dialog header="إضافة" widgetVar="Uo_dd" id="U_id" width="60%"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+						<h:panelGroup id="myaddDialog">
+							<p:fieldset>
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الأسم" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText value="#{licVisitsTypesBean.name}"
+											style="width:100%"></p:inputText>
+									</div>
+
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الوصف" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText value="#{licVisitsTypesBean.visitsDesc}"
+											style="width:100%"></p:inputText>
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<h:outputLabel value="عدد الأيام" />
+									</div>
+									<div class="ui-g-3">
+
+										<p:inputNumber id="Input1"
+											value="#{licVisitsTypesBean.daysNo}">
+										</p:inputNumber>
+									</div>
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="النوع" />
+									</div>
+									<div class="ui-g-3">
+										<h:panelGrid columns="2" style="margin-bottom:10px"
+											cellpadding="5">
+											<p:selectOneRadio id="console"
+												value="#{licVisitsTypesBean.type}" unselectable="true">
+												<f:selectItem itemValue="0" itemLabel="دورية" />
+												<f:selectItem itemValue="1" itemLabel="فجائية" />
+												<f:selectItem itemValue="2" itemLabel="شكوي" />
+											</p:selectOneRadio>
+										</h:panelGrid>
+
+									</div>
+								</div>
+							</p:fieldset>
+						</h:panelGroup>
+						<br></br>
+						<br></br>
+						<div align="left" class="image-box-footer"
+							style="text-align: center">
+							<p:commandButton value="حفظ"
+								action="#{licVisitsTypesBean.saveVisits}"
+								onclick="PF('Uo_dd').hide()" update="@form"
+								styleClass="cyan-btn">
+								<f:ajax render="@form"></f:ajax>
+							</p:commandButton>
+							<p:spacer width="10px" height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								onclick="PF('Uo_dd').hide()" />
+						</div>
+					</p:dialog>
+					<!-- ***********************************Edite****************************************** -->
+					<p:dialog header="التعديل" widgetVar="job_dlg" id="job_dlgId"
+						width="70%" hideEffect="fade" showEffect="explode" dir="rtl"
+						modal="true" resizable="false">
+						<h:panelGroup id="myDialog">
+							<p:fieldset>
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الاسم" />
+									</div>
+									<div class="ui-g-5">
+										<p:inputText value="#{licVisitsTypesBean.visits.name}"
+											style="width: 100%"></p:inputText>
+									</div>
+									<div class="ui-g-1">
+										<h:outputLabel styleClass="btxt" value="الوصف" />
+									</div>
+									<div class="ui-g-5">
+										<p:inputText value="#{licVisitsTypesBean.visits.visitsDesc}"
+											style="width: 100%"></p:inputText>
+									</div>
+									<div class="ui-g">
+										<div class="ui-g-1">
+											<h:outputLabel value="عدد الأيام" />
+										</div>
+										<div class="ui-g-5">
+
+											<p:inputNumber value="#{licVisitsTypesBean.visits.daysNo}"
+												style="width: 100%">
+											</p:inputNumber>
+										</div>
+										<div class="ui-g-1">
+											<h:outputLabel styleClass="btxt" value="النوع" />
+										</div>
+										<div class="ui-g-3">
+											<h:panelGrid columns="2" style="margin-bottom:10px"
+												cellpadding="5">
+												<p:selectOneRadio id="con"
+													value="#{licVisitsTypesBean.visits.type}"
+													unselectable="true">
+													<f:selectItem itemValue="0" itemLabel="دورية" />
+													<f:selectItem itemValue="1" itemLabel="فجائية" />
+													<f:selectItem itemValue="2" itemLabel="شكوي" />
+												</p:selectOneRadio>
+											</h:panelGrid>
+										</div>
+									</div>
+								</div>
+							</p:fieldset>
+							<br></br>
+							<br />
+							<div align="left" class="image-box-footer"
+								style="text-align: center">
+								<p:commandButton value="تعديل"
+									action="#{licVisitsTypesBean.updateVisits}"
+									onclick="PF('job_dlg').hide()" update="includeform:inboxdt"
+									styleClass="cyan-btn">
+								</p:commandButton>
+
+								<p:spacer width="10px" height="10px"></p:spacer>
+								<p:commandButton value="رجوع" immediate="true"
+									onclick="PF('job_dlg').hide()" />
+							</div>
+						</h:panelGroup>
+					</p:dialog>
+				</h:form>
+			</ui:define>
+
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

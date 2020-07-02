@@ -26,18 +26,18 @@
 
 					<div class="image-box-footer" align="left">
 						<p:commandButton value="#{msg['back']}" action="search_bill"
-							immediate="true">
+							immediate="true"  styleClass="orange-btn">
 							<f:ajax execute="@form"></f:ajax>
 						</p:commandButton>
 						<p:spacer width="10px" height="10px"></p:spacer>
-						<p:commandButton value="طباعة" immediate="true"
-							styleClass="orang-btn" onclick="this.form.target='_blank'" ajax="false"
-							action="#{billBean.printBillReport}">
+						<p:commandButton value="طباعة" immediate="true" ajax="false"
+							icon="ui-icon ui-icon-print" onclick="this.form.target='_blank'"
+							styleClass="purple-btn" action="#{billBean.printBillReport}">
 						</p:commandButton>
 						<p:spacer width="10px" height="10px"></p:spacer>
 						<p:commandButton value="#{msg['save']}"
-							rendered="#{!billBean.consultMode}" styleClass="cyan-btn"
-							onclick="this.form.target='_blank'"
+							rendered="#{!billBean.consultMode}" styleClass="green-btn"
+							 immediate="true"
 							actionListener="#{billBean.saveBillAction}">
 							<f:ajax execute="@form" render="@form"></f:ajax>
 						</p:commandButton>
@@ -84,9 +84,10 @@
 								<h:outputLabel value="#{msg['bill.owner.name']}"
 									styleClass="btxt" />
 							</div>
-							<div class="ui-g-3">
+							<div class="ui-g-5">
 								<p:inputText value="#{billBean.payLicBill.billOwnerName}"
-									disabled="#{billBean.consultMode}" styleClass="form-control" />
+									style="width:100%;" disabled="#{billBean.consultMode}"
+									styleClass="form-control" />
 							</div>
 						</div>
 						<div class="ui-g">
@@ -96,12 +97,28 @@
 							</div>
 							<div class="ui-g-3">
 								<p:inputText value="#{billBean.payLicBill.payInstallNumber}"
-									converterMessage="#{msg['error.phone.number']}"
+									converterMessage="#{msg['error.phone.number']}" required="true"
+									requiredMessage="رقم الجوال مطلوب"
 									disabled="#{billBean.consultMode}" styleClass="form-control">
 									<f:validator validatorId="utilities.PhoneNumberValidator" />
 								</p:inputText>
 							</div>
 						</div>
+
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<h:outputLabel value="رقم السجل" styleClass="btxt" />
+							</div>
+							<div class="ui-g-3">
+								<p:inputText value="#{billBean.payLicBill.aplOwner}"
+									converterMessage="#{msg['error.NationalId']}" required="true"
+									requiredMessage="رقم السجل مطلوب"
+									disabled="#{billBean.consultMode}" styleClass="form-control">
+									<f:validator validatorId="nationalIdValidator" />
+								</p:inputText>
+							</div>
+						</div>
+
 						<h:panelGroup rendered="#{!billBean.consultMode}">
 							<div class="ui-g">
 								<div class="ui-g-2">
@@ -109,10 +126,12 @@
 										rendered="#{!billBean.consultMode}" styleClass="btxt" />
 								</div>
 								<div class="ui-g-3">
-									<p:selectOneMenu id="itemsList" filter="true"
-										filterMatchMode="contains" rendered="#{!billBean.consultMode}"
+									<p:selectOneMenu id="itemsList" filter="true" required="true"
+										requiredMessage="ادخل البند مطلوب" filterMatchMode="contains"
+										rendered="#{!billBean.consultMode}"
 										value="#{billBean.selectedItemId}">
-										<f:selectItem itemLabel="أختر من البنود" itemValue="" />
+										<f:selectItem itemLabel="أختر من البنود" itemValue=""
+											noSelectionOption="true" />
 										<f:selectItems value="#{billBean.itemsList}" var="categ"
 											itemLabel="#{categ.accountNumber} - #{categ.name}"
 											itemValue="#{categ.accountNumber}" />
@@ -122,7 +141,7 @@
 							<div class="ui-g">
 								<div class="ui-g-2" />
 								<div class="ui-g-1">
-									<p:inputText value="#{billBean.amount}" placeholder="المبلغ"
+									<p:inputNumber value="#{billBean.amount}" placeholder="المبلغ"
 										rendered="#{!billBean.consultMode}" size="5"
 										styleClass="form-control" />
 								</div>

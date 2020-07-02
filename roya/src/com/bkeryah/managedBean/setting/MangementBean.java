@@ -48,14 +48,15 @@ public class MangementBean {
 			if (mang != null) {
 				mang = new WrkArchiveRcipent();
 				mang.setTitle(title);
-				mang.setId(id);
+				mang.setUserId(id);
 				dataAccessService.save(mang);
 				wrkList = dataAccessService.findAllMang();
+				MsgEntry.addInfoMessage("تم الإضافة");
 			}
-			MsgEntry.addInfoMessage("تم الإضافة");
+			
 
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage("خطأ:لم يتم الإضافة");
+			MsgEntry.addErrorMessage("هذا المستخدم لديه لقب بالفعل");
 			e.printStackTrace();
 		}
 
@@ -67,11 +68,11 @@ public class MangementBean {
 			if (mang != null) {
 				dataAccessService.updateObject(mang);
 				mang = new WrkArchiveRcipent();
-				// logger.info("update User:id:" + mang.getId());
+				logger.info("update User:id:" + mang.getId());
+				MsgEntry.addInfoMessage("تم التعديل");
 			}
-			MsgEntry.addInfoMessage("تم التعديل");
 		} catch (Exception e) {
-			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation") + e.getMessage());
+			MsgEntry.addErrorMessage("هذا المستخدم لديه لقب بالفعل");
 			e.printStackTrace();
 		}
 
@@ -82,8 +83,8 @@ public class MangementBean {
 		try {
 			if (mang != null) {
 				dataAccessService.deleteObject(mang);
+				MsgEntry.addInfoMessage("تم الحذف");
 			}
-			MsgEntry.addInfoMessage("تم الحذف");
 		} catch (Exception e) {
 			MsgEntry.addErrorMessage("لم يتم الحذف");
 			e.printStackTrace();

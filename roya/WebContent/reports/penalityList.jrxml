@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="artical_card" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="752dc002-b410-4732-a584-4d1b8d13417d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<parameter name="type" class="java.lang.String"/>
+	<parameter name="desc" class="java.lang.String"/>
+	<parameter name="carColor" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select FINE_CODE sub,FINE_DESC type,FINE_MINIMUM_VALUE min,FINE_SUPERMUM_VALUE max from REQ_FINES_SETUP]]>
+	</queryString>
+	<field name="type" class="java.lang.String"/>
+	<field name="sub" class="java.lang.String"/>
+	<field name="min" class="java.lang.Double"/>
+	<field name="max" class="java.lang.Double"/>
+	<pageHeader>
+		<band height="137" splitType="Stretch">
+			<staticText>
+				<reportElement x="144" y="60" width="268" height="22" uuid="9dad1304-c0ce-4832-abaa-6896dfb1a2cf"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[حد العقوبة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="60" width="220" height="42" uuid="7217a34d-8332-44ec-91c9-ed83807b6abc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[نوع المخالفة]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="279" y="102" width="133" height="30" uuid="69edb49d-37b7-49b4-b2f4-d689432af7d2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{min}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="512" y="102" width="220" height="30" uuid="74413444-ba71-4e00-b8b2-f8c9c68ff9e6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="680" y="3" width="120" height="15" uuid="a140d0df-7150-47f9-9afb-dd268d3b4257"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="18" width="120" height="15" uuid="6752872a-cca9-4e99-865b-e4142127fbc4"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[أمانة منطقة القصيم
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="33" width="120" height="15" uuid="51b8ae9b-7271-4a55-b054-30acdc9d8662"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[بلدية محافظة المذنب
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="27" width="140" height="30" uuid="beaf231f-f34e-4e67-8f15-4191a16f90e3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[لائحة الغرامات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="60" width="100" height="42" uuid="953d43a6-84dc-4420-a4b5-b314585c69dc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المادة
+]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="412" y="102" width="100" height="30" uuid="79f67410-50ca-4fe2-8864-401695492afc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sub}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="82" width="133" height="20" uuid="888f6c64-650a-4308-a9d7-92d72ab3544c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الأدني]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="82" width="135" height="20" uuid="d96a6305-86ca-4b93-94ad-ce3dfb95f0d0"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الأعلي
+]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="144" y="102" width="135" height="30" uuid="6eacf8d9-3d07-4058-a9e3-0370cb7d2dc1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{max}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

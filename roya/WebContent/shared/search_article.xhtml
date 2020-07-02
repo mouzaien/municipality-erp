@@ -43,6 +43,12 @@
 		<!-- /*  background-size: 25px 26px; */ -->
 		<!-- /* } */ -->
 		<!-- </style> -->
+		<style>
+.bodyt {
+	height: 200px;
+	overflow: auto
+}
+</style>
 	</h:head>
 	<ui:composition template="/template.xhtml">
 
@@ -74,7 +80,7 @@
 							<p:selectOneMenu styleClass="form-control" id="stockNO"
 								placeholder="إختر المستودع" value="#{exchangeRequestBean.strNo}"
 								style="direction: rtl;height: 39px;">
-<!-- 								<f:selectItem itemLabel="إختر المستودع" itemValue="-1"></f:selectItem> -->
+								<!-- 								<f:selectItem itemLabel="إختر المستودع" itemValue="-1"></f:selectItem> -->
 								<f:selectItems value="#{exchangeRequestBean.allWareHouses}"
 									var="c" itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
 								<p:ajax process="@this" update="articleTable"
@@ -168,34 +174,35 @@
 
 						</div>
 						<br />
-						<table id="tabStore" class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th style="width: 20%; text-align: center">اسم العملية</th>
-									<th style="width: 20%; text-align: center">رقم المستند</th>
-									<th style="width: 20%; text-align: center">تاريخ العملية</th>
-									<th style="width: 20%; text-align: center">المستند</th>
-									<th style="width: 20%; text-align: center">الكمية الخارجة</th>
-
-
-								</tr>
-							</thead>
-							<tbody>
-								<ui:repeat var="det" varStatus="x"
-									value="#{exchangeRequestBean.articleStore.historyList}">
+						<div class="bodyt"  style="height: 200px; overflow: auto">
+							<table id="tabStore" class="table table-striped table-hover" >
+								<thead>
 									<tr>
-										<td style="text-align: center">#{det.transactionName}</td>
-										<td style="text-align: center">#{det.serialNumber}</td>
-										<td style="text-align: center">#{det.transactionDate}</td>
-										<td style="text-align: center">#{det.specialNumber}</td>
-										<td style="text-align: center">#{det.qtyOutput}</td>
+										<th style="width: 20%; text-align: center">اسم العملية</th>
+										<th style="width: 20%; text-align: center">رقم المستند</th>
+										<th style="width: 20%; text-align: center">تاريخ العملية</th>
+										<th style="width: 20%; text-align: center">المستند</th>
+										<th style="width: 20%; text-align: center">الكمية الخارجة</th>
+
 
 									</tr>
+								</thead>
+								<tbody>
+									<ui:repeat var="det" varStatus="x"
+										value="#{exchangeRequestBean.articleStore.historyList}">
+										<tr>
+											<td style="text-align: center">#{det.transactionName}</td>
+											<td style="text-align: center">#{det.serialNumber}</td>
+											<td style="text-align: center">#{det.transactionDate}</td>
+											<td style="text-align: center">#{det.specialNumber}</td>
+											<td style="text-align: center">#{det.qtyOutput}</td>
 
-								</ui:repeat>
-							</tbody>
-						</table>
+										</tr>
 
+									</ui:repeat>
+								</tbody>
+							</table>
+						</div>
 
 
 

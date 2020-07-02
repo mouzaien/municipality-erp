@@ -50,6 +50,7 @@ import com.bkeryah.entities.HrsEmpHistorical;
 import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
+import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.hr.entities.HrsCompactFloors;
@@ -60,6 +61,7 @@ import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.ReqFinesMaster;
+import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
 
 /**
  *
@@ -607,4 +609,8 @@ public interface DataAccess {
 	List<Article> getArticlesByUserIdWithoutCars(Integer userId);
 
 	List<Article> get3ohadByUserId(Integer userId);
+
+	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo);
+
+	public List<StoreTemporeryReceiptDetailsModel> getTempReceiptDetailsList(Integer temp_receipt_id);
 }

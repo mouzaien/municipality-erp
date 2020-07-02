@@ -28,6 +28,7 @@ public class ReqFinesMaster {
 	private String fDeptNo;
 	@Column(name = "F_NAME")
 	private String fName;
+	//رقم السجل المدني
 	@Column(name = "F_ID_NO")
 	private String fIdNo;
 	@Column(name = "F_ID_ISSUE_DATE")
@@ -80,6 +81,15 @@ public class ReqFinesMaster {
 	private String mgrDependDate;
 	@Column(name = "MGR_DEPEND_ID")
 	private Long mgrDependId;
+	// مكرر او غير مكرر  0و 1
+	@Column(name = "REPEAT")
+	private Integer repeat;
+	//حد ادني وحد اعلى  0 و 1
+	@Column(name = "TYPE_VALUE")
+	private Integer typeValue;
+	
+	@Column(name = "STATUS")
+	private String status;
 	//0:normal penality, 1:from notification that need agreement
 	@Column(name = "TYPE")
 	private Integer type;
@@ -88,10 +98,20 @@ public class ReqFinesMaster {
 	//@Transient
 	@Formula("(select d.DEPT_NAME from WRK_DEPT d where d.id = F_DEPT_NO)")
 	private String deptName;
+	
+	@Formula("(select u.EMPNAME from ARC_USERS u where u.user_id = F_SUPERVISOR_CODE)")
+	private String supervisorNameView;
+	
+	@Formula("(select u.MHL_ID from lic_trd_master_file u where u.LIC_NO = F_LICENCE_NO)")
+	private String mahlId;
+	
 	@Transient
 	private String supervisorName;
 	@Transient
 	private Double totalValue;
+	
+	@Transient
+	private String phoneNumber;
 	
 	public Integer getFineNo() {
 		return fineNo;
@@ -376,6 +396,54 @@ public class ReqFinesMaster {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getSupervisorNameView() {
+		return supervisorNameView;
+	}
+
+	public void setSupervisorNameView(String supervisorNameView) {
+		this.supervisorNameView = supervisorNameView;
+	}
+
+	public String getMahlId() {
+		return mahlId;
+	}
+
+	public void setMahlId(String mahlId) {
+		this.mahlId = mahlId;
+	}
+
+	public Integer getRepeat() {
+		return repeat;
+	}
+
+	public void setRepeat(Integer repeat) {
+		this.repeat = repeat;
+	}
+
+	public Integer getTypeValue() {
+		return typeValue;
+	}
+
+	public void setTypeValue(Integer typeValue) {
+		this.typeValue = typeValue;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

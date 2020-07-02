@@ -90,6 +90,8 @@ import com.bkeryah.entities.licences.BldLicPcs;
 import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
+import com.bkeryah.entities.licences.LicVisits;
+import com.bkeryah.entities.licences.LicVisitsTypes;
 import com.bkeryah.entities.licences.LicenceTypeEnum;
 import com.bkeryah.fng.entities.AutorizationSettings;
 import com.bkeryah.fng.entities.FngEmpAbsent;
@@ -150,6 +152,8 @@ import com.bkeryah.model.DashbordModel;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.User;
 import com.bkeryah.model.VacationModel;
+import com.bkeryah.penalties.LicDepartment;
+import com.bkeryah.penalties.LicSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesDetails;
 import com.bkeryah.penalties.NotifFinesMaster;
@@ -157,6 +161,7 @@ import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.penalties.ReqFinesSetup;
 import com.bkeryah.penalties.WrkFinesEntity;
+import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
 import com.bkeryah.support.entities.RequestStatus;
 import com.bkeryah.support.entities.RequestStep;
 import com.bkeryah.support.entities.UserRequest;
@@ -3471,9 +3476,9 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public void saveBill(PayLicBills payLicBill) {
 		payLicBill.setBillDate(HijriCalendarUtil.findCurrentHijriDate());
-		int billId = commonDao.findMaxBillId() + 1;
-		payLicBill.setBillNumber(billId);
-		save(payLicBill);
+		// int billId = commonDao.findMaxBillId() + 1;
+		// payLicBill.setBillNumber(billId);
+		int billId = save(payLicBill);
 		savePayBillDetails(billId, payLicBill.getPayBillDetails());
 	}
 
@@ -5140,11 +5145,11 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	public Integer saveBill(PayLicBills bill, List<PayBillDetails> billDetails) {
 		if (bill.getBillNumber() == null) {
-			int billNumber = commonDao.findMaxBillId() + 1;
-			bill.setBillNumber(billNumber);
+			// int billNumber = commonDao.findMaxBillId() + 1;
+			// bill.setBillNumber(billNumber);
 			bill.setBillStatus(0);
 			bill.setBillDate(HijriCalendarUtil.findCurrentHijriDate());
-			save(bill);
+			int billNumber = save(bill);
 			for (PayBillDetails billDetail : billDetails) {
 				if (billDetail.getAmount() > 0) {
 					billDetail.setBillNumber(billNumber);
@@ -6163,10 +6168,12 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.getCountBillByFineNo(fineNo);
 	}
 
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Integer saveLicencePenalty(ReqFinesMaster reqFinesMaster, List<ReqFinesDetails> reqFinesDetailsList,
 			boolean withBill) {
 		Integer fineNo = save(reqFinesMaster);
+		penaltyScenario(Integer.parseInt(reqFinesMaster.getfSupervisorCode()), fineNo);
 		reqFinesMaster.setfFineCase((long) 0);
 		for (ReqFinesDetails reqFinesDetails : reqFinesDetailsList) {
 			reqFinesDetails.setFineNo(fineNo);
@@ -6186,6 +6193,9 @@ public class DataAccessService implements IDataAccessService {
 		newBill.setLicenceType("F");
 		newBill.setBillPayType("S");
 		newBill.setPayAmount(totalValue);
+		newBill.setAplOwner(reqFinesMaster.getfIdNo());
+		newBill.setPayInstallNumber(reqFinesMaster.getPhoneNumber() != null
+				? Long.parseLong(reqFinesMaster.getPhoneNumber()) : new Long(0));
 		PayBillDetails det = new PayBillDetails();
 		det.setAmount(totalValue);
 		List<PayBillDetails> billDetailList = new ArrayList<>();
@@ -8663,6 +8673,35 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
+	public Integer penaltyScenario(Integer createdForId, Integer penaltyId) {
+
+		ArcUsers sender = loadUserById(createdForId);
+		Integer toId = sender.getMgrId();
+		Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
+
+		ArcRecords arcRecord = new ArcRecords();
+		arcRecord.setApplicationType(MailTypeEnum.PENALTY.getValue());
+		String empName = sender.getEmployeeName();
+		String subject = Utils.loadMessagesFromFile("subject.penalty");
+		arcRecord.setRecTitle(empName != null ? subject + empName : subject + sender.getFirstName());
+		int recordId = createNewArcRecord(arcRecord, false, toId);
+
+		WrkApplication application = new WrkApplication();
+		application.setToUserId(toId);
+
+		application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+		application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+
+		String userComment = arcRecord.getRecTitle();
+
+		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
+
+		saveHrsSigns(recordId, penaltyId, false, null, createdForId, MailTypeEnum.PENALTY.getValue());
+		return 1;
+	}
+
+	@Override
+	@Transactional
 	public Integer addTransferOnwerShipItems(TransferOwnership saveTransfer) {
 		if (saveTransfer != null) {
 			Integer docId = (Integer) saveObject(saveTransfer);
@@ -8853,6 +8892,7 @@ public class DataAccessService implements IDataAccessService {
 				Utils.findCurrentUser().getUserId(), modelType);
 		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
 		if (visible) {
+			storeTemporeryReceiptMaster.setStatus("Y");
 			commonDao.update(storeTemporeryReceiptMaster);
 			// updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
@@ -9149,6 +9189,13 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
+	@Transactional
+	public ReqFinesMaster findPenaltyByArchRecordId(Integer recordId) {
+		Integer DocId = commonDao.getDocIdHrsSignByRecId(recordId);
+		return (ReqFinesMaster) commonDao.findEntityById(ReqFinesMaster.class, DocId);
+	}
+
+	@Override
 	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo) {
 		return commonDao.findInventoryMasterByGard_strNO(gardId, strNo);
 	}
@@ -9184,7 +9231,7 @@ public class DataAccessService implements IDataAccessService {
 				Utils.findCurrentUser().getUserId(), modelType);
 		if (visible) {
 			commonDao.update(transOwnership);
-			// updateArcRecordsIncomeNo(app.getArcRecordId());
+			updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
 
 	}
@@ -9199,6 +9246,45 @@ public class DataAccessService implements IDataAccessService {
 		}
 		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
 		refuseModel(newApplication, wrkId, transOwnership,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
+
+	}
+
+	@Override
+	@Transactional
+	public void acceptPenalty(ReqFinesMaster finesMaster, Integer recordId, int modelType, String usercomment,
+			int applicationPurpose) {
+		WrkApplication app = getWrkApplicationRecordById(recordId);
+		WrkApplication application = new WrkApplication(app);
+		commonDao.updateWrkApplicationVisible(app.getId());
+		application.setId(app.getId());
+		application.setApplicationPurpose(applicationPurpose);
+		application.getId().setStepId(application.getId().getStepId() + 1);
+		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
+		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2);
+		application.setToUserId(userTo);
+		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
+
+		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
+		saveHrsSigns(application.getArcRecordId(), finesMaster.getFineNo(), visible, null,
+				Utils.findCurrentUser().getUserId(), modelType);
+		if (visible) {
+			commonDao.update(finesMaster);
+			updateArcRecordsIncomeNo(app.getArcRecordId());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void refusePenalty(WrkApplicationId wrkId, Integer recordId, ReqFinesMaster finesMaster,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, finesMaster,
 				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
 
 	}
@@ -9256,6 +9342,117 @@ public class DataAccessService implements IDataAccessService {
 	public List<Article> getAllArticlesByGroupId(Integer groupId) {
 		List artList = commonDao.getAllArticlesByGroupId(groupId);
 		return artList;
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo) {
+		return dataAccessDAO.searchTempReceipts(beginDate, finishDate, strNo);
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo) {
+		List list = commonDao.getStrTempRcptMstrByStrNo(strNo);
+		return list;
+
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptDetailsModel> getTempReceiptDetailsList(Integer temp_receipt_id) {
+		List list = dataAccessDAO.getTempReceiptDetailsList(temp_receipt_id);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicencesList() {
+		List list = commonDao.findAll(LicTrdMasterFile.class);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<HealthLicenceJob> getAllHealthLicenceJobsList() {
+		List list = commonDao.findAll(HealthLicenceJob.class);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<HealthLicenceCenter> getAllHealthLicenceCentersList() {
+		List list = commonDao.findAll(HealthLicenceCenter.class);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisitsTypes> findAllLicVisits() {
+		List licVisits = commonDao.findAll(LicVisitsTypes.class);
+		return licVisits;
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisits> getAllVisitsByLicId(Integer licNo) {
+		List licVisits = commonDao.findAllVisitsByLicId(licNo);
+		return licVisits;
+	}
+
+	@Override
+	public List<User> getAllSupervisor(Integer deptId) {
+		List usrs = commonDao.getAllSupervisor(deptId);
+		return usrs;
+	}
+
+	// thapet
+	@Override
+	// @Transactional
+	public List<LicCities> findAllCities() {
+		List licCities = commonDao.findAll(LicCities.class);
+		return licCities;
+	}
+
+	@Override
+	@Transactional
+	public List<LicStreet> findAllStreet() {
+		List LicStree = commonDao.findAll(LicStreet.class);
+		return LicStree;
+	}
+
+	@Override
+	@Transactional
+	public List<LicDistrict> findAllDistrict() {
+		List LicDistrict = commonDao.findAll(LicDistrict.class);
+		return LicDistrict;
+	}
+
+	@Override
+	@Transactional
+	public LicTrdMasterFile getLicencesByLicNo(String licNo) {
+		return commonDao.getLicencesByLicNo(licNo);
+	}
+
+	@Override
+	@Transactional
+	public List<LicActivityTypeRy> getAllLicActivityTypeList() {
+		List LicActivityTypeRyList = commonDao.findAll(LicActivityTypeRy.class);
+		return LicActivityTypeRyList;
+	}
+
+	@Override
+	@Transactional
+	public List<LicSection> gatAllLicSectionList() {
+		List licSectionList = commonDao.findAll(LicSection.class);
+		return licSectionList;
+	}
+
+	@Override
+	@Transactional
+	public List<LicDepartment> gatAllLicDepartmentList() {
+		List licDepartmentList = commonDao.findAll(LicDepartment.class);
+		return licDepartmentList;
 	}
 
 }

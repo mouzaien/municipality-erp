@@ -31,7 +31,8 @@ public class FactoryOfFactories {
 		case PERFORMANCE_EVALUATION:
 		case RETURNED_ITEMS_INVENTORY:
 		case TEMPORERY_RECEIPT:
-		case TRANSFER_OWNERSHIP:	
+		case TRANSFER_OWNERSHIP:
+		case PENALTY:
 			return ServicesFactory.getInstance();
 		default:
 			return MailsFactory.getInstance();

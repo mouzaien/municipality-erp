@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<p:growl autoUpdate="true" showDetail="false" />
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer">
+					<p:commandButton value="اضافة زيارة" onclick="PF('add_dlg').show()"
+						update="includeform:pngid" immediate="true" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-plus">
+					</p:commandButton>
+				</div>
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center">#{msg['visit.licences']}</h1>
+					<br></br>
+					<div class="ui-g">
+						<div class="ui-g-2" style="text-align: center">
+							<h:outputLabel value="رقم الرخصة"></h:outputLabel>
+
+						</div>
+						<div class="ui-g-3">
+							<h:outputLabel style="width:100%"
+								value="#{licencesVisitsBean.licence.licNo}" />
+						</div>
+
+						<div class="ui-g-2" style="text-align: center">
+							<h:outputLabel value="الاسم التجاري "></h:outputLabel>
+
+						</div>
+						<div class="ui-g-5">
+							<h:outputLabel style="width:100%"
+								value="#{licencesVisitsBean.licence.trdName}" />
+						</div>
+					</div>
+
+
+					<br />
+					<div class="row">
+						<p:dataTable var="visit" id="inboxdt"
+							value="#{licencesVisitsBean.visits}" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" paginatorPosition="bottom"
+							widgetVar="cellLicence" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{licencesListBean.filteredLicences}"
+							paginator="true" rows="10">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('cellLicence').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:ajax event="rowEdit"
+								listener="#{licencesVisitsBean.onRowEdit}"
+								update=":includeform:msgs :includeform:inboxdt" />
+							<p:ajax event="rowEditCancel"
+								listener="#{licencesVisitsBean.onRowCancel}"
+								update=":includeform:msgs" />
+							<p:column style="text-align: center;" headerText="الرقم"
+								width="5%">
+                                    #{rowIndex+1}
+                            </p:column>
+							<p:column style="text-align: center;" headerText="تاريخ الزيارة "
+								filterBy="#{visit.hDate}" filterMatchMode="contains" width="10%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{visit.hDate}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="licBeginDate" style="width:100%"
+											required="true" requiredMessage="إدخل تاريخ البداية"
+											value="#{visit.hDate}" onfocus="loadCalendar();"
+											styleClass="form-control form-controlCal">
+											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+											<f:ajax execute="@this"></f:ajax>
+										</p:inputText>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="text-align: center;" headerText="الزيارة "
+								filterBy=" #{visit.visitName}" filterMatchMode="contains"
+								width="10%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{visit.visitName}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu id="Licencevisits" style="width:100%"
+											required="true" requiredMessage="إختر نوع الزيارة"
+											value="#{visit.visitId}">
+											<f:selectItem itemLabel="إختر نوع الزياة"
+												noSelectionOption="true" />
+											<f:selectItems value="#{licencesVisitsBean.licVisits}"
+												var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+											<p:ajax process="@this"></p:ajax>
+										</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="نوع الزيارة" width="15%"
+								filterBy="#{visit.visitType}" filterMatchMode="contains">
+
+								<p:selectOneMenu style="width:100%; opacity:1"
+									value="#{visit.visitType}" disabled="true">
+									<f:selectItem itemLabel="دورية" itemValue="0" />
+									<f:selectItem itemLabel="فجأية" itemValue="1" />
+									<f:selectItem itemLabel="عن طريق شكوة" itemValue="2" />
+								</p:selectOneMenu>
+
+							</p:column>
+							<p:column width="5%" style="text-align:center" headerText="تعديل">
+								<p:rowEditor />
+							</p:column>
+							<!-- 							<p:column width="5%" style="text-align:center" headerText="تعديل"> -->
+							<!-- 								<p:commandButton action="#{licencesVisitsBean.edit(visit)}" -->
+							<!-- 									update="inboxdt" immediate="true" icon="ui-icon-edit"> -->
+							<!-- 								</p:commandButton> -->
+							<!-- 							</p:column> -->
+							<p:column width="5%" style="text-align:center" headerText="حذف">
+								<p:commandButton action="#{licencesVisitsBean.remove(visit)}"
+									update="inboxdt" styleClass="red-btn" immediate="true"
+									icon="ui-icon-remove">
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<br />
+				</div>
+				<p:dialog widgetVar="add_dlg" id="dlgid" width="70%"
+					hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+					resizable="false">
+					<h:panelGroup id="pngid">
+						<p:fieldset legend="بيانات الزيارة">
+							<div class="ui-g">
+								<div class="ui-g-2" style="text-align: center">
+									<h:outputLabel value="نوع الزيارة"></h:outputLabel>
+
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="Licencevisits" style="width:100%"
+										required="true" requiredMessage="إختر نوع الزيارة"
+										value="#{licencesVisitsBean.visitId}">
+										<f:selectItem itemLabel="إختر نوع الزياة"
+											noSelectionOption="true" />
+										<f:selectItems value="#{licencesVisitsBean.licVisits}"
+											var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+
+									</p:selectOneMenu>
+								</div>
+
+								<!-- 							<div class="ui-g-2" style="text-align: center"> -->
+								<!-- 								<h:outputLabel value="عدد الايام"></h:outputLabel> -->
+
+								<!-- 							</div> -->
+								<!-- 							<div class="ui-g-2"> -->
+								<!-- 								<p:inputNumber id="marketSpace" style="width:100%" -->
+								<!-- 									required="true" requiredMessage="إدخل عدد الايام" -->
+								<!-- 									value="#{licencesVisitsBean.daysNo}" /> -->
+								<!-- 							</div> -->
+								<!-- 						</div> -->
+								<!-- 						<div class="ui-g"> -->
+								<div class="ui-g-2" style="text-align: center">
+									<h:outputLabel value="تاريخ البداية"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="licBeginDate" style="width:100%"
+										required="true" requiredMessage="إدخل تاريخ البداية"
+										value="#{licencesVisitsBean.beginDate}"
+										onfocus="loadCalendar();"
+										styleClass="form-control form-controlCal">
+										<f:validator validatorId="utilities.UmmAlQUraValidator" />
+									</p:inputText>
+								</div>
+								<!-- 							<div class="ui-g-2" style="text-align: center"> -->
+								<!-- 								<h:outputLabel value="تاريخ النهاية"></h:outputLabel> -->
+								<!-- 							</div> -->
+								<!-- 							<div class="ui-g-2"> -->
+								<!-- 								<p:inputText id="licEndDate" -->
+								<!-- 									value="#{licencesVisitsBean.endDate}" onfocus="loadCalendar();" -->
+								<!-- 									style="width:100%" styleClass="form-control form-controlCal"> -->
+								<!-- 									<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+								<!-- 								</p:inputText> -->
+								<!-- 							</div> -->
+							</div>
+
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" oncomplete="PF('add_dlg').hide()"
+									styleClass="cyan-btn" icon="ui-icon ui-icon-save"
+									update="includeform:inboxdt"
+									action="#{licencesVisitsBean.save}" />
+								<p:commandButton value="رجوع" immediate="true"
+									onclick="PF('add_dlg').hide()" />
+							</div>
+						</p:fieldset>
+					</h:panelGroup>
+
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

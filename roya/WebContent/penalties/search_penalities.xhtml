@@ -26,6 +26,12 @@
 				<h:form id="includeform">
 					<p:messages autoUpdate="true" closable="true"></p:messages>
 					<div class="card car-w-title" dir="rtl">
+						<div align="left" class="image-box-footer">
+							<p:commandButton value="إضافة عقوبة" styleClass="cyan-btn"
+								immediate="true" action="#{penalitiesListBean.addPenality}"
+								icon="ui-icon-add">
+							</p:commandButton>
+						</div>
 						<br></br>
 						<h1 style="color: #7CB342; text-align: center;">#{msg['list.penalities']}
 						</h1>
@@ -71,10 +77,21 @@
                                     #{penalItem.fineNo}
                                 </p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="#{msg['register.number']}" width="10%"
+									headerText="تاريخ الاشعار" width="10%"
 									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">										
 										#{penalItem.fIdNo}										
-									</p:column>
+								</p:column>
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="رقم السجل التجارى" width="10%"
+									filterBy="#{penalItem.mahlId}" filterMatchMode="contains">										
+										#{penalItem.mahlId}										
+								</p:column>
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="رقم السجل المدنى" width="10%"
+									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">										
+										#{penalItem.fIdNo}										
+								</p:column>
 
 								<p:column style="white-space: nowrap;"
 									headerText="#{msg['name']}" width="30%"
@@ -103,10 +120,10 @@
 
 								</p:column>
 
-								<p:column style="white-space: nowrap;"
-									sortBy="#{penalItem.deptName}" headerText="القسم" width="15%"
-									filterBy="#{penalItem.deptName}" filterMatchMode="contains">										
-										#{penalItem.deptName}										
+								<p:column style="white-space: nowrap;" headerText="المراقب"
+									width="15%" filterBy="#{penalItem.supervisorNameView}"
+									filterMatchMode="contains">										
+										#{penalItem.supervisorNameView}										
 									</p:column>
 								<p:column width="5%" style="text-align:center"
 									headerText="#{msg['details']}">
@@ -132,262 +149,272 @@
 
 								<div style="width: 100%">
 
+									<p:fieldset legend="بيانات المخالفة">
+										<div>
 
-									<h4 class="page-header"
-										style="margin: 0px 58px 20px ! important; color: #FF5722">بيانات
-										المخالفة</h4>
+											<div class="ui-g">
 
-									<div>
+												<div class="ui-g-2">
+													<h:outputLabel value="#{msg['penality.number']}"
+														styleClass="btxt" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel
+														value="#{penalitiesListBean.reqFinesMaster.fineNo}" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel value="تاريخ الإشعار" styleClass="btxt" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel
+														value="#{penalitiesListBean.reqFinesMaster.fineDate}" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel value="حالة السداد" styleClass="btxt" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel
+														value="#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? msg['paid'] : msg['not.paid']}" />
+												</div>
 
+											</div>
+											<div class="ui-g">
+												<div class="ui-g-2">
+													<h:outputLabel value="نوع النشاط" styleClass="btxt" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel
+														value="#{(penalitiesListBean.reqFinesMaster.activityType == 1)? msg['commercial'] : 'صحي'}" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel rendered="false" value="رقم الشكوى"
+														styleClass="btxt" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel rendered="false"
+														value="#{penalitiesListBean.reqFinesMaster.fLetterNo}" />
+												</div>
+
+											</div>
+											<div class="ui-g">
+												<div class="ui-g-2">
+													<h:outputLabel value="الإدارة المختصة" styleClass="btxt" />
+												</div>
+												<div class="ui-g-4">
+													<h:outputLabel
+														value="#{penalitiesListBean.reqFinesMaster.deptName}" />
+												</div>
+												<div class="ui-g-2">
+													<h:outputLabel value="المراقب" styleClass="btxt" />
+												</div>
+												<div class="ui-g-4">
+													<h:outputLabel
+														value="#{penalitiesListBean.reqFinesMaster.supervisorName}" />
+												</div>
+
+											</div>
+
+
+
+										</div>
+
+										<br />
+										<br />
+									</p:fieldset>
+
+									<p:fieldset legend="بيانات المخالف">
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="#{msg['penality.number']}"
+												<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+											</div>
+											<div class="ui-g-4">
+												<h:outputLabel
+													value="#{penalitiesListBean.reqFinesMaster.fLicenceNo}" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="#{msg['commercial.name']}"
 													styleClass="btxt" />
 											</div>
-											<div class="ui-g-2">
+											<div class="ui-g-4">
 												<h:outputLabel
-													value="#{penalitiesListBean.reqFinesMaster.fineNo}" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel value="تاريخ الإشعار" styleClass="btxt" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel
-													value="#{penalitiesListBean.reqFinesMaster.fineDate}" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel value="حالة السداد" styleClass="btxt" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel
-													value="#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? msg['paid'] : msg['not.paid']}" />
+													value="#{penalitiesListBean.reqFinesMaster.fTradeMarkName}" />
 											</div>
 
 										</div>
-										<div class="ui-g">
-											<div class="ui-g-2">
-												<h:outputLabel value="نوع النشاط" styleClass="btxt" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel
-													value="#{(penalitiesListBean.reqFinesMaster.activityType == 1)? msg['commercial'] : msg['not.commercial']}" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel value="رقم الشكوى" styleClass="btxt" />
-											</div>
-											<div class="ui-g-2">
-												<h:outputLabel
-													value="#{penalitiesListBean.reqFinesMaster.fLetterNo}" />
-											</div>
 
-										</div>
+
+
 										<div class="ui-g">
+
 											<div class="ui-g-2">
-												<h:outputLabel value="الإدارة المختصة" styleClass="btxt" />
+												<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
-													value="#{penalitiesListBean.reqFinesMaster.deptName}" />
+													value="#{penalitiesListBean.reqFinesMaster.fName}" />
 											</div>
 											<div class="ui-g-2">
-												<h:outputLabel value="المراقب" styleClass="btxt" />
+												<h:outputLabel rendered="false" value="الرقم المميز"
+													styleClass="btxt" />
+											</div>
+											<div class="ui-g-4">
+												<h:outputLabel rendered="false"
+													value="#{penalitiesListBean.reqFinesMaster.fKeycode}" />
+
+											</div>
+										</div>
+
+										<div class="ui-g">
+
+											<div class="ui-g-2">
+												<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+											</div>
+											<div class="ui-g-10">
+												<h:outputLabel
+													value="#{penalitiesListBean.reqFinesMaster.fAddress}" />
+											</div>
+
+										</div>
+
+
+										<div class="ui-g">
+
+											<div class="ui-g-2">
+												<h:outputLabel value="رقم المخطط" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
-													value="#{penalitiesListBean.reqFinesMaster.supervisorName}" />
+													value="#{penalitiesListBean.reqFinesMaster.fMapNo}" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="رقم القطعة" styleClass="btxt" />
+											</div>
+											<div class="ui-g-4">
+												<h:outputLabel
+													value="#{penalitiesListBean.reqFinesMaster.fBlockNo}" />
 											</div>
 
 										</div>
 
 
 
-									</div>
-
-									<br /> <br />
 
 
-									<h4 style="color: #7CB342; text-align: center;">بيانات
-										المخالف</h4>
+										<div class="ui-g">
 
-									<div class="ui-g">
-
-										<div class="ui-g-2">
-											<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fLicenceNo}" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel value="#{msg['commercial.name']}"
-												styleClass="btxt" />
-										</div>
-										<div class="ui-g-6">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fTradeMarkName}" />
+											<div class="ui-g-2">
+												<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+											</div>
+											<div class="ui-g-4">
+												<h:outputLabel
+													value="#{penalitiesListBean.reqFinesMaster.fLicStartDate}" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+											</div>
+											<div class="ui-g-2">
+												<h:outputLabel
+													value="#{penalitiesListBean.reqFinesMaster.fLicEndDate}" />
+											</div>
 										</div>
 
-									</div>
 
 
 
-									<div class="ui-g">
+									</p:fieldset>
+									<p:fieldset legend="بيانات المخالفات">
+										<div class="ui-g">
 
-										<div class="ui-g-2">
-											<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-4">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fName}" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel value="الرقم المميز" styleClass="btxt" />
-										</div>
-										<div class="ui-g-4">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fKeycode}" />
-
-										</div>
-									</div>
-
-									<div class="ui-g">
-
-										<div class="ui-g-2">
-											<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-10">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fAddress}" />
-										</div>
-
-									</div>
+											<div class="table-responsive"
+												style="position: relative; overflow-y: auto; width: 98%; padding-right: 27px;">
 
 
-									<div class="ui-g">
-
-										<div class="ui-g-2">
-											<h:outputLabel value="رقم المخطط" styleClass="btxt" />
-										</div>
-										<div class="ui-g-4">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fMapNo}" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel value="رقم القطعة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-4">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fBlockNo}" />
-										</div>
-
-									</div>
-
-
-
-
-
-									<div class="ui-g">
-
-										<div class="ui-g-2">
-											<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fLicStartDate}" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
-										</div>
-										<div class="ui-g-2">
-											<h:outputLabel
-												value="#{penalitiesListBean.reqFinesMaster.fLicEndDate}" />
-										</div>
-									</div>
-
-
-
-
-
-									<hr />
-									<h4 style="color: #7CB342; text-align: center;">بيانات
-										المخالفات</h4>
-
-
-									<div class="ui-g">
-
-										<div class="table-responsive"
-											style="position: relative; overflow-y: auto; width: 98%; padding-right: 27px;">
-
-
-											<table class="table table-striped table-hover">
-												<thead>
-													<tr>
-
-														<th>عنوان المخالفة</th>
-														<th>التكرار</th>
-														<th>الحد الادنى</th>
-														<th>الحد الأعلى</th>
-														<th>العدد</th>
-														<th>القيمة</th>
-														<th>الإجمالي</th>
-
-
-													</tr>
-												</thead>
-												<tbody>
-													<ui:repeat var="fdet" varStatus="x"
-														value="#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList}">
+												<table class="table table-striped table-hover">
+													<thead>
 														<tr>
-															<td>#{fdet.reqFinesSetup.fineDesc}</td>
-															<td>#{fdet.fineCount}</td>
-															<td>#{fdet.reqFinesSetup.fineMinimumValue}</td>
-															<td>#{fdet.reqFinesSetup.fineSupermumValue}</td>
-															<td>#{fdet.fineCount}</td>
-															<td width="10%"><p:inputText size="2" id="notValue"
-																	value="#{fdet.fineValue}">
-																	<p:ajax event="blur" process="@this,notValue"
-																		update="sumId" />
-																</p:inputText></td>
-															<td width="10%"><p:outputLabel
-																	value="#{fdet.fineTotalValue}" id="sumId" /></td>
-														</tr>
 
-													</ui:repeat>
-												</tbody>
-											</table>
+															<td style="font-size:15px; font-weight: bold">عنوان المخالفة</td>
+															<td style="font-size:15px; font-weight: bold">التكرار</td>
+															<td style="font-size:15px; font-weight: bold">الحد الادنى</td>
+															<td style="font-size:15px; font-weight: bold">الحد الأعلى</td>
+															<td style="font-size:15px; font-weight: bold">العدد</td>
+															<td style="font-size:15px; font-weight: bold">القيمة</td>
+															<td style="font-size:15px; font-weight: bold">الإجمالي</td>
+															
+
+														</tr>
+													</thead>
+													<tbody>
+														<ui:repeat var="fdet" varStatus="x"
+															value="#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList}">
+															<tr>
+																<td>#{fdet.reqFinesSetup.fineDesc}</td>
+																<td>#{fdet.fineCount}</td>
+																<td>#{fdet.reqFinesSetup.fineMinimumValue}</td>
+																<td>#{fdet.reqFinesSetup.fineSupermumValue}</td>
+																<td>#{fdet.fineCount}</td>
+																<td width="10%"><p:inputText size="2" id="notValue"
+																		style=" opacity:1;" disabled="true"
+																		value="#{fdet.fineValue}">
+																		<p:ajax event="blur" process="@this,notValue"
+																			update="sumId" />
+																	</p:inputText></td>
+																<td width="10%"><p:outputLabel
+																		value="#{fdet.fineTotalValue}" id="sumId" /></td>
+
+
+
+
+															</tr>
+
+														</ui:repeat>
+													</tbody>
+													<tfoot>
+														<tr>
+														  
+															<th align="left" colspan="6" style="margin-right: 50px">
+																#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList.stream().map(fdet->fdet.fineTotalValue).sum()}
+															</th>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+
 										</div>
 
-									</div>
-
-
-
+									</p:fieldset>
+									<br />
 									<div>
 
 										<p:commandButton type="button" class="btn btn-primary"
-											onclick="PF('penality_dlg').hide();"
-											style="float: left; font-size: 10px !important; font-family: kufi !important; margin-left: 5px; margin-right: 5px;"
-											data-dismiss="modal">رجوع</p:commandButton>
+											onclick="PF('penality_dlg').hide();" value="رجوع"
+											style="float:left;margin-left:3px;"
+											icon="ui-icon ui-icon-keyboard-arrow-left"
+											styleClass=" orange-btn"></p:commandButton>
 										<p:commandButton style="float:left;margin-left:3px;"
 											rendered="#{penalitiesListBean.reqFinesMaster.fFineCase !=0}"
-											value="طباعة الفاتورة" styleClass="btn btn-primary"
+											value="طباعة الفاتورة" styleClass="purple-btn"
+											icon="ui-icon ui-icon-print" ajax="false"
 											onclick="this.form.target='_blank'"
 											action="#{penalitiesListBean.printBillReport}">
 										</p:commandButton>
 										<p:commandButton style="float:left;margin-left:3px;"
-											value="طباعة المخالفة" id="bt1" styleClass="btn btn-primary"
-											onclick="this.form.target='_blank'"
+											ajax="false" value="طباعة المخالفة" id="bt1"
+											icon="ui-icon ui-icon-print"
+											onclick="this.form.target='_blank'" styleClass="purple-btn"
 											action="#{penalitiesListBean.printPenalityReport}">
 										</p:commandButton>
 
 										<p:commandButton style="float:left;margin-left:3px;"
-											value="طباعة المحضر" id="bt2" styleClass="btn btn-primary"
-											onclick="this.form.target='_blank'"
+											value="طباعة المحضر" id="bt2" styleClass="purple-btn"
+											ajax="false" onclick="this.form.target='_blank'"
+											icon="ui-icon ui-icon-print"
 											action="#{penalitiesListBean.printReportPenalityAction}">
 										</p:commandButton>
 
 										<p:commandButton style="float:left;margin-left:3px;"
-											value="موافق" styleClass="btn btn-primary"
+											value="موافق" styleClass="btn btn-primary" update="myDialog"
 											rendered="#{(penalitiesListBean.notification) and (penalitiesListBean.reqFinesMaster.fFineCase==0)}"
 											action="#{penalitiesListBean.acceptPenality}">
 										</p:commandButton>

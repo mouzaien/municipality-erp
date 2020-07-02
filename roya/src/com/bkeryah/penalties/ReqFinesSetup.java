@@ -12,14 +12,17 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "REQ_FINES_SETUP")
 public class ReqFinesSetup {
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ")
-	@SequenceGenerator(name = "SEQ", sequenceName = "REQ_FINES_SETUP2_SEQ")
 	@Id
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
+	
 	@Column(name = "FINE_CODE")
 	private String fineCode;
 	@Column(name = "FINE_DESC")

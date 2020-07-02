@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<title>تسجيل مخالفة</title>
+	</h:head>
+	<body>
+		<h:form id="includeform" dir="rtl">
+
+			<div align="left" class="image-box-footer">
+				<h:panelGroup rendered="#{!(penaltyViewBean.finesMaster.status == 'N')}">
+					<p:commandButton value="#{msg['accept']}" immediate="true"
+						id="accpt_btn" rendered="#{!(penaltyViewBean.enablePrint)}"
+						action="#{penaltyViewBean.accept}" icon="ui-icon ui-icon-check">
+					</p:commandButton>
+					<p:spacer width="5"></p:spacer>
+					<p:commandButton value="#{msg['refuse']}"
+						rendered="#{!(penaltyViewBean.enablePrint)}"
+						onclick="PF('dlgRefuse').show();" immediate="true"
+						styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+					</p:commandButton>
+					<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
+						onclick="this.form.target='_blank'" ajax="false"
+						action="#{penaltyViewBean.printPenalty}"
+						rendered="#{(penaltyViewBean.enablePrint)}"
+						styleClass="purple-btn">
+					</p:commandButton>
+				</h:panelGroup>
+			</div>
+			<h1 style="color: #7CB342; text-align: center;">
+				بيانات المخالفة <span class="fa fa-fw fa-file-text"></span>
+			</h1>
+			<br></br>
+			<div>
+				<h:panelGroup>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicenceNo}" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="#{msg['commercial.name']}" />
+						</div>
+						<div class="ui-g-6">
+							<h:outputLabel
+								value="#{penaltyViewBean.finesMaster.fTradeMarkName}" />
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+						</div>
+						<div class="ui-g-4">
+							<h:outputLabel value="#{penaltyViewBean.finesMaster.fName}" />
+						</div>
+						<!-- 							<div class="ui-g-2"> -->
+						<!-- 								<h:outputLabel value="عنوان المنشأة" styleClass="btxt" /> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="ui-g-10"> -->
+						<!-- 								<h:outputLabel value="#{penaltyBean.trdMasterFile.licAdress}" /> -->
+						<!-- 							</div> -->
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel
+								value="#{penaltyViewBean.finesMaster.fLicStartDate}" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicEndDate}" />
+						</div>
+
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="المراقب" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel
+								value="#{penaltyViewBean.finesMaster.supervisorNameView}" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputText value="حالة الطلب" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputText rendered="#{!(penaltyViewBean.enablePrint)}"
+								value="#{penaltyViewBean.finesMaster.status == 'Y' ? 'جارية':'تم الرفض '}" />
+
+
+							<h:outputText rendered="#{(penaltyViewBean.enablePrint)}"
+								value="#{penaltyViewBean.finesMaster.status == 'Y' ? 'تمت الموافقة عليها ':'تم الرفض '}" />
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<h:outputLabel value="التكرار" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel
+								value="#{penaltyViewBean.finesMaster.repeat ==1 ?'غير مكرر':'مكرر'}" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel value="الحد" />
+						</div>
+						<div class="ui-g-2">
+							<h:outputLabel
+								value="#{penaltyViewBean.finesMaster.typeValue ==1 ?'حد اعلي':'حد ادني'}" />
+						</div>
+
+					</div>
+				</h:panelGroup>
+			</div>
+			<br />
+			<hr />
+			<div class="col-lg-12">
+
+				<div style="color: color: #428bca">
+					<h1 style="color: #7CB342; text-align: center;">قائمة
+						المخالفات</h1>
+				</div>
+				<p:dataTable var="penaltyItem" id="inboxdt"
+					value="#{penaltyViewBean.finesMaster.reqFinesDetailsList}" emptyMessage="لايوجد بيانات"
+					rowIndexVar="rowIndex" paginatorPosition="bottom"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					filteredValue="#{penaltyBean.filteredArcPeoples}" paginator="true"
+					rows="17">
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+								style="width:150px" placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="الرقم" width="10%" filterBy="#{penaltyItem.id}"
+						filterMatchMode="contains">										
+										#{rowIndex + 1} 									
+									    </p:column>
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="نوع المخالفة" width="30%">
+						<h:outputLabel value="#{penaltyItem.reqFinesSetup.fineDesc}" id="lblFiner"
+							style="width:100% !important;">
+						</h:outputLabel>
+					</p:column>
+
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="الحد الأدنى" width="10%">#{penaltyItem.reqFinesSetup.fineMinimumValue}</p:column>
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="الحد الأعلى" width="10%">#{penaltyItem.reqFinesSetup.fineSupermumValue}</p:column>
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="العدد" width="5%">
+											#{penaltyItem.fineCount}						
+										</p:column>
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="القيمة" width="10%">
+											#{penaltyItem.fineValue}
+										</p:column>
+					<p:column style="white-space: nowrap;text-align: center;"
+						headerText="المجموع" width="10%">
+						<h:outputLabel value="#{penaltyItem.fineTotalValue}" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+			<p:dialog header="#{msg['add.explanation.confirmation']}"
+				widgetVar="dlgRefuse" height="300" width="500">
+
+				<h:panelGroup id="refPopup">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+						styleClass="ui-panelgrid-blank form-group"
+						style="border:0px none; background-color:transparent; direction:rtl">
+
+						<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+						<p:inputTextarea cols="30" rows="5" style="width:100%"
+							value="#{penaltyViewBean.wrkAppComment}">
+						</p:inputTextarea>
+					</p:panelGrid>
+					<br></br>
+					<br></br>
+					<div style="direction: initial;">
+
+						<p:commandButton value="#{msg['back']}" immediate="true"
+							icon="ui-icon ui-icon-keyboard-arrow-left"
+							onclick="PF('dlgRefuse').hide();" styleClass=" orange-btn">
+						</p:commandButton>
+						<p:spacer width="4"></p:spacer>
+
+						<p:commandButton value="#{msg['confirmation']}"
+							icon="ui-icon ui-icon-check" immediate="true"
+							action="#{penaltyViewBean.refuseAction}">
+							<f:ajax execute="refPopup"></f:ajax>
+						</p:commandButton>
+
+					</div>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</body>
+</f:view>
+</html>

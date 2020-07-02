@@ -65,21 +65,23 @@ public class BillBean {
 	 * Save a bill
 	 * @return
 	 */
-	public void saveBillAction(){
+	public String saveBillAction(){
 		if (!checkFields())
-			return ;
+			return "" ;
 		try{
 			Set<PayBillDetails> detailsSet = new HashSet<PayBillDetails>(detailsBillList);
 			payLicBill.setPayBillDetails(detailsSet);
 			dataAccessService.saveBill(payLicBill);
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 			consultMode = true;
-			FacesContext.getCurrentInstance().getExternalContext().redirect("bill.xhtml");
+		//	FacesContext.getCurrentInstance().getExternalContext().redirect("bill.xhtml");
 //			resetFields();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 		}
+		return "" ;
 	}
 	
 	private void resetFields() {
@@ -156,7 +158,7 @@ public class BillBean {
 		payBillDetails.setPayMaster(Integer.parseInt(selectedItemId));
 		detailsBillList.add(payBillDetails);
 		totalAmountBill += amount;
-		selectedItemId = null;
+		//selectedItemId = null;
 		amount = null;
 		payLicBill.setPayAmount(totalAmountBill);
 		if(payLicBill.getPayInstallNumber() == 0)
@@ -192,6 +194,7 @@ public class BillBean {
 				PayMaster selectedPayMaster = getSelectedPayMaster(details.getPayDetails());
 				if (selectedPayMaster != null)
 					details.setItemLabel(selectedPayMaster.getName());
+				    
 			}
 		}
 		try {

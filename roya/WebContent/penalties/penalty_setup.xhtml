@@ -23,31 +23,29 @@
 
 		<ui:composition template="/template.xhtml">
 			<p:growl autoUpdate="true" showDetail="false" />
-
-			<!-- 	<ui:define name="second-menu">
-			</ui:define> -->
 			<ui:define name="content">
 				<h:form id="includeform">
 					<p:messages autoUpdate="true" closable="true"></p:messages>
-				
+
 					<div class="image-box-footer" align="left">
 						<p:commandButton value="#{msg['fine.add']}" id="save"
-							update="fines" process="@this" icon="ui-icon ui-icon-add"
-							styleClass="cyan-btn"
-							actionListener="#{penalitySetupBean.addRowPenality}">
+							process="@this" immediate="true" styleClass="cyan-btn"
+							onclick="PF('print-barcode-dlg').show()" icon="ui-icon-add">
+						</p:commandButton>
+
+						<p:commandButton value="طباعة الكل" icon="ui-icon ui-icon-print "
+							onclick="this.form.target='_blank'" ajax="false" immediate="true"
+							action="#{penalitySetupBean.printPenalityReport}"
+							styleClass="purple-btn">
 						</p:commandButton>
 					</div>
 					<br></br>
 					<div class="card card-w-title" dir="rtl">
-
-
 						<h1 style="color: #7CB342; text-align: center;">
 							#{msg['fines']} <span style="color: red;"
 								class="fa fa-fw fa-file-text"></span>
 						</h1>
-
 						<br />
-
 						<p:dataTable value="#{penalitySetupBean.codesFines}"
 							var="finesetup" id="fines" rowKey="#{finesetup.id}"
 							widgetVar="fineset" paginator="true" rows="17"
@@ -57,8 +55,6 @@
 							paginatorPosition="bottom"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
 							<f:facet name="header">
-
-
 								<p:outputPanel>
 									<h:outputText value="ابحث فى كل الحقول:" />
 									<p:inputText id="globalFilter" onkeyup="PF('fineset').filter()"
@@ -67,11 +63,27 @@
 								</p:outputPanel>
 								<br />
 							</f:facet>
-							<p:ajax event="rowEdit" update="fines"
+							<p:ajax event="rowEdit" update="@form"
 								listener="#{penalitySetupBean.onRowEdit}" />
-							<p:ajax event="rowEditCancel" update="fines"
+							<p:ajax event="rowEditCancel" update="@form"
 								listener="#{penalitySetupBean.onRowCancel}" />
-							<p:column headerText="#{msg['finesetup.number']}" width="6%"
+
+							<p:column headerText="#{msg['finesetup.list']}" width="30%"
+								style="white-space: nowrap;text-align: right;"
+								filterBy="#{finesetup.fineDesc}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{finesetup.fineDesc}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{finesetup.fineDesc}" required="true"
+											requiredMessage="حقل اللائحة مطلوبة " style="width:100%" />
+
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{msg['finesetup.number']}" width="10%"
+								style="white-space: nowrap;text-align: center;"
 								filterBy="#{finesetup.fineCode}">
 								<p:cellEditor>
 									<f:facet name="output">
@@ -79,24 +91,13 @@
 									</f:facet>
 									<f:facet name="input">
 										<p:inputText id="finecode" value="#{finesetup.fineCode}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column headerText="#{msg['finesetup.list']}" width="45%"
-								filterBy="#{finesetup.fineDesc}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{finesetup.fineDesc}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText id="finedesc" value="#{finesetup.fineDesc}"
-											style="width:96%" />
+											style="width:100%" required="true"
+											requiredMessage="حقل المادة مطلوبة " />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="#{msg['finesetup.punish']}" width="30%"
-								filterBy="#{finesetup.fineAction}">
+								filterBy="#{finesetup.fineAction}" rendered="false">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{finesetup.fineAction}" />
@@ -108,6 +109,7 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="#{msg['finesetup.min']}" width="7%"
+								style="white-space: nowrap;text-align: center;"
 								filterBy="#{finesetup.fineMinimumValue}">
 								<p:cellEditor>
 									<f:facet name="output">
@@ -115,11 +117,13 @@
 									</f:facet>
 									<f:facet name="input">
 										<p:inputText id="minvalue"
-											value="#{finesetup.fineMinimumValue}" style="width:96%" />
+											value="#{finesetup.fineMinimumValue}" style="width:96%"
+											required="true" requiredMessage="حقل الحد الادني مطلوبة " />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="#{msg['finesetup.max']}" width="7%"
+								style="white-space: nowrap;text-align: center;"
 								filterBy="#{finesetup.fineSupermumValue}">
 								<p:cellEditor>
 									<f:facet name="output">
@@ -127,7 +131,8 @@
 									</f:facet>
 									<f:facet name="input">
 										<p:inputText id="maxvalue"
-											value="#{finesetup.fineSupermumValue}" style="width:96%" />
+											value="#{finesetup.fineSupermumValue}" style="width:96%"
+											required="true" requiredMessage="حقل الحد الاعلى مطلوبة" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -137,6 +142,88 @@
 						</p:dataTable>
 
 					</div>
+
+					<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
+						width="50%" hideEffect="fade" showEffect="explode" dir="rtl"
+						modal="true" resizable="false">
+						<h:panelGroup>
+							<p:fieldset width="100%" legend="بيانات المخالفة">
+								<div class="ui-g" dir="rtl">
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['finesetup.number']}" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText value="#{penalitySetupBean.finesetup.fineCode}"
+											required="true" requiredMessage="حقل المادة مطلوبة "
+											style="width:100%" />
+									</div>
+
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['finesetup.list']}" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText value="#{penalitySetupBean.finesetup.fineDesc}"
+											required="true" requiredMessage="حقل اللائحة مطلوبة "
+											style="width:100%" />
+										<!-- 									<p:selectOneMenu id="itemsList" filter="true" required="true" requiredMessage="حقل اللائحة مطلوبة " -->
+										<!-- 										filterMatchMode="contains"  style="width:100%" -->
+										<!-- 										value="#{penalitySetupBean.finesetup.fineDesc}"> -->
+										<!-- 										<f:selectItem itemLabel="أختر" itemValue="" noSelectionOption="true"/> -->
+										<!-- 										<f:selectItems value="#{penalitySetupBean.itemsList}" var="categ" -->
+										<!-- 											itemLabel="#{categ.accountNumber} - #{categ.name}" -->
+										<!-- 											itemValue="#{categ.name}" /> -->
+										<!-- 									</p:selectOneMenu> -->
+
+									</div>
+
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['finesetup.punish']}" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText value="#{penalitySetupBean.finesetup.fineAction}"
+											style="width:100%" />
+
+									</div>
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['finesetup.min']}" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText
+											value="#{penalitySetupBean.finesetup.fineMinimumValue}"
+											required="true" requiredMessage="حقل الحد الادني مطلوبة "
+											style="width:100%" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-2">
+										<h:outputLabel value="#{msg['finesetup.max']}" />
+									</div>
+									<div class="ui-g-3">
+										<p:inputText
+											value="#{penalitySetupBean.finesetup.fineSupermumValue}"
+											required="true" requiredMessage="حقل الحد الاعلى مطلوبة "
+											style="width:100%" />
+									</div>
+								</div>
+							</p:fieldset>
+						</h:panelGroup>
+						<div style="float: left;">
+							<p:commandButton value="#{msg['add']}"
+								process="confirmSigndialog"
+								action="#{penalitySetupBean.addPenality}"
+								update="confirmSigndialog fines ">
+							</p:commandButton>
+							<!-- 						actionListener="#{penaltiesBean.addpenalty}" -->
+							<p:spacer width="10" height="10"></p:spacer>
+							<p:commandButton value="#{msg['close']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								styleClass=" orange-btn"
+								onclick="PF('print-barcode-dlg').hide()">
+							</p:commandButton>
+						</div>
+					</p:dialog>
 
 				</h:form>
 			</ui:define>
