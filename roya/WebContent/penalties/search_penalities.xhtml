@@ -32,29 +32,29 @@
 								icon="ui-icon-add">
 							</p:commandButton>
 						</div>
-						<br></br>
+
 						<h1 style="color: #7CB342; text-align: center;">#{msg['list.penalities']}
 						</h1>
-						<br />
+
 						<div class="panel-body" style="padding: 0px;">
 
-							<div class="ui-g">
-								<p:outputLabel value="مخالفات الإشعارات"
-									rendered="#{penalitiesListBean.notification}" />
-								<p:spacer width="5" />
-								<p:selectBooleanCheckbox
-									value="#{penalitiesListBean.notifiPenality}"
-									rendered="#{penalitiesListBean.notification}">
-									<f:ajax render="inboxdt" execute="@this" event="change"
-										listener="#{penalitiesListBean.loadPenalitiesByType}" />
-								</p:selectBooleanCheckbox>
-							</div>
+							<!-- 							<div class="ui-g"> -->
+							<!-- 								<p:outputLabel value="مخالفات الإشعارات" -->
+							<!-- 									rendered="#{penalitiesListBean.notification}" /> -->
+							<!-- 								<p:spacer width="5" /> -->
+							<!-- 								<p:selectBooleanCheckbox -->
+							<!-- 									value="#{penalitiesListBean.notifiPenality}" -->
+							<!-- 									rendered="#{penalitiesListBean.notification}"> -->
+							<!-- 									<f:ajax render="inboxdt" execute="@this" event="change" -->
+							<!-- 										listener="#{penalitiesListBean.loadPenalitiesByType}" /> -->
+							<!-- 								</p:selectBooleanCheckbox> -->
+							<!-- 							</div> -->
 
 
 
 							<p:dataTable value="#{penalitiesListBean.penalitiesList}"
 								var="penalItem" id="inboxdt" widgetVar="penal_dt"
-								paginator="true" rows="17" emptyMessage="لا توجد بيانات"
+								paginator="true" rows="10" emptyMessage="لا توجد بيانات"
 								rowIndexVar="rowIndex" paginatorPosition="bottom"
 								filteredValue="#{penalitiesListBean.filteredPenalities}"
 								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
@@ -76,10 +76,19 @@
 									width="10%">
                                     #{penalItem.fineNo}
                                 </p:column>
+								<p:column style="text-align: center;"
+									headerText="رقم الاشعار"
+									filterBy="#{penalItem.notifyMasterId}" filterMatchMode="contains"
+									width="10%">
+                                    #{penalItem.notifyMasterId}
+                                </p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="تاريخ الاشعار" width="10%"
-									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">										
-										#{penalItem.fIdNo}										
+									filterBy="#{penalItem.notifyDate}" filterMatchMode="contains">
+									<h:outputLabel value="#{penalItem.notifyDate}">
+										<f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
+									</h:outputLabel>
+
 								</p:column>
 
 								<p:column style="white-space: nowrap;text-align: center;"
@@ -155,22 +164,26 @@
 											<div class="ui-g">
 
 												<div class="ui-g-2">
-													<h:outputLabel value="#{msg['penality.number']}"
-														styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold"
+														value="#{msg['penality.number']}" styleClass="btxt" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
 														value="#{penalitiesListBean.reqFinesMaster.fineNo}" />
 												</div>
 												<div class="ui-g-2">
-													<h:outputLabel value="تاريخ الإشعار" styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold"
+														value="تاريخ الإشعار" styleClass="btxt" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
-														value="#{penalitiesListBean.reqFinesMaster.fineDate}" />
+														value="#{penalitiesListBean.reqFinesMaster.notifyDate}">
+														<f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
+													</h:outputLabel>
 												</div>
 												<div class="ui-g-2">
-													<h:outputLabel value="حالة السداد" styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold"
+														value="حالة السداد" styleClass="btxt" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
@@ -180,7 +193,8 @@
 											</div>
 											<div class="ui-g">
 												<div class="ui-g-2">
-													<h:outputLabel value="نوع النشاط" styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold"
+														value="نوع النشاط" styleClass="btxt" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
@@ -198,14 +212,16 @@
 											</div>
 											<div class="ui-g">
 												<div class="ui-g-2">
-													<h:outputLabel value="الإدارة المختصة" styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold"
+														value="الإدارة المختصة" styleClass="btxt" />
 												</div>
 												<div class="ui-g-4">
 													<h:outputLabel
 														value="#{penalitiesListBean.reqFinesMaster.deptName}" />
 												</div>
 												<div class="ui-g-2">
-													<h:outputLabel value="المراقب" styleClass="btxt" />
+													<h:outputLabel style=" font-weight: bold" value="المراقب"
+														styleClass="btxt" />
 												</div>
 												<div class="ui-g-4">
 													<h:outputLabel
@@ -226,15 +242,16 @@
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold" value="رقم الرخصة"
+													styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
 													value="#{penalitiesListBean.reqFinesMaster.fLicenceNo}" />
 											</div>
 											<div class="ui-g-2">
-												<h:outputLabel value="#{msg['commercial.name']}"
-													styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold"
+													value="#{msg['commercial.name']}" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
@@ -248,7 +265,8 @@
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold"
+													value="صاحب المنشأة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
@@ -268,7 +286,8 @@
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="عنوان المنشأة" styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold"
+													value="عنوان المنشأة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-10">
 												<h:outputLabel
@@ -281,17 +300,19 @@
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="رقم المخطط" styleClass="btxt" />
+												<h:outputLabel rendered="false" style=" font-weight: bold"
+													value="رقم المخطط" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
-												<h:outputLabel
+												<h:outputLabel rendered="false"
 													value="#{penalitiesListBean.reqFinesMaster.fMapNo}" />
 											</div>
 											<div class="ui-g-2">
-												<h:outputLabel value="رقم القطعة" styleClass="btxt" />
+												<h:outputLabel rendered="false" style=" font-weight: bold"
+													value="رقم القطعة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
-												<h:outputLabel
+												<h:outputLabel rendered="false"
 													value="#{penalitiesListBean.reqFinesMaster.fBlockNo}" />
 											</div>
 
@@ -304,14 +325,16 @@
 										<div class="ui-g">
 
 											<div class="ui-g-2">
-												<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold"
+													value="تاريخ بداية الرخصة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-4">
 												<h:outputLabel
 													value="#{penalitiesListBean.reqFinesMaster.fLicStartDate}" />
 											</div>
 											<div class="ui-g-2">
-												<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+												<h:outputLabel style=" font-weight: bold"
+													value="تاريخ نهاية الرخصة" styleClass="btxt" />
 											</div>
 											<div class="ui-g-2">
 												<h:outputLabel
@@ -334,14 +357,17 @@
 													<thead>
 														<tr>
 
-															<td style="font-size:15px; font-weight: bold">عنوان المخالفة</td>
-															<td style="font-size:15px; font-weight: bold">التكرار</td>
-															<td style="font-size:15px; font-weight: bold">الحد الادنى</td>
-															<td style="font-size:15px; font-weight: bold">الحد الأعلى</td>
-															<td style="font-size:15px; font-weight: bold">العدد</td>
-															<td style="font-size:15px; font-weight: bold">القيمة</td>
-															<td style="font-size:15px; font-weight: bold">الإجمالي</td>
-															
+															<td style="font-size: 15px; font-weight: bold">عنوان
+																المخالفة</td>
+															<td style="font-size: 15px; font-weight: bold">التكرار</td>
+															<td style="font-size: 15px; font-weight: bold">الحد
+																الادنى</td>
+															<td style="font-size: 15px; font-weight: bold">الحد
+																الأعلى</td>
+															<td style="font-size: 15px; font-weight: bold">العدد</td>
+															<td style="font-size: 15px; font-weight: bold">القيمة</td>
+															<td style="font-size: 15px; font-weight: bold">الإجمالي</td>
+
 
 														</tr>
 													</thead>
@@ -372,7 +398,7 @@
 													</tbody>
 													<tfoot>
 														<tr>
-														  
+
 															<th align="left" colspan="6" style="margin-right: 50px">
 																#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList.stream().map(fdet->fdet.fineTotalValue).sum()}
 															</th>
@@ -393,7 +419,6 @@
 											icon="ui-icon ui-icon-keyboard-arrow-left"
 											styleClass=" orange-btn"></p:commandButton>
 										<p:commandButton style="float:left;margin-left:3px;"
-											rendered="#{penalitiesListBean.reqFinesMaster.fFineCase !=0}"
 											value="طباعة الفاتورة" styleClass="purple-btn"
 											icon="ui-icon ui-icon-print" ajax="false"
 											onclick="this.form.target='_blank'"
@@ -413,11 +438,11 @@
 											action="#{penalitiesListBean.printReportPenalityAction}">
 										</p:commandButton>
 
-										<p:commandButton style="float:left;margin-left:3px;"
-											value="موافق" styleClass="btn btn-primary" update="myDialog"
-											rendered="#{(penalitiesListBean.notification) and (penalitiesListBean.reqFinesMaster.fFineCase==0)}"
-											action="#{penalitiesListBean.acceptPenality}">
-										</p:commandButton>
+										<!-- 										<p:commandButton style="float:left;margin-left:3px;" -->
+										<!-- 											value="موافق" styleClass="btn btn-primary" update="myDialog" -->
+										<!-- 											rendered="#{(penalitiesListBean.reqFinesMaster.fFineCase==0)}" -->
+										<!-- 											action="#{penalitiesListBean.acceptPenality}"> -->
+										<!-- 										</p:commandButton> -->
 
 									</div>
 								</div>

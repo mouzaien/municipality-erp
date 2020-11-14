@@ -4,17 +4,20 @@ public enum MailTypeEnum {
 	COPY(0), KITAB(143), MODAKARA(242), MAILS(1), AUTORIZATION(230), SPECIAL_AUTORIZATION(245), WORKMISSION(153), LEAVE(
 			3), LEAVESUCCESSOR(144), TRAINING(235), RESIGNATION(6), RETURNED_ITEMS_INVENTORY(250), PROJECTeXTRACT(
 					236), EARLYRETIREMENT(7), EXCHANGEREQUEST(237), SALARY(232), SALAR(233), MEDICALEXAMINATION(
-							9), ERROR(-1), VACATION(25), VACNEEDED(26), SICK_VACATION(28), TRANSACTION(
-									114), LIC(118), MEDICALREPORT(234), HEALTH_LICENCE(
-											117), ACTUALEXCHANGE(238), PROCUREMENT_MATERIALS(239), PERSONAL_COMMENT(
-													240), FINE_REBOUND(241), MEMO_RECEIPT(197), NEW_BUILDING_LICENCE(
+							9), ERROR(-1), VACATION(25), VACNEEDED(26), SICK_VACATION(28), TRANSACTION(114), LIC(
+									118), MEDICALREPORT(234), HEALTH_LICENCE(117), ACTUALEXCHANGE(
+											238), PROCUREMENT_MATERIALS(239), PERSONAL_COMMENT(240), FINE_REBOUND(
+													241), MEMO_RECEIPT(197), NEW_BUILDING_LICENCE(
 															119), ATTACH_BUILDING_LICENCE(
 																	243), NEW_BUILDING_WALL_LICENCE(
 																			244), COMPACT_PERFORMANCE(
 																					246), GENERAL_APPRECIATION(
 																							248), PERFORMANCE_EVALUATION(
 																									247), TEMPORERY_RECEIPT(
-																											251),TRANSFER_OWNERSHIP(252),PENALTY(253);
+																											251), TRANSFER_OWNERSHIP(
+																													252), PENALTY(
+																															253), HEALTHCERTIFICATE(
+																																	254);
 	private int value;
 
 	private MailTypeEnum(int value) {
@@ -105,6 +108,8 @@ public enum MailTypeEnum {
 			return MailTypeEnum.TRANSFER_OWNERSHIP;
 		case 253:
 			return MailTypeEnum.PENALTY;
+		case 254:
+			return MailTypeEnum.HEALTHCERTIFICATE;
 		default:
 			return MailTypeEnum.ERROR;
 		}
@@ -174,7 +179,9 @@ public enum MailTypeEnum {
 			return MailTypeEnum.TRANSFER_OWNERSHIP;
 		case "PENALTY":
 			return MailTypeEnum.PENALTY;
-			
+		case "HEALTHCERTIFICATE":
+			return MailTypeEnum.HEALTHCERTIFICATE;
+
 		default:
 			return MailTypeEnum.ERROR;
 		}

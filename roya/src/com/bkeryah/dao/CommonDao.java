@@ -43,6 +43,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.Sort;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -93,6 +94,7 @@ import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
 import com.bkeryah.entities.FinEntity;
 import com.bkeryah.entities.FinFinancialYear;
+import com.bkeryah.entities.HealthMasterLicence;
 import com.bkeryah.entities.HrEmployeeVacation;
 import com.bkeryah.entities.HrScenario;
 import com.bkeryah.entities.HrsEmpHistorical;
@@ -129,6 +131,7 @@ import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SubMenu;
+import com.bkeryah.entities.Supervisor;
 import com.bkeryah.entities.SysCategoryEmployer;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -138,6 +141,7 @@ import com.bkeryah.entities.TenderItems;
 import com.bkeryah.entities.TradIssueType;
 import com.bkeryah.entities.UserRoles;
 import com.bkeryah.entities.VacationsType;
+import com.bkeryah.entities.VisitsSupervisor;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkApplicationId;
@@ -162,12 +166,15 @@ import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
 import com.bkeryah.entities.investment.Contract;
 import com.bkeryah.entities.investment.ContractCancelReason;
+import com.bkeryah.entities.investment.ContractComponents;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
+import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.InvNewspaper;
 import com.bkeryah.entities.investment.Investor;
@@ -236,6 +243,7 @@ import com.bkeryah.hr.entities.Sys112;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.User;
 import com.bkeryah.penalties.FineSection;
+import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
@@ -770,11 +778,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public ArcUsers loadUser(final String username, final String password) throws AuthenticationException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
 		criteria.add(Restrictions.sqlRestriction("UPPER(LOGIN_NAME) = UPPER(?)", username, StringType.INSTANCE));
-//		if (password != null) {
-//			Object[] params = { username, password };
-//			Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
-//			criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?, ?)", params, types));
-//		}
+		// if (password != null) {
+		// Object[] params = { username, password };
+		// Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
+		// criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?,
+		// ?)", params, types));
+		// }
 		List<ArcUsers> result = criteria.list();
 		if (CollectionUtils.isEmpty(result))
 			throw new BadCredentialsException("bad credentials");
@@ -2760,8 +2769,9 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Override
 	public List<ReqFinesMaster> loadAllPenalities(boolean notification) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesMaster.class);
-		if (notification)
-			criteria.add(Restrictions.eq("type", 1));
+		// if (notification)
+		// criteria.add(Restrictions.eq("type", 1));
+		criteria.add(Restrictions.eq("status", "Y"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.addOrder(Order.desc("fineNo"));
 		return criteria.list();
@@ -3965,7 +3975,11 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public List<IntroContract> loadAllIntroContracts() {
-		return loadAll(IntroContract.class);
+		List<IntroContract> list = new ArrayList<IntroContract>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(IntroContract.class);
+		criteria.addOrder(Order.asc("id"));
+		list = criteria.list();
+		return list;
 	}
 
 	@Override
@@ -4764,6 +4778,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	}
 
 	@Override
+	@Transactional
 	public List<SysProperties> getDeansIdInSysProperties() {
 		List<SysProperties> propsList = new ArrayList<SysProperties>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SysProperties.class);
@@ -4773,6 +4788,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	}
 
 	@Override
+	@Transactional
 	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo) {
 		List<StoreTemporeryReceiptMaster> strTempList = new ArrayList<StoreTemporeryReceiptMaster>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
@@ -4783,12 +4799,13 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	}
 
 	@Override
+	@Transactional
 	public LicTrdMasterFile getLicencesByLicNo(String licNo) {
 		LicTrdMasterFile licTrd = new LicTrdMasterFile();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
 		criteria.add(Restrictions.eq("licNo", licNo));
 		licTrd = (LicTrdMasterFile) criteria.uniqueResult();
-		return null;
+		return licTrd;
 	}
 
 	@Override
@@ -4798,7 +4815,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("licId", licNo));
 		return criteria.list();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<User> getAllSupervisor(Integer deptId) {
@@ -4806,4 +4823,425 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("deptId", deptId));
 		return criteria.list();
 	}
+
+	@Override
+	@Transactional
+	public int deleteVisitByDateAndLicNo(Date currentDate, Integer licId) {
+		String hql = "  delete FROM  LicVisits  Where licId = :licId and gDate >= :gDate ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("licId", licId);
+		query.setParameter("gDate", currentDate);
+		return query.executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public List<Supervisor> findAllSupervisorsByDept(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Supervisor.class);
+		// criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+
+	}
+
+	@Override
+	@Transactional
+	public List<ArcUsers> findEmployeesByDept(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<VisitsSupervisor> getAllVisitsBySuperId(Integer superId, Integer secId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(VisitsSupervisor.class);
+		if (superId != null)
+			criteria.add(Restrictions.eq("supervisorId", superId));
+		if (secId != null)
+			criteria.add(Restrictions.eq("sectionId", secId));
+		return criteria.list();
+
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicsBySectionId(Integer sectionId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licSection", sectionId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisits> getAllVisitsByLicIdBetweenDates(Integer licId, String beginDate, String endDate) {
+		String hql = " SELECT id FROM  LicVisits  Where licId = :licId and "
+				+ " TO_DATE(hDate, 'dd-mm-yyyy') BETWEEN  TO_DATE(:beginDate, 'dd-mm-yyyy' )"
+				+ " AND TO_DATE(:endDate, 'dd-mm-yyyy')";
+		// + " AND visitId NOT IN ( SELECT visitId FROM VisitsSupervisor)" ;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("licId", licId);
+		query.setParameter("beginDate", beginDate);
+		query.setParameter("endDate", endDate);
+		List<Integer> List = query.list();
+		List<LicVisits> Vis = new ArrayList<LicVisits>();
+		for (Integer id : List) {
+			LicVisits v = new LicVisits();
+			v.setId(id);
+			Vis.add(v);
+		}
+		return Vis;
+	}
+
+	@Override
+	@Transactional
+	public List<Supervisor> findAllActive() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Supervisor.class);
+		criteria.add(Restrictions.eq("status", 1));// 0 disactive 1 active
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<ContractComponents> loadAllContractComponents() {
+		return loadAll(ContractComponents.class);
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicencesListBySection(Integer sectionId, Integer deparmentId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licSection", sectionId));
+		criteria.add(Restrictions.eq("licDeparment", deparmentId));
+
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public ContractComponents getContractComponentsById(Integer contractTpyeId) {
+		ContractComponents master = new ContractComponents();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractComponents.class);
+		criteria.add(Restrictions.eq("id", contractTpyeId));
+		master = (ContractComponents) criteria.uniqueResult();
+		return master;
+	}
+
+	@Override
+	@Transactional
+	public int findMaxContractDirectNum() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractDirect.class);
+		criteria.setProjection(Projections.max("contractNum"));
+		return (int) criteria.uniqueResult();
+	}
+
+	@Override
+	@Transactional
+	public List<LicDepartment> gatAllLicDepartmentBySection(Integer sectionId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicDepartment.class);
+		criteria.add(Restrictions.eq("sectionId", sectionId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getLicencesByActivityId(Integer activityId, Integer statusId) {
+
+		List<LicTrdMasterFile> licTrdList = new ArrayList<LicTrdMasterFile>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+
+			if (statusId == -1) {
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+
+					licTrdList = query.list();
+				} else {
+
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					licTrdList = query.list();
+
+				}
+			} else if (statusId == 1) {// Expiered منتهية
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile where TO_DATE(licEndDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				} else {
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId and TO_DATE(licEndDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				}
+			} else {// activie غير منتهية
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile where TO_DATE(licEndDate, 'dd-mm-yyyy') > TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				} else {
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId and"
+							+ " TO_DATE(licEndDate, 'dd-mm-yyyy') > TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return licTrdList;
+	}
+
+	@Override
+	@Transactional
+	public List<ContractInstallments> loadContractInstallments(Integer ConId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractInstallments.class);
+		criteria.add(Restrictions.eq("contractId", ConId));
+		return criteria.list();
+	}
+
+	@Override
+	public List<ContractComponents> getContractComponentsListByActivityId(Integer activityId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractComponents.class);
+		criteria.add(Restrictions.eq("contractTypeId", activityId));
+		return criteria.list();
+	}
+
+	@Override
+	public List<RealEstate> getRealEstatesListByActivityIdAndSiteId(Integer activityId, Integer siteId) {
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		if (activityId == -1) {
+			if (siteId == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				list = criteria.list();
+			} else {
+
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+				list = criteria.list();
+
+			}
+		} else {
+			if (siteId == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+				list = criteria.list();
+			} else {
+
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+				criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+				list = criteria.list();
+
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<Investor> loadAllInvestorsById(Integer id) {
+		List<Investor> list = new ArrayList<Investor>();
+
+		if (id != null) {
+			if (id == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+				list = criteria.list();
+			} else {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+				criteria.add(Restrictions.eq("id", id));
+				list = criteria.list();
+			}
+		} else {
+			System.out.println("loadAllInvestorsById has null id value.");
+		}
+		return list;
+	}
+
+	@Override
+	public List<ContractDirect> loadendedContractDirectList(Integer status) {
+		List<ContractDirect> contractsList = new ArrayList<ContractDirect>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+			if (status != null) {
+				if (status == 1) {// منتهية
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else if (status == 0) {// غير منتهية
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') >  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else {
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					contractsList = query.list();
+				}
+
+			} else {
+				contractsList = new ArrayList<ContractDirect>();
+				String hql = "FROM  ContractDirect";
+				Query query = sessionFactory.getCurrentSession().createQuery(hql);
+				contractsList = query.list();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return contractsList;
+	}
+
+	@Override
+	public List<ContractSubcategory> loadSuCategoryByMainCategoryId(Integer contractMaincatgId) {
+		List<ContractSubcategory> subCatgList = new ArrayList<ContractSubcategory>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractSubcategory.class);
+		criteria.add(Restrictions.eq("contMainCategoryid", contractMaincatgId));
+		subCatgList = criteria.list();
+		return subCatgList;
+	}
+
+	@Override
+	public List<RealEstate> getRealEstatesListByAllfliters(Integer activityId, Integer siteId, String components,
+			String street, Integer buildId, Integer district) {
+
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		list = criteria.list();
+		if (activityId != null && activityId != -1) {
+
+			criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+		}
+		if (siteId != null && siteId != -1) {
+			criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+		}
+		if (components != null && !components.equals("-1")) {
+			criteria.add(Restrictions.eq("components", components));
+		}
+		if (street != null && !street.equals("-1")) {
+			criteria.add(Restrictions.eq("street", street));
+		}
+		if (buildId != null && buildId != -1) {
+			criteria.add(Restrictions.eq("buildTypeId", buildId));
+		}
+		if (district != null && district != -1) {
+			criteria.add(Restrictions.eq("district", district));
+		}
+		if (activityId == -1 && siteId == -1 && (components == null || components.equals("-1"))
+				&& (street == null || street.equals("-1")) && buildId == -1 && district == -1) {
+			criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		}
+		list = criteria.list();
+		return list;
+
+	}
+
+	@Override
+	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile) {
+		List<Investor> list = new ArrayList<Investor>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+		// list = criteria.list();
+		if (investorId != null && investorId != -1) {
+			criteria.add(Restrictions.eq("id", investorId));
+		}
+		if (trdRecord != null && trdRecord != -1) {
+			criteria.add(Restrictions.eq("tradeRecord", trdRecord));
+		}
+		if (mobile != null && !mobile.equals("-1")) {
+			criteria.add(Restrictions.eq("mobile", mobile));
+		}
+
+		if (investorId == -1 && trdRecord == -1 && (mobile == null || mobile.equals("-1"))) {
+			criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+		}
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, String investorName, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate) {
+		List<ContractDirect> contractsList = new ArrayList<ContractDirect>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+			String hql = "FROM  ContractDirect";
+			if (status != null) {
+				if (status == 1) {// منتهية
+					hql += "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else if (status == 0) {// غير منتهية
+					hql += "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') >  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				}
+
+			}
+			if (investorName != null) {
+
+			}
+
+			else {
+				contractsList = new ArrayList<ContractDirect>();
+				hql = "FROM  ContractDirect";
+				Query query = sessionFactory.getCurrentSession().createQuery(hql);
+				contractsList = query.list();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return contractsList;
+	}
+
+	@Override
+	public HealthMasterLicence getHealthCertificateByApplId(Integer applId) {
+		HealthMasterLicence helthCert = new HealthMasterLicence();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HealthMasterLicence.class);
+		criteria.add(Restrictions.eq("applicationId", applId));
+		helthCert = (HealthMasterLicence) criteria.uniqueResult();
+		return helthCert;
+	}
+
+	@Override
+	public List<HealthMasterLicence> getAllHealthCertificate() {
+		List<HealthMasterLicence> list = new ArrayList<HealthMasterLicence>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HealthMasterLicence.class);
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public int deleteContractMainCategory(Integer categoryId) {
+		String hql = "  delete FROM  ContractMainCategory  Where id = :categoryId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("categoryId", categoryId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId) {
+		List<ContractsFees> list = new ArrayList<ContractsFees>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+		criteria.add(Restrictions.eq("contractId", contractId));
+		list = criteria.list();
+		return list;
+	}
+
 }

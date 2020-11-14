@@ -11,11 +11,48 @@
 	<ui:composition template="/template.xhtml">
 		<p:growl autoUpdate="true" showDetail="false" />
 		<ui:define name="content">
+			<style type="text/css">
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox
+	{
+	right: 10px;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+	{
+	margin: 0px 20px 0 1px;
+	direction: rtl;
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container
+	{
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-chkbox {
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+	float: left;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label
+	{
+	padding-left: 0px;
+	padding-right: 3em;
+}
+</style>
 			<h:form id="includeform">
 				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
-					<p:commandButton value="اضافة زيارة" onclick="PF('add_dlg').show()"
-						update="includeform:pngid" immediate="true" styleClass="cyan-btn"
+					<p:commandButton value="اضافة زيارة"
+						action="#{licencesVisitsBean.showDlg}" immediate="true"
+						update="includeform:pngid" styleClass="cyan-btn"
 						icon="ui-icon ui-icon-plus">
 					</p:commandButton>
 				</div>
@@ -23,23 +60,63 @@
 					<h1 style="color: #7CB342; text-align: center">#{msg['visit.licences']}</h1>
 					<br></br>
 					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
+						<div class="ui-g-1">
+							<h:outputLabel value="القطاع"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="LicenceSection" style="width:100%"
+								value="#{licencesVisitsBean.sectionId}">
+								<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
+								<f:selectItems value="#{licencesVisitsBean.licSectionList}"
+									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								<f:ajax render="section inboxdt LicenceDepartment" event="change" execute="@this"
+									listener="#{licencesVisitsBean.loadLics}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="القسم"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="LicenceDepartment" style="width:100%"
+								value="#{licencesVisitsBean.deparmentId}">
+								<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
+								<f:selectItems value="#{licencesVisitsBean.licDepartmentList}"
+									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								<f:ajax render="section inboxdt" event="change" execute="@this"
+									listener="#{licencesVisitsBean.loadLics}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
 							<h:outputLabel value="رقم الرخصة"></h:outputLabel>
+						</div>
+						<div class="ui-g-3" style="text-align: center" dir="rtl">
 
+							<p:selectCheckboxMenu id="section" style="width:100%" dir="rtl"
+								label="إختر رقم الرخصة" filter="true" filterMatchMode="contains"
+								panelStyleClass="test" value="#{licencesVisitsBean.licencesIds}">
+								<f:selectItems value="#{licencesVisitsBean.licenceList}"
+									var="licences" itemValue="#{licences.id}"
+									itemLabel="#{licences.licNo}" />
+								<f:ajax render="inboxdt" execute="section" event="change"
+									listener="#{licencesVisitsBean.loadVisitsByLic}" />
+								<p:ajax event="toggleSelect" update="inboxdt"
+									partialSubmit="true"
+									listener="#{licencesVisitsBean.loadVisitsByLic}" />
+							</p:selectCheckboxMenu>
 						</div>
-						<div class="ui-g-3">
-							<h:outputLabel style="width:100%"
-								value="#{licencesVisitsBean.licence.licNo}" />
-						</div>
+						<!-- 						<div class="ui-g-3"> -->
+						<!-- 							<h:outputLabel style="width:100%" -->
+						<!-- 								value="#{licencesVisitsBean.licence.licNo}" /> -->
+						<!-- 						</div> -->
 
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="الاسم التجاري "></h:outputLabel>
+						<!-- 						<div class="ui-g-2" style="text-align: center"> -->
+						<!-- 							<h:outputLabel value="الاسم التجاري "></h:outputLabel> -->
 
-						</div>
-						<div class="ui-g-5">
-							<h:outputLabel style="width:100%"
-								value="#{licencesVisitsBean.licence.trdName}" />
-						</div>
+						<!-- 						</div> -->
+						<!-- 						<div class="ui-g-5"> -->
+						<!-- 							<h:outputLabel style="width:100%" -->
+						<!-- 								value="#{licencesVisitsBean.licence.trdName}" /> -->
+						<!-- 						</div> -->
 					</div>
 
 
@@ -49,6 +126,7 @@
 							value="#{licencesVisitsBean.visits}" emptyMessage="لايوجد بيانات"
 							rowIndexVar="rowIndex" paginatorPosition="bottom"
 							widgetVar="cellLicence" editable="true"
+							sortBy="#{visit.gDate}" sortOrder="descending" 
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							filteredValue="#{licencesListBean.filteredLicences}"
 							paginator="true" rows="10">
@@ -82,15 +160,23 @@
 											required="true" requiredMessage="إدخل تاريخ البداية"
 											value="#{visit.hDate}" onfocus="loadCalendar();"
 											styleClass="form-control form-controlCal">
-											<f:validator validatorId="utilities.UmmAlQUraValidator" />
+<!-- 											<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
 											<f:ajax execute="@this"></f:ajax>
 										</p:inputText>
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 							<p:column style="text-align: center;" headerText="الزيارة "
-								filterBy=" #{visit.visitName}" filterMatchMode="contains"
+								filterBy="#{visit.visitId}" filterMatchMode="contains"
 								width="10%">
+								<f:facet name="filter">
+									<p:selectOneMenu onchange="PF('cellLicence').filter()"
+										value="null">
+										<f:selectItem itemLabel="  " noSelectionOption="true" />
+										<f:selectItems value="#{licencesVisitsBean.licVisits}"
+											var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+									</p:selectOneMenu>
+								</f:facet>
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{visit.visitName}" />
@@ -108,17 +194,39 @@
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
+
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="نوع الزيارة" width="15%"
 								filterBy="#{visit.visitType}" filterMatchMode="contains">
-
+								<f:facet name="filter">
+									<p:selectOneMenu onchange="PF('cellLicence').filter()"
+										value="null">
+										<f:selectItem itemLabel="  " noSelectionOption="true" />
+										<f:selectItem itemLabel="دورية" itemValue="0" />
+										<f:selectItem itemLabel="فجأية" itemValue="1" />
+										<f:selectItem itemLabel="عن طريق شكوة" itemValue="2" />
+									</p:selectOneMenu>
+								</f:facet>
 								<p:selectOneMenu style="width:100%; opacity:1"
 									value="#{visit.visitType}" disabled="true">
 									<f:selectItem itemLabel="دورية" itemValue="0" />
 									<f:selectItem itemLabel="فجأية" itemValue="1" />
 									<f:selectItem itemLabel="عن طريق شكوة" itemValue="2" />
 								</p:selectOneMenu>
-
+							</p:column>
+							<p:column style="text-align: center;" headerText="القطاع "
+								filterBy="#{licencesVisitsBean.getLicData(visit.sectionId)}"
+								filterMatchMode="contains" width="10%">
+								#{licencesVisitsBean.getLicData(visit.sectionId)}
+							</p:column>
+							
+							<p:column style="text-align: center;" headerText="القسم "
+								 width="5%">
+								<p:selectOneMenu id="LicenceDepartment" style="width:100% ; opacity:1"
+								value="#{licencesVisitsBean.deparmentId}" disabled="true">
+								<f:selectItems value="#{licencesVisitsBean.licDepartmentList}"
+									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+							</p:selectOneMenu>
 							</p:column>
 							<p:column width="5%" style="text-align:center" headerText="تعديل">
 								<p:rowEditor />
@@ -144,7 +252,56 @@
 					<h:panelGroup id="pngid">
 						<p:fieldset legend="بيانات الزيارة">
 							<div class="ui-g">
-								<div class="ui-g-2" style="text-align: center">
+								<div class="ui-g-1">
+									<h:outputLabel value="القطاع"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu style="width:100%"
+										value="#{licencesVisitsBean.sectionId}">
+										<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
+										<f:selectItems value="#{licencesVisitsBean.licSectionList}"
+											var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+										<f:ajax render="lics dpts" event="change" execute="@this"
+											listener="#{licencesVisitsBean.loadLics}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel value="القسم"></h:outputLabel>
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu style="width:100%" id="dpts"
+										value="#{licencesVisitsBean.deparmentId}">
+										<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
+										<f:selectItems value="#{licencesVisitsBean.licDepartmentList}"
+											var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+										<f:ajax render="lics" event="change" execute="@this"
+											listener="#{licencesVisitsBean.loadLics}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel value="رقم الرخصة"></h:outputLabel>
+								</div>
+								<div class="ui-g-3" style="text-align: center" dir="rtl">
+
+									<p:selectCheckboxMenu style="width:100%" dir="rtl"
+										required="true" requiredMessage="اختر رقم الرخصة" id="lics"
+										label="إختر الرخصة" filter="true" filterMatchMode="contains"
+										panelStyleClass="test"
+										value="#{licencesVisitsBean.licencesAddIds}">
+										<f:selectItems value="#{licencesVisitsBean.licenceList}"
+											var="licences" itemValue="#{licences.id}"
+											itemLabel="#{licences.licNo}" />
+										<!-- 										<f:ajax render="inboxdt" execute="section" event="change" -->
+										<!-- 											listener="#{licencesVisitsBean.loadVisitsByLic}" /> -->
+										<!-- 										<p:ajax event="toggleSelect" update="inboxdt" -->
+										<!-- 											partialSubmit="true" -->
+										<!-- 											listener="#{licencesVisitsBean.loadVisitsByLic}" /> -->
+									</p:selectCheckboxMenu>
+								</div>
+							</div>
+							<br />
+							<div class="ui-g">
+								<div class="ui-g-1" style="text-align: center">
 									<h:outputLabel value="نوع الزيارة"></h:outputLabel>
 
 								</div>
@@ -171,7 +328,7 @@
 								<!-- 							</div> -->
 								<!-- 						</div> -->
 								<!-- 						<div class="ui-g"> -->
-								<div class="ui-g-2" style="text-align: center">
+								<div class="ui-g-1" style="text-align: center">
 									<h:outputLabel value="تاريخ البداية"></h:outputLabel>
 								</div>
 								<div class="ui-g-2">

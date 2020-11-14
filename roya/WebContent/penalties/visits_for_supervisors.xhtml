@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:secc="http://www.springframework.org/security/tags">
+
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<p:growl autoUpdate="true" showDetail="false" />
+		<ui:define name="content">
+			<style type="text/css">
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox
+	{
+	right: 10px;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+	{
+	margin: 0px 20px 0 1px;
+	direction: rtl;
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container
+	{
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-chkbox {
+	float: right;
+}
+
+.test .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+	float: left;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+}
+
+.test.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label
+	{
+	padding-left: 0px;
+	padding-right: 3em;
+}
+</style>
+			<h:form id="includeform">
+				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
+				<div class="image-box-footer">
+					<p:commandButton value="حساب زيارات" update="includeform:pngid"
+						immediate="true" styleClass="cyan-btn"
+						action="#{supervisorVisitsBean.showDlg}"
+						icon="ui-icon ui-icon-plus">
+					</p:commandButton>
+				</div>
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center">توزيع الزيارات</h1>
+					<br></br>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputLabel value="القطاع"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="LicenceSection" style="width:100%"
+								value="#{supervisorVisitsBean.secId}">
+								<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
+								<f:selectItems value="#{supervisorVisitsBean.licSectionList}"
+									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								<f:ajax render="inboxdt LicencDepartment" execute="@this"
+									listener="#{supervisorVisitsBean.loadVisitsBySuper}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="القسم"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu id="LicencDepartment" style="width:100%">
+								<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
+								<f:selectItems value="#{supervisorVisitsBean.licDepartmentList}"
+									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+
+							</p:selectOneMenu>
+						</div>
+
+						<div class="ui-g-1" style="text-align: center">
+							<h:outputLabel value="المراقب"></h:outputLabel>
+
+						</div>
+						<div class="ui-g-3">
+							<p:selectCheckboxMenu id="superl" style="width:100%" dir="rtl"
+								label="   إختر  المراقب     " filter="true"
+								filterMatchMode="contains" panelStyleClass="test"
+								value="#{supervisorVisitsBean.supervisorIds}">
+								<f:selectItems value="#{supervisorVisitsBean.supervisors}"
+									var="spr" itemValue="#{spr.id}" itemLabel="#{spr.userName}" />
+								<f:ajax render="inboxdt" execute="@this" event="change"
+									listener="#{supervisorVisitsBean.loadVisitsBySuper}" />
+								<p:ajax event="toggleSelect" update="inboxdt"
+									partialSubmit="true"
+									listener="#{supervisorVisitsBean.loadVisitsBySuper}" />
+							</p:selectCheckboxMenu>
+						</div>
+
+						<!-- 						<div class="ui-g-2" style="text-align: center"> -->
+						<!-- 							<h:outputLabel value="القطاع"></h:outputLabel> -->
+
+						<!-- 						</div> -->
+						<!-- 						<div class="ui-g-2"> -->
+						<!-- 							<p:selectOneMenu id="listSection" style="width:100%" -->
+						<!-- 								value="#{supervisorVisitsBean.sectionId}"> -->
+						<!-- 								<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" /> -->
+						<!-- 								<f:selectItems value="#{supervisorVisitsBean.licSectionList}" -->
+						<!-- 									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" /> -->
+						<!-- 							</p:selectOneMenu> -->
+						<!-- 						</div> -->
+					</div>
+
+
+					<br />
+					<div class="row">
+						<p:dataTable var="visit" id="inboxdt"
+							value="#{supervisorVisitsBean.visitsSupervisors}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							sortBy="#{visit.gDate}" sortOrder="descending" 
+							paginatorPosition="bottom" widgetVar="cellLicence"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true" rows="10">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('cellLicence').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="text-align: center;" headerText="الرقم"
+								width="5%">
+                                    #{rowIndex+1}
+                            </p:column>
+							<p:column style="text-align: center;" headerText="تاريخ الزيارة "
+								filterBy="#{visit.hijDate}" filterMatchMode="contains"
+								width="40%">
+								<h:outputText value="#{visit.hijDate}" />
+							</p:column>
+							<p:column style="text-align: center;" headerText="رقم الرخصة"
+								filterBy="#{supervisorVisitsBean.getLicData(visit.licId)}"
+								filterMatchMode="contains" width="40%">
+								#{supervisorVisitsBean.getLicData(visit.licId)}
+							</p:column>
+							<p:column style="text-align: center;" headerText="القطاع"
+								filterBy=" #{visit.sectionName}" filterMatchMode="contains"
+								width="40%">
+								<h:outputText value="#{visit.sectionName}" />
+							</p:column>
+							<p:column width="10%" style="text-align:center"
+								headerText="نقل الزيارة">
+								<p:commandButton action="#{supervisorVisitsBean.setSup(visit)}"
+									styleClass="cyan-btn" update="inboxdt" immediate="true"
+									icon="ui-icon-arrow">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+					<br />
+				</div>
+
+				<p:dialog widgetVar="add_dlg" id="dlgid" width="70%"
+					hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+					resizable="false">
+					<h:panelGroup id="pngid">
+						<p:fieldset legend="حساب الزيارات">
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<h:outputLabel value="المراقب"></h:outputLabel>
+								</div>
+								<div class="ui-g-3" style="text-align: center" dir="rtl">
+									<p:selectCheckboxMenu style="width:100%" dir="rtl"
+										requiredMessage="اختر  المراقب" required="true"
+										label="إختر  المراقب" filter="true" filterMatchMode="contains"
+										panelStyleClass="test"
+										value="#{supervisorVisitsBean.supervisorAddIds}">
+										<f:selectItems value="#{supervisorVisitsBean.supervisors}"
+											var="sprs" itemValue="#{sprs.id}"
+											itemLabel="#{sprs.userName}" />
+									</p:selectCheckboxMenu>
+								</div>
+
+								<div class="ui-g-1" style="text-align: center">
+									<h:outputLabel value="القطاع"></h:outputLabel>
+
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu id="Section" style="width:100%"
+										requiredMessage="إختر القطاع" required="true"
+										value="#{supervisorVisitsBean.sectionAddId}">
+										<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
+										<f:selectItems value="#{supervisorVisitsBean.licSectionList}"
+											var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+										<f:ajax render="inboxdt LicenDepartment" execute="@this"
+											listener="#{supervisorVisitsBean.loadlicDepartments}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel value="القسم"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu id="LicenDepartment" style="width:100%">
+										<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
+										<f:selectItems
+											value="#{supervisorVisitsBean.licDepartmentList}" var="item"
+											itemLabel="#{item.name}" itemValue="#{item.id}" />
+
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-1" style="text-align: center">
+									<h:outputLabel value="تاريخ البداية"></h:outputLabel>
+								</div>
+								<div class="ui-g-3">
+									<p:inputText id="licBeginDate" style="width:100%;opacity:1;"
+										requiredMessage="إدخل تاريخ البداية" required="true"
+										value="#{supervisorVisitsBean.beginDate}"
+										onfocus="loadCalendar();" disabled="true"
+										styleClass="form-control form-controlCal">
+										<f:validator validatorId="utilities.UmmAlQUraValidator" />
+									</p:inputText>
+								</div>
+								<div class="ui-g-2" style="text-align: center">
+									<h:outputLabel value="تاريخ النهاية"></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="licEndDate"
+										requiredMessage="إدخل تاريخ النهاية"
+										value="#{supervisorVisitsBean.endDate}" required="true"
+										onfocus="loadCalendar();" style="width:100%"
+										styleClass="form-control form-controlCal">
+										<f:validator validatorId="utilities.UmmAlQUraValidator" />
+									</p:inputText>
+								</div>
+							</div>
+
+							<br />
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" oncomplete="PF('add_dlg').hide()"
+									styleClass="cyan-btn" icon="ui-icon ui-icon-save"
+									update="includeform:inboxdt"
+									action="#{supervisorVisitsBean.save}" />
+								<p:commandButton value="رجوع" immediate="true"
+									onclick="PF('add_dlg').hide()" />
+							</div>
+						</p:fieldset>
+					</h:panelGroup>
+				</p:dialog>
+			</h:form>
+			<h:form id="include2">
+				<p:dialog widgetVar="trans_dlg" id="dlgid2" width="70%"
+					hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+					resizable="false">
+					<h:panelGroup id="pngid2">
+						<p:fieldset legend="حساب الزيارات">
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<h:outputLabel value="المراقب"></h:outputLabel>
+								</div>
+								<div class="ui-g-3" style="text-align: center" dir="rtl">
+									<p:selectOneMenu style="width:100%" dir="rtl" required="true"
+										requiredMessage="اختر  المراقب" label="إختر  المراقب"
+										filter="true" filterMatchMode="contains"
+										value="#{supervisorVisitsBean.supervisorId}">
+										<f:selectItem itemLabel="اختر" noSelectionOption="true" />
+										<f:selectItems value="#{supervisorVisitsBean.supervisors}"
+											var="sprs" itemValue="#{sprs.id}"
+											itemLabel="#{sprs.userName}" />
+										<p:ajax process="@this" partialSubmit="true"></p:ajax>
+									</p:selectOneMenu>
+								</div>
+							</div>
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" oncomplete="PF('trans_dlg').hide()"
+									action="#{supervisorVisitsBean.transfer}" styleClass="cyan-btn"
+									icon="ui-icon ui-icon-save">
+									<!-- 									<p:ajax process="@this" update="includeform:inboxdt" -->
+									<!-- 										listener="#{supervisorVisitsBean.transfer}"></p:ajax> -->
+								</p:commandButton>
+								<p:commandButton value="رجوع" immediate="true"
+									onclick="PF('trans_dlg').hide()" />
+							</div>
+						</p:fieldset>
+					</h:panelGroup>
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

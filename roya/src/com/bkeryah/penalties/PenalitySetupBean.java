@@ -48,7 +48,7 @@ public class PenalitySetupBean {
 
 	public String printPenalityReport() {
 		try {
-			String reportName = "/reports/penalityList.jasper";
+			String reportName = "/reports/penalitiesListtest.jasper";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			Utils.printPdfReport(reportName, parameters);
 		} catch (Exception e) {

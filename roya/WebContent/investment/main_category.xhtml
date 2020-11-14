@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:growl id="msg" autoUpdate="true" closable="true"
+					showDetail="true" />
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="إضافة" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-add" process="@this"
+						oncomplete="PF('add_main_category_dlg').show()">
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+					<h1 style="color: #7CB342; text-align: center;">
+						التصنيفات الرئيسية <span class="fa fa-fw fa-building"></span>
+					</h1>
+					<br />
+					<div class="ui-g">
+						<p:dataTable var="mainGategoryItem" id="mainGategoryTable"
+							value="#{mainCategoryBean.contractMainCategoryList}"
+							paginatorPosition="bottom" emptyMessage="لايوجد بيانات"
+							rowIndexVar="rowIndex" editable="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{mainCategoryBean.contractMainCategoryListFilter}"
+							paginator="true" rows="12">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:ajax event="rowEdit" listener="#{mainCategoryBean.onRowEdit}"
+								update=":includeform:msg" />
+							<p:ajax event="rowEditCancel"
+								listener="#{mainCategoryBean.onRowCancel}"
+								update=":includeform:msg" />
+							<p:column headerText="الرقم" filterBy="#{rowIndex+1}"
+								filterMatchMode="contains" style="width:10%;text-align:center;">
+								<h:outputText value="#{rowIndex+1}" />
+							</p:column>
+							<p:column headerText="اسم التصنيف"
+								filterBy="#{mainGategoryItem.name}" filterMatchMode="contains"
+								style="width:70%;">
+
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{mainGategoryItem.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{mainGategoryItem.name}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="تعديل" style="width:5%;text-align:center;">
+								<p:rowEditor />
+							</p:column>
+							<p:column headerText="حذف" style="width:5%;text-align:center;">
+								<p:commandButton styleClass="red-btn" icon="ui-icon-remove" immediate="true"
+									oncomplete="PF('delete_main_category_dlg').show();">
+<!-- 									<f:setPropertyActionListener value="mainGategoryItem" -->
+<!-- 										target="#{mainCategoryBean.mainCategory}"></f:setPropertyActionListener> -->
+									<p:ajax listener="#{mainCategoryBean.allowDelete}"
+										process="@this" />
+
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<p:dialog widgetVar="add_main_category_dlg"
+						id="add_main_category_dlgId" header="إضافة تصنيف رئيسي"
+						width="50%" hideEffect="fade" style="text-align: center'"
+						showEffect="explode" dir="rtl" modal="true" resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="إسم التصنيف" styleClass="btxt" />
+							</div>
+							<div class="ui-g-6">
+								<p:inputText value="#{mainCategoryBean.mainCategory.name}"
+									style="width: 100%">
+									<p:ajax process="@this"></p:ajax>
+								</p:inputText>
+							</div>
+						</div>
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="حفظ" styleClass="btn btn-primary"
+								update=":includeform:mainGategoryTable"
+								action="#{mainCategoryBean.saveMainCategory}"
+								oncomplete="PF('add_main_category_dlg').hide();">
+							</p:commandButton>
+						</div>
+					</p:dialog>
+					<p:dialog widgetVar="delete_main_category_dlg"
+						id="deletea_main_category_dlgId" header="تأكيد عملية الحذف"
+						width="20%" hideEffect="fade" style="text-align: center'"
+						showEffect="explode" dir="rtl" modal="true" resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:outputLabel value="هل تريد إتمام عملية الحذف ؟!"
+									styleClass="btxt" />
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="نعم" styleClass="green-btn"
+								update=":includeform:mainGategoryTable"
+								action="#{mainCategoryBean.deleteMainCategory}"
+								icon="fa fa-check"
+								oncomplete="PF('delete_main_category_dlg').hide();">
+							</p:commandButton>
+							<p:spacer width="10px" />
+							<p:commandButton value="لا" styleClass="red-btn"
+								update=":includeform:mainGategoryTable"
+								action="#{mainCategoryBean.cancelDelete}" icon="fa fa-remove"
+								oncomplete="PF('delete_main_category_dlg').hide();">
+							</p:commandButton>
+						</div>
+					</p:dialog>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

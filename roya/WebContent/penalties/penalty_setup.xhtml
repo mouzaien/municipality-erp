@@ -28,11 +28,11 @@
 					<p:messages autoUpdate="true" closable="true"></p:messages>
 
 					<div class="image-box-footer" align="left">
-						<p:commandButton value="#{msg['fine.add']}" id="save"
+						<p:commandButton value="اضافة" id="save"
 							process="@this" immediate="true" styleClass="cyan-btn"
 							onclick="PF('print-barcode-dlg').show()" icon="ui-icon-add">
 						</p:commandButton>
-
+                   <p:spacer height="10"></p:spacer>
 						<p:commandButton value="طباعة الكل" icon="ui-icon ui-icon-print "
 							onclick="this.form.target='_blank'" ajax="false" immediate="true"
 							action="#{penalitySetupBean.printPenalityReport}"

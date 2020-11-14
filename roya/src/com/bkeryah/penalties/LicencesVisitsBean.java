@@ -11,13 +11,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.maven.wagon.providers.ssh.interactive.NullInteractiveUserInfo;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.licences.LicVisits;
 import com.bkeryah.entities.licences.LicVisitsTypes;
+import com.bkeryah.managedBean.reqfin.newReplaceFinBean;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -29,6 +33,7 @@ public class LicencesVisitsBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private LicTrdMasterFile licence;
+	private List<LicTrdMasterFile> licenceList = new ArrayList<>();
 	private LicVisits Visit = new LicVisits();
 	private List<LicVisits> Visits = new ArrayList<LicVisits>();
 	private Integer daysNo;
@@ -36,6 +41,13 @@ public class LicencesVisitsBean {
 	private String beginDate;
 	private String endDate;
 	private List<LicVisitsTypes> licVisits;
+	private List<String> licencesIds = new ArrayList<>();
+	private List<String> licencesAddIds = new ArrayList<>();
+	private Date current;
+	private List<LicSection> licSectionList  = new ArrayList<>();;
+	private List<LicDepartment> licDepartmentList  = new ArrayList<>();;
+	private Integer sectionId;
+	private Integer deparmentId;
 
 	@PostConstruct
 	private void init() {
@@ -46,8 +58,47 @@ public class LicencesVisitsBean {
 		// httpSession.removeAttribute("licence");
 		if (licence != null) {
 			Visits = dataAccessService.getAllVisitsByLicId(licence.getId());
+			deparmentId = licence.getLicDeparment();
+			sectionId = licence.getLicSection();
+			licencesIds.add(licence.getId().toString());
+			licenceList.add(licence);
+			licDepartmentList = dataAccessService.getAllLicDepartmentBySection(sectionId);
 		}
 		licVisits = dataAccessService.findAllLicVisits();
+		licSectionList = dataAccessService.gatAllLicSectionList();
+		
+	}
+
+	public String loadLics() {
+		//if(!(licDepartmentList.size()>0)){
+			licDepartmentList = dataAccessService.getAllLicDepartmentBySection(sectionId);
+		//}
+		if (sectionId != null && deparmentId != null) {
+			Visits = new ArrayList<LicVisits>();
+			licenceList = new ArrayList<>();
+			licenceList = dataAccessService.getAllLicencesListBySection(sectionId, deparmentId);
+		}
+
+		return "";
+
+	}
+
+	public void showDlg() {
+		// licenceList = dataAccessService.getAllLicencesList();
+		sectionId = null;
+		deparmentId = null;
+		licenceList = new ArrayList<>();
+		Utils.openDialog("add_dlg");
+	}
+
+	public String getLicData(Integer licId) {
+		if (licId != null) {
+			LicSection licSec = (LicSection) dataAccessService.findEntityById(LicSection.class, licId);
+			if (licSec != null) {
+				return licSec.getName();
+			}
+		}
+		return null;
 	}
 
 	public String save() {
@@ -57,38 +108,56 @@ public class LicencesVisitsBean {
 				if (vt != null) {
 					String start = Utils.convertHijriDateToGregorian(beginDate);
 					SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-					Date current = format1.parse(start);
+					current = format1.parse(start);
 					Visit.setgDate(current);
 					Visit.sethDate(beginDate);
 					Visit.setVisitId(visitId);
-					Visit.setLicId(licence.getId());
 					daysNo = vt.getDaysNo();
-					if (vt.getType().equals("0")) { // periodic
-						// convert start date to g and insert
-						Calendar calendar1 = Calendar.getInstance();
-						calendar1.setTime(current);
-						calendar1.add(Calendar.YEAR, 1);
-						Date end = calendar1.getTime();
-						while (current.before(end)) {
-							dataAccessService.save(Visit);
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(current);
-							calendar.add(Calendar.DATE, daysNo);
-							current = calendar.getTime();
-							Visit.setgDate(current);
-							Visit.sethDate(Utils.grigDatesConvert(current));
-						}
-						MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+					if (licencesAddIds != null) {
+						for (String id : licencesAddIds) {
+							Visit.setLicId(Integer.parseInt(id));
 
-					} else {
-						dataAccessService.save(Visit);
-						MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+							if (vt.getType().equals(0)) { // periodic
+								// convert start date to g and insert
+								checkVisits(Integer.parseInt(id));
+								Calendar calendar1 = Calendar.getInstance();
+								calendar1.setTime(current);
+								calendar1.add(Calendar.YEAR, 1);
+								Date end = calendar1.getTime();
+								while (current.before(end)) {
+									try {
+										dataAccessService.save(Visit);
+									} catch (Exception e) {
+										System.out.println(e.getMessage());
+										e.printStackTrace();
+									}
+									Calendar calendar = Calendar.getInstance();
+									calendar.setTime(current);
+									calendar.add(Calendar.DATE, daysNo);
+									current = calendar.getTime();
+									Visit.setgDate(current);
+									Visit.sethDate(Utils.grigDatesConvert(current));
+								}
+								MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+								//loadLics();
+							} else {
+								try {
+									dataAccessService.save(Visit);
+									MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+									//loadVisits();
+								} catch (Exception e) {
+									System.out.println(e.getMessage());
+									e.printStackTrace();
+								}
+							}
+
+						}
 					}
 				}
 			}
 
-			if (licence != null) {
-				Visits = dataAccessService.getAllVisitsByLicId(licence.getId());
+			if (licencesAddIds.size() > 0) {
+				loadVisits();
 				beginDate = null;
 				visitId = null;
 			}
@@ -142,6 +211,43 @@ public class LicencesVisitsBean {
 			beginDate = null;
 			visitId = null;
 		}
+	}
+
+	public void loadVisitsByLic(AjaxBehaviorEvent event) {
+		Visits = new ArrayList<LicVisits>();
+		List<LicVisits> Vis = new ArrayList<LicVisits>();
+		for (String id : licencesIds) {
+			Vis = new ArrayList<LicVisits>();
+			Vis = dataAccessService.getAllVisitsByLicId(Integer.parseInt(id));
+			Visits.addAll(Vis);
+		}
+
+	}
+
+	public void loadVisits() {
+		Visits = new ArrayList<LicVisits>();
+		List<LicVisits> Vis = new ArrayList<LicVisits>();
+		for (String id : licencesAddIds) {
+			Vis = new ArrayList<LicVisits>();
+			Vis = dataAccessService.getAllVisitsByLicId(Integer.parseInt(id));
+			Visits.addAll(Vis);
+		}
+
+	}
+
+	public void checkVisits(Integer licId) {
+		try {
+			int del = dataAccessService.deleteVisitByDateAndLicNo(new Date(), licId);
+			if (del > 0) {
+				current = new Date();
+				Visit.setgDate(current);
+				Visit.sethDate(Utils.grigDatesConvert(current));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	public void onRowCancel(RowEditEvent event) {
@@ -219,6 +325,70 @@ public class LicencesVisitsBean {
 
 	public void setVisitId(Integer visitId) {
 		this.visitId = visitId;
+	}
+
+	public List<LicTrdMasterFile> getLicenceList() {
+		return licenceList;
+	}
+
+	public void setLicenceList(List<LicTrdMasterFile> licenceList) {
+		this.licenceList = licenceList;
+	}
+
+	public List<String> getLicencesIds() {
+		return licencesIds;
+	}
+
+	public void setLicencesIds(List<String> licencesIds) {
+		this.licencesIds = licencesIds;
+	}
+
+	public List<String> getLicencesAddIds() {
+		return licencesAddIds;
+	}
+
+	public void setLicencesAddIds(List<String> licencesAddIds) {
+		this.licencesAddIds = licencesAddIds;
+	}
+
+	public Date getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(Date current) {
+		this.current = current;
+	}
+
+	public List<LicSection> getLicSectionList() {
+		return licSectionList;
+	}
+
+	public void setLicSectionList(List<LicSection> licSectionList) {
+		this.licSectionList = licSectionList;
+	}
+
+	public List<LicDepartment> getLicDepartmentList() {
+		return licDepartmentList;
+	}
+
+	public void setLicDepartmentList(List<LicDepartment> licDepartmentList) {
+		this.licDepartmentList = licDepartmentList;
+	}
+
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public Integer getDeparmentId() {
+		return deparmentId;
+	}
+
+	public void setDeparmentId(Integer deparmentId) {
+		this.deparmentId = deparmentId;
 	}
 
 }

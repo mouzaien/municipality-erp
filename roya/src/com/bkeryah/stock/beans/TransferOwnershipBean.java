@@ -241,6 +241,7 @@ public class TransferOwnershipBean {
 		String reportName = "/reports/transferOwnership_Request.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("transId", transOwnership.getId());
+		parameters.put("record_id", recordId);
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

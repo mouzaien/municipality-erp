@@ -55,6 +55,10 @@ public class Investor {
 	private Integer investorIdType;
 	@Column(name = "INVESTOR_STATUS")
 	private Integer investorStatus;
+	@Column(name = "COMPANY_NAME")
+	private String companyName;
+	@Column(name = "MANDATE_NUMBER")//رقم التفويض 
+	private Integer mandateNumber;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Tender> tenderList;
@@ -216,6 +220,22 @@ public class Investor {
 
 	public void setGrigCreateDate(Date grigCreateDate) {
 		this.grigCreateDate = grigCreateDate;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public Integer getMandateNumber() {
+		return mandateNumber;
+	}
+
+	public void setMandateNumber(Integer mandateNumber) {
+		this.mandateNumber = mandateNumber;
 	}
 
 	// public List<Contract> getContractList() {

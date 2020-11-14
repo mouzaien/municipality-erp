@@ -87,7 +87,7 @@ public class PenalitiesListBean {
 		try {
 			String reportName = "/reports/penality_report.jasper";
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("fine_no", reqFinesMaster.getFineNo());
+			parameters.put("fine_no", reqFinesMaster.getNotifyMasterId());
 			parameters.put("now", HijriCalendarUtil.findCurrentHijriDate());
 			// parameters.put("SUBREPORT_DIR",
 			// FacesContext.getCurrentInstance().getExternalContext()

@@ -6,25 +6,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-
-	<!-- 	<h:head> -->
-	<!-- 		<f:metadata> -->
-	<!-- 			<f:viewAction phase="APPLY_REQUEST_VALUES" -->
-	<!-- 				action="#{investorsBean.loadInvestors}"></f:viewAction> -->
-	<!-- 		</f:metadata> -->
-	<!-- 		 <link -->
-	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
-	<!-- 			rel="stylesheet" type="text/css"></link>   -->
-	<!-- 	</h:head> -->
-	<script type="text/javascript">
-		window.onload = window.history.forward(0);
-	</script>
-	<br />
 	<h:body>
-
 		<ui:composition template="/template.xhtml">
-			<p:growl autoUpdate="true" showDetail="false" />
-
 			<ui:define name="content">
 				<h:form id="includeform">
 					<p:messages autoUpdate="true" closable="true"></p:messages>
@@ -33,6 +16,19 @@
 							icon="ui-icon ui-icon-add" oncomplete=" PF('addDialog').show()"
 							action="#{investorsBean.addInvestor}" process="@this"
 							update="includeform:addPG">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="طباعة الكل" ajax="false"
+							onclick="this.form.target='_blank'" styleClass="purple-btn"
+							icon="ui-icon ui-icon-print" immediate="true"
+							action="#{investorsBean.printAllInvestorsReportAction}">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="تصدير ملف اكسيل" ajax="false"
+							styleClass="orange-btn" icon="fa fa-fw fa-file-excel-o"
+							immediate="true">
+							<p:dataExporter encoding="UTF-8" type="xlsx"
+								target="allusersettingdt" fileName="المستثمرين"></p:dataExporter>
 						</p:commandButton>
 					</div>
 					<br />
@@ -44,15 +40,71 @@
 							</h1>
 
 						</div>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<p:outputLabel value="رقم السجل" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="invTradeRecordFillterList"
+									value="#{investorsBean.investorId}" filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="الكل" itemValue="-1"></f:selectItem>
+									<f:selectItems var="i"
+										value="#{investorsBean.investorsListfiltter}"
+										itemLabel="#{i.tradeRecord}" itemValue="#{i.id}">
+									</f:selectItems>
+
+									<p:ajax listener="#{investorsBean.loadInvestorsById}"
+										update="allusersettingdt"></p:ajax>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-1">
+								<p:outputLabel value="اسم المستثمر" styleClass="btxt" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneMenu id="invNameFillterList"
+									value="#{investorsBean.investorId}" filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="الكل" itemValue="-1"></f:selectItem>
+									<f:selectItems var="i"
+										value="#{investorsBean.investorsListfiltter}"
+										itemLabel="#{i.name}" itemValue="#{i.id}">
+									</f:selectItems>
+
+									<p:ajax listener="#{investorsBean.loadInvestorsById}"
+										update="allusersettingdt"></p:ajax>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-1">
+								<p:outputLabel value="رقم الجوال" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="invMobileFillterList"
+									value="#{investorsBean.investorId}" filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="الكل" itemValue="-1"></f:selectItem>
+									<f:selectItems var="i"
+										value="#{investorsBean.investorsListfiltter}"
+										itemLabel="#{i.mobile}" itemValue="#{i.id}">
+									</f:selectItems>
+
+									<p:ajax listener="#{investorsBean.loadInvestorsById}"
+										update="allusersettingdt"></p:ajax>
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
 
 						<p:dataTable var="userItem" id="allusersettingdt"
 							widgetVar="loanVar" value="#{investorsBean.investorsList}"
 							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
 							paginatorPosition="bottom" sortBy="#{investorsBean.investor.id}"
-							sortOrder="ascending"
+							sortOrder="ascending" selectionMode="single"
+							selection="#{investorsBean.investor}" rowKey="#{userItem}"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							filteredValue="#{investorsBean.filteredInvestorsList}"
-							paginator="true" rows="17">
+							paginator="true" rows="15">
 							<f:facet name="header">
 								<p:outputPanel>
 									<h:outputText value="ابحث فى كل الحقول:" />
@@ -61,33 +113,49 @@
 									</p:inputText>
 								</p:outputPanel>
 							</f:facet>
-							<p:column id="invIdcol" headerText="الرقم"
+
+							<p:ajax event="rowSelect" oncomplete="PF('addDialog').show();"
+								immediate="true" listener="#{investorsBean.onRowSelect}"
+								update="includeform:addDialogId" />
+							<p:ajax event="rowUnselect"
+								listener="#{investorsBean.onRowUnselect}"
+								update="includeform:addDialogId,includeform:addPG"></p:ajax>
+
+
+							<p:column id="invIdcol" headerText="الرقم التسلسلي"
 								filterBy="#{userItem.id}" filterMatchMode="contains" width="10%"
 								style="text-align: center;">
-                            #{userItem.id}
-                        </p:column>
-							<p:column id="idcol" headerText="السجل التجاري"
+								<!-- 								<h:outputText value="#{userItem.id}" /> -->
+								<h:outputText value="#{rowIndex+1}" />
+							</p:column>
+							<p:column id="idcol" headerText="رقم السجل"
 								filterBy="#{userItem.tradeRecord}" filterMatchMode="contains"
 								width="10%" style="text-align: center;">
-                            #{userItem.tradeRecord}
-                        </p:column>
-							<p:column headerText="اسم الشركة" filterBy="#{userItem.name}"
-								filterMatchMode="contains" width="56%">
-                            #{userItem.name}text-align: center;"
-                        </p:column>
-							<p:column headerText="نوع النشاط" width="20%"
-								style="text-align: center;">
-                            #{userItem.activityType}
-                        </p:column>
-							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="التفاصيل" width="7%">
-								<p:commandButton oncomplete="PF('addDialog').show();"
-									action="#{investorsBean.loadInvestor}" process="@this"
-									icon="ui-icon-search" update="includeform:addPG">
-									<f:setPropertyActionListener value="#{userItem}"
-										target="#{investorsBean.investor}" />
-								</p:commandButton>
+								<h:outputText value="#{userItem.tradeRecord}" />
 							</p:column>
+							<p:column headerText="اسم المستثمر" filterBy="#{userItem.name}"
+								filterMatchMode="contains" width="56%">
+								<h:outputText value="#{userItem.name}" />
+							</p:column>
+							<!--  <p:column headerText="نوع النشاط" width="20%" -->
+							<!--  	style="text-align: center;"> -->
+							<!--      #{userItem.activityType} -->
+							<!-- </p:column> -->
+							<p:column headerText="رقم الجوال " width="20%"
+								filterBy="#{userItem.mobile}" filterMatchMode="contains"
+								style="text-align: center;">
+								<h:outputText value="#{userItem.mobile}" />
+							</p:column>
+							<!-- 							<p:column style="white-space: nowrap;text-align: center;" -->
+							<!-- 								headerText="التفاصيل" width="7%"> -->
+							<!-- 								<p:commandButton oncomplete="PF('addDialog').show();" -->
+							<!-- 									action="#{investorsBean.loadInvestor}" process="@this" -->
+							<!-- 									icon="ui-icon-search" update="includeform:addPG"> -->
+							<!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+							<!-- 										target="#{investorsBean.investor}" /> -->
+							<!-- 								</p:commandButton> -->
+							<!-- 							</p:column> -->
+							<!-- //////////////////////////////////// -->
 							<!-- 							<p:column style="white-space: nowrap;text-align: center;" -->
 							<!-- 								headerText="حذف" width="7%"> -->
 							<!-- 								<p:commandButton id="delete" immediate="true" -->
@@ -102,15 +170,11 @@
 						</p:dataTable>
 
 
-
-
-
-						<p:dialog widgetVar="addDialog" width="70%" header="" modal="true"
-							dir="rtl" closable="true">
+						<p:dialog widgetVar="addDialog" id="addDialogId" width="70%"
+							header="" modal="true" dir="rtl" closable="true">
 							<h:panelGroup id="addPG">
-								<h3 style="color: #7CB342; text-align: center;">إضافة
-									مستثمر</h3>
-								<br />
+								<h3 style="color: #7CB342; text-align: center;">بيانات
+									المستثمر</h3>
 
 								<div class="ui-g">
 									<div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -123,37 +187,66 @@
 
 								<div class="ui-g">
 									<div class="ui-g-1">
-										<p:outputLabel value="إسم الشركة" styleClass="btxt" />
+										<p:outputLabel value="إسم المستثمر" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
 									<div class="ui-g-5">
 										<p:inputText value="#{investorsBean.investor.name}"
-											required="true" requiredMessage="إسم الشركة مطلوب"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
+											required="true" requiredMessage="إسم المستثمر مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.name}"
-											rendered="#{!investorsBean.addMode}" />
+											rendered="#{!investorsBean.addMode}" style="width: 100%" />
 									</div>
 									<div class="ui-g-1">
-										<p:outputLabel value="السجل" styleClass="btxt" />
+										<p:outputLabel value="إسم الشركة / المؤسسة" styleClass="btxt">
+											<!--  <span style="color: red; font-size: 30px"> * </span> -->
+										</p:outputLabel>
+									</div>
+									<div class="ui-g-5">
+										<p:inputText value="#{investorsBean.investor.companyName}"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.companyName}"
+											rendered="#{!investorsBean.addMode}" style="width: 100%" />
+									</div>
+
+
+								</div>
+								<br />
+								<div class="ui-g">
+									<div class="ui-g-1">
+										<p:outputLabel value="رقم السجل " styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
 									<div class="ui-g-2">
 										<p:inputText value="#{investorsBean.investor.tradeRecord}"
-											required="true" requiredMessage="إالسجل مطلوب"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
+											required="true" requiredMessage="رقم السجل مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.tradeRecord}"
-											rendered="#{!investorsBean.addMode}" />
+											rendered="#{!investorsBean.addMode}" style="width: 100%" />
 									</div>
 									<div class="ui-g-1">
-										<p:outputLabel value="نوع السجل" styleClass="btxt" />
+										<p:outputLabel value="نوع السجل" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
 									<div class="ui-g-2">
 										<p:selectOneMenu id="investor_id_type" required="true"
-											requiredMessage="نوع السجل مطلوب"
+											requiredMessage="نوع السجل مطلوب" style="width: 100%"
 											value="#{investorsBean.investor.investorIdType}">
 											<f:selectItem itemLabel="إختر نوع السجل" itemValue="" />
 											<f:selectItems
 												value="#{investorsBean.investorIdentityTypeList}"
 												var="invIdentity" itemLabel="#{invIdentity.name}"
 												itemValue="#{invIdentity.id}" />
+											<p:ajax process="@this" />
 										</p:selectOneMenu>
 
 										<!-- 										<p:selectOneMenu id="invIdType" -->
@@ -165,18 +258,16 @@
 										<!-- 										</p:selectOneMenu> -->
 									</div>
 
-								</div>
-
-								<br />
-								<div class="ui-g">
 									<div class="ui-g-1">
 										<p:outputLabel value="صادرة من" styleClass="btxt" />
 									</div>
 									<div class="ui-g-2">
 										<p:inputText value="#{investorsBean.investor.region}"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.region}"
-											rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="بتاريخ" styleClass="btxt" />
@@ -200,91 +291,95 @@
 									<div class="ui-g-2">
 										<h:panelGroup id="pDates1">
 											<p:inputText id="hiri1" value="#{investorsBean.selectedDate}"
-												onfocus="loadCalendar();" required="true"
-												requiredMessage="يرجى اختيار تاريخ"
+												onfocus="loadCalendar();" style="width: 100%"
 												rendered="#{investorsBean.higriMode}"
 												styleClass="form-control form-controlCal">
+												<p:ajax process="@this" />
 											</p:inputText>
 
-											<p:calendar id="gric1"
+											<p:calendar id="gric1" style="width: 100%"
 												value="#{investorsBean.selectedDate_G}" pattern="dd/MM/yyyy"
 												rendered="#{!investorsBean.higriMode}">
 											</p:calendar>
 										</h:panelGroup>
 									</div>
 
+									<!-- 									<div class="ui-g-1"> -->
+									<!-- 										<p:outputLabel value="نوع النشاط *" styleClass="btxt" /> -->
+									<!-- 									</div> -->
+									<!-- 									<div class="ui-g-2"> -->
+									<!-- 										<p:inputText value="#{investorsBean.investor.activityType}" -->
+									<!-- 											style="width: 100%" required="true" -->
+									<!-- 											rendered="#{investorsBean.addMode}" -->
+									<!-- 											requiredMessage="نوع النشاط  مطلوب" /> -->
+									<!-- 										<p:inputText value="#{investorsBean.investor.activityType}" -->
+									<!-- 											style="width: 100%" rendered="#{!investorsBean.addMode}" /> -->
+									<!-- 									</div> -->
+								</div>
+								<br />
+								<div class="ui-g">
 									<div class="ui-g-1">
-										<p:outputLabel value="نوع النشاط" styleClass="btxt" />
-									</div>
-									<div class="ui-g-2">
-										<p:inputText value="#{investorsBean.investor.activityType}"
-											style="width: 100%" required="true"
-											rendered="#{investorsBean.addMode}"
-											requiredMessage="نوع النشاط  مطلوب" />
-										<p:inputText value="#{investorsBean.investor.activityType}"
-											rendered="#{!investorsBean.addMode}" />
-									</div>
-
-									<div class="ui-g-1">
-										<p:outputLabel value="نوع المستثمر" styleClass="btxt" />
+										<p:outputLabel value="نوع المستثمر" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
 									<div class="ui-g-2">
 										<p:selectOneMenu id="investor_type" required="true"
-											requiredMessage="نوع المستثمر مطلوب"
+											requiredMessage="نوع المستثمر مطلوب" style="width: 100%"
 											value="#{investorsBean.investor.investorType}">
 											<f:selectItem itemLabel="إختر نوع المستثمر" itemValue="" />
 											<f:selectItems value="#{investorsBean.investorTypeList}"
 												var="invType" itemLabel="#{invType.name}"
 												itemValue="#{invType.id}" />
+											<p:ajax process="@this" />
 										</p:selectOneMenu>
-
-
-									</div>
-
-								</div>
-								<br />
-								<div class="ui-g">
-									<div class="ui-g-1">
-										<p:outputLabel value="هاتف" styleClass="btxt" />
-									</div>
-									<div class="ui-g-2">
-										<p:inputText value="#{investorsBean.investor.phone}"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
-										<p:inputText value="#{investorsBean.investor.phone}"
-											rendered="#{!investorsBean.addMode}" />
 									</div>
 									<div class="ui-g-1">
-										<p:outputLabel value="فاكس" styleClass="btxt" />
-									</div>
-									<div class="ui-g-2">
-										<p:inputText value="#{investorsBean.investor.fax}"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
-										<p:inputText value="#{investorsBean.investor.fax}"
-											rendered="#{!investorsBean.addMode}" />
-									</div>
-									<div class="ui-g-1">
-										<p:outputLabel value="جوال" styleClass="btxt" />
-									</div>
-									<div class="ui-g-2">
-										<p:inputText value="#{investorsBean.investor.mobile}"
-											required="true" requiredMessage="الجوال مطلوب"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
-										<p:inputText value="#{investorsBean.investor.mobile}"
-											rendered="#{!investorsBean.addMode}" />
-									</div>
-									<div class="ui-g-1">
-										<p:outputLabel value="حالة المستثمر" styleClass="btxt" />
+										<p:outputLabel value="حالة المستثمر" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
 									<div class="ui-g-2">
 										<p:selectOneMenu id="Investor_status" required="true"
-											requiredMessage="حالة المستثمر مطلوبة"
+											style="width: 100%" requiredMessage="حالة المستثمر مطلوبة"
 											value="#{investorsBean.investor.investorStatus}">
 											<f:selectItem itemLabel="إختر حالة المستثمر" itemValue="" />
 											<f:selectItems value="#{investorsBean.investorStatusList}"
 												var="invStatus" itemLabel="#{invStatus.name}"
 												itemValue="#{invStatus.id}" />
+											<p:ajax process="@this" />
 										</p:selectOneMenu>
 
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="رقم الجوال" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.mobile}"
+											required="true" requiredMessage="الجوال مطلوب"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.mobile}"
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="البريد الإلكتروني" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.code}"
+											rendered="#{investorsBean.addMode}" required="true"
+											style="width: 100%" requiredMessage="البريد الإلكتروني مطلوب">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.code}"
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
 									</div>
 								</div>
 								<br />
@@ -294,47 +389,90 @@
 									</div>
 									<div class="ui-g-2">
 										<p:inputText value="#{investorsBean.investor.postalCode}"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.postalCode}"
-											rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
 									</div>
 									<div class="ui-g-1">
-										<p:outputLabel value="الرمز" styleClass="btxt" />
+										<p:outputLabel value="الرمز البريدي" styleClass="btxt" />
 									</div>
 									<div class="ui-g-2">
 										<p:inputText value="#{investorsBean.investor.code}"
-											rendered="#{investorsBean.addMode}" style="width: 100%" />
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.code}"
-											rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
 									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="رقم الهاتف" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.phone}"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.phone}"
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+									</div>
+									<div class="ui-g-1">
+										<p:outputLabel value="فاكس" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.fax}"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.fax}"
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+									</div>
+
 								</div>
 								<br />
 								<div class="ui-g">
 									<div class="ui-g-1">
-										<p:outputLabel value="العنوان" styleClass="btxt" />
+										<p:outputLabel value="العنوان الوطني" styleClass="btxt">
+											<span style="color: red; font-size: 30px"> * </span>
+										</p:outputLabel>
 									</div>
-									<div class="ui-g-6">
+									<div class="ui-g-8">
 										<p:inputText value="#{investorsBean.investor.address}"
 											required="true" requiredMessage="العنوان مطلوب"
 											rendered="#{investorsBean.addMode}" style="width: 100%"
-											id="newMobileNumber" />
+											id="newMobileNumber">
+											<p:ajax process="@this" />
+										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.address}"
-											rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+									</div>
+
+									<div class="ui-g-1">
+										<p:outputLabel value="رقم التفويض" styleClass="btxt" />
+									</div>
+									<div class="ui-g-2">
+										<p:inputText value="#{investorsBean.investor.mandateNumber}"
+											rendered="#{investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
+										<p:inputText value="#{investorsBean.investor.mandateNumber}"
+											style="width: 100%" rendered="#{!investorsBean.addMode}" />
 									</div>
 								</div>
 								<p:messages id="messages" autoUpdate="true" />
-
 								<br />
 								<div class="image-box-footer" align="left">
 									<p:commandButton value="تعديل" id="updateBtn" update="@form"
 										rendered="#{!investorsBean.addMode}"
-										action="#{investorsBean.save}"
+										action="#{investorsBean.save}" process="@this"
 										onsuccess="PF('addDialog').hide();">
 									</p:commandButton>
 									<p:spacer width="10px" height="10px"></p:spacer>
 									<p:commandButton value="حفظ" id="addBtn" update="@form"
-										rendered="#{investorsBean.addMode}"
-										action="#{investorsBean.save}"
+										rendered="#{investorsBean.addMode}" styleClass="cyan-btn"
+										action="#{investorsBean.save}" process="@this"
 										onsuccess="PF('addDialog').hide();">
 									</p:commandButton>
 									<p:spacer width="10px" height="10px"></p:spacer>

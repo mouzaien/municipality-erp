@@ -44,12 +44,15 @@ import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
 import com.bkeryah.entities.investment.Contract;
 import com.bkeryah.entities.investment.ContractCancelReason;
+import com.bkeryah.entities.investment.ContractComponents;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
+import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.InvNewspaper;
 import com.bkeryah.entities.investment.Investor;
@@ -128,6 +131,7 @@ import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
+import com.bkeryah.penalties.NotifFinesMastR;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
@@ -1572,7 +1576,8 @@ public interface IDataAccessService {
 
 	public List<ContractDirect> loadAllContractDirects(Integer contractTypeId);
 
-	public void saveContractDirect(ContractDirect contractDirect);
+	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
+			Integer billBandNumber);
 
 	public List<FuelSupply> loadAllFuelSupplies();
 
@@ -1896,4 +1901,90 @@ public interface IDataAccessService {
 	public List<LicSection> gatAllLicSectionList();
 
 	public List<LicDepartment> gatAllLicDepartmentList();
+
+	public int deleteVisitByDateAndLicNo(Date currentDate, Integer licId);
+	// thapet
+	// public void updateObject(Object object);
+
+	public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
+
+	public Integer addSupervisor(Supervisor supervisor);
+
+	public List<ArcUsers> findEmployeesByDept(Integer deptId);
+
+	public List<Supervisor> getAllSupervisors();
+
+	public List<VisitsSupervisor> getAllVisitsBySuperId(Integer SuperId, Integer secId);
+
+	public List<LicTrdMasterFile> getAllLicsBySectionId(Integer sectionAddId);
+
+	public List<LicVisits> getAllVisitsByLicIdBetweenDates(Integer id, String beginDate, String endDate);
+
+	public List<NotifFinesMastR> getAllNotifList();
+
+	public HealthMasterLicence findHealthMasterLicenceRecordId(Integer recordId);
+
+	public Integer insertBill(ReqFinesMaster reqFinesMaster);
+
+	void deleteVisitsForDisactiveSupervisors(Integer licId, String startHDate, String endHDate);
+
+	void acceptHealthCertificate(HealthMasterLicence healthCertificate, Integer recordId, int modelType,
+			String usercomment, int applicationPurpose);
+
+	void refuseHealthCertificate(WrkApplicationId wrkId, Integer recordId, HealthMasterLicence healthCertificate,
+			String wrkAppComment, int applicationPurpose);
+
+	public Integer healthCertificateScenario(Integer createdForId, Integer healthCertificateId);
+
+	public void saveHealthCertificate(HealthMasterLicence healthCertificate, String title, int applicationType,
+			boolean isPictureAtached);
+
+	// public Integer saveHealthCertification(HealthMasterLicence
+	// healthCertificate, boolean isPictureAtached);
+	public List<ContractComponents> loadAllContractComponents();
+
+	public List<LicTrdMasterFile> getAllLicencesListBySection(Integer sectionId, Integer deparmentId);
+
+	public ContractComponents getContractComponentsById(Integer contractTpyeId);
+
+	public int findMaxContractDirectNum();
+
+	public List<LicDepartment> getAllLicDepartmentBySection(Integer sectionId);
+
+	public List<LicTrdMasterFile> getLicencesByActivityId(Integer activityId, Integer statusId);
+
+	public List<ContractComponents> getContractComponentsListByActivityId(Integer activityId);
+
+	public List<ContractInstallments> loadContractInstallments(Integer id);
+
+	public List<RealEstate> getRealEstatesListByActivityIdAndSiteId(Integer activityId, Integer siteId);
+
+	public List<Investor> loadAllInvestorsById(Integer id);
+
+	public List<ContractDirect> loadendedContractDirectListByStatus(Integer status);
+
+	public List<ContractSubcategory> loadSuCategoryByMainCategoryId(Integer contractMaincatgId);
+
+	public List<RealEstate> getRealEstatesListByAllfliters(Integer activityId, Integer siteId, String components,
+			String street, Integer buildId, Integer district);
+
+	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile);
+
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate);
+
+	public HealthMasterLicence getHealthCertificateByApplId(Integer applId);
+
+	public List<HealthMasterLicence> getAllHealthCertificate();
+
+	public int deleteContractMainCategory(Integer categoryId);
+
+	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId);
+
+	public void contractsFeesList(List<ContractsFees> contractsFeesList);
+
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber);
+
+	public void updatecontractFeesList(List<ContractsFees> contFeesList);
+
 }

@@ -51,6 +51,7 @@ import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
+import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.hr.entities.HrsCompactFloors;
@@ -613,4 +614,9 @@ public interface DataAccess {
 	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo);
 
 	public List<StoreTemporeryReceiptDetailsModel> getTempReceiptDetailsList(Integer temp_receipt_id);
+
+	void deleteVisitsForDisactiveSupervisors(Integer licId, String startHDate, String endHDate);
+
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate);
 }

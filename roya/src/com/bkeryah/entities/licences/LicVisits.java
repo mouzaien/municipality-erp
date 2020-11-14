@@ -38,6 +38,12 @@ public class LicVisits {
 	@Formula("(select u.TYPE from LIC_VISITS_TYPES u where u.ID =VISITS_ID)")
 	private String visitType;
 	
+	@Formula("(select u.LIC_SECTION from lic_trd_master_file u where u.ID =LIC_ID)")
+	private Integer sectionId;
+	
+	@Column(name = "STATUS")
+	private Integer status;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -92,6 +98,22 @@ public class LicVisits {
 
 	public void setVisitType(String visitType) {
 		this.visitType = visitType;
+	}
+
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	

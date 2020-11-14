@@ -40,13 +40,13 @@
 				<h:panelGroup>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel value="رقم الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="رقم الرخصة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicenceNo}" />
 						</div>
 						<div class="ui-g-2">
-							<h:outputLabel value="#{msg['commercial.name']}" />
+							<h:outputLabel style=" font-weight: bold" value="#{msg['commercial.name']}" />
 						</div>
 						<div class="ui-g-6">
 							<h:outputLabel
@@ -55,7 +55,7 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel value="صاحب المنشأة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="صاحب المنشأة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-4">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fName}" />
@@ -69,14 +69,14 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel value="تاريخ بداية الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="تاريخ بداية الرخصة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel
 								value="#{penaltyViewBean.finesMaster.fLicStartDate}" />
 						</div>
 						<div class="ui-g-2">
-							<h:outputLabel value="تاريخ نهاية الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="تاريخ نهاية الرخصة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicEndDate}" />
@@ -85,14 +85,14 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel value="المراقب" />
+							<h:outputLabel style=" font-weight: bold" value="المراقب" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel
 								value="#{penaltyViewBean.finesMaster.supervisorNameView}" />
 						</div>
 						<div class="ui-g-2">
-							<h:outputText value="حالة الطلب" />
+							<h:outputText style=" font-weight: bold" value="حالة الطلب" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputText rendered="#{!(penaltyViewBean.enablePrint)}"
@@ -103,23 +103,23 @@
 								value="#{penaltyViewBean.finesMaster.status == 'Y' ? 'تمت الموافقة عليها ':'تم الرفض '}" />
 						</div>
 					</div>
-					<div class="ui-g">
-						<div class="ui-g-2">
-							<h:outputLabel value="التكرار" />
-						</div>
-						<div class="ui-g-2">
-							<h:outputLabel
-								value="#{penaltyViewBean.finesMaster.repeat ==1 ?'غير مكرر':'مكرر'}" />
-						</div>
-						<div class="ui-g-2">
-							<h:outputLabel value="الحد" />
-						</div>
-						<div class="ui-g-2">
-							<h:outputLabel
-								value="#{penaltyViewBean.finesMaster.typeValue ==1 ?'حد اعلي':'حد ادني'}" />
-						</div>
+<!-- 					<div class="ui-g"> -->
+<!-- 						<div class="ui-g-2"> -->
+<!-- 							<h:outputLabel value="التكرار" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="ui-g-2"> -->
+<!-- 							<h:outputLabel -->
+<!-- 								value="#{penaltyViewBean.finesMaster.repeat ==1 ?'غير مكرر':'مكرر'}" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="ui-g-2"> -->
+<!-- 							<h:outputLabel value="الحد" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="ui-g-2"> -->
+<!-- 							<h:outputLabel -->
+<!-- 								value="#{penaltyViewBean.finesMaster.typeValue ==1 ?'حد اعلي':'حد ادني'}" /> -->
+<!-- 						</div> -->
 
-					</div>
+<!-- 					</div> -->
 				</h:panelGroup>
 			</div>
 			<br />
@@ -189,6 +189,7 @@
 						<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
 						<p:inputTextarea cols="30" rows="5" style="width:100%"
 							value="#{penaltyViewBean.wrkAppComment}">
+							<f:ajax execute="@this"></f:ajax>
 						</p:inputTextarea>
 					</p:panelGrid>
 					<br></br>

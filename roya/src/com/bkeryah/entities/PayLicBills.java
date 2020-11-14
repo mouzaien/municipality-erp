@@ -26,6 +26,7 @@ public class PayLicBills implements Serializable {
 	@GeneratedValue(generator = "generator")
 	@Column(name = "BILL_NO")
 	private Integer billNumber;
+	// penalty Id  رقم المخالفة
 	@Column(name = "LIC_NO")
 	private Integer licenceNumber;
 	@Column(name = "LIC_TYPE")

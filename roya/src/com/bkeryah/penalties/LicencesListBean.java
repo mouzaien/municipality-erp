@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -29,7 +30,7 @@ import utilities.Utils;
 public class LicencesListBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	private List<LicTrdMasterFile> licencesList;
+	private List<LicTrdMasterFile> licencesList = new ArrayList<LicTrdMasterFile>();
 	private List<LicTrdMasterFile> filteredLicences;
 	private Integer period;
 	private Integer typeLicence;
@@ -44,29 +45,103 @@ public class LicencesListBean {
 	private List<LicActivityTypeRy> activityList;
 	private List<LicSection> licSectionList;
 	private List<LicDepartment> licDepartmentList;
+	private String activeName;
+	private Integer activityId = -1;
+	private Integer statusId = -1;
+	private String itemActivityName = new String();
 
 	@PostConstruct
 	private void init() {
 		licencesList = dataAccessService.getTrdMasterFileList();
+		allLicencesList = dataAccessService.getLicencesByActivityId(activityId, statusId);
 		typeLicence = 1;
-		allLicencesList = dataAccessService.getAllLicencesList();
+		// allLicencesList = dataAccessService.getAllLicencesList();
 		licVisits = dataAccessService.findAllLicVisits();
 		citiesList = dataAccessService.findAllCities();
 		streetsList = dataAccessService.findAllStreet();
 		districtsList = dataAccessService.findAllDistrict();
 		activityList = dataAccessService.getAllLicActivityTypeList();
 		licSectionList = dataAccessService.gatAllLicSectionList();
-		licDepartmentList = dataAccessService.gatAllLicDepartmentList();
+		// licDepartmentList = dataAccessService.gatAllLicDepartmentList();
 	}
 
 	public void loadLicences() {
 		licencesList = dataAccessService.getTrdMasterFileList();
 	}
 
+	public void loadlicDepartments(AjaxBehaviorEvent event) {
+		licDepartmentList = dataAccessService.getAllLicDepartmentBySection(licence.getLicSection());
+	}
+
 	public void allowAdding() {
 		licence = new LicTrdMasterFile();
 		updateMode = false;
 		// Utils.openDialog("addingLicence_dlg");
+	}
+
+	public String activeAdding() {
+		LicActivityTypeRy ob = new LicActivityTypeRy();
+		try {
+			if (activeName != null) {
+				ob.setName(activeName);
+				dataAccessService.save(ob);
+				activityList = dataAccessService.getAllLicActivityTypeList();
+				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+				activeName = null;
+			}else {
+				MsgEntry.addErrorMessage("ادخل نوع النشاط");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+		}
+		return "";
+	}
+
+	public String loadLicencesByActivityId(AjaxBehaviorEvent e) {
+
+		allLicencesList = dataAccessService.getLicencesByActivityId(activityId, statusId);
+		System.out.println(allLicencesList.size());
+		Utils.updateUIComponent("includeform");
+		// FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("includeform:LicLst");
+		return "";
+	}
+
+	public void getActivityname(LicTrdMasterFile licObj) {
+
+		for (LicActivityTypeRy activity : activityList) {
+			if (licObj.getActivtyType().equals(activity.getId())) {
+				itemActivityName = activity.getName();
+				licObj.setActivityName(itemActivityName);
+			}
+		}
+		// return itemActivityName;
+	}
+
+	public String printLicencesReport() {
+		allLicencesList = dataAccessService.getLicencesByActivityId(activityId, statusId);
+		String reportName = "/reports/search_icences_report.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		LicTrdMasterFile licencesItem = new LicTrdMasterFile();
+		List<LicTrdMasterFile> reportLicencesList = new ArrayList<LicTrdMasterFile>();
+		int num = 1;
+		for (LicTrdMasterFile list : allLicencesList) {
+			getActivityname(list);
+			licencesItem.setLicNo(list.getLicNo());
+			licencesItem.setTrdName(list.getTrdName());
+			licencesItem.setAplOwner(list.getAplOwner());
+			licencesItem.setMhlId(list.getMhlId());
+			licencesItem.setActivityName(list.getActivityName());
+			licencesItem.setLicBeginDate(list.getLicBeginDate());
+			licencesItem.setLicEndDate(list.getLicEndDate());
+			licencesItem.setNum(num);
+			reportLicencesList.add(licencesItem);
+			num++;
+			licencesItem = new LicTrdMasterFile();
+		}
+		Utils.printPdfReportFromListDataSource(reportName, parameters, reportLicencesList);
+		return "";
 	}
 
 	// public String loadLicencePenalities(LicTrdMasterFile licence) {
@@ -274,6 +349,38 @@ public class LicencesListBean {
 
 	public void setLicDepartmentList(List<LicDepartment> licDepartmentList) {
 		this.licDepartmentList = licDepartmentList;
+	}
+
+	public String getActiveName() {
+		return activeName;
+	}
+
+	public void setActiveName(String activeName) {
+		this.activeName = activeName;
+	}
+
+	public Integer getActivityId() {
+		return activityId;
+	}
+
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
+	}
+
+	public Integer getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
+	}
+
+	public String getItemActivityName() {
+		return itemActivityName;
+	}
+
+	public void setItemActivityName(String itemActivityName) {
+		this.itemActivityName = itemActivityName;
 	}
 
 }

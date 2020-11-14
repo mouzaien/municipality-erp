@@ -20,6 +20,8 @@ public class ContractSubcategory {
 	private Integer code;
 	@Column(name = "NAME")
 	private String name;
+	@Column(name = "CONTRACT_MAIN_ID")
+	private Integer contMainCategoryid;
 
 	public Integer getId() {
 		return id;
@@ -43,6 +45,14 @@ public class ContractSubcategory {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getContMainCategoryid() {
+		return contMainCategoryid;
+	}
+
+	public void setContMainCategoryid(Integer contMainCategoryid) {
+		this.contMainCategoryid = contMainCategoryid;
 	}
 
 }

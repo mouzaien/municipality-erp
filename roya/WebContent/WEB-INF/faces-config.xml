@@ -564,6 +564,15 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
+			<from-outcome>visitsuper</from-outcome>
+			<to-view-id>/penalties/visits_for_supervisors.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
 			<from-outcome>searchPenalities</from-outcome>
 			<to-view-id>/penalties/search_penalities.xhtml</to-view-id>
 			<redirect></redirect>
@@ -1324,7 +1333,7 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
@@ -1333,4 +1342,45 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>recruit_supervisor</from-outcome>
+			<to-view-id>/penalties/recruit_supervisor.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>contTypes</from-outcome>
+			<to-view-id>/investment/inv_cont_types.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>contComponents</from-outcome>
+			<to-view-id>/investment/inv_cont_components.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>main_category</from-outcome>
+			<to-view-id>/setting/main_categories.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>sub_category</from-outcome>
+			<to-view-id>/investment/sub_category.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+
 </faces-config>

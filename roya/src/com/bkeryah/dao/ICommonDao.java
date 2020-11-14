@@ -35,6 +35,7 @@ import com.bkeryah.entities.DocumentsType;
 import com.bkeryah.entities.EmployeeInitiation;
 import com.bkeryah.entities.FinEntity;
 import com.bkeryah.entities.FinFinancialYear;
+import com.bkeryah.entities.HealthMasterLicence;
 import com.bkeryah.entities.HrEmployeeVacation;
 import com.bkeryah.entities.HrScenario;
 import com.bkeryah.entities.HrsEmpHistorical;
@@ -69,6 +70,7 @@ import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SubMenu;
+import com.bkeryah.entities.Supervisor;
 import com.bkeryah.entities.SysCategoryEmployer;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.SysTitle;
@@ -78,6 +80,7 @@ import com.bkeryah.entities.TenderItems;
 import com.bkeryah.entities.TradIssueType;
 import com.bkeryah.entities.UserRoles;
 import com.bkeryah.entities.VacationsType;
+import com.bkeryah.entities.VisitsSupervisor;
 import com.bkeryah.entities.WhsWarehouses;
 import com.bkeryah.entities.WrkApplication;
 import com.bkeryah.entities.WrkApplicationId;
@@ -101,12 +104,15 @@ import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
 import com.bkeryah.entities.investment.Contract;
 import com.bkeryah.entities.investment.ContractCancelReason;
+import com.bkeryah.entities.investment.ContractComponents;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
+import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.InvNewspaper;
 import com.bkeryah.entities.investment.Investor;
@@ -169,6 +175,7 @@ import com.bkeryah.hr.entities.Sys059;
 import com.bkeryah.hr.entities.Sys112;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.User;
+import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
@@ -1104,5 +1111,65 @@ public interface ICommonDao {
 	List<LicVisits> findAllVisitsByLicId(Integer licNo);
 
 	List<User> getAllSupervisor(Integer deptId);
+
+	// thapet
+
+	// public void update(Object myObject);
+
+	public List<Supervisor> findAllSupervisorsByDept(Integer deptId);
+
+	// public Integer save(Object myObject);
+
+	public List<ArcUsers> findEmployeesByDept(Integer deptId);
+
+	public int deleteVisitByDateAndLicNo(Date currentDate, Integer licId);
+
+	public List<VisitsSupervisor> getAllVisitsBySuperId(Integer superId, Integer secId);
+
+	public List<LicTrdMasterFile> getAllLicsBySectionId(Integer sectionId);
+
+	public List<LicVisits> getAllVisitsByLicIdBetweenDates(Integer licId, String beginDate, String endDate);
+
+	public List<Supervisor> findAllActive();
+
+	public List<ContractComponents> loadAllContractComponents();
+
+	public List<LicTrdMasterFile> getAllLicencesListBySection(Integer sectionId, Integer deparmentId);
+
+	public ContractComponents getContractComponentsById(Integer contractTpyeId);
+
+	public int findMaxContractDirectNum();
+
+	public List<LicDepartment> gatAllLicDepartmentBySection(Integer sectionId);
+
+	public List<LicTrdMasterFile> getLicencesByActivityId(Integer activityId, Integer statusId);
+
+	public List<ContractInstallments> loadContractInstallments(Integer id);
+
+	public List<ContractComponents> getContractComponentsListByActivityId(Integer activityId);
+
+	public List<RealEstate> getRealEstatesListByActivityIdAndSiteId(Integer activityId, Integer siteId);
+
+	public List<Investor> loadAllInvestorsById(Integer id);
+
+	public List<ContractDirect> loadendedContractDirectList(Integer status);
+
+	public List<ContractSubcategory> loadSuCategoryByMainCategoryId(Integer contractMaincatgId);
+
+	public List<RealEstate> getRealEstatesListByAllfliters(Integer activityId, Integer siteId, String components,
+			String street, Integer buildId, Integer district);
+
+	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile);
+
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, String investorName, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate);
+
+	public HealthMasterLicence getHealthCertificateByApplId(Integer applId);
+
+	public List<HealthMasterLicence> getAllHealthCertificate();
+
+	public int deleteContractMainCategory(Integer categoryId);
+
+	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId);
 
 }

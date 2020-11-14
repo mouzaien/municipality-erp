@@ -8,6 +8,8 @@
 
 	<properties>
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -113,6 +115,22 @@
 			<groupId>net.bootsfaces</groupId>
 			<artifactId>bootsfaces</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.15</version>
+			<type>jar</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.santuario/xmlsec -->
+		<dependency>
+			<groupId>org.apache.santuario</groupId>
+			<artifactId>xmlsec</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 
 	</dependencies>

@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -69,18 +70,29 @@ public class RealEstate {
 	private Integer buildTypeId;
 	@Column(name = "SITE_TYPE_NB")
 	private Integer siteTypeNB;
+	@Column(name = "DISTRICT")
+	private Integer district;
 	@ManyToOne
-	@JoinColumn(name = "ACTIVITY_TYPE_ID", referencedColumnName = "CONT_TYPE_CODE", insertable = false, updatable = false)
+	@JoinColumn(name = "ACTIVITY_TYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private ContractType activityType;
 	@ManyToOne
-	@JoinColumn(name = "SITE_LYPE_ID", referencedColumnName = "SITE_CODE", insertable = false, updatable = false)
+	@JoinColumn(name = "SITE_LYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private SiteType siteType;
 	@Transient
 	private String fullName;
-	@OneToMany(fetch= FetchType.LAZY, mappedBy="realEstate")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "realEstate")
 	private Set<ContractDirect> contractDirectSet;
-//	@OneToMany(fetch= FetchType.LAZY)
-//	private List<Contract> contractList ;
+	// @OneToMany(fetch= FetchType.LAZY)
+	// private List<Contract> contractList ;
+
+	@Formula("(select w.CONT_TYPE_DESC from INV_CONT_TYPES w where w.id = ACTIVITY_TYPE_ID)")
+	private String activityName;
+	@Formula("(select s.SITE_NAME from INV_SITES s where s.id = SITE_LYPE_ID)")
+	private String siteName;
+	@Formula("(select b.NAME from BUILDING_TYPE b where b.id = BUILD_TYPE)")
+	private String buildName;
+	@Formula("(select d.NAME from LIC_DISTRICT d where d.id = DISTRICT)")
+	private String districtName;
 
 	public Integer getId() {
 		return id;
@@ -259,7 +271,10 @@ public class RealEstate {
 	}
 
 	public String getFullName() {
-		fullName = numRealEstate+" - "+((siteType != null)?siteType.getName():"")+" - "+((activityType != null)?activityType.getName():"")+" - "+street;
+//		fullName = numRealEstate + " - " + ((siteType != null) ? siteType.getName() : "") + " - "
+//				+ ((activityType != null) ? activityType.getName() : "") + " - " + street;
+		fullName = id + " - " + ((siteType != null) ? siteType.getName() : "") + " - "
+				+ ((activityType != null) ? activityType.getName() : "") + " - " + street;
 		return fullName;
 	}
 
@@ -283,14 +298,13 @@ public class RealEstate {
 		this.siteType = siteType;
 	}
 
-
-//	public List<Contract> getContractList() {
-//		return contractList;
-//	}
-//
-//	public void setContractList(List<Contract> contractList) {
-//		this.contractList = contractList;
-//	}
+	// public List<Contract> getContractList() {
+	// return contractList;
+	// }
+	//
+	// public void setContractList(List<Contract> contractList) {
+	// this.contractList = contractList;
+	// }
 
 	public Integer getSiteTypeNB() {
 		return siteTypeNB;
@@ -306,6 +320,46 @@ public class RealEstate {
 
 	public void setContractDirectSet(Set<ContractDirect> contractDirectSet) {
 		this.contractDirectSet = contractDirectSet;
+	}
+
+	public Integer getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(Integer district) {
+		this.district = district;
+	}
+
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
+
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+
+	public String getBuildName() {
+		return buildName;
+	}
+
+	public void setBuildName(String buildName) {
+		this.buildName = buildName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 
 }

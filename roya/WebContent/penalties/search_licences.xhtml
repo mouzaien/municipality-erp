@@ -6,426 +6,524 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:secc="http://www.springframework.org/security/tags">
+<f:view>
+	<h:body>
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<div align="left" class="image-box-footer">
+						<!--  <p:commandButton value="طباعة" styleClass="purple-btn" -->
+						<!-- 	 onclick="this.form.target='_blank'" icon="ui-icon-print" -->
+						<!-- 	 action="#{licencesListBean.printReportAction}"> -->
+						<!-- </p:commandButton> -->
 
-<h:body>
-	<ui:composition template="/template.xhtml">
-		<p:growl autoUpdate="true" showDetail="false" />
-		<ui:define name="content">
-			<h:form id="includeform">
-				<p:messages autoUpdate="true" closable="true"></p:messages>
-				<div align="left" class="image-box-footer">
-					<!--  <p:commandButton value="طباعة" styleClass="purple-btn" -->
-					<!-- 	 onclick="this.form.target='_blank'" icon="ui-icon-print" -->
-					<!-- 	 action="#{licencesListBean.printReportAction}"> -->
-					<!-- </p:commandButton> -->
-					<p:spacer width="10"></p:spacer>
-					<p:commandButton value="إضافة رخصة" styleClass="cyan-btn"
-						immediate="true" oncomplete="PF('addingLicence_dlg').show()"
-						update="licenceDlgFrm:addingLicence_id"
-						action="#{licencesListBean.allowAdding}" icon="ui-icon-add">
-					</p:commandButton>
-				</div>
-				<br />
-				<div class="card card-w-title" dir="rtl">
-					<h1 style="color: #7CB342; text-align: center">#{msg['list.licences']}</h1>
-					<div class="ui-g">
-						<br></br>
-						<div class="row">
-							<p:dataTable var="licenceItem" id="inboxdt"
-								value="#{licencesListBean.allLicencesList}"
-								emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
-								paginatorPosition="bottom" widgetVar="cellLicence"
-								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-								filteredValue="#{licencesListBean.filteredLicences}"
-								paginator="true" rows="17">
-								<f:facet name="header">
-									<p:outputPanel>
-										<h:outputText value="ابحث فى كل الحقول:" />
-										<p:inputText id="globalFilter"
-											onkeyup="PF('cellLicence').filter()" style="width:150px"
-											placeholder="كلمة البحث">
-										</p:inputText>
-									</p:outputPanel>
-								</f:facet>
-								<p:column style="text-align: center;" headerText="الرقم"
-									width="5%">
+						<p:spacer width="10"></p:spacer>
+						<p:commandButton immediate="true" value="إضافة رخصة"
+							styleClass="cyan-btn" oncomplete="PF('addingLicence_dlg').show()"
+							update="licenceDlgFrm:addingLicence_id"
+							action="#{licencesListBean.allowAdding}" icon="ui-icon-add">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="طباعة" ajax="false"
+							onclick="this.form.target='_blank'" styleClass="purple-btn"
+							icon="ui-icon ui-icon-print" immediate="true"
+							action="#{licencesListBean.printLicencesReport}">
+						</p:commandButton>
+					</div>
+					<br />
+					<div class="card card-w-title" dir="rtl">
+						<h1 style="color: #7CB342; text-align: center">#{msg['list.licences']}</h1>
+
+
+
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputText value="نوع النشاط" />
+							</div>
+							<div class="ui-g-2">
+								<!-- 							<p:selectOneMenu filter="true" filterMatchMode="contains" -->
+								<!-- 								value="#{licencesListBean.activityId}"> -->
+
+								<!-- 								<f:selectItem itemLabel="الكل" itemValue="-1" /> -->
+								<!-- 								<f:selectItems var="actv" -->
+								<!-- 									value="#{licencesListBean.activityList}" -->
+								<!-- 									itemLabel="#{actv.name}" itemValue="#{actv.id}"></f:selectItems> -->
+								<!-- 								<p:ajax update="lic_table_pg" process="@this" -->
+								<!-- 									listener="#{licencesListBean.loadLicencesByActivityId}" /> -->
+								<!-- 							</p:selectOneMenu> -->
+								<p:selectOneMenu styleClass="form-control" id="stockNO"
+									value="#{licencesListBean.activityId}"
+									style="direction: rtl;height: 39px;width:95%">
+									<f:selectItem itemValue="-1" itemLabel="الكل"></f:selectItem>
+									<f:selectItems value="#{licencesListBean.activityList}" var="c"
+										itemLabel="#{c.name}" itemValue="#{c.id}" />
+									<p:ajax process="@this" update="LicLst"
+										listener="#{licencesListBean.loadLicencesByActivityId}" />
+								</p:selectOneMenu>
+
+							</div>
+
+							<div class="ui-g-1">
+								<h:outputText value="الحالة" />
+							</div>
+
+							<div class="ui-g-2">
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
+									style="direction: rtl;height: 39px;width:95%"
+									value="#{licencesListBean.statusId}">
+									<f:selectItem itemLabel="الكل " itemValue="-1" />
+									<f:selectItem itemLabel="منتهية" itemValue="1" />
+									<f:selectItem itemLabel="غير منتهية " itemValue="2" />
+									<p:ajax process="@this" update="LicLst"
+										listener="#{licencesListBean.loadLicencesByActivityId}" />
+
+								</p:selectOneMenu>
+							</div>
+						</div>
+
+						<p:dataTable var="licenceItem" id="LicLst"
+							value="#{licencesListBean.allLicencesList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom" widgetVar="cellLicence"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{licencesListBean.filteredLicences}"
+							paginator="true" rows="15">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('cellLicence').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column style="text-align: center;" headerText="الرقم"
+								width="5%">
                                     #{rowIndex+1}
 
                                 </p:column>
-								<p:column style="text-align: center;" headerText="رقم الرخصة"
-									filterBy="#{licenceItem.licNo}" filterMatchMode="contains"
-									width="10%">
+							<p:column style="text-align: center;" headerText="رقم الرخصة"
+								filterBy="#{licenceItem.licNo}" filterMatchMode="contains"
+								width="10%">
                                     #{licenceItem.licNo}
 
                                 </p:column>
-								<p:column style="white-space: nowrap; "
-									headerText="#{msg['commercial.name']}" width="30%"
-									filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+							<p:column style="white-space: nowrap; "
+								headerText="#{msg['commercial.name']}" width="30%"
+								filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
 										#{licenceItem.trdName} - #{licenceItem.activity} 									
 									</p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="السجل التجاري" width="13%"
-									filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="السجل التجاري" width="13%"
+								filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
 										#{licenceItem.mhlId} 									
 									</p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="الهوية الوطنية" width="13%"
-									filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="الهوية الوطنية" width="13%"
+								filterBy="#{licenceItem.aplOwner}" filterMatchMode="contains">										
 										#{licenceItem.aplOwner} 									
 									</p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="#{msg['licence.start.date']}" width="13%"
-									filterBy="#{licenceItem.licBeginDate}"
-									filterMatchMode="contains">										
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="نوع النشاط" width="11%">
+
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
+									disabled="true" style="width:95%;opacity: 1;" immediate="true"
+									value="#{licenceItem.activtyType}">
+									<f:selectItems var="item"
+										value="#{licencesListBean.activityList}"
+										itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['licence.start.date']}" width="13%"
+								filterBy="#{licenceItem.licBeginDate}"
+								filterMatchMode="contains">										
 										#{licenceItem.licBeginDate}										
 									</p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="#{msg['licence.end.date']}" width="13%"
-									filterBy="#{licenceItem.licEndDate}" filterMatchMode="contains">										
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['licence.end.date']}" width="13%"
+								filterBy="#{licenceItem.licEndDate}" filterMatchMode="contains">										
 										#{licenceItem.licEndDate}										
 									</p:column>
-								<p:column width="5%" style="text-align:center"
-									headerText="طباعة">
-									<p:commandButton styleClass="purple-btn" ajax="false"
-										onclick="this.form.target='_blank'" icon="ui-icon-print"
-										action="#{licencesListBean.printReportAction(licenceItem)}"
-										immediate="true">
-									</p:commandButton>
-									<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
+							<p:column width="5%" style="text-align:center" headerText="طباعة">
+								<p:commandButton styleClass="purple-btn" ajax="false"
+									onclick="this.form.target='_blank'" icon="ui-icon-print"
+									action="#{licencesListBean.printReportAction(licenceItem)}"
+									immediate="true">
+								</p:commandButton>
+								<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
 									loadSelectedJob -->
-								</p:column>
-								<p:column width="5%" style="text-align:center"
-									headerText="#{msg['details']}">
-									<p:commandButton
-										action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
-										oncomplete="PF('addingLicence_dlg').show()"
-										update="licenceDlgFrm:addingLicence_id" immediate="true"
-										icon="ui-icon-search">
-									</p:commandButton>
-									<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
+							</p:column>
+							<p:column width="5%" style="text-align:center"
+								headerText="#{msg['details']}">
+								<p:commandButton oncomplete="PF('addingLicence_dlg').show()"
+									update="licenceDlgFrm:addingLicence_id" immediate="true"
+									icon="ui-icon-search">
+									<p:ajax
+										listener="#{licencesListBean.loadLicencePenalities(licenceItem)}"></p:ajax>
+								</p:commandButton>
+								<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
 									loadSelectedJob -->
-								</p:column>
-								<p:column width="10%" style="text-align:center"
-									headerText="الزيارات">
-									<p:commandButton
-										action="#{licencesListBean.visits(licenceItem)}"
-										immediate="true" value="الزيارات">
-									</p:commandButton>
-									<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
+							</p:column>
+							<p:column width="10%" style="text-align:center"
+								headerText="الزيارات">
+								<p:commandButton
+									action="#{licencesListBean.visits(licenceItem)}"
+									immediate="true" value="الزيارات">
+								</p:commandButton>
+								<!-- action="#{licencesListBean.loadLicencePenalities(licenceItem)}"
 									loadSelectedJob -->
-								</p:column>
-							</p:dataTable>
+							</p:column>
+						</p:dataTable>
+					</div>
+
+
+					<p:dialog widgetVar="addingActive_dlg" id="adding_id" width="70%"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+						<p:fieldset legend="بيانات النشاط">
+							<div class="ui-g">
+								<div class="ui-g-2" style="text-align: center">
+									<h:outputLabel value="نوع النشاط "></h:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText style="width:100%" required="true"
+										requiredMessage="إدخل نوع النشاط"
+										value="#{licencesListBean.activeName}">
+										<p:ajax process="@this" />
+									</p:inputText>
+
+								</div>
+							</div>
+							<div class="image-box-footer" align="left">
+								<p:commandButton value="حفظ" immediate="true"
+									oncomplete="PF('addingActive_dlg').hide()"
+									styleClass="cyan-btn" icon="ui-icon ui-icon-save"
+									update="licenceDlgFrm:LicenceActivatyType"
+									action="#{licencesListBean.activeAdding}" />
+								<p:spacer height="10px"></p:spacer>
+								<p:commandButton value="رجوع" immediate="true"
+									onclick="PF('addingActive_dlg').hide()" />
+							</div>
+						</p:fieldset>
+					</p:dialog>
+
+
+
+				</h:form>
+
+				<h:form id="licenceDlgFrm">
+
+					<p:dialog widgetVar="addingLicence_dlg" id="addingLicence_id"
+						width="70%" hideEffect="fade" showEffect="explode" dir="rtl"
+						modal="true" resizable="false">
+
+						<div
+							style="text-align: center; font-size: x-large; color: #7CB342;">
+							<h:outputLabel value="بيانات الرخصة"></h:outputLabel>
 						</div>
 						<br />
-					</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="رقم الرخصة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="LicenceNumber" style="width:100%"
+									required="true" requiredMessage="إدخل رقم الرخصة"
+									value="#{licencesListBean.licence.licNo}" />
+							</div>
 
-
-
-				</div>
-			</h:form>
-
-			<h:form id="licenceDlgFrm">
-
-				<p:dialog widgetVar="addingLicence_dlg" id="addingLicence_id"
-					width="70%" hideEffect="fade" showEffect="explode" dir="rtl"
-					modal="true" resizable="false">
-
-					<div
-						style="text-align: center; font-size: x-large; color: #7CB342;">
-						<h:outputLabel value="بيانات الرخصة"></h:outputLabel>
-					</div>
-					<br />
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="رقم الرخصة"></h:outputLabel>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="إسم المالك"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="licOwnerName" style="width:100%"
+									required="true" requiredMessage="إدخل إسم المالك"
+									value="#{licencesListBean.licence.licOwnerName}" />
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="رقم السجل المدني / الهوية"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="licOwnerApl" style="width:100%" required="true"
+									requiredMessage="إدخل رقم السجل المدني / الهوية"
+									value="#{licencesListBean.licence.aplOwner}" maxlength="10">
+									<f:validator validatorId="nationalIdValidator" />
+								</p:inputText>
+							</div>
 						</div>
-						<div class="ui-g-2">
-							<p:inputText id="LicenceNumber" style="width:100%"
-								required="true" requiredMessage="إدخل رقم الرخصة"
-								value="#{licencesListBean.licence.licNo}" />
-						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="الاسم التجاري"></h:outputLabel>
 
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="إسم المالك"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="licOwnerName" style="width:100%" required="true"
-								requiredMessage="إدخل إسم المالك"
-								value="#{licencesListBean.licence.licOwnerName}" />
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="رقم السجل المدني / الهوية"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="licOwnerApl" style="width:100%" required="true"
-								requiredMessage="إدخل رقم السجل المدني / الهوية"
-								value="#{licencesListBean.licence.aplOwner}" maxlength="10">
-								<f:validator validatorId="nationalIdValidator" />
-							</p:inputText>
-						</div>
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="الاسم التجاري"></h:outputLabel>
+							</div>
+							<div class="ui-g-6">
+								<p:inputText id="LicenceBuildName" style="width:100%"
+									required="true" requiredMessage="إدخل الاسم التجاري"
+									value="#{licencesListBean.licence.trdName}" />
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="رقم السجل التجاري"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="licMhlID" style="width:100%" required="true"
+									requiredMessage="إدخل رقم السجل التجاري"
+									value="#{licencesListBean.licence.mhlId}" />
+							</div>
 
 						</div>
-						<div class="ui-g-6">
-							<p:inputText id="LicenceBuildName" style="width:100%"
-								required="true" requiredMessage="إدخل الاسم التجاري"
-								value="#{licencesListBean.licence.trdName}" />
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="رقم السجل التجاري"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="licMhlID" style="width:100%" required="true"
-								requiredMessage="إدخل رقم السجل التجاري"
-								value="#{licencesListBean.licence.mhlId}" />
-						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="العنوان"></h:outputLabel>
 
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="العنوان"></h:outputLabel>
+							</div>
+							<div class="ui-g-6">
+								<p:inputText id="addrees" style="width:100%" required="true"
+									requiredMessage="إدخل العنوان"
+									value="#{licencesListBean.licence.licAdress}" />
+							</div>
 
-						</div>
-						<div class="ui-g-6">
-							<p:inputText id="addrees" style="width:100%" required="true"
-								requiredMessage="إدخل العنوان"
-								value="#{licencesListBean.licence.licAdress}" />
-						</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="مساحة المنشئة"></h:outputLabel>
 
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="مساحة المنشئة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="marketSpace" style="width:100%" required="true"
+									requiredMessage="إدخل مساحة المنشئة"
+									value="#{licencesListBean.licence.licAdress}" />
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="تاريخ البداية"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="licBeginDate" style="width:100%"
+									required="true" requiredMessage="إدخل تاريخ البداية"
+									value="#{licencesListBean.licence.licBeginDate}"
+									onfocus="loadCalendar();"
+									styleClass="form-control form-controlCal">
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="تاريخ النهاية"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="licEndDate"
+									value="#{licencesListBean.licence.licEndDate}" required="true"
+									requiredMessage="إدخل تاريخ النهاية" onfocus="loadCalendar();"
+									style="width:100%" styleClass="form-control form-controlCal">
+									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="رقم الجوال / الهاتف"></h:outputLabel>
 
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="marketSpace" style="width:100%" required="true"
-								requiredMessage="إدخل مساحة المنشئة"
-								value="#{licencesListBean.licence.licAdress}" />
-						</div>
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="تاريخ البداية"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="licBeginDate" style="width:100%" required="true"
-								requiredMessage="إدخل تاريخ البداية"
-								value="#{licencesListBean.licence.licBeginDate}"
-								onfocus="loadCalendar();"
-								styleClass="form-control form-controlCal">
-								<f:validator validatorId="utilities.UmmAlQUraValidator" />
-							</p:inputText>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="تاريخ النهاية"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="licEndDate"
-								value="#{licencesListBean.licence.licEndDate}" required="true"
-								requiredMessage="إدخل تاريخ النهاية" onfocus="loadCalendar();"
-								style="width:100%" styleClass="form-control form-controlCal">
-								<f:validator validatorId="utilities.UmmAlQUraValidator" />
-							</p:inputText>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="رقم الجوال / الهاتف"></h:outputLabel>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<p:inputText id="phoneNumber" style="width:100%" required="true"
+									requiredMessage="إدخل رقم الجوال / الهاتف"
+									value="#{licencesListBean.licence.phoneNumber}" maxlength="12">
+									<f:validator validatorId="utilities.PhoneNumberValidator" />
+								</p:inputText>
+							</div>
 
 						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<p:inputText id="phoneNumber" style="width:100%" required="true"
-								requiredMessage="إدخل رقم الجوال / الهاتف"
-								value="#{licencesListBean.licence.phoneNumber}" maxlength="12">
-								<f:validator validatorId="utilities.PhoneNumberValidator" />
-							</p:inputText>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="حالة المنشأة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="LicenceActivationStatus" style="width:100%"
+									required="true" requiredMessage="إدخل حالة المنشأة"
+									value="#{licencesListBean.licence.activationStatus}">
+									<f:selectItem itemLabel="إختر الحالة" noSelectionOption="true" />
+									<f:selectItem itemLabel="منتهية" itemValue="N" />
+									<f:selectItem itemLabel="فعالة" itemValue="Y" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="نوع النشاط"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="LicenceActivatyType" style="width:80%"
+									required="true" requiredMessage="إدخل نوع النشاط"
+									value="#{licencesListBean.licence.activtyType}">
+									<f:selectItem itemLabel="إختر نوع النشاط"
+										noSelectionOption="true" />
+									<f:selectItems var="item"
+										value="#{licencesListBean.activityList}"
+										itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+								<!-- 							<p:spacer height="10"></p:spacer> -->
+								<p:commandButton styleClass="cyan-btn" immediate="true"
+									oncomplete="PF('addingActive_dlg').show()" icon="ui-icon-add">
+								</p:commandButton>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="الأمانة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="amanaName" style="width:100%"
+									required="true" requiredMessage="إختر الأمانة"
+									value="#{licencesListBean.licence.amaana}">
+									<f:selectItem itemLabel="إختر الأمانة" noSelectionOption="true" />
+									<f:selectItem itemLabel="أمانة القصيم" itemValue="1" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="المنطقة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="regoinName" style="width:100%"
+									required="true" requiredMessage="إختر المنطقة"
+									value="#{licencesListBean.licence.city}">
+									<f:selectItem itemLabel="إختر المنطقة" noSelectionOption="true" />
+									<f:selectItems var="item"
+										value="#{licencesListBean.citiesList}"
+										itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="رقم الوحدة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="buildNumber" style="width:100%" required="true"
+									requiredMessage="إدخل رقم الوحدة السكنية"
+									value="#{licencesListBean.licence.buildingNumber}" />
+
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="إسم الحي"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu style="width:100%" filter="true"
+									filterMatchMode="contains" id="LicenceDistrictName"
+									required="true" requiredMessage="إدخل إسم الحي"
+									value="#{licencesListBean.licence.district}">
+
+									<f:selectItem itemLabel="إختر الحي" noSelectionOption="true" />
+									<f:selectItems var="item"
+										value="#{licencesListBean.districtsList}"
+										itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="إسم الشارع"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+
+								<p:selectOneMenu style="width:100%" filter="true"
+									filterMatchMode="contains" id="LicenceStreetName"
+									required="true" requiredMessage="إدخل إسم الشارع"
+									value="#{licencesListBean.licence.street}">
+
+									<f:selectItem itemLabel="إختر الشارع" noSelectionOption="true" />
+									<f:selectItems var="item"
+										value="#{licencesListBean.streetsList}"
+										itemLabel="#{item.title}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="خط العرض"></h:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="LicenceLatitude" style="width:100%"
+									value="#{licencesListBean.licence.latitude}" />
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="خط الطول"></h:outputLabel>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<p:inputText id="LicenceLongitude" style="width:100%"
+									value="#{licencesListBean.licence.longitude}" />
+							</div>
+
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="نوع الزيارة"></h:outputLabel>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<p:selectOneMenu id="Licencevisits" style="width:100%"
+									required="true" requiredMessage="إختر نوع الزيارة"
+									value="#{licencesListBean.licence.visitName}">
+									<f:selectItem itemLabel="إختر نوع الزياة"
+										noSelectionOption="true" />
+									<f:selectItems value="#{licencesListBean.licVisits}" var="item"
+										itemLabel="#{item.name}" itemValue="#{item.id}" />
+
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="القطاع"></h:outputLabel>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<p:selectOneMenu id="LicenceSection" style="width:100%"
+									required="true" requiredMessage="إختر القطاع"
+									value="#{licencesListBean.licence.licSection}">
+									<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
+									<f:selectItems value="#{licencesListBean.licSectionList}"
+										var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+									<f:ajax render="LicenceDepartment" execute="@this"
+										listener="#{licencesListBean.loadlicDepartments}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="القسم"></h:outputLabel>
+							</div>
+							<div class="ui-g-2" style="text-align: center">
+								<p:selectOneMenu id="LicenceDepartment" style="width:100%"
+									required="true" requiredMessage="إختر القسم"
+									value="#{licencesListBean.licence.licDeparment}">
+									<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
+									<f:selectItems value="#{licencesListBean.licDepartmentList}"
+										var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2" style="text-align: center">
+								<h:outputLabel value="الكروكي"></h:outputLabel>
+							</div>
+							<div class="ui-g-10" style="text-align: center">
+								<!-- 								<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" -->
+								<!-- 									style="width:100%;height:400px" /> -->
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="حفظ"
+								onclick="PF('addingLicence_dlg').hide()" styleClass="cyan-btn"
+								icon="ui-icon ui-icon-save" update=":includeform:LicLst"
+								rendered="#{!(licencesListBean.updateMode)}"
+								action="#{licencesListBean.saveLicence}" />
+							<p:commandButton value="تعديل" styleClass="green-btn"
+								icon="ui-icon ui-icon-update" update=":includeform:LicLst"
+								rendered="#{(licencesListBean.updateMode)}"
+								action="#{licencesListBean.updateLicence}"
+								onclick="PF('addingLicence_dlg').hide()" />
+							<p:spacer height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								onclick="PF('addingLicence_dlg').hide()" />
 						</div>
 
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="حالة المنشأة"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:selectOneMenu id="LicenceActivationStatus" style="width:100%"
-								required="true" requiredMessage="إدخل حالة المنشأة"
-								value="#{licencesListBean.licence.activationStatus}">
-								<f:selectItem itemLabel="إختر الحالة" noSelectionOption="true" />
-								<f:selectItem itemLabel="منتهية" itemValue="N" />
-								<f:selectItem itemLabel="فعالة" itemValue="Y" />
-							</p:selectOneMenu>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="نوع النشاط"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:selectOneMenu id="LicenceActivatyType" style="width:100%"
-								required="true" requiredMessage="إدخل نوع النشاط"
-								value="#{licencesListBean.licence.activtyType}">
-								<f:selectItem itemLabel="إختر نوع النشاط"
-									noSelectionOption="true" />
-								<f:selectItems var="item"
-									value="#{licencesListBean.activityList}"
-									itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="الأمانة"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:selectOneMenu id="amanaName" style="width:100%"
-								required="true" requiredMessage="إختر الأمانة"
-								value="#{licencesListBean.licence.amaana}">
-								<f:selectItem itemLabel="إختر الأمانة" noSelectionOption="true" />
-								<f:selectItem itemLabel="أمانة القصيم" itemValue="1" />
-							</p:selectOneMenu>
-						</div>
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="المنطقة"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:selectOneMenu id="regoinName" style="width:100%"
-								required="true" requiredMessage="إختر المنطقة"
-								value="#{licencesListBean.licence.city}">
-								<f:selectItem itemLabel="إختر المنطقة" noSelectionOption="true" />
-								<f:selectItems var="item" value="#{licencesListBean.citiesList}"
-									itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
+					</p:dialog>
 
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="رقم الوحدة"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="buildNumber" style="width:100%" required="true"
-								requiredMessage="إدخل رقم الوحدة السكنية"
-								value="#{licencesListBean.licence.buildingNumber}" />
+				</h:form>
+			</ui:define>
+		</ui:composition>
 
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="إسم الحي"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:selectOneMenu style="width:100%" filter="true"
-								filterMatchMode="contains" id="LicenceDistrictName"
-								required="true" requiredMessage="إدخل إسم الحي"
-								value="#{licencesListBean.licence.district}">
-
-								<f:selectItem itemLabel="إختر الحي" noSelectionOption="true" />
-								<f:selectItems var="item"
-									value="#{licencesListBean.districtsList}"
-									itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="إسم الشارع"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-
-							<p:selectOneMenu style="width:100%" filter="true"
-								filterMatchMode="contains" id="LicenceStreetName"
-								required="true" requiredMessage="إدخل إسم الشارع"
-								value="#{licencesListBean.licence.street}">
-
-								<f:selectItem itemLabel="إختر الشارع" noSelectionOption="true" />
-								<f:selectItems var="item"
-									value="#{licencesListBean.streetsList}"
-									itemLabel="#{item.title}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
-
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="خط العرض"></h:outputLabel>
-						</div>
-						<div class="ui-g-2">
-							<p:inputText id="LicenceLatitude" style="width:100%"
-								value="#{licencesListBean.licence.latitude}" />
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="خط الطول"></h:outputLabel>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<p:inputText id="LicenceLongitude" style="width:100%"
-								value="#{licencesListBean.licence.longitude}" />
-						</div>
-
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="نوع الزيارة"></h:outputLabel>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<p:selectOneMenu id="Licencevisits" style="width:100%"
-								required="true" requiredMessage="إختر نوع الزيارة"
-								value="#{licencesListBean.licence.visitName}">
-								<f:selectItem itemLabel="إختر نوع الزياة"
-									noSelectionOption="true" />
-								<f:selectItems value="#{licencesListBean.licVisits}" var="item"
-									itemLabel="#{item.name}" itemValue="#{item.id}" />
-
-							</p:selectOneMenu>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="القطاع"></h:outputLabel>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<p:selectOneMenu id="LicenceSection" style="width:100%"
-								required="true" requiredMessage="إختر القطاع"
-								value="#{licencesListBean.licence.licSection}">
-								<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
-								<f:selectItems value="#{licencesListBean.licSectionList}"
-									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="القسم"></h:outputLabel>
-						</div>
-						<div class="ui-g-2" style="text-align: center">
-							<p:selectOneMenu id="LicenceDepartment" style="width:100%"
-								required="true" requiredMessage="إختر القسم"
-								value="#{licencesListBean.licence.licDeparment}">
-								<f:selectItem itemLabel="إختر القسم" noSelectionOption="true" />
-								<f:selectItems value="#{licencesListBean.licDepartmentList}"
-									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-						</div>
-					</div>
-					<div class="ui-g">
-						<div class="ui-g-2" style="text-align: center">
-							<h:outputLabel value="الكروكي"></h:outputLabel>
-						</div>
-						<div class="ui-g-10" style="text-align: center">
-							<!-- 								<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" -->
-							<!-- 									style="width:100%;height:400px" /> -->
-						</div>
-					</div>
-					<br />
-					<div class="image-box-footer" align="left">
-						<p:commandButton value="حفظ"
-							onclick="PF('addingLicence_dlg').hide()" styleClass="cyan-btn"
-							icon="ui-icon ui-icon-save" update=":includeform:inboxdt"
-							rendered="#{!(licencesListBean.updateMode)}"
-							action="#{licencesListBean.saveLicence}" />
-						<p:commandButton value="تعديل" styleClass="green-btn"
-							icon="ui-icon ui-icon-update" update=":includeform:inboxdt"
-							rendered="#{(licencesListBean.updateMode)}"
-							action="#{licencesListBean.updateLicence}"
-							onclick="PF('addingLicence_dlg').hide()" />
-						<p:spacer height="10px"></p:spacer>
-						<p:commandButton value="رجوع" immediate="true"
-							onclick="PF('addingLicence_dlg').hide()" />
-					</div>
-
-				</p:dialog>
-
-			</h:form>
-		</ui:define>
-	</ui:composition>
-
-</h:body>
+	</h:body>
+</f:view>
 </html>
 

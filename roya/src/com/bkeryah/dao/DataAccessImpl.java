@@ -91,6 +91,7 @@ import com.bkeryah.entities.HrsSalaryScaleId;
 import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
+import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
 import com.bkeryah.fuel.entities.Car;
@@ -103,6 +104,7 @@ import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
+import com.mchange.lang.StringUtils;
 
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
@@ -7827,7 +7829,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.setInt(1, temp_receipt_id);
 			callableStatement.executeUpdate();
 			rs = (ResultSet) callableStatement.getObject(2);
-		 	while (rs.next()) {
+			while (rs.next()) {
 				tempReceiptModel = new StoreTemporeryReceiptDetailsModel();
 				tempReceiptModel.setArticleId(rs.getInt("ARTICLE_ID"));
 				tempReceiptModel.setQty(rs.getInt("QTY"));
@@ -7839,7 +7841,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				tempReceiptModel.setSupplierName(rs.getString("SUPPLIER_NAME"));
 				tempReceiptModelList.add(tempReceiptModel);
 
-			} 
+			}
 		} catch (Exception e) {
 			logger.error("getTempReceiptDetailsList " + e.getMessage());
 		} finally {
@@ -7855,5 +7857,119 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			}
 		}
 		return tempReceiptModelList;
+	}
+
+	@Override
+	public void deleteVisitsForDisactiveSupervisors(Integer licId, String startHDate, String endHDate) {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.deleteVisitsForDisactiveSupervisors(?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, licId);
+			callableStatement.setString(2, startHDate);
+			callableStatement.setString(3, endHDate);
+			callableStatement.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("deleteVisitsForDisactiveSupervisors " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate) {
+
+		if (!(contNum != null))
+			contNum = -1;
+		if (!(status != null))
+			status = -1;
+		if (!(investorId != null))
+			investorId = -1;
+		if (!(fromStartDate != null && fromStartDate.length()>0 ))
+			fromStartDate = "-1";
+		if (!(toStartDate != null && toStartDate.length()>0))
+			toStartDate = "-1";
+		if (!(fromEndDate != null && fromEndDate.length()>0))
+			fromEndDate = "-1";
+		if (!(toEndDate != null && toEndDate.length()>0))
+			toEndDate = "-1";
+
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ContractDirect contractDirect = new ContractDirect();
+		List<ContractDirect> contractslist = new ArrayList<ContractDirect>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			String sql = "{call NEW_PKG_WEBKIT.getContractDirectListByAllFilters(?,?,?,?,?,?,?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, contNum);
+			callableStatement.setInt(2, status);
+			callableStatement.setString(3, currentHijriDate);
+			callableStatement.setInt(4, investorId);
+			callableStatement.setString(5, fromStartDate);
+			callableStatement.setString(6, toStartDate);
+			callableStatement.setString(7, fromEndDate);
+			callableStatement.setString(8, toEndDate);
+			callableStatement.registerOutParameter(9, OracleTypes.CURSOR);
+			callableStatement.execute();
+			rs = (ResultSet) callableStatement.getObject(9);
+			int i=0;
+			while (rs.next()) {
+				System.out.println(i++);
+				contractDirect = new ContractDirect();
+				contractDirect.setId(rs.getInt("ID"));
+				contractDirect.setContractNum(rs.getInt("CONTRACT_NUM"));
+				contractDirect.setContractDate(rs.getDate("CONTRACT_DATE"));
+				contractDirect.setStartDate(rs.getString("START_DATE"));
+				contractDirect.setEndDate(rs.getString("END_DATE"));
+				contractDirect.setRealEstateId(rs.getInt("REAL_ESTATE_ID"));
+				contractDirect.setInvestorId(rs.getInt("INVESTOR_ID"));
+				contractDirect.setInvRepresentName(rs.getString("INV_REPRES_NAME"));
+				contractDirect.setInvRepresentFunct(rs.getString("INV_REPRES_FUNCT"));
+				contractDirect.setInvRepresentNatId(rs.getLong("INV_REPRES_NAT_ID"));
+				contractDirect.setInvRepresentIdPlace(rs.getString("INV_REPRES_ID_PLACE"));
+				contractDirect.setInvRepresentIdDate(rs.getString("INV_REPRES_ID_DATE"));
+				contractDirect.setContractTypeId(rs.getInt("CONTRACT_TYPE_ID"));
+				contractDirect.setContractYears(rs.getInt("CONTRACT_YEARS"));
+				contractDirect.setAnnualRent(rs.getDouble("ANNUAL_RENT"));
+				contractDirect.setProcessPeriod(rs.getInt("PROC_CONST_PERIOD"));
+				contractDirect.setIntroduction(rs.getString("CONTRACT_INTRO"));
+				contractDirect.setObservation(rs.getString("OBSERVATION"));
+				contractDirect.setCancelReasonId(rs.getInt("CANCEL_REASON_ID"));
+				contractDirect.setStatus(rs.getInt("STATUS"));
+				contractDirect.setContractMaincatgId(rs.getInt("CONTRACT_MAIN_CATG"));
+				contractDirect.setContractSubcatgId(rs.getInt("CONTRACT_SUB_CATG"));
+				contractDirect.setContractStatId(rs.getInt("CONTRACT_STATUS"));
+
+				contractslist.add(contractDirect);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(" loadContractDirectListByAllFilters : " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return contractslist;
 	}
 }

@@ -18,16 +18,31 @@ public class LicDepartment {
 	private Integer id;
 	@Column(name = "NAME")
 	private String name;
+
+	@Column(name = "SECTION_ID")
+	private Integer sectionId;
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
 	}
 }

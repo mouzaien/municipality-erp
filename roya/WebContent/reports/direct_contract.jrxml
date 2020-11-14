@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-07-26T09:04:34 -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="direct_contract" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="10" rightMargin="30" topMargin="20" bottomMargin="20" uuid="cfcb9d96-acb4-420b-a4f9-65485f7afb0e">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="289"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="700"/>
 	<property name="ireport.zoom" value="1.0"/>
@@ -19,7 +18,7 @@ INV.NAME,INV.TRADE_RECORD,INV.REGION,INV.ADDRESS,INV.PHONE,INV.FAX,INV.MOBILE,IN
 INV.POSTAL_CODE,INV.CODE,RS.STREET,RS.LAND_AREA,RS.NORTH_LIMIT,RS.WEST_LIMIT,RS.EAST_LIMIT,RS.SOUTH_LIMIT,RS.NUM_REAL_ESTATE 
 from contract_direct c, investor inv, real_estate rs, INV_SITES sity
 where C.REAL_ESTATE_ID=RS.ID
-and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]]>
+and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]]>
 	</queryString>
 	<field name="CONTID" class="java.lang.String"/>
 	<field name="CONTRACT_INTRO" class="java.lang.String"/>
@@ -83,7 +82,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
 	<detail>
 		<band height="561" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="20" y="100" width="520" height="139" backcolor="#EDEBEB" uuid="7f29bd54-9783-49ae-8aba-051fb1da23c2">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
@@ -98,15 +97,15 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
 					<paragraph lineSpacingSize="1.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[(" { الطرف الأول } \n"+
-"بلدية محافظة البكيرية و يمثلها\n"+
-"{ يوسف بن عبدالله الخليفة } \n"+
-"  بصفته رئيس بلدية محافظة البكيرية\n"+
+"بلدية محافظة المذنب و يمثلها\n"+
+"{ فهد بن صالح الجلعود } \n"+
+"  بصفته رئيس بلدية محافظة المذنب\n"+
 "هاتف رقم [063360800] فاكس [ 063358513 ] \n"+
 "ص.ب [ 313 ]  الرمز البريدي [ 51941 ]").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="277" y="10" width="251" height="30" backcolor="#EDEBEB" uuid="82628ee8-1824-46ee-af54-bc6ef265f002"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -120,7 +119,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="26" y="10" width="251" height="30" backcolor="#EDEBEB" uuid="dee5f899-be8e-4ce5-8f1a-6f8779e88735"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -134,7 +133,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")+"   "]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="46" width="520" height="50" uuid="5bad1904-66a2-41e2-81b3-c7a57ca6c951">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -144,7 +143,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
 				</textElement>
 				<textFieldExpression><![CDATA["عقد إيجار "+$F{SITE_NAME}+" القطعة رقم ("+$F{NUM_REAL_ESTATE}+") "+$F{STREET}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="20" y="243" width="520" height="190" backcolor="#EDEBEB" uuid="a58a26a1-1ce4-4bf6-b42d-b76f8f90698f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -169,7 +168,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="20" y="437" width="520" height="112" isPrintWhenDetailOverflows="true" uuid="5ed6c3ab-126d-4549-ae88-2964bffffe24">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
@@ -188,7 +187,7 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
 			</textField>
 		</band>
 		<band height="561">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="20" y="20" width="520" height="390" isPrintWhenDetailOverflows="true" uuid="0b684dab-96ea-44ef-a1af-9e11ea1a2a46">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
@@ -277,9 +276,9 @@ and RS.SITE_LYPE_ID = SITY.SITE_CODE and C.INVESTOR_ID=INV.ID and C.ID= $P{contr
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["رئيس بلدية محافظة البكيرية\nيوسف بن عبدالله الخليفة"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["رئيس بلدية محافظة المذنب\nفهد بن صالح الجلعود"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="310" y="518" width="230" height="40" uuid="adebfa5d-3f73-4e3a-b916-531577d7b6dc">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>

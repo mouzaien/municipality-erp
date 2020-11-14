@@ -39,9 +39,9 @@ public class LicTrdMasterFile {
 	@Column(name = "MARKET_SPACE")
 	private String marketSpace;
 	@Column(name = "longitude")
-	private double longitude;
+	private String longitude;
 	@Column(name = "latitude")
-	private double latitude;
+	private String latitude;
 	@Column(name = "street")
 	private Integer street;
 	@Column(name = "district")
@@ -62,6 +62,11 @@ public class LicTrdMasterFile {
 	private Integer licSection;
 	@Column(name = "LIC_DEPARTMENT")
 	private Integer licDeparment;
+
+	@Transient
+	private String activityName;
+	@Transient
+	private Integer num;
 
 	public String getMhlId() {
 		return mhlId;
@@ -194,19 +199,19 @@ public class LicTrdMasterFile {
 		this.marketSpace = marketSpace;
 	}
 
-	public double getLongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
 
-	public double getLatitude() {
+	public String getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
 
@@ -288,6 +293,22 @@ public class LicTrdMasterFile {
 
 	public void setLicDeparment(Integer licDeparment) {
 		this.licDeparment = licDeparment;
+	}
+
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
 	}
 
 }

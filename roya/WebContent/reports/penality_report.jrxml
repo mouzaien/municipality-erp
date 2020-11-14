@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2018-08-05T11:45:00 -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="penality_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3323bf0f-bc60-4d7d-95d7-19f5834b1a61">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORCL"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<subDataset name="Table Dataset 1" uuid="08d883d9-733a-4867-847f-470f858b4c8d"/>
 	<parameter name="fine_no" class="java.lang.Integer"/>
-	<parameter name="now" class="java.lang.String">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
+	<parameter name="now" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\workspace\\Bkeryah\\WebContent\\reports\\sub_penality_report.jasper"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select M.F_NAME, M.F_LICENCE_NO, M.F_TRADE_MARK_NAME,M.F_ADDRESS,N.observation,
-US.EMPNAME,
+		<![CDATA[select 
+
+m.AQR_OWNER_NAME F_NAME, M.LIC_NO F_LICENCE_NO, M.TRd_NAME F_TRADE_MARK_NAME, m.MHL_ADDRS F_ADDRESS, fd.observation,
+US.EMPNAME
+,
 (SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = US.USER_ID) SIGN_SUP, 
 (SELECT US.EMPNAME FROM ARC_USERS US WHERE US.USER_ID = GET_SYS_PROP_VAL('HEALTH_CONTROL_HEAD')) DIRECTOR,
-(SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('HEALTH_CONTROL_HEAD')) SIGN_DIR ,
-FD.FINE_NO, f.fine_code,F.FINE_MINIMUM_VALUE,F.FINE_SUPERMUM_VALUE , f.FINE_DESC, FD.FINE_COUNT  , fd.fine_value
-from REQ_FINES_MASTER M,NOTIF_FINES_MASTER N,REQ_FINES_DETAILS fd, REQ_FINES_SETUP f, ARC_USERS US
-where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and M.FINE_NO =  $P{fine_no} and N.SUPERVISOR_EMPNO = US.EMPNO]]>
+(SELECT PR.SIGN2 PRSIGN FROM WRK_PROFILE PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('HEALTH_CONTROL_HEAD')) SIGN_DIR 
+
+, f.fine_code,F.FINE_MINIMUM_VALUE, F.FINE_SUPERMUM_VALUE ,fd.DUPLICATED FINE_COUNT , f.FINE_DESC, decode(fd.UPDOWN,1,F.FINE_SUPERMUM_VALUE, F.FINE_MINIMUM_VALUE) fine_value
+
+
+
+from 
+
+REQ_FINES_SETUP f,
+
+LIC_TRD_MASTER_FILE M, NOTIF_FINES_MASTR N,
+
+NOTIF_FINES_DTLS fd,  ARC_USERS US
+
+
+where M.id        = N.LIC_ID 
+AND fd.MASTER_ID  = n.id
+and N.id = $P{fine_no}
+and N.SUBERVISOR_ID = US.user_id
+AND fd.SETUP_ID  =  f.id(+)]]>
 	</queryString>
 	<field name="F_NAME" class="java.lang.String"/>
 	<field name="F_LICENCE_NO" class="java.lang.String"/>
@@ -34,21 +50,20 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 	<field name="SIGN_SUP" class="java.io.InputStream"/>
 	<field name="DIRECTOR" class="java.lang.String"/>
 	<field name="SIGN_DIR" class="java.io.InputStream"/>
-	<field name="FINE_NO" class="java.math.BigDecimal"/>
 	<field name="FINE_CODE" class="java.lang.String"/>
-	<field name="FINE_MINIMUM_VALUE" class="java.math.BigDecimal"/>
-	<field name="FINE_SUPERMUM_VALUE" class="java.math.BigDecimal"/>
+	<field name="FINE_MINIMUM_VALUE" class="java.lang.Integer"/>
+	<field name="FINE_SUPERMUM_VALUE" class="java.lang.Integer"/>
 	<field name="FINE_DESC" class="java.lang.String"/>
-	<field name="FINE_COUNT" class="java.math.BigDecimal"/>
-	<field name="FINE_VALUE" class="java.math.BigDecimal"/>
+	<field name="FINE_COUNT" class="java.lang.Integer"/>
+	<field name="FINE_VALUE" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="479" splitType="Stretch">
+		<band height="454" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="16" y="118" width="90" height="16" uuid="be8d5dff-10ff-4cc9-8341-78452bf53791"/>
+				<reportElement x="0" y="2" width="90" height="16" uuid="be8d5dff-10ff-4cc9-8341-78452bf53791"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -56,129 +71,129 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="401" y="118" width="100" height="20" uuid="69a8703f-55eb-4b41-adf4-78c5ad057809"/>
+			<staticText>
+				<reportElement x="412" y="55" width="142" height="20" uuid="b169f826-f215-4774-9c3f-cd2de4499d87"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["قسم صحة البيئة"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[قسم صحة البيئة]]></text>
+			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="209" width="530" height="52" isPrintWhenDetailOverflows="true" uuid="a41b7c1e-8364-4005-a022-57052add9fe9"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="126" width="530" height="52" isPrintWhenDetailOverflows="true" uuid="a41b7c1e-8364-4005-a022-57052add9fe9"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المكرم / مدير إدارة الرقابة الشاملة \n\n"+
+				<textFieldExpression><![CDATA["المكرم / مدير إدارة الرقابة الشاملة \n"+
 "السلام عليكم و رحمة الله و بركاته\n"+
 "برفقة صورة من ضبط و إثبات مخالفة بلدية:"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="480" y="261" width="62" height="20" isPrintWhenDetailOverflows="true" uuid="9484abda-d6ab-434b-a116-481e4a7dd0d9">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="470" y="188" width="72" height="20" isPrintWhenDetailOverflows="true" uuid="28c09a72-cf62-4b6b-9206-1491ff0bf45f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["إسم المخالف"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[إسم المخالف :]]></text>
+			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="290" y="261" width="190" height="20" isPrintWhenDetailOverflows="true" uuid="23a2b858-ca90-4215-8d90-4ce54b9010af">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="290" y="188" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="23a2b858-ca90-4215-8d90-4ce54b9010af">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_NAME}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="217" y="261" width="62" height="20" isPrintWhenDetailOverflows="true" uuid="ddebbe10-ad6d-46cf-a042-0172ed483ccb">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="208" y="188" width="71" height="20" isPrintWhenDetailOverflows="true" uuid="e6333ca4-dc41-4cba-927b-889070db0362">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["موقع المحل"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[موقع المحل :]]></text>
+			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="77" y="261" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="c0db05de-8565-4040-8921-dfaa83eaba94">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="64" y="188" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="c0db05de-8565-4040-8921-dfaa83eaba94">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ADDRESS}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="217" y="284" width="62" height="20" isPrintWhenDetailOverflows="true" uuid="dbd27986-7a79-406d-88ac-fe5a01a5df9c">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="208" y="211" width="71" height="20" isPrintWhenDetailOverflows="true" uuid="16bc7d3f-49ae-4bb7-ae48-32d438cab85d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["رقم الترخيص"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[رقم الترخيص :]]></text>
+			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="77" y="284" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="ebb79ab9-295c-42ef-ba71-7aaf75c9b607">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="64" y="211" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="ebb79ab9-295c-42ef-ba71-7aaf75c9b607">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_LICENCE_NO}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="480" y="284" width="62" height="20" isPrintWhenDetailOverflows="true" uuid="ccef16a8-6b0c-421d-9d53-92ce1c808a29">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="470" y="211" width="72" height="20" isPrintWhenDetailOverflows="true" uuid="5abc6ebb-4e55-462c-9595-8d80ce67a125">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["نوع النشاط"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[الاسم التجارى:]]></text>
+			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="290" y="284" width="190" height="20" isPrintWhenDetailOverflows="true" uuid="679a28f7-52b0-4d70-b746-a54f7c883a09">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="290" y="211" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="679a28f7-52b0-4d70-b746-a54f7c883a09">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_TRADE_MARK_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="250" y="310" width="292" height="20" isPrintWhenDetailOverflows="true" uuid="d515f3c6-59e8-4997-8789-6cf54f47e04b">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="250" y="237" width="292" height="20" isPrintWhenDetailOverflows="true" uuid="d515f3c6-59e8-4997-8789-6cf54f47e04b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["وصف المخالفة و حجمها الموجودة بالمحل:"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="336" width="530" height="30" isPrintWhenDetailOverflows="true" uuid="13811cd4-2bc5-4fd4-ae1e-21721191ede4">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="263" width="530" height="107" isPrintWhenDetailOverflows="true" uuid="13811cd4-2bc5-4fd4-ae1e-21721191ede4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{OBSERVATION}+"\n"+
-"آمل الإطلاع و الإحاطةو الإيعاز بإكمال اللازم."]]></textFieldExpression>
+"آمل الإطلاع و الإحاطة و الإيعاز بإكمال اللازم."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="396" width="530" height="50" isPrintWhenDetailOverflows="true" uuid="ae7534ff-fd34-4c27-a01e-61e4690629bd">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="370" width="530" height="50" isPrintWhenDetailOverflows="true" uuid="ae7534ff-fd34-4c27-a01e-61e4690629bd">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="14" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["سعادة رئيس البلدية\n\n"+
+				<textFieldExpression><![CDATA["سعادة رئيس البلدية\n"+
 "و حيث تنطبق على مخالفة المذكور من لائحة الغرامات و الجزاءات عن المخالفات البلدية الصادرة بقرار مجلس الوزراء رقم [218] في 1422/08/06 هـ. آمل الإطلاع و الإيعاز حيال إستحصال الغرامات و الجزاءات المقررة بموجب اللائحة:".replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="300" y="459" width="242" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="51b25c83-1062-48c0-a3fc-4ca8678eba7a">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="300" y="434" width="242" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="51b25c83-1062-48c0-a3fc-4ca8678eba7a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -194,7 +209,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				<textFieldExpression><![CDATA["المادة"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="240" y="459" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="4543f727-1591-456b-a84f-c077a908edea">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="240" y="434" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="4543f727-1591-456b-a84f-c077a908edea">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -210,7 +225,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				<textFieldExpression><![CDATA["الحد الأدنى"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="180" y="459" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="b3f84b3b-411c-466d-baad-a6112582ec6f">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="180" y="434" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="b3f84b3b-411c-466d-baad-a6112582ec6f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -225,8 +240,8 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				</textElement>
 				<textFieldExpression><![CDATA["الحد الأعلى"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="120" y="459" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="54dbeb2b-423e-4bc5-affe-08231aee5408">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="120" y="434" width="60" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="d053a221-4ab1-4916-a187-4470065d1392">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -239,10 +254,10 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["نوع المخالفة"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[التكرار]]></text>
+			</staticText>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="12" y="459" width="108" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="db2f629c-a77b-4505-9117-e407b0b83e34">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="12" y="434" width="108" height="20" isPrintWhenDetailOverflows="true" backcolor="#E8E3E3" uuid="db2f629c-a77b-4505-9117-e407b0b83e34">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -256,6 +271,29 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				</textElement>
 				<textFieldExpression><![CDATA["توجيه صاحب الصلاحية"]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="90" y="2" width="70" height="16" uuid="ddecade5-0bcc-450d-bd0c-29135c6fe13d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تاريخ اليوم :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="5" width="142" height="55" uuid="59f3ce31-394c-489e-b538-b25063a5bb19"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية و القروية
+أمانة منطقة القصيم
+بلدية محافظة المذنب ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="85" width="544" height="24" forecolor="#000000" backcolor="#F0F0F0" uuid="62455d4e-7572-4336-b1e3-7e021ac11180"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[محضر المخالفة]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
@@ -341,7 +379,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{FINE_VALUE}.doubleValue() == $F{FINE_MINIMUM_VALUE}.doubleValue())?"الحد الأدنى":(($F{FINE_VALUE}.doubleValue() == $F{FINE_SUPERMUM_VALUE}.doubleValue())?"الحد الأعلى":($F{FINE_VALUE}+"")).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661").replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665").replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FINE_COUNT} == 0 ? "الحد الادني":"الحد الاعلي"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -349,7 +387,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 		<band height="124" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement positionType="Float" x="12" y="16" width="148" height="20" uuid="dbdd4f99-e2a1-4c6c-882d-34736f5e93b3"/>
+				<reportElement positionType="Float" x="12" y="65" width="148" height="20" uuid="dbdd4f99-e2a1-4c6c-882d-34736f5e93b3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
@@ -363,7 +401,7 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				<textFieldExpression><![CDATA[$F{DIRECTOR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="380" y="17" width="148" height="20" uuid="d35d47ac-cc1f-4c12-ab80-69b9abb436d5"/>
+				<reportElement positionType="Float" x="380" y="61" width="148" height="20" uuid="d35d47ac-cc1f-4c12-ab80-69b9abb436d5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
@@ -376,14 +414,6 @@ where M.FINE_NO=FD.FINE_NO and fd.fine_code = f.id and M.FINE_NO =N.FINE_ID and 
 				</textElement>
 				<textFieldExpression><![CDATA[$F{EMPNAME}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame">
-				<reportElement positionType="Float" x="12" y="37" width="148" height="62" uuid="d442fe2f-c544-41c9-9553-e7424ceca304"/>
-				<imageExpression><![CDATA[$F{SIGN_DIR}]]></imageExpression>
-			</image>
-			<image scaleImage="FillFrame">
-				<reportElement positionType="Float" x="380" y="37" width="148" height="62" uuid="808b6888-9dec-4059-96c5-0bb366809867"/>
-				<imageExpression><![CDATA[$F{SIGN_SUP}]]></imageExpression>
-			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

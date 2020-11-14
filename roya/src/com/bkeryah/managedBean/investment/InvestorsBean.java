@@ -3,19 +3,27 @@ package com.bkeryah.managedBean.investment;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 import com.bkeryah.entities.investment.Investor;
 import com.bkeryah.entities.investment.InvestorIdentityType;
 import com.bkeryah.entities.investment.InvestorStatus;
 import com.bkeryah.entities.investment.InvestorType;
+import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.HijriCalendarUtil;
@@ -29,7 +37,7 @@ public class InvestorsBean {
 	private IDataAccessService dataAccessService;
 	private List<Investor> investorsList;
 	private List<Investor> filteredInvestorsList;
-	private Investor investor = new Investor();;
+	private Investor investor = new Investor();
 
 	private InvestorType investorType;
 	private InvestorIdentityType investorIdentityType;
@@ -47,16 +55,36 @@ public class InvestorsBean {
 	private String selectedDate;
 	private Date selectedDate_G;
 
+	private Integer investorId = -1;
+	private List<Investor> investorsListfiltter = new ArrayList<Investor>();
+
+	private Integer trdRecord = -1;
+	private String mobile = "-1";
+
 	@PostConstruct
 	public void init() {
 		investorTypeList = dataAccessService.loadAllInvestorType();
 		investorIdentityTypeList = dataAccessService.loadAllInvestorIdentityType();
 		investorStatusList = dataAccessService.loadAllInvestorStatus();
-		investorsList = dataAccessService.loadAllInvestors();
+		investorsListfiltter = dataAccessService.loadAllInvestors();
+		loadInvestors();
+	}
+
+	public String printAllInvestorsReportAction() {
+		String reportName = "/reports/all_investors_report.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("inv_id", investorId);
+		Utils.printPdfReport(reportName, parameters);
+		return "";
 	}
 
 	public void loadInvestors() {
 		investorsList = dataAccessService.loadAllInvestors();
+	}
+
+	public String loadInvestorsById() {
+		investorsList = dataAccessService.loadAllInvestorsById(investorId);
+		return "";
 	}
 
 	public void loadInvestor() {
@@ -66,6 +94,14 @@ public class InvestorsBean {
 	public void addInvestor() {
 		investor = new Investor();
 		setAddMode(true);
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		investor = new Investor();
+		investor = (Investor) event.getObject();
+	}
+
+	public void onRowUnselect(UnselectEvent event) {
 	}
 
 	public void save() {
@@ -270,6 +306,38 @@ public class InvestorsBean {
 
 	public void setSelectedDate_G(Date selectedDate_G) {
 		this.selectedDate_G = selectedDate_G;
+	}
+
+	public Integer getInvestorId() {
+		return investorId;
+	}
+
+	public void setInvestorId(Integer investorId) {
+		this.investorId = investorId;
+	}
+
+	public List<Investor> getInvestorsListfiltter() {
+		return investorsListfiltter;
+	}
+
+	public void setInvestorsListfiltter(List<Investor> investorsListfiltter) {
+		this.investorsListfiltter = investorsListfiltter;
+	}
+
+	public Integer getTrdRecord() {
+		return trdRecord;
+	}
+
+	public void setTrdRecord(Integer trdRecord) {
+		this.trdRecord = trdRecord;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }

@@ -66,12 +66,15 @@ import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
 import com.bkeryah.entities.investment.Contract;
 import com.bkeryah.entities.investment.ContractCancelReason;
+import com.bkeryah.entities.investment.ContractComponents;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
+import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.InvNewspaper;
 import com.bkeryah.entities.investment.Investor;
@@ -156,6 +159,7 @@ import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesDetails;
+import com.bkeryah.penalties.NotifFinesMastR;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
 import com.bkeryah.penalties.ReqFinesMaster;
@@ -3605,9 +3609,9 @@ public class DataAccessService implements IDataAccessService {
 		}
 		PayLicBills myBill = new PayLicBills(payLicBill);
 		myBill.setBillDate(HijriCalendarUtil.findCurrentHijriDate());
-		int billId = commonDao.findMaxBillId() + 1;
-		myBill.setBillNumber(billId);
-		save(myBill);
+		// int billId = commonDao.findMaxBillId() + 1;
+		// myBill.setBillNumber(billId);
+		int billId = save(myBill);
 		Set<PayBillDetails> myBillDetails = new HashSet<>();
 		for (PayBillDetails myDetails : payLicBill.getPayBillDetails()) {
 			myBillDetails.add(new PayBillDetails(myDetails));
@@ -5158,7 +5162,6 @@ public class DataAccessService implements IDataAccessService {
 						billDetail.setPayDetails(1438);
 					}
 					billDetail.setCreatedIn(new Date());
-					billDetail.setCreatedBy(Utils.findCurrentUser().getUserId());
 					billDetail.setBillHYear(Integer.parseInt(HijriCalendarUtil.findCurrentYear()));
 					billDetail.setBillGYear(Calendar.getInstance().get(Calendar.YEAR));
 					save(billDetail);
@@ -6179,16 +6182,20 @@ public class DataAccessService implements IDataAccessService {
 			reqFinesDetails.setFineNo(fineNo);
 			save(reqFinesDetails);
 		}
-		if (!withBill)
-			return fineNo;
-		reqFinesMaster.setReqFinesDetailsList(reqFinesDetailsList);
-		double totalValue = reqFinesMaster.getTotalValue();
 
+		return fineNo;
+
+	}
+
+	@Override
+	@Transactional
+	public Integer insertBill(ReqFinesMaster reqFinesMaster) {
+		double totalValue = reqFinesMaster.getTotalValue();
 		PayLicBills newBill = new PayLicBills();
-		newBill.setLicenceNumber(fineNo);
+		newBill.setLicenceNumber(reqFinesMaster.getFineNo());
 		String LicenceNo = reqFinesMaster.getfLicenceNo();
 		if (LicenceNo != null)
-			newBill.setLicenceNumber(fineNo);
+			newBill.setLicenceNumber(reqFinesMaster.getFineNo());
 		newBill.setBillOwnerName(reqFinesMaster.getfName());
 		newBill.setLicenceType("F");
 		newBill.setBillPayType("S");
@@ -6197,6 +6204,7 @@ public class DataAccessService implements IDataAccessService {
 		newBill.setPayInstallNumber(reqFinesMaster.getPhoneNumber() != null
 				? Long.parseLong(reqFinesMaster.getPhoneNumber()) : new Long(0));
 		PayBillDetails det = new PayBillDetails();
+		det.setCreatedBy(Integer.parseInt(reqFinesMaster.getfSupervisorCode()));
 		det.setAmount(totalValue);
 		List<PayBillDetails> billDetailList = new ArrayList<>();
 		billDetailList.add(det);
@@ -8039,8 +8047,16 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public void saveContractDirect(ContractDirect contractDirect) {
-		commonDao.save(contractDirect);
+	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
+			Integer billBandNumber) {
+		Integer contractId = commonDao.save(contractDirect);
+		contractDirect.setId(contractId);
+		for (ContractsFees contractsFees : contractFees) {
+			contractsFees.setContractId(contractDirect.getId());
+			saveObject(contractsFees);
+		}
+		insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber);
+		return contractId;
 	}
 
 	@Override
@@ -8179,6 +8195,7 @@ public class DataAccessService implements IDataAccessService {
 		newBill.setBillPayType("S");
 		newBill.setPayAmount(totalValue);
 		PayBillDetails det = new PayBillDetails();
+		det.setCreatedBy(Integer.parseInt(reqFinesMaster.getfSupervisorCode()));
 		det.setAmount(totalValue);
 		List<PayBillDetails> billDetailList = new ArrayList<>();
 		billDetailList.add(det);
@@ -9453,6 +9470,346 @@ public class DataAccessService implements IDataAccessService {
 	public List<LicDepartment> gatAllLicDepartmentList() {
 		List licDepartmentList = commonDao.findAll(LicDepartment.class);
 		return licDepartmentList;
+	}
+
+	@Override
+	public int deleteVisitByDateAndLicNo(Date currentDate, Integer licId) {
+		return commonDao.deleteVisitByDateAndLicNo(currentDate, licId);
+
+	}
+
+	// thapet
+	@Override
+	@Transactional
+	public List<ArcUsers> findEmployeesByDept(Integer deptId) {
+		return commonDao.findEmployeesByDept(deptId);
+	}
+
+	@Override
+	@Transactional
+	public List<Supervisor> findAllSupervisorsByDept(Integer deptId) {
+		return commonDao.findAllSupervisorsByDept(deptId);
+	}
+
+	@Override
+	@Transactional
+	public Integer addSupervisor(Supervisor supervisor) {
+		return commonDao.save(supervisor);
+	}
+
+	@Override
+	public List<Supervisor> getAllSupervisors() {
+		List supervisorList = commonDao.findAllActive();
+		return supervisorList;
+	}
+
+	@Override
+	@Transactional
+	public List<VisitsSupervisor> getAllVisitsBySuperId(Integer superId, Integer secId) {
+		return commonDao.getAllVisitsBySuperId(superId, secId);
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicsBySectionId(Integer sectionId) {
+		return commonDao.getAllLicsBySectionId(sectionId);
+	}
+
+	@Override
+	public List<LicVisits> getAllVisitsByLicIdBetweenDates(Integer licId, String beginDate, String endDate) {
+		return commonDao.getAllVisitsByLicIdBetweenDates(licId, beginDate, endDate);
+	}
+
+	@Override
+	public List<NotifFinesMastR> getAllNotifList() {
+		List NotifList = commonDao.findAll(NotifFinesMastR.class);
+		return NotifList;
+	}
+
+	@Override
+	@Transactional
+	public HealthMasterLicence findHealthMasterLicenceRecordId(Integer recordId) {
+		Integer DocId = commonDao.getDocIdHrsSignByRecId(recordId);
+		HealthMasterLicence certificate = (HealthMasterLicence) commonDao.findEntityById(HealthMasterLicence.class,
+				DocId);
+		return certificate;
+	}
+
+	@Override
+	@Transactional
+	public void acceptHealthCertificate(HealthMasterLicence healthCertificate, Integer recordId, int modelType,
+			String usercomment, int applicationPurpose) {
+		WrkApplication app = getWrkApplicationRecordById(recordId);
+		WrkApplication application = new WrkApplication(app);
+		commonDao.updateWrkApplicationVisible(app.getId());
+		application.setId(app.getId());
+		application.setApplicationPurpose(applicationPurpose);
+		application.getId().setStepId(application.getId().getStepId() + 1);
+		Integer acceptCount = commonDao.getHrsSignNextStep(application.getArcRecordId());
+		Integer userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2);
+		application.setToUserId(userTo);
+		createNewWrkApplication(application.getArcRecordId(), application, usercomment, false, null);
+
+		boolean visible = (getDestinationModel(modelType, acceptCount).getSigned() == 1);
+		saveHrsSigns(application.getArcRecordId(), healthCertificate.getApplicationId(), visible, null,
+				Utils.findCurrentUser().getUserId(), modelType);
+		if (visible) {
+			commonDao.update(healthCertificate);
+			updateArcRecordsIncomeNo(app.getArcRecordId());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void deleteVisitsForDisactiveSupervisors(Integer licId, String startHDate, String endHDate) {
+		dataAccessDAO.deleteVisitsForDisactiveSupervisors(licId, startHDate, endHDate);
+	}
+
+	@Override
+	@Transactional
+	public void refuseHealthCertificate(WrkApplicationId wrkId, Integer recordId, HealthMasterLicence healthCertificate,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, healthCertificate,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
+
+	}
+
+	@Override
+	@Transactional
+	public void saveHealthCertificate(HealthMasterLicence healthCertificate, String title, int applicationType,
+			boolean isPictureAtached) {
+		try {
+			ArcUsers user = Utils.findCurrentUser();
+			Integer fromId = user.getUserId();
+			Integer toId = user.getUserId();
+			Integer applicationUserDeptJob = getUserDeptJob(user.getUserId());
+
+			if (fromId < 1 || toId < 1 || title == null) {
+				return;
+			}
+
+			ArcRecords arcRecords = new ArcRecords();
+			arcRecords.setApplicationType(applicationType);
+			arcRecords.setRecTitle(title + ": " + user.getEmployeeName());
+			int recordId = createNewArcRecord(arcRecords, false, toId);
+
+			WrkApplication application = new WrkApplication();
+			application.setToUserId(toId);
+			// application.setId(new WrkApplicationId(commonDao.createWrkId(),
+			// findStepId(recordId)));
+			application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+			application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+			// application.setApplicationUserDeptJob(applicationUserDeptJob);
+			String userComment = title;
+			createNewWrkApplication(recordId, application, userComment, isPictureAtached, applicationUserDeptJob);
+			int healthCertificateId = (int) saveObject(healthCertificate);
+			saveHrsSigns(recordId, healthCertificateId, false, null, Utils.findCurrentUser().getUserId(),
+					applicationType);
+			System.out.print("From >>>> " + fromId);
+			System.out.print("To >>>> " + toId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("saveHealthCertificate >>> healthCertificate with ApplId"
+					+ healthCertificate.getApplicationId() + "   " + e.toString());
+		}
+	}
+
+	@Override
+	@Transactional
+	public Integer healthCertificateScenario(Integer createdForId, Integer healthCertificateId) {
+		ArcUsers sender = loadUserById(createdForId);
+		Integer toId = sender.getMgrId();
+		Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
+
+		ArcRecords arcRecord = new ArcRecords();
+		arcRecord.setApplicationType(MailTypeEnum.HEALTHCERTIFICATE.getValue());
+		String empName = sender.getEmployeeName();
+		String subject = Utils.loadMessagesFromFile("subject.health.certificate");
+		arcRecord.setRecTitle(empName != null ? subject + empName : subject + sender.getFirstName());
+		int recordId = createNewArcRecord(arcRecord, false, toId);
+
+		WrkApplication application = new WrkApplication();
+		application.setToUserId(toId);
+
+		application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
+		application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
+
+		String userComment = arcRecord.getRecTitle();
+
+		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
+
+		saveHrsSigns(recordId, healthCertificateId, false, null, createdForId,
+				MailTypeEnum.HEALTHCERTIFICATE.getValue());
+		return 1;
+	}
+
+	@Override
+	@Transactional
+	public List<ContractComponents> loadAllContractComponents() {
+		return commonDao.loadAllContractComponents();
+	}
+
+	@Override
+	public List<LicTrdMasterFile> getAllLicencesListBySection(Integer sectionId, Integer deparmentId) {
+		// TODO Auto-generated method stub
+		return commonDao.getAllLicencesListBySection(sectionId, deparmentId);
+	}
+
+	@Transactional
+	public ContractComponents getContractComponentsById(Integer contractTpyeId) {
+
+		return commonDao.getContractComponentsById(contractTpyeId);
+	}
+
+	@Override
+	public int findMaxContractDirectNum() {
+		return commonDao.findMaxContractDirectNum();
+	}
+
+	@Override
+	public List<LicDepartment> getAllLicDepartmentBySection(Integer sectionId) {
+		return commonDao.gatAllLicDepartmentBySection(sectionId);
+
+	}
+
+	@Override
+	public List<LicTrdMasterFile> getLicencesByActivityId(Integer activityId, Integer statusId) {
+		return commonDao.getLicencesByActivityId(activityId, statusId);
+
+	}
+
+	@Override
+	@Transactional
+	public List<ContractComponents> getContractComponentsListByActivityId(Integer activityId) {
+		return commonDao.getContractComponentsListByActivityId(activityId);
+	}
+
+	@Override
+	public List<ContractInstallments> loadContractInstallments(Integer id) {
+		return commonDao.loadContractInstallments(id);
+	}
+
+	@Override
+	@Transactional
+	public List<RealEstate> getRealEstatesListByActivityIdAndSiteId(Integer activityId, Integer siteId) {
+		return commonDao.getRealEstatesListByActivityIdAndSiteId(activityId, siteId);
+	}
+
+	@Override
+	@Transactional
+	public List<Investor> loadAllInvestorsById(Integer id) {
+		return commonDao.loadAllInvestorsById(id);
+	}
+
+	@Override
+	@Transactional
+	public List<ContractDirect> loadendedContractDirectListByStatus(Integer status) {
+		return commonDao.loadendedContractDirectList(status);
+	}
+
+	@Override
+	@Transactional
+	public List<ContractSubcategory> loadSuCategoryByMainCategoryId(Integer contractMaincatgId) {
+		return commonDao.loadSuCategoryByMainCategoryId(contractMaincatgId);
+	}
+
+	@Override
+	@Transactional
+	public List<RealEstate> getRealEstatesListByAllfliters(Integer activityId, Integer siteId, String components,
+			String street, Integer buildId, Integer district) {
+		return commonDao.getRealEstatesListByAllfliters(activityId, siteId, components, street, buildId, district);
+	}
+
+	@Override
+	@Transactional
+	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile) {
+		return commonDao.loadAllInvestorsByAllfliters(investorId, trdRecord, mobile);
+	}
+
+	@Override
+	@Transactional
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorID, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate) {
+		return dataAccessDAO.loadContractDirectListByAllFilters(contNum, investorID, status, fromStartDate, toStartDate,
+				fromEndDate, toEndDate);
+	}
+
+	@Override
+	@Transactional
+	public HealthMasterLicence getHealthCertificateByApplId(Integer applId) {
+		return commonDao.getHealthCertificateByApplId(applId);
+	}
+
+	@Override
+	@Transactional
+	public List<HealthMasterLicence> getAllHealthCertificate() {
+		List list = commonDao.findAll(HealthMasterLicence.class);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public int deleteContractMainCategory(Integer categoryId) {
+		return commonDao.deleteContractMainCategory(categoryId);
+
+	}
+
+	@Override
+	@Transactional
+	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId) {
+		return commonDao.loadContractFeeslistbycontractId(contractId);
+
+	}
+
+	@Override
+	@Transactional
+	public void contractsFeesList(List<ContractsFees> contractsFeesList) {
+
+		for (ContractsFees fees : contractsFeesList)
+			commonDao.saveObject(fees);
+	}
+
+	@Override
+	@Transactional
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber) {
+		ArcUsers currUser = Utils.findCurrentUser();
+		PayLicBills newBill = new PayLicBills();
+		newBill.setLicenceNumber(investContract.getId());
+		newBill.setBillOwnerName(investContract.getInvestorName());
+		newBill.setLicenceType(MyConstants.CONTRACT_DIRECT_TYPE);
+		newBill.setBillDate(HijriCalendarUtil.findCurrentHijriDate());
+		newBill.setBillStatus(0);
+		newBill.setBillPayType("S");
+		newBill.setPayAmount(totalValue);
+		newBill.setAplOwner(investContract.getInvRepresentNatId().toString());
+		newBill.setPayInstallNumber(investContract.getInvestor().getMobile() != null
+				? Long.parseLong(investContract.getInvestor().getMobile()) : new Long(0));
+		PayBillDetails det = new PayBillDetails();
+		det.setCreatedBy(currUser.getUserId());
+		det.setAmount(totalValue);
+		det.setBillGYear(Calendar.getInstance().get(Calendar.YEAR));
+		det.setPayMaster(billBandNumber);
+		det.setPayDetails(billBandNumber);
+		// det.setPayMaster(1438);
+		// det.setPayDetails(1438);
+		det.setCreatedIn(new Date());
+		List<PayBillDetails> billDetailList = new ArrayList<>();
+		billDetailList.add(det);
+		return saveBill(newBill, billDetailList);
+	}
+
+	@Transactional
+	@Override
+	public void updatecontractFeesList(List<ContractsFees> contFeesList) {
+		for (ContractsFees contFees : contFeesList) {
+			updateObject(contFees);
+		}
 	}
 
 }

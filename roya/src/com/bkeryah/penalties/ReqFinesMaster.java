@@ -1,5 +1,6 @@
 package com.bkeryah.penalties;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -81,12 +82,6 @@ public class ReqFinesMaster {
 	private String mgrDependDate;
 	@Column(name = "MGR_DEPEND_ID")
 	private Long mgrDependId;
-	// مكرر او غير مكرر  0و 1
-	@Column(name = "REPEAT")
-	private Integer repeat;
-	//حد ادني وحد اعلى  0 و 1
-	@Column(name = "TYPE_VALUE")
-	private Integer typeValue;
 	
 	@Column(name = "STATUS")
 	private String status;
@@ -110,8 +105,14 @@ public class ReqFinesMaster {
 	@Transient
 	private Double totalValue;
 	
-	@Transient
+	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
+	
+	@Column(name = "NOTIFY_DATE")
+	private Date notifyDate;
+	
+	@Column(name = "NOTIFY_MASTER_ID")
+	private Integer notifyMasterId;
 	
 	public Integer getFineNo() {
 		return fineNo;
@@ -422,28 +423,29 @@ public class ReqFinesMaster {
 		this.mahlId = mahlId;
 	}
 
-	public Integer getRepeat() {
-		return repeat;
-	}
-
-	public void setRepeat(Integer repeat) {
-		this.repeat = repeat;
-	}
-
-	public Integer getTypeValue() {
-		return typeValue;
-	}
-
-	public void setTypeValue(Integer typeValue) {
-		this.typeValue = typeValue;
-	}
-
+	
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getNotifyDate() {
+		return notifyDate;
+	}
+
+	public void setNotifyDate(Date notifyDate) {
+		this.notifyDate = notifyDate;
+	}
+
+	public Integer getNotifyMasterId() {
+		return notifyMasterId;
+	}
+
+	public void setNotifyMasterId(Integer notifyMasterId) {
+		this.notifyMasterId = notifyMasterId;
 	}
 
 }

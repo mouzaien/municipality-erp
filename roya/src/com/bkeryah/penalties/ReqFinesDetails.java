@@ -32,12 +32,24 @@ public class ReqFinesDetails {
 	private Integer fineCount;
 	@Column(name = "FINE_COUNT_NO")
 	private Integer fineCountNo;
+	// مكرر او غير مكرر 0و 1
+	@Column(name = "REPEAT")
+	private Integer repeat;
+	// حد ادني وحد اعلى 0 و 1
+	@Column(name = "TYPE_VALUE")
+	private Integer typeValue;
+	@Column(name = "NOTIFY_DTLS_ID")
+	private Integer notifyDTLsId;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FINE_CODE", referencedColumnName = "ID", insertable = false, updatable = false)
 	ReqFinesSetup reqFinesSetup;
 	@ManyToOne
 	@JoinColumn(name = "FINE_NO", referencedColumnName = "FINE_NO", insertable = false, updatable = false)
 	private ReqFinesMaster reqFinesMaster;
+	
+	
+	
 	@Transient
 	private double fineTotalValue;
 
@@ -121,5 +133,29 @@ public class ReqFinesDetails {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getRepeat() {
+		return repeat;
+	}
+
+	public void setRepeat(Integer repeat) {
+		this.repeat = repeat;
+	}
+
+	public Integer getTypeValue() {
+		return typeValue;
+	}
+
+	public void setTypeValue(Integer typeValue) {
+		this.typeValue = typeValue;
+	}
+
+	public Integer getNotifyDTLsId() {
+		return notifyDTLsId;
+	}
+
+	public void setNotifyDTLsId(Integer notifyDTLsId) {
+		this.notifyDTLsId = notifyDTLsId;
 	}
 }

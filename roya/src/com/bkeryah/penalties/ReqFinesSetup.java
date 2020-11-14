@@ -60,7 +60,14 @@ public class ReqFinesSetup {
 	private boolean visible = true;
 	@ManyToMany(mappedBy="finesList")
 	private Set<FineSection> sectionsList;
-
+	@Transient
+	private String typeValue;
+	@Transient
+	private String repeat;
+	
+	@Transient
+	private Integer notifyDTLsId;
+	
 	public String getShortDesc() {
 		if (fineDesc.length() > 50)
 			shortDesc = fineDesc.substring(0, 50)+"...";
@@ -225,5 +232,29 @@ public class ReqFinesSetup {
 
 	public void setSectionsList(Set<FineSection> sectionsList) {
 		this.sectionsList = sectionsList;
+	}
+
+	public String getTypeValue() {
+		return typeValue;
+	}
+
+	public void setTypeValue(String typeValue) {
+		this.typeValue = typeValue;
+	}
+
+	public String getRepeat() {
+		return repeat;
+	}
+
+	public void setRepeat(String repeat) {
+		this.repeat = repeat;
+	}
+
+	public Integer getNotifyDTLsId() {
+		return notifyDTLsId;
+	}
+
+	public void setNotifyDTLsId(Integer notifyDTLsId) {
+		this.notifyDTLsId = notifyDTLsId;
 	}
 }

@@ -2,11 +2,12 @@
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="protection_card" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="878d7470-c189-4e4d-ad42-eadf044e8c65">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="roya_Project.xml"/>
 	<parameter name="artId" class="java.lang.Integer"/>
 	<parameter name="userId" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
+rownum num,
 reqs.artCode code ,
 reqs.artName name ,
  reqs.EMPNAME usrName, 
@@ -26,7 +27,7 @@ from
 RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE, (SELECT * from TRANSFER_OWNERSHIP WHERE nvl(TRANSFER_OWNERSHIP.STATUS ,'N')='Y')TRANSFER_OWNERSHIP,
 (
 
-SELECT
+SELECT 
 	TDR_INV_GNRL_REQ.INV_G_R_NO,
 	NVL(SERIALNUMBER, 0)SERIALNUMBER,
 	INV_G_R_DATE srfDate,
@@ -88,7 +89,7 @@ AND reqs.INV_G_R_NO = TRANSFER_OWNERSHIP.EXCH_MASTER_ID (+)
 
 UNION
 
-	SELECT
+	SELECT rownum num,
 	ts.ART_CODE code ,
 	ar.NAME name ,
 	usr.EMPNAME usrName ,
@@ -122,6 +123,7 @@ UNION
     AND usr.DEPT_ID = WRK_DEPT.ID
     AND WHS_WAREHOUSES.STRNO =ts.STR_NO]]>
 	</queryString>
+	<field name="num" class="java.lang.Integer"/>
 	<field name="code" class="java.lang.Integer"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="itemUnit" class="java.lang.String"/>
@@ -487,7 +489,7 @@ UNION
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($V{COLUMN_COUNT}== null)?"":(""+$V{COLUMN_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($F{num}== null)?"":(""+$F{num}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>

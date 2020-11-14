@@ -2,77 +2,163 @@
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exchange_Request_A4_Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9857a5ef-ed37-495d-90dc-b70dbf6477ec">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="roya_Project.xml"/>
 	<parameter name="transId" class="java.lang.Integer"/>
+	<parameter name="record_id" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT art.CODE code , art.NAME artName, iu.ITEMUNITNAME itemUnitName ,tr.QTY qty , usr.EMPNAME toUser , str.STRNAME strName , tr.notes notes , tr.TRANSFER_HDATE CREATEDATE
-,
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 1 and model_id =252
-)fromUser,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 1 and model_id =252
-)fromUserDate ,
-
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 2 and model_id =252
-)mngFromUser,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 2 and model_id =252
-)mngFromUserDate,
-
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 3 and model_id =252
-)president,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 3 and model_id =252
-)presidentDate ,
-
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 4 and model_id =252
-)mngtoUser,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id =4 and model_id =252
-)mngtoUserDate ,
-
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 5 and model_id =252
-)toUser,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 5 and model_id =252
-)toUserDate ,
-(
-select  hrs_signs.SIGN_JOB_NAME  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 6 and model_id =252
-)deanUser
-,
-(
-select HRS_SIGNS.SIGN_DATE  FROM hrs_signs,WRK_PROFILE_SIGN
-where doc_id=2 and HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID and  sign_step_id = 6 and model_id =252
-)deanUserDate 
-
-FROM 
-ARTICLE art , TRANSFER_OWNERSHIP tr , TDR_ITEMUNIT iu , ARC_USERS usr , WHS_WAREHOUSES str
-WHERE 
-tr.ID = 2
-AND 
-tr.ART_ID = art.ID
-AND 
-art.ITEM_UNITE_ID = iu.ITEMUNITID
-AND 
-usr.USER_ID = tr.TO_USER
-AND 
-tr.STR_NO = str.STRNO]]>
+		<![CDATA[SELECT
+	art.CODE code ,
+	art.NAME artName,
+	iu.ITEMUNITNAME itemUnitName ,
+	tr.QTY qty ,
+	usr.EMPNAME toUser ,
+	str.STRNAME strName ,
+	tr.notes notes ,
+	tr.TRANSFER_HDATE CREATEDATE ,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 1
+		AND model_id = 252 )fromUser,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID =  $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 1
+		AND model_id = 252 )fromUserDate ,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 2
+		AND model_id = 252 )mngFromUser,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 2
+		AND model_id = 252 )mngFromUserDate,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 3
+		AND model_id = 252 )president,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 3
+		AND model_id = 252 )presidentDate ,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 4
+		AND model_id = 252 )mngtoUser,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 4
+		AND model_id = 252 )mngtoUserDate ,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 5
+		AND model_id = 252 )toUser,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 5
+		AND model_id = 252 )toUserDate ,
+	(
+	SELECT
+		hrs_signs.SIGN_JOB_NAME
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 6
+		AND model_id = 252 )deanUser ,
+	(
+	SELECT
+		HRS_SIGNS.SIGN_DATE
+	FROM
+		hrs_signs,
+		WRK_PROFILE_SIGN
+	WHERE
+		ARC_RECORD_ID = $P{record_id}
+		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
+		AND sign_step_id = 6
+		AND model_id = 252 )deanUserDate
+FROM
+	ARTICLE art ,
+	TRANSFER_OWNERSHIP tr ,
+	TDR_ITEMUNIT iu ,
+	ARC_USERS usr ,
+	WHS_WAREHOUSES str 
+WHERE
+	tr.ID = $P{transId}
+	AND tr.ART_ID = art.ID
+	AND art.ITEM_UNITE_ID = iu.ITEMUNITID
+	AND usr.USER_ID = tr.TO_USER
+	AND tr.STR_NO = str.STRNO]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
 	<field name="artName" class="java.lang.String"/>
@@ -572,10 +658,9 @@ tr.STR_NO = str.STRNO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[  $F{presidentDate}== null?"":(""+  $F{presidentDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{presidentDate}== null?"":(""+  $F{presidentDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
-              ]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="308" y="18" width="138" height="20" uuid="3173210a-1c89-4d48-804c-6443e53c2928">
@@ -622,10 +707,9 @@ tr.STR_NO = str.STRNO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[ $F{mngtoUserDate}== null?"":(""+ $F{mngtoUserDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{mngtoUserDate}== null?"":(""+ $F{mngtoUserDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
-               ]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="170" y="18" width="138" height="20" uuid="5155dc33-00c4-4346-aae4-18a07487eda0">
@@ -672,10 +756,9 @@ tr.STR_NO = str.STRNO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[ $F{deanUserDate}== null?"":(""+ $F{deanUserDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{deanUserDate}== null?"":(""+ $F{deanUserDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
-               ]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="150" width="180" height="20" uuid="a8e3fffa-ab6e-4458-a8f2-1766f88d733e">
@@ -701,8 +784,7 @@ tr.STR_NO = str.STRNO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fromUserDate}== null?"":(""+$F{fromUserDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
-                ]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="130" width="180" height="20" uuid="ae0f324d-4719-423c-9559-b93f703e5d5e">

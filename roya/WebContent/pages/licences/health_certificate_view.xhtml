@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+
+	<h:body>
+
+		<h:form id="includeform" dir="rtl">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div align="left" class="image-box-footer">
+				<h:panelGroup
+					rendered="#{!(healthCertificateViewBean.healthCertificate.status == 'N')}">
+					<p:commandButton value="#{msg['accept']}" icon="ui-icon-save"
+						rendered="#{!(healthCertificateViewBean.enablePrint)}"
+						update="print" action="#{healthCertificateViewBean.accept}">
+						<p:ajax execute="@form" update="Lic_No"></p:ajax>
+					</p:commandButton>
+					<p:spacer height="10" />
+					<p:commandButton id="print" value="#{msg['refuse']}"
+						styleClass="red-btn" ajax="false"
+						rendered="#{!(healthCertificateViewBean.enablePrint)}"
+						onclick="this.form.target='_blank'" icon="ui-icon-print"
+						action="#{healthCertificateViewBean.refuseAction}"
+						immediate="true">
+					</p:commandButton>
+					<p:spacer height="10" />
+					<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
+						onclick="this.form.target='_blank'" ajax="false"
+						action="#{healthCertificateViewBean.printCertificateCardReport}"
+						rendered="#{(healthCertificateViewBean.enablePrint)}"
+						styleClass="purple-btn">
+					</p:commandButton>
+				</h:panelGroup>
+			</div>
+			<br />
+			<h1 style="color: #7CB342; text-align: center;">
+				بيانات الشهادة <span class="fa fa-fw fa-file-text"></span>
+			</h1>
+			<h3 class="page-header" style="color: #428bca">#{msg['request.data']}
+			</h3>
+			<div class="ui-g">
+				<div class="ui-g-1">
+					<h:outputLabel value="رقم الشهادة" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%" id="Lic_No"
+						validatorMessage="#{msg['error.NationalId']}"
+						value="#{healthCertificateViewBean.healthCertificate.applicationId}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="تاريخ الفحص" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel id="incomeDate" style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.applicationHDate}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="نوع الهوية" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.ownerApllType}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="رقم الهوية" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.applicationOwner}" />
+				</div>
+			</div>
+			<div class="ui-g">
+				<div class="ui-g-1">
+					<h:outputLabel value="#{msg['name']}" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.appOwnerName}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="#{msg['work']}" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.job.name}" />
+					<!-- value="#{healthCertificateViewBean.jobTitle}" /> -->
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="النوع / الجنس" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.gender}" />
+				</div>
+			</div>
+			<div class="ui-g">
+
+				<div class="ui-g-1">
+					<h:outputLabel value="اسم الكفيل" />
+				</div>
+				<div class="ui-g-2">
+					<p:inputText style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.kafeelName}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="رقم هوية الكفيل" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.kafeelApllNumber}" />
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="رقم جوال الكفيل" />
+				</div>
+				<div class="ui-g-2">
+					<h:outputLabel style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.kafeelPhoneNumber}" />
+				</div>
+			</div>
+			<div class="ui-g">
+				<div class="ui-g-1">
+					<h:outputLabel value="تاريخ التطعيم" />
+					<!--  "#{msg['typhoid.date']}" -->
+				</div>
+				<div class="ui-g-2">
+					<p:inputText id="tefodDate" style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.tefodDate}"
+						onfocus="loadCalendar();" required="true"
+						requiredMessage="أدخل تاريخ التطعيم"
+						styleClass="form-control form-controlCal">
+						<f:validator validatorId="utilities.UmmAlQUraValidator" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="تاريخ تطعيم الشوكية" styleClass="btxt" />
+				</div>
+				<div class="ui-g-2">
+					<p:inputText id="hommaDate" style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.hommaDate}"
+						onfocus="loadCalendar();" required="true"
+						requiredMessage="أدخل تاريخ  تطعيم الشوكية"
+						styleClass="form-control form-controlCal">
+						<f:validator validatorId="utilities.UmmAlQUraValidator" />
+					</p:inputText>
+				</div>
+			</div>
+			<div class="ui-g">
+				<div class="ui-g-1">
+					<h:outputLabel value="#{msg['authorization.start.date']}"
+						styleClass="btxt" />
+				</div>
+				<div class="ui-g-2">
+					<p:inputText id="resultStartDate" style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.resultStartDate}"
+						onfocus="loadCalendar();" required="true"
+						requiredMessage="أدخل تاريخ البداية"
+						styleClass="form-control form-controlCal">
+						<f:validator validatorId="utilities.UmmAlQUraValidator" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-1">
+					<h:outputLabel value="#{msg['authorization.end.date']}"
+						styleClass="btxt" />
+				</div>
+				<div class="ui-g-2">
+					<p:inputText id="resultEndDate" style="width:100%"
+						value="#{healthCertificateViewBean.healthCertificate.resultEndDate}"
+						onfocus="loadCalendar();" required="true"
+						requiredMessage="أدخل تاريخ النهاية"
+						styleClass="form-control form-controlCal">
+						<f:validator validatorId="utilities.UmmAlQUraValidator" />
+					</p:inputText>
+				</div>
+				<!-- 				<div class="ui-g-1"> -->
+				<!-- 					<h:outputLabel value="#{msg['authorization.start.date']}" -->
+				<!-- 						styleClass="btxt" /> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="ui-g-2"> -->
+				<!-- 					<h:outputLabel id="resultStartDate" style="width:100%" -->
+				<!-- 						value="#{healthCertificateViewBean.healthCertificate.resultStartDate}" /> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="ui-g-1"> -->
+				<!-- 					<h:outputLabel value="#{msg['authorization.end.date']}" -->
+				<!-- 						styleClass="btxt" /> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="ui-g-2"> -->
+				<!-- 					<h:outputLabel id="resultEndDate" style="width:100%" -->
+				<!-- 						value="#{healthCertificateViewBean.healthCertificate.resultEndDate}" /> -->
+
+				<!-- 				</div> -->
+				<div class="ui-g-2">
+					<h:outputLabel value="#{msg['owner.picture']}" />
+				</div>
+				<br /> <br /> <br />
+				<div class="ui-g-8">
+
+					<p:graphicImage url=""
+						value="#{healthCertificateViewBean.healthCertificate.ownerImage}">
+						<f:param id="param" name="param"
+							value="#{healthCertificateViewBean.healthCertificate.applicationId}" />
+					</p:graphicImage>
+
+				</div>
+
+			</div>
+		</h:form>
+
+	</h:body>
+</f:view>
+</html>

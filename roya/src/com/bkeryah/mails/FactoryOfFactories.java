@@ -33,6 +33,7 @@ public class FactoryOfFactories {
 		case TEMPORERY_RECEIPT:
 		case TRANSFER_OWNERSHIP:
 		case PENALTY:
+		case HEALTHCERTIFICATE:
 			return ServicesFactory.getInstance();
 		default:
 			return MailsFactory.getInstance();

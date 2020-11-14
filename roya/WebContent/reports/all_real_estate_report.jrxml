@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="all_real_estate_report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09b30dc7-2856-471a-b580-0bdb6451a56b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<parameter name="activityId" class="java.lang.Integer"/>
+	<parameter name="siteId" class="java.lang.Integer"/>
+	<parameter name="buildId" class="java.lang.Integer"/>
+	<parameter name="districtId" class="java.lang.Integer"/>
+	<parameter name="components" class="java.lang.String"/>
+	<parameter name="street" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	rownum num,
+	INV_SITES.SITE_NAME SITE,
+	INV_CONT_TYPES.CONT_TYPE_DESC ACTIVITY_TYPE,
+	STREET,
+	LIC_DISTRICT.NAME DISTRICT_NAME,
+	BUILDING_TYPE.NAME BUILDING_NAME,
+	COMPONENTS
+FROM
+	REAL_ESTATE,
+	INV_SITES,
+	INV_CONT_TYPES ,
+	LIC_DISTRICT,
+	BUILDING_TYPE
+WHERE
+	REAL_ESTATE.SITE_LYPE_ID = INV_SITES.ID
+	AND REAL_ESTATE.ACTIVITY_TYPE_ID = INV_CONT_TYPES.ID
+	AND REAL_ESTATE.DISTRICT = LIC_DISTRICT.ID
+	AND REAL_ESTATE.BUILD_TYPE = BUILDING_TYPE.ID
+	AND( ACTIVITY_TYPE_ID =$P{activityId} OR $P{activityId} =-1)
+	AND (SITE_LYPE_ID = $P{siteId} OR $P{siteId}= -1) 
+	AND (COMPONENTS = $P{components}  OR $P{components} = '-1')
+	AND( BUILD_TYPE =$P{buildId}  OR $P{buildId} = -1)
+	AND (DISTRICT =$P{districtId} OR $P{districtId} =-1)
+	AND (STREET = $P{street}  OR $P{street} = '-1')]]>
+	</queryString>
+	<field name="num" class="java.lang.Integer"/>
+	<field name="SITE" class="java.lang.String"/>
+	<field name="ACTIVITY_TYPE" class="java.lang.String"/>
+	<field name="STREET" class="java.lang.String"/>
+	<field name="DISTRICT_NAME" class="java.lang.String"/>
+	<field name="BUILDING_NAME" class="java.lang.String"/>
+	<field name="COMPONENTS" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="660" y="4" width="140" height="15" uuid="06acc1b0-3f90-4a1a-bc6b-e7c6a7e0559f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[المملكة العربية السعودية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="660" y="19" width="140" height="15" uuid="1536baf0-9c26-494c-a81c-c5a423da5bc9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="14" width="220" height="25" uuid="ad9ea91a-c557-497e-8fae-0ae96327a863"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[العقارات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="34" width="120" height="15" uuid="bf710551-8fb7-4023-894b-a05f34f6a789"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[إدارة الإستثمارات]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="110" height="38" uuid="8e572027-53cc-400f-bde9-6553b555dfb1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الحي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="620" y="0" width="140" height="38" uuid="59f1090d-394f-451b-bc01-b1df30f1f9c5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["نوع النشاط"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="0" width="110" height="38" uuid="af6c24f6-1740-4cf0-80e6-5fca18332874">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مكونات النشاط"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="760" y="0" width="42" height="38" uuid="42ca96e7-9775-4ffa-bdf2-88713fcb2fd3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="200" height="38" uuid="76ca16b7-4f54-46f8-84b4-e1c462e532f8">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الشارع"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="90" height="38" uuid="2c7d5934-5188-4d4f-95c2-ec60135c895e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["نوع البناء"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="110" height="38" uuid="b9435150-2adc-4d5b-8357-47ec57c6d366">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["نوع العقار"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="620" y="0" width="140" height="30" uuid="0537723a-f263-47d7-85a0-5adabbd9ec36"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ACTIVITY_TYPE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="0" width="110" height="30" uuid="51d3d117-26b4-467c-a5fc-fc2eb7d607f1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COMPONENTS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="760" y="0" width="42" height="30" uuid="2c3bd984-d1c1-452f-b303-25119930ade3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num}== null?"":(""+$F{num}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="30" uuid="dd15db61-c7c8-4c66-b188-9a41ae1a8316"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DISTRICT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="200" height="30" uuid="03879338-ecce-422f-b862-714e8c42ea38"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="90" height="30" uuid="1566994e-81c3-42c7-b745-ba61005373c7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BUILDING_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="110" height="30" uuid="4234b0ba-943f-459f-be6b-150286a3bbb4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SITE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

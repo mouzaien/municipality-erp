@@ -74,14 +74,24 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private Integer status;
 	@Column(name = "OBSERVATION")
 	private String observation;
-
 	@Column(name = "CONTRACT_MAIN_CATG")
 	private Integer contractMaincatgId;
 	@Column(name = "CONTRACT_SUB_CATG")
 	private Integer contractSubcatgId;
 	@Column(name = "CONTRACT_STATUS")
 	private Integer contractStatId;
-
+	@Column(name = "CONTRACT_TYPE")
+	private Integer contractType;
+	@Column(name = "CONTRACT_DURATION")
+	private Integer contractDuration;
+	@Column(name = "FEES_NBR")
+	private Integer totalInstallment;// الاقساط الكلية
+	@Column(name = "FEES_BILLED_NBR")
+	private Integer billedInstallment;// الاقساط المفوترة
+	@Column(name = "SPECIAL_CONDITIONS")
+	private String specialConditions;// الشروط الخاصة
+	@Column(name = "CONTRACT_DURATION_RATIO")
+	private Integer contractDurationRetio;// نسبة مدة التجهيز (0% -> 100% )
 	// @Formula("(select cb.bill_id from contract_bills cb where cb.contract_id
 	// = id and status = 0)")
 	// private Integer billNo;
@@ -104,6 +114,12 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private String startContDate;
 	@Transient
 	private String endContDate;
+	@Transient
+	private String investorName;
+	@Transient
+	private Integer num;
+	@Transient
+	private double totalBillValue = 0.0;
 
 	public Integer getId() {
 		return id;
@@ -427,9 +443,11 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	public String getEndContDate() {
 		try {
-			Date date = Utils.convertHDateToGDate(getEndDate());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			endContDate = sdf.format(date);
+			if (getEndDate() != null) {
+				Date date = Utils.convertHDateToGDate(getEndDate());
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				endContDate = sdf.format(date);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -439,6 +457,80 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	public void setEndContDate(String endContDate) {
 		this.endContDate = endContDate;
+	}
+
+	public String getInvestorName() {
+		if (investor != null)
+			investorName = investor.getName();
+		return investorName;
+	}
+
+	public void setInvestorName(String investorName) {
+		this.investorName = investorName;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
+	public Integer getContractType() {
+		return contractType;
+	}
+
+	public void setContractType(Integer contractType) {
+		this.contractType = contractType;
+	}
+
+	public Integer getContractDuration() {
+		return contractDuration;
+	}
+
+	public void setContractDuration(Integer contractDuration) {
+		this.contractDuration = contractDuration;
+	}
+
+	public Integer getTotalInstallment() {
+		return totalInstallment;
+	}
+
+	public void setTotalInstallment(Integer totalInstallment) {
+		this.totalInstallment = totalInstallment;
+	}
+
+	public Integer getBilledInstallment() {
+		return billedInstallment;
+	}
+
+	public void setBilledInstallment(Integer billedInstallment) {
+		this.billedInstallment = billedInstallment;
+	}
+
+	public double getTotalBillValue() {
+		return totalBillValue;
+	}
+
+	public void setTotalBillValue(double totalBillValue) {
+		this.totalBillValue = totalBillValue;
+	}
+
+	public String getSpecialConditions() {
+		return specialConditions;
+	}
+
+	public void setSpecialConditions(String specialConditions) {
+		this.specialConditions = specialConditions;
+	}
+
+	public Integer getContractDurationRetio() {
+		return contractDurationRetio;
+	}
+
+	public void setContractDurationRetio(Integer contractDurationRetio) {
+		this.contractDurationRetio = contractDurationRetio;
 	}
 
 }

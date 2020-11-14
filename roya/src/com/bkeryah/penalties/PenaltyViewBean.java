@@ -58,6 +58,7 @@ public class PenaltyViewBean {
 	private String applicationPurpose;
 	private String wrkAppComment;
 	private ArcUsers currentUser;
+	private HrScenario scenario;
 
 	@PostConstruct
 	private void init() {
@@ -81,8 +82,7 @@ public class PenaltyViewBean {
 			// set all data
 			// and get details
 		}
-		HrScenario scenario = (HrScenario) dataAccessService.findEntityById(HrScenario.class,
-				MailTypeEnum.PENALTY.getValue());
+		scenario = (HrScenario) dataAccessService.findEntityById(HrScenario.class, MailTypeEnum.PENALTY.getValue());
 		if (scenario != null)
 			if (stepNum == scenario.getStepsCount() + 1) {
 				enablePrint = true;
@@ -100,20 +100,28 @@ public class PenaltyViewBean {
 
 	public String accept() {
 
-		wrkAppComment = Utils.loadMessagesFromFile("accept.operation")+currentUser.getEmployeeName();
+		wrkAppComment = Utils.loadMessagesFromFile("accept.operation") + currentUser.getEmployeeName();
 		applicationPurpose = "1";
-		dataAccessService.acceptPenalty(finesMaster, arcRecordId, MailTypeEnum.PENALTY.getValue(),
-				wrkAppComment, Integer.parseInt(applicationPurpose.trim()));
+		dataAccessService.acceptPenalty(finesMaster, arcRecordId, MailTypeEnum.PENALTY.getValue(), wrkAppComment,
+				Integer.parseInt(applicationPurpose.trim()));
+
+		// insert bill //
+		if (stepNum == 3) {
+			dataAccessService.insertBill(finesMaster);
+		}
 		return "mails";
 	}
 
 	public String refuseAction() {
 		try {
 			applicationPurpose = "2";
-		finesMaster.setStatus(MyConstants.NO);
+			finesMaster.setStatus(MyConstants.NO);
 			String wrkCommentRefuse = wrkAppComment;
-			dataAccessService.refusePenalty( WrkId,arcRecordId, finesMaster, wrkCommentRefuse,
+			dataAccessService.refusePenalty(WrkId, arcRecordId, finesMaster, wrkCommentRefuse,
 					Integer.parseInt(applicationPurpose.trim()));
+			NotifFinesMastR notifMstr = new NotifFinesMastR();
+			notifMstr.setPenaltyIsRecoreded("N");
+			dataAccessService.updateObject(notifMstr);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
 			return "mails";
 		} catch (Exception e) {
@@ -122,7 +130,7 @@ public class PenaltyViewBean {
 			return "";
 		}
 	}
-	
+
 	public String printPenalty() {
 		try {
 			String reportName = "/reports/penality.jasper";
@@ -139,7 +147,7 @@ public class PenaltyViewBean {
 
 		return "";
 	}
-	
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -306,5 +314,13 @@ public class PenaltyViewBean {
 
 	public void setCurrentUser(ArcUsers currentUser) {
 		this.currentUser = currentUser;
+	}
+
+	public HrScenario getScenario() {
+		return scenario;
+	}
+
+	public void setScenario(HrScenario scenario) {
+		this.scenario = scenario;
 	}
 }

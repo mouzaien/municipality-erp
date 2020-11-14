@@ -13,13 +13,13 @@
 			<div class="ui-g-4">
 				<div class="ui-g-2">
 					<p:commandButton ajax="false" value="طباعة" icon="ui-icon-print"
-						onclick="this.form.target='_blank'" immediate="true"
+						onclick="this.form.target='_blank'" immediate="true" styleClass="purple-btn" 
 						action="#{vehicleBean.printCarsReport}">
 					</p:commandButton>
 				</div>
 				<div class="ui-g-2">
 					<p:commandButton value="إضافة" icon="fa fa-plus"
-						style="float:left;font-family: kufi !important;"
+						style="float:left;font-family: kufi !important;" immediate="true"
 						action="#{vehicleBean.addCar}" oncomplete="PF('car_dlg').show()"
 						update="includeform:addPG ">
 					</p:commandButton>
@@ -121,12 +121,12 @@
 							</div>
 
 							<div class="ui-g-2">
-								<p:outputLabel value="المصنع*" styleClass="btxt" />
+								<p:outputLabel value="المصنع" styleClass="btxt" />
 							</div>
 							<div class="ui-g-3">
-
+<!-- required="true" requiredMessage="ادخل المصنع" -->
 								<p:selectOneMenu value="#{vehicleBean.carBrandId}"
-									required="true" requiredMessage="ادخل المصنع"
+									
 									style="width: 100%" filter="true" filterMatchMode="contains">
 									<f:selectItem itemLabel="أختر المصنع" itemValue=""
 										noSelectionOption="true" />
@@ -143,8 +143,9 @@
 								<p:outputLabel value="النوع*" styleClass="btxt" />
 							</div>
 							<div class="ui-g-3">
-								<p:selectOneMenu id="models_list" required="true"
-									requiredMessage="ادخل النوع"
+<!-- 							required="true" -->
+<!-- 									requiredMessage="ادخل النوع" -->
+								<p:selectOneMenu id="models_list" 
 									value="#{vehicleBean.car.carModel}" style="width: 100%"
 									filter="true" filterMatchMode="contains">
 									<!-- 								<f:selectItem itemLabel="أختر نوع المركبة" itemValue="" noSelectionOption="true"  /> -->
@@ -185,10 +186,11 @@
 							</div>
 
 							<div class="ui-g-2">
-								<p:outputLabel value="سنة الصنع*" styleClass="btxt" />
+								<p:outputLabel value="سنة الصنع" styleClass="btxt" />
 							</div>
 							<div class="ui-g-3">
-								<p:inputText required="true" requiredMessage="ادخل سنة الصنع"
+<!-- 							required="true" requiredMessage="ادخل سنة الصنع" -->
+								<p:inputText 
 									value="#{vehicleBean.car.yearModel}" type="number"
 									style="width: 100%" />
 
@@ -196,11 +198,12 @@
 						</div>
 						<div class="ui-g">
 							<div class="ui-g-2">
-								<p:outputLabel value="رقم اللوحة *" styleClass="btxt" />
+								<p:outputLabel value="رقم اللوحة " styleClass="btxt" />
 							</div>
 							<div class="ui-g-3">
+<!-- 							required="true" requiredMessage="ادخل رقم اللوحة" -->
 								<p:inputText value="#{vehicleBean.car.matricule}"
-									required="true" requiredMessage="ادخل رقم اللوحة"
+									
 									style="width: 100%" />
 							</div>
 
