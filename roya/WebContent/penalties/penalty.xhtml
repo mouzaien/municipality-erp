@@ -183,7 +183,7 @@
 										<f:selectItem itemLabel="أختر  نوع المخالفة"
 											noSelectionOption="true" />
 										<f:selectItems value="#{penaltyBean.codesFines}" var="finer"
-											itemLabel="#{finer.fineCode} - #{finer.shortDesc}"
+											itemLabel="#{finer.fineCode} - #{finer.fineAction}"
 											itemValue="#{finer}"></f:selectItems>
 									</p:selectOneMenu>
 								</div>
@@ -209,7 +209,7 @@
 								<div class="ui-g-1">
 									<h:outputLabel value="تكرار العقوبة" />
 								</div>
-								<div class="ui-g-4">
+								<div class="ui-g-3">
 									<p:selectOneRadio style="width:100%; " columns="1"
 										layout="grid" value="#{penaltyBean.selectedCodeFiner.repeat}">
 										<f:selectItem itemLabel="غير مكرر" itemValue="0" />
@@ -220,7 +220,7 @@
 								<div class="ui-g-1">
 									<h:outputLabel value="حد العقوبة" />
 								</div>
-								<div class="ui-g-4">
+								<div class="ui-g-3">
 
 									<p:selectOneRadio style="width:100%;" columns="1" layout="grid"
 										value="#{penaltyBean.selectedCodeFiner.typeValue}">
@@ -228,6 +228,16 @@
 										<f:selectItem itemLabel="حد اعلى" itemValue="1" />
 										<f:ajax execute="@this"></f:ajax>
 									</p:selectOneRadio>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel value="السبب" />
+								</div>
+								<div class="ui-g-3">
+									<p:inputTextarea style="width:100%;"
+										value="#{penaltyBean.selectedCodeFiner.notes}"
+										required="true" requiredMessage="السبب مطلوب">
+										<p:ajax process="@this" />
+									</p:inputTextarea>
 								</div>
 
 							</div>
@@ -315,38 +325,20 @@
 									</f:facet>
 
 									<p:column style="white-space: nowrap;text-align: center;"
-										headerText="الرقم" width="10%" filterBy="#{penaltyItem.id}"
+										headerText="الرقم" width="5%" 
 										filterMatchMode="contains">										
 										#{rowIndex + 1} 									
 									    </p:column>
-									<p:column style="white-space: nowrap;text-align: center;"
-										headerText="نوع المخالفة" width="30%">
-										<div>
-											<!-- 												<p:selectOneMenu style=" width:300px" autoWidth="false" -->
-											<!-- 													requiredMessage="يجب اختيار نوع المخالفة" id="fineIdB" -->
-											<!-- 													rendered="#{penaltyItem.visible}" converter="fineConverter" -->
-											<!-- 													filter="true" filterMatchMode="contains" required="true" -->
-											<!-- 													value="#{penaltyBean.selectedCodeFiner}"> -->
-											<!-- 													<p:ajax process="@this" update="fines:table" -->
-											<!-- 														listener="#{penaltyBean.updateFiner(penaltyItem)}" /> -->
-											<!-- 													<f:selectItem itemLabel="أختر  نوع المخالفة" -->
-											<!-- 														noSelectionOption="true" /> -->
-											<!-- 													<f:selectItems value="#{penaltyBean.codesFines}" -->
-											<!-- 														var="finer" -->
-											<!-- 														itemLabel="#{finer.fineCode} - #{finer.shortDesc}" -->
-											<!-- 														itemValue="#{finer}"></f:selectItems> -->
-											<!-- 												</p:selectOneMenu> -->
-											<h:outputLabel value="#{penaltyItem.fineDesc}" id="lblFiner"
-												style="width:100% !important;">
-											</h:outputLabel>
-										</div>
-
+									<p:column headerText="نوع المخالفة" width="25%">
+										<h:outputLabel value="#{penaltyItem.fineAction}" id="lblFiner"
+											style="width:100% !important;">
+										</h:outputLabel>
 									</p:column>
 
 									<p:column style="white-space: nowrap;text-align: center;"
-										headerText="الحد الأدنى" width="10%">#{penaltyItem.fineMinimumValue}</p:column>
+										headerText="الحد الأدنى" width="5%">#{penaltyItem.fineMinimumValue}</p:column>
 									<p:column style="white-space: nowrap;text-align: center;"
-										headerText="الحد الأعلى" width="10%">#{penaltyItem.fineSupermumValue}</p:column>
+										headerText="الحد الأعلى" width="5%">#{penaltyItem.fineSupermumValue}</p:column>
 									<p:column style="white-space: nowrap;text-align: center;"
 										headerText="العدد" width="5%">
 										<p:inputText value="#{penaltyItem.fineNbr}" required="true"
@@ -369,6 +361,10 @@
 									<p:column style="white-space: nowrap;text-align: center;"
 										headerText="المجموع" width="10%">
 										<h:outputLabel id="total" value="#{penaltyItem.fineValSum}" />
+									</p:column>
+									<p:column style="text-align: center;"
+										headerText="السبب" width="15%">
+										<h:outputLabel value="#{penaltyItem.notes}" style="width:100% !important;" />
 									</p:column>
 									<!-- 										<p:column style="white-space: nowrap;text-align: center;" -->
 									<!-- 											headerText=":" width="5%"></p:column> -->
@@ -453,7 +449,8 @@
 					<h1 style="color: #7CB342; text-align: center;">تحديد</h1>
 					<p:dataTable value="#{penaltyBean.licencesList}" var="people"
 						style="width:100%" id="ARCpDT" paginator="true" rows="10"
-						emptyMessage="لا يوجد" paginatorPosition="bottom"
+						filteredValue="#{penaltyBean.licencesList}" emptyMessage="لا يوجد"
+						paginatorPosition="bottom" widgetVar="cellemp"
 						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
 						<f:facet name="header">
 							<p:outputPanel>

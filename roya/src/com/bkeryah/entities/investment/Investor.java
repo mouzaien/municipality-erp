@@ -64,7 +64,7 @@ public class Investor {
 	private List<Tender> tenderList;
 	// @OneToMany(fetch= FetchType.LAZY)
 	// private List<Contract> contractList ;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "investor")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "investor")
 	private Set<ContractDirect> contractDirectSet;
 
 	@Transient

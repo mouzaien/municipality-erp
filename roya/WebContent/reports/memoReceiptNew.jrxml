@@ -214,7 +214,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{artName} !=null|| $F{notes} !=null  ?$F{artName}+" - "+ $F{notes}:""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{notes} !=null  ?$F{artName}+" - "+ $F{notes}:$F{artName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="233" y="0" width="46" height="22" uuid="117b5905-38b8-42fa-ac34-70f4b957a5b5"/>

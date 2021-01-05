@@ -89,7 +89,7 @@ public class RealEstateBean {
 
 	public void save() {
 		try {
-			realEstate.setComponents(contractComponent.getName());
+//			realEstate.setComponents(contractComponent.getName());
 			dataAccessService.save(realEstate);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 			realEstatesList.add(realEstate);
@@ -136,6 +136,7 @@ public class RealEstateBean {
 
 	public void onRowSelect(SelectEvent event) {
 		realEstate = new RealEstate();
+		addMode = false;
 		realEstate = (RealEstate) event.getObject();
 		loadDialogData(realEstate);
 	}

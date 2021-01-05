@@ -97,10 +97,10 @@
 								<!--  value="#{healthCertificateBean.healthCertificate.arcPeople.paperType}"> -->
 								<f:selectItem itemLabel="إختر نوع الإثبات"
 									noSelectionOption="true" />
-								<f:selectItem itemLabel="سجل مدني / هوية" itemValue="0" />
-								<!--  <f:selectItem itemLabel="سجل تجاري" itemValue="1" /> -->
-								<f:selectItem itemLabel="إقامة" itemValue="2" />
-								<f:selectItem itemLabel="جواز سفر" itemValue="3" />
+								<f:selectItems var="h"
+									value="#{healthCertificateBean.personIdTypeList}"
+									itemLabel="#{h.typeName}"
+									itemValue="#{h.typeId}" />
 							</p:selectOneMenu>
 						</div>
 						<div class="ui-g-1">
@@ -164,8 +164,9 @@
 								value="#{healthCertificateBean.healthCertificate.apllOwnerSource}">
 								<f:selectItem itemLabel="إختر مصدر الهوية"
 									noSelectionOption="true" />
-								<f:selectItem itemLabel="المذنب" itemValue="0" />
-								<f:selectItem itemLabel="عنيزة" itemValue="1" />
+								<f:selectItems value="#{healthCertificateBean.personIdCityList}"
+									var="natios" itemLabel="#{natios.placeName}"
+									itemValue="#{natios.placeId}" />
 							</p:selectOneMenu>
 						</div>
 						<div class="ui-g-1">
@@ -204,7 +205,8 @@
 								value="#{healthCertificateBean.healthCertificate.kafeelNationalId}"
 								filterMatchMode="contains">
 								<!-- 	  value="#{healthCertificateBean.healthCertificate.arcPeople.nationality.nationalityName}" -->
-								<f:selectItem itemLabel="اختر الجنسية" itemValue="" />
+								<f:selectItem itemLabel="اختر الجنسية" itemValue=""
+									noSelectionOption="true" />
 								<f:selectItems value="#{healthCertificateBean.listNationality}"
 									var="natios" itemLabel="#{natios.nationalityName}"
 									itemValue="#{natios.id}" />

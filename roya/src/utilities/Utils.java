@@ -217,8 +217,6 @@ public class Utils {
 		context.execute("PF('" + DialogName + "').show()");
 	}
 
-	
-	
 	public static void closeDialog(String DialogName) {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("PF('" + DialogName + "').hide()");
@@ -460,17 +458,19 @@ public class Utils {
 
 	public static Date convertHDateToGDate(String hijriDate) throws Exception {
 		try {
+			if (hijriDate != null && (hijriDate.length() == 10 || hijriDate.length() == 9)) {
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+				String myDate = HijriCalendarUtil.ConvertHijriTogeorgianDate(hijriDate);
+				Date date = format.parse(myDate);
+				return date;
+			}
 
-			String myDate = HijriCalendarUtil.ConvertHijriTogeorgianDate(hijriDate);
-
-			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-			Date date = format.parse(myDate);
-			return date;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new Exception();
 		}
+		return null;
 	}
 
 	public static String getDayForHigriDate(String hijriCalendar) {
@@ -1100,9 +1100,10 @@ public class Utils {
 		}
 		return date;
 	}
+
 	public static void updateUIComponent(String ComponentName) {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.update(ComponentName);
-		
+
 	}
 }

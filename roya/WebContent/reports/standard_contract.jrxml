@@ -6,14 +6,72 @@
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="contractId" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[select C.CONTRACT_NUM as contId,C.CONTRACT_INTRO,TO_CHAR( C.CONTRACT_DATE, 'dd/MM/yyyy') AS CONTRACT_DATE,
-C.START_DATE, C.END_DATE,C.INV_REPRES_FUNCT,C.INV_REPRES_ID_DATE,C.INV_REPRES_ID_PLACE,C.INV_REPRES_NAME, c.CONTRACT_TYPE,
-C.INV_REPRES_NAT_ID,C.ANNUAL_RENT,C.CONTRACT_YEARS,C.PROC_CONST_PERIOD, sity.SITE_NAME,	C.SPECIAL_CONDITIONS ,
-INV.NAME,INV.TRADE_RECORD,c.CONTRACT_DURATION_RATIO as ratio,INV.REGION,INV.ADDRESS,INV.PHONE,INV.FAX,INV.MOBILE,INV.HIGRI_CREATE_DATE,
-INV.POSTAL_CODE,INV.CODE,RS.STREET,RS.LAND_AREA,RS.NORTH_LIMIT,RS.WEST_LIMIT,RS.EAST_LIMIT,RS.SOUTH_LIMIT,RS.NUM_REAL_ESTATE ,RS.components
-from contract_direct c, investor inv, real_estate rs, INV_SITES sity
-where C.REAL_ESTATE_ID=RS.ID
-and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]]>
+		<![CDATA[SELECT
+	C.CONTRACT_NUM AS contId,
+	C.CONTRACT_INTRO,
+	TO_CHAR( C.CONTRACT_DATE, 'dd/MM/yyyy') AS CONTRACT_DATE,
+	C.START_DATE,
+	C.END_DATE,
+	C.INV_REPRES_FUNCT,
+	C.INV_REPRES_ID_DATE,
+	C.INV_REPRES_ID_PLACE,
+	INV.COMPANY_NAME,
+	C.INV_REPRES_NAME,
+	c.CONTRACT_TYPE,
+	C.INV_REPRES_NAT_ID,
+	NUM_AR(C.ANNUAL_RENT) AS arabic_annual_rent,
+	(C.ANNUAL_RENT * C.CONTRACT_YEARS) AS ONE_TIME_RENT,
+	NUM_AR(C.ANNUAL_RENT * C.CONTRACT_YEARS) AS ONE_TIME_RENT_AR ,
+	C.ANNUAL_RENT,
+	C.CONTRACT_YEARS,
+	NUM_AR(C.CONTRACT_YEARS,
+	' ') AS CONTRACT_DURATION_AR,
+	C.PROC_CONST_PERIOD,
+	sity.SITE_NAME,
+	C.SPECIAL_CONDITIONS ,
+	INV.NAME,
+	INV.TRADE_RECORD,
+	NUM_AR(C.PROC_CONST_PERIOD, ' ') AS PERIOD_AR,
+	c.CONTRACT_DURATION_RATIO AS ratio,
+	INV.REGION,
+	INV.ADDRESS,
+	INV.PHONE,
+	INV.FAX,
+	INV.MOBILE,
+	INV.HIGRI_CREATE_DATE,
+	INV.POSTAL_CODE,
+	INV.CODE,
+	RS.STREET,
+	RS.LAND_AREA,
+	RS.NORTH_LIMIT,
+	RS.NORTH_LENGTH,
+	RS.WEST_LIMIT,
+	RS.WEST_LENGTH,
+	RS.EAST_LIMIT,
+	RS.EAST_LENGTH,
+	RS.SOUTH_LIMIT,
+	RS.SOUTH_LENGTH,
+	RS.NUM_REAL_ESTATE ,
+	RS.components,
+	RS.BUILDING_AREA,
+	RS.NUM_PLAN,
+	RS.SITE_TYPE_NB,
+	dis.NAME AS DISTRICT,
+	b.NAME as BUILD_TYPE_NAME
+FROM
+	contract_direct c,
+	investor inv,
+	real_estate rs,
+	INV_SITES sity ,
+	LIC_DISTRICT dis,
+	BUILDING_TYPE b
+WHERE
+	C.REAL_ESTATE_ID = RS.ID
+	AND RS.SITE_LYPE_ID = SITY.id
+	AND C.INVESTOR_ID = INV.ID
+	AND RS.DISTRICT = DIS.ID
+	AND RS.BUILD_TYPE = b.ID
+	AND C.ID = $P{contractId}]]>
 	</queryString>
 	<field name="CONTID" class="java.lang.String"/>
 	<field name="CONTRACT_INTRO" class="java.lang.String"/>
@@ -29,6 +87,8 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 	<field name="INV_REPRES_NAT_ID" class="java.math.BigDecimal"/>
 	<field name="ANNUAL_RENT" class="java.math.BigDecimal"/>
 	<field name="CONTRACT_YEARS" class="java.math.BigDecimal"/>
+	<field name="CONTRACT_DURATION_AR" class="java.lang.String"/>
+	<field name="PERIOD_AR" class="java.lang.String"/>
 	<field name="PROC_CONST_PERIOD" class="java.math.BigDecimal"/>
 	<field name="ratio" class="java.math.BigDecimal"/>
 	<field name="SITE_NAME" class="java.lang.String"/>
@@ -48,34 +108,47 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 	<field name="WEST_LIMIT" class="java.lang.String"/>
 	<field name="EAST_LIMIT" class="java.lang.String"/>
 	<field name="SOUTH_LIMIT" class="java.lang.String"/>
+	<field name="NORTH_LENGTH" class="java.math.BigDecimal"/>
+	<field name="WEST_LENGTH" class="java.math.BigDecimal"/>
+	<field name="EAST_LENGTH" class="java.math.BigDecimal"/>
+	<field name="SOUTH_LENGTH" class="java.math.BigDecimal"/>
 	<field name="NUM_REAL_ESTATE" class="java.lang.String"/>
 	<field name="SPECIAL_CONDITIONS" class="java.lang.String"/>
+	<field name="COMPANY_NAME" class="java.lang.String"/>
+	<field name="arabic_annual_rent" class="java.lang.String"/>
+	<field name="NUM_PLAN" class="java.lang.String"/>
+	<field name="DISTRICT" class="java.lang.String"/>
+	<field name="BUILD_TYPE_NAME" class="java.lang.String"/>
+	<field name="BUILDING_AREA" class="java.math.BigDecimal"/>
+	<field name="SITE_TYPE_NB" class="java.math.BigDecimal"/>
+	<field name="ONE_TIME_RENT" class="java.math.BigDecimal"/>
+	<field name="ONE_TIME_RENT_AR" class="java.lang.String"/>
 	<variable name="conType" class="java.lang.String">
 		<variableExpression><![CDATA[$F{CONTRACT_TYPE}==1?"سنة" : $F{CONTRACT_TYPE}==2?"ِشهر" : "يوم"]]></variableExpression>
 	</variable>
 	<variable name="yearaRant" class="java.lang.String">
 		<variableExpression><![CDATA["الإيجار السنوي للعقار   "+$F{ANNUAL_RENT}+"  ريال  "+
-"(     "+$F{ANNUAL_RENT}+"      ريال فقط  )"+
+"(     "+$F{arabic_annual_rent}+"      فقط  )"+
 "ويتم سداد إيجار السنة الأولى عند توقيع العقد، أما أجور السنوات التالية، فيتم سدادها فى بداية كل سنة، وبحد أقصى عشرة أيام من بداية السنة."== null?"":(""+"الإيجار السنوي للعقار    "+$F{ANNUAL_RENT}+" ريال  "+
-"(     "+$F{ANNUAL_RENT}+"      ريال فقط  )"+
+"(     "+$F{arabic_annual_rent}+"       فقط  )"+
 "ويتم سداد إيجار السنة الأولى عند توقيع العقد، أما أجور السنوات التالية، فيتم سدادها فى بداية كل سنة، وبحد أقصى عشرة أيام من بداية السنة.").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></variableExpression>
 	</variable>
 	<variable name="monthRant" class="java.lang.String">
-		<variableExpression><![CDATA["الإيجار  للعقار   "+$F{ANNUAL_RENT}.multiply( $F{CONTRACT_YEARS} )+" ريال  "+
-"(         "+$F{ANNUAL_RENT}.multiply( $F{CONTRACT_YEARS} )+"     ريال فقط  )"+
-"ويتم سداد الإيجار عند توقيع العقد.  "== null?"":(""+"الإيجار  للعقار   "+$F{ANNUAL_RENT}.multiply( $F{CONTRACT_YEARS} )+" ريال  "+
-"(        "+$F{ANNUAL_RENT}.multiply( $F{CONTRACT_YEARS} )+"      ريال فقط  )"+
+		<variableExpression><![CDATA["الإيجار  للعقار   "+$F{ONE_TIME_RENT}+" ريال  "+
+"(         "+$F{ONE_TIME_RENT_AR}+"      فقط  )"+
+"ويتم سداد الإيجار عند توقيع العقد.  "== null?"":(""+"الإيجار  للعقار   "+$F{ONE_TIME_RENT}+" ريال  "+
+"(        "+$F{ONE_TIME_RENT_AR}+"       فقط  )"+
 "ويتم سداد الإيجار عند توقيع العقد.  ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></variableExpression>
 	</variable>
 	<variable name="dayRant" class="java.lang.String">
 		<variableExpression><![CDATA["الإيجار  للعقار   "+$F{ANNUAL_RENT}+" ريال  "+
-"(       "+$F{ANNUAL_RENT}+"     ريال فقط  )"+
+"(       "+$F{ONE_TIME_RENT}+"      فقط  )"+
 "ويتم سداد الإيجار عند توقيع العقد.  "== null?"":(""+"الإيجار  للعقار   "+$F{ANNUAL_RENT}+" ريال  "+
-"(       "+$F{ANNUAL_RENT}+"     ريال فقط  )"+
+"(       "+$F{ONE_TIME_RENT}+"      فقط  )"+
 "ويتم سداد الإيجار عند توقيع العقد.  ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></variableExpression>
@@ -399,7 +472,7 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{INV_REPRES_NAME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="460" y="222" width="90" height="20" uuid="2cc0b936-1031-41a6-98b2-fb2ed69127ee"/>
@@ -413,7 +486,7 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{COMPANY_NAME}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="460" y="242" width="90" height="20" uuid="9d1edf06-ba6b-4485-b5c6-87fa9de5f6d0"/>
@@ -581,7 +654,9 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 					<font fontName="Arial" size="12"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ADDRESS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ADDRESS}== null?"":(""+$F{ADDRESS}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="10" y="322" width="265" height="20" uuid="a5c15b26-4f32-4599-aa98-39a8bf8e862d"/>
@@ -814,41 +889,11 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 				<text><![CDATA[وصف العقار .	:	المادة الثالثة]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="138" width="519" height="211" uuid="fc6a3620-2a6e-43d2-8be5-fa572a1555a7"/>
+				<reportElement x="10" y="138" width="519" height="20" uuid="fc6a3620-2a6e-43d2-8be5-fa572a1555a7"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA["- بموجب هذا العقد قام الطرف الأول بتأجير الطرف الثاني العقار الوارد بياناته فيما يلي :\n"+
-"   - موقع العقار :\n"+
-"   - المدينة :\n"+
-"   - الشارع :\n"+"   - الحي :\t\t\t"+
-"   - رقم العقار :\n"+"   - رقم المخطط :\t\t\t"+
-"   - حدود العقار: (حسب الكروكي المرفق) :\n"+
-"      - شمالاً : \t\t\t بطول :  \t\t\t  متراً \n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - جنوباً : \t\t\t"+"\n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - شرقاً : \t\t\t"+"\n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - غرباً : \t\t\t"+"\n"+
-"   - مساحة العقار :\n"+
-"      - المساحة الإجمالية ( "+$F{LAND_AREA}+"  ):\n"+
-"   - متر مربع :\n"+"      - مساحة المبنى : \t\t\t" +
-"   - طابقاً :\n"+"      - عدد الأدوار : \t\t\t" +
-"      - نوع البناء :\n"== null?"":(""+"- بموجب هذا العقد قام الطرف الأول بتأجير الطرف الثاني العقار الوارد بياناته فيما يلي :\n"+
-"   - موقع العقار :\n"+
-"   - المدينة :\n"+
-"   - الشارع :\n"+"   - الحي :\t\t\t"+
-"   - رقم العقار :\n"+"   - رقم المخطط :\t\t\t"+
-"   - حدود العقار: (حسب الكروكي المرفق) :\n"+
-"      - شمالاً : \t\t\t بطول :  \t\t\t  متراً \n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - جنوباً : \t\t\t"+"\n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - شرقاً : \t\t\t"+"\n"+
-"   - متراً :"+"   - بطول :\t\t"+"      - غرباً : \t\t\t"+"\n"+
-"   - مساحة العقار :\n"+
-"      - المساحة الإجمالية ( "+$F{LAND_AREA}+"  ):\n"+
-"   - متر مربع :\n"+"      - مساحة المبنى : \t\t\t" +
-"   - طابقاً :\n"+"      - عدد الأدوار : \t\t\t" +
-"      - نوع البناء :\n").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
-                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+				<textFieldExpression><![CDATA["- بموجب هذا العقد قام الطرف الأول بتأجير الطرف الثاني العقار الوارد بياناته فيما يلي :\n"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="281" y="349" width="264" height="28" uuid="02f68a72-8b21-49b9-881a-fc0fcfc5809f"/>
@@ -858,56 +903,62 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 				<text><![CDATA[الغرض من العقد .	:	المادة الرابعة]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="281" y="418" width="262" height="28" uuid="fa9d1697-25ee-4f74-84cc-a4568c3b2553"/>
+				<reportElement x="281" y="412" width="262" height="28" uuid="fa9d1697-25ee-4f74-84cc-a4568c3b2553"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[مدة العقد .	:	المادة الخامسة]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="446" width="519" height="34" uuid="cf6ca7b8-f126-45bd-979e-21dd213980a6"/>
+				<reportElement x="10" y="440" width="519" height="34" uuid="cf6ca7b8-f126-45bd-979e-21dd213980a6"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
 				<textFieldExpression><![CDATA["مدة العقد "+
-"( "+ $F{CONTRACT_YEARS}  +" ) "+ " (  "+ $V{conType} +"  )"+
+"( "+ $F{CONTRACT_YEARS}  +" ) "+ " (  "+ $F{CONTRACT_DURATION_AR}+ $V{conType} +"  )"+
 " تبدأ من تاريخ تسلم المستثمر للعقار من البلدية، بموجب محضر تسليم موقع من الطرفين خلال شهر على الأكثر من تاريخ توقيع العقد. "== null?"":(""+"مدة العقد "+
-"( "+ $F{CONTRACT_YEARS}  +" ) "+ " (  "+ $V{conType} +"  )"+
+"( "+ $F{CONTRACT_YEARS}  +" ) "+ " (  "+ $F{CONTRACT_DURATION_AR}+ $V{conType} +"  )"+
 " تبدأ من تاريخ تسلم المستثمر للعقار من البلدية، بموجب محضر تسليم موقع من الطرفين خلال شهر على الأكثر من تاريخ توقيع العقد. ").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="281" y="481" width="262" height="28" uuid="b033794a-efac-4cb6-bebd-7119163d3d35"/>
+				<reportElement x="281" y="474" width="262" height="28" uuid="b033794a-efac-4cb6-bebd-7119163d3d35"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[فترة التجهيز والإنشاء .	:	المادة السادسة]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="510" width="519" height="40" uuid="02e1b4c2-78cf-408c-b27f-ccfaef221e27"/>
+				<reportElement x="10" y="503" width="519" height="40" uuid="02e1b4c2-78cf-408c-b27f-ccfaef221e27"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
-				<textFieldExpression><![CDATA["يعطى المستثمر فترة  "+
-"( "+$F{PROC_CONST_PERIOD}+" ) (  يوم  )"+
+				<textFieldExpression><![CDATA[$F{ratio}!= null?   ("يعطى المستثمر فترة  "+
+"( "+$F{PROC_CONST_PERIOD}+" ) (  "+ $F{PERIOD_AR}+"  يوم   )"+
 "للتجهيز والإنشاء، وهى تعادل" +   $F{ratio}+" %  من المدة المحددة في المادة الخامسة من العقد، وهى فترة زمنية غير مدفوعة الأجرة."== null?"":(""+"يعطى المستثمر فترة  "+
-"( "+$F{PROC_CONST_PERIOD}+" ) (  يوم  )"+
+"( "+$F{PROC_CONST_PERIOD}+" ) (  "+ $F{PERIOD_AR}+"  يوم   )"+
 "للتجهيز والإنشاء، وهى تعادل "+ $F{ratio}+" %  من المدة المحددة في المادة الخامسة من العقد، وهى فترة زمنية غير مدفوعة الأجرة.").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")) :  ( "يعطى المستثمر فترة  "+
+"( "+$F{PROC_CONST_PERIOD}+" ) (  "+ $F{PERIOD_AR}+"  يوم   )"+
+"للتجهيز والإنشاء، وهى تعادل" +   $F{ratio}+" %  من المدة المحددة في المادة الخامسة من العقد، وهى فترة زمنية غير مدفوعة الأجرة."== null?"":(""+"يعطى المستثمر فترة  "+
+"( "+$F{PROC_CONST_PERIOD}+" ) (  "+ $F{PERIOD_AR}+"  يوم   )"+
+"للتجهيز والإنشاء، وهى تعادل "+ " -- "+" %  من المدة المحددة في المادة الخامسة من العقد، وهى فترة زمنية غير مدفوعة الأجرة.").replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669"))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="281" y="551" width="267" height="28" uuid="8c4027f4-a989-4362-959d-306225406b70"/>
+				<reportElement x="281" y="543" width="267" height="28" uuid="8c4027f4-a989-4362-959d-306225406b70"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[الإيجار  .	:	المادة السابعة]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="577" width="524" height="40" uuid="b9770471-0596-426b-a5e2-40d254107092"/>
+				<reportElement x="10" y="571" width="524" height="46" uuid="b9770471-0596-426b-a5e2-40d254107092"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="1_1_2"/>
@@ -915,13 +966,327 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 				<textFieldExpression><![CDATA[$F{CONTRACT_TYPE}==1?$V{yearaRant} : $F{CONTRACT_TYPE}==2?$V{monthRant}:$V{dayRant}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="379" width="519" height="34" uuid="af0778eb-6bd4-43c7-a311-6e21626d7a29"/>
+				<reportElement x="15" y="378" width="519" height="34" uuid="af0778eb-6bd4-43c7-a311-6e21626d7a29"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
 				<textFieldExpression><![CDATA["الغرض من العقد هو استثمار الموقع الموضحة بياناته أعلاه لإنشاء وإدارة وتشغيل "+$F{components}+" ولا يجوز استخدامه لغير الغرض المخصصة له."]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="460" y="158" width="75" height="12" uuid="609310b4-dd1a-44aa-aee2-2b1222748b60"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- موقع العقار :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="170" width="75" height="12" uuid="17370764-23a0-4609-89c9-4e9d433c7762"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- المدنية :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="170" width="428" height="12" uuid="7b8327c5-cfce-4f7e-92d5-77e3e346dfcc"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["محافظة المذنب"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="11" y="194" width="172" height="12" uuid="8de39f6b-ba7b-4cd7-a510-56f96063fc24"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM_REAL_ESTATE}== null?"":(""+$F{NUM_REAL_ESTATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="194" width="75" height="12" uuid="39660e57-d8d4-4254-a90d-932b4c6818d2"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- رقم المخطط :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="182" width="75" height="12" uuid="f4bd96d0-b370-444a-bbbe-78d4fbafdf70"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- الحي :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="258" y="182" width="182" height="12" uuid="39e39a3f-3b8a-42f9-9512-d395a7fd528d"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DISTRICT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="230" width="226" height="12" uuid="0d362411-cbf2-48a0-9c74-5edb5a464f22"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOUTH_LIMIT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="218" width="226" height="12" uuid="16335047-9b92-412f-a219-7f339a2340b7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NORTH_LIMIT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="242" width="75" height="12" uuid="6709cabb-8378-415f-88dc-3e1d241da077"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- شرقاً :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="242" width="226" height="12" uuid="7f0ebaac-e367-424c-8f7f-26fd3a26b7a7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EAST_LIMIT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="218" width="75" height="12" uuid="5cac3493-756b-4582-b90d-59a0e6dcb8ae"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- شمالاً :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="230" width="75" height="12" uuid="3c596d53-4039-4d3f-8e19-e4a8f24e66ce"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- جنوباً :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="206" width="165" height="12" uuid="58a7abb4-3758-4bef-b85e-cc9bbe372e43"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- حدود العقار ( حسب الكروكي المرفق) :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="290" width="75" height="12" uuid="2d5b2410-79f9-4660-853a-f762b8607d7b"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- مساحة المباني :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="254" width="226" height="12" uuid="c1ea6913-6be8-48f8-8732-cbc82cd33b8f"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WEST_LIMIT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="302" width="75" height="12" uuid="c6535901-8248-428e-89f5-e96caff2af48"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- عدد الأدوار :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="290" width="140" height="12" uuid="837489b0-2109-4473-b53e-a68619dc8ad5"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BUILDING_AREA}== null?($F{LAND_AREA}== null?"":(""+$F{LAND_AREA}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")):(""+$F{BUILDING_AREA}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="314" width="75" height="12" uuid="6717399b-64e0-4f73-ab9e-4d09ea2302e7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- نوع البناء :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="278" width="75" height="12" uuid="fc5cde75-7935-415e-92ff-c44c4bb16311"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- المساحة الإجمالية :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="12" y="314" width="428" height="12" uuid="f52f14bc-d8f1-4edb-967c-2cee3825641a"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BUILD_TYPE_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="266" width="75" height="12" uuid="38b45eec-052e-4b25-8633-eefddba7671c"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- مساحة العقار :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="254" width="75" height="12" uuid="7f5e5762-5612-4f61-8528-42e64ce05f45"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- غرباً :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="12" y="278" width="428" height="12" uuid="0c27b748-e6e5-40e8-b985-2a307c0d6276"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LAND_AREA}== null?"":(""+$F{LAND_AREA}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="12" y="302" width="428" height="12" uuid="afa8a7aa-80a2-436b-bc95-523cdedb5457"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SITE_TYPE_NB}== null?"":(""+$F{SITE_TYPE_NB}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="184" y="194" width="74" height="12" uuid="e0ae53c6-5154-4b35-8c95-a26f02b23c77"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- رقم العقار :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="258" y="194" width="182" height="12" uuid="2c89b854-a76a-46ff-9f11-b809d93e1cc1"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM_PLAN}== null?"":(""+$F{NUM_PLAN}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="11" y="182" width="172" height="12" uuid="8c991843-4352-4aae-9afc-8f8935c248a7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STREET}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="184" y="182" width="74" height="12" uuid="31bce670-a668-45a3-b9a6-cac04ca6bd09"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- الشارع :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="218" width="35" height="12" uuid="c83d14bf-a060-4f7f-847f-32769b4340d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[بطول]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="230" width="35" height="12" uuid="53165230-b672-4a8f-9b78-b3f731323e6f"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[بطول]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="218" width="94" height="12" uuid="bbfbecd0-b029-47f2-a361-3beffb414228"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NORTH_LENGTH}== null?"":(""+$F{NORTH_LENGTH}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="242" width="35" height="12" uuid="4254f3cc-a775-472c-af29-5a51372b6a81"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[بطول]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="254" width="35" height="12" uuid="e334746a-9bd3-4e03-a466-bc64dc8be4dc"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[بطول]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="242" width="94" height="12" uuid="dbe9ffbc-7dda-417b-aa28-5436011447eb"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EAST_LENGTH}== null?"":(""+$F{EAST_LENGTH}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="230" width="94" height="12" uuid="3fabfca1-8ecc-4085-8a91-2c8ef489a639"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOUTH_LENGTH}== null?"":(""+$F{SOUTH_LENGTH}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="254" width="94" height="12" uuid="aaaa17d9-5571-4c0a-96af-fed023b281a4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WEST_LENGTH}== null?"":(""+$F{WEST_LENGTH}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="218" width="37" height="12" uuid="4463b174-03b5-41b4-a47a-8e5079fe69be"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[متراً]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="254" width="37" height="12" uuid="eb80b488-b149-4cdd-b1d2-8d47e4ced75a"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[متراً]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="230" width="37" height="12" uuid="43ddd39a-e4ff-4a79-b127-0c296c4b2909"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[متراً]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="242" width="37" height="12" uuid="a5a1d892-436b-4190-9835-2ae1076e5525"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[متراً]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="290" width="70" height="12" uuid="93184f49-afad-4532-8c49-c5aeea4ff5eb"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[متر مربع]]></text>
+			</staticText>
 		</band>
 		<band height="617">
 			<staticText>
@@ -1110,11 +1475,9 @@ and RS.SITE_LYPE_ID = SITY.id and C.INVESTOR_ID=INV.ID and C.ID= $P{contractId}]
 					<paragraph lineSpacing="AtLeast"/>
 				</textElement>
 				<textFieldExpression><![CDATA["الشروط الخاصة: \n" 
-+  $F{SPECIAL_CONDITIONS}!=null?"لا يوجد" : $F{SPECIAL_CONDITIONS}== null?"":(""+"الشروط الخاصة: \n" +
-	 $F{SPECIAL_CONDITIONS}!=null?"لا يوجد" : $F{SPECIAL_CONDITIONS}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
++    $F{SPECIAL_CONDITIONS}==null?"لا يوجد" :( ""+$F{SPECIAL_CONDITIONS}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
-]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="10" y="41" width="524" height="158" uuid="8a198b5e-6b6f-476c-a9ae-3af313b7f21c"/>

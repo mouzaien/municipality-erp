@@ -112,7 +112,7 @@
 	WHERE
 		ARC_RECORD_ID = $P{record_id}
 		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
-		AND sign_step_id = 5
+		AND sign_step_id = 6
 		AND model_id = 252 )toUser,
 	(
 	SELECT
@@ -123,7 +123,7 @@
 	WHERE
 		ARC_RECORD_ID = $P{record_id}
 		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
-		AND sign_step_id = 5
+		AND sign_step_id = 6
 		AND model_id = 252 )toUserDate ,
 	(
 	SELECT
@@ -134,7 +134,7 @@
 	WHERE
 		ARC_RECORD_ID = $P{record_id}
 		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
-		AND sign_step_id = 6
+		AND sign_step_id = 5
 		AND model_id = 252 )deanUser ,
 	(
 	SELECT
@@ -145,7 +145,7 @@
 	WHERE
 		ARC_RECORD_ID = $P{record_id}
 		AND HRS_SIGNS.SIGN_USER_ID = WRK_PROFILE_SIGN.USER_ID
-		AND sign_step_id = 6
+		AND sign_step_id = 5
 		AND model_id = 252 )deanUserDate
 FROM
 	ARTICLE art ,

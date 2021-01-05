@@ -80,7 +80,7 @@ public class RealEstate {
 	private SiteType siteType;
 	@Transient
 	private String fullName;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "realEstate")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "realEstate")
 	private Set<ContractDirect> contractDirectSet;
 	// @OneToMany(fetch= FetchType.LAZY)
 	// private List<Contract> contractList ;

@@ -26,7 +26,7 @@ public class PayLicBills implements Serializable {
 	@GeneratedValue(generator = "generator")
 	@Column(name = "BILL_NO")
 	private Integer billNumber;
-	// penalty Id  رقم المخالفة
+	// penalty Id رقم المخالفة
 	@Column(name = "LIC_NO")
 	private Integer licenceNumber;
 	@Column(name = "LIC_TYPE")
@@ -60,22 +60,23 @@ public class PayLicBills implements Serializable {
 	@Column(name = "PAY_DATE_TO")
 	private String payDateTo;
 	@Column(name = "PAY_INSTALL_NO")
-	private Long payInstallNumber;
+	private Long payInstallNumber; // phone number
 	@Column(name = "CHEQUE_DATE")
 	private String chequeDate;
 	@Column(name = "PAID_BY")
 	private String paidBy;
-	
+	@Column(name = "BAYAN")
+	private String bayan;
+
 	@Column(name = "APL_OWNER")
 	private String aplOwner;
-	
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "payLicBill")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "payLicBill")
 	private Set<PayBillDetails> payBillDetails;
 
 	@Transient
 	private String sadadStatus;
-	
-	
+
 	public PayLicBills(PayLicBills payLicBills) {
 		super();
 		this.billNumber = payLicBills.getBillNumber();
@@ -272,9 +273,10 @@ public class PayLicBills implements Serializable {
 	}
 
 	public String getSadadStatus() {
-		if(billStatus!=null)
-		return billStatus==1? Utils.loadMessagesFromFile("paid"):Utils.loadMessagesFromFile("not.paid");
-		else return"unknown";
+		if (billStatus != null)
+			return billStatus == 1 ? Utils.loadMessagesFromFile("paid") : Utils.loadMessagesFromFile("not.paid");
+		else
+			return "unknown";
 	}
 
 	public void setSadadStatus(String sadadStatus) {
@@ -287,6 +289,14 @@ public class PayLicBills implements Serializable {
 
 	public void setAplOwner(String aplOwner) {
 		this.aplOwner = aplOwner;
+	}
+
+	public String getBayan() {
+		return bayan;
+	}
+
+	public void setBayan(String bayan) {
+		this.bayan = bayan;
 	}
 
 }

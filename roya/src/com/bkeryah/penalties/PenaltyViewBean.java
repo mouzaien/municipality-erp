@@ -23,11 +23,11 @@ import com.bkeryah.entities.LicActivityTypeRy;
 import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
-import com.bkeryah.managedBean.reqfin.newReplaceFinBean;
 import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
-import utilities.HijriCalendarUtil;
+import service.SmsService;
+import sms.sender.ResponseTypeEnum;
 import utilities.MsgEntry;
 import utilities.MyConstants;
 import utilities.Utils;
@@ -99,15 +99,17 @@ public class PenaltyViewBean {
 	}
 
 	public String accept() {
+		try {
+			wrkAppComment = Utils.loadMessagesFromFile("accept.operation") + currentUser.getEmployeeName();
+			applicationPurpose = "1";
+			dataAccessService.acceptPenalty(finesMaster, arcRecordId, MailTypeEnum.PENALTY.getValue(), wrkAppComment,
+					Integer.parseInt(applicationPurpose.trim()));
 
-		wrkAppComment = Utils.loadMessagesFromFile("accept.operation") + currentUser.getEmployeeName();
-		applicationPurpose = "1";
-		dataAccessService.acceptPenalty(finesMaster, arcRecordId, MailTypeEnum.PENALTY.getValue(), wrkAppComment,
-				Integer.parseInt(applicationPurpose.trim()));
-
-		// insert bill //
-		if (stepNum == 3) {
-			dataAccessService.insertBill(finesMaster);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			return "";
 		}
 		return "mails";
 	}
@@ -119,9 +121,9 @@ public class PenaltyViewBean {
 			String wrkCommentRefuse = wrkAppComment;
 			dataAccessService.refusePenalty(WrkId, arcRecordId, finesMaster, wrkCommentRefuse,
 					Integer.parseInt(applicationPurpose.trim()));
-			NotifFinesMastR notifMstr = new NotifFinesMastR();
-			notifMstr.setPenaltyIsRecoreded("N");
-			dataAccessService.updateObject(notifMstr);
+			// NotifFinesMastR notifMstr = new NotifFinesMastR();
+			// notifMstr.setPenaltyIsRecoreded("N");
+			// dataAccessService.updateObject(notifMstr);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
 			return "mails";
 		} catch (Exception e) {

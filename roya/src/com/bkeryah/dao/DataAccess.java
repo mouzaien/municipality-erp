@@ -49,6 +49,7 @@ import com.bkeryah.entities.ExchangeRequest;
 import com.bkeryah.entities.HrsEmpHistorical;
 import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsUserAbsent;
+import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.investment.ContractDirect;
@@ -618,5 +619,9 @@ public interface DataAccess {
 	void deleteVisitsForDisactiveSupervisors(Integer licId, String startHDate, String endHDate);
 
 	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
-			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate);
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate, Integer sectionId,
+			Integer contractMaincatgId, Integer contractSubcatgId, Integer actvityId, String component, Integer contractStatusFilter);
+
+	public List<PayLicBills> loadBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+			Long phoneNumber, Integer billStatus,Integer bandId);
 }

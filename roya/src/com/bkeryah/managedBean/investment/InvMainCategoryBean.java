@@ -3,9 +3,9 @@ package com.bkeryah.managedBean.investment;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.service.IDataAccessService;
@@ -78,7 +79,7 @@ public class InvMainCategoryBean implements Serializable {
 				dataAccessService.deleteContractMainCategory(mainCategory.getId());
 				contractMainCategoryList = dataAccessService.loadAllContractMainCategory();
 				Utils.updateUIComponent(":includeform:LicLst");
-				MsgEntry.addAcceptFlashInfoMessage("تم الحذف" + mainCategory.getId());
+				MsgEntry.addErrorMessage("تم الحذف" + mainCategory.getId());
 				delete = false;
 			}
 
@@ -87,7 +88,19 @@ public class InvMainCategoryBean implements Serializable {
 			MsgEntry.addErrorMessage("لم يتم الحذف! ... تأكد من ان التصنيف ليس عليه عقود و ليس تحته تصنيف فرعي");
 		}
 		contractMainCategoryList = dataAccessService.loadAllContractMainCategory();
-		//return "";
+		// return "";
+	}
+
+	public void onRowEdit(RowEditEvent event) {
+		ContractMainCategory mainCat = (ContractMainCategory) event.getObject();
+		dataAccessService.updateObject(mainCat);
+		FacesMessage msg = new FacesMessage(" تم تعديل ", mainCat.getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		ContractMainCategory mainCat = (ContractMainCategory) event.getObject();
+		MsgEntry.addErrorMessage("تم الإلغاء");
 	}
 
 	//////////////////////////////// setters and getters

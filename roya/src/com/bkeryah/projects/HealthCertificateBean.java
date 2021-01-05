@@ -29,6 +29,8 @@ import com.bkeryah.entities.HealthLicenceCenter;
 import com.bkeryah.entities.HealthLicenceJob;
 import com.bkeryah.entities.HealthMasterLicence;
 import com.bkeryah.entities.HrsScenarioDocument;
+import com.bkeryah.entities.NationalIdPlaces;
+import com.bkeryah.entities.NationalIdType;
 import com.bkeryah.entities.SysNationality;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.penalties.LicTrdMasterFile;
@@ -68,17 +70,19 @@ public class HealthCertificateBean implements Serializable {
 	private HealthLicenceJob hlthLicJob = new HealthLicenceJob();
 	private Integer helthApplId;
 	private List<HealthMasterLicence> healthLicList = new ArrayList<HealthMasterLicence>();
-
+	private List<NationalIdPlaces> personIdCityList = new ArrayList<NationalIdPlaces>();
+	private List<NationalIdType> personIdTypeList = new ArrayList<NationalIdType>();
 	// private StreamedContent streamedcontent;
 	@PostConstruct
 	public void init() {
-
+		personIdCityList = dataAccessService.getallNationalIdPlaces();
 		hlthLicJobsList = dataAccessService.getAllHealthLicenceJobsList();
 		hlthLicCenterList = dataAccessService.getAllHealthLicenceCentersList();
 		allLicencesList = dataAccessService.getAllLicencesList();
 		listNationality = dataAccessService.loadNationalEmploye();
 		healthLicList = dataAccessService.getAllHealthCertificate();
 		FacesContext context = FacesContext.getCurrentInstance();
+		personIdTypeList = dataAccessService.getAllNationalIdTypes();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		HttpSession httpSession = request.getSession(false);
 		String arcRecordId = (String) httpSession.getAttribute("arcRecord");
@@ -423,5 +427,29 @@ public class HealthCertificateBean implements Serializable {
 
 	public void setHealthLicList(List<HealthMasterLicence> healthLicList) {
 		this.healthLicList = healthLicList;
+	}
+
+	public Integer getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(Integer recordId) {
+		this.recordId = recordId;
+	}
+
+	public List<NationalIdPlaces> getPersonIdCityList() {
+		return personIdCityList;
+	}
+
+	public void setPersonIdCityList(List<NationalIdPlaces> personIdCityList) {
+		this.personIdCityList = personIdCityList;
+	}
+
+	public List<NationalIdType> getPersonIdTypeList() {
+		return personIdTypeList;
+	}
+
+	public void setPersonIdTypeList(List<NationalIdType> personIdTypeList) {
+		this.personIdTypeList = personIdTypeList;
 	}
 }

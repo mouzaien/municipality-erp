@@ -1,0 +1,15 @@
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -234,7 +234,10 @@
+ 									</p:inputText>
+ 								</p:outputPanel>
+ 							</f:facet>
+-
++							<p:column headerText="الرقم التسلسلي"
++								style="width:5%; text-align:center;">
++								<h:outputLabel value="#{rowIndex+1}" />
++							</p:column>
+ 							<p:column id="idcol" headerText="رقم العقد" sortable="true"
+ 								sortBy="#{userItem.contractNum}"
+ 								filterBy="#{userItem.contractNum}" filterMatchMode="contains"

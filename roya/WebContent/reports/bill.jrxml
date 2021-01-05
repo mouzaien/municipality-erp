@@ -4,7 +4,7 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="78"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -48,7 +48,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select
-BILL_NO, LIC_NO, LIC_TYPE, BILL_STATUS, BILL_PAY_TYPE, COLLECT_BY, COLLECTION_SR, PAY_DATE_H, PAY_DATE_G, PAY_AMOUNT, BILL_O_NAME, BILL_DATE
+BILL_NO, LIC_NO, LIC_TYPE, BILL_STATUS, BILL_PAY_TYPE,BAYAN ,PAY_INSTALL_NO ,APL_OWNER, COLLECT_BY, COLLECTION_SR, PAY_DATE_H, PAY_DATE_G, PAY_AMOUNT, BILL_O_NAME, BILL_DATE
 ,NUM_AR(((select sum(AMOUNT) from PAY_BILL_DETAILS where BILL_NO = $P{p1} ) )) num_ar ,
  (select GET_NAME(user_id) from arc_users where user_id = (select distinct CREATED_BY from PAY_BILL_DETAILS where BILL_NO =PAY_LIC_BILLS.bill_no ) ) ADDED_BY
  from PAY_LIC_BILLS
@@ -64,10 +64,13 @@ where bill_no   = $P{p1}]]>
 	<field name="PAY_DATE_H" class="java.lang.String"/>
 	<field name="PAY_DATE_G" class="java.sql.Timestamp"/>
 	<field name="PAY_AMOUNT" class="java.math.BigDecimal"/>
+	<field name="PAY_INSTALL_NO" class="java.math.BigDecimal"/>
 	<field name="BILL_O_NAME" class="java.lang.String"/>
 	<field name="BILL_DATE" class="java.lang.String"/>
 	<field name="NUM_AR" class="java.lang.String"/>
 	<field name="ADDED_BY" class="java.lang.String"/>
+	<field name="BAYAN" class="java.lang.String"/>
+	<field name="APL_OWNER" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -112,7 +115,7 @@ where bill_no   = $P{p1}]]>
 				</textElement>
 				<text><![CDATA[وزارة الشئون البلدية و القروية
 أمانة منطقة القصيم
-بلدية محافظة المذنب]]></text>
+بلدية محافظة المذنب ]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -131,9 +134,15 @@ where bill_no   = $P{p1}]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="285" splitType="Stretch">
+		<band height="353" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="353" forecolor="#182C3B" uuid="9e2da592-305b-4e11-8140-b1af8413b718"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Solid" lineColor="#182C3B"/>
+				</graphicElement>
+			</rectangle>
 			<subreport>
-				<reportElement x="1" y="72" width="554" height="27" uuid="f847ebe6-ed05-4bc2-88e1-3c4fa88e12c1"/>
+				<reportElement x="1" y="129" width="554" height="27" uuid="f847ebe6-ed05-4bc2-88e1-3c4fa88e12c1"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -173,43 +182,44 @@ where bill_no   = $P{p1}]]>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BILL_O_NAME}.replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{BILL_O_NAME}== null?"":(""+$F{BILL_O_NAME}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
+]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="443" y="113" width="101" height="15" uuid="388ef20e-c5c2-41cf-a75d-92de4064b0b7"/>
+				<reportElement positionType="Float" x="443" y="200" width="101" height="15" uuid="388ef20e-c5c2-41cf-a75d-92de4064b0b7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[المبلغ كتابة : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="0" y="113" width="427" height="15" uuid="98624902-0040-4be2-90a7-4f51f9ccd89d"/>
+				<reportElement positionType="Float" x="0" y="200" width="427" height="15" uuid="98624902-0040-4be2-90a7-4f51f9ccd89d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NUM_AR}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="444" y="135" width="101" height="15" uuid="b9fa3c37-13f7-45ca-a019-be9e035064ee"/>
+				<reportElement positionType="Float" x="444" y="222" width="101" height="15" uuid="b9fa3c37-13f7-45ca-a019-be9e035064ee"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[معد النموذج :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="1" y="135" width="427" height="15" uuid="1ed38970-e06e-4975-8d6d-a7f102647e63"/>
+				<reportElement positionType="Float" x="1" y="222" width="427" height="15" uuid="1ed38970-e06e-4975-8d6d-a7f102647e63"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ADDED_BY}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="1" y="165" width="554" height="1" uuid="9db7ece3-c68a-4b09-aaae-47b103644085"/>
+				<reportElement positionType="Float" x="1" y="245" width="554" height="1" uuid="9db7ece3-c68a-4b09-aaae-47b103644085"/>
 			</line>
 			<staticText>
-				<reportElement positionType="Float" x="5" y="171" width="544" height="20" forecolor="#CC0000" uuid="46969c83-11dd-49ed-853a-ab435e790e7f">
+				<reportElement positionType="Float" x="5" y="252" width="544" height="20" forecolor="#CC0000" uuid="46969c83-11dd-49ed-853a-ab435e790e7f">
 					<printWhenExpression><![CDATA[$F{BILL_STATUS} == 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -218,7 +228,7 @@ where bill_no   = $P{p1}]]>
 				<text><![CDATA[لم يتم سداد الفاتورة حتي تاريخه]]></text>
 			</staticText>
 			<frame>
-				<reportElement positionType="Float" x="1" y="166" width="554" height="86" uuid="b364827a-1ec4-4c6f-9176-bfac9f9ed39d">
+				<reportElement positionType="Float" x="1" y="253" width="554" height="86" uuid="b364827a-1ec4-4c6f-9176-bfac9f9ed39d">
 					<printWhenExpression><![CDATA[$F{BILL_STATUS} == 1]]></printWhenExpression>
 				</reportElement>
 				<staticText>
@@ -268,12 +278,62 @@ where bill_no   = $P{p1}]]>
 					<text><![CDATA[تاريخ التحصيل:]]></text>
 				</staticText>
 			</frame>
-			<rectangle>
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="285" forecolor="#182C3B" uuid="9e2da592-305b-4e11-8140-b1af8413b718"/>
-				<graphicElement>
-					<pen lineWidth="1.25" lineStyle="Solid" lineColor="#182C3B"/>
-				</graphicElement>
-			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="443" y="168" width="101" height="19" uuid="3f0d5efe-2787-4b45-a7f3-9000f8b3fb9c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[البيان : ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="168" width="427" height="32" uuid="49fb4df5-9175-4e08-87ff-ecf0dc765a06"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BAYAN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="444" y="72" width="100" height="20" backcolor="#F0F0F0" uuid="6af0e54e-c758-4caa-b3c0-177927082991">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رقم الجوال :]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="33" y="72" width="403" height="20" forecolor="#003366" backcolor="#F0F0F0" uuid="32fb661f-78aa-471c-b2b5-ae8a76dbc818">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PAY_INSTALL_NO}== null?"":(""+$F{PAY_INSTALL_NO}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
+]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="445" y="101" width="100" height="20" backcolor="#F0F0F0" uuid="2734449a-11f5-41b8-94ba-f8e4fc376237">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رقم الهوية :]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="34" y="101" width="403" height="20" forecolor="#003366" backcolor="#F0F0F0" uuid="a41f75c0-2cb2-43dc-980c-5e6eaa3cacb0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APL_OWNER}== null?"":(""+$F{APL_OWNER}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")
+]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -282,7 +342,7 @@ where bill_no   = $P{p1}]]>
 	<pageFooter>
 		<band height="92" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="11" y="5" width="534" height="87" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="f87c4ed8-48c5-4d63-a270-aff7b46abbd4">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="11" y="4" width="534" height="87" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="f87c4ed8-48c5-4d63-a270-aff7b46abbd4">
 					<printWhenExpression><![CDATA[$F{BILL_STATUS} == 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -291,7 +351,7 @@ where bill_no   = $P{p1}]]>
 				<text><![CDATA[تعليمات السداد عن طريقة خدمة ( سداد ) :
 1 التوجه الى اقرب صراف آلي للبنك الذي تتعامل معه، او الدخول الى بوابة البنك الالكترونية او استخدام الهاتف المصرفي.
 2 اختيار خدمة ( سداد ).
-3 اختيار ( أمانة منطقة القصيم)
+3 اختيار ( أمانة منطقة القصيم) رمز 070
 4 إدخال رقم الفاتورة الموضح في الأعلى و تفعيل الفاتورة ثم سدادها .]]></text>
 			</staticText>
 		</band>

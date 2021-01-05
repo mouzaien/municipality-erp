@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -22,6 +24,9 @@ public class ContractSubcategory {
 	private String name;
 	@Column(name = "CONTRACT_MAIN_ID")
 	private Integer contMainCategoryid;
+
+	@Formula("(SELECT M.NAME FROM CONTRACT_MAIN_CATEGORY M WHERE M.ID =CONTRACT_MAIN_ID )")
+	private String contMainCategoryName;
 
 	public Integer getId() {
 		return id;
@@ -53,6 +58,14 @@ public class ContractSubcategory {
 
 	public void setContMainCategoryid(Integer contMainCategoryid) {
 		this.contMainCategoryid = contMainCategoryid;
+	}
+
+	public String getContMainCategoryName() {
+		return contMainCategoryName;
+	}
+
+	public void setContMainCategoryName(String contMainCategoryName) {
+		this.contMainCategoryName = contMainCategoryName;
 	}
 
 }

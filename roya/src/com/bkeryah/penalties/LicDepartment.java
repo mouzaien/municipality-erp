@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -21,6 +22,9 @@ public class LicDepartment {
 
 	@Column(name = "SECTION_ID")
 	private Integer sectionId;
+
+	@Formula("(select u.NAME from LIC_SECTION u where u.ID =SECTION_ID)")
+	private String sectionName;
 
 	public Integer getId() {
 		return id;
@@ -44,5 +48,13 @@ public class LicDepartment {
 
 	public void setSectionId(Integer sectionId) {
 		this.sectionId = sectionId;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
 	}
 }

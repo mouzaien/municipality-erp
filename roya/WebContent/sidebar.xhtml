@@ -254,25 +254,24 @@
 									icon="ui-icon ui-icon-security">
 
 									<!-- 	rendered="false" -->
-										<p:menuitem id="sb_add_licences" value="الرخص"
-											action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sb_add_licences" value="الرخص"
+										action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
 
-										<p:menuitem id="sa_add_recruit" value="المراقبين"
-											action="recruit_supervisor" icon="ui-icon ui-icon-pan-tool" />
-										<p:menuitem id="sa_add_" value="الزيارات"
-											action="visits" icon="ui-icon ui-icon-pan-tool" />
-											
-											
-										<p:menuitem id="superV" value="توزيع الزيارت"
-											action="visitsuper" icon="ui-icon ui-icon-pan-tool" />
-										<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
-											action="health_certificate" icon="ui-icon ui-icon-cheet" />
+									<p:menuitem id="sa_add_recruit" value="المراقبين"
+										action="recruit_supervisor" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sa_add_" value="الزيارات" action="visits"
+										icon="ui-icon ui-icon-pan-tool" />
+
+
+									<p:menuitem id="superV" value="توزيع الزيارت"
+										action="visitsuper" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
+										action="health_certificate" icon="ui-icon ui-icon-cheet" />
 									<p:menuitem id="sb_penalty_setup" value="#{msg['fines']}"
 										action="penalty_setup" icon="fa fa-fw fa-leanpub" />
 
 									<p:menuitem id="sb_penalty" value="مخالفة جديدة"
-										 action="penalty"
-										icon="fa fa-fw fa-file-text-o" />
+										action="penalty" icon="fa fa-fw fa-file-text-o" />
 
 									<p:menuitem id="sb_searchPenalities" value="عرض العقوبات"
 										action="searchPenalities" icon="fa fa-fw fa-file-text" />
@@ -287,6 +286,8 @@
 										action="new_fin_req" icon="fa fa-fw fa-files-o" />
 									<p:menuitem id="sb_new_replace_fine" value="إعادة إصدار"
 										action="new_replace_fine" icon="ui-icon ui-icon-replay" />
+
+
 								</p:submenu>
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVEST">
@@ -315,6 +316,8 @@
 											action="contracts" icon="fa fa-fw fa-file-text-o" />
 									</secc:authorize>
 								</p:submenu>
+							</secc:authorize>
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SADAD">
 								<p:submenu id="sr_search_bill" label="سداد"
 									icon="fa fa-fw fa-money">
 									<p:menuitem id="sb_search_bill" value="الفواتير"
@@ -397,6 +400,23 @@
 												icon="fa fa-unlink" action="Attachments">
 											</p:menuitem>
 										</p:submenu>
+										<p:submenu label="الرقابة" icon="fa fa-building">
+											<p:menuitem value="القطاعات " action="licSections"
+												icon="fa fa-sitemap" />
+											<p:menuitem value="الاقسام " action="licDepts"
+												icon="fa fa-sitemap" />
+											<p:menuitem value="الأمانات " action="licAmana"
+												icon="fa fa-sitemap" />
+											<p:menuitem id="s_activity" value="النشاط" icon="fa fa-book"
+												action="licActivtyType">
+											</p:menuitem>
+											<p:menuitem id="s_Visits" value="أنواع الزيارات"
+												icon="fa fa-leaf" action="licVisitsTypesView">
+											</p:menuitem>
+											<p:menuitem value="المراكز الصحية" icon="fa fa-file-o"
+												action="licHealthCenters">
+											</p:menuitem>
+										</p:submenu>
 										<p:submenu id="inv_setting" label="الإستثمارات"
 											icon="fa fa-fw fa-exchange">
 											<p:menuitem id="inv_cont_types" value="نوع النشاط"
@@ -407,6 +427,12 @@
 												action="main_category" icon="fa fa-sitemap" />
 											<p:menuitem id="inv_sub_category" value="التصنيف الفرعي"
 												action="sub_category" icon="fa fa-sitemap" />
+											<p:menuitem id="inv_building_type" value="نوع البناء"
+												action="building_type" icon="fa fa-home" />
+											<p:menuitem id="inv_site_type" value="نوع العقار"
+												action="site_type" icon="fa fa-home" />
+											<p:menuitem id="inv_contract_intro" value="مقدمة العقد"
+												action="contract_intro" icon="fa fa-file" />
 										</p:submenu>
 
 										<p:submenu id="st_Setting1" label="شئون الموظفين"
@@ -415,9 +441,6 @@
 												action="vacationType" icon="ui-icon ui-icon-location-city" />
 											<p:menuitem id="EMPhis" value="تاريخ الموظفين  "
 												icon="fa fa-dashboard" action="empHistory">
-											</p:menuitem>
-											<p:menuitem id="benfit" value="المستفيدين"
-												icon="fa fa-dashboard" action="beneficiaryContent">
 											</p:menuitem>
 											<p:menuitem id="sm_employer" value="تصنيف الموظفين"
 												action="categoryEmployer"
@@ -443,8 +466,23 @@
 
 										<p:submenu id="st_Setting4" label="العامة"
 											icon="fa fa-fw fa-cogs">
+											<p:menuitem value="الجنسيات" action="licNationalities"
+												icon="ui-icon ui-icon-location-city">
+											</p:menuitem>
+											<p:menuitem value="الوظائف/المهن" action="licJobs"
+												icon="fa fa-sitemap">
+											</p:menuitem>
 											<p:menuitem id="s_users" value="المستخدمين"
 												icon="fa fa-search" action="emps_list">
+											</p:menuitem>
+											<p:menuitem id="benfit" value="المستفيدين"
+												icon="fa fa-dashboard" action="beneficiaryContent">
+											</p:menuitem>
+											<p:menuitem id="identity_type" value="أنواع الهوية"
+												icon="fa fa-picture-o" action="personal_identity_type">
+											</p:menuitem>
+											<p:menuitem id="identity_place" value="مصدر الهوية"
+												icon="fa fa-location-arrow" action="personal_identity_city">
 											</p:menuitem>
 											<p:menuitem id="s_Cities" value="المدن" icon="fa fa-building"
 												action="liCities">
@@ -456,13 +494,9 @@
 												action="licDistrict">
 											</p:menuitem>
 
-											<p:menuitem id="s_activity" value="النشاط" icon="fa fa-book"
-												action="licActivtyType">
-											</p:menuitem>
 
-											<p:menuitem id="s_Visits" value="أنواع الزيارات"
-												icon="fa fa-leaf" action="licVisitsTypesView">
-											</p:menuitem>
+
+
 											<p:menuitem id="s_referral" value="الإحالات"
 												icon="ui-icon ui-icon-people" action="referral">
 											</p:menuitem>
@@ -496,7 +530,6 @@
 												icon="ui-icon ui-icon-assignment-turned-in"
 												action="Contracts_Screen">
 											</p:menuitem>
-
 										</p:submenu>
 									</secc:authorize>
 								</p:submenu>

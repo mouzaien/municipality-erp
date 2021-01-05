@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA["C:\\Users\\habib\\Desktop\\logo.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select fd.id, FD.FINE_NO, f.fine_code, f.FINE_DESC, (FD.FINE_COUNT*fd.fine_value) fine_value,M.FINE_DATE , M.F_NAME, M.F_LICENCE_NO, M.F_ID_NO, M.F_FINE_CASE, B.BILL_NO,B.BILL_DATE,
+		<![CDATA[select fd.id, FD.FINE_NO, f.fine_code, f.FINE_ACTION FINE_DESC , (FD.FINE_COUNT*fd.fine_value) fine_value,M.FINE_DATE , M.F_NAME, M.F_LICENCE_NO, M.F_ID_NO, M.F_FINE_CASE, B.BILL_NO,B.BILL_DATE,
 (SELECT PR.DDD FROM WRK_PROFILE_SIGN PR WHERE PR.USER_ID = GET_SYS_PROP_VAL('PENALITIES_RESP'))  PRSIGN,
 (SELECT PR.DDD FROM WRK_PROFILE_SIGN PR WHERE PR.USER_ID = m.F_SUPERVISOR_CODE)  SUPSIGN
 from REQ_FINES_DETAILS fd, REQ_FINES_SETUP f,REQ_FINES_master m,pay_lic_bills b
@@ -224,7 +224,7 @@ and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
 				</textElement>
-				<textFieldExpression><![CDATA["مدير الرقابة الشاملة"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["مدير ادارة صحة البيئة "]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" x="380" y="36" width="150" height="24" uuid="1cd5ac52-bed6-437d-8c87-a54ab78bf1f6"/>

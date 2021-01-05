@@ -642,7 +642,7 @@ public interface ICommonDao {
 
 	List<User> getAllUsers();
 
-	public List<ReqFinesMaster> loadAllPenalities(boolean notification);
+	public List<ReqFinesMaster> loadAllPenalities(String notification);
 
 	List<ReqFinesSetup> getCodesFines();
 
@@ -1172,4 +1172,14 @@ public interface ICommonDao {
 
 	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId);
 
+	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
+			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus);
+
+	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+
+	public PayLicBills getBillById(Integer billNumber);
+
+	public int deleteSiteType(Integer siteTypeId);
+
+	public int deleteIntroContract(Integer introId);
 }

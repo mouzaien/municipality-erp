@@ -35,6 +35,7 @@ public class PenalitiesListBean {
 	private Integer fineNo;
 	private boolean notification;
 	private boolean notifiPenality;
+	private String fineStatus = "-1";
 
 	@PostConstruct
 	private void init() {
@@ -46,7 +47,7 @@ public class PenalitiesListBean {
 	}
 
 	public void loadPenalitiesByType() {
-		penalitiesList = dataAccessService.loadAllPenalities(notifiPenality);
+		penalitiesList = dataAccessService.loadAllPenalities(fineStatus);
 	}
 
 	public void loadSelectedPenalty() {
@@ -104,7 +105,7 @@ public class PenalitiesListBean {
 		try {
 			String reportName = "/reports/bill.jasper";
 			PayLicBills payLicBill = dataAccessService.loadBillByLicNo(reqFinesMaster.getFineNo());
-			System.out.println(">>>>"+reqFinesMaster.getFineNo());
+			System.out.println(">>>>" + reqFinesMaster.getFineNo());
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("p1", payLicBill.getBillNumber());
 			parameters.put("SUBREPORT_DIR",
@@ -117,10 +118,11 @@ public class PenalitiesListBean {
 		return "";
 	}
 
-	public String addPenality(){
+	public String addPenality() {
 		return "penalty";
-		
+
 	}
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -244,5 +246,13 @@ public class PenalitiesListBean {
 
 	public void setNotifiPenality(boolean notifiPenality) {
 		this.notifiPenality = notifiPenality;
+	}
+
+	public String getFineStatus() {
+		return fineStatus;
+	}
+
+	public void setFineStatus(String fineStatus) {
+		this.fineStatus = fineStatus;
 	}
 }

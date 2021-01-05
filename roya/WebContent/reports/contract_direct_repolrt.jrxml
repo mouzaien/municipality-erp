@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contract_direct_repolrt" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8252985e-df32-419e-9c97-aa229630321c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="statusMap" class="java.util.Map"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -19,7 +20,7 @@
 		<band height="79" splitType="Stretch">
 			<staticText>
 				<reportElement x="660" y="19" width="140" height="15" uuid="39db367f-0b60-47a9-b9f4-ec303a0780dd"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<text><![CDATA[وزارة الشئون البلدية والقروية]]></text>
@@ -33,7 +34,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="660" y="4" width="140" height="15" uuid="1d958851-3d07-41dd-b332-fe8da1839126"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<text><![CDATA[المملكة العربية السعودية]]></text>
@@ -98,10 +99,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["رقم الرعقد"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["رقم العقد"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="1" y="5" width="110" height="38" uuid="ca349c13-b601-423a-a05d-d20e0e9afae5">
+			<staticText>
+				<reportElement x="1" y="5" width="110" height="38" uuid="9ba50ea1-82f6-4d2b-9516-0163847ba221">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -111,8 +112,8 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["الحالة"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[حالة الفاتورة]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="760" y="5" width="42" height="38" uuid="06f42bf5-b1e6-4e4b-a605-022d0500cbed">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -137,7 +138,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{status}==1?"جديد":($F{status}==2?"تجديد":"ملغي")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{status} == 1 ? "مسددة":"غير مسددة"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="390" y="0" width="140" height="30" uuid="fd000d63-9c59-482f-a825-a5d08807e306"/>

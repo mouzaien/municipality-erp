@@ -44,6 +44,8 @@ public class ContractsFees {
 
 	@Transient
 	private boolean checkfees;
+	@Transient
+	private boolean canRenew = true;
 
 	public Integer getId() {
 		return id;
@@ -139,6 +141,18 @@ public class ContractsFees {
 
 	public void setDiscountAmount(double discountAmount) {
 		this.discountAmount = discountAmount;
+	}
+
+	public boolean isCanRenew() {
+		if (status == 3)
+			canRenew = false;
+		else
+			canRenew = true;
+		return canRenew;
+	}
+
+	public void setCanRenew(boolean canRenew) {
+		this.canRenew = canRenew;
 	}
 
 }

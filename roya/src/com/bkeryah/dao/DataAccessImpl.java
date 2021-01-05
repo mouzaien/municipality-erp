@@ -24,6 +24,7 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
@@ -89,6 +91,7 @@ import com.bkeryah.entities.HrsEmpHistoricalId;
 import com.bkeryah.entities.HrsSalaryScale;
 import com.bkeryah.entities.HrsSalaryScaleId;
 import com.bkeryah.entities.HrsUserAbsent;
+import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.investment.ContractDirect;
@@ -104,7 +107,6 @@ import com.bkeryah.model.VacationModel;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
-import com.mchange.lang.StringUtils;
 
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
@@ -7890,7 +7892,9 @@ public class DataAccessImpl implements DataAccess, Serializable {
 
 	@Override
 	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
-			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate) {
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate, Integer sectionId,
+			Integer contractMaincatgId, Integer contractSubcatgId, Integer actvityId, String component,
+			Integer contractStatusFilter) {
 
 		if (!(contNum != null))
 			contNum = -1;
@@ -7898,14 +7902,26 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			status = -1;
 		if (!(investorId != null))
 			investorId = -1;
-		if (!(fromStartDate != null && fromStartDate.length()>0 ))
+		if (!(fromStartDate != null && fromStartDate.length() > 0))
 			fromStartDate = "-1";
-		if (!(toStartDate != null && toStartDate.length()>0))
+		if (!(toStartDate != null && toStartDate.length() > 0))
 			toStartDate = "-1";
-		if (!(fromEndDate != null && fromEndDate.length()>0))
+		if (!(fromEndDate != null && fromEndDate.length() > 0))
 			fromEndDate = "-1";
-		if (!(toEndDate != null && toEndDate.length()>0))
+		if (!(toEndDate != null && toEndDate.length() > 0))
 			toEndDate = "-1";
+		if (sectionId == null)
+			sectionId = -1;
+		if (contractMaincatgId == null)
+			contractMaincatgId = -1;
+		if (contractSubcatgId == null)
+			contractSubcatgId = -1;
+		if (actvityId == null)
+			actvityId = -1;
+		if (component == null || component.isEmpty())
+			component = "-1";
+		if (contractStatusFilter == null)
+			contractStatusFilter = -1;
 
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
@@ -7914,7 +7930,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		List<ContractDirect> contractslist = new ArrayList<ContractDirect>();
 		try {
 			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
-			String sql = "{call NEW_PKG_WEBKIT.getContractDirectListByAllFilters(?,?,?,?,?,?,?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.getContractDirectListByAllFilters(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setInt(1, contNum);
 			callableStatement.setInt(2, status);
@@ -7924,10 +7940,16 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.setString(6, toStartDate);
 			callableStatement.setString(7, fromEndDate);
 			callableStatement.setString(8, toEndDate);
-			callableStatement.registerOutParameter(9, OracleTypes.CURSOR);
+			callableStatement.setInt(9, sectionId);
+			callableStatement.setInt(10, contractMaincatgId);
+			callableStatement.setInt(11, contractSubcatgId);
+			callableStatement.setString(12, component);
+			callableStatement.setInt(13, actvityId);
+			callableStatement.setInt(14, contractStatusFilter);
+			callableStatement.registerOutParameter(15, OracleTypes.CURSOR);
 			callableStatement.execute();
-			rs = (ResultSet) callableStatement.getObject(9);
-			int i=0;
+			rs = (ResultSet) callableStatement.getObject(15);
+			int i = 0;
 			while (rs.next()) {
 				System.out.println(i++);
 				contractDirect = new ContractDirect();
@@ -7971,5 +7993,77 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			}
 		}
 		return contractslist;
+	}
+
+	@Override
+	public List<PayLicBills> loadBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+			Long phoneNumber, Integer billStatus, Integer bandId) {
+
+		if (fromStartDate == null || fromStartDate.isEmpty())
+			fromStartDate = "-1";
+
+		if (toStartDate == null || toStartDate.isEmpty())
+			toStartDate = "-1";
+
+		if (aplnumber == null || aplnumber.isEmpty())
+			aplnumber = "-1";
+
+		if (phoneNumber == null)
+			phoneNumber = -1L;
+
+		if (billStatus == null)
+			billStatus = -1;
+		if (bandId == null)
+			bandId = -1;
+
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		PayLicBills bill = new PayLicBills();
+		List<PayLicBills> billslist = new ArrayList<PayLicBills>();
+		try {
+			// String currentHijriDate =
+			// Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			String sql = "{call NEW_PKG_WEBKIT.getBillsListByAllFilters(?,?,?,?,?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setString(1, fromStartDate);
+			callableStatement.setString(2, toStartDate);
+			callableStatement.setString(3, aplnumber);
+			callableStatement.setLong(4, phoneNumber);
+			callableStatement.setInt(5, billStatus);
+			callableStatement.setInt(6, bandId);
+			callableStatement.registerOutParameter(7, OracleTypes.CURSOR);
+			callableStatement.execute();
+			rs = (ResultSet) callableStatement.getObject(7);
+			int i = 0;
+			while (rs.next()) {
+				System.out.println(i++);
+				bill = new PayLicBills();
+				bill.setBillNumber(rs.getInt("BILL_NO"));
+				bill.setAplOwner(rs.getString("APL_OWNER"));
+				bill.setBillOwnerName(rs.getString("BILL_O_NAME"));
+				bill.setPayInstallNumber(rs.getLong("PAY_INSTALL_NO"));
+				bill.setBillDate(rs.getString("BILL_DATE"));
+				bill.setPayAmount(rs.getDouble("PAY_AMOUNT"));
+				bill.setCollectionSR(rs.getString("COLLECTION_SR"));
+				bill.setPayHijriDate(rs.getString("PAY_DATE_H"));
+				bill.setBillStatus(rs.getInt("BILL_STATUS"));
+				billslist.add(bill);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(" loadBillsListByAllFilters : " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return billslist;
 	}
 }

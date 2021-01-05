@@ -28,6 +28,8 @@ public class El3ohadBean {
 	private ArcUsers currentUser;
 	private Integer employerId;
 	private List<Article> articleList = new ArrayList<Article>();
+	private List<Article> articleFilterdList ;
+	private Integer artId;
 
 	@PostConstruct
 	public void init() {
@@ -46,24 +48,32 @@ public class El3ohadBean {
 	}
 
 	// method for
-		// print Protection card from search_exchange_request بطاقة عهدة
-		public String printProtectionCardAllArt() {
-			String reportName = "/reports/protection_A3ohad.jasper";
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("artId", -1);
-			parameters.put("userId", employerId);
-			Utils.printPdfReport(reportName, parameters);
-			return "";
-		}
-	
-		public String printProtectionCardOneArt(Integer artId) {
-			String reportName = "/reports/protection_A3ohad.jasper";
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("artId", artId);
-			parameters.put("userId", employerId);
-			Utils.printPdfReport(reportName, parameters);
-			return "";
-		}
+	// print Protection card from search_exchange_request بطاقة عهدة
+	public String printProtectionCardAllArt() {
+		String reportName = "/reports/protection_A3ohad.jasper";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		// if (articleFilterdList != null && articleFilterdList.size() > 0) {
+		// Utils.printPdfReportFromListDataSource(reportName, parameters,
+		// articleFilterdList);
+		// return "";
+		// }
+
+		parameters.put("artId", -1);
+		parameters.put("userId", employerId);
+		Utils.printPdfReport(reportName, parameters);
+		return "";
+
+	}
+
+	public String printProtectionCardOneArt() {
+		String reportName = "/reports/protection_A3ohad.jasper";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("artId", artId);
+		parameters.put("userId", employerId);
+		Utils.printPdfReport(reportName, parameters);
+		return "";
+	}
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -94,6 +104,22 @@ public class El3ohadBean {
 
 	public void setArticleList(List<Article> articleList) {
 		this.articleList = articleList;
+	}
+
+	public List<Article> getArticleFilterdList() {
+		return articleFilterdList;
+	}
+
+	public void setArticleFilterdList(List<Article> articleFilterdList) {
+		this.articleFilterdList = articleFilterdList;
+	}
+
+	public Integer getArtId() {
+		return artId;
+	}
+
+	public void setArtId(Integer artId) {
+		this.artId = artId;
 	}
 
 }

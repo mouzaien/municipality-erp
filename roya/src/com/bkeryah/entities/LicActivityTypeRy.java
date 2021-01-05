@@ -15,7 +15,7 @@ public class LicActivityTypeRy {
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "ID")
+	@Column(name = "ID")  
 	private Integer id;
 	@Column(name = "NAME")
 	private String name;

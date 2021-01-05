@@ -782,8 +782,19 @@ public class HijriCalendarUtil {
 		yearsList.add(new YearClass(1447, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 30, 29, "2025/06/26"));
 		yearsList.add(new YearClass(1448, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 29, "2026/06/16"));
 		yearsList.add(new YearClass(1449, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2027/06/06"));
-//		yearsList.add(new YearClass(1450, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2028/05/26"));
-//		yearsList.add(new YearClass(1451, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1450, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2028/05/26"));
+		yearsList.add(new YearClass(1451, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1452, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1453, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1454, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1455, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1456, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1457, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1458, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1459, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1460, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1461, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+		yearsList.add(new YearClass(1462, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
 		return yearsList;
 
 	}

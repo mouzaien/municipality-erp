@@ -1,6 +1,8 @@
 package com.bkeryah.managedBean;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,16 +13,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.bkeryah.entities.PayBillDetails;
 import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.PayMaster;
 import com.bkeryah.service.IDataAccessService;
 
+import service.ISmsService;
+import service.SmsService;
+import sms.sender.ResponseTypeEnum;
 import utilities.HijriCalendarUtil;
 import utilities.MsgEntry;
 import utilities.Utils;
@@ -29,7 +39,7 @@ import utilities.Utils;
 @SessionScoped
 public class BillBean {
 
-	@ManagedProperty(value="#{dataAccessService}")
+	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private PayLicBills payLicBill = new PayLicBills();
 	private List<PayBillDetails> detailsBillList = new ArrayList<>();
@@ -40,19 +50,65 @@ public class BillBean {
 	private boolean consultMode;
 	private Double totalAmountBill;
 	private String url;
-	
+	ISmsService smsService = new SmsService();
+
 	/**
 	 * Search bill
-	 * */
+	 */
 	private List<PayLicBills> billsList;
 	private List<PayLicBills> filteredBills;
-	
-	
+	private String aplnumber;
+	private String phoneNumber;
+	private Double billAmount;
+	private BigDecimal billAmountBig;
+
+	private String fromStartDate;
+	private String toStartDate;
+	private String fromEndDate = "-1";
+	private String toEndDate = "-1";
+	private Integer billStatus = -1;
+	private Integer itemIdFilter;
+
+	@PostConstruct
+	void init() {
+
+	}
+
+	public void initLoad() {
+		billAmount = null;
+		billAmountBig = null;
+		billsList = dataAccessService.loadAllBills();
+		billAmount = billsList.stream().mapToDouble(num -> num.getPayAmount()).sum();
+		billAmountBig = new BigDecimal(billAmount).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	/**
+	 * load by filters
+	 */
+	public void loadPayLicBillslist() {
+		billAmount = null;
+		billAmountBig = null;
+		fromStartDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:fromStartDate");
+		toStartDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:toStartDate");
+		fromEndDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:fromEndDate");
+		toEndDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:toEndDate");
+		billsList = dataAccessService.loadAllBillsListByAllFilters(fromStartDate, toStartDate, aplnumber,
+				(phoneNumber == null || phoneNumber.isEmpty())? null : new Long(phoneNumber), billStatus, itemIdFilter);
+		billAmount = billsList.stream().mapToDouble(num -> num.getPayAmount()).sum();
+		billAmountBig = new BigDecimal(billAmount).setScale(2, RoundingMode.HALF_UP);
+
+	}
+
 	/**
 	 * Instantiate a new bill
+	 * 
 	 * @return
 	 */
-	public String addBill(){
+	public String addBill() {
 		consultMode = false;
 		payLicBill = new PayLicBills();
 		selectedItemId = null;
@@ -60,30 +116,34 @@ public class BillBean {
 		totalAmountBill = 0.0;
 		return "bill";
 	}
-	
+
 	/**
 	 * Save a bill
+	 * 
 	 * @return
 	 */
-	public String saveBillAction(){
+	public String saveBillAction() {
 		if (!checkFields())
-			return "" ;
-		try{
+			return "";
+		try {
 			Set<PayBillDetails> detailsSet = new HashSet<PayBillDetails>(detailsBillList);
 			payLicBill.setPayBillDetails(detailsSet);
 			dataAccessService.saveBill(payLicBill);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 			consultMode = true;
-		//	FacesContext.getCurrentInstance().getExternalContext().redirect("bill.xhtml");
-//			resetFields();
-			
+			smsService = new SmsService();
+			ResponseTypeEnum RESPONSE = smsService.sendMessage(payLicBill.getPayInstallNumber().toString(),
+					"تم اصدار فاتورة لك برقم:  " + payLicBill.getBillNumber());
+			// FacesContext.getCurrentInstance().getExternalContext().redirect("bill.xhtml");
+			// resetFields();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 		}
-		return "" ;
+		return "";
 	}
-	
+
 	private void resetFields() {
 		payLicBill = new PayLicBills();
 		detailsBillList = new ArrayList<>();
@@ -92,20 +152,22 @@ public class BillBean {
 
 	/**
 	 * Change the expired bill
+	 * 
 	 * @return
 	 */
-	public String changeBillAction(){
+	public String changeBillAction() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date billExpireDate = null;
 		try {
-			billExpireDate = sdf.parse(HijriCalendarUtil.ConvertHijriTogeorgianDate(HijriCalendarUtil.addDaysToHijriDate(payLicBill.getBillDate(), 7)));
+			billExpireDate = sdf.parse(HijriCalendarUtil
+					.ConvertHijriTogeorgianDate(HijriCalendarUtil.addDaysToHijriDate(payLicBill.getBillDate(), 7)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		if(1==payLicBill.getBillStatus()){
+		if (1 == payLicBill.getBillStatus()) {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("paid.bill"));
 			return "";
-		} else if (billExpireDate.after(new Date())){
+		} else if (billExpireDate.after(new Date())) {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("not.expired.bill"));
 			return "";
 		}
@@ -118,7 +180,29 @@ public class BillBean {
 		}
 		return "";
 	}
-	
+
+	/**
+	 * @param document
+	 */
+	public void postProcessXLS(Object document) {
+		HSSFWorkbook wb = (HSSFWorkbook) document;
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFRow header = sheet.getRow(0);
+		// sheet.removeColumnBreak(8);
+		sheet.setColumnHidden(9, true);
+		;
+		//
+		// HSSFCellStyle cellStyle = wb.createCellStyle();
+		// cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
+		// cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		//
+		// for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+		// HSSFCell cell = header.getCell(i);
+		//
+		// cell.setCellStyle(cellStyle);
+		// }
+	}
+
 	/**
 	 * Validate screen's fields
 	 * 
@@ -130,23 +214,24 @@ public class BillBean {
 		if ((payLicBill.getBillOwnerName() == null) || (payLicBill.getBillOwnerName().trim().equals(""))) {
 			valid = false;
 		}
-//		if ((payLicBill.getPayInstallNumber() == null) || (payLicBill.getPayInstallNumber() == 0)) {
-//			valid = false;
-//		}
+		// if ((payLicBill.getPayInstallNumber() == null) ||
+		// (payLicBill.getPayInstallNumber() == 0)) {
+		// valid = false;
+		// }
 		if (!valid)
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("required.fields"));
-		else if((detailsBillList == null) || (detailsBillList.isEmpty())){
+		else if ((detailsBillList == null) || (detailsBillList.isEmpty())) {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.details.bill"));
 			valid = false;
 		}
 		return valid;
 	}
-	
+
 	/**
 	 * Add an item to the bill
 	 */
-	public void addNewItem(){
-		if(amount == 0){
+	public void addNewItem() {
+		if (amount == 0) {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.amount"));
 			return;
 		}
@@ -158,28 +243,29 @@ public class BillBean {
 		payBillDetails.setPayMaster(Integer.parseInt(selectedItemId));
 		detailsBillList.add(payBillDetails);
 		totalAmountBill += amount;
-		//selectedItemId = null;
+		// selectedItemId = null;
 		amount = null;
 		payLicBill.setPayAmount(totalAmountBill);
-		if(payLicBill.getPayInstallNumber() == 0)
+		if (payLicBill.getPayInstallNumber() == 0)
 			payLicBill.setPayInstallNumber(null);
 	}
-	
+
 	/**
 	 * Find the selected payMaster
+	 * 
 	 * @param selectedId
 	 * @return
 	 */
 	private PayMaster getSelectedPayMaster(int selectedId) {
-		if((getItemsList() != null) && (!getItemsList().isEmpty())){
-			for(PayMaster item : getItemsList()){
-				if(item.getAccountNumber() == selectedId)
+		if ((getItemsList() != null) && (!getItemsList().isEmpty())) {
+			for (PayMaster item : getItemsList()) {
+				if (item.getAccountNumber() == selectedId)
 					return item;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Load bill data
 	 */
@@ -194,7 +280,7 @@ public class BillBean {
 				PayMaster selectedPayMaster = getSelectedPayMaster(details.getPayDetails());
 				if (selectedPayMaster != null)
 					details.setItemLabel(selectedPayMaster.getName());
-				    
+
 			}
 		}
 		try {
@@ -203,16 +289,17 @@ public class BillBean {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Load bills list
 	 */
-	public void loadAllBills(){
+	public void loadAllBills() {
 		billsList = dataAccessService.loadAllBills();
 	}
-	
+
 	/**
 	 * Get the reporting URL
+	 * 
 	 * @return
 	 */
 	public String getUrl() {
@@ -261,7 +348,7 @@ public class BillBean {
 
 	public void setSelectedItem(PayBillDetails selectedItem) {
 		this.selectedItem = selectedItem;
-		if(detailsBillList != null){
+		if (detailsBillList != null) {
 			detailsBillList.remove(selectedItem);
 			totalAmountBill -= selectedItem.getAmount();
 		}
@@ -269,15 +356,13 @@ public class BillBean {
 
 	public List<PayMaster> getItemsList() {
 		if ((itemsList == null) || (itemsList.isEmpty()))
-			 itemsList = dataAccessService.loadAllPayMasters();
+			itemsList = dataAccessService.loadAllPayMasters();
 		return itemsList;
 	}
 
 	public void setItemsList(List<PayMaster> itemsList) {
 		this.itemsList = itemsList;
 	}
-
-
 
 	public List<PayLicBills> getBillsList() {
 		return billsList;
@@ -303,8 +388,6 @@ public class BillBean {
 		this.consultMode = consultMode;
 	}
 
-
-	
 	public Double getAmount() {
 		return amount;
 	}
@@ -324,12 +407,108 @@ public class BillBean {
 	public String printBillReport() {
 		String reportName = "/reports/bill.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("p1", payLicBill.getBillNumber()+"");
-		parameters.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext()
-				.getRealPath("/reports/bill_detail.jasper"));
+		parameters.put("p1", payLicBill.getBillNumber() + "");
+		parameters.put("SUBREPORT_DIR",
+				FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/bill_detail.jasper"));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
-	
-	
+
+	public String printAllBillsAction() {
+		String reportName = "/reports/all_bills_report.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		Utils.printPdfReportFromListDataSource(reportName, parameters, billsList);
+		// Utils.printPdfReport(reportName, parameters);
+
+		return "";
+	}
+
+	public String getAplnumber() {
+		return aplnumber;
+	}
+
+	public void setAplnumber(String aplnumber) {
+		this.aplnumber = aplnumber;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Double getBillAmount() {
+		return billAmount;
+	}
+
+	public void setBillAmount(Double billAmount) {
+		this.billAmount = billAmount;
+	}
+
+	public String getFromStartDate() {
+		return fromStartDate;
+	}
+
+	public void setFromStartDate(String fromStartDate) {
+		this.fromStartDate = fromStartDate;
+	}
+
+	public String getToStartDate() {
+		return toStartDate;
+	}
+
+	public void setToStartDate(String toStartDate) {
+		this.toStartDate = toStartDate;
+	}
+
+	public String getFromEndDate() {
+		return fromEndDate;
+	}
+
+	public void setFromEndDate(String fromEndDate) {
+		this.fromEndDate = fromEndDate;
+	}
+
+	public String getToEndDate() {
+		return toEndDate;
+	}
+
+	public void setToEndDate(String toEndDate) {
+		this.toEndDate = toEndDate;
+	}
+
+	public Integer getBillStatus() {
+		return billStatus;
+	}
+
+	public void setBillStatus(Integer billStatus) {
+		this.billStatus = billStatus;
+	}
+
+	public Integer getItemIdFilter() {
+		return itemIdFilter;
+	}
+
+	public void setItemIdFilter(Integer itemIdFilter) {
+		this.itemIdFilter = itemIdFilter;
+	}
+
+	public ISmsService getSmsService() {
+		return smsService;
+	}
+
+	public void setSmsService(ISmsService smsService) {
+		this.smsService = smsService;
+	}
+
+	public BigDecimal getBillAmountBig() {
+		return billAmountBig;
+	}
+
+	public void setBillAmountBig(BigDecimal billAmountBig) {
+		this.billAmountBig = billAmountBig;
+	}
+
 }

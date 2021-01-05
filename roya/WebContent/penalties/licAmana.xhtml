@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		<h:form id="form-lic" prependId="false">
+			<p:messages autoUpdate="true" closable="true"></p:messages>
+			<div class="image-box-footer" align="left">
+				<p:commandButton value="اضافة" id="save" process="@this"
+					immediate="true" styleClass="cyan-btn"
+					onclick="PF('print-barcode-dlg').show()" icon="ui-icon-add">
+				</p:commandButton>
+			</div>
+			<br></br>
+			<div class="card card-w-title" dir="rtl">
+				<h1 style="color: #7CB342; text-align: center;">
+					الأمانات <span style="color: red;" class="fa fa-fw fa-file-text"></span>
+				</h1>
+				<br />
+				<p:dataTable value="#{penalityAmanaBean.amanaList}" var="sec"
+					id="fines" rowKey="#{sec.id}" paginator="true" rows="10"
+					emptyMessage="لا يوجد" editable="true" rowIndexVar="rowIndex"
+					sortBy="#{sec.id}" sortOrder="descending"
+					paginatorPosition="bottom" widgetVar="cellLicence"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					<p:ajax event="rowEdit" update="fines"
+						listener="#{penalityAmanaBean.onRowEdit}" />
+					<p:ajax event="rowEditCancel" update="fines"
+						listener="#{penalityAmanaBean.onRowCancel}" />
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="ابحث فى كل الحقول:" />
+							<p:inputText id="globalFilter"
+								onkeyup="PF('cellLicence').filter()" style="width:150px"
+								placeholder="كلمة البحث">
+							</p:inputText>
+						</p:outputPanel>
+					</f:facet>
+					<p:column style="text-align: center;" headerText="الرقم" width="5%">
+						<h:outputText value="#{rowIndex+1}" />
+					</p:column>
+					<p:column headerText="الامانة" width="50%" filterBy="#{sec.name}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{sec.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{sec.name}" required="true"
+									requiredMessage="حقل الاسم مطلوبة " style="width:100%" />
+
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:10%" headerText="تعديل">
+						<p:rowEditor />
+					</p:column>
+					<p:column width="5%" style="text-align:center" headerText="حذف">
+						<p:commandButton action="#{penalityAmanaBean.deleteSection(sec)}"
+							process="@this" update="fines" styleClass="red-btn"
+							immediate="true" icon="ui-icon-remove">
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</div>
+
+			<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
+				width="50%" hideEffect="fade" showEffect="explode" dir="rtl"
+				modal="true" resizable="false">
+				<h:panelGroup>
+					<p:fieldset width="100%" legend="بيانات الامانة">
+						<div class="ui-g" dir="rtl">
+							<div class="ui-g-2">
+								<h:outputLabel value="الاسم" />
+							</div>
+							<div class="ui-g-5">
+								<p:inputText value="#{penalityAmanaBean.addAmana.name}"
+									required="true" requiredMessage="حقل الاسم مطلوبة "
+									style="width:100%" />
+							</div>
+						</div>
+					</p:fieldset>
+				</h:panelGroup>
+				<div style="float: left;">
+					<p:commandButton value="#{msg['add']}" process="confirmSigndialog"
+						action="#{penalityAmanaBean.addSection}"
+						update="confirmSigndialog fines ">
+					</p:commandButton>
+					<!-- 						actionListener="#{penaltiesBean.addpenalty}" -->
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton value="#{msg['close']}" immediate="true"
+						icon="ui-icon ui-icon-keyboard-arrow-left"
+						styleClass=" orange-btn" onclick="PF('print-barcode-dlg').hide()">
+					</p:commandButton>
+				</div>
+			</p:dialog>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

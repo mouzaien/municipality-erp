@@ -26,7 +26,7 @@
 
 					<div class="image-box-footer" align="left">
 						<p:commandButton value="#{msg['back']}" action="search_bill"
-							immediate="true"  styleClass="orange-btn">
+							immediate="true" styleClass="orange-btn">
 							<f:ajax execute="@form"></f:ajax>
 						</p:commandButton>
 						<p:spacer width="10px" height="10px"></p:spacer>
@@ -37,8 +37,7 @@
 						<p:spacer width="10px" height="10px"></p:spacer>
 						<p:commandButton value="#{msg['save']}"
 							rendered="#{!billBean.consultMode}" styleClass="green-btn"
-							 immediate="true"
-							actionListener="#{billBean.saveBillAction}">
+							immediate="true" actionListener="#{billBean.saveBillAction}">
 							<f:ajax execute="@form" render="@form"></f:ajax>
 						</p:commandButton>
 						<p:spacer width="10px" height="10px"></p:spacer>
@@ -78,16 +77,28 @@
 										itemValue="#{categ.code}" />
 								</p:selectOneMenu>
 							</div>
-						</div>
-						<div class="ui-g">
-							<div class="ui-g-2">
+							<div class="ui-g-1">
 								<h:outputLabel value="#{msg['bill.owner.name']}"
 									styleClass="btxt" />
 							</div>
-							<div class="ui-g-5">
+							<div class="ui-g-3">
 								<p:inputText value="#{billBean.payLicBill.billOwnerName}"
 									style="width:100%;" disabled="#{billBean.consultMode}"
 									styleClass="form-control" />
+							</div>
+
+						</div>
+						<div class="ui-g">
+
+							<div class="ui-g-2">
+								<h:outputLabel value="البيان" styleClass="btxt" />
+							</div>
+							<div class="ui-g-3">
+								<p:inputTextarea value="#{billBean.payLicBill.bayan}" cols="190"
+									rows="2">
+
+								</p:inputTextarea>
+
 							</div>
 						</div>
 						<div class="ui-g">
@@ -98,14 +109,16 @@
 							<div class="ui-g-3">
 								<p:inputText value="#{billBean.payLicBill.payInstallNumber}"
 									converterMessage="#{msg['error.phone.number']}" required="true"
-									requiredMessage="رقم الجوال مطلوب"
+									requiredMessage="رقم الجوال مطلوب" placeholder="*********966"
 									disabled="#{billBean.consultMode}" styleClass="form-control">
 									<f:validator validatorId="utilities.PhoneNumberValidator" />
 								</p:inputText>
 							</div>
+
 						</div>
 
 						<div class="ui-g">
+
 							<div class="ui-g-2">
 								<h:outputLabel value="رقم السجل" styleClass="btxt" />
 							</div>

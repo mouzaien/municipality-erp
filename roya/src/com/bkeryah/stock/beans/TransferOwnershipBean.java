@@ -223,7 +223,7 @@ public class TransferOwnershipBean {
 					transSave.setArtName(item.getArticleName());
 					transSave.setExchMasterId(item.getExchMasterId());
 					transSave.setQty(item.getQty());
-					transSave.setStatus("Y");
+					transSave.setStatus("R");
 					// transSaveList.add(transSave);
 				}
 				dataAccessService.addTransferOnwerShipItems(transSave);

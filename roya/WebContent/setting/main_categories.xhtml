@@ -28,42 +28,64 @@
 						<h1 style="color: #7CB342; text-align: center;">
 							التصنيفات الرئيسية <span class="fa fa-fw fa-building"></span>
 						</h1>
-						<br /> 
+						<br />
 						<p:dataTable var="item" id="LicLst" widgetVar="deptCell"
-							value="#{invMainCategoryBean.contractMainCategoryList}" emptyMessage="لايوجد بيانات"
-							rowIndexVar="rowIndex" paginatorPosition="bottom" 
+							value="#{invMainCategoryBean.contractMainCategoryList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom" editable="true"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							paginator="true" rows="13">
 							<f:facet name="header">
 								<p:outputPanel>
 									<h:outputText value="ابحث فى كل الحقول:" />
-									<p:inputText id="globalFilter" onkeyup="PF('deptCell').filter()"
-										style="width:150px" placeholder="كلمة البحث" >
+									<p:inputText id="globalFilter"
+										onkeyup="PF('deptCell').filter()" style="width:150px"
+										placeholder="كلمة البحث">
 									</p:inputText>
 								</p:outputPanel>
 							</f:facet>
-							<p:column headerText="الرقم" filterBy="#{rowIndex +1}"
+							<p:ajax event="rowEdit"
+								listener="#{invMainCategoryBean.onRowEdit}"
+								update=":includeform:LicLst" />
+							<p:ajax event="rowEditCancel"
+								listener="#{invMainCategoryBean.onRowCancel}"
+								update=":includeform:LicLst" />
+
+							<p:column headerText=" الرقم التسلسلي" filterBy="#{rowIndex +1}"
 								filterMatchMode="contains" style="width:10%;text-align:center;">
 								<h:outputText value="#{rowIndex +1}" />
 							</p:column>
-							
-							<p:column headerText="الرقم11111" filterBy="#{item.id}"
-								filterMatchMode="contains" style="width:10%;text-align:center;">
-								<h:outputText value="#{item.id}" />
-							</p:column>
-							
+
+							<!-- 							<p:column headerText="الرقم" filterBy="#{item.id}" -->
+							<!-- 								filterMatchMode="contains" style="width:10%;text-align:center;"> -->
+							<!-- 								<h:outputText value="#{item.id}" /> -->
+							<!-- 							</p:column> -->
+
 							<p:column headerText="اسم التصنيف" filterBy="#{item.name}"
-								filterMatchMode="contains" style="width:70%;">
-								<h:outputText value="#{item.name}" />
+								filterMatchMode="contains" style="width:60%;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{item.name}" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
-							<p:column width="10%" style="text-align:center" headerText="حذف">
-								<p:commandButton
-									onclick="PF('delete_main_category_dlg').show()" process="@this"
-									icon="ui-icon-search">
+
+							<p:column style="width:7% ; text-align:center" headerText="تعديل">
+								<p:rowEditor />
+							</p:column>
+
+							<p:column width="7%" style="text-align:center" headerText="حذف">
+								<p:commandButton onclick="PF('delete_main_category_dlg').show()"
+									styleClass="red-btn" process="@this" icon="ui-icon-remove">
 									<f:setPropertyActionListener value="#{item}"
 										target="#{invMainCategoryBean.mainCategory}" />
-										</p:commandButton>
+								</p:commandButton>
 							</p:column>
+
+
 						</p:dataTable>
 
 						<p:dialog widgetVar="add_main_category_dlg"
@@ -84,6 +106,7 @@
 							<div class="image-box-footer" align="left">
 								<p:commandButton value="حفظ" styleClass="btn btn-primary"
 									action="#{invMainCategoryBean.saveMainCategory}"
+									update="LicLst"
 									oncomplete="PF('add_main_category_dlg').hide();">
 								</p:commandButton>
 							</div>
@@ -102,9 +125,10 @@
 							<br />
 							<div class="image-box-footer" align="center">
 								<p:commandButton value="نعم" styleClass="green-btn"
-									icon="fa fa-check" action="#{invMainCategoryBean.deleteMainCategory}" 
+									update="LicLst" icon="fa fa-check"
+									action="#{invMainCategoryBean.deleteMainCategory}"
 									oncomplete="PF('delete_main_category_dlg').hide();">
-									
+
 								</p:commandButton>
 								<p:spacer width="10px" />
 								<p:commandButton value="لا" styleClass="red-btn"

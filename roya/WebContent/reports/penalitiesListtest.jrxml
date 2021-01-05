@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a4f5284-91ab-4d7f-9478-cb513f2e6999">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="royaTest"/>
 	<queryString language="SQL">
-		<![CDATA[select FINE_CODE sub,FINE_DESC type,FINE_MINIMUM_VALUE min,FINE_SUPERMUM_VALUE max from REQ_FINES_SETUP]]>
+		<![CDATA[select FINE_CODE sub,FINE_ACTION type,FINE_MINIMUM_VALUE min,FINE_SUPERMUM_VALUE max from REQ_FINES_SETUP]]>
 	</queryString>
 	<field name="type" class="java.lang.String"/>
 	<field name="sub" class="java.lang.String"/>

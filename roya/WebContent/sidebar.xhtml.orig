@@ -10,7 +10,7 @@
 		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-dark' : ''}">
 		<div class="sidebar-logo">
 			<a href="dashboard.xhtml"> <p:graphicImage
-					name="images/login/icon-logo1.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
+					name="images/login/icon-logo.png" library="serenity-layout" /> <!--                 <span class="app-name">#{msg['municipality']}</span> -->
 			</a> <a href="#" class="sidebar-anchor" title="Toggle Menu"></a>
 		</div>
 
@@ -36,14 +36,14 @@
 
 							<p:submenu id="sr_Transactions" label="#{msg['transactions']}"
 								icon="ui-icon ui-icon-create">
-								
+
 								<p:menuitem id="menu1" value="#{msg['menu.letter']}"
 									icon="fa fa-fw fa-edit" action="PersonalComment"
 									rendered="#{loginBean.currentUser.mgrId != null}" />
-									
-									<p:menuitem id="menu3" value="#{msg['menu.memo']}"
+
+								<p:menuitem id="menu3" value="#{msg['menu.memo']}"
 									action="internalMemo" icon="fa fa-fw fa-file-text-o" />
-									
+
 								<secc:authorize ifAnyGranted="ROLE_SUPPORT1">
 									<p:menuitem id="menu2" value="#{msg['menu.personnel.letter']}"
 										icon="fa fa-fw fa-file-text"
@@ -254,30 +254,29 @@
 									icon="ui-icon ui-icon-security">
 
 									<!-- 	rendered="false" -->
-									<p:submenu id="sr_shop" label="المحلات"
-										icon="ui-icon ui-icon-shop">
-										<p:menuitem id="sb_add_licences" value="إضافة رخصة"
-											action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sb_add_licences" value="الرخص"
+										action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
 
-										<p:menuitem id="sa_add_recruit" value="إضافة مراقب"
-											action="recruit_supervisor" icon="ui-icon ui-icon-pan-tool" />
-										<p:menuitem id="superV" value="حساب الزيارت"
-											action="visitsuper" icon="ui-icon ui-icon-pan-tool" />
-										<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
-											action="health_certificate" icon="ui-icon ui-icon-cheet" />
+									<p:menuitem id="sa_add_recruit" value="المراقبين"
+										action="recruit_supervisor" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sa_add_" value="الزيارات" action="visits"
+										icon="ui-icon ui-icon-pan-tool" />
 
-									</p:submenu>
+
+									<p:menuitem id="superV" value="توزيع الزيارت"
+										action="visitsuper" icon="ui-icon ui-icon-pan-tool" />
+									<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
+										action="health_certificate" icon="ui-icon ui-icon-cheet" />
 									<p:menuitem id="sb_penalty_setup" value="#{msg['fines']}"
 										action="penalty_setup" icon="fa fa-fw fa-leanpub" />
 
 									<p:menuitem id="sb_penalty" value="مخالفة جديدة"
-										rendered="false" action="penalty"
-										icon="fa fa-fw fa-file-text-o" />
+										action="penalty" icon="fa fa-fw fa-file-text-o" />
 
 									<p:menuitem id="sb_searchPenalities" value="عرض العقوبات"
 										action="searchPenalities" icon="fa fa-fw fa-file-text" />
 									<p:menuitem id="sb_fines" value="المخالفات" action="penalties"
-										icon="ui-icon ui-icon-pan-tool" />
+										icon="ui-icon ui-icon-pan-tool" rendered="false" />
 									<p:menuitem id="sb_notif_penalities" value="إشعارات المخالفات"
 										action="notif_penalities"
 										icon="ui-icon ui-icon-notifications-active" />
@@ -292,28 +291,31 @@
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVEST">
 								<p:submenu id="sr_investments" label="الاستثمارات"
 									icon="ui-icon ui-icon-landscape">
-									<p:menuitem id="sb_announcements" value="المزايدات"
-										action="announcements" icon="fa fa-fw fa-bullseye" />
 
-									<p:menuitem id="sb_real_estate" value="العقارات"
-										action="real_estate" icon="fa fa-fw fa-building" />
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_INVEST">
+										<p:menuitem id="sb_real_estate" value="العقارات"
+											action="real_estate" icon="fa fa-fw fa-building" />
 
-									<p:menuitem id="sb_investors" value="المستثمرين"
-										action="investors" icon="fa fa-fw fa-dollar" />
+										<p:menuitem id="sb_investors" value="المستثمرين"
+											action="investors" icon="fa fa-fw fa-dollar" />
+										<p:menuitem id="sb_contract_direct" value="العقود"
+											action="contract_direct" icon="fa fa-fw fa-file-text-o" />
+									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
+										<p:menuitem id="sb_announcements" value="المزايدات"
+											action="announcements" icon="fa fa-fw fa-bullseye" />
+										<p:menuitem id="sb_tenders" value="العطاءات" action="tenders"
+											icon="fa fa-fw fa-cube" />
 
-									<p:menuitem id="sb_tenders" value="العطاءات" action="tenders"
-										icon="fa fa-fw fa-cube" />
+										<p:menuitem id="sb_select_tender" value="ترسية العطاءات"
+											action="select_tender" icon="fa fa-fw fa-cubes" />
 
-									<p:menuitem id="sb_select_tender" value="ترسية العطاءات"
-										action="select_tender" icon="fa fa-fw fa-cubes" />
-
-									<p:menuitem id="sb_contracts" value="العقود" action="contracts"
-										icon="fa fa-fw fa-file-text-o" />
-
-									<p:menuitem id="sb_contract_direct" value="العقود المباشرة"
-										action="contract_direct" icon="fa fa-fw fa-file-text-o" />
-
+										<p:menuitem id="sb_contracts" value="عقود المزايدات"
+											action="contracts" icon="fa fa-fw fa-file-text-o" />
+									</secc:authorize>
 								</p:submenu>
+								</secc:authorize>
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SADAD">
 								<p:submenu id="sr_search_bill" label="سداد"
 									icon="fa fa-fw fa-money">
 									<p:menuitem id="sb_search_bill" value="الفواتير"
@@ -396,6 +398,17 @@
 												icon="fa fa-unlink" action="Attachments">
 											</p:menuitem>
 										</p:submenu>
+										<p:submenu id="inv_setting" label="الإستثمارات"
+											icon="fa fa-fw fa-exchange">
+											<p:menuitem id="inv_cont_types" value="نوع النشاط"
+												action="contTypes" icon="fa fa-sitemap" />
+											<p:menuitem id="inv_cont_Components" value="مكونات النشاط "
+												action="contComponents" icon="fa fa-sitemap" />
+											<p:menuitem id="inv_main_category" value="التصنيف الرئيسي"
+												action="main_category" icon="fa fa-sitemap" />
+											<p:menuitem id="inv_sub_category" value="التصنيف الفرعي"
+												action="sub_category" icon="fa fa-sitemap" />
+										</p:submenu>
 
 										<p:submenu id="st_Setting1" label="شئون الموظفين"
 											icon="ui-icon ui-icon-people">
@@ -403,9 +416,6 @@
 												action="vacationType" icon="ui-icon ui-icon-location-city" />
 											<p:menuitem id="EMPhis" value="تاريخ الموظفين  "
 												icon="fa fa-dashboard" action="empHistory">
-											</p:menuitem>
-											<p:menuitem id="benfit" value="المستفيدين"
-												icon="fa fa-dashboard" action="beneficiaryContent">
 											</p:menuitem>
 											<p:menuitem id="sm_employer" value="تصنيف الموظفين"
 												action="categoryEmployer"
@@ -433,6 +443,15 @@
 											icon="fa fa-fw fa-cogs">
 											<p:menuitem id="s_users" value="المستخدمين"
 												icon="fa fa-search" action="emps_list">
+											</p:menuitem>
+											<p:menuitem id="benfit" value="المستفيدين"
+												icon="fa fa-dashboard" action="beneficiaryContent">
+											</p:menuitem>
+											<p:menuitem id="identity_type" value="أنواع الهوية"
+												icon="fa fa-picture-o" action="personal_identity_type">
+											</p:menuitem>
+											<p:menuitem id="identity_place" value="مصدر الهوية"
+												icon="fa fa-location-arrow" action="personal_identity_city">
 											</p:menuitem>
 											<p:menuitem id="s_Cities" value="المدن" icon="fa fa-building"
 												action="liCities">

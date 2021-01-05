@@ -316,6 +316,8 @@
 				<value>com.bkeryah.penalties.LicFinesRoles</value>
 				<value>com.bkeryah.entities.investment.ContractComponents</value>
 				<value>com.bkeryah.entities.investment.ContractsFees</value>
+				<value>com.bkeryah.penalties.Amana</value>
+				<value>com.bkeryah.entities.investment.ContractFeesCanceled</value>
 
 			</list>
 		</property>
@@ -324,6 +326,7 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
 				<prop key="hibernate.show_sql">
 					false
+					<!-- true -->
 				</prop>
 				<prop key="hibernate.connection.characterEncoding">utf-8</prop>
 				<prop key="hibernate.connection.CharSet">utf-8</prop>

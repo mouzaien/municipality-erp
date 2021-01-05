@@ -22,7 +22,7 @@ public class ReqFinesSetup {
 	@GeneratedValue(generator = "generator")
 	@Column(name = "ID")
 	private Integer id;
-	
+
 	@Column(name = "FINE_CODE")
 	private String fineCode;
 	@Column(name = "FINE_DESC")
@@ -49,6 +49,9 @@ public class ReqFinesSetup {
 	private Integer fineClass;
 
 	@Transient
+	private String notes;
+
+	@Transient
 	private String shortDesc;
 	@Transient
 	private Integer fineNbr;
@@ -58,19 +61,19 @@ public class ReqFinesSetup {
 	private Integer fineValSum;
 	@Transient
 	private boolean visible = true;
-	@ManyToMany(mappedBy="finesList")
+	@ManyToMany(mappedBy = "finesList")
 	private Set<FineSection> sectionsList;
 	@Transient
 	private String typeValue;
 	@Transient
 	private String repeat;
-	
+
 	@Transient
 	private Integer notifyDTLsId;
-	
+
 	public String getShortDesc() {
 		if (fineDesc.length() > 50)
-			shortDesc = fineDesc.substring(0, 50)+"...";
+			shortDesc = fineDesc.substring(0, 50) + "...";
 		else
 			shortDesc = fineDesc;
 		return shortDesc;
@@ -257,4 +260,13 @@ public class ReqFinesSetup {
 	public void setNotifyDTLsId(Integer notifyDTLsId) {
 		this.notifyDTLsId = notifyDTLsId;
 	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
 }

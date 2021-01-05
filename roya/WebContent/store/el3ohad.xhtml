@@ -16,13 +16,14 @@
 	<ui:composition template="/template.xhtml">
 
 		<ui:define name="content">
-			<h:form id="form">
+			<h:form id="form" dir="rtl">
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 
-				<div class="image-box-footer">
+				<div class="image-box-footer" align="left">
 					<p:commandButton value="طباعة الكل" icon="ui-icon ui-icon-print "
 						onclick="this.form.target='_blank'" ajax="false"
-						action="#{el3ohadBean.printProtectionCardAllArt}" styleClass="purple-btn">
+						action="#{el3ohadBean.printProtectionCardAllArt}"
+						styleClass="purple-btn">
 					</p:commandButton>
 				</div>
 
@@ -33,10 +34,11 @@
 
 				<br />
 
-				<p:dataTable id="arts" var="article" style="direction:rtl;"
-					value="#{el3ohadBean.articleList}" widgetVar="cellemp"
-					rows="10" paginator="true" paginatorPosition="bottom"
+				<p:dataTable id="arts" var="article"
+					value="#{el3ohadBean.articleList}" widgetVar="cellemp" rows="10"
+					paginator="true" paginatorPosition="bottom" dir="rtl"
 					emptyMessage="الجدول فارغ" rowIndexVar="index"
+					filteredValue="#{el3ohadBean.articleFilterdList}"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 					<f:facet name="header">
 						<p:outputPanel>
@@ -49,42 +51,53 @@
 					<p:column headerText="الرقم " width="5%" style="text-align: center">
 						<h:outputText value="#{index+1}" />
 					</p:column>
-					<p:column headerText="االإسم" width="20%"
-						filterBy="#{article.name}" filterMatchMode="contains">
+					<p:column headerText="الإسم" width="20%" filterBy="#{article.name}"
+						filterMatchMode="contains">
 						<h:outputText value="#{article.name}"></h:outputText>
 
 					</p:column>
 
-					<p:column headerText="الرمز" width="20%"
-						filterBy="#{article.code}" filterMatchMode="contains">
+					<p:column headerText="الرمز" width="20%" filterBy="#{article.code}"
+						filterMatchMode="contains">
 						<h:outputText value="#{article.code}"></h:outputText>
 
 					</p:column>
-					
+
 					<p:column headerText="الوحدة" width="20%"
 						filterBy="#{article.unitName}" filterMatchMode="contains">
 						<h:outputText value="#{article.unitName}"></h:outputText>
 
 					</p:column>
-					
+
 					<p:column headerText="كيف حصلت عليها" width="20%"
 						filterBy="#{article.reqType}" filterMatchMode="contains">
 						<h:outputText value="#{article.reqType == 1 ?'صرف':'مناقلة'}"></h:outputText>
 					</p:column>
-					
+
 					<p:column headerText="المستودع " width="20%"
-						filterBy=" #{el3ohadBean.getStoreName(article.strNo)}" filterMatchMode="contains">
+						filterBy=" #{el3ohadBean.getStoreName(article.strNo)}"
+						filterMatchMode="contains">
 					  #{el3ohadBean.getStoreName(article.strNo)}
 					</p:column>
-					
-					
-					<p:column width="10%" headerText="حذف" style="text-align: center">
 
-						<p:commandButton id="cBdelete" value="طباعة" icon="ui-icon ui-icon-print "
-							styleClass="purple-btn" update="@form" immediate="true"
-							onclick="this.form.target='_blank'" ajax="false"
-							action="#{el3ohadBean.printProtectionCardOneArt(article.id)}">
+
+					<p:column width="10%" headerText="طباعة" style="text-align: center">
+
+						<p:commandButton value="طباعة" ajax="false" icon="ui-icon-print"
+							styleClass="purple-btn" onclick="this.form.target='_blank'"
+							immediate="true"
+							action="#{el3ohadBean.printProtectionCardOneArt}">
+							<f:setPropertyActionListener value="#{article.id}"
+								target="#{el3ohadBean.artId}" />
 						</p:commandButton>
+						<!-- 							<p:remoteCommand name="rc" onsuccess="this.form.target='_blank'" -->
+						<!-- 								action="#{el3ohadBean.printProtectionCardOneArt}" /> -->
+						<!-- 							<p:commandButton type="button" onclick="rc()" value="طباعة" -->
+						<!-- 								icon="ui-icon-print" styleClass="purple-btn"> -->
+						<!-- 								<f:setPropertyActionListener value="#{article.id}" -->
+						<!-- 									target="#{el3ohadBean.artId}" /> -->
+						<!-- 							</p:commandButton> -->
+
 					</p:column>
 				</p:dataTable>
 			</h:form>

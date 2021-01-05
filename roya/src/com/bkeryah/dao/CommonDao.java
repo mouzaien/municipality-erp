@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PreDestroy;
+import javax.persistence.OrderBy;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -467,8 +468,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	}
 
-	@Override
 	@Transactional
+	@Override
 	public Integer save(Object myObject) {
 
 		Integer save = (Integer) sessionFactory.getCurrentSession().save(myObject);
@@ -2767,11 +2768,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ReqFinesMaster> loadAllPenalities(boolean notification) {
+	public List<ReqFinesMaster> loadAllPenalities(String notification) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesMaster.class);
 		// if (notification)
 		// criteria.add(Restrictions.eq("type", 1));
-		criteria.add(Restrictions.eq("status", "Y"));
+		if (!("-1".equalsIgnoreCase(notification))) // all fines if == -1
+			criteria.add(Restrictions.eq("status", notification));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.addOrder(Order.desc("fineNo"));
 		return criteria.list();
@@ -3730,7 +3732,18 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public List<RealEstate> loadAllRealEstates() {
-		return loadAll(RealEstate.class);
+		// List<RealEstate> list = loadAll(RealEstate.class);
+		List<RealEstate> list = orderedRealEstateList();
+		return list;
+	}
+
+	private List<RealEstate> orderedRealEstateList() {
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		criteria.addOrder(Order.desc("id"));
+		list = criteria.list();
+		return list;
+
 	}
 
 	@Override
@@ -4931,7 +4944,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public int findMaxContractDirectNum() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractDirect.class);
 		criteria.setProjection(Projections.max("contractNum"));
-		return (int) criteria.uniqueResult();
+		Integer in = (Integer) criteria.uniqueResult();
+		return in == null ? 0 : in;
 	}
 
 	@Override
@@ -5242,6 +5256,69 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("contractId", contractId));
 		list = criteria.list();
 		return list;
+	}
+
+	@Override
+	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
+			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus) {
+		List<PayLicBills> billsList = new ArrayList<PayLicBills>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
+		// if ((!("-1".equalsIgnoreCase(fromStartDate))) && fromStartDate !=
+		// null)
+		// criteria.add(Restrictions.ge("payHijriDate", fromStartDate));
+		// if ((!("-1".equalsIgnoreCase(toStartDate))) && toStartDate != null)
+		// criteria.add(Restrictions.le("payHijriDate", toStartDate));
+		//
+		// if (!("-1".equalsIgnoreCase(fromEndDate)))
+		// criteria.add(Restrictions.ge("contractId", toEndDate));
+		// if (!("-1".equalsIgnoreCase(toStartDate)))
+		// criteria.add(Restrictions.le("contractId", toEndDate));
+
+		// if ((!("-1".equalsIgnoreCase(aplnumber))) && aplnumber != null)
+		// criteria.add(Restrictions.eq("aplOwner", aplnumber));
+		// if ((!("-1".equalsIgnoreCase(phoneNumber))) && phoneNumber != null)
+		// criteria.add(Restrictions.eq("payInstallNumber", phoneNumber));
+		//
+		// if (billStatus != null && billStatus != -1)
+		// criteria.add(Restrictions.eq("billStatus", billStatus));
+
+		billsList = criteria.list();
+		return billsList;
+	}
+
+	@Override
+	public List<ContractsFees> getContractFessListByContractId(Integer contractId) {
+		List<ContractsFees> list = new ArrayList<ContractsFees>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+		criteria.add(Restrictions.eq("contractId", contractId));
+		list = criteria.list();
+
+		return list;
+	}
+
+	@Override
+	public PayLicBills getBillById(Integer billNumber) {
+		PayLicBills bill = new PayLicBills();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
+		criteria.add(Restrictions.eq("billNumber", billNumber));
+		bill = (PayLicBills) criteria.uniqueResult();
+		return bill;
+	}
+
+	@Override
+	public int deleteSiteType(Integer siteTypeId) {
+		String hql = "  delete FROM  SiteType  Where id = :siteTypeId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("siteTypeId", siteTypeId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public int deleteIntroContract(Integer introId) {
+		String hql = "  delete FROM  IntroContract  Where id = :introId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("introId", introId);
+		return query.executeUpdate();
 	}
 
 }

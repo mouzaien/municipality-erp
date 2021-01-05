@@ -1,5 +1,6 @@
 package com.bkeryah.entities.investment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.bkeryah.entities.PayLicBills;
 
 import utilities.ContractOperationEnum;
 import utilities.Utils;
@@ -95,14 +98,18 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	// @Formula("(select cb.bill_id from contract_bills cb where cb.contract_id
 	// = id and status = 0)")
 	// private Integer billNo;
+	@Column(name = "USER_SECTION_ID")
+	private Integer usrSectionId;
+	@Column(name = "USER_DEPT_ID")
+	private Integer usrDeptId;
 	@Transient
 	private List<ContractOperationEnum> actionsList = new ArrayList<>();
 	@Transient
 	private int operationId;
 	@Transient
 	private String statusName;
-	@Formula("(select SUM(b.PAY_AMOUNT) from PAY_LIC_BILLS b where b.BILL_STATUS = 1 and b.LIC_NO = ID and b.LIC_TYPE= 'I')")
-	private Double payedBills;
+	@Formula("(select min(b.BILL_STATUS) from PAY_LIC_BILLS b where b.LIC_NO = ID and b.LIC_TYPE= 'I')")
+	private Integer payedBills;
 	@Transient
 	private Integer payStatus;
 	@Transient
@@ -120,6 +127,18 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private Integer num;
 	@Transient
 	private double totalBillValue = 0.0;
+
+	@Transient
+	private Date selecteStartDate_G;
+	@Transient
+	private Date selecteEndDate_G;
+
+	@Transient
+	private Date invRepresentIdDate_G;
+
+	// @Formula("(SELECT * FROM PAY_LIC_BILLS B WHERE B.LIC_NO = ID AND
+	// B.LIC_TYPE = 'I' )")
+	// private List<PayLicBills> contractBillsList;
 
 	public Integer getId() {
 		return id;
@@ -351,11 +370,11 @@ public class ContractDirect implements Comparable<ContractDirect> {
 		this.contractTypeId = contractTypeId;
 	}
 
-	public Double getPayedBills() {
+	public Integer getPayedBills() {
 		return payedBills;
 	}
 
-	public void setPayedBills(Double payedBills) {
+	public void setPayedBills(Integer payedBills) {
 		this.payedBills = payedBills;
 	}
 
@@ -367,7 +386,7 @@ public class ContractDirect implements Comparable<ContractDirect> {
 		this.payStatus = payStatus;
 	}
 
-	private Integer isPayed() {
+	public Integer isPayed() {
 		if ((payedBills == null) || (payedBills == 0))
 			return 0;
 		Integer days = (int) (Utils.calculateDiffDaysHijriDate(startDate, endDate) - processPeriod);
@@ -394,6 +413,18 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	}
 
 	public Integer getFinished() {
+		try {
+			Date end = Utils.convertGregStringToDate(endContDate);
+
+			if (end != null && end.compareTo(new Date()) < 0) {
+				finished = 1;
+			} else {
+				finished = 0;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return finished;
 	}
 
@@ -427,11 +458,12 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	public String getStartContDate() {
 		try {
-			Date date = Utils.convertHDateToGDate(getStartDate());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			startContDate = sdf.format(date);
+			if (startDate != null) {
+				Date date = Utils.convertHDateToGDate(startDate);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				startContDate = sdf.format(date);
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return startContDate;
@@ -443,8 +475,8 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	public String getEndContDate() {
 		try {
-			if (getEndDate() != null) {
-				Date date = Utils.convertHDateToGDate(getEndDate());
+			if (endDate != null && endDate.length() == 10) {
+				Date date = Utils.convertHDateToGDate(endDate);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				endContDate = sdf.format(date);
 			}
@@ -531,6 +563,78 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	public void setContractDurationRetio(Integer contractDurationRetio) {
 		this.contractDurationRetio = contractDurationRetio;
+	}
+
+	public Date getSelecteStartDate_G() {
+		if (startDate != null) {
+			try {
+				selecteStartDate_G = Utils.convertHDateToGDate(startDate);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return selecteStartDate_G;
+	}
+
+	public void setSelecteStartDate_G(Date selecteStartDate_G) {
+		this.selecteStartDate_G = selecteStartDate_G;
+	}
+
+	public Date getSelecteEndDate_G() {
+		if (endDate != null) {
+			try {
+				selecteEndDate_G = Utils.convertHDateToGDate(endDate);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return selecteEndDate_G;
+	}
+
+	public void setSelecteEndDate_G(Date selecteEndDate_G) {
+		this.selecteEndDate_G = selecteEndDate_G;
+	}
+
+	public Integer getUsrSectionId() {
+		return usrSectionId;
+	}
+
+	public void setUsrSectionId(Integer usrSectionId) {
+		this.usrSectionId = usrSectionId;
+	}
+
+	public Integer getUsrDeptId() {
+		return usrDeptId;
+	}
+
+	public void setUsrDeptId(Integer usrDeptId) {
+		this.usrDeptId = usrDeptId;
+	}
+
+	public void setPayStatusName(String payStatusName) {
+		this.payStatusName = payStatusName;
+	}
+
+	public Date getInvRepresentIdDate_G() {
+		if (invRepresentIdDate != null) {
+			try {
+				invRepresentIdDate_G = Utils.convertHDateToGDate(invRepresentIdDate);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return invRepresentIdDate_G;
+	}
+
+	public void setInvRepresentIdDate_G(Date invRepresentIdDate_G) {
+		if (invRepresentIdDate == null && invRepresentIdDate_G != null) {
+			try {
+				invRepresentIdDate = Utils.grigDatesConvert(invRepresentIdDate_G);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		this.invRepresentIdDate_G = invRepresentIdDate_G;
 	}
 
 }

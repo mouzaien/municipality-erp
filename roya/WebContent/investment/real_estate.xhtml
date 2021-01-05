@@ -14,7 +14,7 @@
 				<div class="image-box-footer" align="left">
 					<p:commandButton value="إضافة" styleClass="cyan-btn"
 						icon="ui-icon ui-icon-add" process="@this"
-						action="#{realEstateBean.addRealEstate}"
+						action="#{realEstateBean.addRealEstate}" immediate="true"
 						oncomplete="PF('realEstate_dlg').show()"
 						update="includeform:addPG">
 					</p:commandButton>
@@ -185,10 +185,10 @@
 							<!-- 										fileName="العقارات" /> -->
 							<!-- 								</p:commandButton> -->
 
-							<p:column headerText="الرقم التسلسلي"
-								style="width:5%; text-align:center;">
-								<h:outputLabel value="#{rowIndex+1}" />
-							</p:column>
+							<!-- 							<p:column headerText="الرقم التسلسلي" -->
+							<!-- 								style="width:5%; text-align:center;"> -->
+							<!-- 								<h:outputLabel value="#{rowIndex+1}" /> -->
+							<!-- 							</p:column> -->
 							<!-- <p:column headerText="موقع العقار" -->
 							<!-- 								filterBy="#{realEstateItem.numPlan}" filterMatchMode="contains" -->
 							<!-- 								style="width:10%;text-align:center;"> -->
@@ -199,7 +199,8 @@
 							<!-- 								filterMatchMode="contains" style="width:10%;text-align:center;"> -->
 							<!-- 								<h:outputText value="#{realEstateItem.numRealEstate}" /> -->
 							<!-- 							</p:column> -->
-							<p:column headerText="رقم العقار" style="width:10% ;text-align:center"
+							<p:column headerText="رقم العقار"
+								style="width:10% ;text-align:center"
 								filterBy="#{realEstateItem.id}" filterMatchMode="contains">
 								<h:outputText value="#{realEstateItem.id}" />
 							</p:column>
@@ -287,24 +288,22 @@
 										value="#{realEstateBean.realEstate.activityTypeId}"
 										style="width: 80%" required="true" filter="true"
 										filterMatchMode="contains"
-										rendered="#{realEstateBean.addMode}"
 										requiredMessage="يرجي إختيار نوع النشاط">
 										<f:selectItem itemLabel="أختر نوع النشاط" itemValue="" />
 										<f:selectItems var="cont" itemValue="#{cont.id}"
 											itemLabel="#{cont.name}"
 											value="#{realEstateBean.contractTypesList}" />
-										<p:ajax process="@this"
+										<p:ajax
 											listener="#{realEstateBean.getContractComponentsByActivityId}"
 											update="components_id"></p:ajax>
 									</p:selectOneMenu>
 									<p:spacer height="10"></p:spacer>
 									<p:commandButton icon="ui-icon ui-icon-add" process="@this"
-										rendered="#{realEstateBean.addMode}"
 										oncomplete="PF('add_activity_dlg').show()">
 									</p:commandButton>
-									<p:outputLabel
-										value="#{realEstateBean.realEstate.activityName}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--  <p:outputLabel -->
+									<!--  	value="#{realEstateBean.realEstate.activityName}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 
 								<div class="ui-g-1">
@@ -331,7 +330,7 @@
 										<f:selectItems var="com"
 											value="#{realEstateBean.contractComponentList}"
 											itemLabel="#{com.name}" itemValue="#{com.name}" />
-										<p:ajax process="@this"></p:ajax>
+										<!-- <p:ajax process="@this"></p:ajax> -->
 									</p:selectOneMenu>
 									<p:spacer height="10"></p:spacer>
 									<p:commandButton icon="ui-icon ui-icon-add" process="@this"
@@ -359,7 +358,7 @@
 										<f:selectItems value="#{realEstateBean.buildingTypeList}"
 											var="building" itemLabel="#{building.name}"
 											itemValue="#{building.id}"></f:selectItems>
-										<p:ajax process="@this"></p:ajax>
+										<!--  <p:ajax process="@this"></p:ajax> -->
 									</p:selectOneMenu>
 
 								</div>
@@ -383,7 +382,7 @@
 										<f:selectItems var="street" itemValue="#{street.title}"
 											itemLabel="#{street.title}"
 											value="#{realEstateBean.streetList}" />
-										<p:ajax process="@this"></p:ajax>
+										<!-- 	 <p:ajax process="@this"></p:ajax> -->
 									</p:selectOneMenu>
 									<p:spacer height="10"></p:spacer>
 									<p:commandButton icon="ui-icon ui-icon-add" process="@this"
@@ -416,7 +415,7 @@
 										<f:selectItems var="district" itemValue="#{district.id}"
 											itemLabel="#{district.name}"
 											value="#{realEstateBean.districtList}" />
-										<p:ajax process="@this"></p:ajax>
+										<!-- 	 <p:ajax process="@this"></p:ajax> -->
 									</p:selectOneMenu>
 									<p:spacer height="10"></p:spacer>
 									<p:commandButton icon="ui-icon ui-icon-add" process="@this"
@@ -458,7 +457,7 @@
 										<f:selectItems var="site" itemValue="#{site.id}"
 											itemLabel="#{site.name}"
 											value="#{realEstateBean.siteTypesList}" />
-										<p:ajax process="@this"></p:ajax>
+										<!-- 	 <p:ajax process="@this"></p:ajax> -->
 									</p:selectOneMenu>
 									<p:spacer height="10"></p:spacer>
 									<p:commandButton icon="ui-icon ui-icon-add" process="@this"
@@ -473,10 +472,9 @@
 								</div>
 								<div class="ui-g-2">
 									<p:inputText value="#{realEstateBean.realEstate.siteTypeNB}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.siteTypeNB}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!-- <p:outputLabel value="#{realEstateBean.realEstate.siteTypeNB}" -->
+									<!--  	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 
 							</div>
@@ -546,11 +544,10 @@
 								</div>
 								<div class="ui-g-2">
 									<p:inputText value="#{realEstateBean.realEstate.landArea}"
-										process="@this" requiredMessage="المساحة  مطلوبة"
-										immediate="true" required="true"
-										rendered="#{realEstateBean.addMode}" style="width: 90%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.landArea}"
-										rendered="#{!realEstateBean.addMode}" />
+										requiredMessage="المساحة  مطلوبة" immediate="true"
+										required="true" style="width: 90%" />
+									<!-- <p:outputLabel value="#{realEstateBean.realEstate.landArea}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 									<p:outputLabel value="م" styleClass="btxt">
 										<span> <sup>2</sup></span>
 									</p:outputLabel>
@@ -562,40 +559,36 @@
 								</div>
 								<div class="ui-g-3">
 									<p:inputText value="#{realEstateBean.realEstate.northLimit}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.northLimit}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--  <p:outputLabel value="#{realEstateBean.realEstate.northLimit}" -->
+									<!-- rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="بطول" styleClass="btxt" />
 								</div>
 								<div class="ui-g-1">
 									<p:inputText value="#{realEstateBean.realEstate.northLength}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.northLength}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--  <p:outputLabel value="#{realEstateBean.realEstate.northLength}" -->
+									<!--  rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="جنوبا " styleClass="btxt" />
 								</div>
 								<div class="ui-g-3">
 									<p:inputText value="#{realEstateBean.realEstate.southLimit}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.southLimit}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--  <p:outputLabel value="#{realEstateBean.realEstate.southLimit}" -->
+									<!--  	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="بطول" styleClass="btxt" />
 								</div>
 								<div class="ui-g-1">
 									<p:inputText value="#{realEstateBean.realEstate.southLength}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.southLength}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!-- <p:outputLabel value="#{realEstateBean.realEstate.southLength}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 							</div>
 
@@ -606,57 +599,54 @@
 								</div>
 								<div class="ui-g-3">
 									<p:inputText value="#{realEstateBean.realEstate.eastLimit}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.eastLimit}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!-- <p:outputLabel value="#{realEstateBean.realEstate.eastLimit}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="بطول" styleClass="btxt" />
 								</div>
 								<div class="ui-g-1">
 									<p:inputText value="#{realEstateBean.realEstate.eastLength}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.eastLength}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!-- <p:outputLabel value="#{realEstateBean.realEstate.eastLength}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="غربا " styleClass="btxt" />
 								</div>
 								<div class="ui-g-3">
 									<p:inputText value="#{realEstateBean.realEstate.westLimit}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.westLimit}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--<p:outputLabel value="#{realEstateBean.realEstate.westLimit}" -->
+									<!-- 	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 								<div class="ui-g-1">
 									<p:outputLabel value="بطول" styleClass="btxt" />
 								</div>
 								<div class="ui-g-1">
 									<p:inputText value="#{realEstateBean.realEstate.westLength}"
-										process="@this" rendered="#{realEstateBean.addMode}"
 										style="width: 100%" />
-									<p:outputLabel value="#{realEstateBean.realEstate.westLength}"
-										rendered="#{!realEstateBean.addMode}" />
+									<!--<p:outputLabel value="#{realEstateBean.realEstate.westLength}" -->
+									<!--	rendered="#{!realEstateBean.addMode}" /> -->
 								</div>
 							</div>
 
 							<br />
 							<div class="image-box-footer" align="left">
 								<p:commandButton value="حفظ" styleClass="btn btn-primary"
-									update="@form" rendered="#{realEstateBean.addMode}"
-									process="@this" action="#{realEstateBean.save}"
-									style="margin-left:3px;"
-									onsuccess="PF('realEstate_dlg').hide();">
+									update="@form,realEstateTable" process="realEstate_dlgId"
+									rendered="#{realEstateBean.addMode}" immediate="false"
+									action="#{realEstateBean.save}" style="margin-left:3px;"
+									ajax="true" oncomplete="PF('realEstate_dlg').hide();">
 								</p:commandButton>
 								<p:spacer width="10px" height="10px"></p:spacer>
 								<p:commandButton value="تعديل" styleClass="btn btn-primary"
-									update="@form,realEstateTable"
+									update="@form,realEstateTable" process="realEstate_dlgId"
 									rendered="#{!realEstateBean.addMode}"
 									action="#{realEstateBean.update}" style="margin-left:3px;"
-									onsuccess="PF('realEstate_dlg').hide();">
+									oncomplete="PF('realEstate_dlg').hide();">
+									<p:ajax process="addPG"></p:ajax>
 								</p:commandButton>
 								<p:spacer width="10px" height="10px"></p:spacer>
 								<p:commandButton value="رجوع" styleClass="btn btn-primary"

@@ -16,7 +16,7 @@ public class PhoneNumberValidator implements Validator {
 
 	}
 
-	public static boolean  isPhoneValid(Object value) {
+	public static boolean isPhoneValid(Object value) {
 		Long phoneNumber;
 		try {
 			phoneNumber = Long.parseLong(value.toString());
@@ -26,9 +26,12 @@ public class PhoneNumberValidator implements Validator {
 			throw new ValidatorException(msg);
 		}
 		if ((("" + phoneNumber).length() != 12) || (!("" + phoneNumber).startsWith("966"))) {
+			// String num = "0" + phoneNumber.toString();
+			// if (((num).length() != 10) || (!(num).startsWith("05"))) {
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					Utils.loadMessagesFromFile("error.phone.number"), "");
 			throw new ValidatorException(msg);
+			// }
 		}
 		return true;
 	}

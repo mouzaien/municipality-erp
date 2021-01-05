@@ -78,7 +78,6 @@
 									required="true" requiredMessage="ادخل التاريخ"
 									onfocus="loadCalendar();"
 									styleClass="form-control form-controlCal">
-									<f:validator validatorId="utilities.UmmAlQUraValidator" />
 								</p:inputText>
 							</div>
 							<div class="ui-g-1">
@@ -161,7 +160,7 @@
 						</div>
 						<div class="ui-g-2">
 							<h:outputText rendered="#{!(transferBean.enablePrint)}"
-								value="#{transferBean.transOwnership.status == 'Y' ? 'جارية':'تم الرفض '}" />
+								value="#{transferBean.transOwnership.status == 'R' ? 'جارية':'تم الرفض '}" />
 
 
 							<h:outputText rendered="#{(transferBean.enablePrint)}"

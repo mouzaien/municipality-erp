@@ -143,7 +143,7 @@ public class PenaltyBean {
 			try {
 
 				reqFinesMaster.setfSupervisorCode(supervisorId.toString());
-				reqFinesMaster.setStatus("Y");
+				reqFinesMaster.setStatus("R");
 				setDetailsFiner();
 				calcFineSum();
 				reqFinesMaster.setTotalValue(FineSum);
@@ -151,6 +151,8 @@ public class PenaltyBean {
 				dataAccessService.saveLicencePenalty(reqFinesMaster, reqFinesDetailsList, true);
 
 				codesFinesList.clear();
+				reqFinesDetailsList.clear();
+				reqFinesDetailsList = new ArrayList<>();
 				codesFinesList = new ArrayList<ReqFinesSetup>();
 				reqFinesMaster = new ReqFinesMaster();
 				// ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
@@ -211,6 +213,7 @@ public class PenaltyBean {
 		reqFinesDetails.setTypeValue(Integer.parseInt(codeFines.getTypeValue()));
 		reqFinesDetails.setRepeat(Integer.parseInt(codeFines.getRepeat()));
 		reqFinesDetails.setNotifyDTLsId(codeFines.getNotifyDTLsId());
+		reqFinesDetails.setFineDesc2(codeFines.getNotes());
 		return reqFinesDetails;
 	}
 

@@ -108,7 +108,7 @@
 							<f:facet name="header">
 								<p:outputPanel>
 									<h:outputText value="ابحث فى كل الحقول:" />
-									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+									<p:inputText id="globalFilter" onkeyup="PF('loanVar').filter()"
 										style="width:150px" placeholder="كلمة البحث">
 									</p:inputText>
 								</p:outputPanel>
@@ -198,7 +198,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.name}"
-											rendered="#{!investorsBean.addMode}" style="width: 100%" />
+											rendered="#{!investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="إسم الشركة / المؤسسة" styleClass="btxt">
@@ -211,7 +213,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.companyName}"
-											rendered="#{!investorsBean.addMode}" style="width: 100%" />
+											rendered="#{!investorsBean.addMode}" style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 
 
@@ -226,11 +230,16 @@
 									<div class="ui-g-2">
 										<p:inputText value="#{investorsBean.investor.tradeRecord}"
 											required="true" requiredMessage="رقم السجل مطلوب"
-											rendered="#{investorsBean.addMode}" style="width: 100%">
+											maxlength="10" rendered="#{investorsBean.addMode}"
+											style="width: 100%">
 											<p:ajax process="@this" />
 										</p:inputText>
+
 										<p:inputText value="#{investorsBean.investor.tradeRecord}"
-											rendered="#{!investorsBean.addMode}" style="width: 100%" />
+											maxlength="10" rendered="#{!investorsBean.addMode}"
+											style="width: 100%">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="نوع السجل" styleClass="btxt">
@@ -267,7 +276,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.region}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="بتاريخ" styleClass="btxt" />
@@ -300,6 +311,7 @@
 											<p:calendar id="gric1" style="width: 100%"
 												value="#{investorsBean.selectedDate_G}" pattern="dd/MM/yyyy"
 												rendered="#{!investorsBean.higriMode}">
+												<p:ajax process="@this" />
 											</p:calendar>
 										</h:panelGroup>
 									</div>
@@ -364,7 +376,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.mobile}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 
 									<div class="ui-g-1">
@@ -379,7 +393,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.code}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 								</div>
 								<br />
@@ -393,7 +409,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.postalCode}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="الرمز البريدي" styleClass="btxt" />
@@ -404,7 +422,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.code}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 
 									<div class="ui-g-1">
@@ -416,7 +436,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.phone}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 									<div class="ui-g-1">
 										<p:outputLabel value="فاكس" styleClass="btxt" />
@@ -427,7 +449,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.fax}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 
 								</div>
@@ -446,7 +470,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.address}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 
 									<div class="ui-g-1">
@@ -458,7 +484,9 @@
 											<p:ajax process="@this" />
 										</p:inputText>
 										<p:inputText value="#{investorsBean.investor.mandateNumber}"
-											style="width: 100%" rendered="#{!investorsBean.addMode}" />
+											style="width: 100%" rendered="#{!investorsBean.addMode}">
+											<p:ajax process="@this" />
+										</p:inputText>
 									</div>
 								</div>
 								<p:messages id="messages" autoUpdate="true" />

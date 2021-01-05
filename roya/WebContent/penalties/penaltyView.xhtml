@@ -13,7 +13,8 @@
 		<h:form id="includeform" dir="rtl">
 
 			<div align="left" class="image-box-footer">
-				<h:panelGroup rendered="#{!(penaltyViewBean.finesMaster.status == 'N')}">
+				<h:panelGroup
+					rendered="#{!(penaltyViewBean.finesMaster.status == 'N')}">
 					<p:commandButton value="#{msg['accept']}" immediate="true"
 						id="accpt_btn" rendered="#{!(penaltyViewBean.enablePrint)}"
 						action="#{penaltyViewBean.accept}" icon="ui-icon ui-icon-check">
@@ -40,13 +41,15 @@
 				<h:panelGroup>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel style=" font-weight: bold" value="رقم الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="رقم الرخصة"
+								styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicenceNo}" />
 						</div>
 						<div class="ui-g-2">
-							<h:outputLabel style=" font-weight: bold" value="#{msg['commercial.name']}" />
+							<h:outputLabel style=" font-weight: bold"
+								value="#{msg['commercial.name']}" />
 						</div>
 						<div class="ui-g-6">
 							<h:outputLabel
@@ -55,7 +58,8 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel style=" font-weight: bold" value="صاحب المنشأة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold" value="صاحب المنشأة"
+								styleClass="btxt" />
 						</div>
 						<div class="ui-g-4">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fName}" />
@@ -69,14 +73,16 @@
 					</div>
 					<div class="ui-g">
 						<div class="ui-g-2">
-							<h:outputLabel style=" font-weight: bold" value="تاريخ بداية الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold"
+								value="تاريخ بداية الرخصة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel
 								value="#{penaltyViewBean.finesMaster.fLicStartDate}" />
 						</div>
 						<div class="ui-g-2">
-							<h:outputLabel style=" font-weight: bold" value="تاريخ نهاية الرخصة" styleClass="btxt" />
+							<h:outputLabel style=" font-weight: bold"
+								value="تاريخ نهاية الرخصة" styleClass="btxt" />
 						</div>
 						<div class="ui-g-2">
 							<h:outputLabel value="#{penaltyViewBean.finesMaster.fLicEndDate}" />
@@ -96,30 +102,30 @@
 						</div>
 						<div class="ui-g-2">
 							<h:outputText rendered="#{!(penaltyViewBean.enablePrint)}"
-								value="#{penaltyViewBean.finesMaster.status == 'Y' ? 'جارية':'تم الرفض '}" />
+								value="#{penaltyViewBean.finesMaster.status == 'R' ? 'جارية':'تم الرفض '}" />
 
 
 							<h:outputText rendered="#{(penaltyViewBean.enablePrint)}"
 								value="#{penaltyViewBean.finesMaster.status == 'Y' ? 'تمت الموافقة عليها ':'تم الرفض '}" />
 						</div>
 					</div>
-<!-- 					<div class="ui-g"> -->
-<!-- 						<div class="ui-g-2"> -->
-<!-- 							<h:outputLabel value="التكرار" /> -->
-<!-- 						</div> -->
-<!-- 						<div class="ui-g-2"> -->
-<!-- 							<h:outputLabel -->
-<!-- 								value="#{penaltyViewBean.finesMaster.repeat ==1 ?'غير مكرر':'مكرر'}" /> -->
-<!-- 						</div> -->
-<!-- 						<div class="ui-g-2"> -->
-<!-- 							<h:outputLabel value="الحد" /> -->
-<!-- 						</div> -->
-<!-- 						<div class="ui-g-2"> -->
-<!-- 							<h:outputLabel -->
-<!-- 								value="#{penaltyViewBean.finesMaster.typeValue ==1 ?'حد اعلي':'حد ادني'}" /> -->
-<!-- 						</div> -->
+					<!-- 					<div class="ui-g"> -->
+					<!-- 						<div class="ui-g-2"> -->
+					<!-- 							<h:outputLabel value="التكرار" /> -->
+					<!-- 						</div> -->
+					<!-- 						<div class="ui-g-2"> -->
+					<!-- 							<h:outputLabel -->
+					<!-- 								value="#{penaltyViewBean.finesMaster.repeat ==1 ?'غير مكرر':'مكرر'}" /> -->
+					<!-- 						</div> -->
+					<!-- 						<div class="ui-g-2"> -->
+					<!-- 							<h:outputLabel value="الحد" /> -->
+					<!-- 						</div> -->
+					<!-- 						<div class="ui-g-2"> -->
+					<!-- 							<h:outputLabel -->
+					<!-- 								value="#{penaltyViewBean.finesMaster.typeValue ==1 ?'حد اعلي':'حد ادني'}" /> -->
+					<!-- 						</div> -->
 
-<!-- 					</div> -->
+					<!-- 					</div> -->
 				</h:panelGroup>
 			</div>
 			<br />
@@ -131,8 +137,9 @@
 						المخالفات</h1>
 				</div>
 				<p:dataTable var="penaltyItem" id="inboxdt"
-					value="#{penaltyViewBean.finesMaster.reqFinesDetailsList}" emptyMessage="لايوجد بيانات"
-					rowIndexVar="rowIndex" paginatorPosition="bottom"
+					value="#{penaltyViewBean.finesMaster.reqFinesDetailsList}"
+					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+					paginatorPosition="bottom"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 					filteredValue="#{penaltyBean.filteredArcPeoples}" paginator="true"
 					rows="17">
@@ -147,21 +154,21 @@
 					</f:facet>
 
 					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الرقم" width="10%" filterBy="#{penaltyItem.id}"
+						headerText="الرقم" width="5%" filterBy="#{penaltyItem.id}"
 						filterMatchMode="contains">										
 										#{rowIndex + 1} 									
 									    </p:column>
-					<p:column style="white-space: nowrap;text-align: center;"
+					<p:column style="text-align: center;"
 						headerText="نوع المخالفة" width="30%">
-						<h:outputLabel value="#{penaltyItem.reqFinesSetup.fineDesc}" id="lblFiner"
-							style="width:100% !important;">
+						<h:outputLabel value="#{penaltyItem.reqFinesSetup.fineAction}"
+							id="lblFiner" style="width:100% !important;">
 						</h:outputLabel>
 					</p:column>
 
 					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الحد الأدنى" width="10%">#{penaltyItem.reqFinesSetup.fineMinimumValue}</p:column>
+						headerText="الحد الأدنى" width="8%">#{penaltyItem.reqFinesSetup.fineMinimumValue}</p:column>
 					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الحد الأعلى" width="10%">#{penaltyItem.reqFinesSetup.fineSupermumValue}</p:column>
+						headerText="الحد الأعلى" width="8%">#{penaltyItem.reqFinesSetup.fineSupermumValue}</p:column>
 					<p:column style="white-space: nowrap;text-align: center;"
 						headerText="العدد" width="5%">
 											#{penaltyItem.fineCount}						
@@ -173,6 +180,17 @@
 					<p:column style="white-space: nowrap;text-align: center;"
 						headerText="المجموع" width="10%">
 						<h:outputLabel value="#{penaltyItem.fineTotalValue}" />
+					</p:column>
+
+					<p:column style="text-align: center;" headerText="التكرار"
+						width="8%">
+						<h:outputLabel
+							value="#{penaltyItem.repeat == 1 ? 'مكرر' : 'غير مكرر'}" />
+					</p:column>
+
+					<p:column style="text-align: center;" headerText="الملاحظات"
+						width="16%">
+						<h:outputLabel value="#{penaltyItem.fineDesc2}" />
 					</p:column>
 
 				</p:dataTable>

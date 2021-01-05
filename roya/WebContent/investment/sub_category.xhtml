@@ -15,71 +15,122 @@
 				<div class="image-box-footer" align="left">
 					<p:commandButton value="إضافة" styleClass="cyan-btn"
 						icon="ui-icon ui-icon-add" process="@this"
-						oncomplete="PF('add_cont_type_dlg').show()" update="">
+						oncomplete="PF('add_sub_category_dlg').show()" update="">
 					</p:commandButton>
 				</div>
 				<br />
 				<div class="card card-w-title" dir="rtl">
 
 					<h1 style="color: #7CB342; text-align: center;">
-						انواع النشاط <span class="fa fa-fw fa-building"></span>
+						التصنيفات الفرعية <span class="fa fa-fw fa-building"></span>
 					</h1>
 
 					<br />
 
-					<div class="ui-g">
-						<p:dataTable var="contTypeItem" id="contTypeTable"
-							value="#{contractTypeBeen.contractTypeList}"
-							paginatorPosition="bottom" emptyMessage="لايوجد بيانات"
-							rowIndexVar="rowIndex" editable="true"
-							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-							filteredValue="#{contractTypeBeen.contractTypeListfilter}"
-							paginator="true" rows="12">
-							<f:facet name="header">
-								<p:outputPanel>
-									<h:outputText value="ابحث فى كل الحقول:" />
-									<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
-										style="width:150px" placeholder="كلمة البحث">
-									</p:inputText>
-								</p:outputPanel>
-							</f:facet>
-							<p:ajax event="rowEdit" listener="#{contractTypeBeen.onRowEdit}"
-								update=":includeform:msg" />
-							<p:ajax event="rowEditCancel"
-								listener="#{contractTypeBeen.onRowCancel}"
-								update=":includeform:msg" />
-							<p:column headerText="الرقم" filterBy="#{rowIndex+1}"
-								filterMatchMode="contains" style="width:10%;text-align:center;">
-								<h:outputText value="#{rowIndex+1}" />
-							</p:column>
-							<p:column headerText="نوع النشاط" filterBy="#{contTypeItem.name}"
-								filterMatchMode="contains" style="width:70%;">
+					<p:dataTable var="item" id="LicLst" widgetVar="deptCell"
+						value="#{invSubCategoryBean.contractSubCategoryList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom" editable="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						paginator="true" rows="13">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('deptCell').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
 
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{contTypeItem.name}" />
-									</f:facet>
-									<f:facet name="input">
-										<p:inputText value="#{contTypeItem.name}" style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column headerText="تعديل" style="width:5%;text-align:center;">
-								<p:rowEditor />
-							</p:column>
-						</p:dataTable>
-					</div>
+						<p:ajax event="rowEdit" listener="#{invSubCategoryBean.onRowEdit}"
+							update=":includeform:LicLst" />
+						<p:ajax event="rowEditCancel"
+							listener="#{invSubCategoryBean.onRowCancel}"
+							update=":includeform:LicLst" />
+						<p:column headerText=" الرقم التسلسلي" filterBy="#{rowIndex +1}"
+							filterMatchMode="contains" style="width:10%;text-align:center;">
+							<h:outputText value="#{rowIndex +1}" />
+						</p:column>
 
-					<p:dialog widgetVar="add_cont_type_dlg" id="add_cont_type_dlgId"
-						header="إضافة نشاط" width="50%" hideEffect="fade"
-						style="text-align: center'" showEffect="explode" dir="rtl"
-						modal="true" resizable="false">
+						<p:column headerText="الرقم" filterBy="#{item.id}"
+							filterMatchMode="contains" style="width:10%;text-align:center;">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+
+						<p:column headerText="التصنيف الرئيسي"
+							filterBy="#{item.contMainCategoryName}"
+							filterMatchMode="contains" style="width:30%;">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:selectOneMenu disabled="true" style="opacity: 1.0;"
+										value="#{item.contMainCategoryid}">
+										<f:selectItems var="c"
+											value="#{invSubCategoryBean.contractMainCategoryList}"
+											itemLabel="#{c.name}" itemValue="#{c.id}" />
+
+									</p:selectOneMenu>
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu value="#{item.contMainCategoryid}">
+										<f:selectItems var="c"
+											value="#{invSubCategoryBean.contractMainCategoryList}"
+											itemLabel="#{c.name}" itemValue="#{c.id}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="التصنيف الفرعي" filterBy="#{item.name}"
+							filterMatchMode="contains" style="width:30%;">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{item.name}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:7% ; text-align:center;" headerText="تعديل">
+							<p:rowEditor />
+						</p:column>
+						<p:column width="7%" style="text-align:center" headerText="حذف">
+							<p:commandButton onclick="PF('delete_sub_category_dlg').show()"
+								styleClass="red-btn" process="@this" icon="ui-icon-remove">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{invSubCategoryBean.subCategory}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog widgetVar="add_sub_category_dlg"
+						id="add_sub_category_dlgId" header="إضافة تصنيف فرعي" width="50%"
+						hideEffect="fade" style="text-align: center'" showEffect="explode"
+						dir="rtl" modal="true" resizable="false">
 						<div class="ui-g">
+
 							<div class="ui-g-2">
-								<p:outputLabel value="إسم نوع النشاط" styleClass="btxt" />
+								<p:outputLabel value="التصنيف الرئيسي" styleClass="btxt" />
 							</div>
 							<div class="ui-g-6">
-								<p:inputText value="#{contractTypeBeen.contType.name}"
+								<p:selectOneMenu value="#{invSubCategoryBean.mainCategoryId}">
+									<f:selectItem itemLabel="إختر التصنيف االرئيسي"
+										noSelectionOption="true" />
+									<f:selectItems var="c"
+										value="#{invSubCategoryBean.contractMainCategoryList}"
+										itemLabel="#{c.name}" itemValue="#{c.id}" />
+
+								</p:selectOneMenu>
+
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value=" إسم التصنيف الفرعي" styleClass="btxt" />
+							</div>
+							<div class="ui-g-6">
+								<p:inputText value="#{invSubCategoryBean.subCategory.name}"
 									style="width: 100%">
 									<p:ajax process="@this"></p:ajax>
 								</p:inputText>
@@ -87,8 +138,34 @@
 						</div>
 						<div class="image-box-footer" align="left">
 							<p:commandButton value="حفظ" styleClass="btn btn-primary"
-								update="@form" action="#{contractTypeBeen.save}"
-								oncomplete="PF('add_district_dlg').hide();">
+								action="#{invSubCategoryBean.saveSubCategory}" update="LicLst"
+								oncomplete="PF('add_sub_category_dlg').hide();">
+							</p:commandButton>
+						</div>
+					</p:dialog>
+
+					<p:dialog widgetVar="delete_sub_category_dlg"
+						id="delete_sub_category_dlgId" header="تأكيد عملية الحذف"
+						width="20%" style="text-align: center'" dir="rtl" modal="true"
+						resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:outputLabel value="هل تريد إتمام عملية الحذف ؟!"
+									styleClass="btxt" />
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="نعم" styleClass="green-btn"
+								update="LicLst" icon="fa fa-check"
+								action="#{invSubCategoryBean.deleteSubCategory}"
+								oncomplete="PF('delete_sub_category_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+							<p:commandButton value="لا" styleClass="red-btn"
+								action="#{invSubCategoryBean.cancelDelete}" icon="fa fa-remove"
+								oncomplete="PF('delete_sub_category_dlg').hide();">
 							</p:commandButton>
 						</div>
 					</p:dialog>

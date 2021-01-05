@@ -128,6 +128,7 @@ import com.bkeryah.model.DashbordModel;
 import com.bkeryah.model.MemoReceiptModel;
 import com.bkeryah.model.User;
 import com.bkeryah.model.VacationModel;
+import com.bkeryah.penalties.Amana;
 import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicSection;
 import com.bkeryah.penalties.LicTrdMasterFile;
@@ -1158,7 +1159,7 @@ public interface IDataAccessService {
 
 	public List<User> getAllUsers();
 
-	public List<ReqFinesMaster> loadAllPenalities(boolean notification);
+	public List<ReqFinesMaster> loadAllPenalities(String notification);
 
 	List<ReqFinesSetup> getCodesFines();
 
@@ -1971,7 +1972,9 @@ public interface IDataAccessService {
 	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile);
 
 	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
-			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate);
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate, Integer sectionId,
+			Integer contractMaincatgId, Integer contractSubcatgId, Integer actvityId, String component,
+			Integer contractStatusFilter);
 
 	public HealthMasterLicence getHealthCertificateByApplId(Integer applId);
 
@@ -1985,6 +1988,27 @@ public interface IDataAccessService {
 
 	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber);
 
-	public void updatecontractFeesList(List<ContractsFees> contFeesList);
+	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
+			Integer billBandNumber);
 
+	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
+			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus);
+
+	public List<Amana> getAllLicAmanaList();
+
+	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+			Integer billBandNumber);
+
+	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+
+	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+			Long phoneNumber, Integer billStatus, Integer bandId);
+
+	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect);
+
+	public PayLicBills getBillById(Integer billNumber);
+
+	public int deleteSiteType(Integer siteTypeId);
+
+	public int deleteIntroContract(Integer introId);
 }

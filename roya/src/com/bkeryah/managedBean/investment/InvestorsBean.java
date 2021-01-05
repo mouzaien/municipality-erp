@@ -98,6 +98,7 @@ public class InvestorsBean {
 
 	public void onRowSelect(SelectEvent event) {
 		investor = new Investor();
+		addMode = false;
 		investor = (Investor) event.getObject();
 	}
 

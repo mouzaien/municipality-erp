@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:growl id="msg" autoUpdate="true" closable="true"
+					showDetail="true" />
+
+				<div class="image-box-footer" align="left">
+					<p:commandButton value="إضافة" styleClass="cyan-btn"
+						icon="ui-icon ui-icon-add" process="@this"
+						oncomplete="PF('add_contact_intro_dlg').show()" update="">
+					</p:commandButton>
+				</div>
+				<br />
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center;">
+						مقدمات العقود <span class="fa fa-fw fa-building"></span>
+					</h1>
+
+					<br />
+
+					<p:dataTable var="item" id="LicLst" widgetVar="deptCell"
+						value="#{contractIntroBean.introContractList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom" editable="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						paginator="true" rows="5">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('deptCell').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+
+						<p:ajax event="rowEdit" listener="#{contractIntroBean.onRowEdit}"
+							update=":includeform:LicLst" />
+						<p:ajax event="rowEditCancel"
+							listener="#{contractIntroBean.onRowCancel}"
+							update=":includeform:LicLst" />
+						<p:column headerText=" الرقم التسلسلي" filterBy="#{rowIndex +1}"
+							filterMatchMode="contains" style="width:10%;text-align:center;">
+							<h:outputText value="#{rowIndex +1}" />
+						</p:column>
+
+						<!-- 						<p:column headerText="الرقم" filterBy="#{item.id}" -->
+						<!-- 							filterMatchMode="contains" style="width:10%;text-align:center;"> -->
+						<!-- 							<h:outputText value="#{item.id}" /> -->
+						<!-- 						</p:column> -->
+						<p:column headerText="نوع العقار" filterBy="#{item.name}"
+							filterMatchMode="contains" style="width:10%;">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.name}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{item.name}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="نوع العقار" filterBy="#{item.name}"
+							filterMatchMode="contains" style="width:50%;">
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:inputTextarea id="intro_Des_out" disabled="true"
+										style="opacity: 1" rows="5" cols="140"
+										value="#{item.description}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputTextarea id="intro_Des_in" rows="6" cols="150"
+										value="#{item.description}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:7% ; text-align:center;" headerText="تعديل">
+							<p:rowEditor />
+						</p:column>
+						<p:column width="7%" style="text-align:center" headerText="حذف">
+							<p:commandButton onclick="PF('delete_contact_intro_dlg').show()"
+								styleClass="red-btn" process="@this" icon="ui-icon-remove">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{contractIntroBean.introdaction}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+					<p:dialog widgetVar="add_contact_intro_dlg"
+						id="add_contact_intro_dlgId" header="إضافة مقدمة" width="50%"
+						hideEffect="fade" style="text-aling: center'" showEffect="explode"
+						dir="rtl" modal="true" resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="إسم المقدمة " styleClass="btxt" />
+							</div>
+							<div class="ui-g-6">
+								<p:inputText value="#{contractIntroBean.introName}"
+									style="width: 100%">
+									<p:ajax process="@this"></p:ajax>
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="نص المقدمة " styleClass="btxt" />
+							</div>
+							<div class="ui-g-6">
+
+								<p:inputTextarea id="intro_Des" rows="6" cols="150"
+									value="#{contractIntroBean.introDescription}">
+
+									<p:ajax process="@this" />
+								</p:inputTextarea>
+							</div>
+						</div>
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="حفظ" styleClass="btn btn-primary"
+								update=":includeform:LicLst" immediate="true"
+								action="#{contractIntroBean.saveIntrodaction}"
+								oncomplete="PF('add_contact_intro_dlg').hide();">
+								<p:ajax process="@this"></p:ajax>
+							</p:commandButton>
+						</div>
+					</p:dialog>
+
+
+					<p:dialog widgetVar="delete_contact_intro_dlg"
+						id="delete_contact_intro_dlgId" header="تأكيد عملية الحذف"
+						width="20%" style="text-align: center'" dir="rtl" modal="true"
+						resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:outputLabel value="هل تريد إتمام عملية الحذف ؟!"
+									styleClass="btxt" />
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="نعم" styleClass="green-btn"
+								update=":includeform:LicLst" icon="fa fa-check"
+								action="#{contractIntroBean.deleteIntrodaction}"
+								oncomplete="PF('delete_contact_intro_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+							<p:commandButton value="لا" styleClass="red-btn"
+								action="#{contractIntroBean.cancelDelete}" icon="fa fa-remove"
+								oncomplete="PF('delete_contact_intro_dlg').hide();">
+							</p:commandButton>
+						</div>
+					</p:dialog>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

@@ -7,51 +7,14 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
 	<f:metadata>
-		<f:viewAction action="#{billBean.loadAllBills}"
+		<f:viewAction action="#{billBean.initLoad}"
 			phase="APPLY_REQUEST_VALUES" />
 	</f:metadata>
-
-	<!-- 	<h:head> -->
-
-	<!-- 		<link -->
-	<!-- 			href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" -->
-	<!-- 			rel="stylesheet" type="text/css"></link> -->
-	<!-- 	</h:head> -->
-	<script type="text/javascript">
-		window.onload = window.history.forward(0);
-	</script>
-	<br />
+	<!-- 	<script type="text/javascript"> -->
+	<!-- // 		window.onload = window.history.forward(0); -->
+	<!-- 	</script> -->
 	<h:body>
 		<ui:composition template="/template.xhtml">
-
-			<!-- 			<ui:define name="second-menu"> -->
-			<!-- 				<br></br> -->
-			<!-- 				<br></br> -->
-			<!-- 				<div style="margin-right: 20%;"> -->
-			<!-- 					<div class="navbar-default sidebar" role="navigation"> -->
-			<!-- 						<div class="sidebar-nav navbar-collapse"> -->
-			<!-- 							<ul class="nav" id="side-menu"> -->
-			<!-- 								<li><h:form> -->
-			<!-- 										<h:commandLink immediate="true" action="#{billBean.addBill}" -->
-			<!-- 											value="#{msg['new.bill']}"> -->
-			<!-- 											<f:ajax execute="@form"></f:ajax> -->
-			<!-- 											<i class="glyphicon glyphicon-pencil"></i> -->
-			<!-- 										</h:commandLink> -->
-
-			<!-- 									</h:form></li> -->
-			<!-- 							</ul> -->
-			<!-- 						</div> -->
-			<!-- 						/.sidebar-collapse -->
-			<!-- 					</div> -->
-			<!-- 				</div> -->
-			<!-- 			</ui:define> -->
-
-			<!-- 			<p class="text-center"> -->
-			<!-- 					<h:outputLabel styleClass="btxt" -->
-			<!-- 						style="font-weight:bold; font-size:30px;" value=""> -->
-			<!-- 					</h:outputLabel> -->
-			<!-- 				</p> -->
-
 			<ui:define name="content">
 
 				<h:form id="includeform">
@@ -63,6 +26,25 @@
 							icon="ui-icon ui-icon-add" action="#{billBean.addBill}">
 							<f:ajax execute="@form"></f:ajax>
 						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="طباعة الكل" ajax="false"
+							onclick="this.form.target='_blank'" styleClass="purple-btn"
+							icon="ui-icon ui-icon-print" immediate="true"
+							action="#{billBean.printAllBillsAction}">
+						</p:commandButton>
+						<p:spacer width="10" height="10"></p:spacer>
+						<p:commandButton value="طباعة اكسيل" ajax="false"
+							styleClass="green-btn" icon="fa fa-fw fa-file-excel-o"
+							immediate="true">
+							<p:graphicImage name="/demo/images/xlsx.png" width="24" />
+							<p:dataExporter encoding="UTF-8" type="xls" target="inboxdt"
+								facetBackground="#F88017" facetFontSize="10"
+								facetFontColor="#0000ff" facetFontStyle="BOLD"
+								orientation="Landscape" 
+								cellFontColor="#00ff00" cellFontSize="8" cellFontStyle="NORMAL"
+								postProcessor="#{billBean.postProcessXLS}" fileName="الفواتير"></p:dataExporter>
+						</p:commandButton>
+						<!-- 						postProcessor="#{billBean.postProcessXLS}" -->
 					</div>
 					<br />
 					<div class="card card-w-title" dir="rtl">
@@ -70,7 +52,96 @@
 						<h1 style="color: #7CB342; text-align: center;">
 							#{msg['bills']}</h1>
 						<br />
-						<h3 style="text-align: right;">#{msg['list.bills']}</h3>
+
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<p:outputLabel value="رقم الهوية"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{billBean.aplnumber}" style="width:85%">
+									<p:ajax process="@this" />
+									<f:validator validatorId="nationalIdValidator" />
+								</p:inputText>
+
+							</div>
+							<div class="ui-g-1">
+								<p:outputLabel value="رقم الجوال"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:inputText value="#{billBean.phoneNumber}" style="width:85%">
+									<p:ajax process="@this" />
+<!-- 									<f:validator validatorId="utilities.PhoneNumberValidator" /> -->
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<p:outputLabel value="حالة السداد"></p:outputLabel>
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu value="#{billBean.billStatus}" filter="true"
+									filterMatchMode="contains" style="width:85%">
+									<f:selectItem itemLabel="الكل" itemValue="-1" />
+									<f:selectItem itemLabel="غير مسددة" itemValue="0" />
+									<f:selectItem itemLabel="مسددة" itemValue="1" />
+									<p:ajax process="@this"
+										listener="#{billBean.loadPayLicBillslist}" update="inboxdt" />
+								</p:selectOneMenu>
+							</div>
+
+							<!-- 							<div class="ui-g-1"> -->
+							<!-- 								<p:outputLabel value="المبلغ"></p:outputLabel> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="ui-g-2"> -->
+							<!-- 								<p:inputNumber minValue="0.00" emptyValue="0.00" -->
+							<!-- 									value="#{billBean.billAmount}" -->
+							<!-- 									inputStyle="text-align: right ; font-color : red" -->
+							<!-- 									decimalSeparator="." decimalPlaces="2"></p:inputNumber> -->
+							<!-- 							</div > -->
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<p:outputLabel value="تاريخ  الفاتورة من" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="fromStartDate"
+									value="#{billBean.fromStartDate}" onfocus="loadCalendar();"
+									style="width:85%" styleClass="form-control form-controlCal">
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<p:outputLabel value="إلى" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText id="toStartDate" value="#{billBean.toStartDate}"
+									onfocus="loadCalendar();" style="width:85%"
+									styleClass="form-control form-controlCal">
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="#{msg['item.name']}" styleClass="btxt" />
+							</div>
+							<div class="ui-g-2">
+								<p:selectOneMenu id="itemsList" filter="true" style="width:85%"
+									filterMatchMode="contains" value="#{billBean.itemIdFilter}">
+									<f:selectItem itemLabel="الكل" itemValue="-1"
+										noSelectionOption="true" />
+									<f:selectItems value="#{billBean.itemsList}" var="categ"
+										itemLabel="#{categ.accountNumber} - #{categ.name}"
+										itemValue="#{categ.accountNumber}" />
+									<p:ajax process="@this"
+										listener="#{billBean.loadPayLicBillslist}" update="inboxdt" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-2">
+								<p:commandButton value="استعلام" style="float:left;"
+									immediate="true" icon="ui-icon ui-icon-refresh"
+									action="#{billBean.loadPayLicBillslist}" process="@this"
+									update="inboxdt">
+								</p:commandButton>
+							</div>
+
+						</div>
 						<br />
 						<p:dataTable value="#{billBean.billsList}" var="billItem"
 							id="inboxdt" rowKey="#{billItem.wrkId}" widgetVar="bill_dt"
@@ -78,38 +149,61 @@
 							paginatorPosition="bottom" rowIndexVar="rowIndex"
 							filteredValue="#{billBean.filteredBills}"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
-
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter" onkeyup="PF('bill_dt').filter()"
+										style="width:150px" placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
 							<p:column style="text-align: center;"
 								headerText="#{msg['bill.number']}" filterMatchMode="contains"
 								filterBy="#{billItem.billNumber}" width="10%">
-                                    #{billItem.billNumber}
+								<h:outputText value="#{billItem.billNumber}" />
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['bill.owner.name']}" width="20%"
+								filterMatchMode="contains" filterBy="#{billItem.billOwnerName}">
+								<h:outputText value="#{billItem.billOwnerName}" />
+							</p:column>
+							<p:column style="white-space: nowrap;"
+								headerText="#{msg['bill.date']}" width="10%"
+								filterMatchMode="contains" filterBy="#{billItem.billDate}">
+								<h:outputText value="#{billItem.billDate}" />
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="رقم الهوية"
+								width="10%" filterMatchMode="contains"
+								filterBy="#{billItem.aplOwner}">
+								<h:outputText value="#{billItem.aplOwner}" />
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="رقم الجوال"
+								width="10%" filterMatchMode="contains"
+								filterBy="#{billItem.payInstallNumber}">
+								<h:outputText value="#{billItem.payInstallNumber}" />
+							</p:column>
+							<p:column style="white-space: nowrap;" headerText="المبلغ"
+								width="10%" filterMatchMode="contains"
+								filterBy="#{billItem.payAmount}">
+								<h:outputText value="#{billItem.payAmount}" />
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['receipt.number']}" width="10%"
+								filterMatchMode="contains" filterBy="#{billItem.collectionSR}">
+								<h:outputText value="#{billItem.collectionSR}" />
+							</p:column>
+							<p:column style="white-space: nowrap;text-align: center;"
+								headerText="#{msg['receipt.date']}" width="10%"
+								filterMatchMode="contains" filterBy="#{billItem.payHijriDate}">
+								<h:outputText value="#{billItem.payHijriDate}" />
 
-                                </p:column>
-							<p:column style="white-space: nowrap;"
-								headerText="#{msg['bill.owner.name']}" width="30%"
-								filterMatchMode="contains" filterBy="#{billItem.billOwnerName}">										
-										#{billItem.billOwnerName}										
-									</p:column>
-							<p:column style="white-space: nowrap;"
-								headerText="#{msg['bill.date']}" width="15%"
-								filterMatchMode="contains" filterBy="#{billItem.billDate}">										
-										#{billItem.billDate}										
-									</p:column>
-							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="#{msg['receipt.number']}" width="15%"
-								filterMatchMode="contains" filterBy="#{billItem.collectionSR}">										
-										#{billItem.collectionSR}										
-									</p:column>
-							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="#{msg['receipt.date']}" width="15%"
-								filterMatchMode="contains" filterBy="#{billItem.payHijriDate}">										
-										#{billItem.payHijriDate}										
-									</p:column>
+							</p:column>
 							<p:column style="white-space: nowrap;"
 								headerText="#{msg['payment.status']}" width="10%"
-								filterMatchMode="contains" filterBy="#{billItem.sadadStatus}">										
-										#{(billItem.sadadStatus)}	
-									</p:column>
+								filterMatchMode="contains" filterBy="#{billItem.sadadStatus}">
+								<h:outputText value="#{(billItem.sadadStatus)}" />
+
+							</p:column>
 							<p:column width="5%" style="text-align:center"
 								headerText="#{msg['details']}">
 								<p:commandButton action="#{billBean.loadSelectedBill}"
@@ -118,6 +212,22 @@
 										target="#{billBean.payLicBill}" />
 								</p:commandButton>
 							</p:column>
+							<p:columnGroup type="footer">
+								<p:row>
+									<p:column />
+									<p:column />
+									<p:column />
+									<p:column />
+									<p:column style="text-align:left ; color :blue"
+										footerText="المجموع" />
+									<p:column style="text-align:right ;color :blue"
+										footerText="#{billBean.billAmountBig}" />
+									<p:column />
+									<p:column />
+									<p:column />
+									<p:column />
+								</p:row>
+							</p:columnGroup>
 						</p:dataTable>
 					</div>
 				</h:form>

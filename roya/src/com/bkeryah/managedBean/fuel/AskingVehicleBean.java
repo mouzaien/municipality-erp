@@ -145,7 +145,10 @@ public class AskingVehicleBean {
 			requestModel.setArticleCode(articleStore.getArticleCode());
 			requestModel.setArticleName(articleStore.getArticleName());
 			requestModel.setArticleUnite(articleStore.getArticleUnite());
-			requestModel.setSpecialNumber(requestdets.getSpecialNumber());
+			if (requestdets.getSerialNumber() == null || requestdets.getSerialNumber().isEmpty())
+				requestModel.setSpecialNumber(null);
+			else
+				requestModel.setSpecialNumber(Integer.parseInt(requestdets.getSerialNumber()));
 			requestModel.setTransactionDate(requestdets.getTransactionDate());
 			requestModel.setTransactionCode(requestdets.getTransactionCode());
 			requestModel.setSupplierName(requestdets.getSupplierName());
@@ -168,6 +171,12 @@ public class AskingVehicleBean {
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);
 				break;
+			case 1:// inventory
+				availablebQty = requestdets.getQtyOutput();
+				requestModel.setQtyAvailable(availablebQty);
+				strReqModelList.add(requestModel);
+				break;
+
 			}
 		}
 		Utils.printPdfReportFromListDataSource(reportName, parameters, strReqModelList);

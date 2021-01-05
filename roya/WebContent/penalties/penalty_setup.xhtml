@@ -28,11 +28,11 @@
 					<p:messages autoUpdate="true" closable="true"></p:messages>
 
 					<div class="image-box-footer" align="left">
-						<p:commandButton value="اضافة" id="save"
-							process="@this" immediate="true" styleClass="cyan-btn"
+						<p:commandButton value="اضافة" id="save" process="@this"
+							immediate="true" styleClass="cyan-btn"
 							onclick="PF('print-barcode-dlg').show()" icon="ui-icon-add">
 						</p:commandButton>
-                   <p:spacer height="10"></p:spacer>
+						<p:spacer height="10"></p:spacer>
 						<p:commandButton value="طباعة الكل" icon="ui-icon ui-icon-print "
 							onclick="this.form.target='_blank'" ajax="false" immediate="true"
 							action="#{penalitySetupBean.printPenalityReport}"
@@ -63,26 +63,26 @@
 								</p:outputPanel>
 								<br />
 							</f:facet>
-							<p:ajax event="rowEdit" update="@form"
+							<p:ajax event="rowEdit" update="fines"
 								listener="#{penalitySetupBean.onRowEdit}" />
-							<p:ajax event="rowEditCancel" update="@form"
+							<p:ajax event="rowEditCancel" update="fines"
 								listener="#{penalitySetupBean.onRowCancel}" />
 
-							<p:column headerText="#{msg['finesetup.list']}" width="30%"
-								style="white-space: nowrap;text-align: right;"
-								filterBy="#{finesetup.fineDesc}">
+							<p:column headerText="نوع المخالفة" width="30%"
+								filterMatchMode="contains" filterBy="#{finesetup.fineAction}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{finesetup.fineDesc}" />
+										<h:outputText value="#{finesetup.fineAction}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{finesetup.fineDesc}" required="true"
-											requiredMessage="حقل اللائحة مطلوبة " style="width:100%" />
+										<p:inputText value="#{finesetup.fineAction}" required="true"
+											requiredMessage="حقل العقوبة مطلوبة " style="width:100%" />
 
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="#{msg['finesetup.number']}" width="10%"
+								filterMatchMode="contains"
 								style="white-space: nowrap;text-align: center;"
 								filterBy="#{finesetup.fineCode}">
 								<p:cellEditor>
@@ -97,13 +97,15 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="#{msg['finesetup.punish']}" width="30%"
-								filterBy="#{finesetup.fineAction}" rendered="false">
+								filterMatchMode="contains" filterBy="#{finesetup.fineAction}"
+								rendered="false">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{finesetup.fineAction}" />
 									</f:facet>
 									<f:facet name="input">
 										<p:inputText id="fineaction" value="#{finesetup.fineAction}"
+											required="true" requiredMessage="حقل العقوبة مطلوبة "
 											style="width:96%" />
 									</f:facet>
 								</p:cellEditor>
@@ -163,7 +165,6 @@
 									</div>
 									<div class="ui-g-3">
 										<p:inputText value="#{penalitySetupBean.finesetup.fineDesc}"
-											required="true" requiredMessage="حقل اللائحة مطلوبة "
 											style="width:100%" />
 										<!-- 									<p:selectOneMenu id="itemsList" filter="true" required="true" requiredMessage="حقل اللائحة مطلوبة " -->
 										<!-- 										filterMatchMode="contains"  style="width:100%" -->
@@ -183,6 +184,7 @@
 									</div>
 									<div class="ui-g-3">
 										<p:inputText value="#{penalitySetupBean.finesetup.fineAction}"
+											required="true" requiredMessage="حقل العقوبة مطلوبة "
 											style="width:100%" />
 
 									</div>

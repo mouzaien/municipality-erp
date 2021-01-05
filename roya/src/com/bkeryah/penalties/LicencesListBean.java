@@ -49,6 +49,7 @@ public class LicencesListBean {
 	private Integer activityId = -1;
 	private Integer statusId = -1;
 	private String itemActivityName = new String();
+	private List<Amana> amanaList = new ArrayList<Amana>();
 
 	@PostConstruct
 	private void init() {
@@ -62,6 +63,7 @@ public class LicencesListBean {
 		districtsList = dataAccessService.findAllDistrict();
 		activityList = dataAccessService.getAllLicActivityTypeList();
 		licSectionList = dataAccessService.gatAllLicSectionList();
+		amanaList = dataAccessService.getAllLicAmanaList();
 		// licDepartmentList = dataAccessService.gatAllLicDepartmentList();
 	}
 
@@ -76,6 +78,7 @@ public class LicencesListBean {
 	public void allowAdding() {
 		licence = new LicTrdMasterFile();
 		updateMode = false;
+		licDepartmentList = new ArrayList<>();
 		// Utils.openDialog("addingLicence_dlg");
 	}
 
@@ -88,7 +91,7 @@ public class LicencesListBean {
 				activityList = dataAccessService.getAllLicActivityTypeList();
 				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 				activeName = null;
-			}else {
+			} else {
 				MsgEntry.addErrorMessage("ادخل نوع النشاط");
 			}
 		} catch (Exception e) {
@@ -155,6 +158,7 @@ public class LicencesListBean {
 	public void loadLicencePenalities(LicTrdMasterFile licenceItemTable) {
 		updateMode = true;
 		licence = licenceItemTable;
+		licDepartmentList = dataAccessService.gatAllLicDepartmentList();
 		// licence.setLicNo(licenceItemTable.getLicNo());
 		// licence.set(licenceItemTable.);
 		// licence.set(licenceItemTable.);
@@ -195,16 +199,27 @@ public class LicencesListBean {
 	}
 
 	public String saveLicence() {
-		dataAccessService.save(licence);
-		MsgEntry.addAcceptFlashInfoMessage("تم الحفظ");
-
+		try {
+			dataAccessService.save(licence);
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			return "";
+		}
 		return "";
 	}
 
 	// public String updateLicence(LicTrdMasterFile licence) {
 	public String updateLicence() {
-		dataAccessService.updateObject(licence);
-		MsgEntry.addAcceptFlashInfoMessage("تم التعديل");
+		try {
+			dataAccessService.updateObject(licence);
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			return "";
+		}
 		return "";
 	}
 
@@ -381,6 +396,14 @@ public class LicencesListBean {
 
 	public void setItemActivityName(String itemActivityName) {
 		this.itemActivityName = itemActivityName;
+	}
+
+	public List<Amana> getAmanaList() {
+		return amanaList;
+	}
+
+	public void setAmanaList(List<Amana> amanaList) {
+		this.amanaList = amanaList;
 	}
 
 }

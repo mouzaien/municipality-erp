@@ -74,5 +74,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/trado.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-metadata-6.6.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-6.7.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sms-manager.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

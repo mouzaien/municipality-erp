@@ -54,7 +54,8 @@
 								<!-- 									listener="#{licencesListBean.loadLicencesByActivityId}" /> -->
 								<!-- 							</p:selectOneMenu> -->
 								<p:selectOneMenu styleClass="form-control" id="stockNO"
-									value="#{licencesListBean.activityId}"
+									filter="true" value="#{licencesListBean.activityId}"
+									filterMatchMode="contains"
 									style="direction: rtl;height: 39px;width:95%">
 									<f:selectItem itemValue="-1" itemLabel="الكل"></f:selectItem>
 									<f:selectItems value="#{licencesListBean.activityList}" var="c"
@@ -113,11 +114,11 @@
 							<p:column style="white-space: nowrap; "
 								headerText="#{msg['commercial.name']}" width="30%"
 								filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
-										#{licenceItem.trdName} - #{licenceItem.activity} 									
+										#{licenceItem.trdName} 									
 									</p:column>
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="السجل التجاري" width="13%"
-								filterBy="#{licenceItem.trdName}" filterMatchMode="contains">										
+								filterBy="#{licenceItem.mhlId}" filterMatchMode="contains">										
 										#{licenceItem.mhlId} 									
 									</p:column>
 							<p:column style="white-space: nowrap;text-align: center;"
@@ -126,7 +127,7 @@
 										#{licenceItem.aplOwner} 									
 									</p:column>
 							<p:column style="white-space: nowrap;text-align: center;"
-								headerText="نوع النشاط" width="11%">
+								headerText="نوع النشاط" width="14%">
 
 								<p:selectOneMenu filter="true" filterMatchMode="contains"
 									disabled="true" style="width:95%;opacity: 1;" immediate="true"
@@ -292,7 +293,7 @@
 							<div class="ui-g-2">
 								<p:inputText id="marketSpace" style="width:100%" required="true"
 									requiredMessage="إدخل مساحة المنشئة"
-									value="#{licencesListBean.licence.licAdress}" />
+									value="#{licencesListBean.licence.marketSpace}" />
 							</div>
 						</div>
 						<div class="ui-g">
@@ -305,7 +306,6 @@
 									value="#{licencesListBean.licence.licBeginDate}"
 									onfocus="loadCalendar();"
 									styleClass="form-control form-controlCal">
-									<f:validator validatorId="utilities.UmmAlQUraValidator" />
 								</p:inputText>
 							</div>
 							<div class="ui-g-2" style="text-align: center">
@@ -316,7 +316,7 @@
 									value="#{licencesListBean.licence.licEndDate}" required="true"
 									requiredMessage="إدخل تاريخ النهاية" onfocus="loadCalendar();"
 									style="width:100%" styleClass="form-control form-controlCal">
-									<f:validator validatorId="utilities.UmmAlQUraValidator" />
+
 								</p:inputText>
 							</div>
 							<div class="ui-g-2" style="text-align: center">
@@ -326,6 +326,7 @@
 							<div class="ui-g-2" style="text-align: center">
 								<p:inputText id="phoneNumber" style="width:100%" required="true"
 									requiredMessage="إدخل رقم الجوال / الهاتف"
+									placeholder="*********966"
 									value="#{licencesListBean.licence.phoneNumber}" maxlength="12">
 									<f:validator validatorId="utilities.PhoneNumberValidator" />
 								</p:inputText>
@@ -350,7 +351,8 @@
 							</div>
 							<div class="ui-g-2">
 								<p:selectOneMenu id="LicenceActivatyType" style="width:80%"
-									required="true" requiredMessage="إدخل نوع النشاط"
+									filter="true" filterMatchMode="contains" required="true"
+									requiredMessage="إدخل نوع النشاط"
 									value="#{licencesListBean.licence.activtyType}">
 									<f:selectItem itemLabel="إختر نوع النشاط"
 										noSelectionOption="true" />
@@ -371,7 +373,8 @@
 									required="true" requiredMessage="إختر الأمانة"
 									value="#{licencesListBean.licence.amaana}">
 									<f:selectItem itemLabel="إختر الأمانة" noSelectionOption="true" />
-									<f:selectItem itemLabel="أمانة القصيم" itemValue="1" />
+									<f:selectItems value="#{licencesListBean.amanaList}"
+										var="amana" itemLabel="#{amana.name}" itemValue="#{amana.id}" />
 								</p:selectOneMenu>
 							</div>
 						</div>

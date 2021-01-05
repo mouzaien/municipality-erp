@@ -36,7 +36,24 @@
 						<h1 style="color: #7CB342; text-align: center;">#{msg['list.penalities']}
 						</h1>
 
+						<br />
 						<div class="panel-body" style="padding: 0px;">
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="حالة المخالفة" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu styleClass="form-control"
+										value="#{penalitiesListBean.fineStatus}">
+										<f:selectItem itemLabel="الكل" itemValue="-1" />
+										<f:selectItem itemLabel="تحت الاجراء" itemValue="R" />
+										<f:selectItem itemLabel="تم الموافقة عليها" itemValue="Y" />
+										<f:selectItem itemLabel="تم رفضها" itemValue="N" />
+										<p:ajax process="@this" update="inboxdt"
+											listener="#{penalitiesListBean.loadPenalitiesByType}"></p:ajax>
+									</p:selectOneMenu>
+								</div>
+							</div>
 
 							<!-- 							<div class="ui-g"> -->
 							<!-- 								<p:outputLabel value="مخالفات الإشعارات" -->
@@ -76,20 +93,20 @@
 									width="10%">
                                     #{penalItem.fineNo}
                                 </p:column>
-								<p:column style="text-align: center;"
-									headerText="رقم الاشعار"
-									filterBy="#{penalItem.notifyMasterId}" filterMatchMode="contains"
-									width="10%">
-                                    #{penalItem.notifyMasterId}
-                                </p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
-									headerText="تاريخ الاشعار" width="10%"
-									filterBy="#{penalItem.notifyDate}" filterMatchMode="contains">
-									<h:outputLabel value="#{penalItem.notifyDate}">
-										<f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
-									</h:outputLabel>
+								<!-- 								<p:column style="text-align: center;" -->
+								<!-- 									headerText="رقم الاشعار" -->
+								<!-- 									filterBy="#{penalItem.notifyMasterId}" filterMatchMode="contains" -->
+								<!-- 									width="10%"> -->
+								<!--                                     #{penalItem.notifyMasterId} -->
+								<!--                                 </p:column> -->
+								<!-- 								<p:column style="white-space: nowrap;text-align: center;" -->
+								<!-- 									headerText="تاريخ الاشعار" width="10%" -->
+								<!-- 									filterBy="#{penalItem.notifyDate}" filterMatchMode="contains"> -->
+								<!-- 									<h:outputLabel value="#{penalItem.notifyDate}"> -->
+								<!-- 										<f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime> -->
+								<!-- 									</h:outputLabel> -->
 
-								</p:column>
+								<!-- 								</p:column> -->
 
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="رقم السجل التجارى" width="10%"
@@ -102,24 +119,24 @@
 										#{penalItem.fIdNo}										
 								</p:column>
 
-								<p:column style="white-space: nowrap;"
+								<p:column 
 									headerText="#{msg['name']}" width="30%"
 									filterBy="#{penalItem.fName}" filterMatchMode="contains">										
 										#{penalItem.fName}										
 									</p:column>
 
-								<p:column style="white-space: nowrap;"
+								<p:column
 									headerText="#{msg['commercial.name']}" width="30%"
 									filterBy="#{penalItem.fTradeMarkName}"
 									filterMatchMode="contains">										
 										#{penalItem.fTradeMarkName}										
 									</p:column>
-								<p:column style="white-space: nowrap;text-align: center;"
+								<p:column style="text-align: center;"
 									headerText="#{msg['licence.number']}" width="7%"
 									filterBy="#{penalItem.fLicenceNo}">										
 										#{penalItem.fLicenceNo}										
 									</p:column>
-								<p:column style="white-space: nowrap;"
+								<p:column
 									filterBy="#{penalItem.fFineCase}" filterMatchMode="contains"
 									headerText="#{msg['payment.status']}" width="8%">
 
@@ -129,7 +146,7 @@
 
 								</p:column>
 
-								<p:column style="white-space: nowrap;" headerText="المراقب"
+								<p:column  headerText="المراقب"
 									width="15%" filterBy="#{penalItem.supervisorNameView}"
 									filterMatchMode="contains">										
 										#{penalItem.supervisorNameView}										
@@ -187,6 +204,7 @@
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
+														style="color:#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? 'green' : 'red'}"
 														value="#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? msg['paid'] : msg['not.paid']}" />
 												</div>
 
@@ -198,7 +216,7 @@
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
-														value="#{(penalitiesListBean.reqFinesMaster.activityType == 1)? msg['commercial'] : 'صحي'}" />
+														value="#{penalitiesListBean.reqFinesMaster.activityName}" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel rendered="false" value="رقم الشكوى"
@@ -375,12 +393,12 @@
 														<ui:repeat var="fdet" varStatus="x"
 															value="#{penalitiesListBean.reqFinesMaster.reqFinesDetailsList}">
 															<tr>
-																<td>#{fdet.reqFinesSetup.fineDesc}</td>
+																<td>#{fdet.reqFinesSetup.fineAction}</td>
 																<td>#{fdet.fineCount}</td>
 																<td>#{fdet.reqFinesSetup.fineMinimumValue}</td>
 																<td>#{fdet.reqFinesSetup.fineSupermumValue}</td>
-																<td>#{fdet.fineCount}</td>
-																<td width="10%"><p:inputText size="2" id="notValue"
+																<td width="12%">#{fdet.fineCount}</td>
+																<td width="10%"><p:inputText size="4" id="notValue"
 																		style=" opacity:1;" disabled="true"
 																		value="#{fdet.fineValue}">
 																		<p:ajax event="blur" process="@this,notValue"
@@ -431,12 +449,12 @@
 											action="#{penalitiesListBean.printPenalityReport}">
 										</p:commandButton>
 
-										<p:commandButton style="float:left;margin-left:3px;"
-											value="طباعة المحضر" id="bt2" styleClass="purple-btn"
-											ajax="false" onclick="this.form.target='_blank'"
-											icon="ui-icon ui-icon-print"
-											action="#{penalitiesListBean.printReportPenalityAction}">
-										</p:commandButton>
+										<!-- 										<p:commandButton style="float:left;margin-left:3px;" -->
+										<!-- 											value="طباعة المحضر" id="bt2" styleClass="purple-btn" -->
+										<!-- 											ajax="false" onclick="this.form.target='_blank'" -->
+										<!-- 											icon="ui-icon ui-icon-print" -->
+										<!-- 											action="#{penalitiesListBean.printReportPenalityAction}"> -->
+										<!-- 										</p:commandButton> -->
 
 										<!-- 										<p:commandButton style="float:left;margin-left:3px;" -->
 										<!-- 											value="موافق" styleClass="btn btn-primary" update="myDialog" -->
@@ -450,7 +468,6 @@
 							<div />
 						</p:dialog>
 					</div>
-
 				</h:form>
 			</ui:define>
 		</ui:composition>

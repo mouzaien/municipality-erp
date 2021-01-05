@@ -100,6 +100,9 @@ public class ReqFinesMaster {
 	@Formula("(select u.MHL_ID from lic_trd_master_file u where u.LIC_NO = F_LICENCE_NO)")
 	private String mahlId;
 	
+	@Formula("(select u.NAME from LIC_ACTIVITY_TYPE_RY u where u.ID = ACTIVITY_TYPE)")
+	private String activityName	;
+	
 	@Transient
 	private String supervisorName;
 	@Transient
@@ -446,6 +449,14 @@ public class ReqFinesMaster {
 
 	public void setNotifyMasterId(Integer notifyMasterId) {
 		this.notifyMasterId = notifyMasterId;
+	}
+
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
 	}
 
 }
