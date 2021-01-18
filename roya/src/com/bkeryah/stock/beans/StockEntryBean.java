@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.RowEditEvent;
 
+import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
@@ -33,6 +34,7 @@ import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.WhsWarehouses;
+import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.model.MemoReceiptModel;
@@ -113,6 +115,8 @@ public class StockEntryBean {
 	private SysProperties prop;
 	private boolean enableEditMgr;
 	private boolean serialPrintFlag;
+	private UserMailObj selectedInbox;
+	private WrkApplicationId WrkId;
 
 	@PostConstruct
 	public void init() {
@@ -145,6 +149,9 @@ public class StockEntryBean {
 			getMemoReceiptDetails();
 			wrkPurposes = dataAccessService.getAllPurposes();
 			stepNum = dataAccessService.getStepNumberFromHrSign(recordId);
+			selectedInbox = (UserMailObj) httpSession.getAttribute("selectedMail");
+			if (selectedInbox != null)
+				WrkId = new WrkApplicationId(Integer.parseInt(this.selectedInbox.WrkId), selectedInbox.StepId);
 			for (StockInDetails stockInDetails : stockEntryMaster.getStockInDetailsList()) {
 				articleStatus = (ArticleStatus) dataAccessService.findEntityById(ArticleStatus.class,
 						stockInDetails.getArticleStatus());
@@ -628,6 +635,22 @@ public class StockEntryBean {
 		return "mails";
 	}
 
+	public String refuseAction() {
+		try {
+			applicationPurpose = "2";
+			stockEntryMaster.setStockEntryStatus(MyConstants.NO);
+			String wrkCommentRefuse = wrkAppComment;
+			dataAccessService.refuseMemoReceipt(WrkId, recordId, stockEntryMaster, wrkCommentRefuse,
+					Integer.parseInt(applicationPurpose.trim()));
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
+			return "mails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			return "";
+		}
+	}
+
 	public void updateSerialNum() {
 		// if (stockEntryMaster.getSerialNumber() == null) {
 		// stockEntryMaster.setSerialNumber(SerialNum);
@@ -1065,6 +1088,22 @@ public class StockEntryBean {
 
 	public void setSerialPrintFlag(boolean serialPrintFlag) {
 		this.serialPrintFlag = serialPrintFlag;
+	}
+
+	public UserMailObj getSelectedInbox() {
+		return selectedInbox;
+	}
+
+	public void setSelectedInbox(UserMailObj selectedInbox) {
+		this.selectedInbox = selectedInbox;
+	}
+
+	public WrkApplicationId getWrkId() {
+		return WrkId;
+	}
+
+	public void setWrkId(WrkApplicationId wrkId) {
+		WrkId = wrkId;
 	}
 
 }

@@ -95,6 +95,7 @@ import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.investment.ContractDirect;
+import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
 import com.bkeryah.fuel.entities.Car;
@@ -8066,4 +8067,84 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		}
 		return billslist;
 	}
+
+	@Override
+	public List<RealEstate> loadAllUnusedRealEstatesList() {
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		RealEstate realEstate = new RealEstate();
+		List<RealEstate> realEstateList = new ArrayList<RealEstate>();
+
+		try {
+			// String currentHijriDate =
+			// Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			String sql = "{call NEW_PKG_WEBKIT.getAllUnusedRealEstates(?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+			callableStatement.execute();
+			rs = (ResultSet) callableStatement.getObject(1);
+			int i = 0;
+			realEstateList = new ArrayList<RealEstate>();
+			while (rs.next()) {
+
+				realEstate = new RealEstate();
+				realEstate.setId(rs.getInt("ID"));
+				realEstate.setName(rs.getString("NAME"));
+				realEstate.setNumPlan(rs.getString("NUM_PLAN"));
+				realEstate.setComponents(rs.getString("COMPONENTS"));
+				realEstate.setSiteTypeId(rs.getString("SITE_LYPE_ID"));
+				realEstate.setStreet(rs.getString("STREET"));
+				realEstate.setFullName(rs.getString("fullName"));
+				realEstate.setActivityTypeId(rs.getString("ACTIVITY_TYPE_ID"));
+				realEstate.setStatus(rs.getInt("STATUS"));
+
+				realEstateList.add(realEstate);
+			}
+			// System.out.println("UnusedRealEstatesList size " +
+			// realEstateList.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(" loadAllUnusedRealEstatesList : " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return realEstateList;
+	}
+
+	@Override
+	public Integer getContractPayedStatus(Integer contractId) {
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		int countOfRows = -1;
+		try {
+			String sql = "{call NEW_PKG_WEBKIT.getContractPayedStatus(?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setInt(1, contractId);
+			callableStatement.registerOutParameter(2, OracleTypes.NUMBER);
+			callableStatement.execute();
+			countOfRows = ((BigDecimal) callableStatement.getObject(2)).intValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(" getContractPayedStatus : " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return countOfRows;
+	}
+
 }

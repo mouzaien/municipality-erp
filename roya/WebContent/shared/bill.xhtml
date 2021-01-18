@@ -22,7 +22,7 @@
 		<ui:composition template="/template.xhtml">
 			<ui:define name="content">
 				<h:form id="includeform">
-					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<p:messages id="msg" autoUpdate="true" closable="true"></p:messages>
 
 					<div class="image-box-footer" align="left">
 						<p:commandButton value="#{msg['back']}" action="search_bill"
@@ -93,12 +93,18 @@
 							<div class="ui-g-2">
 								<h:outputLabel value="البيان" styleClass="btxt" />
 							</div>
-							<div class="ui-g-3">
-								<p:inputTextarea value="#{billBean.payLicBill.bayan}" cols="190"
+							<div class="ui-g-8">
+								<p:inputTextarea id="bayan" value="#{billBean.payLicBill.bayan}" cols="190"
 									rows="2">
 
 								</p:inputTextarea>
-
+								
+							</div>
+							<div class="ui-g-1">
+								<p:commandButton value="#{msg['save']}" styleClass="green-btn"
+									immediate="true" action="#{billBean.saveBayan}">
+									<f:ajax execute="bayan" render="msg"></f:ajax>
+								</p:commandButton>
 							</div>
 						</div>
 						<div class="ui-g">

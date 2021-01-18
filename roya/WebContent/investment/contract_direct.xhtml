@@ -871,18 +871,22 @@
 											rendered="#{contractDirectBean.addMode}"
 											value="#{contractDirectBean.contractDirect.realEstateId}">
 											<f:selectItem itemLabel="اختر العقار" />
-											<f:selectItems value="#{loadingDataBean.realEstateList}"
-												var="x" itemLabel="#{x.fullName}" itemValue="#{x.id}" />
+											<f:selectItems
+												value="#{contractDirectBean.unusedRealEstatesList}" var="x"
+												itemLabel="#{x.fullName}" itemValue="#{x.id}" />
+											<!-- 											<f:selectItems value="#{loadingDataBean.realEstateList}" -->
+											<!-- 												var="x" itemLabel="#{x.fullName}" itemValue="#{x.id}" /> -->
 
 											<p:ajax process="@this" />
 										</p:selectOneMenu>
 										<p:selectOneMenu style="width: 100% ;opacity:1;"
 											disabled="true" rendered="#{!contractDirectBean.addMode}"
 											value="#{contractDirectBean.contractDirect.realEstateId}">
-											<f:selectItem itemLabel=" " />
 											<f:selectItems value="#{loadingDataBean.realEstateList}"
 												var="x" itemLabel="#{x.fullName}" itemValue="#{x.id}" />
-
+											<!-- 											<f:selectItems -->
+											<!-- 												value="#{contractDirectBean.unusedRealEstatesList}" var="x" -->
+											<!-- 												itemLabel="#{x.fullName}" itemValue="#{x.id}" /> -->
 										</p:selectOneMenu>
 
 										<!-- 										<p:outputLabel -->
@@ -1099,6 +1103,8 @@
 													var="categ"
 													itemLabel="#{categ.accountNumber} - #{categ.name}"
 													itemValue="#{categ.accountNumber}" />
+
+												<p:ajax process="@this"></p:ajax>
 											</p:selectOneMenu>
 										</div>
 
@@ -1647,7 +1653,7 @@
 									<p:selectBooleanCheckbox value="#{contfeesItem.checkfees}"
 										disabled="#{!contfeesItem.canRenew}">
 										<p:ajax process="@this"
-											listener="#{contractDirectBean.checkedFeesIncremint(contfeesItem.factId)}"
+											listener="#{contractDirectBean.checkedFeesIncremint(contfeesItem.factId,contfeesItem.status)}"
 											update="includeform:feesPG  includeform:btn-pnl"></p:ajax>
 									</p:selectBooleanCheckbox>
 								</p:column>

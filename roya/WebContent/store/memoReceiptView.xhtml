@@ -140,6 +140,11 @@ body .ui-dialog .ui-dialog-titlebar {
 			<p:commandButton value="#{msg['accept']}" immediate="true"
 				action="#{stockEntryBean.accept}" icon="ui-icon ui-icon-check">
 			</p:commandButton>
+			<p:commandButton value="#{msg['refuse']}"
+				rendered="#{(stockEntryBean.enableAccept)}"
+				onclick="PF('dlgRefuse').show();" immediate="true"
+				styleClass="deep-orange-btn" icon="ui-icon ui-icon-cancel">
+			</p:commandButton>
 		</h:panelGroup>
 		<h:panelGroup id="printBtnGrp">
 
@@ -337,6 +342,40 @@ body .ui-dialog .ui-dialog-titlebar {
 								<p:ajax listener="#{stockEntryBean.cancleUpdateSerialNum}"
 									process="@this" update="serialNumId,printBtnGrp" />
 							</p:commandButton>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+
+				<p:dialog header="#{msg['add.explanation.confirmation']}"
+					widgetVar="dlgRefuse" height="300" width="500">
+
+					<h:panelGroup id="refPopup">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-5,ui-grid-col-12" layout="grid"
+							styleClass="ui-panelgrid-blank form-group"
+							style="border:0px none; background-color:transparent; direction:rtl">
+
+							<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
+							<p:inputTextarea cols="30" rows="5" style="width:100%"
+								value="#{stockEntryBean.wrkAppComment}">
+							</p:inputTextarea>
+						</p:panelGrid>
+						<br></br>
+						<br></br>
+						<div style="direction: initial;">
+
+							<p:commandButton value="#{msg['back']}" immediate="true"
+								icon="ui-icon ui-icon-keyboard-arrow-left"
+								onclick="PF('dlgRefuse').hide();" styleClass=" orange-btn">
+							</p:commandButton>
+							<p:spacer width="4"></p:spacer>
+
+							<p:commandButton value="#{msg['confirmation']}"
+								icon="ui-icon ui-icon-check" immediate="true"
+								action="#{stockEntryBean.refuseAction}">
+								<f:ajax execute="refPopup"></f:ajax>
+							</p:commandButton>
+
 						</div>
 					</h:panelGroup>
 				</p:dialog>

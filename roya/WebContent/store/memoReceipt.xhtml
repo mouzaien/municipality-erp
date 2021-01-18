@@ -242,13 +242,12 @@
 							id="art_table" emptyMessage="لايوجد بيانات" var="storeItem"
 							rowIndexVar="rowIndex" editable="true">
 
-							<p:ajax event="rowEdit" listener="#{stockEntryBean.onRowEdit}" immediate="true"
-								delay="200" update="total_price ,:includeform:total"
-								process="price" />
+							<p:ajax event="rowEdit" listener="#{stockEntryBean.onRowEdit}"
+								immediate="true" delay="200"
+								update="total_price" process="price" />
 							<p:ajax event="rowEditCancel" immediate="true"
 								listener="#{stockEntryBean.onRowCancel}" delay="200"
-								update="total_price ,:includeform:total"
-								process="price" />
+								update="total_price " process="price" />
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="رقم" width="5%">										
 										#{rowIndex+1} 									
@@ -326,27 +325,26 @@
 							</p:column>
 
 
-<!-- 							<p:columnGroup type="footer"> -->
-<!-- 								<p:row> -->
-<!-- 									<p:column colspan="7" style="text-align:left;font-size:25px " -->
-<!-- 										footerText="المجموع الكلي: " /> -->
-<!-- 									<p:column id="total_sum" colspan="3" -->
-<!-- 										style="text-align:right;font-size:25px" -->
-<!-- 										footerText=" #{stockEntryBean.articlesTotalPrice}  ريال" /> -->
-
-<!-- 								</p:row> -->
-<!-- 							</p:columnGroup> -->
+							<p:columnGroup type="footer">
+								<p:row>
+									<p:column colspan="7" style="text-align:left;font-size:25px "
+										footerText="المجموع الكلي: " />
+									<p:column id="total_sum" colspan="3"
+										style="text-align:right;font-size:25px"
+										footerText="#{stockEntryBean.stockInDetailList.stream().map(fdet->fdet.total).sum()}  ريال" />
+								</p:row>
+							</p:columnGroup>
 						</p:dataTable>
 
 
 					</h:panelGroup>
 				</div>
-				<div>
-					<h:outputText value="المجوع الكلي :  "
-						style="text-align:right;font-size:35px"></h:outputText>
-					<h:outputLabel id="total" style="text-align:right;font-size:35px"
-						value=" #{stockEntryBean.articlesTotalPrice}  ريال"></h:outputLabel>
-				</div>
+<!-- 				<div> -->
+<!-- 					<h:outputText value="المجوع الكلي :  " -->
+<!-- 						style="text-align:right;font-size:35px"></h:outputText> -->
+<!-- 					<h:outputLabel id="total" style="text-align:right;font-size:35px" -->
+<!-- 						value=" #{stockEntryBean.articlesTotalPrice}  ريال"></h:outputLabel> -->
+<!-- 				</div> -->
 
 			</h:form>
 		</ui:define>

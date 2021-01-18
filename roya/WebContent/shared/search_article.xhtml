@@ -87,7 +87,22 @@
 									listener="#{exchangeRequestBean.loadAllStoreRequestModel}" />
 							</p:selectOneMenu>
 						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="حالة الرصيد" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu value="#{exchangeRequestBean.status}"
+								style="width: 75%">
+								<f:selectItem itemLabel="الكل" itemValue="0" />
+								<f:selectItem itemLabel="رصيد" itemValue="1" />
+								<f:selectItem itemLabel="بدون رصيد" itemValue="2" />
+								<p:ajax update="articleTable" process="@this"
+									listener="#{exchangeRequestBean.loadAllStoreRequestModel}"></p:ajax>
+							</p:selectOneMenu>
+						</div>
+
 					</div>
+
 					<br></br>
 					<p:dataTable var="articleItem" id="articleTable"
 						value="#{exchangeRequestBean.articlesStockList}"
@@ -174,8 +189,8 @@
 
 						</div>
 						<br />
-						<div class="bodyt"  style="height: 200px; overflow: auto">
-							<table id="tabStore" class="table table-striped table-hover" >
+						<div class="bodyt" style="height: 200px; overflow: auto">
+							<table id="tabStore" class="table table-striped table-hover">
 								<thead>
 									<tr>
 										<th style="width: 20%; text-align: center">اسم العملية</th>

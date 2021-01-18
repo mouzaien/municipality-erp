@@ -2011,4 +2011,14 @@ public interface IDataAccessService {
 	public int deleteSiteType(Integer siteTypeId);
 
 	public int deleteIntroContract(Integer introId);
+
+	public List<RealEstate> loadAllUnusedRealEstatesList();
+
+	void refuseMemoReceipt(WrkApplicationId wrkId, Integer recordId, StockEntryMaster memoR, String wrkAppComment,
+			int applicationPurpose);
+
+	void refuseStoreTemporeryReceipt(WrkApplicationId wrkId, Integer recordId, StoreTemporeryReceiptMaster memoR,
+			String wrkAppComment, int applicationPurpose);
+
+	public Integer getContractPayedStatus(Integer contractId);
 }

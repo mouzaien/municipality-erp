@@ -53,6 +53,7 @@ import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.investment.ContractDirect;
+import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.hr.entities.HrsCompactFloors;
@@ -620,8 +621,14 @@ public interface DataAccess {
 
 	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, Integer investorId, Integer status,
 			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate, Integer sectionId,
-			Integer contractMaincatgId, Integer contractSubcatgId, Integer actvityId, String component, Integer contractStatusFilter);
+			Integer contractMaincatgId, Integer contractSubcatgId, Integer actvityId, String component,
+			Integer contractStatusFilter);
 
 	public List<PayLicBills> loadBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus,Integer bandId);
+			Long phoneNumber, Integer billStatus, Integer bandId);
+
+	public List<RealEstate> loadAllUnusedRealEstatesList();
+
+	public Integer getContractPayedStatus(Integer contractId);
+
 }

@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "INV_SITES")
@@ -48,7 +50,5 @@ public class SiteType {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	
 
 }

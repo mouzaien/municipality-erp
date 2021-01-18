@@ -9286,6 +9286,34 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
+	public void refuseMemoReceipt(WrkApplicationId wrkId, Integer recordId, StockEntryMaster memoR,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, memoR,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
+
+	}
+
+	@Override
+	@Transactional
+	public void refuseStoreTemporeryReceipt(WrkApplicationId wrkId, Integer recordId, StoreTemporeryReceiptMaster memoR,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, memoR,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
+
+	}
+	
+	@Override
+	@Transactional
 	public void acceptPenalty(ReqFinesMaster finesMaster, Integer recordId, int modelType, String usercomment,
 			int applicationPurpose) {
 		WrkApplication app = getWrkApplicationRecordById(recordId);
@@ -9921,10 +9949,25 @@ public class DataAccessService implements IDataAccessService {
 
 		return commonDao.deleteSiteType(siteTypeId);
 	}
+
 	@Override
 	@Transactional
 	public int deleteIntroContract(Integer introId) {
-		
+
 		return commonDao.deleteIntroContract(introId);
 	}
+
+	@Override
+	@Transactional
+	public List<RealEstate> loadAllUnusedRealEstatesList() {
+
+		return dataAccessDAO.loadAllUnusedRealEstatesList();
+	}
+
+	@Override
+	public Integer getContractPayedStatus(Integer contractId) {
+		// TODO Auto-generated method stub
+		return dataAccessDAO.getContractPayedStatus(contractId);
+	}
+	
 }

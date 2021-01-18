@@ -400,7 +400,7 @@ WHERE
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="143" height="38" uuid="b2eda959-88a4-4dd6-ba3e-4b390f9507e9"/>
 				<box>
 					<pen lineWidth="0.5"/>

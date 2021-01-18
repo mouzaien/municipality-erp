@@ -116,7 +116,18 @@ public class BillBean {
 		totalAmountBill = 0.0;
 		return "bill";
 	}
+	public String saveBayan(){
+		try {
+			dataAccessService.updateObject(payLicBill);
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));	
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+		}
+		return "";
+	}
+	
 	/**
 	 * Save a bill
 	 * 

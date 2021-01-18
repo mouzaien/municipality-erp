@@ -40,7 +40,13 @@ public class InventoryGardBean {
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
-		allWareHouses = dataAccessService.getAllStores();
+		Integer usrId = dataAccessService.getPropertiesValue("MOSTAWDA3_ID");
+		if (usrId == currentUser.getUserId()) {
+			setAllWareHouses(dataAccessService.getAllStores());
+		} else {
+			setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
+		}
+		// allWareHouses = dataAccessService.getAllStores();
 		// inventoriesList = dataAccessService.findAllInventoryMaster();
 	}
 

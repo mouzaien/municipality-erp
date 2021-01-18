@@ -824,4 +824,16 @@ public class HijriCalendarUtil {
 
 		return null;
 	}
+
+	public static Integer findDayOfHijriDate(String hijriDate) {
+		return Integer.parseInt(hijriDate.substring(0, 2));
+	}
+
+	public static Integer findMonthOfHijriDate(String hijriDate) {
+		return Integer.parseInt(hijriDate.substring(3, 5));
+	}
+
+	public static Integer findYearOfHijriDate(String hijriDate) {
+		return Integer.parseInt(hijriDate.substring(6, 10));
+	}
 }

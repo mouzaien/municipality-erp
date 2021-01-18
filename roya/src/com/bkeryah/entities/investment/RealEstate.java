@@ -271,10 +271,14 @@ public class RealEstate {
 	}
 
 	public String getFullName() {
-//		fullName = numRealEstate + " - " + ((siteType != null) ? siteType.getName() : "") + " - "
-//				+ ((activityType != null) ? activityType.getName() : "") + " - " + street;
-		fullName = id + " - " + ((siteType != null) ? siteType.getName() : "") + " - "
-				+ ((activityType != null) ? activityType.getName() : "") + " - " + street;
+		// fullName = numRealEstate + " - " + ((siteType != null) ?
+		// siteType.getName() : "") + " - "
+		// + ((activityType != null) ? activityType.getName() : "") + " - " +
+		// street;
+		if (siteType != null)
+			fullName = id + " - " + ((siteType != null) ? siteType.getName() : "") + " - "
+					+ ((activityType != null) ? activityType.getName() : "") + " - " + components + " - " + street;
+		// System.out.println(fullName);
 		return fullName;
 	}
 

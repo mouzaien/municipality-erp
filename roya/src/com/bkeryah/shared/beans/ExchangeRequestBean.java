@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,7 +18,9 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
+import com.bkeryah.bean.StoreArtsRequestModel;
 import com.bkeryah.bean.StoreRequestModel;
+import com.bkeryah.bean.UserContactClass;
 import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
@@ -33,6 +36,7 @@ import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.mails.MailTypeEnum;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.HijriCalendarUtil;
@@ -103,7 +107,8 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private boolean stockIsBlocked;
 	private boolean canSave;
 	private Integer selectedItemId;
-
+	private List<User> employersList;
+	private List<UserContactClass> listOfEmpsInDept;
 	@ManagedProperty(value = "#{stockServiceDao}")
 	private IStockServiceDao stockServiceDao;
 
@@ -113,13 +118,37 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private boolean chckRtrnArt;
 	private WhsWarehouses wrHouse = new WhsWarehouses();
 	private boolean serialPrintFlag;
+	private Integer status;
 
 	@PostConstruct
 	public void init() {
-		typeId = MailTypeEnum.EXCHANGEREQUEST;
+		employersList = new ArrayList<>();
 		currentUser = Utils.findCurrentUser();
 		employerId = currentUser.getUserId();
-		setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
+
+		typeId = MailTypeEnum.EXCHANGEREQUEST;
+		// if stores manager get all stors
+		// allWareHouses = dataAccessService.getAllStores();
+		Integer usrId = dataAccessService.getPropertiesValue("MOSTAWDA3_ID");
+
+		if (usrId == currentUser.getUserId()) {
+			setAllWareHouses(dataAccessService.getAllStores());
+		} else {
+			setAllWareHouses(stockServiceDao.getStoreDeanWharehouses(currentUser.getUserId()));
+		}
+		employersList = dataAccessService.getAllUsers();
+		// listOfEmpsInDept =
+		// dataAccessService.findAllEmployeesInDept(currentUser.getUserId());
+		// User usr = (User) dataAccessService.findEntityById(User.class,
+		// currentUser.getUserId());
+		// employersList.add(usr);
+		// for (UserContactClass user : listOfEmpsInDept) {
+		// usr = (User) dataAccessService.findEntityById(User.class,
+		// user.getUserId());
+		// employersList.add(usr);
+		// }
+		// }
+
 		wareHousesList = stockServiceDao.getStoreWharehouses(null);
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -593,12 +622,28 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	 * printSearch_ArticleReportAction
 	 **/
 	public String printSearch_ArticleReportAction() {
-		String reportName = "/reports/search_article.jasper";
+		String reportName = "/reports/search_article - Copy.jasper";
+		StoreArtsRequestModel artM = new StoreArtsRequestModel();
+		List<StoreArtsRequestModel> artMList = new ArrayList<StoreArtsRequestModel>();
+		int i = 1;
+		for (StoreRequestModel item : articlesStockList) {
+			artM = new StoreArtsRequestModel();
+			artM.setNUM(i);
+			artM.setNAME(item.getArticleName());
+			artM.setCODE(item.getArticleCode());
+			artM.setAVAILABLE(item.getQtyAvailable());
+			artM.setRESERVED(item.getQtyReserved());
+			WhsWarehouses str = (WhsWarehouses) dataAccessService.findEntityById(WhsWarehouses.class, strNo);
+			artM.setSTRNAME(str.getStoreName());
+			artMList.add(artM);
+
+			i++;
+		}
+
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("articleId", -1);
 		parameters.put("strnumber", strNo);// "259306";
-
-		Utils.printPdfReport(reportName, parameters);
+		Utils.printPdfReportFromListDataSource(reportName, parameters, artMList);
 		return "";
 	}
 
@@ -762,6 +807,21 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		}
 		searchArticles();
 
+		if (status != null) {
+			if (status == 0) { // all
+				searchArticles();
+			}
+			if (status == 1) { // with qtyAvailable
+				articlesStockList = articlesStockList.stream().filter(i -> i.getQtyAvailable() > 0)
+						.collect(Collectors.toList());
+			}
+			if (status == 2) {
+				// without qtyAvailable
+				articlesStockList = articlesStockList.stream().filter(i -> i.getQtyAvailable() == 0)
+						.collect(Collectors.toList());
+			}
+
+		}
 		refreshPage();
 	}
 
@@ -815,6 +875,32 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 				chckRtrnArt = false;
 			}
 		}
+	}
+
+	public String printProtectionCardAllArt() {
+		String reportName = "/reports/protection_A3ohad.jasper";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		// if (articleFilterdList != null && articleFilterdList.size() > 0) {
+		// Utils.printPdfReportFromListDataSource(reportName, parameters,
+		// articleFilterdList);
+		// return "";
+		// }
+		if (!checkType) {
+			MsgEntry.addErrorMessage(" اخترالعهد");
+			return "";
+		}
+		parameters.put("artId", -1);
+		parameters.put("userId", employerId);
+		parameters.put("STRNO", strNo);
+		if (employerId == null) {
+			parameters.put("userId", -1);
+		}
+		if (strNo == null) {
+			parameters.put("STRNO", -1);
+		}
+		Utils.printPdfReport(reportName, parameters);
+		return "";
+
 	}
 
 	public IDataAccessService getDataAccessService() {
@@ -1335,6 +1421,38 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void setSerialPrintFlag(boolean serialPrintFlag) {
 		this.serialPrintFlag = serialPrintFlag;
+	}
+
+	public UserMailObj getSelectedInbox() {
+		return selectedInbox;
+	}
+
+	public void setSelectedInbox(UserMailObj selectedInbox) {
+		this.selectedInbox = selectedInbox;
+	}
+
+	public List<User> getEmployersList() {
+		return employersList;
+	}
+
+	public void setEmployersList(List<User> employersList) {
+		this.employersList = employersList;
+	}
+
+	public List<UserContactClass> getListOfEmpsInDept() {
+		return listOfEmpsInDept;
+	}
+
+	public void setListOfEmpsInDept(List<UserContactClass> listOfEmpsInDept) {
+		this.listOfEmpsInDept = listOfEmpsInDept;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

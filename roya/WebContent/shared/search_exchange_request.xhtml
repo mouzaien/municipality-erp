@@ -24,8 +24,15 @@
 				<p:messages autoUpdate="true" closable="true"></p:messages>
 
 				<div class="image-box-footer" align="left">
-					<p:commandButton value="#{msg['search']}" icon="ui-icon-search"
+					<p:commandButton value="طباعة كل العهد"
+						icon="ui-icon ui-icon-print " onclick="this.form.target='_blank'"
+						ajax="false"
+						action="#{exchangeRequestBean.printProtectionCardAllArt}"
 						styleClass="purple-btn">
+					</p:commandButton>
+					<p:spacer width="30" height="10"></p:spacer>
+					<p:commandButton value="#{msg['search']}" icon="ui-icon-search"
+						styleClass="green-btn">
 						<f:ajax execute="@form" render="includeform:exchangeTable"
 							listener="#{exchangeRequestBean.searchExchangeRequests(e)}"></f:ajax>
 					</p:commandButton>
@@ -74,7 +81,7 @@
 							<p:selectOneMenu id="empList" filterMatchMode="contains"
 								filter="true" value="#{exchangeRequestBean.employerId}">
 								<f:selectItem itemLabel="الكل" itemValue="-1" />
-								<f:selectItems value="#{loadingDataBean.employersList}"
+								<f:selectItems value="#{exchangeRequestBean.employersList}"
 									var="emp" itemLabel="#{emp.employeeName}"
 									itemValue="#{emp.userId}" />
 								<p:ajax process="@this,hiri1,hiri2" update="exchangeTable"
@@ -265,8 +272,7 @@
 
 						<p:separator></p:separator>
 						<div class="bodyt" style="height: 200px; overflow: auto">
-							<table id="tabStore" class="table table-striped table-hover"
-								>
+							<table id="tabStore" class="table table-striped table-hover">
 								<thead>
 									<tr>
 

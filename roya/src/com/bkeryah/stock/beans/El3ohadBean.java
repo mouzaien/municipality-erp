@@ -57,7 +57,7 @@ public class El3ohadBean {
 		// articleFilterdList);
 		// return "";
 		// }
-
+		parameters.put("STRNO", -1);
 		parameters.put("artId", -1);
 		parameters.put("userId", employerId);
 		Utils.printPdfReport(reportName, parameters);
@@ -70,6 +70,7 @@ public class El3ohadBean {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("artId", artId);
 		parameters.put("userId", employerId);
+		parameters.put("STRNO", -1);
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}

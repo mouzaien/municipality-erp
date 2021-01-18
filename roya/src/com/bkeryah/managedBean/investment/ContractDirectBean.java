@@ -2,12 +2,15 @@ package com.bkeryah.managedBean.investment;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +23,14 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.context.RequestContext;
 
 import com.bkeryah.entities.ArcUsers;
@@ -39,6 +48,7 @@ import com.bkeryah.entities.investment.ContractType;
 import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.Investor;
+import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.ContractOperationEnum;
@@ -131,6 +141,8 @@ public class ContractDirectBean {
 	private double reminderDiscountAmount = 0;
 	private boolean renewBill;
 
+	private List<RealEstate> unusedRealEstatesList;
+
 	@PostConstruct
 	public void init() {
 		loadContracts();
@@ -151,7 +163,7 @@ public class ContractDirectBean {
 		introContractList = dataAccessService.loadAllIntroContracts();
 		investorsList = dataAccessService.loadAllInvestors();
 		filteredContractsNumList = dataAccessService.loadAllContractDirects(contractTypeId);
-
+		compaerFeesAndBillDates();
 	}
 
 	private void loadContractOperations() {
@@ -172,6 +184,7 @@ public class ContractDirectBean {
 				e.printStackTrace();
 			}
 		}
+		compaerFeesAndBillDates();
 	}
 
 	public void loadContractsByFinishingStatus() {
@@ -185,6 +198,7 @@ public class ContractDirectBean {
 			allContractComponentList = dataAccessService.getContractComponentsListByActivityId(activityIdFilter);
 
 		loadContractDirectListByAllFilters();
+
 	}
 
 	public void loadContractDirectListByAllFilters() {
@@ -306,7 +320,7 @@ public class ContractDirectBean {
 			if (fees.getDiscountduration() != null)
 				oldDiscountDuration += fees.getDiscountduration();
 		}
-
+		renewBill = false;
 	}
 
 	public String save() {
@@ -368,6 +382,16 @@ public class ContractDirectBean {
 		}
 		return "";
 
+	}
+
+	public void compaerFeesAndBillDates() {
+		for (ContractDirect contract : contractsDirectList) {
+			if (dataAccessService.getContractPayedStatus(contract.getId()) > 0) {
+				contract.setPayStatus(0);// غير مسددة
+			} else {
+				contract.setPayStatus(1);// مسددة
+			}
+		}
 	}
 
 	public void saveFeesUpdate() {
@@ -452,15 +476,15 @@ public class ContractDirectBean {
 		Integer discountStatus;
 		Integer discountRemainder = discountDuration;
 		int count = 0;
+		String oldFeesHDueDate = new String();
 		try {
 			contractsFeesList = new ArrayList<ContractsFees>();
 			fees = new ContractsFees();
 			for (int i = 1; i <= totalInstallmentCount; i++) {
 				fees = new ContractsFees();
-				fees.setDueGDate(Utils.convertHDateToGDate(fees.getDueHDate()));
 				fees.setOldFees(oldInstallment);
 				// fees.setDiscountduration(discountDuration);
-				discountStatus = calculateFeesDiscount(fees);
+
 				// 0 => total discount < installment
 				// 1 => total discount > installment
 				if ((oldInstallment <= 0 || i > oldInstallment)) {
@@ -470,7 +494,7 @@ public class ContractDirectBean {
 						// || i == (totalInstallmentCount - oldInstallment +
 						// installmentNum)) {
 						fees.setStatus(2);
-
+						discountStatus = calculateFeesDiscount(fees);
 						discountRemainder = feesDiscountDuration(fees, discountStatus, discountRemainder, count);
 
 						fees.setOldFees(fees.getOldFees() + 1);
@@ -488,7 +512,19 @@ public class ContractDirectBean {
 				}
 
 				contractsFeesList.add(fees);
-				fees.setDueHDate(calculateDueDates(i, dueHDate));
+				if (contractDirect.getContractType() == 1 || contractDirect.getContractType() == 3)
+					fees.setDueHDate(calculateDueDates(i, dueHDate));
+				if (contractDirect.getContractType() == 2) {
+					if (i == 1) {
+						fees.setDueHDate(dueHDate);
+					} else {
+						fees.setDueHDate(calculateDueDates(i, oldFeesHDueDate));
+					}
+					oldFeesHDueDate = fees.getDueHDate();
+				}
+
+				fees.setDueGDate(Utils.convertHDateToGDate(fees.getDueHDate()));
+
 			}
 			fees = new ContractsFees();
 			return contractsFeesList;
@@ -564,12 +600,14 @@ public class ContractDirectBean {
 		return reminderDiscountAmount;
 	}
 
-	public void checkedFeesIncremint(String factId) {
+	public void checkedFeesIncremint(String factId, Integer feesstatus) {
 
 		checkedFees++;
-		Integer billNum = Integer.parseInt(factId);
-		updateFeesRenewableState(billNum);
+		if (factId != null && feesstatus == 2) {
+			Integer billNum = Integer.parseInt(factId);
+			updateFeesRenewableState(billNum);
 
+		}
 	}
 
 	private void updateFeesRenewableState(Integer billNum) {
@@ -675,27 +713,50 @@ public class ContractDirectBean {
 
 	public String calculateDueDates(Integer feesNum, String dueHDate) {
 		String hDate = new String();
-		Date dueGDate = new Date();
-		Date gDate = new Date();
-		Calendar calendar;
+		Integer day = new Integer(0);
+		Integer month = new Integer(0);
+		Integer year = new Integer(0);
 		try {
-			dueGDate = Utils.convertHDateToGDate(dueHDate);
-			calendar = Utils.getCalendar(dueGDate);
+			day = HijriCalendarUtil.findDayOfHijriDate(dueHDate);
+			month = HijriCalendarUtil.findMonthOfHijriDate(dueHDate);
+			year = HijriCalendarUtil.findYearOfHijriDate(dueHDate);
 			if (feesNum != null && contractDirect.getContractType() != null
 					&& !contractDirect.getContractType().equals(3)) {
 				if (contractDirect.getContractType().equals(1)) {
-					calendar.add(Calendar.YEAR, feesNum);
+					hDate = HijriCalendarUtil.addYearsToHijriDate(dueHDate, feesNum - 1);
+
 				} else {
-					calendar.add(Calendar.MONTH, feesNum);
+					// hDate = HijriCalendarUtil.addMonthsToHijriDate(dueHDate,
+					// feesNum - 1);
+
+					hDate = HijriCalendarUtil.addDaysToHijriDate(dueHDate,
+							HijriCalendarUtil.findMonthLength(year, month));
+
 				}
-				gDate = calendar.getTime();
-				hDate = Utils.grigDatesConvert(gDate);
 			} else {
 				hDate = dueHDate;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// try {
+		// dueGDate = Utils.convertHDateToGDate(dueHDate);
+		// calendar = Utils.getCalendar(dueGDate);
+		// if (feesNum != null && contractDirect.getContractType() != null
+		// && !contractDirect.getContractType().equals(3)) {
+		// if (contractDirect.getContractType().equals(1)) {
+		// calendar.add(Calendar.YEAR, feesNum - 1);
+		// } else {
+		// calendar.add(Calendar.MONTH, feesNum - 1);
+		// }
+		// gDate = calendar.getTime();
+		// hDate = Utils.grigDatesConvert(gDate);
+		// } else {
+		// hDate = dueHDate;
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 
 		return hDate;
 	}
@@ -805,8 +866,13 @@ public class ContractDirectBean {
 		String gric1 = params.get("includeform:gric1");
 		String hiri12 = params.get("includeform:hiri12");
 		String gric12 = params.get("includeform:gric12");
+		if (contractDirect.getSelecteStartDate_G() != null && gric1 == null)
+			gric1 = Utils.convertDateToString(contractDirect.getSelecteStartDate_G());
+		if (contractDirect.getSelecteEndDate_G() != null && gric12 == null)
+			gric12 = Utils.convertDateToString(contractDirect.getSelecteEndDate_G());
+
 		try {
-			if (!higriMode) {
+			if (!higriMode && gric1 != null && gric12 != null) {
 
 				// contractDirect.setStartDate(Utils.grigDatesConvert(contractDirect.getSelecteStartDate_G()));
 				// contractDirect.setEndDate(Utils.grigDatesConvert(contractDirect.getSelecteEndDate_G()));
@@ -815,11 +881,13 @@ public class ContractDirectBean {
 				contractDirect.setSelecteStartDate_G(Utils.convertGregStringToDate(gric1));
 				contractDirect.setSelecteEndDate_G(Utils.convertGregStringToDate(gric12));
 			} else {
-				contractDirect.setStartDate(hiri1);
-				contractDirect.setEndDate(hiri12);
-				contractDirect.setSelecteStartDate_G(Utils.convertHDateToGDate(hiri1));
-				contractDirect.setSelecteEndDate_G(Utils.convertHDateToGDate(hiri12));
+				if (hiri1 != null && hiri12 != null) {
+					contractDirect.setStartDate(hiri1);
+					contractDirect.setEndDate(hiri12);
+					contractDirect.setSelecteStartDate_G(Utils.convertHDateToGDate(hiri1));
+					contractDirect.setSelecteEndDate_G(Utils.convertHDateToGDate(hiri12));
 
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -892,6 +960,8 @@ public class ContractDirectBean {
 	public void updateContractDirectNum() {
 		newcontractNum = dataAccessService.findMaxContractDirectNum() + 1;
 		loadIntroduction();
+		// unusedRealEstatesList =
+		// dataAccessService.loadAllUnusedRealEstatesList();
 
 	}
 
@@ -1892,6 +1962,15 @@ public class ContractDirectBean {
 
 	public void setRenewBill(boolean renewBill) {
 		this.renewBill = renewBill;
+	}
+
+	public List<RealEstate> getUnusedRealEstatesList() {
+		unusedRealEstatesList = dataAccessService.loadAllUnusedRealEstatesList();
+		return unusedRealEstatesList;
+	}
+
+	public void setUnusedRealEstatesList(List<RealEstate> unusedRealEstatesList) {
+		this.unusedRealEstatesList = unusedRealEstatesList;
 	}
 
 }

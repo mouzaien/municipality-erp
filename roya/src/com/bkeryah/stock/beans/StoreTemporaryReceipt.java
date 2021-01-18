@@ -16,6 +16,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
@@ -27,6 +28,7 @@ import com.bkeryah.entities.StockInDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.WhsWarehouses;
+import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.fuel.entities.Car;
 import com.bkeryah.mails.MailTypeEnum;
@@ -34,6 +36,7 @@ import com.bkeryah.service.IDataAccessService;
 import com.bkeryah.testssss.EmployeeForDropDown;
 
 import utilities.MsgEntry;
+import utilities.MyConstants;
 import utilities.Utils;
 
 @ManagedBean
@@ -97,6 +100,8 @@ public class StoreTemporaryReceipt {
 	private List<StoreTemporeryReceiptMaster> tempreceiptsList = new ArrayList<StoreTemporeryReceiptMaster>();
 	private List<StoreTemporeryReceiptMaster> filterTempreceiptsList;
 	private List<StoreTemporeryReceiptDetails> strTempReceiptDetails = new ArrayList<StoreTemporeryReceiptDetails>();
+	private UserMailObj selectedInbox;
+	private WrkApplicationId WrkId;
 
 	@PostConstruct
 	public void init() {
@@ -116,6 +121,9 @@ public class StoreTemporaryReceipt {
 					.getStoreTemporeryReceiptDetailsById(storeTemporeryReceiptMaster.getId());
 			wrkPurposes = dataAccessService.getAllPurposes();
 			stepNum = dataAccessService.getStepNumberFromHrSign(recordId);
+			selectedInbox = (UserMailObj) httpSession.getAttribute("selectedMail");
+			if (selectedInbox != null)
+				WrkId = new WrkApplicationId(Integer.parseInt(this.selectedInbox.WrkId), selectedInbox.StepId);
 			int i = 0;
 			for (StoreTemporeryReceiptDetails tempReceiptList : temporeryReceiptDetailsList) {
 				temporeryReceiptModelRecord = new StoreTemporeryReceiptDetailsModel();
@@ -234,6 +242,22 @@ public class StoreTemporaryReceipt {
 		return "mails";
 	}
 
+	public String refuseAction() {
+		try {
+			applicationPurpose = "2";
+			storeTemporeryReceiptMaster.setStatus(MyConstants.NO);
+			String wrkCommentRefuse = wrkAppComment;
+			dataAccessService.refuseStoreTemporeryReceipt(WrkId, recordId, storeTemporeryReceiptMaster,
+					wrkCommentRefuse, Integer.parseInt(applicationPurpose.trim()));
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
+			return "mails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			return "";
+		}
+	}
+
 	public String save() {
 		try {
 			for (StoreTemporeryReceiptDetailsModel item : temporeryReceiptDetailsModelList) {
@@ -296,6 +320,24 @@ public class StoreTemporaryReceipt {
 		parameters.put("DOCUMENT_H_DATE", storeTemporeryReceiptMaster.getDocumentHDate());
 		parameters.put("SPECIAL_NUMBER", storeTemporeryReceiptMaster.getSpecialNumber());
 		parameters.put("RECEIPT_H_DATE", storeTemporeryReceiptMaster.getReceiptHDate());
+		Utils.printPdfReport(reportName, parameters);
+		return "";
+	}
+
+	public String printtemporaryReceiptA4Action() {
+		String reportName = "/reports/temporary_receipt_notice.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("TEMP_MSTR_ID", temporeryReceipt.getId());
+		WhsWarehouses str = (WhsWarehouses) dataAccessService.findEntityById(WhsWarehouses.class, strNo);
+		parameters.put("STORE_NAME", str.getStoreName());
+		parameters.put("SUPPLIER_NAME", temporeryReceipt.getSupplierName());
+		DocumentType item = (DocumentType) dataAccessService.findEntityById(DocumentType.class,
+				temporeryReceipt.getDocument());
+		parameters.put("DOCUMENT_TYPE", item.getDocumentName());
+		parameters.put("DOCUMENT_NUMBER", temporeryReceipt.getDocumentNumber());
+		parameters.put("DOCUMENT_H_DATE", temporeryReceipt.getDocumentHDate());
+		parameters.put("SPECIAL_NUMBER", temporeryReceipt.getSpecialNumber());
+		parameters.put("RECEIPT_H_DATE", temporeryReceipt.getReceiptHDate());
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -844,5 +886,37 @@ public class StoreTemporaryReceipt {
 
 	public void setStrTempReceiptDetails(List<StoreTemporeryReceiptDetails> strTempReceiptDetails) {
 		this.strTempReceiptDetails = strTempReceiptDetails;
+	}
+
+	public String getApplicationPurpose() {
+		return applicationPurpose;
+	}
+
+	public void setApplicationPurpose(String applicationPurpose) {
+		this.applicationPurpose = applicationPurpose;
+	}
+
+	public String getWrkAppComment() {
+		return wrkAppComment;
+	}
+
+	public void setWrkAppComment(String wrkAppComment) {
+		this.wrkAppComment = wrkAppComment;
+	}
+
+	public UserMailObj getSelectedInbox() {
+		return selectedInbox;
+	}
+
+	public void setSelectedInbox(UserMailObj selectedInbox) {
+		this.selectedInbox = selectedInbox;
+	}
+
+	public WrkApplicationId getWrkId() {
+		return WrkId;
+	}
+
+	public void setWrkId(WrkApplicationId wrkId) {
+		WrkId = wrkId;
 	}
 }
