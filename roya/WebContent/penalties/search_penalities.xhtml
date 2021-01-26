@@ -108,6 +108,13 @@
 
 								<!-- 								</p:column> -->
 
+
+								<p:column style="white-space: nowrap;text-align: center;"
+									headerText="تاريخ المخالفة" width="10%"
+									filterBy="#{penalItem.fineDate}" filterMatchMode="contains">										
+										#{penalItem.mahlId}										
+								</p:column>
+
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="رقم السجل التجارى" width="10%"
 									filterBy="#{penalItem.mahlId}" filterMatchMode="contains">										
@@ -119,25 +126,23 @@
 										#{penalItem.fIdNo}										
 								</p:column>
 
-								<p:column 
-									headerText="#{msg['name']}" width="30%"
+								<p:column headerText="#{msg['name']}" width="20%"
 									filterBy="#{penalItem.fName}" filterMatchMode="contains">										
 										#{penalItem.fName}										
 									</p:column>
 
-								<p:column
-									headerText="#{msg['commercial.name']}" width="30%"
+								<p:column headerText="#{msg['commercial.name']}" width="20%"
 									filterBy="#{penalItem.fTradeMarkName}"
 									filterMatchMode="contains">										
 										#{penalItem.fTradeMarkName}										
 									</p:column>
 								<p:column style="text-align: center;"
-									headerText="#{msg['licence.number']}" width="7%"
+									headerText="#{msg['licence.number']}" width="10%"
 									filterBy="#{penalItem.fLicenceNo}">										
 										#{penalItem.fLicenceNo}										
 									</p:column>
-								<p:column
-									filterBy="#{penalItem.fFineCase}" filterMatchMode="contains"
+								<p:column filterBy="#{penalItem.fFineCase}"
+									filterMatchMode="contains"
 									headerText="#{msg['payment.status']}" width="8%">
 
 									<h:outputLabel
@@ -146,14 +151,14 @@
 
 								</p:column>
 
-								<p:column  headerText="المراقب"
-									width="15%" filterBy="#{penalItem.supervisorNameView}"
+								<p:column headerText="المراقب" width="15%"
+									filterBy="#{penalItem.supervisorNameView}"
 									filterMatchMode="contains">										
 										#{penalItem.supervisorNameView}										
 									</p:column>
 								<p:column width="5%" style="text-align:center"
 									headerText="#{msg['details']}">
-									<p:commandButton onclick="PF('penality_dlg').show()"
+									<p:commandButton oncomplete="PF('penality_dlg').show()"
 										action="#{penalitiesListBean.loadSelectedPenalty}"
 										process="@this" icon="ui-icon-search"
 										update="includeform:myDialog">
@@ -190,11 +195,11 @@
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel style=" font-weight: bold"
-														value="تاريخ الإشعار" styleClass="btxt" />
+														value="تاريخ المخالفة" styleClass="btxt" />
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
-														value="#{penalitiesListBean.reqFinesMaster.notifyDate}">
+														value="#{penalitiesListBean.reqFinesMaster.fineDate}">
 														<f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
 													</h:outputLabel>
 												</div>

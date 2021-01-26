@@ -168,6 +168,7 @@ import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.penalties.ReqFinesSetup;
 import com.bkeryah.penalties.WrkFinesEntity;
 import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
+import com.bkeryah.stock.beans.TransferOwnershipModel;
 import com.bkeryah.support.entities.RequestStatus;
 import com.bkeryah.support.entities.RequestStep;
 import com.bkeryah.support.entities.UserRequest;
@@ -8735,9 +8736,22 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public Integer addTransferOnwerShipItems(TransferOwnership saveTransfer) {
+	public Integer addTransferOnwerShipItems(TransferOwnership saveTransfer,
+			List<TransferOwnershipModel> transModelList) {
 		if (saveTransfer != null) {
 			Integer docId = (Integer) saveObject(saveTransfer);
+			for (TransferOwnershipModel trans : transModelList) {
+				TransferOwnershipDetails tsd = new TransferOwnershipDetails();
+				tsd.setArticleCode(trans.getArticleCode());
+				tsd.setArticleId(trans.getArticleId());
+				tsd.setExchMasterId(trans.getExchMasterId());
+				tsd.setTransferId(docId);
+				tsd.setStrNo(trans.getStrNo());
+				tsd.setNotes(trans.getNotes());
+				tsd.setQty(trans.getQty());
+				tsd.setSerialNumber(trans.getSerialNumber());
+				saveObject(tsd);
+			}
 
 			ArcUsers sender = loadUserById(saveTransfer.getFromUser()); // from
 																		// user
@@ -9311,7 +9325,7 @@ public class DataAccessService implements IDataAccessService {
 				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
 
 	}
-	
+
 	@Override
 	@Transactional
 	public void acceptPenalty(ReqFinesMaster finesMaster, Integer recordId, int modelType, String usercomment,
@@ -9969,5 +9983,10 @@ public class DataAccessService implements IDataAccessService {
 		// TODO Auto-generated method stub
 		return dataAccessDAO.getContractPayedStatus(contractId);
 	}
-	
+
+	@Override
+	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer transId) {
+		return commonDao.loadTransferOwnerDetails(transId);
+	}
+
 }

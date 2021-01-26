@@ -139,6 +139,7 @@ import com.bkeryah.penalties.ReqFinesMaster;
 import com.bkeryah.penalties.ReqFinesSetup;
 import com.bkeryah.penalties.WrkFinesEntity;
 import com.bkeryah.stock.beans.StoreTemporeryReceiptDetailsModel;
+import com.bkeryah.stock.beans.TransferOwnershipModel;
 import com.bkeryah.support.entities.RequestStatus;
 import com.bkeryah.support.entities.RequestStep;
 import com.bkeryah.support.entities.UserRequest;
@@ -1829,7 +1830,7 @@ public interface IDataAccessService {
 
 	TransferOwnership findTransferOwnershipByArchRecordId(Integer recordId);
 
-	Integer addTransferOnwerShipItems(TransferOwnership saveTransfer);
+	Integer addTransferOnwerShipItems(TransferOwnership saveTransfer , List<TransferOwnershipModel> transModelList);
 
 	List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
 
@@ -2021,4 +2022,6 @@ public interface IDataAccessService {
 			String wrkAppComment, int applicationPurpose);
 
 	public Integer getContractPayedStatus(Integer contractId);
+
+	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer id);
 }

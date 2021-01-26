@@ -13,7 +13,7 @@
 	tr.QTY qty ,
 	usr.EMPNAME toUser ,
 	str.STRNAME strName ,
-	tr.notes notes ,
+	tsd.notes notes ,
 	tr.TRANSFER_HDATE CREATEDATE ,
 	(
 	SELECT
@@ -152,13 +152,15 @@ FROM
 	TRANSFER_OWNERSHIP tr ,
 	TDR_ITEMUNIT iu ,
 	ARC_USERS usr ,
-	WHS_WAREHOUSES str 
+	WHS_WAREHOUSES str ,
+	TRANSFER_OWNERSHIP_DETAILS tsd
 WHERE
 	tr.ID = $P{transId}
-	AND tr.ART_ID = art.ID
+	AND tsd.ART_ID = art.ID
 	AND art.ITEM_UNITE_ID = iu.ITEMUNITID
 	AND usr.USER_ID = tr.TO_USER
-	AND tr.STR_NO = str.STRNO]]>
+	AND tr.ID =  tsd.TRANSFER_ID
+	AND tsd.STR_NO = str.STRNO]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
 	<field name="artName" class="java.lang.String"/>
@@ -369,7 +371,7 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="58" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="340" y="0" width="340" height="25" uuid="c443aac9-dba6-4a36-896c-b5ddedc2d906">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>

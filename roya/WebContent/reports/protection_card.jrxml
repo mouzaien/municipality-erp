@@ -7,7 +7,8 @@
 	<parameter name="userId" class="java.lang.Integer"/>
 	<parameter name="reqNum" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT 
+		<![CDATA[SELECT * from (
+		SELECT 
 reqs.artCode code ,
 reqs.artName name ,
  reqs.EMPNAME usrName, 
@@ -91,7 +92,7 @@ AND reqs.INV_G_R_NO = $P{reqNum}
 UNION
 
 	SELECT
-	ts.ART_CODE code ,
+	tsd.ART_CODE code ,
 	ar.NAME name ,
 	usr.EMPNAME usrName ,
 	DEPT_NAME deptName ,
@@ -110,20 +111,24 @@ UNION
      RETURN_STORE.RET_HDATE R_datetransaction ,
     RETURN_STORE.SERIAL_NUMBER R_SPECIAL_NO 
 	FROM TRANSFER_OWNERSHIP ts ,article ar,
+	 TRANSFER_OWNERSHIP_DETAILS tsd ,
 	TDR_ITEMUNIT un ,TDR_INV_GNRL_REQ master , ARC_USERS usr ,WRK_DEPT
 	, WHS_WAREHOUSES  ,RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE
 	WHERE 
 	ts.TO_USER = $P{userId}
-	AND ts.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
-	AND ts.EXCH_MASTER_ID = $P{reqNum}
+	AND  ts.ID =  tsd.TRANSFER_ID
+	AND tsd.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
+	AND tsd.EXCH_MASTER_ID = $P{reqNum}
     AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID
 	AND ts.STATUS = 'Y'
-	AND ts.ART_ID  = ar.ID 
+	AND tsd.ART_ID  = ar.ID 
 	AND un.ITEMUNITID  = ar.ITEM_UNITE_ID 
-	AND ts.EXCH_MASTER_ID (+) = master.INV_G_R_NO
+	AND tsd.EXCH_MASTER_ID (+) = master.INV_G_R_NO
 	AND ts.TO_USER  = usr.USER_ID
     AND usr.DEPT_ID = WRK_DEPT.ID
-    AND WHS_WAREHOUSES.STRNO =ts.STR_NO]]>
+    AND WHS_WAREHOUSES.STRNO =tsd.STR_NO
+    )
+     ORDER BY TO_DATE(sarfDate, 'dd/mm/yyyy', 'nls_calendar=''Arabic Hijrah''')  asc]]>
 	</queryString>
 	<field name="code" class="java.lang.Integer"/>
 	<field name="name" class="java.lang.String"/>
@@ -630,7 +635,4 @@ UNION
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="24" splitType="Stretch"/>
-	</columnFooter>
 </jasperReport>

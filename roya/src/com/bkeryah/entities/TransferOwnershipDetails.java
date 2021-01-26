@@ -38,6 +38,15 @@ public class TransferOwnershipDetails {
 	@Formula("(select a.name from ARTICLE a where a.id = ART_ID)")
 	private String articleName;
 
+	@Column(name = "QTY")
+	private Integer qty;
+	
+	@Column(name = "EXCH_MASTER_ID")
+	private Integer exchMasterId;
+	
+	@Column(name = "SERIAL_NUMBER")
+	private Integer serialNumber;
+	
 	public Integer getId() {
 		return Id;
 	}
@@ -92,6 +101,30 @@ public class TransferOwnershipDetails {
 
 	public void setArticleName(String articleName) {
 		this.articleName = articleName;
+	}
+
+	public Integer getExchMasterId() {
+		return exchMasterId;
+	}
+
+	public void setExchMasterId(Integer exchMasterId) {
+		this.exchMasterId = exchMasterId;
+	}
+
+	public Integer getQty() {
+		return qty;
+	}
+
+	public void setQty(Integer qty) {
+		this.qty = qty;
+	}
+
+	public Integer getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(Integer serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 
 }

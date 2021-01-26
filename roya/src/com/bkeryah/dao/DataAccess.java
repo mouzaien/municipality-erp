@@ -52,6 +52,7 @@ import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
+import com.bkeryah.entities.TransferOwnershipDetails;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.fng.entities.TstFinger;
@@ -630,5 +631,7 @@ public interface DataAccess {
 	public List<RealEstate> loadAllUnusedRealEstatesList();
 
 	public Integer getContractPayedStatus(Integer contractId);
+
+	
 
 }

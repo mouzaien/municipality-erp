@@ -437,7 +437,8 @@
 											itemLabel="#{stat.name}" itemValue="#{stat.id}" />
 									</p:selectOneMenu>
 								</f:facet>
-								#{contractDirectBean.contractStatusList[userItem.contractStatId-1].name}
+								<h:outputText
+									value="#{contractDirectBean.contractStatusList[userItem.contractStatId-1].name}"></h:outputText>
 								<!--  #{userItem.statusName} -->
 							</p:column>
 							<p:column headerText="الفواتير" width="8%"
@@ -507,21 +508,30 @@
 							</p:column>
 							<p:column width="13%" style="text-align:center"
 								headerText="العملية">
-								<p:selectOneMenu style="width:50%"
+								<p:selectOneMenu style="width:50%; opacity:1.0;"
+									disabled="#{userItem.operationId >0}"
 									value="#{userItem.operationId}">
 									<f:selectItem itemLabel="العملية" itemValue="0"
 										noSelectionOption="true" />
 									<f:selectItems value="#{userItem.actionsList}" var="x"
 										itemLabel="#{x.name}" itemValue="#{x.action}" />
-									<p:ajax process="@this"></p:ajax>
+									<!-- <f:selectItems value="#{contractDirectBean.contractStatusList}" -->
+									<!-- 	var="stat" itemLabel="#{stat.name}" itemValue="#{stat.id}" /> -->
+									<p:ajax process="@this" update="allusersettingdt"></p:ajax>
 								</p:selectOneMenu>
 								<p:spacer width="5" />
-								<p:commandButton icon="fa fa-mail-reply" update="@form"
-									immediate="true" action="#{contractDirectBean.doAction}">
+								<p:commandButton icon="fa fa-mail-reply" style="opacity: 1.0;"
+									process="@this" disabled="#{userItem.operationId ==0}"
+									update="includeform:addPG, allusersettingdt"
+									action="#{contractDirectBean.extendContract(userItem)}">
 									<f:setPropertyActionListener value="#{userItem}"
 										target="#{contractDirectBean.contractDirect}" />
 								</p:commandButton>
-
+								<!-- <p:commandButton icon="fa fa-mail-reply" update="@form" -->
+								<!-- 	immediate="true" action="#{contractDirectBean.doAction}"> -->
+								<!-- 	<f:setPropertyActionListener value="#{userItem}" -->
+								<!-- 		target="#{contractDirectBean.contractDirect}" /> -->
+								<!--  </p:commandButton> -->
 							</p:column>
 							<!-- 							<p:column width="7%" style="text-align:center" -->
 							<!-- 								headerText="طباعة الفاتورة"> -->
@@ -574,7 +584,9 @@
 										<p:inputText id="contract_num" process="@this"
 											value="#{contractDirectBean.newcontractNum}" required="true"
 											requiredMessage="رقم العقد مطلوب"
-											rendered="#{contractDirectBean.addMode}" style="width: 100%">
+											rendered="#{contractDirectBean.addMode}"
+											disabled="!#{contractDirectBean.addMode}"
+											style="width: 100%; opacity:1.0;">
 											<p:ajax process="@this"></p:ajax>
 										</p:inputText>
 										<p:outputLabel
@@ -721,7 +733,8 @@
 									</div>
 									<div class="ui-g-3">
 										<p:selectOneMenu id="contract_stat_id" required="true"
-											requiredMessage="حالة العقد مطلوب" style="width: 100%"
+											disabled="true" requiredMessage="حالة العقد مطلوب"
+											style="width: 100%; opacity: 1.0; "
 											value="#{contractDirectBean.contractStatus}">
 											<!-- 											value="#{contractDirectBean.contractDirect.contractStatId}"> -->
 											<f:selectItem itemLabel="إختر حالة العقد" itemValue="" />
@@ -744,8 +757,10 @@
 											<p:selectOneMenu id="investors_list" filter="true"
 												filterMatchMode="contains" required="true" process="@this"
 												requiredMessage="المستثمر مطلوب"
+												disabled="#{!contractDirectBean.assigned and !contractDirectBean.addMode}"
 												value="#{contractDirectBean.contractDirect.investorId}"
-												style="width: 100%" rendered="#{contractDirectBean.addMode}">
+												style="width: 100%; opacity: 1.0;">
+												<!--   rendered="#{contractDirectBean.addMode}" -->
 												<f:selectItem itemLabel="أختر المستثمر" itemValue="" />
 												<f:selectItems var="tit" itemValue="#{tit.id}"
 													itemLabel="#{tit.name}"
@@ -753,15 +768,16 @@
 												<p:ajax event="change" update="inv_panel " process="@this"
 													listener="#{contractDirectBean.loadInvestor}" />
 											</p:selectOneMenu>
-											<p:selectOneMenu disabled="true"
-												value="#{contractDirectBean.contractDirect.investorId}"
-												style="width: 100% ;opacity:1;"
-												rendered="#{!contractDirectBean.addMode}">
-												<f:selectItem itemLabel="" itemValue="" />
-												<f:selectItems var="tit" itemValue="#{tit.id}"
-													itemLabel="#{tit.name}"
-													value="#{loadingDataBean.investorsList}" />
-											</p:selectOneMenu>
+											<!-- <p:selectOneMenu -->
+											<!-- 	disabled="#{contractDirectBean.contractDirect.operationId != 3}" -->
+											<!-- 	value="#{contractDirectBean.contractDirect.investorId}" -->
+											<!-- 	style="width: 100% ;opacity:1;" -->
+											<!-- 	rendered="#{!contractDirectBean.addMode}"> -->
+											<!-- 	<f:selectItem itemLabel="" itemValue="" /> -->
+											<!-- 	<f:selectItems var="tit" itemValue="#{tit.id}" -->
+											<!-- 		itemLabel="#{tit.name}" -->
+											<!-- 		value="#{loadingDataBean.investorsList}" /> -->
+											<!-- </p:selectOneMenu> -->
 											<!-- 											<p:outputLabel -->
 											<!-- 												value="#{contractDirectBean.contractDirect.investor.name}" -->
 											<!-- 												style="width: 100%" -->
@@ -773,11 +789,10 @@
 										<div class="ui-g-3">
 											<p:inputText process="@this"
 												value="#{contractDirectBean.contractDirect.invRepresentName}"
-												rendered="#{contractDirectBean.addMode}" style="width: 100%" />
-											<p:outputLabel
-												value="#{contractDirectBean.contractDirect.invRepresentName}"
-												style="width: 100%"
-												rendered="#{!contractDirectBean.addMode}" />
+												style="width: 100%" />
+											<!-- <p:outputLabel -->
+											<!-- 	value="#{contractDirectBean.contractDirect.invRepresentName}" -->
+											<!-- 	style="width: 100%" /> -->
 										</div>
 										<div class="ui-g-1">
 											<p:outputLabel value="صفته" styleClass="btxt" />
@@ -785,14 +800,11 @@
 										<div class="ui-g-3">
 											<p:inputText process="@this"
 												value="#{contractDirectBean.contractDirect.invRepresentFunct}"
-												rendered="#{contractDirectBean.addMode}" style="width: 100%" />
-											<p:outputLabel
-												value="#{contractDirectBean.contractDirect.invRepresentFunct}"
-												rendered="#{!contractDirectBean.addMode}"
 												style="width: 100%" />
+											<!-- <p:outputLabel -->
+											<!-- 	value="#{contractDirectBean.contractDirect.invRepresentFunct}" -->
+											<!-- 	style="width: 100%" /> -->
 										</div>
-
-
 									</div>
 									<div class="ui-g">
 										<div class="ui-g-1">
@@ -813,11 +825,10 @@
 										<div class="ui-g-3">
 											<p:inputText process="@this"
 												value="#{contractDirectBean.contractDirect.invRepresentIdPlace}"
-												rendered="#{contractDirectBean.addMode}" style="width: 100%" />
+												style="width: 100%" />
 											<p:outputLabel
 												value="#{contractDirectBean.contractDirect.invRepresentIdPlace}"
-												style="width: 100%"
-												rendered="#{!contractDirectBean.addMode}" />
+												style="width: 100%" />
 										</div>
 										<div class="ui-g-1">
 											<p:outputLabel value="بتاريخ" styleClass="btxt" />
@@ -830,7 +841,6 @@
 													value="#{contractDirectBean.contractDirect.invRepresentIdDate}"
 													onfocus="loadCalendar();" style="width: 100%"
 													rendered="#{contractDirectBean.higriMode}"
-													disabled="#{!contractDirectBean.addMode}"
 													styleClass="form-control form-controlCal">
 													<p:ajax process="@this" />
 												</p:inputText>
@@ -900,7 +910,8 @@
 									</div>
 									<div class="ui-g-3">
 										<p:selectOneMenu value="#{contractDirectBean.contractType}"
-											process="@this" style="width:100%">
+											disabled="#{!contractDirectBean.addMode}" process="@this"
+											style="width:100%;opacity: 1.0;">
 											<!-- 											<f:selectItem itemLabel="إختر نوع العقد" -->
 											<!-- 												noSelectionOption="true" /> -->
 											<f:selectItem itemLabel="سنوي" itemValue="1" />
@@ -977,20 +988,20 @@
 										</p:outputLabel>
 									</div>
 									<div class="ui-g-3">
-										<p:inputNumber id="annualRent" required="true" process="@this"
+										<p:inputNumber id="annualRent" required="true"
 											requiredMessage="قيمة القسط  مطلوب"
 											value="#{contractDirectBean.contractDirect.annualRent}"
-											rendered="#{contractDirectBean.addMode}" style="width: 100%">
-											<p:ajax event="blur"
+											style="width: 100%">
+											<p:ajax event="blur" process="@this"
 												update="proc_period,totalLabel,disc_duration"
 												listener="#{contractDirectBean.calculateDiscount}" />
 											<!-- listener="#{contractDirectBean.calculateProcessPeriod}" /> -->
 											<!-- process="@this,stratContr,endContr" -->
 										</p:inputNumber>
-										<p:outputLabel
-											value="#{contractDirectBean.contractDirect.annualRent}"
-											style="width: 100%" rendered="#{!contractDirectBean.addMode}" />
-										<p:outputLabel value="" />
+										<!-- <p:outputLabel -->
+										<!-- 	value="#{contractDirectBean.contractDirect.annualRent}" -->
+										<!-- 	style="width: 100%" /> -->
+										<!-- <p:outputLabel value="" /> -->
 
 									</div>
 								</div>
@@ -1002,19 +1013,22 @@
 									</div>
 									<div class="ui-g-1">
 										<p:inputNumber minValue="0" id="proc_period" lang="ar"
-											style="width: 100%" required="true" process="@this"
-											requiredMessage="مدة التجهيز مطلوبة"
+											disabled="#{contractDirectBean.contractDirect.operationId>0}"
+											style="width: 100%; opacity:1.0;" required="true"
+											process="@this" requiredMessage="مدة التجهيز مطلوبة"
 											value="#{contractDirectBean.contractDirect.processPeriod}"
 											rendered="#{contractDirectBean.addMode}">
 											<p:ajax update="disc_duration" />
 										</p:inputNumber>
-										<p:inputText process="@this"
-											value="#{contractDirectBean.contractDirect.processPeriod}"
-											style="width: 100%" rendered="#{!contractDirectBean.addMode}" />
+										<!-- <p:inputText process="@this" -->
+										<!-- 	value="#{contractDirectBean.contractDirect.processPeriod}" -->
+										<!-- 	style="width: 100%" rendered="#{!contractDirectBean.addMode}" /> -->
+
+
 									</div>
 									<div class="ui-g-2">
 										<p:outputLabel value="تعادل (%)" styleClass="btxt" />
-										<p:spacer width="10"></p:spacer>
+										<p:spacer width="5"></p:spacer>
 										<p:inputNumber process="@this"
 											value="#{contractDirectBean.contractDirect.contractDurationRetio}"
 											minValue="0" maxValue="100" symbol="%"></p:inputNumber>
@@ -1025,6 +1039,7 @@
 									</div>
 									<div class="ui-g-3">
 										<p:inputNumber id="disc_duration" minValue="0" process="@this"
+											disabled="#{contractDirectBean.contractDirect.operationId>0}"
 											maxValue="#{contractDirectBean.contractDirect.processPeriod}"
 											value="#{contractDirectBean.discountDuration}">
 											<p:ajax update="totalLabel,disc_duration"
@@ -1061,13 +1076,11 @@
 									<div class="ui-g">
 
 										<div class="ui-g-1">
-											<p:outputLabel value="مقدمة العقد" styleClass="btxt"
-												rendered="#{contractDirectBean.addMode}" />
+											<p:outputLabel value="مقدمة العقد" styleClass="btxt" />
 										</div>
 										<div class="ui-g-3">
 											<p:selectOneMenu id="cont_intro" filterMatchMode="contains"
 												filter="true" style="width:75%" process="@this"
-												rendered="#{contractDirectBean.addMode}"
 												value="#{contractDirectBean.introductionId}">
 												<f:selectItems
 													value="#{contractDirectBean.introContractList}" var="x"
@@ -1079,23 +1092,19 @@
 
 											<p:spacer height="10"></p:spacer>
 											<p:commandButton icon="ui-icon ui-icon-add" process="@this"
-												rendered="#{contractDirectBean.addMode}"
 												oncomplete="PF('add_introdaction_dlg').show()">
 											</p:commandButton>
 
 										</div>
 
 										<div class="ui-g-1">
-											<h:outputLabel value="#{msg['item.name']}"
-												rendered="#{contractDirectBean.addMode}" styleClass="btxt">
+											<h:outputLabel value="#{msg['item.name']}" styleClass="btxt">
 												<span style="color: red; font-size: 30px"> * </span>
 											</h:outputLabel>
 										</div>
 										<div class="ui-g-3">
-											<p:selectOneMenu id="itemsList" filter="true" required="true"
-												requiredMessage="ادخل البند مطلوب"
+											<p:selectOneMenu id="itemsList" filter="true"
 												filterMatchMode="contains"
-												rendered="#{contractDirectBean.addMode}"
 												value="#{contractDirectBean.billBandNumber}">
 												<f:selectItem itemLabel="أختر من البنود" itemValue=""
 													noSelectionOption="true" />
@@ -1119,14 +1128,14 @@
 
 											<p:inputTextarea rows="3" cols="100" required="true"
 												requiredMessage="مقدمة العقد مطلوبة" id="intro_desc_area"
-												value="#{contractDirectBean.contractIntro}"
-												rendered="#{contractDirectBean.addMode}">
+												rendered="#{contractDirectBean.addMode}"
+												value="#{contractDirectBean.contractIntro}">
 												<p:ajax process="@this" />
 											</p:inputTextarea>
 											<p:inputTextarea id="intro_contract_update" rows="3"
 												cols="100" process="@this"
-												value="#{contractDirectBean.contractDirect.introduction}"
-												rendered="#{!contractDirectBean.addMode}" />
+												rendered="#{contractDirectBean.contractDirect.operationId>0}"
+												value="#{contractDirectBean.contractDirect.introduction}" />
 										</div>
 
 										<div class="ui-g-1">
@@ -1136,14 +1145,13 @@
 
 											<p:inputTextarea rows="3" cols="100"
 												id="specialConditions_area" process="@this"
-												value="#{contractDirectBean.contractDirect.specialConditions}"
-												rendered="#{contractDirectBean.addMode}">
+												value="#{contractDirectBean.contractDirect.specialConditions}">
 												<p:ajax process="@this" />
 											</p:inputTextarea>
-											<p:inputTextarea id="specialConditions_update" rows="3"
-												cols="100" process="@this"
-												value="#{contractDirectBean.contractDirect.introduction}"
-												rendered="#{!contractDirectBean.addMode}" />
+											<!-- <p:inputTextarea id="specialConditions_update" rows="3" -->
+											<!-- 	cols="100" process="@this" -->
+											<!-- 	value="#{contractDirectBean.contractDirect.introduction}" -->
+											<!-- 	rendered="#{!contractDirectBean.addMode and contractDirectBean.contractDirect.operationId <1}" /> -->
 										</div>
 									</div>
 									<p:messages id="messages" autoUpdate="true" />
@@ -1151,6 +1159,11 @@
 										<p:commandButton value="حفظ" update="@form"
 											process="@this , addPG "
 											rendered="#{contractDirectBean.addMode}"
+											action="#{contractDirectBean.save}">
+										</p:commandButton>
+										<p:commandButton value="تنفيذ" update="@form"
+											process="@this , addPG "
+											rendered="#{!contractDirectBean.addMode and contractDirectBean.contractDirect.operationId >0 }"
 											action="#{contractDirectBean.save}">
 										</p:commandButton>
 										<p:spacer width="10px" height="10px"></p:spacer>
@@ -1166,7 +1179,7 @@
 										<p:spacer width="10px" height="10px"></p:spacer>
 										<p:commandButton value="تعديل" update="@form"
 											process="@this , addPG "
-											rendered="#{!contractDirectBean.addMode}"
+											rendered="#{!contractDirectBean.addMode and contractDirectBean.contractDirect.operationId ==0}"
 											onsuccess="PF('addDialog').hide();">
 											<!--   action="#{contractDirectBean.updateContractBill}" 
 												action="#{contractDirectBean.update}" -->
@@ -1613,42 +1626,48 @@
 									<h:outputLabel value="#{rowIndex+1}" />
 								</p:column>
 
-								<p:column id="feesIdCol" headerText="رقم القسط" width="15%"
+								<p:column id="feesIdCol" headerText="رقم القسط" width="10%"
 									style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.id}" />
 								</p:column>
-								<p:column id="contIdCol" headerText="رقم العقد" width="15%"
+								<p:column id="contIdCol" headerText="رقم العقد" width="10%"
 									style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.contractNumber}" />
 								</p:column>
 								<p:column id="discountdurationcol" headerText="مدة الخصم"
-									width="15%" style="text-align: center;">
+									width="10%" style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.discountduration}" />
 								</p:column>
 								<p:column id="discountExceptionelcol"
-									headerText="الخصم الإستثنائي" width="15%"
+									headerText="الخصم الإستثنائي" width="10%"
 									style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.discountExceptionel}" />
 								</p:column>
-								<p:column id="factIdCol" headerText="رقم الفاتورة" width="15%"
+								<p:column id="factIdCol" headerText="رقم الفاتورة" width="10%"
 									style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.factId}" />
 								</p:column>
-								<p:column id="dueDateCol" headerText="تاريخ الإستحقاق"
+								<p:column id="dueHDateCol" headerText="تاريخ الإستحقاق هجري"
 									width="15%" style="text-align: center;">
 									<h:outputLabel value="#{contfeesItem.dueHDate}" />
+								</p:column>
+								<p:column id="dueGDateCol" headerText="تاريخ الإستحقاق ميلادي"
+									width="15%" style="text-align: center;">
+									<h:outputText value="#{contfeesItem.dueGDate}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
 								</p:column>
 								<p:column id="amountCol" headerText="قيمة القسط" width="15%"
 									style="text-align: center;">
 									<h:outputLabel
 										value="#{(contractDirectBean.contractDirect.annualRent - contfeesItem.discountAmount)}" />
 								</p:column>
-								<p:column id="statusCol" headerText="الحالة" width="15%"
+								<p:column id="statusCol" headerText="الحالة" width="7.5%"
 									style="text-align: center;">
 									<h:outputLabel
 										value="#{(contfeesItem.status)==3 ? 'مدفوع' :((contfeesItem.status)==2 ? 'مفوتر' : 'غير مفوتر')}" />
 								</p:column>
-								<p:column id="fatoraCol" headerText="فوترة القسط" width="15%"
+								<p:column id="fatoraCol" headerText="فوترة القسط" width="7.5%"
 									style="text-align: center;">
 									<p:selectBooleanCheckbox value="#{contfeesItem.checkfees}"
 										disabled="#{!contfeesItem.canRenew}">
@@ -1786,6 +1805,31 @@
 								</p:column>
 							</p:dataTable>
 						</p:scrollPanel>
+					</p:dialog>
+
+					<p:dialog widgetVar="cancel_dlg" id="cancel_dlgId"
+						header="تأكيد عملية الإلغاء" width="20%"
+						style="text-align: center'" dir="rtl" modal="true"
+						resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:outputLabel value="هل تريد إتمام عملية الإلغاء ؟!"
+									styleClass="btxt" />
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="نعم" styleClass="green-btn"
+								update="allusersettingdt" icon="fa fa-check" immediate="true"
+								action="#{contractDirectBean.cancelContractDirect}"
+								oncomplete="PF('cancel_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+							<p:commandButton value="لا" styleClass="red-btn" immediate="true"
+								icon="fa fa-remove" oncomplete="PF('cancel_dlg').hide();">
+							</p:commandButton>
+						</div>
 					</p:dialog>
 				</h:form>
 			</ui:define>

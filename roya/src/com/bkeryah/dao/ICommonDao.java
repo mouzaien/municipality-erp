@@ -78,6 +78,7 @@ import com.bkeryah.entities.TechnicalResponse;
 import com.bkeryah.entities.TechnicalUsers;
 import com.bkeryah.entities.TenderItems;
 import com.bkeryah.entities.TradIssueType;
+import com.bkeryah.entities.TransferOwnershipDetails;
 import com.bkeryah.entities.UserRoles;
 import com.bkeryah.entities.VacationsType;
 import com.bkeryah.entities.VisitsSupervisor;
@@ -1182,4 +1183,6 @@ public interface ICommonDao {
 	public int deleteSiteType(Integer siteTypeId);
 
 	public int deleteIntroContract(Integer introId);
+
+	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer transId);
 }

@@ -68,6 +68,8 @@ public class TransferOwnershipBean {
 	private String applicationPurpose;
 	private UserMailObj selectedInbox;
 	private WrkApplicationId WrkId;
+	private List<TransferOwnershipDetails> tsOnDtls = new ArrayList<>();
+	private boolean allowSelect;
 
 	@PostConstruct
 	public void init() {
@@ -97,26 +99,42 @@ public class TransferOwnershipBean {
 						transOwnership.getFromUser());
 				ArcUsers toUser = (ArcUsers) dataAccessService.findEntityById(ArcUsers.class,
 						transOwnership.getToUser());
+				transModel.setFromUserId(transOwnership.getFromUser());
+				transModel.setFromUserName(fromUser.getEmployeeName());
 				Article art = (Article) dataAccessService.findEntityById(Article.class, transOwnership.getArticleId());
 				transModel.setArticleCode(transOwnership.getArticleCode());
 				transModel.setArticleId(transOwnership.getArticleId());
 				transModel.setArticleName(art.getName());
 				transModel.setArticleUnit(art.getItemUnite().getName());
-				transModel.setFromUserId(transOwnership.getFromUser());
-				transModel.setFromUserName(fromUser.getEmployeeName());
 				transModel.setNotes(transOwnership.getNotes());
 				transModel.setSerialNumber(transOwnership.getSerialNumber());
 				transModel.setStrNo(transOwnership.getStrNo());
 				transModel.setToUserId(transOwnership.getToUser());
 				transModel.setToUserName(toUser.getEmployeeName());
 				transModel.setQty(transOwnership.getQty());
-				transModelList.add(transModel);
+
+				tsOnDtls = dataAccessService.loadTransferOwnerDetails(transOwnership.getId());
+				for (TransferOwnershipDetails tsd : tsOnDtls) {
+					TransferOwnershipModel transM = new TransferOwnershipModel();
+					Article article = (Article) dataAccessService.findEntityById(Article.class,
+							tsd.getArticleId());
+					transM.setArticleCode(tsd.getArticleCode());
+					transM.setArticleId(tsd.getArticleId());
+					transM.setArticleName(article.getName());
+					transM.setArticleUnit(article.getItemUnite().getName());
+					transM.setNotes(tsd.getNotes());
+					transM.setSerialNumber(tsd.getSerialNumber());
+					transM.setStrNo(tsd.getStrNo());
+					transM.setQty(tsd.getQty());
+					transModelList.add(transM);
+				}
+
 			}
 		}
 		HrScenario scenario = (HrScenario) dataAccessService.findEntityById(HrScenario.class,
 				MailTypeEnum.TRANSFER_OWNERSHIP.getValue());
 
-		System.out.println("stepNum >> "+stepNum);
+		System.out.println("stepNum >> " + stepNum);
 		if (stepNum > 1) {
 			hideInputs = true;
 		}
@@ -149,24 +167,34 @@ public class TransferOwnershipBean {
 		Utils.updateUIComponent("includeform:addBtn");
 	}
 
-	public void addItem(AjaxBehaviorEvent event) {
+	public String addItem(AjaxBehaviorEvent event) {
 		if (selectedArticleId == null || returnHDate == null || employerId == null) {
-			MsgEntry.addErrorMessage("يجب أدخال البيانات كاملة ");
+			// MsgEntry.addErrorMessage("يجب أدخال البيانات كاملة ");
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("missing.data"));
 		} else {
-			if (transModelList.size() < 1) {
-				for (Article art : articleList) {
-					System.out.println("code" + art.getCode());
-					if (art.getId() == selectedArticleId) {
-						transModel.setArticleCode(art.getCode());
-						transModel.setArticleId(art.getId());
-						transModel.setArticleUnit(art.getUnitName());
-						transModel.setArticleName(art.getName());
-						transModel.setStrNo(art.getStrNo());
-						transModel.setExchMasterId(art.getExchMasterId());
+			// if (transModelList.size() > 0) {
+			// for (TransferOwnershipModel md : transModelList) {
+			// if (md.getArticleId().equals(selectedArticleId)) {
+			// //MsgEntry.addErrorMessage("هذا الصنف تم اختياره");
+			// MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("art.error"));
+			// return "";
+			// }
+			// }
+			// } else {
+			for (Article art : articleList) {
 
-					}
+				System.out.println("code" + art.getCode());
+				if (art.getId() == selectedArticleId) {
+					transModel.setArticleCode(art.getCode());
+					transModel.setArticleId(art.getId());
+					transModel.setArticleUnit(art.getUnitName());
+					transModel.setArticleName(art.getName());
+					transModel.setStrNo(art.getStrNo());
+					transModel.setExchMasterId(art.getExchMasterId());
+
 				}
-
+			}
+			try {
 				currentUser = Utils.findCurrentUser();
 				transModel.setFromUserId(currentUser.getUserId());
 				transModel.setFromUserName(currentUser.getEmployeeName());
@@ -179,19 +207,27 @@ public class TransferOwnershipBean {
 				transModelList.add(transModel);
 				canSave = true;
 				// Utils.updateUIComponent("includeform:panalSave");
-				try {
-					transModel = new TransferOwnershipModel();
 
-				} catch (Exception ex) {
-					System.out.println("exxxxxxxxx");
-				}
-				// employerId = null;
-				// selectedArticleId = null;
-				// allowAdd = false;
-				Utils.updateUIComponent("includeform:itemsTable");
+				transModel = new TransferOwnershipModel();
+
+			} catch (Exception ex) {
+				System.out.println("exxxxxxxxx");
 			}
+			// employerId = null;
+			// selectedArticleId = null;
+			// allowAdd = false;
+			if (transModelList.size() < 1) {
+				allowSelect = false;
+			} else {
+				allowSelect = true;
+			}
+			Utils.updateUIComponent("includeform:itemsTable");
+			Utils.updateUIComponent("includeform:empList");
+			Utils.updateUIComponent("includeform:hiri1");
 		}
 
+		// }
+		return "";
 	}
 
 	public void removeRecord(TransferOwnershipModel recordItem) {
@@ -202,33 +238,38 @@ public class TransferOwnershipBean {
 			// Utils.updateUIComponent("includeform:empList");
 			// Utils.updateUIComponent("includeform:articles");
 		}
+		if (transModelList.size() < 1) {
+			allowSelect = false;
+		} else {
+			allowSelect = true;
+		}
+		Utils.updateUIComponent("includeform:articles");
+		Utils.updateUIComponent("includeform:hiri1");
 	}
 
 	public String save() {
 		if (transModelList.size() > 0) {
 			try {
-
-				for (TransferOwnershipModel item : transModelList) {
-					transSave = new TransferOwnership();
-					transSave.setArticleId(item.getArticleId());
-					transSave.setArticleCode(item.getArticleCode());
-					transSave.setStrNo(item.getStrNo());
-					transSave.setNotes(item.getNotes());
-					transSave.setSerialNumber(item.getSerialNumber());
-					transSave.setNotes(item.getNotes());
-					transSave.setFromUser(item.getFromUserId());
-					transSave.setToUser(item.getToUserId());
-					transSave.setTransferHDate(returnHDate);
-					transSave.setTransferGDate(Utils.convertHDateToGDate(returnHDate));
-					transSave.setArtName(item.getArticleName());
-					transSave.setExchMasterId(item.getExchMasterId());
-					transSave.setQty(item.getQty());
-					transSave.setStatus("R");
-					// transSaveList.add(transSave);
-				}
-				dataAccessService.addTransferOnwerShipItems(transSave);
+				TransferOwnershipModel item = transModelList.get(0);
+				transSave = new TransferOwnership();
+				transSave.setArticleId(item.getArticleId());
+				transSave.setArticleCode(item.getArticleCode());
+				transSave.setStrNo(item.getStrNo());
+				transSave.setNotes(item.getNotes());
+				transSave.setSerialNumber(item.getSerialNumber());
+				transSave.setNotes(item.getNotes());
+				transSave.setFromUser(item.getFromUserId());
+				transSave.setToUser(item.getToUserId());
+				transSave.setTransferHDate(returnHDate);
+				transSave.setTransferGDate(Utils.convertHDateToGDate(returnHDate));
+				transSave.setArtName(item.getArticleName());
+				transSave.setExchMasterId(item.getExchMasterId());
+				transSave.setQty(item.getQty());
+				transSave.setStatus("R");
+				// transSaveList.add(transSave);
+				dataAccessService.addTransferOnwerShipItems(transSave, transModelList);
 				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-				return "mails";
+				 return "mails";
 			} catch (Exception e) {
 				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 				e.printStackTrace();
@@ -248,7 +289,7 @@ public class TransferOwnershipBean {
 
 	public String accept() {
 
-		wrkAppComment = Utils.loadMessagesFromFile("accept.operation")+currentUser.getEmployeeName();
+		wrkAppComment = Utils.loadMessagesFromFile("accept.operation") + currentUser.getEmployeeName();
 		applicationPurpose = "1";
 		dataAccessService.acceptTransOwnership(transOwnership, recordId, MailTypeEnum.TRANSFER_OWNERSHIP.getValue(),
 				wrkAppComment, Integer.parseInt(applicationPurpose.trim()));
@@ -260,7 +301,7 @@ public class TransferOwnershipBean {
 			applicationPurpose = "2";
 			transOwnership.setStatus(MyConstants.NO);
 			String wrkCommentRefuse = wrkAppComment;
-			dataAccessService.refuseTransOwnership( WrkId,recordId, transOwnership, wrkCommentRefuse,
+			dataAccessService.refuseTransOwnership(WrkId, recordId, transOwnership, wrkCommentRefuse,
 					Integer.parseInt(applicationPurpose.trim()));
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
 			return "mails";
@@ -477,5 +518,21 @@ public class TransferOwnershipBean {
 
 	public void setWrkId(WrkApplicationId wrkId) {
 		WrkId = wrkId;
+	}
+
+	public List<TransferOwnershipDetails> getTsOnDtls() {
+		return tsOnDtls;
+	}
+
+	public void setTsOnDtls(List<TransferOwnershipDetails> tsOnDtls) {
+		this.tsOnDtls = tsOnDtls;
+	}
+
+	public boolean isAllowSelect() {
+		return allowSelect;
+	}
+
+	public void setAllowSelect(boolean allowSelect) {
+		this.allowSelect = allowSelect;
 	}
 }

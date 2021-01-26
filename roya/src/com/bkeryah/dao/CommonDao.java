@@ -140,6 +140,7 @@ import com.bkeryah.entities.TechnicalResponse;
 import com.bkeryah.entities.TechnicalUsers;
 import com.bkeryah.entities.TenderItems;
 import com.bkeryah.entities.TradIssueType;
+import com.bkeryah.entities.TransferOwnershipDetails;
 import com.bkeryah.entities.UserRoles;
 import com.bkeryah.entities.VacationsType;
 import com.bkeryah.entities.VisitsSupervisor;
@@ -5321,4 +5322,15 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return query.executeUpdate();
 	}
 
+	@Override
+	@Transactional
+	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer transId) {
+		List<TransferOwnershipDetails> list = new ArrayList<TransferOwnershipDetails>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TransferOwnershipDetails.class);
+		criteria.add(Restrictions.eq("transferId", transId));
+		list = criteria.list();
+		return list;
+	}
+
+	
 }

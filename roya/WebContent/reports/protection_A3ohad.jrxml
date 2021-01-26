@@ -110,22 +110,23 @@ UNION
 	0 qtySarf ,
      RETURN_STORE.RET_HDATE R_datetransaction ,
     RETURN_STORE.SERIAL_NUMBER R_SPECIAL_NO 
-	FROM TRANSFER_OWNERSHIP ts ,article ar,
+	FROM TRANSFER_OWNERSHIP ts , TRANSFER_OWNERSHIP_DETAILS tsd , article ar,
 	TDR_ITEMUNIT un ,TDR_INV_GNRL_REQ master , ARC_USERS usr ,WRK_DEPT
 	, WHS_WAREHOUSES  ,RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE
 	WHERE 
 	(ts.TO_USER = $P{userId} OR $P{userId} = -1)
-	AND ts.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
+	AND tsd.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
     AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID
 	AND ts.STATUS = 'Y'
-	AND ts.ART_ID  = ar.ID 
-	AND (ts.ART_ID =$P{artId} OR $P{artId} = -1)
+	AND  ts.ID =  tsd.TRANSFER_ID
+	AND tsd.ART_ID  = ar.ID 
+	AND (tsd.ART_ID =$P{artId} OR $P{artId} = -1)
 	AND un.ITEMUNITID  = ar.ITEM_UNITE_ID 
-	AND ts.EXCH_MASTER_ID (+) = master.INV_G_R_NO
+	AND tsd.EXCH_MASTER_ID (+) = master.INV_G_R_NO
 	AND ts.TO_USER  = usr.USER_ID
     AND usr.DEPT_ID = WRK_DEPT.ID
-    AND WHS_WAREHOUSES.STRNO =ts.STR_NO
-    AND (ts.STR_NO =$P{STRNO} OR $P{STRNO} = -1) 
+    AND WHS_WAREHOUSES.STRNO =tsd.STR_NO
+    AND (tsd.STR_NO =$P{STRNO} OR $P{STRNO} = -1) 
     )
      ORDER BY TO_DATE(sarfDate, 'dd/mm/yyyy', 'nls_calendar=''Arabic Hijrah''')  asc]]>
 	</queryString>
@@ -634,7 +635,4 @@ UNION
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="24" splitType="Stretch"/>
-	</columnFooter>
 </jasperReport>
