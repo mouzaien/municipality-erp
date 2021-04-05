@@ -1,0 +1,43 @@
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -376,13 +376,6 @@
+ 								<h:outputLabel value="#{rowIndex+1}" />
+ 							</p:column>
+ 							
+-							<p:column id="idcol11" headerText="رقم العيييقد" sortable="true"
+-								sortBy="#{userItem.oldPayedFees}"
+-								filterBy="#{userItem.oldPayedFees}" filterMatchMode="contains"
+-								width="7%" style="text-align: center;">
+-								<h:outputText value="#{userItem.oldPayedFees}"></h:outputText>
+-
+-							</p:column>
+ 							
+ 							<p:column id="idcol" headerText="رقم العقد" sortable="true"
+ 								sortBy="#{userItem.contractNum}"
+@@ -478,7 +471,6 @@
+ 							<p:column style="white-space: nowrap;text-align: center;"
+ 								headerText="التفاصيل" width="6%">
+ 								<p:commandButton oncomplete="PF('addDialog').show();"
+-									action="#{contractDirectBean.loadContract}" process="@this"
+-									icon="ui-icon-search" update="includeform:addPG">
++									icon="ui-icon-search" >
+ <!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+ <!-- 										target="#{contractDirectBean.contractDirect}" /> -->
+@@ -483,6 +475,6 @@
+ <!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+ <!-- 										target="#{contractDirectBean.contractDirect}" /> -->
+-									<p:ajax process="@this"
++									<p:ajax process="@this" update="includeform:addPG"
+ 										listener="#{contractDirectBean.loadSuCategoryByMainCategoryId(userItem)}" />
+ 								</p:commandButton>
+ 							</p:column>
+@@ -998,7 +990,7 @@
+ 											id="yeanumber" style="width: 100% "
+ 											value="#{contractDirectBean.installmentNum}">
+ 											<!--  disabled="#{!contractDirectBean.addMode}" -->
+-											<p:ajax update="totalLabel,disc_duration"
++											<p:ajax update="totalLabel,disc_duration" process="@this"
+ 												listener="#{contractDirectBean.calculateDiscount}" />
+ 										</p:inputNumber>
+ 									</div>

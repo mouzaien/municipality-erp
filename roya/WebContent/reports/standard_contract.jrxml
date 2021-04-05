@@ -5,6 +5,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="contractId" class="java.lang.Integer"/>
+	<parameter name="stringStartDay" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 	C.CONTRACT_NUM AS contId,
@@ -250,11 +251,9 @@ WHERE
 				<reportElement x="380" y="62" width="120" height="20" uuid="ea85bf2e-a5a0-4c0a-af0f-2495aec1a03c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
-					<paragraph rightIndent="5"/>
+					<paragraph rightIndent="15"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CONTID}== null?"":(""+$F{CONTID}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
-                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
-                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{stringStartDay}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="30" width="95" height="20" uuid="1879d2be-7f61-465a-9d6b-b6cdfbcbc4d6"/>
@@ -262,7 +261,7 @@ WHERE
 					<font fontName="Arial" size="12"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CONTRACT_DATE}== null?"":(""+$F{CONTRACT_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{START_DATE}== null?"":(""+$F{START_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
@@ -297,7 +296,7 @@ WHERE
 					<font fontName="Arial" size="12"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CONTRACT_DATE}== null?"":(""+$F{CONTRACT_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[$F{START_DATE}== null?"":(""+$F{START_DATE}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>

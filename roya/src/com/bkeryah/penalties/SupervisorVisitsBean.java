@@ -19,6 +19,10 @@ import com.bkeryah.service.IDataAccessService;
 import utilities.MsgEntry;
 import utilities.Utils;
 
+/**
+ * @author Amr Alkady
+ *
+ */
 @ManagedBean(name = "supervisorVisitsBean")
 @ViewScoped
 public class SupervisorVisitsBean {
@@ -77,6 +81,9 @@ public class SupervisorVisitsBean {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public String save() {
 		if (sectionAddId != null && supervisorAddIds != null && beginDate != null && endDate != null) {
 			licences = dataAccessService.getAllLicsBySectionId(sectionAddId);

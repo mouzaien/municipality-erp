@@ -51,13 +51,13 @@
 				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
 					<p:commandButton value="حساب زيارات" update="includeform:pngid"
-						immediate="true" styleClass="cyan-btn"
+						immediate="true" styleClass="cyan-btn" rendered="false"
 						action="#{supervisorVisitsBean.showDlg}"
 						icon="ui-icon ui-icon-plus">
 					</p:commandButton>
 				</div>
 				<div class="card card-w-title" dir="rtl">
-					<h1 style="color: #7CB342; text-align: center">توزيع الزيارات</h1>
+					<h1 style="color: #7CB342; text-align: center">استعلام الزيارات</h1>
 					<br></br>
 					<div class="ui-g">
 						<div class="ui-g-1">
@@ -124,7 +124,7 @@
 						<p:dataTable var="visit" id="inboxdt"
 							value="#{supervisorVisitsBean.visitsSupervisors}"
 							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
-							sortBy="#{visit.gDate}" sortOrder="descending" 
+							sortBy="#{visit.gDate}" sortOrder="descending"
 							paginatorPosition="bottom" widgetVar="cellLicence"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							paginator="true" rows="10">
@@ -156,13 +156,13 @@
 								width="40%">
 								<h:outputText value="#{visit.sectionName}" />
 							</p:column>
-							<p:column width="10%" style="text-align:center"
-								headerText="نقل الزيارة">
-								<p:commandButton action="#{supervisorVisitsBean.setSup(visit)}"
-									styleClass="cyan-btn" update="inboxdt" immediate="true"
-									icon="ui-icon-arrow">
-								</p:commandButton>
-							</p:column>
+							<!-- 							<p:column width="10%" style="text-align:center" -->
+							<!-- 								headerText="نقل الزيارة"> -->
+							<!-- 								<p:commandButton action="#{supervisorVisitsBean.setSup(visit)}" -->
+							<!-- 									styleClass="cyan-btn" update="inboxdt" immediate="true" -->
+							<!-- 									icon="ui-icon-arrow"> -->
+							<!-- 								</p:commandButton> -->
+							<!-- 							</p:column> -->
 
 						</p:dataTable>
 					</div>

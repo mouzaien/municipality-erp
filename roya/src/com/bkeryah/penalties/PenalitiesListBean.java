@@ -14,14 +14,27 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import com.bkeryah.entities.ArcUsers;
+import com.bkeryah.entities.LicActivityTypeRy;
 import com.bkeryah.entities.PayBillDetails;
 import com.bkeryah.entities.PayLicBills;
+import com.bkeryah.entities.investment.ContractDirect;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
+import utilities.ContractOperationEnum;
 import utilities.HijriCalendarUtil;
 import utilities.MyConstants;
 import utilities.Utils;
 
+/**
+ * @author Amr Alkady
+ *
+ */
 @ManagedBean
 @ViewScoped
 public class PenalitiesListBean {
@@ -36,6 +49,16 @@ public class PenalitiesListBean {
 	private boolean notification;
 	private boolean notifiPenality;
 	private String fineStatus = "-1";
+	private Integer fineTradeType;
+	private Integer fineSadad;
+	private String licNo;
+	private String alpNo;
+	private String fromStartDate;
+	private String toStartDate;
+	private boolean higriMode = true;
+	private Date fromStartDateG;// = new Date();
+	private Date toStartDateG;// = new Date();
+	private List<LicActivityTypeRy> activityList = new ArrayList<LicActivityTypeRy>();
 
 	@PostConstruct
 	private void init() {
@@ -43,23 +66,84 @@ public class PenalitiesListBean {
 		if ((Utils.findCurrentUser().getUserId() == healthCareId)
 				|| (Utils.findCurrentUser().getUserId() == MyConstants.SUPPORT_USER_ID))
 			notification = true;
-		loadPenalitiesByType();
+
+		// load all penalities by log in user dept Id
+		penalitiesList = dataAccessService.loadAllPenalities(fineStatus, Utils.findCurrentUser().getDeptId());
+		activityList = dataAccessService.getAllLicActivityTypeList();
+		loadFineData();
 	}
 
 	public void loadPenalitiesByType() {
-		penalitiesList = dataAccessService.loadAllPenalities(fineStatus);
+		fromStartDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:fromStDate");
+		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:fromStDate"));
+		toStartDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:toStartDate");
+		String dfrom = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:dfrom");
+		String dto = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("includeform:dto");
+
+		if (!higriMode) {
+			try {
+				fromStartDate = Utils.grigDatesConvert(fromStartDateG);
+				toStartDate = Utils.grigDatesConvert(toStartDateG);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		Integer deptId = Utils.findCurrentUser().getDeptId();
+		penalitiesList = dataAccessService.loadListPenalities(fineStatus, fineTradeType, fineSadad, licNo, alpNo,
+				fromStartDate, toStartDate, Integer.toString(deptId));
+
+		loadFineData();
+
+	}
+
+	public void loadFineData() {
+		for (ReqFinesMaster fine : penalitiesList) {
+			if (fine.getfSupervisorCode() != null) {
+				ArcUsers usr = dataAccessService.loadUserById(Integer.parseInt(fine.getfSupervisorCode().trim()));
+				if (usr != null) {
+					fine.setSupervisorNameView(usr.getEmployeeName());
+					fine.setSupervisorName(usr.getEmployeeName());
+				}
+			}
+			if (fine.getfLicenceNo() != null) {
+				LicTrdMasterFile act = (LicTrdMasterFile) dataAccessService.findLicByLicId(fine.getfLicenceNo().trim());
+				if (act != null)
+					fine.setMahlId(act.getMhlId());
+			}
+			fine.setReqFinesDetailsList(dataAccessService.findLstFinesDetailsByFineNO(fine.getFineNo()));
+			for (ReqFinesDetails detail : fine.getReqFinesDetailsList()) {
+				detail.setFineCountNo(
+						dataAccessService.getNumberLicencePenality(detail.getFineCode(), fine.getFineNo()));
+			}
+			fine.setFineAmount(
+					fine.getReqFinesDetailsList().stream().mapToDouble(fdet -> fdet.getFineTotalValue()).sum());
+		}
 	}
 
 	public void loadSelectedPenalty() {
 		reqFinesMaster
 				.setDeptName(dataAccessService.findDepartmentNameById(Integer.parseInt(reqFinesMaster.getfDeptNo())));
-		reqFinesMaster.setSupervisorName(dataAccessService
-				.loadUserById(Integer.parseInt(reqFinesMaster.getfSupervisorCode())).getEmployeeName());
-		for (ReqFinesDetails detail : reqFinesMaster.getReqFinesDetailsList()) {
-			detail.setFineCountNo(
-					dataAccessService.getNumberLicencePenality(detail.getFineCode(), reqFinesMaster.getFineNo()));
-		}
+		// reqFinesMaster.setSupervisorName(dataAccessService
+		// .loadUserById(Integer.parseInt(reqFinesMaster.getfSupervisorCode())).getEmployeeName());
+		LicActivityTypeRy act = (LicActivityTypeRy) dataAccessService.findEntityById(LicActivityTypeRy.class,
+				reqFinesMaster.getActivityType());
+		reqFinesMaster.setActivityName(act.getName());
 		fineNo = reqFinesMaster.getFineNo();
+	}
+
+	/**
+	 * @param document
+	 */
+	public void postProcessXLS(Object document) {
+		HSSFWorkbook wb = (HSSFWorkbook) document;
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFRow header = sheet.getRow(0);
+		sheet.setColumnHidden(9, true);
 	}
 
 	public void acceptPenality() {
@@ -76,6 +160,19 @@ public class PenalitiesListBean {
 			parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
 					.getRealPath(Utils.loadMessagesFromFile("report.logo")));
 			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String printAllFines() {
+		try {
+			String reportName = "/reports/penalities.jasper";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			Utils.printPdfReportFromListDataSource(reportName, parameters, penalitiesList);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -254,5 +351,85 @@ public class PenalitiesListBean {
 
 	public void setFineStatus(String fineStatus) {
 		this.fineStatus = fineStatus;
+	}
+
+	public Integer getFineTradeType() {
+		return fineTradeType;
+	}
+
+	public void setFineTradeType(Integer fineTradeType) {
+		this.fineTradeType = fineTradeType;
+	}
+
+	public Integer getFineSadad() {
+		return fineSadad;
+	}
+
+	public void setFineSadad(Integer fineSadad) {
+		this.fineSadad = fineSadad;
+	}
+
+	public String getLicNo() {
+		return licNo;
+	}
+
+	public void setLicNo(String licNo) {
+		this.licNo = licNo;
+	}
+
+	public String getAlpNo() {
+		return alpNo;
+	}
+
+	public void setAlpNo(String alpNo) {
+		this.alpNo = alpNo;
+	}
+
+	public String getFromStartDate() {
+		return fromStartDate;
+	}
+
+	public void setFromStartDate(String fromStartDate) {
+		this.fromStartDate = fromStartDate;
+	}
+
+	public String getToStartDate() {
+		return toStartDate;
+	}
+
+	public void setToStartDate(String toStartDate) {
+		this.toStartDate = toStartDate;
+	}
+
+	public boolean isHigriMode() {
+		return higriMode;
+	}
+
+	public void setHigriMode(boolean higriMode) {
+		this.higriMode = higriMode;
+	}
+
+	public Date getFromStartDateG() {
+		return fromStartDateG;
+	}
+
+	public void setFromStartDateG(Date fromStartDateG) {
+		this.fromStartDateG = fromStartDateG;
+	}
+
+	public Date getToStartDateG() {
+		return toStartDateG;
+	}
+
+	public void setToStartDateG(Date toStartDateG) {
+		this.toStartDateG = toStartDateG;
+	}
+
+	public List<LicActivityTypeRy> getActivityList() {
+		return activityList;
+	}
+
+	public void setActivityList(List<LicActivityTypeRy> activityList) {
+		this.activityList = activityList;
 	}
 }

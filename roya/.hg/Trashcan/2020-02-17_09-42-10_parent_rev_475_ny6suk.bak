@@ -1,0 +1,74 @@
+diff --git a/src/com/bkeryah/entities/investment/ContractsFees.java b/src/com/bkeryah/entities/investment/ContractsFees.java
+--- a/src/com/bkeryah/entities/investment/ContractsFees.java
++++ b/src/com/bkeryah/entities/investment/ContractsFees.java
+@@ -49,6 +49,9 @@
+ 	@Transient
+ 	private boolean delete = false;
+ 
++	@Transient
++	private String oldFactId;// 
++	
+ 	public Integer getId() {
+ 		return id;
+ 	}
+@@ -165,4 +168,12 @@
+ 		this.delete = delete;
+ 	}
+ 
++	public String getOldFactId() {
++		return oldFactId;
++	}
++
++	public void setOldFactId(String oldFactId) {
++		this.oldFactId = oldFactId;
++	}
++
+ }
+\ No newline at end of file
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -379,6 +379,7 @@
+ 		oldDiscountDuration = 0;
+ 		updateFeesRenewableState(-1);
+ 		for (ContractsFees fees : contractsFeesList) {
++			fees.setOldFactId(fees.getFactId());
+ 			if (fees.getDiscountduration() != null)
+ 				oldDiscountDuration += fees.getDiscountduration();
+ 		}
+@@ -725,6 +726,10 @@
+ 	}
+ 
+ 	public void checkedFeesIncremint(ContractsFees contFees) {
+-
++		if(contFees.isCheckfees()){
++			checkedFees++;
++		}else{
++			checkedFees--;
++		}
+ 		if (contFees.getStatus().equals(2)) {
+ 			if (contFees.isCheckfees() && contFees.getStatus().equals(2)) {
+@@ -729,5 +734,5 @@
+ 		if (contFees.getStatus().equals(2)) {
+ 			if (contFees.isCheckfees() && contFees.getStatus().equals(2)) {
+-				checkedFees++;
++				//checkedFees++;
+ 				renewBill = true;
+ 			} else {
+@@ -732,6 +737,6 @@
+ 				renewBill = true;
+ 			} else {
+-				checkedFees--;
++				//checkedFees--;
+ 				renewBill = false;
+ 			}
+ 		}
+@@ -1185,7 +1190,7 @@
+ 	}
+ 
+ 	public void updateFeesObject(ContractsFees feeaItem) {
+-		dataAccessService.updateObject(feeaItem);
++		dataAccessService.updateContrFee(feeaItem);
+ 
+ 	}
+ 

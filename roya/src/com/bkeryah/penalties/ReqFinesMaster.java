@@ -29,7 +29,7 @@ public class ReqFinesMaster {
 	private String fDeptNo;
 	@Column(name = "F_NAME")
 	private String fName;
-	//رقم السجل المدني
+	// رقم السجل المدني
 	@Column(name = "F_ID_NO")
 	private String fIdNo;
 	@Column(name = "F_ID_ISSUE_DATE")
@@ -82,41 +82,44 @@ public class ReqFinesMaster {
 	private String mgrDependDate;
 	@Column(name = "MGR_DEPEND_ID")
 	private Long mgrDependId;
-	
+
 	@Column(name = "STATUS")
 	private String status;
-	//0:normal penality, 1:from notification that need agreement
+	// 0:normal penality, 1:from notification that need agreement
 	@Column(name = "TYPE")
 	private Integer type;
-	@OneToMany(mappedBy = "reqFinesMaster", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "reqFinesMaster", fetch = FetchType.EAGER)
 	private List<ReqFinesDetails> reqFinesDetailsList;
-	//@Transient
+	// @Transient
 	@Formula("(select d.DEPT_NAME from WRK_DEPT d where d.id = F_DEPT_NO)")
 	private String deptName;
-	
+
 	@Formula("(select u.EMPNAME from ARC_USERS u where u.user_id = F_SUPERVISOR_CODE)")
 	private String supervisorNameView;
-	
+
 	@Formula("(select u.MHL_ID from lic_trd_master_file u where u.LIC_NO = F_LICENCE_NO)")
 	private String mahlId;
-	
+
 	@Formula("(select u.NAME from LIC_ACTIVITY_TYPE_RY u where u.ID = ACTIVITY_TYPE)")
-	private String activityName	;
-	
+	private String activityName;
+
 	@Transient
 	private String supervisorName;
 	@Transient
 	private Double totalValue;
-	
+
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
-	
+
 	@Column(name = "NOTIFY_DATE")
 	private Date notifyDate;
-	
+
 	@Column(name = "NOTIFY_MASTER_ID")
 	private Integer notifyMasterId;
-	
+
+	@Transient
+	private double fineAmount;
+
 	public Integer getFineNo() {
 		return fineNo;
 	}
@@ -383,8 +386,8 @@ public class ReqFinesMaster {
 
 	public Double getTotalValue() {
 		double sum = 0;
-		if(reqFinesDetailsList != null){
-			for(ReqFinesDetails det : reqFinesDetailsList)
+		if (reqFinesDetailsList != null) {
+			for (ReqFinesDetails det : reqFinesDetailsList)
 				sum += det.getFineTotalValue();
 		}
 		return sum;
@@ -426,7 +429,6 @@ public class ReqFinesMaster {
 		this.mahlId = mahlId;
 	}
 
-	
 	public String getStatus() {
 		return status;
 	}
@@ -457,6 +459,14 @@ public class ReqFinesMaster {
 
 	public void setActivityName(String activityName) {
 		this.activityName = activityName;
+	}
+
+	public double getFineAmount() {
+		return fineAmount;
+	}
+
+	public void setFineAmount(double fineAmount) {
+		this.fineAmount = fineAmount;
 	}
 
 }

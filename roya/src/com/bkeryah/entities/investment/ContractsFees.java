@@ -46,6 +46,13 @@ public class ContractsFees {
 	private boolean checkfees;
 	@Transient
 	private boolean canRenew = true;
+	@Transient
+	private boolean delete = false;
+
+	@Transient
+	private String oldFactId;//
+	@Transient
+	private Integer countOfRows;//
 
 	public Integer getId() {
 		return id;
@@ -153,6 +160,30 @@ public class ContractsFees {
 
 	public void setCanRenew(boolean canRenew) {
 		this.canRenew = canRenew;
+	}
+
+	public boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
+	}
+
+	public String getOldFactId() {
+		return oldFactId;
+	}
+
+	public void setOldFactId(String oldFactId) {
+		this.oldFactId = oldFactId;
+	}
+
+	public Integer getCountOfRows() {
+		return countOfRows;
+	}
+
+	public void setCountOfRows(Integer countOfRows) {
+		this.countOfRows = countOfRows;
 	}
 
 }

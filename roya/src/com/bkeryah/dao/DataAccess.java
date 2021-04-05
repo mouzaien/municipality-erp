@@ -52,8 +52,8 @@ import com.bkeryah.entities.HrsUserAbsent;
 import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
-import com.bkeryah.entities.TransferOwnershipDetails;
 import com.bkeryah.entities.investment.ContractDirect;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fuel.entities.Car;
@@ -612,7 +612,7 @@ public interface DataAccess {
 
 	List<Article> getArticlesByUserIdWithoutCars(Integer userId);
 
-	List<Article> get3ohadByUserId(Integer userId);
+	List<Article> get3ohadByUserId(Integer userId, Integer deptId);
 
 	public List<StoreTemporeryReceiptMaster> searchTempReceipts(String beginDate, String finishDate, Integer strNo);
 
@@ -626,12 +626,13 @@ public interface DataAccess {
 			Integer contractStatusFilter);
 
 	public List<PayLicBills> loadBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus, Integer bandId);
+			Long phoneNumber, Integer billStatus, Integer bandId ,Integer employerId);
 
 	public List<RealEstate> loadAllUnusedRealEstatesList();
 
-	public Integer getContractPayedStatus(Integer contractId);
+	public List<ContractsFees> getContractPayedStatus(Integer contractId);
 
-	
+	public List<ReqFinesMaster> loadListPenalities(String fineStatus, Integer fineTradeType, Integer fineSadad,
+			String licNo, String alpNo, String fromStartDate, String toStartDate , String deptId);
 
 }

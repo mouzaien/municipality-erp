@@ -1,0 +1,70 @@
+diff --git a/src/com/bkeryah/dao/CommonDao.java b/src/com/bkeryah/dao/CommonDao.java
+--- a/src/com/bkeryah/dao/CommonDao.java
++++ b/src/com/bkeryah/dao/CommonDao.java
+@@ -5159,6 +5159,7 @@
+ 		List<ContractsFees> list = new ArrayList<ContractsFees>();
+ 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+ 		criteria.add(Restrictions.eq("contractId", contractId));
++		criteria.addOrder(Order.asc("id"));
+ 		list = criteria.list();
+ 		return list;
+ 	}
+@@ -5271,4 +5272,21 @@
+ 		return list;
+ 	}
+ 
++	@Override
++	@Transactional
++	public PayLicBills getContInvBill(ContractsFees contrFee) {
++		try {
++			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
++			criteria.add(Restrictions.eq("licenceNumber", contrFee.getContractId()));
++			criteria.add(Restrictions.eq("licenceType", "I"));
++			criteria.add(Restrictions.eq("billNumber", contrFee.getOldFactId()));
++			List list = criteria.list();
++			if (list != null && list.size() > 0)
++				return (PayLicBills) list.get(0);
++			else
++				return null;
++		} catch (Exception ex) {
++			return null;
++		}
++	}
+ }
+diff --git a/src/com/bkeryah/dao/ICommonDao.java b/src/com/bkeryah/dao/ICommonDao.java
+--- a/src/com/bkeryah/dao/ICommonDao.java
++++ b/src/com/bkeryah/dao/ICommonDao.java
+@@ -1193,4 +1193,6 @@
+ 	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo);
+ 
+ 	public List<User> getAllEmployeesByManager(Integer managerId);
++
++	PayLicBills getContInvBill(ContractsFees contrFee);
+ }
+diff --git a/src/com/bkeryah/entities/investment/ContractsFees.java b/src/com/bkeryah/entities/investment/ContractsFees.java
+--- a/src/com/bkeryah/entities/investment/ContractsFees.java
++++ b/src/com/bkeryah/entities/investment/ContractsFees.java
+@@ -49,6 +49,9 @@
+ 	@Transient
+ 	private boolean delete = false;
+ 
++	@Transient
++	private String oldFactId;// 
++	
+ 	public Integer getId() {
+ 		return id;
+ 	}
+@@ -165,4 +168,12 @@
+ 		this.delete = delete;
+ 	}
+ 
++	public String getOldFactId() {
++		return oldFactId;
++	}
++
++	public void setOldFactId(String oldFactId) {
++		this.oldFactId = oldFactId;
++	}
++
+ }
+\ No newline at end of file

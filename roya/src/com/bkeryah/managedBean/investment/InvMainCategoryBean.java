@@ -40,7 +40,7 @@ public class InvMainCategoryBean implements Serializable {
 
 	public void saveMainCategory() {
 		try {
-			if (mainCategory != null) {
+			if (mainCategory != null && mainCategory.getName() != null && mainCategory.getName().trim().length() > 2) {
 				dataAccessService.save(mainCategory);
 				contractMainCategoryList = dataAccessService.loadAllContractMainCategory();
 				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));

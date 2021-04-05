@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+
+	<!-- 	<f:metadata> -->
+	<!-- 		<f:viewAction action="#{contractDirectBean.contractMessagerInit}" /> -->
+	<!-- 	</f:metadata> -->
+</h:head>
+<f:view>
+
+	<h:body>
+
+		<ui:composition template="/template.xhtml">
+			<p:growl autoUpdate="true" showDetail="false" />
+
+			<ui:define name="content">
+				<h:form id="includeform">
+					<p:messages autoUpdate="true" closable="true"></p:messages>
+					<p:growl autoUpdate="true"></p:growl>
+					<div class="card card-w-title" dir="rtl">
+						<h1 style="color: #7CB342; text-align: center">
+							رسائل العقود<span class="fa fa-fw fa-file-text-o"></span>
+						</h1>
+						<br />
+						<p:dataTable var="msgItem" id="allmsgdt"
+							widgetVar="ContractsMSGTable"
+							value="#{contractMessageBean.contractMsgList}"
+							emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							filteredValue="#{contractMessageBean.filterContractMsgList}"
+							paginator="true" rows="10">
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="ابحث فى كل الحقول:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('ContractsMSGTable').filter()" style="width:150px"
+										placeholder="كلمة البحث">
+									</p:inputText>
+								</p:outputPanel>
+							</f:facet>
+							<p:column headerText="الرقم التسلسلي"
+								style="width:5%; text-align:center;">
+								<h:outputLabel value="#{rowIndex+1}" />
+							</p:column>
+							<p:column id="idcol" headerText="رقم العقد" sortable="true"
+								filterBy="#{msgItem.contractId}" filterMatchMode="contains"
+								width="7%" style="text-align: center;">
+								<h:outputText value="#{msgItem.contractId}"></h:outputText>
+							</p:column>
+							<p:column id="treadeRecordcol" headerText="رقم السجل"
+								sortable="true" filterBy="#{msgItem.treadeRecord}"
+								filterMatchMode="contains" width="7%"
+								style="text-align: center;">
+								<h:outputText value="#{msgItem.treadeRecord}"></h:outputText>
+							</p:column>
+							<p:column id="DateHcol" headerText="تاريخ الإرسال هجري"
+								sortable="true" filterBy="#{msgItem.sendDateH}"
+								filterMatchMode="contains" width="7%"
+								style="text-align: center;">
+								<h:outputText value="#{msgItem.sendDateH}"></h:outputText>
+							</p:column>
+							<p:column id="DateGcol" headerText="تاريخ الإرسال ميلادي"
+								sortable="true" filterBy="#{msgItem.sendDateG}"
+								filterMatchMode="contains" width="7%"
+								style="text-align: center;">
+								<h:outputText value="#{msgItem.sendDateG}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column id="phoneNocol" headerText="رقم الجوال" sortable="true"
+								filterBy="#{msgItem.phoneNo}" filterMatchMode="contains"
+								width="7%" style="text-align: center;">
+								<h:outputText value="#{msgItem.phoneNo}"></h:outputText>
+							</p:column>
+							<p:column id="billNocol" headerText="رقم الفاتورة"
+								sortable="true" filterBy="#{msgItem.billNo}"
+								filterMatchMode="contains" width="7%"
+								style="text-align: center;">
+								<h:outputText value="#{msgItem.billNo}"></h:outputText>
+							</p:column>
+							<p:column id="MSGcol" headerText="نص الرسالة" sortable="true"
+								filterBy="#{msgItem.messageTxt}" filterMatchMode="contains"
+								width="50%" style="text-align: center;">
+								<h:outputText value="#{msgItem.messageTxt}"></h:outputText>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

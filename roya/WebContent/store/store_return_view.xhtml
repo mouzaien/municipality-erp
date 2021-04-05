@@ -40,7 +40,7 @@
 				
 				<h:outputLabel styleClass="btxt" value="#{msg['explanation']}" />
 				<p:inputTextarea cols="30" rows="5" style="width:100%"
-					value="#{transferBean.wrkAppComment}">
+					value="#{storeReturnBean.wrkAppComment}">
 				</p:inputTextarea>
 			</p:panelGrid>
 			<br></br>
@@ -56,7 +56,7 @@
 				<!-- 	data-dismiss="modal">#{msg['back']}</button> -->
 				<p:commandButton value="#{msg['confirmation']}"
 					icon="ui-icon ui-icon-check" immediate="true"
-					action="#{transferBean.refuseAction}">
+					action="#{storeReturnBean.refuseAction}">
 					<f:ajax execute="refPopup"></f:ajax>
 				</p:commandButton>
 

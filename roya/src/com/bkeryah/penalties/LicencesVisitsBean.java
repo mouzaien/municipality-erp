@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.maven.wagon.providers.ssh.interactive.NullInteractiveUserInfo;
 import org.primefaces.event.RowEditEvent;
 
+import com.bkeryah.entities.Supervisor;
+import com.bkeryah.entities.VisitsSupervisor;
 import com.bkeryah.entities.licences.LicVisits;
 import com.bkeryah.entities.licences.LicVisitsTypes;
 import com.bkeryah.managedBean.reqfin.newReplaceFinBean;
@@ -44,10 +46,12 @@ public class LicencesVisitsBean {
 	private List<String> licencesIds = new ArrayList<>();
 	private List<String> licencesAddIds = new ArrayList<>();
 	private Date current;
-	private List<LicSection> licSectionList  = new ArrayList<>();;
-	private List<LicDepartment> licDepartmentList  = new ArrayList<>();;
+	private List<LicSection> licSectionList = new ArrayList<>();;
+	private List<LicDepartment> licDepartmentList = new ArrayList<>();;
 	private Integer sectionId;
 	private Integer deparmentId;
+	private List<Supervisor> supervisors;
+	private Integer supervisorId;
 
 	@PostConstruct
 	private void init() {
@@ -66,13 +70,14 @@ public class LicencesVisitsBean {
 		}
 		licVisits = dataAccessService.findAllLicVisits();
 		licSectionList = dataAccessService.gatAllLicSectionList();
-		
+		supervisors = dataAccessService.getAllSupervisors();
+
 	}
 
 	public String loadLics() {
-		//if(!(licDepartmentList.size()>0)){
-			licDepartmentList = dataAccessService.getAllLicDepartmentBySection(sectionId);
-		//}
+		// if(!(licDepartmentList.size()>0)){
+		licDepartmentList = dataAccessService.getAllLicDepartmentBySection(sectionId);
+		// }
 		if (sectionId != null && deparmentId != null) {
 			Visits = new ArrayList<LicVisits>();
 			licenceList = new ArrayList<>();
@@ -103,58 +108,82 @@ public class LicencesVisitsBean {
 
 	public String save() {
 		try {
-			if (visitId != null) {
-				LicVisitsTypes vt = (LicVisitsTypes) dataAccessService.findEntityById(LicVisitsTypes.class, visitId);
-				if (vt != null) {
-					String start = Utils.convertHijriDateToGregorian(beginDate);
-					SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-					current = format1.parse(start);
-					Visit.setgDate(current);
-					Visit.sethDate(beginDate);
-					Visit.setVisitId(visitId);
-					daysNo = vt.getDaysNo();
-					if (licencesAddIds != null) {
-						for (String id : licencesAddIds) {
-							Visit.setLicId(Integer.parseInt(id));
+			String start = Utils.convertHijriDateToGregorian(beginDate);
+			SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+			current = format1.parse(start);
+			if (supervisorId != null) {
+				if (licencesAddIds != null && licencesAddIds.size() > 0) {
+					for (String id : licencesAddIds) {
+						Visit.setgDate(current);
+						Visit.sethDate(beginDate);
+						Visit.setVisitId(visitId);
+						Visit.setLicId(Integer.parseInt(id));
+						Integer vId = dataAccessService.save(Visit);
+						VisitsSupervisor visSupAdd = new VisitsSupervisor();
+						visSupAdd.setVisitId(vId);
+						visSupAdd.setSupervisorId(supervisorId);
+						visSupAdd.setSectionId(sectionId);
+						dataAccessService.save(visSupAdd);
+						MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 
-							if (vt.getType().equals(0)) { // periodic
-								// convert start date to g and insert
-								checkVisits(Integer.parseInt(id));
-								Calendar calendar1 = Calendar.getInstance();
-								calendar1.setTime(current);
-								calendar1.add(Calendar.YEAR, 1);
-								Date end = calendar1.getTime();
-								while (current.before(end)) {
-									try {
-										dataAccessService.save(Visit);
-									} catch (Exception e) {
-										System.out.println(e.getMessage());
-										e.printStackTrace();
-									}
-									Calendar calendar = Calendar.getInstance();
-									calendar.setTime(current);
-									calendar.add(Calendar.DATE, daysNo);
-									current = calendar.getTime();
-									Visit.setgDate(current);
-									Visit.sethDate(Utils.grigDatesConvert(current));
-								}
-								MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-								//loadLics();
-							} else {
-								try {
-									dataAccessService.save(Visit);
-									MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-									//loadVisits();
-								} catch (Exception e) {
-									System.out.println(e.getMessage());
-									e.printStackTrace();
-								}
-							}
-
-						}
 					}
 				}
 			}
+			// } else {
+			//
+			// if (visitId != null) {
+			// LicVisitsTypes vt = (LicVisitsTypes)
+			// dataAccessService.findEntityById(LicVisitsTypes.class,
+			// visitId);
+			// if (vt != null) {
+			// Visit.setgDate(current);
+			// Visit.sethDate(beginDate);
+			// Visit.setVisitId(visitId);
+			// daysNo = vt.getDaysNo();
+			// if (licencesAddIds != null) {
+			// for (String id : licencesAddIds) {
+			// Visit.setLicId(Integer.parseInt(id));
+			//
+			// if (vt.getType().equals(0)) { // periodic
+			// // convert start date to g and insert
+			// checkVisits(Integer.parseInt(id));
+			// Calendar calendar1 = Calendar.getInstance();
+			// calendar1.setTime(current);
+			// calendar1.add(Calendar.YEAR, 1);
+			// Date end = calendar1.getTime();
+			// while (current.before(end)) {
+			// try {
+			// dataAccessService.save(Visit);
+			// } catch (Exception e) {
+			// System.out.println(e.getMessage());
+			// e.printStackTrace();
+			// }
+			// Calendar calendar = Calendar.getInstance();
+			// calendar.setTime(current);
+			// calendar.add(Calendar.DATE, daysNo);
+			// current = calendar.getTime();
+			// Visit.setgDate(current);
+			// Visit.sethDate(Utils.grigDatesConvert(current));
+			// }
+			// MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+			// // loadLics();
+			// } else {
+			// try {
+			// dataAccessService.save(Visit);
+			// MsgEntry.addAcceptFlashInfoMessage(
+			// Utils.loadMessagesFromFile("success.operation"));
+			// // loadVisits();
+			// } catch (Exception e) {
+			// System.out.println(e.getMessage());
+			// e.printStackTrace();
+			// }
+			// }
+			//
+			// }
+			// }
+			// }
+			// }
+			// }
 
 			if (licencesAddIds.size() > 0) {
 				loadVisits();
@@ -167,6 +196,7 @@ public class LicencesVisitsBean {
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 
 		}
+
 		return "";
 
 	}
@@ -389,6 +419,22 @@ public class LicencesVisitsBean {
 
 	public void setDeparmentId(Integer deparmentId) {
 		this.deparmentId = deparmentId;
+	}
+
+	public List<Supervisor> getSupervisors() {
+		return supervisors;
+	}
+
+	public void setSupervisors(List<Supervisor> supervisors) {
+		this.supervisors = supervisors;
+	}
+
+	public Integer getSupervisorId() {
+		return supervisorId;
+	}
+
+	public void setSupervisorId(Integer supervisorId) {
+		this.supervisorId = supervisorId;
 	}
 
 }

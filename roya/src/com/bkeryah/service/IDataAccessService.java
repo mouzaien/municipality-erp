@@ -49,6 +49,7 @@ import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
 import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
+import com.bkeryah.entities.investment.ContractMessage;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
@@ -1160,7 +1161,7 @@ public interface IDataAccessService {
 
 	public List<User> getAllUsers();
 
-	public List<ReqFinesMaster> loadAllPenalities(String notification);
+	public List<ReqFinesMaster> loadAllPenalities(String notification ,Integer deptId);
 
 	List<ReqFinesSetup> getCodesFines();
 
@@ -1579,7 +1580,7 @@ public interface IDataAccessService {
 	public List<ContractDirect> loadAllContractDirects(Integer contractTypeId);
 
 	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber);
+			Integer billBandNumber, String bayan);
 
 	public List<FuelSupply> loadAllFuelSupplies();
 
@@ -1830,7 +1831,7 @@ public interface IDataAccessService {
 
 	TransferOwnership findTransferOwnershipByArchRecordId(Integer recordId);
 
-	Integer addTransferOnwerShipItems(TransferOwnership saveTransfer , List<TransferOwnershipModel> transModelList);
+	Integer addTransferOnwerShipItems(TransferOwnership saveTransfer, List<TransferOwnershipModel> transModelList);
 
 	List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo);
 
@@ -1844,7 +1845,7 @@ public interface IDataAccessService {
 
 	List<SysProperties> getDeansIdInSysProperties();
 
-	List<Article> find3ohadByUserId(Integer userId);
+	List<Article> find3ohadByUserId(Integer userId, Integer deptId);
 
 	// thapet
 	List<Sys035> loadAllJobRec();
@@ -1987,25 +1988,24 @@ public interface IDataAccessService {
 
 	public void contractsFeesList(List<ContractsFees> contractsFeesList);
 
-	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber);
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber,
+			String bayan);
 
 	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber);
+			Integer billBandNumber, String bayan);
 
 	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
 			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus);
 
 	public List<Amana> getAllLicAmanaList();
 
-	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber);
-
 	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
 
 	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus, Integer bandId);
+			Long phoneNumber, Integer billStatus, Integer bandId , Integer employerId);
 
-	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect);
+	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect,
+			Integer billBandNumber, String bayan);
 
 	public PayLicBills getBillById(Integer billNumber);
 
@@ -2021,7 +2021,37 @@ public interface IDataAccessService {
 	void refuseStoreTemporeryReceipt(WrkApplicationId wrkId, Integer recordId, StoreTemporeryReceiptMaster memoR,
 			String wrkAppComment, int applicationPurpose);
 
-	public Integer getContractPayedStatus(Integer contractId);
+	public List<ContractsFees> getContractPayedStatus(Integer contractId);
 
 	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer id);
+
+	public List<TransferOwnership> loadAllTransferOwners();
+
+	public List<ReturnStore> loadAllReturnStore();
+
+	public List<ReturnStore> loadAllReturnStoreByEmpId(Integer empId, Integer strNo);
+
+	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo);
+
+	public List<User> getAllEmployeesByManager(Integer managerId);
+
+	public void refuseReturnStore(WrkApplicationId wrkId, Integer recordId, ReturnStore returnStore,
+			String wrkAppComment, int applicationPurpose);
+
+	public void updateContractFessList(List<ContractsFees> feesList);
+
+	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList);
+
+	public void deleteFeesList(List<ContractsFees> fessList);
+
+	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
+	public void updateContrFee(ContractsFees contrFee);
+
+	public List<ReqFinesMaster> loadListPenalities(String fineStatus, Integer fineTradeType, Integer fineSadad,
+			String licNo, String alpNo, String fromStartDate, String toStartDate, String deptId);
+
+	public void deleteContractDirect(ContractDirect contractDirect);
+
+	public List<ContractMessage> getAllContractMessagesList();
 }

@@ -108,6 +108,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private boolean canSave;
 	private Integer selectedItemId;
 	private List<User> employersList;
+	private List<User> employers;
 	private List<UserContactClass> listOfEmpsInDept;
 	@ManagedProperty(value = "#{stockServiceDao}")
 	private IStockServiceDao stockServiceDao;
@@ -119,6 +120,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 	private WhsWarehouses wrHouse = new WhsWarehouses();
 	private boolean serialPrintFlag;
 	private Integer status;
+	private boolean showForDept = false;
 
 	@PostConstruct
 	public void init() {
@@ -238,8 +240,14 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			request.setArcUser(user);
 
 		} else {
+			request.setForDept(1);
+			employers = new ArrayList<>();
+			employers = dataAccessService.getAllEmployeesByManager(currentUser.getUserId());
+			if (employers != null && employers.size() > 0) {
+				// for dept 3ohad
 
-			// articleList = dataAccessService.getAllArticles();
+				showForDept = true;
+			}
 
 		}
 		if (request.getSerialNumber() != null) {
@@ -356,6 +364,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		if (exchangeRequestDetails.size() > 0) {
 
 			try {
+				if (request.getForDept() == 2) {
+					request.setDeptId(currentUser.getDeptId());
+				}
 				exchangeRequestId = dataAccessService.addExchangeRequest(request, currentUser.getUserId(),
 						exchangeRequestDetails);
 				request = new ExchangeRequest();
@@ -365,10 +376,11 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 			} catch (Exception e) {
 				MsgEntry.addErrorMessage("خطا فى تنفيذ العملية");
 				e.printStackTrace();
-
+				return "";
 			}
 		} else {
 			MsgEntry.addErrorMessage("من فضلك اضف على الاقل واحد صنف");
+			return "";
 		}
 		return "mails";
 		// }
@@ -383,7 +395,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 						(warehouseManager) ? notes : null);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return "";
 			}
 			return "mails";
 		} else {
@@ -405,7 +417,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 					Integer.parseInt(dataAccessService.getPropertiesValueById(MyConstants.WAREHOUSE_MANAGER)), notes);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return "";
 		}
 
 		return "mails";
@@ -420,7 +432,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return "";
 		}
 
 		return "mails";
@@ -448,7 +460,7 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return "";
 			}
 
 			return "mails";
@@ -898,6 +910,9 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 		if (strNo == null) {
 			parameters.put("STRNO", -1);
 		}
+		parameters.put("masterId", -1);
+		parameters.put("forDept", 1);
+		parameters.put("mngDeptId", -1);
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 
@@ -1453,6 +1468,22 @@ public class ExchangeRequestBean extends ArcScenarioManager {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public List<User> getEmployers() {
+		return employers;
+	}
+
+	public void setEmployers(List<User> employers) {
+		this.employers = employers;
+	}
+
+	public boolean isShowForDept() {
+		return showForDept;
+	}
+
+	public void setShowForDept(boolean showForDept) {
+		this.showForDept = showForDept;
 	}
 
 }

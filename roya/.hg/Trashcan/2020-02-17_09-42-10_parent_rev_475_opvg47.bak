@@ -1,0 +1,33 @@
+diff --git a/src/com/bkeryah/dao/CommonDao.java b/src/com/bkeryah/dao/CommonDao.java
+--- a/src/com/bkeryah/dao/CommonDao.java
++++ b/src/com/bkeryah/dao/CommonDao.java
+@@ -5159,6 +5159,7 @@
+ 		List<ContractsFees> list = new ArrayList<ContractsFees>();
+ 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+ 		criteria.add(Restrictions.eq("contractId", contractId));
++		criteria.addOrder(Order.asc("id"));
+ 		list = criteria.list();
+ 		return list;
+ 	}
+@@ -5271,4 +5272,21 @@
+ 		return list;
+ 	}
+ 
++	@Override
++	@Transactional
++	public PayLicBills getContInvBill(ContractsFees contrFee) {
++		try {
++			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
++			criteria.add(Restrictions.eq("licenceNumber", contrFee.getContractId()));
++			criteria.add(Restrictions.eq("licenceType", "I"));
++			criteria.add(Restrictions.eq("billNumber", contrFee.getOldFactId()));
++			List list = criteria.list();
++			if (list != null && list.size() > 0)
++				return (PayLicBills) list.get(0);
++			else
++				return null;
++		} catch (Exception ex) {
++			return null;
++		}
++	}
+ }

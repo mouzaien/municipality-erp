@@ -27,7 +27,7 @@
 					</p:commandButton>
 					<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
 						onclick="this.form.target='_blank'" ajax="false"
-						action="#{penaltyViewBean.printPenalty}"
+						action="#{penaltyViewBean.printPenalty}" immediate="true"
 						rendered="#{(penaltyViewBean.enablePrint)}"
 						styleClass="purple-btn">
 					</p:commandButton>
@@ -130,71 +130,215 @@
 			</div>
 			<br />
 			<hr />
-			<div class="col-lg-12">
+			<div align="left" class="image-box-footer">
+				<p:commandButton value="اضافة" id="save" process="@this"
+					immediate="true" styleClass="cyan-btn"
+					rendered="#{penaltyViewBean.hideAddBtn}"
+					onclick="PF('print-barcode-dlg').show()" icon="ui-icon-add">
+				</p:commandButton>
+			</div>
+			<p:dialog widgetVar="print-barcode-dlg" id="confirmSigndialog"
+				width="70%" hideEffect="fade" showEffect="explode" dir="rtl"
+				modal="true" resizable="false">
+				<h:panelGroup id="png">
+					<p:fieldset width="100%" legend="بيانات المخالفة">
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="نوع المخالفة" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneMenu style=" width:90%" autoWidth="false"
+									requiredMessage="يجب اختيار نوع المخالفة" id="fineIdB"
+									converter="fineConverter" filter="true"
+									filterMatchMode="contains" required="true"
+									value="#{penaltyViewBean.selectedCodeFiner}">
+									<p:ajax process="@this"
+										update="includeform:min includeform:max" />
+									<f:selectItem itemLabel="أختر  نوع المخالفة"
+										noSelectionOption="true" />
+									<f:selectItems value="#{penaltyViewBean.codesFines}"
+										var="finer"
+										itemLabel="#{finer.fineCode} - #{finer.fineAction}"
+										itemValue="#{finer}"></f:selectItems>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="#{msg['finesetup.min']}" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel id="min"
+									value="#{penaltyViewBean.selectedCodeFiner.fineMinimumValue}"
+									style="width:100%" />
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="#{msg['finesetup.max']}" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel id="max"
+									value="#{penaltyViewBean.selectedCodeFiner.fineSupermumValue}"
+									style="width:100%" />
+							</div>
+						</div>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="تكرار العقوبة" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneRadio style="width:100%; " columns="1" layout="grid"
+									value="#{penaltyViewBean.selectedCodeFiner.repeat}">
+									<f:selectItem itemLabel="غير مكرر" itemValue="0" />
+									<f:selectItem itemLabel="مكرر" itemValue="1" />
+									<f:ajax execute="@this"></f:ajax>
+								</p:selectOneRadio>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="حد العقوبة" />
+							</div>
+							<div class="ui-g-3">
 
-				<div style="color: color: #428bca">
-					<h1 style="color: #7CB342; text-align: center;">قائمة
-						المخالفات</h1>
+								<p:selectOneRadio style="width:100%;" columns="1" layout="grid"
+									value="#{penaltyViewBean.selectedCodeFiner.typeValue}">
+									<f:selectItem itemLabel="حد ادني" itemValue="0" />
+									<f:selectItem itemLabel="حد اعلى" itemValue="1" />
+									<f:ajax execute="@this"></f:ajax>
+								</p:selectOneRadio>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="السبب" />
+							</div>
+							<div class="ui-g-3">
+								<p:inputTextarea style="width:100%;"
+									value="#{penaltyViewBean.selectedCodeFiner.notes}"
+									required="true" requiredMessage="السبب مطلوب">
+									<p:ajax process="@this" />
+								</p:inputTextarea>
+							</div>
+
+						</div>
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-1">
+								<h:outputLabel value="العدد" />
+							</div>
+							<div class="ui-g-3">
+								<p:inputText
+									value="#{penaltyViewBean.selectedCodeFiner.fineNbr}"
+									required="true" requiredMessage="العدد مطلوب">
+									<p:ajax event="blur" process="@this"
+										update="includeform:sumId1"
+										listener="#{penaltyViewBean.calcFineValuesSum}" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="القيمة" />
+							</div>
+							<div class="ui-g-2">
+								<p:inputText
+									value="#{penaltyViewBean.selectedCodeFiner.fineValue}"
+									required="true" requiredMessage="القيمة مطلوب">
+									<p:ajax event="blur" process="@this"
+										listener="#{penaltyViewBean.calcFineValuesSum}"
+										update="includeform:sumId1" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1">
+								<h:outputLabel value="المجموع" />
+							</div>
+							<div class="ui-g-2">
+								<h:outputLabel id="sumId1"
+									value="#{penaltyViewBean.selectedCodeFiner.fineValSum}"
+									style="width:100%" />
+							</div>
+						</div>
+					</p:fieldset>
+				</h:panelGroup>
+				<div style="float: left;">
+					<p:commandButton value="#{msg['add']}" process="confirmSigndialog"
+						action="#{penaltyViewBean.addCodeFiner}"
+						update="confirmSigndialog inboxdt">
+					</p:commandButton>
+					<!-- 						actionListener="#{penaltiesBean.addpenalty}" -->
+					<p:spacer width="10" height="10"></p:spacer>
+					<p:commandButton value="#{msg['close']}" immediate="true"
+						icon="ui-icon ui-icon-keyboard-arrow-left"
+						styleClass=" orange-btn" onclick="PF('print-barcode-dlg').hide()">
+					</p:commandButton>
 				</div>
-				<p:dataTable var="penaltyItem" id="inboxdt"
-					value="#{penaltyViewBean.finesMaster.reqFinesDetailsList}"
-					emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
-					paginatorPosition="bottom"
-					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					filteredValue="#{penaltyBean.filteredArcPeoples}" paginator="true"
-					rows="17">
+			</p:dialog>
 
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="ابحث فى كل الحقول:" />
-							<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
-								style="width:150px" placeholder="كلمة البحث">
-							</p:inputText>
-						</p:outputPanel>
-					</f:facet>
+			<div style="color: color: #428bca">
+				<h1 style="color: #7CB342; text-align: center;">قائمة المخالفات</h1>
+			</div>
+			<p:dataTable var="penaltyItem" id="inboxdt"
+				value="#{penaltyViewBean.finesMaster.reqFinesDetailsList}"
+				emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+				paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				filteredValue="#{penaltyBean.filteredArcPeoples}" paginator="true"
+				rows="17">
 
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الرقم" width="5%" filterBy="#{penaltyItem.id}"
-						filterMatchMode="contains">										
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="ابحث فى كل الحقول:" />
+						<p:inputText id="globalFilter" onkeyup="PF('cellemp').filter()"
+							style="width:150px" placeholder="كلمة البحث">
+						</p:inputText>
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="الرقم" width="5%" filterBy="#{penaltyItem.id}"
+					filterMatchMode="contains">										
 										#{rowIndex + 1} 									
 									    </p:column>
-					<p:column style="text-align: center;"
-						headerText="نوع المخالفة" width="30%">
-						<h:outputLabel value="#{penaltyItem.reqFinesSetup.fineAction}"
-							id="lblFiner" style="width:100% !important;">
-						</h:outputLabel>
-					</p:column>
+				<p:column style="text-align: center;" headerText="نوع المخالفة"
+					width="30%">
+					<h:outputLabel
+						value="#{penaltyItem.reqFinesSetup.fineAction} - #{penaltyItem.reqFinesSetup.fineCode}"
+						id="lblFiner" style="width:100% !important;">
+					</h:outputLabel>
+				</p:column>
 
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الحد الأدنى" width="8%">#{penaltyItem.reqFinesSetup.fineMinimumValue}</p:column>
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="الحد الأعلى" width="8%">#{penaltyItem.reqFinesSetup.fineSupermumValue}</p:column>
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="العدد" width="5%">
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="الحد الأدنى" width="8%">#{penaltyItem.reqFinesSetup.fineMinimumValue}</p:column>
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="الحد الأعلى" width="8%">#{penaltyItem.reqFinesSetup.fineSupermumValue}</p:column>
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="العدد" width="5%">
 											#{penaltyItem.fineCount}						
 										</p:column>
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="القيمة" width="10%">
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="القيمة" width="10%">
 											#{penaltyItem.fineValue}
 										</p:column>
-					<p:column style="white-space: nowrap;text-align: center;"
-						headerText="المجموع" width="10%">
-						<h:outputLabel value="#{penaltyItem.fineTotalValue}" />
-					</p:column>
+				<p:column style="white-space: nowrap;text-align: center;"
+					headerText="المجموع" width="10%">
+					<h:outputLabel value="#{penaltyItem.fineTotalValue}" />
+				</p:column>
 
-					<p:column style="text-align: center;" headerText="التكرار"
-						width="8%">
-						<h:outputLabel
-							value="#{penaltyItem.repeat == 1 ? 'مكرر' : 'غير مكرر'}" />
-					</p:column>
+				<p:column style="text-align: center;" headerText="التكرار"
+					width="8%">
+					<h:outputLabel
+						value="#{penaltyItem.repeat == 1 ? 'مكرر' : 'غير مكرر'}" />
+				</p:column>
 
-					<p:column style="text-align: center;" headerText="الملاحظات"
-						width="16%">
-						<h:outputLabel value="#{penaltyItem.fineDesc2}" />
-					</p:column>
+				<p:column style="text-align: center;" headerText="الملاحظات"
+					width="16%">
+					<h:outputLabel value="#{penaltyItem.fineDesc2}" />
+				</p:column>
+				<p:column style="text-align: center;" headerText="حذف" width="5%"
+					rendered="#{penaltyViewBean.hideAddBtn}">
+					<div class="image-box-footer">
+						<p:commandButton icon="ui-icon ui-icon-remove" immediate="true"
+							update="inboxdt" styleClass="red-btn"
+							rendered="#{penaltyViewBean.hideAddBtn}"
+							action="#{penaltyViewBean.deleteFiner(penaltyItem)}">
+						</p:commandButton>
+					</div>
+				</p:column>
+			</p:dataTable>
 
-				</p:dataTable>
-			</div>
 			<p:dialog header="#{msg['add.explanation.confirmation']}"
 				widgetVar="dlgRefuse" height="300" width="500">
 

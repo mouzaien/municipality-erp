@@ -31,9 +31,26 @@
 				<h1 style="color: #7CB342; float: unset; text-align: center;">
 					العهد <span class="ui-icon ui-icon-store"></span>
 				</h1>
-
 				<br />
-
+				<div class="ui-g">
+					<div class="ui-g-1 ui-md-6 ui-lg-1">
+						<p:outputLabel value="نوع العهد "
+							rendered="#{el3ohadBean.showForDept}"></p:outputLabel>
+					</div>
+					<div class="ui-g-2 ui-md-3 ui-lg-2">
+						<p:selectOneRadio id="console"
+							rendered="#{el3ohadBean.showForDept}"
+							value="#{el3ohadBean.forDept}">
+							<f:selectItem itemLabel="شخصي" itemValue="1" />
+							<f:selectItem itemLabel="للقسم" itemValue="2" />
+							<p:ajax process="@this" listener="#{el3ohadBean.filter}"
+								update="arts"></p:ajax>
+						</p:selectOneRadio>
+					</div>
+				</div>
+				
+				<br />
+				<br />
 				<p:dataTable id="arts" var="article"
 					value="#{el3ohadBean.articleList}" widgetVar="cellemp" rows="10"
 					paginator="true" paginatorPosition="bottom" dir="rtl"
@@ -87,8 +104,8 @@
 							styleClass="purple-btn" onclick="this.form.target='_blank'"
 							immediate="true"
 							action="#{el3ohadBean.printProtectionCardOneArt}">
-							<f:setPropertyActionListener value="#{article.id}"
-								target="#{el3ohadBean.artId}" />
+							<f:setPropertyActionListener value="#{article}"
+								target="#{el3ohadBean.art}" />
 						</p:commandButton>
 						<!-- 							<p:remoteCommand name="rc" onsuccess="this.form.target='_blank'" -->
 						<!-- 								action="#{el3ohadBean.printProtectionCardOneArt}" /> -->

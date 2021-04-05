@@ -129,6 +129,11 @@
 									<p:menuitem id="menu8_Service" value="صرف مواد"
 										action="#{mainManagedBean.exchangeRequestNavi}"></p:menuitem>
 									<p:menuitem id="el3ohad" value="العهد" action="el3ohad" />
+
+									<p:menuitem value="استعلام المناقلة " action="searchTransfer"
+										icon="fa fa-fw fa-search-plus" />
+									<p:menuitem value="استعلام الارجاع" action="searchReturnStore"
+										icon="fa fa-fw fa-search-plus" />
 								</p:submenu>
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_HR">
@@ -244,11 +249,33 @@
 
 											<p:menuitem id="st_sm_art" value="الاصناف"
 												action="search_article" icon="fa fa-fw fa-search-plus" />
+											<p:menuitem value="المناقلة" action="searchTransfer"
+												icon="fa fa-fw fa-search-plus" />
+											<p:menuitem value="الارجاع" action="searchReturnStore"
+												icon="fa fa-fw fa-search-plus" />
 										</p:submenu>
 
 									</secc:authorize>
 								</p:submenu>
 							</secc:authorize>
+							<secc:authorize ifAnyGranted="ROLE_SUPPORT, ROLE_FINES">
+								<p:submenu  label="المخالفات"
+									icon="ui-icon ui-icon-security">
+									<p:menuitem  value="الرخص"
+										action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
+
+									<p:menuitem value="#{msg['fines']}" action="penalty_setup"
+										icon="fa fa-fw fa-leanpub" />
+
+									<p:menuitem value="مخالفة جديدة" action="penalty"
+										icon="fa fa-fw fa-file-text-o" />
+
+									<p:menuitem value="عرض العقوبات" action="searchPenalities"
+										icon="fa fa-fw fa-file-text" />
+
+								</p:submenu>
+							</secc:authorize>
+
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT, ROLE_HEALTH">
 								<p:submenu id="sr_fines" label="الرقابة"
 									icon="ui-icon ui-icon-security">
@@ -263,7 +290,7 @@
 										icon="ui-icon ui-icon-pan-tool" />
 
 
-									<p:menuitem id="superV" value="توزيع الزيارت"
+									<p:menuitem id="superV" value="استعلام الزيارات"
 										action="visitsuper" icon="ui-icon ui-icon-pan-tool" />
 									<p:menuitem id="sb_health_certificate" value="الشهادات الصحية"
 										action="health_certificate" icon="ui-icon ui-icon-cheet" />
@@ -302,6 +329,8 @@
 											action="investors" icon="fa fa-fw fa-dollar" />
 										<p:menuitem id="sb_contract_direct" value="العقود"
 											action="contract_direct" icon="fa fa-fw fa-file-text-o" />
+										<p:menuitem id="sb_contract_message" value="إرشيف الرسائل"
+											action="contract_message" icon="fa fa-fw fa-file-text-o" />
 									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="sb_announcements" value="المزايدات"

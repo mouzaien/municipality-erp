@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -32,6 +33,7 @@ import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
 import com.bkeryah.managedBean.reqfin.newReplaceFinBean;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -70,6 +72,9 @@ public class TransferOwnershipBean {
 	private WrkApplicationId WrkId;
 	private List<TransferOwnershipDetails> tsOnDtls = new ArrayList<>();
 	private boolean allowSelect;
+	private List<WhsWarehouses> allWareHouses = new ArrayList<WhsWarehouses>();
+	private Integer strNo;
+	private List<User> employers;
 
 	@PostConstruct
 	public void init() {
@@ -77,7 +82,8 @@ public class TransferOwnershipBean {
 		transModelList = new ArrayList<TransferOwnershipModel>();
 		transOwnership = new TransferOwnership();
 		currentUser = Utils.findCurrentUser();
-		articleList = dataAccessService.getArticlesByUserIdWithoutCars(currentUser.getUserId());
+
+		setAllWareHouses(dataAccessService.getAllStores());
 		// employerId = currentUser.getUserId();
 		curUserName = currentUser.getEmployeeName();
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -116,8 +122,7 @@ public class TransferOwnershipBean {
 				tsOnDtls = dataAccessService.loadTransferOwnerDetails(transOwnership.getId());
 				for (TransferOwnershipDetails tsd : tsOnDtls) {
 					TransferOwnershipModel transM = new TransferOwnershipModel();
-					Article article = (Article) dataAccessService.findEntityById(Article.class,
-							tsd.getArticleId());
+					Article article = (Article) dataAccessService.findEntityById(Article.class, tsd.getArticleId());
 					transM.setArticleCode(tsd.getArticleCode());
 					transM.setArticleId(tsd.getArticleId());
 					transM.setArticleName(article.getName());
@@ -126,6 +131,10 @@ public class TransferOwnershipBean {
 					transM.setSerialNumber(tsd.getSerialNumber());
 					transM.setStrNo(tsd.getStrNo());
 					transM.setQty(tsd.getQty());
+					transM.setToUserId(transOwnership.getToUser());
+					transM.setToUserName(toUser.getEmployeeName());
+					transM.setFromUserId(transOwnership.getFromUser());
+					transM.setFromUserName(fromUser.getEmployeeName());
 					transModelList.add(transM);
 				}
 
@@ -153,6 +162,22 @@ public class TransferOwnershipBean {
 
 	public void loadEmpAssignedArticles(AjaxBehaviorEvent abe) {
 		// articleList = dataAccessService.getArticlesByUserId(employerId);
+	}
+
+	public void loadArticlesByStore() {
+		if (strNo != null) {
+			articleList = dataAccessService.getArticlesByUserIdWithoutCars(currentUser.getUserId());
+			employers = new ArrayList<>();
+			employers = dataAccessService.getAllEmployeesByManager(currentUser.getUserId());
+			if (employers != null && employers.size() > 0) {
+				// for dept 3ohad if user is manager
+				List<Article> articles = new ArrayList<>();
+				articles = dataAccessService.find3ohadByUserId(-1, currentUser.getDeptId());
+				articleList.addAll(articles);
+			}
+			articleList = articleList.stream().filter(i -> i.getStrNo() == strNo).collect(Collectors.toList());
+		}
+
 	}
 
 	public void allowAddBtn() {
@@ -269,7 +294,7 @@ public class TransferOwnershipBean {
 				// transSaveList.add(transSave);
 				dataAccessService.addTransferOnwerShipItems(transSave, transModelList);
 				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-				 return "mails";
+				return "mails";
 			} catch (Exception e) {
 				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 				e.printStackTrace();
@@ -534,5 +559,29 @@ public class TransferOwnershipBean {
 
 	public void setAllowSelect(boolean allowSelect) {
 		this.allowSelect = allowSelect;
+	}
+
+	public List<WhsWarehouses> getAllWareHouses() {
+		return allWareHouses;
+	}
+
+	public void setAllWareHouses(List<WhsWarehouses> allWareHouses) {
+		this.allWareHouses = allWareHouses;
+	}
+
+	public Integer getStrNo() {
+		return strNo;
+	}
+
+	public void setStrNo(Integer strNo) {
+		this.strNo = strNo;
+	}
+
+	public List<User> getEmployers() {
+		return employers;
+	}
+
+	public void setEmployers(List<User> employers) {
+		this.employers = employers;
 	}
 }

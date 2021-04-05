@@ -1,0 +1,21 @@
+diff --git a/src/com/bkeryah/service/IDataAccessService.java b/src/com/bkeryah/service/IDataAccessService.java
+--- a/src/com/bkeryah/service/IDataAccessService.java
++++ b/src/com/bkeryah/service/IDataAccessService.java
+@@ -1998,9 +1998,6 @@
+ 
+ 	public List<Amana> getAllLicAmanaList();
+ 
+-	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan);
+-
+ 	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+ 
+ 	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+@@ -2045,4 +2042,7 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList);
+ 
+ 	public void deleteFeesList(List<ContractsFees> fessList);
++
++	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
++			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
+ }

@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,6 +61,12 @@ public class TransferOwnership {
 	
 	@Column(name = "EXCH_MASTER_ID")
 	private Integer exchMasterId;
+	
+	@Formula("(select u.EMPNAME from ARC_USERS u where u.user_id=FROM_USER)")
+	private String employeeNameFrom;
+	
+	@Formula("(select u.EMPNAME from ARC_USERS u where u.user_id=TO_USER)")
+	private String employeeNameTo;
 	
 	@Transient
 	private String artName;
@@ -174,6 +181,22 @@ public class TransferOwnership {
 
 	public void setExchMasterId(Integer exchMasterId) {
 		this.exchMasterId = exchMasterId;
+	}
+
+	public String getEmployeeNameFrom() {
+		return employeeNameFrom;
+	}
+
+	public void setEmployeeNameFrom(String employeeNameFrom) {
+		this.employeeNameFrom = employeeNameFrom;
+	}
+
+	public String getEmployeeNameTo() {
+		return employeeNameTo;
+	}
+
+	public void setEmployeeNameTo(String employeeNameTo) {
+		this.employeeNameTo = employeeNameTo;
 	}
 
 }

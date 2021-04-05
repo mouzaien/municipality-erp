@@ -66,6 +66,7 @@ import com.bkeryah.entities.PayMaster;
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
 import com.bkeryah.entities.RecDepts;
+import com.bkeryah.entities.ReturnStore;
 import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptDetails;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
@@ -78,6 +79,7 @@ import com.bkeryah.entities.TechnicalResponse;
 import com.bkeryah.entities.TechnicalUsers;
 import com.bkeryah.entities.TenderItems;
 import com.bkeryah.entities.TradIssueType;
+import com.bkeryah.entities.TransferOwnership;
 import com.bkeryah.entities.TransferOwnershipDetails;
 import com.bkeryah.entities.UserRoles;
 import com.bkeryah.entities.VacationsType;
@@ -643,7 +645,7 @@ public interface ICommonDao {
 
 	List<User> getAllUsers();
 
-	public List<ReqFinesMaster> loadAllPenalities(String notification);
+	public List<ReqFinesMaster> loadAllPenalities(String notification , Integer deptId);
 
 	List<ReqFinesSetup> getCodesFines();
 
@@ -1185,4 +1187,14 @@ public interface ICommonDao {
 	public int deleteIntroContract(Integer introId);
 
 	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer transId);
+
+	public List<ReturnStore> loadAllReturnStoreByEmpId(Integer empId, Integer strNo);
+
+	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo);
+
+	public List<User> getAllEmployeesByManager(Integer managerId);
+
+	PayLicBills getContInvBill(ContractsFees contrFee);
+
+	public void deleteContractDirect(ContractDirect contractDirect);
 }

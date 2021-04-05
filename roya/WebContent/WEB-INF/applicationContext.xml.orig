@@ -35,10 +35,12 @@
 		destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.2.10:1521:ORCL" />
-<!-- 		<property name="user" value="roya" /> -->
-<!-- 		<property name="password" value="123" /> -->
-		<!-- <property name="user" value="ROYA" /> -->
-		<!-- <property name="password" value="1234" /> -->
+<!-- 		<property name="user" value="tstUsr" /> -->
+<!-- 		<property name="password" value="1234" /> -->
+
+		<!-- <property name="user" value="roya" /> -->
+		<!-- <property name="password" value="1524" /> -->
+
 		<property name="user" value="project" />
 		<property name="password" value="oraserverdb201" />
 		<property name="initialPoolSize" value="1" />
@@ -300,6 +302,7 @@
 				<value>com.bkeryah.entities.WrkArchiveRcipent</value>
 				<value>com.bkeryah.entities.WrkDept2</value>
 				<value>com.bkeryah.entities.TransferOwnership</value>
+				<value>com.bkeryah.entities.TransferOwnershipDetails</value>
 				<value>com.bkeryah.hr.entities.Sys035</value>
 				<value>com.bkeryah.entities.licences.LicVisitsTypes</value>
 				<value>com.bkeryah.entities.licences.LicVisits</value>
@@ -318,7 +321,6 @@
 				<value>com.bkeryah.entities.investment.ContractsFees</value>
 				<value>com.bkeryah.penalties.Amana</value>
 				<value>com.bkeryah.entities.investment.ContractFeesCanceled</value>
-
 			</list>
 		</property>
 		<property name="hibernateProperties">

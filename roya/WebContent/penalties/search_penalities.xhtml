@@ -31,6 +31,21 @@
 								immediate="true" action="#{penalitiesListBean.addPenality}"
 								icon="ui-icon-add">
 							</p:commandButton>
+							<p:spacer width="10" height="10"></p:spacer>
+							<p:commandButton value="طباعة اكسيل" ajax="false"
+								styleClass="orange-btn" icon="fa fa-fw fa-file-excel-o"
+								immediate="true">
+
+								<p:dataExporter encoding="UTF-8" type="xls"
+									postProcessor="#{penalitiesListBean.postProcessXLS}"
+									target="inboxdt" fileName="المخالفات"></p:dataExporter>
+							</p:commandButton>
+							<p:spacer width="10" height="10"></p:spacer>
+							<p:commandButton value="طباعة الكل" ajax="false"
+								onclick="this.form.target='_blank'" styleClass="purple-btn"
+								icon="ui-icon ui-icon-print" immediate="true"
+								action="#{penalitiesListBean.printAllFines}">
+							</p:commandButton>
 						</div>
 
 						<h1 style="color: #7CB342; text-align: center;">#{msg['list.penalities']}
@@ -43,7 +58,7 @@
 									<h:outputLabel styleClass="btxt" value="حالة المخالفة" />
 								</div>
 								<div class="ui-g-2">
-									<p:selectOneMenu styleClass="form-control"
+									<p:selectOneMenu styleClass="form-control" style="width:70%"
 										value="#{penalitiesListBean.fineStatus}">
 										<f:selectItem itemLabel="الكل" itemValue="-1" />
 										<f:selectItem itemLabel="تحت الاجراء" itemValue="R" />
@@ -53,26 +68,130 @@
 											listener="#{penalitiesListBean.loadPenalitiesByType}"></p:ajax>
 									</p:selectOneMenu>
 								</div>
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="نوع النشاط" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu styleClass="form-control" style="width:70%"
+										filter="true" filterMatchMode="contains"
+										value="#{penalitiesListBean.fineTradeType}">
+										<f:selectItem itemLabel="الكل" itemValue="-1" />
+										<f:selectItems value="#{penalitiesListBean.activityList}"
+											var="categ" itemLabel="#{categ.name}" itemValue="#{categ.id}" />
+										<p:ajax process="@this" update="inboxdt"
+											listener="#{penalitiesListBean.loadPenalitiesByType}"></p:ajax> activityList
+									</p:selectOneMenu>
+								</div>
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="حالة السداد" />
+								</div>
+								<div class="ui-g-2">
+									<p:selectOneMenu styleClass="form-control" style="width:70%"
+										value="#{penalitiesListBean.fineSadad}">
+										<f:selectItem itemLabel="الكل" itemValue="-1" />
+										<f:selectItem itemLabel="غير مسددة" itemValue="0" />
+										<f:selectItem itemLabel="مسددة" itemValue="1" />
+										<p:ajax process="@this" update="inboxdt"
+											listener="#{penalitiesListBean.loadPenalitiesByType}"></p:ajax>
+									</p:selectOneMenu>
+								</div>
+
 							</div>
+							<div class="ui-g">
+								<div class="ui-g-1">
+									<p:outputLabel value="رقم الرخصة"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{penalitiesListBean.licNo}"
+										style="width:85%">
+										<p:ajax process="@this" />
+										<!-- 										<f:validator validatorId="nationalIdValidator" /> -->
+									</p:inputText>
 
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="رقم السجل المدنى"></p:outputLabel>
+								</div>
+								<div class="ui-g-2">
+									<p:inputText value="#{penalitiesListBean.alpNo}"
+										style="width:85%">
+										<p:ajax process="@this" />
+									</p:inputText>
+								</div>
+							</div>
 							<!-- 							<div class="ui-g"> -->
-							<!-- 								<p:outputLabel value="مخالفات الإشعارات" -->
-							<!-- 									rendered="#{penalitiesListBean.notification}" /> -->
-							<!-- 								<p:spacer width="5" /> -->
-							<!-- 								<p:selectBooleanCheckbox -->
-							<!-- 									value="#{penalitiesListBean.notifiPenality}" -->
-							<!-- 									rendered="#{penalitiesListBean.notification}"> -->
-							<!-- 									<f:ajax render="inboxdt" execute="@this" event="change" -->
-							<!-- 										listener="#{penalitiesListBean.loadPenalitiesByType}" /> -->
-							<!-- 								</p:selectBooleanCheckbox> -->
+							<!-- 								<div class="ui-g-3 ui-md-6 ui-lg-3"> -->
+							<!-- 									<h:outputLabel value="هجري  :  " /> -->
+							<!-- 									<p:selectBooleanCheckbox -->
+							<!-- 										value="#{penalitiesListBean.higriMode}"> -->
+							<!-- 										<p:ajax update="pngDate" process="@this"></p:ajax> -->
+							<!-- 									</p:selectBooleanCheckbox> -->
+							<!-- 								</div> -->
 							<!-- 							</div> -->
+							<!-- 							<h:panelGroup id="pngDate"> -->
+							<div class="ui-g">
 
+								<div class="ui-g-1">
+									<p:outputLabel value="تاريخ  المخالفة من" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<!-- 									<p:inputText id="fromStDate" -->
+									<!-- 										rendered="#{penalitiesListBean.higriMode}" -->
+									<!-- 										value="#{penalitiesListBean.fromStartDate}" -->
+									<!-- 										onfocus="loadCalendar();" style="width:85%" -->
+									<!-- 										styleClass="form-control form-controlCal"> -->
+									<!-- 										<p:ajax process="@this" /> -->
+									<!-- 									</p:inputText> -->
+
+									<p:inputText id="fromStDate"
+										rendered="#{penalitiesListBean.higriMode}"
+										value="#{penalitiesListBean.fromStartDate}"
+										onfocus="loadCalendar();" style="width:85%"
+										styleClass="form-control form-controlCal">
+										<p:ajax process="@this" />
+									</p:inputText>
+
+									<p:calendar value="#{penalitiesListBean.fromStartDateG}"
+										pattern="dd/MM/yyyy" style="width: 100%" id="dfrom"
+										rendered="#{!penalitiesListBean.higriMode}">
+										<p:ajax process="@this" />
+									</p:calendar>
+								</div>
+								<div class="ui-g-1">
+									<p:outputLabel value="إلى" styleClass="btxt" />
+								</div>
+								<div class="ui-g-2">
+									<p:inputText id="toStartDate"
+										rendered="#{penalitiesListBean.higriMode}"
+										value="#{penalitiesListBean.toStartDate}"
+										onfocus="loadCalendar();" style="width:85%"
+										styleClass="form-control form-controlCal">
+										<p:ajax process="@this" />
+									</p:inputText>
+									<p:calendar value="#{penalitiesListBean.toStartDateG}"
+										pattern="dd/MM/yyyy" style="width: 100%" id="dto"
+										rendered="#{!penalitiesListBean.higriMode}">
+										<p:ajax process="@this" />
+									</p:calendar>
+								</div>
+
+								<div class="ui-g-2">
+									<p:commandButton value="استعلام" style="float:left;"
+										immediate="true" icon="ui-icon ui-icon-refresh"
+										action="#{penalitiesListBean.loadPenalitiesByType}"
+										process="@this " update="inboxdt">
+									</p:commandButton>
+								</div>
+
+							</div>
+							<!-- 							</h:panelGroup> -->
+							<br />
 
 
 							<p:dataTable value="#{penalitiesListBean.penalitiesList}"
 								var="penalItem" id="inboxdt" widgetVar="penal_dt"
 								paginator="true" rows="10" emptyMessage="لا توجد بيانات"
-								rowIndexVar="rowIndex" paginatorPosition="bottom"
+								rowIndexVar="rowIndex" paginatorPosition="bottom" sortBy="#{1}"
 								filteredValue="#{penalitiesListBean.filteredPenalities}"
 								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
 
@@ -85,14 +204,12 @@
 										</p:inputText>
 									</p:outputPanel>
 								</f:facet>
-
-
 								<p:column style="text-align: center;"
 									headerText="#{msg['penality.number']}"
 									filterBy="#{penalItem.fineNo}" filterMatchMode="contains"
 									width="10%">
-                                    #{penalItem.fineNo}
-                                </p:column>
+									<p:outputLabel value="#{penalItem.fineNo}"></p:outputLabel>
+								</p:column>
 								<!-- 								<p:column style="text-align: center;" -->
 								<!-- 									headerText="رقم الاشعار" -->
 								<!-- 									filterBy="#{penalItem.notifyMasterId}" filterMatchMode="contains" -->
@@ -111,51 +228,57 @@
 
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="تاريخ المخالفة" width="10%"
-									filterBy="#{penalItem.fineDate}" filterMatchMode="contains">										
-										#{penalItem.mahlId}										
+									filterBy="#{penalItem.fineDate}" filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.fineDate}"></p:outputLabel>
 								</p:column>
 
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="رقم السجل التجارى" width="10%"
-									filterBy="#{penalItem.mahlId}" filterMatchMode="contains">										
-										#{penalItem.mahlId}										
+									filterBy="#{penalItem.mahlId}" filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.mahlId}"></p:outputLabel>
 								</p:column>
 								<p:column style="white-space: nowrap;text-align: center;"
 									headerText="رقم السجل المدنى" width="10%"
-									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">										
-										#{penalItem.fIdNo}										
+									filterBy="#{penalItem.fIdNo}" filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.fIdNo}"></p:outputLabel>
 								</p:column>
 
 								<p:column headerText="#{msg['name']}" width="20%"
-									filterBy="#{penalItem.fName}" filterMatchMode="contains">										
-										#{penalItem.fName}										
-									</p:column>
+									filterBy="#{penalItem.fName}" filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.fName}"></p:outputLabel>
+								</p:column>
 
 								<p:column headerText="#{msg['commercial.name']}" width="20%"
 									filterBy="#{penalItem.fTradeMarkName}"
-									filterMatchMode="contains">										
-										#{penalItem.fTradeMarkName}										
-									</p:column>
+									filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.fTradeMarkName}"></p:outputLabel>
+								</p:column>
 								<p:column style="text-align: center;"
 									headerText="#{msg['licence.number']}" width="10%"
-									filterBy="#{penalItem.fLicenceNo}">										
-										#{penalItem.fLicenceNo}										
-									</p:column>
+									filterBy="#{penalItem.fLicenceNo}">
+									<p:outputLabel value="#{penalItem.fLicenceNo}"></p:outputLabel>
+								</p:column>
 								<p:column filterBy="#{penalItem.fFineCase}"
 									filterMatchMode="contains"
 									headerText="#{msg['payment.status']}" width="8%">
 
 									<h:outputLabel
-										value="#{(penalItem.fFineCase==2)? msg['paid'] : msg['not.paid']}"
-										style="color:#{(penalItem.fFineCase==2)? 'green' : 'red'}"></h:outputLabel>
+										value="#{(penalItem.fFineCase==1)? msg['paid'] : msg['not.paid']}"
+										style="color:#{(penalItem.fFineCase==1)? 'green' : 'red'}"></h:outputLabel>
 
 								</p:column>
 
 								<p:column headerText="المراقب" width="15%"
 									filterBy="#{penalItem.supervisorNameView}"
-									filterMatchMode="contains">										
-										#{penalItem.supervisorNameView}										
-									</p:column>
+									filterMatchMode="contains">
+
+									<p:outputLabel value="#{penalItem.supervisorNameView}"></p:outputLabel>
+								</p:column>
+								<p:column headerText="قيمة المخالفة" width="15%"
+									filterBy="#{penalItem.fineAmount}" filterMatchMode="contains">
+									<p:outputLabel value="#{penalItem.fineAmount}"></p:outputLabel>
+								</p:column>
+
 								<p:column width="5%" style="text-align:center"
 									headerText="#{msg['details']}">
 									<p:commandButton oncomplete="PF('penality_dlg').show()"
@@ -166,6 +289,27 @@
 											target="#{penalitiesListBean.reqFinesMaster}" />
 									</p:commandButton>
 								</p:column>
+								<!-- 								<p:summaryRow> -->
+								<!-- 									<p:column colspan="9" style="text-align:right"> -->
+								<!-- 										<h:outputText value="الاجمالى :" /> -->
+								<!-- 									</p:column> -->
+								<!-- 									<p:column> -->
+								<!-- 										<h:outputText -->
+								<!-- 											value="#{penalitiesListBean.penalitiesList.stream().map(fdet->fdet.fineAmount).sum()}"> -->
+								<!-- 											<f:convertNumber type="currency" currencySymbol="SAR" /> -->
+								<!-- 										</h:outputText> -->
+								<!-- 									</p:column> -->
+								<!-- 								</p:summaryRow> -->
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="9" style="text-align:center; background : grey ; font-size : bold;"
+											footerText="الاجمالى :" />
+										<p:column style="text-align:right ; background : grey ; font-size : bold;"
+											footerText="#{penalitiesListBean.penalitiesList.stream().map(fdet->fdet.fineAmount).sum()}" />
+										<p:column  style="text-align:left; background : grey ; font : bold"/>
+									</p:row>
+								</p:columnGroup>
 							</p:dataTable>
 
 
@@ -209,8 +353,8 @@
 												</div>
 												<div class="ui-g-2">
 													<h:outputLabel
-														style="color:#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? 'green' : 'red'}"
-														value="#{(penalitiesListBean.reqFinesMaster.fFineCase==2)? msg['paid'] : msg['not.paid']}" />
+														style="color:#{(penalitiesListBean.reqFinesMaster.fFineCase==1)? 'green' : 'red'}"
+														value="#{(penalitiesListBean.reqFinesMaster.fFineCase==1)? msg['paid'] : msg['not.paid']}" />
 												</div>
 
 											</div>

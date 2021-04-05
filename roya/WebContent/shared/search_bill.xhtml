@@ -40,8 +40,8 @@
 							<p:dataExporter encoding="UTF-8" type="xls" target="inboxdt"
 								facetBackground="#F88017" facetFontSize="10"
 								facetFontColor="#0000ff" facetFontStyle="BOLD"
-								orientation="Landscape" 
-								cellFontColor="#00ff00" cellFontSize="8" cellFontStyle="NORMAL"
+								orientation="Landscape" cellFontColor="#00ff00" cellFontSize="8"
+								cellFontStyle="NORMAL"
 								postProcessor="#{billBean.postProcessXLS}" fileName="الفواتير"></p:dataExporter>
 						</p:commandButton>
 						<!-- 						postProcessor="#{billBean.postProcessXLS}" -->
@@ -57,20 +57,20 @@
 							<div class="ui-g-1">
 								<p:outputLabel value="رقم الهوية"></p:outputLabel>
 							</div>
-							<div class="ui-g-2">
+							<div class="ui-g-1">
 								<p:inputText value="#{billBean.aplnumber}" style="width:85%">
 									<p:ajax process="@this" />
-									<f:validator validatorId="nationalIdValidator" />
+									<!-- 									<f:validator validatorId="nationalIdValidator" /> -->
 								</p:inputText>
 
 							</div>
 							<div class="ui-g-1">
 								<p:outputLabel value="رقم الجوال"></p:outputLabel>
 							</div>
-							<div class="ui-g-2">
+							<div class="ui-g-1">
 								<p:inputText value="#{billBean.phoneNumber}" style="width:85%">
 									<p:ajax process="@this" />
-<!-- 									<f:validator validatorId="utilities.PhoneNumberValidator" /> -->
+									<!-- 									<f:validator validatorId="utilities.PhoneNumberValidator" /> -->
 								</p:inputText>
 							</div>
 							<div class="ui-g-1">
@@ -86,22 +86,26 @@
 										listener="#{billBean.loadPayLicBillslist}" update="inboxdt" />
 								</p:selectOneMenu>
 							</div>
-
-							<!-- 							<div class="ui-g-1"> -->
-							<!-- 								<p:outputLabel value="المبلغ"></p:outputLabel> -->
-							<!-- 							</div> -->
-							<!-- 							<div class="ui-g-2"> -->
-							<!-- 								<p:inputNumber minValue="0.00" emptyValue="0.00" -->
-							<!-- 									value="#{billBean.billAmount}" -->
-							<!-- 									inputStyle="text-align: right ; font-color : red" -->
-							<!-- 									decimalSeparator="." decimalPlaces="2"></p:inputNumber> -->
-							<!-- 							</div > -->
+							<div class="ui-g-1">
+								<h:outputLabel value="معد الفاتورة" />
+							</div>
+							<div class="ui-g-3">
+								<p:selectOneMenu filterMatchMode="contains" style="width:85%"
+									filter="true" value="#{billBean.employerId}">
+									<f:selectItem itemLabel="الكل" itemValue="-1" />
+									<f:selectItems value="#{loadingDataBean.employersList}"
+										var="emp" itemLabel="#{emp.employeeName}"
+										itemValue="#{emp.userId}" />
+									<p:ajax process="@this"
+										listener="#{billBean.loadPayLicBillslist}" update="inboxdt" />
+								</p:selectOneMenu>
+							</div>
 						</div>
 						<div class="ui-g">
 							<div class="ui-g-1">
 								<p:outputLabel value="تاريخ  الفاتورة من" styleClass="btxt" />
 							</div>
-							<div class="ui-g-2">
+							<div class="ui-g-1">
 								<p:inputText id="fromStartDate"
 									value="#{billBean.fromStartDate}" onfocus="loadCalendar();"
 									style="width:85%" styleClass="form-control form-controlCal">
@@ -111,7 +115,7 @@
 							<div class="ui-g-1">
 								<p:outputLabel value="إلى" styleClass="btxt" />
 							</div>
-							<div class="ui-g-2">
+							<div class="ui-g-1">
 								<p:inputText id="toStartDate" value="#{billBean.toStartDate}"
 									onfocus="loadCalendar();" style="width:85%"
 									styleClass="form-control form-controlCal">
@@ -133,7 +137,7 @@
 										listener="#{billBean.loadPayLicBillslist}" update="inboxdt" />
 								</p:selectOneMenu>
 							</div>
-							<div class="ui-g-2">
+							<div class="ui-g-3">
 								<p:commandButton value="استعلام" style="float:left;"
 									immediate="true" icon="ui-icon ui-icon-refresh"
 									action="#{billBean.loadPayLicBillslist}" process="@this"

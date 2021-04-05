@@ -1,0 +1,93 @@
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -926,7 +926,7 @@
+ 											<f:selectItem itemLabel="شهري" itemValue="2" />
+ 											<f:selectItem itemLabel="يومي" itemValue="3" />
+ 											<p:ajax listener="#{contractDirectBean.updateDurationLabel}"
+-												process="@this" update="yeanumber  total_installment" />
++												process="@this" update="total_installment" />
+ 										</p:selectOneMenu>
+ 									</div>
+ 									<div class="ui-g-1">
+@@ -943,7 +943,7 @@
+ 											value="#{contractDirectBean.yearsNum}">
+ 											<p:ajax process="@this"
+ 												listener="#{contractDirectBean.calculateInstallments}"
+-												update=" total_installment , yeanumber" />
++												update=" total_installment" />
+ 										</p:inputNumber>
+ 										<!-- 										<p:inputNumber id="dur_label" -->
+ 										<!-- 											rendered="#{!contractDirectBean.addMode}" -->
+@@ -961,7 +961,7 @@
+ 											process="@this">
+ 											<p:ajax
+ 												listener="#{contractDirectBean.calculateInstallments}"
+-												update="yeanumber,total_installment" />
++												update="total_installment" />
+ 										</p:inputText>
+ 									</div>
+ 								</div>
+@@ -977,20 +977,20 @@
+ 									</div>
+ 
+ 
+-									<div class="ui-g-1">
+-										<p:outputLabel value="أقساط مفوترة للدفع" styleClass="btxt" />
+-									</div>
+-									<div class="ui-g-3">
+-										<!-- maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}" -->
+-										<p:inputNumber process="@this"
+-											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.contractDirect.oldPayedFees)}"
+-											id="yeanumber" style="width: 100% "
+-											value="#{contractDirectBean.installmentNum}">
+-											<!--  disabled="#{!contractDirectBean.addMode}" -->
+-											<p:ajax update="totalLabel,disc_duration" process="@this"
+-												listener="#{contractDirectBean.calculateDiscount}" />
+-										</p:inputNumber>
+-									</div>
++<!-- 									<div class="ui-g-1"> -->
++<!-- 										<p:outputLabel value="أقساط مفوترة للدفع" styleClass="btxt" /> -->
++<!-- 									</div> -->
++<!-- 									<div class="ui-g-3"> -->
++<!-- 										maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}" -->
++<!-- 										<p:inputNumber process="@this" -->
++<!-- 											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.contractDirect.oldPayedFees)}" -->
++<!-- 											id="yeanumber" style="width: 100% " -->
++<!-- 											value="#{contractDirectBean.installmentNum}"> -->
++<!-- 											 disabled="#{!contractDirectBean.addMode}" -->
++<!-- 											<p:ajax update="totalLabel,disc_duration" process="@this" -->
++<!-- 												listener="#{contractDirectBean.calculateDiscount}" /> -->
++<!-- 										</p:inputNumber> -->
++<!-- 									</div> -->
+ 									<div class="ui-g-1">
+ 										<p:outputLabel value="قيمة القسط (ريال)" styleClass="btxt">
+ 											<span style="color: red; font-size: 30px"> * </span>
+@@ -1021,4 +1021,6 @@
+ 											styleClass="btxt" />
+ 									</div>
+ 									<div class="ui-g-1">
++<!-- 																				disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}" -->
++									
+ 										<p:inputNumber minValue="0" id="proc_period" lang="ar"
+@@ -1024,5 +1026,4 @@
+ 										<p:inputNumber minValue="0" id="proc_period" lang="ar"
+-											disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}"
+ 											style="width: 100%; opacity:1.0;" required="true"
+ 											process="@this" requiredMessage="مدة التجهيز مطلوبة"
+ 											value="#{contractDirectBean.contractDirect.processPeriod}">
+@@ -1037,5 +1038,7 @@
+ 									</div>
+ 									<div class="ui-g-2">
+ 										<p:outputLabel value="تعادل (%)" styleClass="btxt" />
++<!-- 																					disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}" -->
++										
+ 										<p:spacer width="5"></p:spacer>
+ 										<p:inputNumber process="@this"
+@@ -1040,6 +1043,5 @@
+ 										<p:spacer width="5"></p:spacer>
+ 										<p:inputNumber process="@this"
+-											disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}"
+ 											value="#{contractDirectBean.contractDirect.contractDurationRetio}"
+ 											minValue="0" maxValue="100" symbol="%"></p:inputNumber>
+ 									</div>

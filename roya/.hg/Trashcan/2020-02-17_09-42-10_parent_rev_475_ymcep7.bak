@@ -1,0 +1,27 @@
+diff --git a/src/com/bkeryah/entities/investment/ContractsFees.java b/src/com/bkeryah/entities/investment/ContractsFees.java
+--- a/src/com/bkeryah/entities/investment/ContractsFees.java
++++ b/src/com/bkeryah/entities/investment/ContractsFees.java
+@@ -49,6 +49,9 @@
+ 	@Transient
+ 	private boolean delete = false;
+ 
++	@Transient
++	private String oldFactId;// 
++	
+ 	public Integer getId() {
+ 		return id;
+ 	}
+@@ -165,4 +168,12 @@
+ 		this.delete = delete;
+ 	}
+ 
++	public String getOldFactId() {
++		return oldFactId;
++	}
++
++	public void setOldFactId(String oldFactId) {
++		this.oldFactId = oldFactId;
++	}
++
+ }
+\ No newline at end of file

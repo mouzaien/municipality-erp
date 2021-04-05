@@ -14,6 +14,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.dao.IStockServiceDao;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
@@ -23,8 +24,10 @@ import com.bkeryah.entities.ReturnStore;
 import com.bkeryah.entities.ReturnStoreDetails;
 import com.bkeryah.entities.SysProperties;
 import com.bkeryah.entities.WhsWarehouses;
+import com.bkeryah.entities.WrkApplicationId;
 import com.bkeryah.entities.WrkPurpose;
 import com.bkeryah.mails.MailTypeEnum;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -76,12 +79,23 @@ public class StoreReturnBean {
 	private SysProperties prop;
 	private List<SysProperties> propsList = new ArrayList<SysProperties>();
 	private boolean enableEmpsList;
+	private UserMailObj selectedInbox;
+	private WrkApplicationId WrkId;
+	private List<User> employers;
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		employerId = currentUser.getUserId();
 		articleList = dataAccessService.getArticlesByUserId(employerId);
+		employers = new ArrayList<>();
+		employers = dataAccessService.getAllEmployeesByManager(currentUser.getUserId());
+		if (employers != null && employers.size() > 0) {
+			// for dept 3ohad if user is manager
+			List<Article> articles = new ArrayList<>();
+			articles = dataAccessService.find3ohadByUserId(-1, currentUser.getDeptId());
+			articleList.addAll(articles);
+		}
 		setAllWareHouses(stockServiceDao.getStoreWharehouses(2));
 		// prop = (SysProperties)
 		// dataAccessService.findEntityById(SysProperties.class,
@@ -105,6 +119,8 @@ public class StoreReturnBean {
 			HrsSigns model = dataAccessService.getHrsSignsByArcId(recordId);
 			employerId = model.getUserId();
 			returnitemsDetailsList = dataAccessService.getReturnStoreDetailsById(returnStore.getReturnStoreId());
+			selectedInbox = (UserMailObj) httpSession.getAttribute("selectedMail");
+			WrkId = new WrkApplicationId(Integer.parseInt(this.selectedInbox.WrkId), selectedInbox.StepId);
 			wrkPurposes = dataAccessService.getAllPurposes();
 			stepNum = dataAccessService.getStepNumberFromHrSign(recordId);
 			int i = 0;
@@ -155,6 +171,22 @@ public class StoreReturnBean {
 			return "mails";
 		} else {
 			MsgEntry.addErrorMessage("يجب أدخال االرقم التسلسلي بشكل صحيح");
+			return "";
+		}
+	}
+
+	public String refuseAction() {
+		try {
+			applicationPurpose = "2";
+			returnStore.setStatus(MyConstants.NO);
+			String wrkCommentRefuse = wrkAppComment;
+			dataAccessService.refuseReturnStore(WrkId, recordId, returnStore, wrkCommentRefuse,
+					Integer.parseInt(applicationPurpose.trim()));
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("refuse.record"));
+			return "mails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 			return "";
 		}
 	}
@@ -226,6 +258,7 @@ public class StoreReturnBean {
 			returnStore.setReturnHDate(returnDate);
 			returnStore.setWrhouseId(article.getStrNo());
 			returnStore.setStrNo(strNo);
+			returnStore.setUserId(currentUser.getUserId());
 			returnStore.setReturnGDate(Utils.convertHDateToGDate(returnDate));
 			if (returnitemsDetailsList.size() > 0) {
 				returnedItmesId = dataAccessService.addRturnedStoreItems(returnStore, employerId,
@@ -567,5 +600,29 @@ public class StoreReturnBean {
 
 	public void setEnableEmpsList(boolean enableEmpsList) {
 		this.enableEmpsList = enableEmpsList;
+	}
+
+	public UserMailObj getSelectedInbox() {
+		return selectedInbox;
+	}
+
+	public void setSelectedInbox(UserMailObj selectedInbox) {
+		this.selectedInbox = selectedInbox;
+	}
+
+	public WrkApplicationId getWrkId() {
+		return WrkId;
+	}
+
+	public void setWrkId(WrkApplicationId wrkId) {
+		WrkId = wrkId;
+	}
+
+	public List<User> getEmployers() {
+		return employers;
+	}
+
+	public void setEmployers(List<User> employers) {
+		this.employers = employers;
 	}
 }

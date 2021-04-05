@@ -1,0 +1,211 @@
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -375,6 +375,15 @@
+ 								style="width:5%; text-align:center;">
+ 								<h:outputLabel value="#{rowIndex+1}" />
+ 							</p:column>
++							
++							<p:column id="idcol11" headerText="رقم العيييقد" sortable="true"
++								sortBy="#{userItem.oldPayedFees}"
++								filterBy="#{userItem.oldPayedFees}" filterMatchMode="contains"
++								width="7%" style="text-align: center;">
++								<h:outputText value="#{userItem.oldPayedFees}"></h:outputText>
++
++							</p:column>
++							
+ 							<p:column id="idcol" headerText="رقم العقد" sortable="true"
+ 								sortBy="#{userItem.contractNum}"
+ 								filterBy="#{userItem.contractNum}" filterMatchMode="contains"
+@@ -471,8 +480,8 @@
+ 								<p:commandButton oncomplete="PF('addDialog').show();"
+ 									action="#{contractDirectBean.loadContract}" process="@this"
+ 									icon="ui-icon-search" update="includeform:addPG">
+-									<f:setPropertyActionListener value="#{userItem}"
+-										target="#{contractDirectBean.contractDirect}" />
++<!-- 									<f:setPropertyActionListener value="#{userItem}" -->
++<!-- 										target="#{contractDirectBean.contractDirect}" /> -->
+ 									<p:ajax process="@this"
+ 										listener="#{contractDirectBean.loadSuCategoryByMainCategoryId(userItem)}" />
+ 								</p:commandButton>
+@@ -959,7 +968,7 @@
+ 											style="width:100%" />
+ 									</div>
+ 									<div class="ui-g-1">
+-										<p:inputText value="#{contractDirectBean.oldInstallment}"
++										<p:inputText value="#{contractDirectBean.contractDirect.oldPayedFees}"
+ 											process="@this">
+ 											<p:ajax
+ 												listener="#{contractDirectBean.calculateInstallments}"
+@@ -985,7 +994,7 @@
+ 									<div class="ui-g-3">
+ 										<!-- maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}" -->
+ 										<p:inputNumber process="@this"
+-											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}"
++											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.contractDirect.oldPayedFees)}"
+ 											id="yeanumber" style="width: 100% "
+ 											value="#{contractDirectBean.installmentNum}">
+ 											<!--  disabled="#{!contractDirectBean.addMode}" -->
+@@ -1640,8 +1649,6 @@
+ 								value="#{contractDirectBean.contractsFeesList}" editable="true"
+ 								editMode="cell" widgetVar="cellfees"
+ 								emptyMessage="لايوجد بيانات" reflow="true"
+-								selection="#{contractDirectBean.selectedcontractsFeesList}"
+-								selectionMode="multiple" rowKey="#{contfeesItem.id}"
+ 								rowIndexVar="rowIndex" scrollRows="10" scrollable="true"
+ 								selectionPageOnly="false" scrollHeight="250" Height="250">
+ 
+@@ -1717,10 +1724,10 @@
+ 									<p:selectBooleanCheckbox value="#{contfeesItem.checkfees}"
+ 										disabled="#{!contfeesItem.canRenew}">
+ 										<p:ajax process="@this"
+-											listener="#{contractDirectBean.checkedFeesIncremint(contfeesItem.factId,contfeesItem.status)}"
+-											update="includeform:feesPG  includeform:btn-pnl"></p:ajax>
++											listener="#{contractDirectBean.checkedFeesIncremint(contfeesItem)}"
++											update="includeform:feesPG includeform:btn-pnl" ></p:ajax>
+ 									</p:selectBooleanCheckbox>
+ 								</p:column>
+ 								<!-- 								<p:column selectionMode="multiple" headerText="حذف" -->
+ 								<!-- 									style="width:7.5%;text-align:center"> -->
+ 								<!-- 								</p:column> -->
+@@ -1722,10 +1729,10 @@
+ 									</p:selectBooleanCheckbox>
+ 								</p:column>
+ 								<!-- 								<p:column selectionMode="multiple" headerText="حذف" -->
+ 								<!-- 									style="width:7.5%;text-align:center"> -->
+ 								<!-- 								</p:column> -->
+-								<p:ajax event="rowSelect" update=" includeform:btn-pnl"
+-									listener="#{contractDirectBean.selestedFeesValue}" />
++<!-- 								<p:ajax event="rowSelect" update=" includeform:btn-pnl" -->
++<!-- 									listener="#{contractDirectBean.selestedFeesValue}" /> -->
+ 							</p:dataTable>
+ 							<!-- 							</h:panelGroup> -->
+ 							<br />
+@@ -1801,7 +1808,7 @@
+ 
+ 							<div class="image-box-footer" align="left">
+ 								<h:panelGroup id="btn-pnl">
+-									<p:commandButton value="حذف القسط" immediate="true"
++									<p:commandButton value="حذف القسط" immediate="true" rendered="false"
+ 										disabled="#{!contractDirectBean.allowDelete}"
+ 										action="#{contractDirectBean.deleteFeesList}"
+ 										oncomplete="PF('fees_dlg').hide();"
+@@ -1819,7 +1826,7 @@
+ 									</p:commandButton>
+ 									<p:spacer height="10" />
+ 									<p:commandButton value="فوترة" immediate="true"
+-										disabled="#{contractDirectBean.renewBill}"
++										disabled="#{contractDirectBean.renewBill }"
+ 										action="#{contractDirectBean.saveFeesUpdate}"
+ 										oncomplete="PF('fees_dlg').hide();"
+ 										process="@this, itemsList2">
+@@ -1911,4 +1918,4 @@
+ 		</ui:composition>
+ 	</h:body>
+ </f:view>
+-</html>
++</html>
+\ No newline at end of file
+diff --git a/src/com/bkeryah/service/IDataAccessService.java b/src/com/bkeryah/service/IDataAccessService.java
+--- a/src/com/bkeryah/service/IDataAccessService.java
++++ b/src/com/bkeryah/service/IDataAccessService.java
+@@ -1998,9 +1998,6 @@
+ 
+ 	public List<Amana> getAllLicAmanaList();
+ 
+-	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan);
+-
+ 	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+ 
+ 	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+@@ -2045,4 +2042,7 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList);
+ 
+ 	public void deleteFeesList(List<ContractsFees> fessList);
++
++	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
++			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
+ }
+diff --git a/src/com/bkeryah/service/DataAccessService.java b/src/com/bkeryah/service/DataAccessService.java
+--- a/src/com/bkeryah/service/DataAccessService.java
++++ b/src/com/bkeryah/service/DataAccessService.java
+@@ -9932,7 +9932,7 @@
+ 	@Override
+ 	@Transactional
+ 	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan) {
++			Integer billBandNumber, String bayan,List<ContractsFees> oldFees ) {
+ 		Integer factId = 0;
+ 		if (contractDirect.getTotalBillValue() > 0)
+ 			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+@@ -9936,6 +9936,11 @@
+ 		Integer factId = 0;
+ 		if (contractDirect.getTotalBillValue() > 0)
+ 			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
++		
++		for (ContractsFees contractsFees : oldFees) {
++			deleteObject(contractsFees);
++		}
++		
+ 		for (ContractsFees contractsFees : contractFees) {
+ 			contractsFees.setContractId(contractDirect.getId());
+ 			if (contractsFees.getFactId() == null && factId > 0 && contractsFees.getStatus() == 2)// مفوترة
+@@ -9966,7 +9971,7 @@
+ 			Integer billBandNumber, String bayan) {
+ 		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+ 		for (ContractsFees contFees : contFeesList) {
+-			if (contFees.getFactId() != null && contFees.isCheckfees())
++			if (contFees.getFactId() != null && contFees.isCheckfees() && contFees.getStatus().equals(2))
+ 				contFees.setFactId(factId.toString());
+ 			updateObject(contFees);
+ 		}
+@@ -10063,9 +10068,9 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList) {
+ 		try {
+ 			updateObject(contrectDirect);
+-			for (ContractsFees fess : fessList) {
+-				updateObject(fess);
+-			}
++//			for (ContractsFees fess : fessList) {
++//				updateObject(fess);
++//			}
+ 		} catch (Exception ex) {
+ 			ex.printStackTrace();
+ 			logger.error(" updateContractFessList : " + ex.getMessage());
+@@ -10087,5 +10092,4 @@
+ 
+ 		}
+ 	}
+-
+-}
++}
+\ No newline at end of file
+diff --git a/src/com/bkeryah/entities/investment/ContractDirect.java b/src/com/bkeryah/entities/investment/ContractDirect.java
+--- a/src/com/bkeryah/entities/investment/ContractDirect.java
++++ b/src/com/bkeryah/entities/investment/ContractDirect.java
+@@ -91,6 +91,10 @@
+ 	private Integer totalInstallment;// الاقساط الكلية
+ 	@Column(name = "FEES_BILLED_NBR")
+ 	private Integer billedInstallment;// الاقساط المفوترة
++	
++	@Column(name = "OLD_PAYED_FEES")
++	private Integer oldPayedFees;// الاقساط المدفوعة السابقة
++	
+ 	@Column(name = "SPECIAL_CONDITIONS")
+ 	private String specialConditions;// الشروط الخاصة
+ 	@Column(name = "CONTRACT_DURATION_RATIO")
+@@ -637,4 +641,12 @@
+ 		this.invRepresentIdDate_G = invRepresentIdDate_G;
+ 	}
+ 
++	public Integer getOldPayedFees() {
++		return oldPayedFees;
++	}
++
++	public void setOldPayedFees(Integer oldPayedFees) {
++		this.oldPayedFees = oldPayedFees;
++	}
++
+ }
+\ No newline at end of file

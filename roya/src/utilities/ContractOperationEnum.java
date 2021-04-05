@@ -1,11 +1,15 @@
 package utilities;
 
 public enum ContractOperationEnum {
-	SADAD(1, Utils.loadMessagesFromFile("sadad")),DELETE(1, Utils.loadMessagesFromFile("delete")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3, Utils.loadMessagesFromFile("cancel")), BILL(4, Utils.loadMessagesFromFile("bills")), GIVE_UP(5, Utils.loadMessagesFromFile("give_up"));
-	
-	private int action;	
+	NEW(1, Utils.loadMessagesFromFile("delete")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
+			Utils.loadMessagesFromFile("cancel")), STOPPED(4, Utils.loadMessagesFromFile("sadad")), GIVE_UP(5,
+					Utils.loadMessagesFromFile("give_up")), BILL(6, Utils.loadMessagesFromFile("bills")), DELETE(7,
+							Utils.loadMessagesFromFile("delete")), SADAD(8,
+									Utils.loadMessagesFromFile("sadad")), SMS(9, Utils.loadMessagesFromFile("contract.sms.msg"));
+
+	private int action;
 	private String name;
-	
+
 	private ContractOperationEnum(int action, String name) {
 		this.setAction(action);
 		this.name = name;
@@ -27,6 +31,4 @@ public enum ContractOperationEnum {
 		this.name = name;
 	}
 
-
-	
 }

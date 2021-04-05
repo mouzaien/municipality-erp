@@ -85,6 +85,12 @@ public class Article {
 	@Formula("(select n.STRNAME from WHS_WAREHOUSES n where  n.STRNO = STRNO)")
 	private String strName;
 
+	@Transient
+	private Integer forDept;
+	
+	@Transient
+	private Integer deptId;
+	
 	public int getId() {
 		return id;
 	}
@@ -255,6 +261,22 @@ public class Article {
 
 	public void setTypeInString(String typeInString) {
 		this.typeInString = typeInString;
+	}
+
+	public Integer getForDept() {
+		return forDept;
+	}
+
+	public void setForDept(Integer forDept) {
+		this.forDept = forDept;
+	}
+
+	public Integer getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
 	}
 
 }

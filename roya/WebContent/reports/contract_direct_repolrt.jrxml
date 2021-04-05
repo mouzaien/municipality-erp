@@ -13,6 +13,8 @@
 	<field name="endDate" class="java.lang.String"/>
 	<field name="investorName" class="java.lang.String"/>
 	<field name="status" class="java.lang.Integer"/>
+	<field name="payStatus" class="java.lang.Integer"/>
+	<field name="invPhoneNo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -51,7 +53,7 @@
 	<columnHeader>
 		<band height="43" splitType="Stretch">
 			<textField>
-				<reportElement x="111" y="5" width="279" height="38" uuid="bf1d7d45-574b-4c9d-a879-1c78949d1e0b">
+				<reportElement x="219" y="5" width="231" height="38" uuid="bf1d7d45-574b-4c9d-a879-1c78949d1e0b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -64,7 +66,7 @@
 				<textFieldExpression><![CDATA["المستثمر"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="5" width="140" height="38" uuid="0ad23ed8-7c73-4e51-b95c-efb307426d53">
+				<reportElement x="450" y="5" width="110" height="38" uuid="0ad23ed8-7c73-4e51-b95c-efb307426d53">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -77,7 +79,7 @@
 				<textFieldExpression><![CDATA["تاريخ النهاية"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="530" y="5" width="150" height="38" uuid="de722ccb-8c34-4cb7-a739-16c40f63462c">
+				<reportElement x="560" y="5" width="120" height="38" uuid="de722ccb-8c34-4cb7-a739-16c40f63462c">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
@@ -102,7 +104,7 @@
 				<textFieldExpression><![CDATA["رقم العقد"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="5" width="110" height="38" uuid="9ba50ea1-82f6-4d2b-9516-0163847ba221">
+				<reportElement x="1" y="5" width="98" height="38" uuid="9ba50ea1-82f6-4d2b-9516-0163847ba221">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -126,22 +128,34 @@
 				</textElement>
 				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="99" y="5" width="120" height="38" uuid="96a8c200-e893-4748-b520-0c2c0c1dbdd2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الجوال"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="0" width="110" height="30" uuid="95efd343-8660-4de6-93b3-443754859256"/>
+				<reportElement x="1" y="0" width="98" height="30" uuid="95efd343-8660-4de6-93b3-443754859256"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{status} == 1 ? "مسددة":"غير مسددة"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{status} ==1 ? "مسسدة" : "غير مسسدة"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="0" width="140" height="30" uuid="fd000d63-9c59-482f-a825-a5d08807e306"/>
+				<reportElement x="450" y="0" width="110" height="30" uuid="fd000d63-9c59-482f-a825-a5d08807e306"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -165,7 +179,7 @@
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="530" y="0" width="150" height="30" uuid="fcf4e3b9-ac93-4563-bd3a-ee776ed0da3f"/>
+				<reportElement x="560" y="0" width="120" height="30" uuid="fcf4e3b9-ac93-4563-bd3a-ee776ed0da3f"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -177,7 +191,7 @@
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="111" y="0" width="279" height="30" uuid="5e1b9c38-b926-4b90-a079-1796b487ea18"/>
+				<reportElement x="219" y="0" width="231" height="30" uuid="5e1b9c38-b926-4b90-a079-1796b487ea18"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -196,6 +210,18 @@
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{num}== null?"":(""+$F{num}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="0" width="120" height="30" uuid="6c518bf4-7a79-4243-96a4-841939f2f85f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invPhoneNo}== null?"":(""+$F{invPhoneNo}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>

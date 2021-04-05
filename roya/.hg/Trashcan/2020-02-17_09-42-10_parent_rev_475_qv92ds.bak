@@ -1,0 +1,61 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -692,9 +692,9 @@
+ 	private Integer feesDiscountDuration(ContractsFees fees, Integer discountStatus, Integer discountRemainder,
+ 			int count) {
+ 		// if (discountStatus == 1) {
+-		// if (contractType == 1 && (count <= 1 || discountDuration > 365)) {
+-		// fees.setDiscountExceptionel(365);
+-		// discountRemainder = discountDuration - 365;
++		// if (contractType == 1 && (count <= 1 || discountDuration > 360)) {
++		// fees.setDiscountExceptionel(360);
++		// discountRemainder = discountDuration - 360;
+ 		//
+ 		// } else if (contractType == 2 && (count <= 1 || discountDuration >
+ 		// 30)) {
+@@ -703,5 +703,5 @@
+ 		// } else
+ 		// fees.setDiscountduration(discountRemainder);
+ 
+-		if (contractType == 1 && (count < 1 || discountDuration > 365)) {
++		if (contractType == 1 && (count < 1 || discountDuration > 360)) {
+ 			if (discountStatus == 1) {
+@@ -707,6 +707,6 @@
+ 			if (discountStatus == 1) {
+-				fees.setDiscountduration(365);
+-				discountRemainder = discountDuration - 365;
++				fees.setDiscountduration(360);
++				discountRemainder = discountDuration - 360;
+ 			}
+ 			if (discountStatus == 0) {
+ 				fees.setDiscountduration(discountRemainder);
+@@ -835,8 +835,8 @@
+ 
+ 			switch (contractType) {
+ 			case 1:
+-				totalDiscount = ((contractDirect.getAnnualRent() / 365) * discountDuration) + discountExceptionel;
+-				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 365)
++				totalDiscount = ((contractDirect.getAnnualRent() / 360) * discountDuration) + discountExceptionel;
++				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 360)
+ 						* (reminderDiscountDuration - discountDuration));
+ 				break;
+ 			case 2:
+@@ -953,7 +953,7 @@
+ 		}
+ 	}
+ 
+-	public void oadSuCategoryByMainCategoryId() {
++	public void loadSuCategoryByMainCategoryId() {
+ 		if (contractMaincatgId != null && contractMaincatgId > 0) {
+ 			contractDirect.setContractMaincatgId(contractMaincatgId);
+ 		}
+@@ -1032,7 +1032,7 @@
+ 			dataAccessService.save(subCategory);
+ 			// contractSubcategoryList =
+ 			// dataAccessService.loadAllContractSubcategory();
+-			//loadSuCategoryByMainCategoryId();
++			loadSuCategoryByMainCategoryId();
+ 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+ 
+ 		} catch (

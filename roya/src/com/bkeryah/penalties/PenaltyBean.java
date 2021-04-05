@@ -54,7 +54,7 @@ public class PenaltyBean {
 	private Integer fineSetupId;
 	private NotifFinesMastR notifMstr;
 	private boolean fineByNot = false;
-
+	
 	@PostConstruct
 	private void init() {
 		reqFinesMaster = new ReqFinesMaster();
@@ -81,8 +81,8 @@ public class PenaltyBean {
 		}
 		activityTypes = dataAccessService.getAllLicActivityTypeList();
 		System.out.println(activityTypes.size());
-		// 2 = dept id صحة البيئة
-		supervisors = dataAccessService.getAllSupervisor(2);
+		//load Supervisors in dept by user log in dept id 
+		supervisors = dataAccessService.getAllSupervisor(Utils.findCurrentUser().getDeptId());
 		// لائحة العقوبات
 		codesFines = dataAccessService.getCodesFines();
 		// ReqFinesSetup reqFinesSetup = new ReqFinesSetup();
@@ -522,4 +522,6 @@ public class PenaltyBean {
 	public void setFineSum(double fineSum) {
 		FineSum = fineSum;
 	}
+
+	
 }

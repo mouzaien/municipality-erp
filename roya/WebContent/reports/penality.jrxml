@@ -219,20 +219,21 @@ and fd.fine_code = f.id and M.FINE_NO=B.LIC_NO and B.LIC_TYPE='F']]>
 	<pageFooter>
 		<band height="219" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="20" y="26" width="212" height="24" uuid="cf025a0b-563f-45ce-b37c-f54f4cec682c"/>
+			<staticText>
+				<reportElement positionType="Float" x="19" y="38" width="159" height="24" uuid="b2bc262a-6904-4dab-8296-71d41705476e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
 				</textElement>
-				<textFieldExpression><![CDATA["مدير ادارة صحة البيئة "]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="380" y="36" width="150" height="24" uuid="1cd5ac52-bed6-437d-8c87-a54ab78bf1f6"/>
+				<text><![CDATA[مدير الادارة ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="380" y="36" width="150" height="24" uuid="4d3bdab7-a651-4e5c-8637-5408c86e386d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Traditional Arabic" size="14" isBold="true" pdfEncoding="Cp1256"/>
 				</textElement>
-				<textFieldExpression><![CDATA["المراقب"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[المراقب
+]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" x="357" y="76" width="187" height="24" uuid="9bf48716-5a1d-4fe9-b344-8bb28d262275"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

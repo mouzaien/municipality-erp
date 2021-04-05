@@ -53,7 +53,7 @@
 						<div class="ui-g-1">
 							<h:outputLabel value="الي الموظف" />
 						</div>
-						<div class="ui-g-2">
+						<div class="ui-g-3">
 							<p:selectOneMenu id="empList" filterMatchMode="contains"
 								style="width:100%" filter="true"
 								disabled="#{transferBean.allowSelect}"
@@ -67,22 +67,38 @@
 									event="change" process="@this" />
 							</p:selectOneMenu>
 						</div>
+						<div class="ui-g-1">
+							<h:outputLabel value="التاريخ"></h:outputLabel>
+						</div>
+						<div class="ui-g-2">
+							<p:inputText id="hiri1" value="#{transferBean.returnHDate}"
+								required="true" requiredMessage="ادخل التاريخ"
+								onfocus="loadCalendar();" disabled="#{transferBean.allowSelect}"
+								styleClass="form-control form-controlCal">
+								<p:ajax process="@this" />
+							</p:inputText>
+						</div>
+
 					</div>
 					<br />
 					<h:panelGroup>
 						<div class="ui-g">
 							<div class="ui-g-1">
-								<h:outputLabel value="التاريخ"></h:outputLabel>
+								<h:outputLabel value="المستودع"></h:outputLabel>
 							</div>
 							<div class="ui-g-2">
-								<p:inputText id="hiri1" value="#{transferBean.returnHDate}"
-									required="true" requiredMessage="ادخل التاريخ"
-									onfocus="loadCalendar();"
+								<p:selectOneMenu styleClass="form-control" id="stockNO"
+									required="true" requiredMessage="من فضلك إختر المستودع"
 									disabled="#{transferBean.allowSelect}"
-									styleClass="form-control form-controlCal">
-									<p:ajax process="@this" />
-								</p:inputText>
+									placeholder="إختر المستودع" value="#{transferBean.strNo}">
+									<f:selectItem itemLabel="إختر مستودع" noSelectionOption="true"></f:selectItem>
+									<f:selectItems value="#{transferBean.allWareHouses}" var="c"
+										itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+									<p:ajax listener="#{transferBean.loadArticlesByStore}"
+										update="articles" event="change" process="@this" />
+								</p:selectOneMenu>
 							</div>
+
 							<div class="ui-g-1">
 								<h:outputLabel value="اختر الصنف" />
 							</div>
@@ -102,7 +118,7 @@
 							<div class="ui-g-1">
 								<h:outputLabel styleClass="btxt" value="الكمية" />
 							</div>
-							<div class="ui-g-1">
+							<div class="ui-g-2">
 								<p:inputText id="qty" style="width:100%; opacity: 1"
 									disabled="true" value="1" />
 							</div>
@@ -135,7 +151,7 @@
 								style="float:left;" styleClass="cyan-btn"
 								disabled="#{transferBean.allowAdd}" value="إضافة">
 								<p:ajax listener="#{transferBean.addItem}"
-									update="itemsTable saveBn" process="@this articles empList " />
+									update="itemsTable saveBn stockNO" process="@this articles empList stockNO" />
 
 								<!-- 								 process="desc articles hiri1 empList" -->
 							</p:commandButton>
@@ -183,33 +199,32 @@
 						emptyMessage="لايوجد بيانات" var="transItem"
 						rowIndexVar="rowIndex">
 
-						<p:column style="text-align: center;"
-							headerText="رقم" width="5%">
+						<p:column style="text-align: center;" headerText="رقم" width="5%">
 							<h:outputText value="#{rowIndex+1}" />
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText="اسم الصنف" width="20%">
+						<p:column style="text-align: center;" headerText="اسم الصنف"
+							width="20%">
 							<h:outputText
 								value="#{transItem.articleCode} - #{transItem.articleName}"></h:outputText>
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText="الرمز" width="10%">
+						<p:column style="text-align: center;" headerText="الرمز"
+							width="10%">
 							<h:outputText value="#{transItem.serialNumber}" />
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText="الكمية" width="5%">
+						<p:column style="text-align: center;" headerText="الكمية"
+							width="5%">
 							<h:outputText value="#{transItem.qty}" />
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText="من الموظف " width="20%">
+						<p:column style="text-align: center;" headerText="من الموظف "
+							width="20%">
 							<h:outputText value="#{transItem.fromUserName}" />
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText=" الي الموظف" width="20%">
+						<p:column style="text-align: center;" headerText=" الي الموظف"
+							width="20%">
 							<h:outputText value="#{transItem.toUserName}" />
 						</p:column>
-						<p:column style="text-align: center;"
-							headerText="الملاحظات" width="10%">
+						<p:column style="text-align: center;" headerText="الملاحظات"
+							width="10%">
 							<h:outputText value="#{transItem.notes}" />
 						</p:column>
 						<p:column style="text-align: center;"

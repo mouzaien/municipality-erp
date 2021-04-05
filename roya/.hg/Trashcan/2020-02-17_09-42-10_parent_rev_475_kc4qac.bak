@@ -1,0 +1,163 @@
+diff --git a/src/com/bkeryah/dao/CommonDao.java b/src/com/bkeryah/dao/CommonDao.java
+--- a/src/com/bkeryah/dao/CommonDao.java
++++ b/src/com/bkeryah/dao/CommonDao.java
+@@ -5159,6 +5159,7 @@
+ 		List<ContractsFees> list = new ArrayList<ContractsFees>();
+ 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+ 		criteria.add(Restrictions.eq("contractId", contractId));
++		criteria.addOrder(Order.asc("id"));
+ 		list = criteria.list();
+ 		return list;
+ 	}
+@@ -5271,4 +5272,21 @@
+ 		return list;
+ 	}
+ 
++	@Override
++	@Transactional
++	public PayLicBills getContInvBill(ContractsFees contrFee) {
++		try {
++			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
++			criteria.add(Restrictions.eq("licenceNumber", contrFee.getContractId()));
++			criteria.add(Restrictions.eq("licenceType", "I"));
++			criteria.add(Restrictions.eq("billNumber", contrFee.getOldFactId()));
++			List list = criteria.list();
++			if (list != null && list.size() > 0)
++				return (PayLicBills) list.get(0);
++			else
++				return null;
++		} catch (Exception ex) {
++			return null;
++		}
++	}
+ }
+diff --git a/src/com/bkeryah/dao/ICommonDao.java b/src/com/bkeryah/dao/ICommonDao.java
+--- a/src/com/bkeryah/dao/ICommonDao.java
++++ b/src/com/bkeryah/dao/ICommonDao.java
+@@ -1193,4 +1193,6 @@
+ 	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo);
+ 
+ 	public List<User> getAllEmployeesByManager(Integer managerId);
++
++	PayLicBills getContInvBill(ContractsFees contrFee);
+ }
+diff --git a/src/com/bkeryah/entities/investment/ContractsFees.java b/src/com/bkeryah/entities/investment/ContractsFees.java
+--- a/src/com/bkeryah/entities/investment/ContractsFees.java
++++ b/src/com/bkeryah/entities/investment/ContractsFees.java
+@@ -49,6 +49,9 @@
+ 	@Transient
+ 	private boolean delete = false;
+ 
++	@Transient
++	private String oldFactId;// 
++	
+ 	public Integer getId() {
+ 		return id;
+ 	}
+@@ -165,4 +168,12 @@
+ 		this.delete = delete;
+ 	}
+ 
++	public String getOldFactId() {
++		return oldFactId;
++	}
++
++	public void setOldFactId(String oldFactId) {
++		this.oldFactId = oldFactId;
++	}
++
+ }
+\ No newline at end of file
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -379,6 +379,7 @@
+ 		oldDiscountDuration = 0;
+ 		updateFeesRenewableState(-1);
+ 		for (ContractsFees fees : contractsFeesList) {
++			fees.setOldFactId(fees.getFactId());
+ 			if (fees.getDiscountduration() != null)
+ 				oldDiscountDuration += fees.getDiscountduration();
+ 		}
+@@ -725,6 +726,10 @@
+ 	}
+ 
+ 	public void checkedFeesIncremint(ContractsFees contFees) {
+-
++		if(contFees.isCheckfees()){
++			checkedFees++;
++		}else{
++			checkedFees--;
++		}
+ 		if (contFees.getStatus().equals(2)) {
+ 			if (contFees.isCheckfees() && contFees.getStatus().equals(2)) {
+@@ -729,5 +734,5 @@
+ 		if (contFees.getStatus().equals(2)) {
+ 			if (contFees.isCheckfees() && contFees.getStatus().equals(2)) {
+-				checkedFees++;
++				//checkedFees++;
+ 				renewBill = true;
+ 			} else {
+@@ -732,6 +737,6 @@
+ 				renewBill = true;
+ 			} else {
+-				checkedFees--;
++				//checkedFees--;
+ 				renewBill = false;
+ 			}
+ 		}
+@@ -1185,7 +1190,7 @@
+ 	}
+ 
+ 	public void updateFeesObject(ContractsFees feeaItem) {
+-		dataAccessService.updateObject(feeaItem);
++		dataAccessService.updateContrFee(feeaItem);
+ 
+ 	}
+ 
+diff --git a/src/com/bkeryah/service/DataAccessService.java b/src/com/bkeryah/service/DataAccessService.java
+--- a/src/com/bkeryah/service/DataAccessService.java
++++ b/src/com/bkeryah/service/DataAccessService.java
+@@ -10088,7 +10088,32 @@
+ 			}
+ 		} catch (Exception ex) {
+ 			ex.printStackTrace();
+-			System.out.println("Error: >>>deleting not complete...!");
++
++		}
++	}
++	
++	@Override
++	@Transactional
++	public void updateContrFee(ContractsFees contrFee) {
++		try {
++			PayLicBills contrFeeBill = null;
++			if (contrFee.getFactId() != null && contrFee.getFactId().length() > 0)
++				contrFeeBill = (PayLicBills) commonDao.findEntityById(PayLicBills.class,
++						Integer.parseInt(contrFee.getFactId()));
++
++			if (contrFeeBill != null) {
++				contrFeeBill.setLicenceNumber(contrFee.getContractId());
++				updateObject(contrFeeBill);
++			} else {
++				contrFeeBill = contrFeeBill = (PayLicBills) commonDao.findEntityById(PayLicBills.class,
++						Integer.parseInt(contrFee.getOldFactId()));
++				if (contrFeeBill != null)
++					updateObject(contrFeeBill);
++			}
++			updateObject(contrFee);
++
++		} catch (Exception ex) {
++			ex.printStackTrace();
+ 
+ 		}
+ 	}
+diff --git a/src/com/bkeryah/service/IDataAccessService.java b/src/com/bkeryah/service/IDataAccessService.java
+--- a/src/com/bkeryah/service/IDataAccessService.java
++++ b/src/com/bkeryah/service/IDataAccessService.java
+@@ -2045,4 +2045,5 @@
+ 
+ 	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+ 			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
++	public void updateContrFee(ContractsFees contrFee);
+ }

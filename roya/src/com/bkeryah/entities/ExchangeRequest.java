@@ -48,6 +48,13 @@ public class ExchangeRequest {
 	private Integer stockNo;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "exchangeRequest", cascade = CascadeType.ALL)
 	private List<ExchangeRequestDetails> exchangeRequestDetailsList;
+	
+	@Column(name = "DEPT_ID")
+	private Integer deptId;
+	// 1 personal 2 for dept // dept manager 3ohad
+	@Column(name = "FOR_DEPT")
+	private Integer forDept;
+	
 	@Transient
 	private ArcUsers arcUser;
 	@Transient
@@ -171,5 +178,21 @@ public class ExchangeRequest {
 
 	public void setStockNo(Integer stockNo) {
 		this.stockNo = stockNo;
+	}
+
+	public Integer getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
+	}
+
+	public Integer getForDept() {
+		return forDept;
+	}
+
+	public void setForDept(Integer forDept) {
+		this.forDept = forDept;
 	}
 }

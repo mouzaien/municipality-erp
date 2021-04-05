@@ -1,0 +1,130 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -596,7 +596,6 @@
+ 		String oldFeesHDueDate = new String();
+ 		try {
+ 			contractsFeesList = new ArrayList<ContractsFees>();
+-			fees = new ContractsFees();
+ 			for (int i = 1; i <= totalInstallmentCount; i++) {
+ 				fees = new ContractsFees();
+ 				fees.setOldFees(contractDirect.getOldPayedFees());
+@@ -600,15 +599,20 @@
+ 			for (int i = 1; i <= totalInstallmentCount; i++) {
+ 				fees = new ContractsFees();
+ 				fees.setOldFees(contractDirect.getOldPayedFees());
+-				// fees.setDiscountduration(discountDuration);
+-
+-				// 0 => total discount < installment
+-				// 1 => total discount > installment
+-				// if ((oldInstallment <= 0 || i > oldInstallment)) {
+-				// fee is not payed
+-				if ((i == 1 || (i - contractDirect.getOldPayedFees()) <= (installmentNum)) && installmentNum > 0) {
+-					//
+-
++				// fees payed
++				if (i <= contractDirect.getOldPayedFees()) {
++					fees.setStatus(3);
++				
++				}else if ((i - contractDirect.getOldPayedFees()) <= (installmentNum)) {
++					// fee factured
++						fees.setStatus(2);
++					
++					count++;
++				} else {
++					//fees not factured
++					fees.setStatus(1);
++				}
++				if (fees.getStatus().equals(3) || fees.getStatus().equals(2)) {
+ 					discountStatus = calculateFeesDiscount(fees);
+ 					discountRemainder = feesDiscountDuration(fees, discountStatus, discountRemainder, count);
+ 					fees.setOldFees(fees.getOldFees() + 1);
+@@ -612,12 +616,6 @@
+ 					discountStatus = calculateFeesDiscount(fees);
+ 					discountRemainder = feesDiscountDuration(fees, discountStatus, discountRemainder, count);
+ 					fees.setOldFees(fees.getOldFees() + 1);
+-
+-					if (i <= contractDirect.getOldPayedFees()) {
+-						fees.setStatus(3);
+-					} else {
+-						fees.setStatus(2);
+-						contractDirect.setTotalBillValue(contractDirect.getTotalBillValue()
+-								+ contractDirect.getAnnualRent() - fees.getDiscountAmount());
+-					}
++					contractDirect.setTotalBillValue(contractDirect.getTotalBillValue() + contractDirect.getAnnualRent()
++							- fees.getDiscountAmount());
+ 					count++;
+@@ -623,5 +621,3 @@
+ 					count++;
+-				} else {
+-					fees.setStatus(1);
+ 				}
+ 
+@@ -626,13 +622,5 @@
+ 				}
+ 
+-				// }
+-				//
+-				//
+-				// else {
+-				// if (i <= oldInstallment) {
+-				// fees.setStatus(3);
+-				// }
+-				// }
+ 				contractsFeesList.add(fees);
+ 				oldFeesHDueDate = setDueFeesDates(fees, dueHDate, oldFeesHDueDate, i);
+ 
+@@ -977,8 +965,8 @@
+ 		contractSubcategoryList = dataAccessService
+ 				.loadSuCategoryByMainCategoryId(selectesContract.getContractMaincatgId());
+ 		feesList = dataAccessService.getContractFessListByContractId(selectesContract.getId());
+-		if (feesList != null && feesList.size() > 0)
+-			contractDirect.setOldPayedFees(feesList.get(feesList.size() - 1).getOldFees());
++//		if (feesList != null && feesList.size() > 0)
++//			contractDirect.setOldPayedFees(feesList.get(feesList.size() - 1).getOldFees());
+ 		calculateInstallments();
+ 		if (contractDirect.getStartDate() != null)
+ 			oldStartdate = contractDirect.getStartDate();
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -376,13 +376,6 @@
+ 								<h:outputLabel value="#{rowIndex+1}" />
+ 							</p:column>
+ 							
+-							<p:column id="idcol11" headerText="رقم العيييقد" sortable="true"
+-								sortBy="#{userItem.oldPayedFees}"
+-								filterBy="#{userItem.oldPayedFees}" filterMatchMode="contains"
+-								width="7%" style="text-align: center;">
+-								<h:outputText value="#{userItem.oldPayedFees}"></h:outputText>
+-
+-							</p:column>
+ 							
+ 							<p:column id="idcol" headerText="رقم العقد" sortable="true"
+ 								sortBy="#{userItem.contractNum}"
+@@ -478,7 +471,6 @@
+ 							<p:column style="white-space: nowrap;text-align: center;"
+ 								headerText="التفاصيل" width="6%">
+ 								<p:commandButton oncomplete="PF('addDialog').show();"
+-									action="#{contractDirectBean.loadContract}" process="@this"
+-									icon="ui-icon-search" update="includeform:addPG">
++									icon="ui-icon-search" >
+ <!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+ <!-- 										target="#{contractDirectBean.contractDirect}" /> -->
+@@ -483,6 +475,6 @@
+ <!-- 									<f:setPropertyActionListener value="#{userItem}" -->
+ <!-- 										target="#{contractDirectBean.contractDirect}" /> -->
+-									<p:ajax process="@this"
++									<p:ajax process="@this" update="includeform:addPG"
+ 										listener="#{contractDirectBean.loadSuCategoryByMainCategoryId(userItem)}" />
+ 								</p:commandButton>
+ 							</p:column>
+@@ -998,7 +990,7 @@
+ 											id="yeanumber" style="width: 100% "
+ 											value="#{contractDirectBean.installmentNum}">
+ 											<!--  disabled="#{!contractDirectBean.addMode}" -->
+-											<p:ajax update="totalLabel,disc_duration"
++											<p:ajax update="totalLabel,disc_duration" process="@this"
+ 												listener="#{contractDirectBean.calculateDiscount}" />
+ 										</p:inputNumber>
+ 									</div>

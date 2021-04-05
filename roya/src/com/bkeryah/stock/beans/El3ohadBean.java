@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
 import com.bkeryah.entities.WhsWarehouses;
+import com.bkeryah.model.User;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.Utils;
@@ -28,15 +30,28 @@ public class El3ohadBean {
 	private ArcUsers currentUser;
 	private Integer employerId;
 	private List<Article> articleList = new ArrayList<Article>();
-	private List<Article> articleFilterdList ;
+	private List<Article> articleFilterdList;
 	private Integer artId;
+	private Article art;
+	private Integer forDept;
+	private boolean showForDept = false;
+	private List<User> employers;
 
 	@PostConstruct
 	public void init() {
 		currentUser = Utils.findCurrentUser();
 		employerId = currentUser.getUserId();
-		articleList = dataAccessService.find3ohadByUserId(employerId);
+		articleList = dataAccessService.find3ohadByUserId(employerId, -1);
+		employers = new ArrayList<>();
+		employers = dataAccessService.getAllEmployeesByManager(employerId);
+		forDept = 1;
+		if (employers != null && employers.size() > 0) {
+			// for dept 3ohad
+			showForDept = true;
+			articleList = articleList.stream().filter(i -> i.getForDept() != 2).collect(Collectors.toList());
 
+		}
+		System.out.println(4 + 5 + 'g');
 	}
 
 	public String getStoreName(Integer str) {
@@ -45,6 +60,16 @@ public class El3ohadBean {
 		if (warehouses != null)
 			return warehouses.getStoreName();
 		return srtName;
+	}
+
+	public String filter() {
+		if (forDept == 1) {
+			articleList = dataAccessService.find3ohadByUserId(employerId, -1);
+			articleList = articleList.stream().filter(i -> i.getForDept() != 2).collect(Collectors.toList());
+		} else {
+			articleList = dataAccessService.find3ohadByUserId(-1, currentUser.getDeptId());
+		}
+		return "";
 	}
 
 	// method for
@@ -57,9 +82,18 @@ public class El3ohadBean {
 		// articleFilterdList);
 		// return "";
 		// }
+		parameters.put("masterId", -1);
 		parameters.put("STRNO", -1);
 		parameters.put("artId", -1);
-		parameters.put("userId", employerId);
+		parameters.put("forDept", forDept);
+		if (forDept == 1) {
+			parameters.put("mngDeptId", -1);
+			parameters.put("userId", employerId);
+		} else {
+			parameters.put("mngDeptId", currentUser.getDeptId());
+			parameters.put("userId", 0);
+		}
+
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 
@@ -68,9 +102,18 @@ public class El3ohadBean {
 	public String printProtectionCardOneArt() {
 		String reportName = "/reports/protection_A3ohad.jasper";
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("artId", artId);
+		parameters.put("artId", art.getId());
 		parameters.put("userId", employerId);
 		parameters.put("STRNO", -1);
+		parameters.put("masterId", art.getExchMasterId());
+		parameters.put("forDept", forDept);
+		if (forDept == 1) {
+			parameters.put("mngDeptId", -1);
+			parameters.put("userId", employerId);
+		} else {
+			parameters.put("mngDeptId", currentUser.getDeptId());
+			parameters.put("userId", 0);
+		}
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
@@ -121,6 +164,38 @@ public class El3ohadBean {
 
 	public void setArtId(Integer artId) {
 		this.artId = artId;
+	}
+
+	public Article getArt() {
+		return art;
+	}
+
+	public void setArt(Article art) {
+		this.art = art;
+	}
+
+	public Integer getForDept() {
+		return forDept;
+	}
+
+	public void setForDept(Integer forDept) {
+		this.forDept = forDept;
+	}
+
+	public boolean isShowForDept() {
+		return showForDept;
+	}
+
+	public void setShowForDept(boolean showForDept) {
+		this.showForDept = showForDept;
+	}
+
+	public List<User> getEmployers() {
+		return employers;
+	}
+
+	public void setEmployers(List<User> employers) {
+		this.employers = employers;
 	}
 
 }

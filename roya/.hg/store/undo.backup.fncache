@@ -68,6 +68,7 @@ data/WebContent/pages/bower_components/flot/examples/ajax/data-usa-gdp-growth.js
 data/src/com/bkeryah/model/ReportParameters.java.i
 data/src/com/bkeryah/entities/WrkRefrentionalSetting.java.i
 data/WebContent/store/exchangeRequestView.xhtml.i
+data/WebContent/pages/bower_components/bootstrap/less/navbar.less.i
 data/WebContent/pages/bower_components/datatables/media/css/jquery.dataTables.min.css.i
 data/src/com/bkeryah/bean/RecordMapClass.java.i
 data/WebContent/pages/bower_components/flot/jquery.flot.js.i
@@ -103,7 +104,6 @@ data/target/classes/SessionListener.class.i
 data/WebContent/pages/bower_components/morrisjs/morris.css.i
 data/src/com/bkeryah/hr/managedBeans/CharterPerformanceBean.java.i
 data/src/com/bkeryah/managedBean/setting/MangDepartments.java.i
-data/target/classes/com/bkeryah/entities/investment/SiteType.class.i
 data/WebContent/investment/select_tender.xhtml.i
 data/target/classes/com/bkeryah/entities/investment/IntroContract.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/bek-tit_05_05.gif.i
@@ -132,7 +132,6 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/javax.servlet-api-3.1.0.j
 data/WebContent/dataTableCss3/css/images/ui-bg_flat_75_ffffff_40x100.png.i
 data/WebContent/dataTableCss3/css/images/forward_disabled.html.i
 data/WebContent/pages/bower_components/bootstrap/js/button.js.i
-data/target/classes/com/bkeryah/entities/Test.class.i
 data/WebContent/pages/models/contentModel.xhtml.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/index.html.i
 data/WebContent/resources/css/myStyle.css.i
@@ -176,11 +175,12 @@ data/WebContent/pages/bower_components/flot/jquery.flot.selection.js.i
 data/target/classes/com/bkeryah/entities/ItemUnite.class.i
 data/WebContent/pages/models/action/jsp-resources/ojdbc14.jar.d
 data/WebContent/pages/bower_components/jquery/src/var/indexOf.js.i
-data/target/classes/com/bkeryah/entities/BillIssueRubish.class.i
+data/target/classes/com/bkeryah/bean/ArcAttachmentClass.class.i
 data/WebContent/dataTableCss3/datatables/1.10.10/images/sort_both.png.i
 data/src/com/bkeryah/managedBean/ArchiveBean.java.i
 data/target/classes/com/bkeryah/entities/Procurement.class.i
 data/WebContent/resources/serenity-layout/css/layout-bluegrey.css.i
+data/WebContent/pages/bower_components/flot/examples/axes-time-zones/tz/solar89.i
 data/WebContent/store/el3ohad.xhtml.i
 data/WebContent/resources/css/PFDataTableCustomize.css.i
 data/WebContent/pages/bower_components/jquery/bower.json.i
@@ -321,6 +321,7 @@ data/WebContent/resources/jqueryCalendarsIslam/jquery.calendars.min.js.i
 data/WebContent/pages/bower_components/flot/jquery.flot.crosshair.js.i
 data/target/classes/com/bkeryah/entities/WrkComment.java.orig.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/bean/LoginBean.class.i
+data/WebContent/investment/contract_message.xhtml.i
 data/src/com/bkeryah/dao/ICommonDao.java.i
 data/src/com/bkeryah/entities/BillIssueCash.java.i
 data/target/classes/com/bkeryah/bean/WrkCommentsClass.class.i
@@ -370,7 +371,7 @@ data/WebContent/pages/bower_components/bootstrap/less/mixins/reset-filter.less.i
 data/WebContent/pages/dist/css/timeline.css.i
 data/WebContent/pages/bower_components/datatables-plugins/api/fnFilterAll.js.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/plugins/font-awesome/bordered-pulled.less.i
-data/target/classes/com/bkeryah/entities/StockEntryMaster.class.i
+data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/ArabicFormatFactory.class.i
 data/src/com/bkeryah/hr/entities/Sys035.java.i
 data/WebContent/pages/bower_components/bootstrap/nuget/bootstrap.less.nuspec.i
 data/target/classes/com/bkeryah/fng/beans/FngMonitoringBean.class.i
@@ -484,7 +485,7 @@ data/WebContent/pages/bower_components/flot/examples/ajax/data-eu-gdp-growth-2.j
 data/WebContent/pages/bower_components/datatables-responsive/docs/option/responsive.details.type.xml.i
 data/WebContent/pages/bower_components/jquery/src/css/var/isHidden.js.i
 data/target/classes/com/bkeryah/hr/entities/HrsCompactRating.class.i
-data/WebContent/pages/models/sp_autorization_model_view.xhtml.i
+data/WebContent/pages/bower_components/datatables-plugins/api/fnFindCellRowIndexes.js.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/index.html.i
 data/WebContent/WEB-INF/lib/httpcore-4.3.3.jar.i
 data/src/com/bkeryah/bean/Sub_menu_class.java.i
@@ -501,6 +502,7 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/ArcAttachmentClas
 data/src/com/bkeryah/entities/ArcRecordLinkingId.java.i
 data/target/classes/utilities/FtpTransferFile.class.i
 data/target/classes/com/bkeryah/penalties/NotifFinesMaster.class.i
+data/src/com/bkeryah/stock/beans/SearchReturnBean.java.i
 data/WebContent/dropDownMenuCss/css/bootstrap/fonts/font-awesome/fontawesome-webfont.svg.i
 data/WebContent/pages/bower_components/flot/jquery.colorhelpers.js.i
 data/WebContent/pages/bower_components/datatables-plugins/integration/font-awesome/datatables.html.i
@@ -603,7 +605,7 @@ data/src/com/bkeryah/entities/ItemUnite.java.i
 data/WebContent/pages/bower_components/jquery/dist/jquery.min.map.i
 data/WebContent/resources/images/loadingT.gif.i
 data/target/classes/utilities/ShowImageServlrt.class.i
-data/src/com/bkeryah/managedBean/FineSetupConverter.java.i
+data/WebContent/reports/penalities.jrxml.i
 data/WebContent/resources/serenity-layout/images/landing/icon-responsive.svg.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/maven-monitor-2.0.6.jar.i
 data/src/com/bkeryah/managedBean/setting/LicVisitsTypesBean.java.i
@@ -672,7 +674,8 @@ data/WebContent/resources/serenity-layout/images/special/sideBar1.jpeg.i
 data/WebContent/reports/announcement.jrxml.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/date-dd-MMM-yyyy.js.i
 data/WebContent/resources/serenity-layout/images/special/bg-storm-dark-horizontal.png.i
-data/WebContent/pages/bower_components/datatables-plugins/api/fnFindCellRowIndexes.js.i
+data/src/com/bkeryah/bean/Abcd2.java.i
+data/WebContent/pages/models/sp_autorization_model_view.xhtml.i
 data/WebContent/reports/penalityList.jasper.i
 data/target/classes/com/bkeryah/dao/StockServiceDao.class.i
 data/WebContent/pages/bower_components/bootstrap/less/labels.less.i
@@ -685,6 +688,7 @@ data/WebContent/store/storeDashboard.xhtml.i
 data/src/com/bkeryah/licences/beans/FineReboundBean.java.i
 data/target/classes/com/bkeryah/fng/entities/FngEmpAbsent.class.i
 data/src/com/bkeryah/hr/managedBeans/CommentBean.java.i
+data/WebContent/resources/serenity-layout/images/landing/icon-cleancode.svg.i
 data/target/classes/com/bkeryah/dao/CommonDao$2.class.i
 data/WebContent/resources/serenity-layout/fonts/otf/Tajawal-Black.otf.i
 data/target/classes/com/bkeryah/entities/HrsSalaryScaleId.class.i
@@ -702,6 +706,7 @@ data/WebContent/reports/penalities_list.jrxml.i
 data/WebContent/dataTableCss3/css/library/bootstrap-select.css.i
 data/WebContent/reports/compact_performance.jrxml.i
 data/target/classes/com/bkeryah/entities/WrkApplicationExtension.class.i
+data/src/com/bkeryah/stock/beans/SearchTransferOwnershipBean.java.i
 data/WebContent/reports/letter_view.jrxml.i
 data/WebContent/pages/bower_components/bootstrap/less/dropdowns.less.i
 data/target/classes/com/bkeryah/entities/StockOutDetails.class.i
@@ -727,7 +732,6 @@ data/WebContent/WEB-INF/lib/primefaces-6.1.jar.d
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/table-row.less.i
 data/src/com/bkeryah/managedBean/setting/WrCommentBean.java.i
 data/WebContent/WEB-INF/lib/primefaces-6.1.jar.i
-data/target/classes/com/bkeryah/entities/InventoryMaster.class.i
 data/WebContent/pages/bower_components/holderjs/holder.js.i
 data/WebContent/resources/serenity-layout/images/special/bg-cityscape-light-horizontal.png.d
 data/WebContent/reports/letter_view_blank.jrxml.i
@@ -739,7 +743,7 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/maven-artifact-2.0.6.jar.
 data/WebContent/reports/sub_compact_performance_goals.jrxml.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/wagon-ssh-common-1.0-beta-2.jar.i
 data/WebContent/setting/main_categories.xhtml.i
-data/WebContent/pages/bower_components/jquery/src/selector.js.i
+data/src/com/bkeryah/entities/SubMenu.java.i
 data/WebContent/pages/bower_components/datatables-plugins/api/fnGetColumnData.js.i
 data/WebContent/reports/sub_exchange_report2_A4_Model.jasper.i
 data/src/com/bkeryah/hr/managedBeans/Employer.java.i
@@ -767,6 +771,7 @@ data/WebContent/dropDownMenuCss/js/vendor/filterlist.min.js.i
 data/WebContent/pages/bower_components/bootstrap/less/breadcrumbs.less.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/forms.less.i
 data/WebContent/dropDownMenuCss/css/bootstrap/fonts/font-awesome/fontawesome-webfont.ttf.i
+data/WebContent/store/searchTransferOwnerShip.xhtml.i
 data/WebContent/resources/serenity-layout/images/special/bg-reflection-dark-horizontal.png.d
 data/WebContent/resources/serenity-layout/images/exception/icon-taxi-yellow.svg.i
 data/target/classes/com/bkeryah/managedBean/hr/OvertimeBean.class.i
@@ -905,6 +910,7 @@ data/src/com/bkeryah/testssss/LogTest.java.i
 data/WebContent/resources/images/setting-icon.png.i
 data/WebContent/pages/bower_components/morrisjs/spec/lib/bar/colours.coffee.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/rectypes.png.i
+data/WebContent/pages/bower_components/bootstrap/js/transition.js.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Georgian.lang.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/userMenues.xhtml.i
 data/WebContent/resources/primefaces-serenity-purple/theme.css.i
@@ -944,9 +950,11 @@ data/WebContent/pages/bower_components/datatables-plugins/integration/foundation
 data/WebContent/pages/bower_components/morrisjs/Gruntfile.js.i
 data/src/com/bkeryah/managedBean/ChargingBean.java.i
 data/WebContent/pages/bower_components/flot/examples/navigate/arrow-up.gif.i
+data/.hgtags.i
 data/WebContent/WEB-INF/lib/spring-security-config-4.0.3.RELEASE.jar.d
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/search.png.i
 data/src/com/bkeryah/hr/managedBeans/HrsSalaryScaleBean.java.i
+data/src/com/bkeryah/bean/StoreArtsRequestModel.java.i
 data/target/classes/com/bkeryah/dao/BkrptService.class.i
 data/WebContent/pages/bower_components/flot/examples/axes-time-zones/index.html.i
 data/src/utilities/SynchronousHelper.java.i
@@ -957,6 +965,7 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/httpclient-4.3.6.jar.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Gujarati.lang.i
 data/WebContent/pages/bower_components/datatables/media/css/dataTables.jqueryui.css.i
 data/WebContent/pages/bower_components/flot/examples/ajax/data-eu-gdp-growth.json.i
+data/WebContent/reports/search_article - Copy.jrxml.i
 data/WebContent/pages/bower_components/holderjs/.jshintrc.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/httpclient-4.3.6.jar.d
 data/src/com/bkeryah/penalties/NotifFinesDetails.java.i
@@ -1000,6 +1009,7 @@ data/WebContent/penalties/penalties.xhtml.i
 data/WebContent/pages/bower_components/jquery/src/var/push.js.i
 data/WebContent/pages/js/morris-data.js.i
 data/WebContent/pages/bower_components/bootstrap/less/mixins/background-variant.less.i
+data/WebContent/pages/SaveToFile.jsp.i
 data/WebContent/dev/chargingView.xhtml.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/setting-icon.png.i
 data/WebContent/dataTableCss3/css/images/ui-icons_cd0a0a_256x240.png.i
@@ -1047,7 +1057,7 @@ data/WebContent/setting/wrkComment.xhtml.i
 data/src/com/bkeryah/entities/Procurement.java.i
 data/WebContent/setting/absenceStatus.xhtml.i
 data/WebContent/pages/bower_components/flot/examples/axes-time/index.html.i
-data/src/com/bkeryah/hr/managedBeans/ContractorJobBean.java.i
+data/WebContent/store/searchReturnStore.xhtml.i
 data/src/AA.java.i
 data/WebContent/resources/serenity-layout/images/exception/icon-donut-yellow.svg.i
 data/WebContent/pages/bower_components/jquery/src/css/swap.js.i
@@ -1067,8 +1077,10 @@ data/WebContent/reports/rep001_subreport2.jasper.i
 data/WebContent/pages/bower_components/datatables-responsive/examples/initialisation/new.xml.i
 data/WebContent/pages/bower_components/flot/examples/visitors/index.html.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/size.less.i
+data/WebContent/resources/images/logo_methneb.png.i
 data/target/classes/com/bkeryah/managedBean/hr/LoanBean.class.i
 data/WebContent/resources/images/footer-bg_12.gif.i
+data/src/com/bkeryah/managedBean/FineSetupConverter.java.i
 data/src/com/bkeryah/hr/managedBeans/EmployerBean.java.i
 data/target/classes/com/bkeryah/entities/ProjectContract.class.i
 data/WebContent/pages/bower_components/bootstrap/less/code.less.i
@@ -1084,7 +1096,7 @@ data/src/com/bkeryah/entities/Article.java.i
 data/WebContent/shared/buyDate.xhtml.i
 data/WebContent/pages/model1.xhtml.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/fonts/cocon.otf.i
-data/WebContent/resources/primefaces-serenity-blue/theme.scss.i
+data/target/classes/com/bkeryah/entities/Test.class.i
 data/WebContent/dataTableCss2/fonts/glyphicons-halflings-regular.svg.i
 data/target/classes/utilities/MyUserDetailsService.class.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/image.less.i
@@ -1122,7 +1134,7 @@ data/WebContent/dataTableCss2/fonts/less/core.less.i
 data/target/classes/com/bkeryah/licences/BkServicesFactory.class.i
 data/WebContent/dataTableCss3/css/images/back_disabled.html.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/ArcApplicationTypeClass.class.i
-data/target/classes/com/bkeryah/bean/ArcAttachmentClass.class.i
+data/target/classes/com/bkeryah/entities/BillIssueRubish.class.i
 data/WebContent/pages/bower_components/jquery/src/queue/delay.js.i
 data/WebContent/resources/css/ds.demo.css.i
 data/WebContent/pages/bower_components/flot/examples/canvas/index.html.i
@@ -1158,7 +1170,6 @@ data/src/com/bkeryah/entities/licences/LicVisitsTypes.java.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/types/executable.png.i
 data/src/com/bkeryah/hr/entities/HrsSalary.java.i
 data/src/com/bkeryah/managedBean/investment/NewsConverter.java.i
-data/src/com/bkeryah/entities/HealthLicenceJob.java.i
 data/target/classes/com/bkeryah/fuel/entities/Car.class.i
 data/target/classes/com/bkeryah/bean/WrkArchiveRecepentClass.class.i
 data/WebContent/pages/bower_components/datatables/media/js/jquery.dataTables.js.i
@@ -1200,7 +1211,6 @@ data/src/com/bkeryah/entities/FineReboundMaster.java.i
 data/src/com/bkeryah/dao/CommonDao.java.i
 data/target/classes/com/bkeryah/hr/entities/Sys051.class.i
 data/WebContent/pages/bower_components/datatables/media/css/jquery.dataTables_themeroller.css.i
-data/target/classes/com/bkeryah/managedBean/investment/ClauseConverter.class.i
 data/WebContent/pages/bower_components/jquery/src/dimensions.js.i
 data/WebContent/reports/inventory.jrxml.i
 data/WebContent/resources/serenity-layout/images/dashboard/usercard.png.i
@@ -1281,7 +1291,6 @@ data/target/classes/com/bkeryah/entities/ArcUsers.class.i
 data/WebContent/pages/bower_components/bootstrap/nuget/bootstrap.nuspec.i
 data/WebContent/resources/images/important.gif.i
 data/WebContent/pages/models/letter_tab.xhtml.i
-data/target/classes/com/bkeryah/shared/beans/BeneficiaryDataBean.class.i
 data/src/com/bkeryah/entities/ArcPeoplePic.java.i
 data/target/classes/com/bkeryah/shared/beans/ArcScenarioManager.class.i
 data/WebContent/pages/bower_components/jquery/src/ajax/jsonp.js.i
@@ -1343,7 +1352,7 @@ data/src/com/bkeryah/hr/entities/HrsSalaryScale.java.i
 data/WebContent/investment/sub_category.xhtml.i
 data/WebContent/pages/action/jsp-resources/classes12.jar.i
 data/target/classes/com/bkeryah/entities/ArcUsersExtension.class.i
-data/target/classes/com/bkeryah/bean/LastRecordActionClass.class.i
+data/target/classes/com/bkeryah/entities/InventoryMaster.class.i
 data/target/classes/com/bkeryah/hr/entities/HrsSalaryScaleOrder.class.i
 data/WebContent/pages/action/jsp-resources/classes12.jar.d
 data/target/classes/com/bkeryah/entities/investment/Clause.class.i
@@ -1356,7 +1365,7 @@ data/WebContent/resources/images/ld001.gif.i
 data/target/classes/com/bkeryah/entities/HrScenario.class.i
 data/WebContent/pages/bower_components/datatables/media/js/dataTables.foundation.min.js.i
 data/WebContent/pages/SearchRecord.xhtml.i
-data/WebContent/pages/models/userFiles.xhtml.i
+data/WebContent/pages/bower_components/bootstrap/less/mixins/nav-divider.less.i
 data/WebContent/pages/bower_components/bootstrap/js/tab.js.i
 data/WebContent/setting/emps_list.xhtml.i
 data/WebContent/pages/bower_components/bootstrap/dist/css/bootstrap-theme.min.css.i
@@ -1393,6 +1402,7 @@ data/src/com/bkeryah/managedBean/param/ContractsParamBean.java.i
 data/target/classes/com/bkeryah/entities/HrsSigns.class.i
 data/WebContent/WEB-INF/lib/joda-time-2.7.jar.i
 data/WebContent/WEB-INF/lib/spring-binding-2.4.2.RELEASE.jar.d
+data/WebContent/resources/js/bootstrap-arabic.js.i
 data/WebContent/WEB-INF/lib/all-themes-1.0.10.jar.d
 data/WebContent/pages/bower_components/jquery/src/ajax/parseJSON.js.i
 data/src/com/bkeryah/entities/ArcUsers.java.i
@@ -1415,7 +1425,7 @@ data/WebContent/pages/bower_components/holderjs/src/ondomready.js.i
 data/WebContent/pages/bower_components/bootstrap/js/.jshintrc.i
 data/WebContent/pages/bower_components/flot/examples/axes-time-zones/tz/southamerica.i
 data/WebContent/reports/memoReceiptDetailsNew.jasper.i
-data/WebContent/resources/js/bootstrap-arabic.js.i
+data/WebContent/reports/penalities.jasper.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/date-eu.js.i
 data/target/classes/com/bkeryah/entities/WrkConfedintialRepliesId.class.i
 data/WebContent/pages/models/action/jsp-resources/commons-io-2.4.jar.d
@@ -1431,10 +1441,10 @@ data/src/com/bkeryah/entities/InventoryMaster.java.i
 data/target/classes/com/bkeryah/entities/investment/Announcement.class.i
 data/WebContent/reports/sub_compact_performance_floors_2.jasper.i
 data/WebContent/pages/bower_components/datatables-responsive/docs/option/responsive.breakpoints.xml.i
-data/WebContent/reports/test.jrxml.i
+data/WebContent/reports/normal_vacation.jrxml.i
 data/WebContent/reports/loan.jasper.i
 data/WebContent/pages/bower_components/jquery/src/ajax/xhr.js.i
-data/WebContent/pages/bower_components/morrisjs/examples/resize.html.i
+data/src/com/bkeryah/managedBean/UserClassConverter.java.i
 data/src/resources/messages.properties.i
 data/src/com/bkeryah/hr/entities/HrsSalaryScaleId.java.i
 data/target/classes/com/bkeryah/licences/ErrorExecutor.class.i
@@ -1475,7 +1485,6 @@ data/WebContent/resources/serenity-layout/css/layout-horizon.scss.i
 data/src/com/bkeryah/entities/WrkDept.java.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/resources/locale_en.properties.i
 data/WebContent/WEB-INF/lib/jboss-logging-3.3.0.Final.jar.i
-data/src/com/bkeryah/hr/managedBeans/MainManagedBean.java.i
 data/target/classes/helper/ParamClass$ParamType.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/primefaces-metroui-1.0.jar.i
 data/WebContent/pages/bower_components/flot/jquery.js.i
@@ -1503,7 +1512,7 @@ data/target/classes/com/bkeryah/entities/investment/ContractClause.class.i
 data/WebContent/resources/images/scanner-icon.png.i
 data/WebContent/pages/licences/new_building.xhtml.i
 data/WebContent/store/articlesPage.xhtml.i
-data/src/com/bkeryah/managedBean/UserClassConverter.java.i
+data/WebContent/pages/bower_components/morrisjs/examples/resize.html.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/commons-codec-1.6.jar.d
 data/src/com/bkeryah/bean/WrkLetterToClass.java.i
 data/src/com/bkeryah/entities/UserRoles.java.i
@@ -1546,7 +1555,7 @@ data/WebContent/resources/serenity-layout/images/dashboard/gradient-waters.png.d
 data/WebContent/pages/bower_components/morrisjs/examples/stacked_bars.html.i
 data/WebContent/dataTableCss2/fonts/less/icons.less.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/Main_menu_class.class.i
-data/WebContent/setting/letterFrom.xhtml.i
+data/target/classes/com/bkeryah/bean/StoreRequestModel.class.i
 data/WebContent/resources/serenity-layout/images/dashboard/gradient-waters.png.i
 data/WebContent/resources/fonts/glyphicons-halflings-regular.svg.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/thumbnails.less.i
@@ -1554,7 +1563,6 @@ data/target/classes/com/bkeryah/mails/TransactionExecutor.class.i
 data/WebContent/resources/jqueryCalendarsIslam/jquery.calendars.picker.css.i
 data/WebContent/penalties/licNationalities.xhtml.i
 data/WebContent/resources/serenity-layout/fonts/roboto-v15-latin-regular.woff.i
-data/target/classes/com/bkeryah/managedBean/TransferRecordsBean.class.i
 data/WebContent/resources/images/exit.png.i
 data/target/classes/com/bkeryah/hr/managedBeans/Employer.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/SearchRecord.xhtml.i
@@ -1707,7 +1715,7 @@ data/target/classes/com/bkeryah/bean/TrdModelClass.class.i
 data/WebContent/resources/jqueryCalendarsIslam/jquery.calendars.islamic.js.i
 data/WebContent/dataTableCss3/css/images/ui-bg_glass_65_ffffff_1x400.png.i
 data/WebContent/resources/serenity-layout/images/special/bg-panaroma-light.png.i
-data/WebContent/reports/sub_announcement.jasper.i
+data/WebContent/resources/css/bootstrap-arabic.css.i
 data/WebContent/pages/bower_components/bootstrap/less/progress-bars.less.i
 data/WebContent/pages/bower_components/bootstrap/less/panels.less.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Hindi.lang.i
@@ -1722,7 +1730,7 @@ data/WebContent/dataTableCss2/fonts/fonts/FontAwesome.otf.i
 data/WebContent/pages/bower_components/datatables-plugins/integration/bootstrap/1/dataTables.bootstrap.css.i
 data/WebContent/pages/bower_components/bootstrap/less/mixins/resize.less.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/WrkLetterFromClass.class.i
-data/WebContent/pages/SaveToFile.jsp.i
+data/target/classes/com/bkeryah/managedBean/TransferRecordsBean.class.i
 data/WebContent/pages/userSettings.xhtml.i
 data/WebContent/pages/bower_components/font-awesome/less/variables.less.i
 data/target/classes/com/bkeryah/managedBean/investment/AnnouncementBean.class.i
@@ -1841,7 +1849,6 @@ data/WebContent/resources/serenity-layout/images/login/login2-bg.jpg.i
 data/target/classes/com/bkeryah/entities/licences/LicAgents.class.i
 data/WebContent/resources/serenity-layout/images/login/login2-bg.jpg.d
 data/target/classes/com/bkeryah/hr/managedBeans/PersonalCommentBean.class.i
-data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/sign-up.png.i
 data/src/com/bkeryah/entities/HrLetterRequest.java.i
 data/WebContent/pages/bower_components/metisMenu/dist/metisMenu.min.css.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/types/Media.png.d
@@ -2100,6 +2107,7 @@ data/src/com/bkeryah/shared/beans/HijriMonth.java.i
 data/WebContent/pages/bower_components/jquery/src/ajax/parseXML.js.i
 data/WebContent/pages/bower_components/jquery/src/deprecated.js.i
 data/WebContent/pages/bower_components/morrisjs/examples/bar-no-axes.html.i
+data/WebContent/pages/models/userFiles.xhtml.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/buttons.less.i
 data/WebContent/resources/serenity-layout/css/layout-lightblue.css.i
 data/WebContent/resources/images/logoT.png.i
@@ -2115,6 +2123,7 @@ data/WebContent/pages/bower_components/datatables-plugins/.bower.json.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/contact.png.i
 data/target/classes/com/bkeryah/fuel/entities/UserCars.class.i
 data/src/com/bkeryah/penalties/LicFinesRoles.java.i
+data/target/classes/com/bkeryah/bean/EmpVac.class.i
 data/WebContent/dataTableCss2/fonts/css/font-awesome.css.i
 data/WebContent/reports/sub_exchange_report2.jrxml.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/httpcore-4.3.3.jar.d
@@ -2133,7 +2142,7 @@ data/WebContent/resources/timepicker/example.js.i
 data/src/com/bkeryah/hr/entities/HrsGeneralAppreciation.java.i
 data/WebContent/dataTableCss2/fonts/less/larger.less.i
 data/target/classes/com/bkeryah/managedBean/licences/RubbishRemoveBean.class.i
-data/target/classes/com/bkeryah/bean/StoreRequestModel.class.i
+data/WebContent/setting/letterFrom.xhtml.i
 data/WebContent/pages/bower_components/jquery/src/outro.js.i
 data/WebContent/resources/css/default.css.orig.i
 data/WebContent/investment/contract_direct.xhtml.i
@@ -2185,7 +2194,7 @@ data/src/com/bkeryah/hr/entities/HrsVacationUpdate.java.i
 data/src/com/bkeryah/entities/SysNationality.java.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Albanian.lang.i
 data/WebContent/pages/bower_components/datatables-plugins/features/alphabetSearch/dataTables.alphabetSearch.min.js.i
-data/WebContent/pages/bower_components/bootstrap/less/navbar.less.i
+data/target/classes/com/bkeryah/shared/beans/BeneficiaryDataBean.class.i
 data/WebContent/pages/Resources/reference/imgs/print.png.i
 data/src/com/bkeryah/entities/HrsTrainingPlace.java.i
 data/WebContent/pages/bower_components/flot/jquery.flot.symbol.js.i
@@ -2232,7 +2241,7 @@ data/WebContent/pages/bower_components/datatables-plugins/type-detection/date-uk
 data/target/classes/com/bkeryah/mails/VacationExecutor.class.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/mixins/tab-focus.less.i
 data/WebContent/resources/jqueryCalendarsIslam/jquery.calendars.ummalqura.js.i
-data/WebContent/pages/bower_components/flot/examples/axes-time-zones/tz/solar89.i
+data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/sign-up.png.i
 data/src/com/bkeryah/stock/beans/StockEntryBean.java.i
 data/WebContent/pages/bower_components/morrisjs/spec/viz/visual_specs.js.i
 data/WebContent/pages/bower_components/datatables-plugins/integration/bootstrap/2/dataTables.bootstrap.js.i
@@ -2242,7 +2251,7 @@ data/WebContent/resources/serenity-layout/css/layout-cyan.css.i
 data/target/classes/resources/sqlRequests.sql.i
 data/WebContent/setting/autorizationSettings.xhtml.i
 data/WebContent/reports/general_fingerprint2.jrxml.i
-data/WebContent/pages/bower_components/flot/examples/axes-time-zones/tz/antarctica.i
+data/src/com/bkeryah/dao/StockServiceDao.java.i
 data/target/classes/com/bkeryah/entities/InventoryRecord.class.i
 data/WebContent/setting/Supps_Screen.xhtml.i
 data/WebContent/pages/Resources/reference/imgs/hand.png.i
@@ -2327,7 +2336,7 @@ data/WebContent/fuel/user_cars.xhtml.i
 data/WebContent/pages/models/transfer_tab.xhtml.i
 data/WebContent/resources/primefaces-serenity-lime/theme.css.i
 data/WebContent/resources/serenity-layout/images/special/bg-panaroma-dark.png.i
-data/WebContent/pages/bower_components/datatables-plugins/api/fnFilterOnReturn.js.i
+data/WebContent/resources/images/types/rarfile.png.i
 data/WebContent/pages/bower_components/bootstrap-social/bootstrap-social.scss.i
 data/WebContent/resources/fonts/font-awesome.min.css.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/English.lang.i
@@ -2346,11 +2355,11 @@ data/WebContent/reports/standard_contract.jrxml.i
 data/WebContent/WEB-INF/lib/c3p0-0.9.2.1.jar.d
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Macedonian.lang.i
 data/target/classes/com/bkeryah/penalties/PenaltyBean.class.i
-data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/ArabicFormatFactory.class.i
+data/target/classes/com/bkeryah/entities/StockEntryMaster.class.i
 data/src/com/bkeryah/bean/EmployersOrganigram.java.i
 data/target/classes/com/bkeryah/entities/ArcRecordLinking.class.i
 data/src/com/bkeryah/hr/entities/UserVacSold.java.i
-data/WebContent/store/memoReceipt.xhtml.i
+data/src/com/bkeryah/mails/SpecialAutorisationExecutor.java.i
 data/WebContent/reports/penality.jrxml.i
 data/target/classes/com/bkeryah/dao/ICommonDao.class.i
 data/src/com/bkeryah/licences/BldLicListExecutor.java.i
@@ -2359,7 +2368,7 @@ data/WebContent/resources/css/default.css.i
 data/WebContent/reports/penalities_list.jasper.i
 data/src/com/bkeryah/licences/AbstractExecutor.java.i
 data/WebContent/js/scanner.js.i
-data/WebContent/resources/serenity-layout/images/landing/icon-cleancode.svg.i
+data/src/com/bkeryah/hr/managedBeans/MainManagedBean.java.i
 data/target/classes/com/bkeryah/bean/UserStatisticsClass.class.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Urdu.lang.i
 data/WebContent/pages/bower_components/bootstrap/less/mixins/progress-bar.less.i
@@ -2618,10 +2627,12 @@ data/src/com/bkeryah/managedBean/setting/FiscalYearBean.java.i
 data/WebContent/dataTableCss2/js/jquery.min.js.i
 data/WebContent/pages/bower_components/flot/examples/resize/index.html.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/css/bootstrap-arabic-theme.min.css.i
-data/WebContent/dropDownMenuCss/css/bootstrap/less/core/button-groups.less.i
+data/target/classes/com/bkeryah/entities/investment/SiteType.class.i
 data/src/com/bkeryah/managedBean/HomeBean.java.i
+data/WebContent/pages/bower_components/bootstrap/less/forms.less.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/com/WrkSectionClass.class.i
-data/WebContent/reports/normal_vacation.jrxml.i
+data/WebContent/reports/test.jrxml.i
+data/WebContent/store/store_temporary_receipt.xhtml.i
 data/WebContent/pages/bower_components/datatables/media/images/sort_both.png.i
 data/WebContent/pages/bower_components/flot/examples/basic-usage/index.html.i
 data/WebContent/store/transferOwnership.xhtml.i
@@ -2724,7 +2735,7 @@ data/WebContent/pages/bower_components/bootstrap/dist/fonts/glyphicons-halflings
 data/WebContent/pages/bower_components/font-awesome/less/mixins.less.i
 data/WebContent/pages/bower_components/datatables-responsive/examples/initialisation/className.xml.i
 data/WebContent/hr/charter_performance_list.xhtml.i
-data/src/com/bkeryah/dao/StockServiceDao.java.i
+data/WebContent/pages/bower_components/flot/examples/axes-time-zones/tz/antarctica.i
 data/src/common/Util/MyUserDetailsService.java.i
 data/WebContent/reports/bill_fuel.jrxml.i
 data/WebContent/resources/primefaces-serenity-deeporange/theme.scss.i
@@ -2798,6 +2809,7 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/systemSettings.xhtml.i
 data/WebContent/pages/bower_components/jquery/src/traversing/findFilter.js.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/css/cssLayout.css.i
 data/src/com/bkeryah/entities/ArcPeoplePapers.java.i
+data/src/com/bkeryah/entities/investment/ContractMessage.java.i
 data/WebContent/resources/jqueryCalendarsIslam/convertHG.js.i
 data/WebContent/reports/exchange_report.jrxml.i
 data/target/classes/com/bkeryah/entities/WrkConfedintialReplies.class.i
@@ -2876,7 +2888,7 @@ data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/edarat.
 data/src/SessionListener.java.i
 data/WebContent/pages/bower_components/jquery/src/attributes/support.js.i
 data/WebContent/resources/serenity-layout/fonts/roboto-v15-latin-regular.ttf.i
-data/WebContent/dataTableCss2/fonts/scss/_larger.scss.i
+data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/wagon-file-1.0-beta-2.jar.i
 data/WebContent/dataTableCss3/css/library/bootstrap-wysihtml5.css.i
 data/WebContent/resources/serenity-layout/images/exception/icon-shop-purple.svg.i
 data/WebContent/projects/projectExtract.xhtml.i
@@ -2900,7 +2912,7 @@ data/target/classes/com/bkeryah/entities/HealthLicenceCenter.class.i
 data/WebContent/dataTableCss3/css/library/jquery-ui-1.10.3.css.i
 data/WebContent/reports/standard_contract.jasper.d
 data/WebContent/pages/bower_components/bootstrap/Gruntfile.js.i
-data/WebContent/pages/bower_components/morrisjs/morris.min.js.i
+data/src/com/bkeryah/hr/entities/HrsVacSold.java.i
 data/target/classes/com/bkeryah/fuel/entities/CarModel.class.i
 data/target/classes/com/bkeryah/entities/licences/BldLicDigging.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/dao/DataBaseConnectionClass.class.i
@@ -2910,14 +2922,13 @@ data/target/classes/com/bkeryah/managedBean/licences/NewBuildingBean.class.i
 data/WebContent/pages/bower_components/holderjs/src/augment.js.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/aksam.png.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/SettingIcons/types.png.i
-data/WebContent/pages/bower_components/bootstrap/less/mixins/nav-divider.less.i
 data/WebContent/resources/serenity-layout/images/special/bg-cloudy-dark.png.i
 data/WebContent/pages/bower_components/morrisjs/examples/years.html.i
 data/WebContent/resources/primefaces-serenity-cyan/theme.scss.i
 data/WebContent/pages/EmpServ.xhtml.i
 data/src/com/bkeryah/hr/entities/HrsAppreciationScale.java.i
 data/WebContent/dropDownMenuCss/css/bootstrap/less/core/responsive-utilities.less.i
-data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/wagon-file-1.0-beta-2.jar.i
+data/WebContent/dataTableCss2/fonts/scss/_larger.scss.i
 data/WebContent/pages/bower_components/jquery/src/css/curCSS.js.i
 data/src/com/bkeryah/entities/WrkJobs.java.i
 data/target/classes/com/bkeryah/bean/ArticleSubGroupBean.class.i
@@ -2938,12 +2949,12 @@ data/WebContent/reports/car_artical_card.jrxml.i
 data/WebContent/resources/serenity-layout/css/layout-teal.css.i
 data/WebContent/resources/serenity-layout/images/landing/landing-header.png.i
 data/WebContent/resources/serenity-layout/images/exception/error-bg.jpg.i
-data/WebContent/pages/bower_components/datatables-plugins/type-detection/numeric-comma.js.i
+data/target/classes/com/bkeryah/entities/ArcRecAtt.class.i
 data/src/com/bkeryah/entities/WrkConfedintialRepliesId.java.i
 data/WebContent/resources/serenity-layout/images/landing/icon-coffee.svg.i
 data/src/com/bkeryah/managedBean/UserLogBean.java.i
 data/WebContent/pages/mailsBoots.xhtml.i
-data/WebContent/pages/bower_components/bootstrap-social/bootstrap-social.less.i
+data/src/com/bkeryah/model/User.java.i
 data/src/com/bkeryah/licences/models/ResultModel.java.i
 data/WebContent/dataTableCss3/2.0.2/css/responsive.bootstrap.min.css.i
 data/target/classes/com/bkeryah/model/Roles.class.i
@@ -2961,7 +2972,7 @@ data/src/com/bkeryah/shared/beans/DateTimeBean.java.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/Charging.xhtml.i
 data/WebContent/resources/serenity-layout/images/landing/icon-moderndesign.svg.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/NewIncomeRecord.xhtml.i
-data/WebContent/resources/serenity-layout/images/special/bg-cityscape-light-horizontal.png.i
+data/target/classes/com/bkeryah/managedBean/GeneralizationBean.class.i
 data/src/com/bkeryah/penalties/NotifFinesMaster.java.i
 data/WebContent/pages/bower_components/datatables-responsive/.gitignore.i
 data/WebContent/pages/bower_components/font-awesome/less/list.less.i
@@ -2969,7 +2980,7 @@ data/WebContent/reports/outboxbarcode.jrxml.i
 data/src/ContextListener.java.i
 data/WebContent/pages/bower_components/jquery/src/var/rnotwhite.js.i
 data/WebContent/pages/bower_components/jquery/src/data/var/data_user.js.i
-data/WebContent/pages/bower_components/bootstrap/less/forms.less.i
+data/WebContent/resources/primefaces-serenity-blue/theme.scss.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/formatted-numbers.js.i
 data/src/com/bkeryah/penalties/PenalitySetupBean.java.i
 data/WebContent/store/Inventories.xhtml.i
@@ -2983,7 +2994,7 @@ data/src/customeExceptions/VacationAndInitException.java.i
 data/WebContent/reports/all_real_estate_report.jasper.i
 data/WebContent/reports/rep001_subreport2.jrxml.i
 data/WebContent/dataTableCss3/css/library/footable/footable.paginate.css.i
-data/src/com/bkeryah/bean/Abcd2.java.i
+data/target/classes/com/bkeryah/managedBean/investment/ClauseConverter.class.i
 data/WebContent/WEB-INF/lib/antlr-2.7.6.jar.d
 data/target/classes/com/bkeryah/bean/BillsIssueBeanTest.class.i
 data/src/com/bkeryah/managedBean/setting/SectionsBean.java.i
@@ -3016,6 +3027,7 @@ data/WebContent/resources/serenity-layout/fonts/otf/Tajawal-ExtraBold.otf.i
 data/WebContent/WEB-INF/lib/spring-faces-2.4.2.RELEASE.jar.i
 data/src/com/bkeryah/entities/Test.java.i
 data/src/com/bkeryah/hr/managedBeans/GeneralAppreciationBean.java.i
+data/src/com/bkeryah/managedBean/UserMenuBean.java.i
 data/WebContent/pages/bower_components/font-awesome/fonts/fontawesome-webfont.eot.i
 data/src/com/bkeryah/managedBean/TemplateBean.java.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/home3.png.i
@@ -3028,6 +3040,7 @@ data/src/com/bkeryah/bean/Main_menu_class.java.i
 data/src/com/bkeryah/hr/entities/HrsJobCreation.java.i
 data/target/classes/com/bkeryah/managedBean/UserFilesBean.class.i
 data/WebContent/pages/models/TradeLicModel.xhtml.i
+data/src/com/bkeryah/hr/managedBeans/ContractorJobBean.java.i
 data/WebContent/dataTableCss3/js/respensive/2.0.2/js/responsive.bootstrap.min.js.i
 data/src/com/bkeryah/dao/CommonServicesDao.java.i
 data/WebContent/pages/bower_components/flot/jquery.flot.resize.js.i
@@ -3056,12 +3069,12 @@ data/target/classes/com/bkeryah/bean/InventoryMasterBean.class.i
 data/src/common/Util/HibernateUtility.java.i
 data/target/classes/com/bkeryah/entities/ExpenseaAccountBudget.class.i
 data/WebContent/pages/bower_components/flot/examples/examples.css.i
-data/src/com/bkeryah/entities/SubMenu.java.i
+data/WebContent/pages/bower_components/jquery/src/selector.js.i
 data/WebContent/pages/bower_components/morrisjs/spec/lib/bar/bar_spec.coffee.i
 data/WebContent/dropDownMenuCss/css/bootstrap/fonts/glyphicons-halflings-regular.woff.i
 data/target/classes/com/bkeryah/hr/managedBeans/ChartView.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/reports/demo.jrxml.i
-data/src/com/bkeryah/hr/entities/HrsVacSold.java.i
+data/WebContent/pages/bower_components/morrisjs/morris.min.js.i
 data/src/com/bkeryah/dao/FngVacation.java.i
 data/src/utilities/CodeLabel.java.i
 data/WebContent/resources/timepicker/time2.js.i
@@ -3220,9 +3233,8 @@ data/target/classes/com/bkeryah/entities/Article.class.i
 data/src/com/bkeryah/penalties/NotifFinesMastR.java.i
 data/target/classes/Test.class.i
 data/WebContent/reports/inboxbarcode .jasper.i
-data/WebContent/resources/css/bootstrap-arabic.css.i
+data/WebContent/reports/sub_announcement.jasper.i
 data/WebContent/dataTableCss/css/jquery.dataTables.css.i
-data/src/com/bkeryah/entities/SysCategoryEmployer.java.i
 data/src/com/bkeryah/hr/entities/HrsCompactEmpCaracter.java.i
 data/WebContent/dataTableCss3/css/images/ui-icons_2e83ff_256x240.png.i
 data/WebContent/pages/bower_components/datatables-plugins/api/fnAddTr.js.i
@@ -3237,7 +3249,7 @@ data/src/com/bkeryah/entities/BillIssue.java.i
 data/target/classes/com/bkeryah/entities/WrkProfileSign.class.i
 data/WebContent/action/jsp-resources/commons-io-2.4.jar.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/lib/javax.faces-2.2.9.jar.d
-data/WebContent/pages/bower_components/bootstrap/js/transition.js.i
+data/target/classes/com/bkeryah/bean/LastRecordActionClass.class.i
 data/src/com/bkeryah/fuel/entities/Car.java.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Italian.lang.i
 data/src/com/bkeryah/managedBean/param/UsersParamBean.java.i
@@ -3258,7 +3270,7 @@ data/target/classes/com/bkeryah/penalties/ActivityType.class.i
 data/WebContent/resources/serenity-layout/images/special/bg-cloudy-light-horizontal.png.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/WEB-INF/classes/dao/DataAccessImpl.class.i
 data/src/com/bkeryah/entities/investment/Contract.java.i
-data/WebContent/resources/images/types/rarfile.png.i
+data/WebContent/pages/bower_components/datatables-plugins/api/fnFilterOnReturn.js.i
 data/WebContent/reports/absent_delay.jasper.i
 data/target/classes/com/bkeryah/hr/managedBeans/FloorModel.class.i
 data/src/com/bkeryah/bean/UserStatisticsClass.java.i
@@ -3292,7 +3304,7 @@ data/WebContent/pages/bower_components/flot/component.json.i
 data/WebContent/reports/search_article.jasper.i
 data/WebContent/resources/images/home3.png.i
 data/WebContent/store/transferOwnershipInclude.xhtml.i
-data/target/classes/com/bkeryah/entities/ArcRecAtt.class.i
+data/WebContent/pages/bower_components/datatables-plugins/type-detection/numeric-comma.js.i
 data/WebContent/pages/bower_components/morrisjs/lib/morris.area.coffee.i
 data/src/com/bkeryah/entities/ArcRecAttId.java.i
 data/src/com/bkeryah/mails/VacationExecutor.java.i
@@ -3306,7 +3318,7 @@ data/WebContent/pages/bower_components/bootstrap/js/dropdown.js.i
 data/WebContent/pages/bower_components/datatables-plugins/i18n/Swedish.lang.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/resources/images/REQUIRED.png.i
 data/WebContent/pages/bower_components/metisMenu/LICENSE.i
-data/src/com/bkeryah/model/User.java.i
+data/WebContent/pages/bower_components/bootstrap-social/bootstrap-social.less.i
 data/WebContent/pages/bower_components/datatables-plugins/make.sh.i
 data/src/com/bkeryah/licences/LicencesTypeEnum.java.i
 data/src/com/bkeryah/entities/NationalIdType.java.i
@@ -3356,7 +3368,7 @@ data/WebContent/reports/empty_records_list.jrxml.i
 data/target/classes/com/bkeryah/entities/licences/BldLicDiggingPurpose.class.i
 data/target/classes/com/bkeryah/managedBean/MenuBarBean.class.i
 data/WebContent/reports/sub_announcement.jrxml.i
-data/WebContent/resources/images/logo_methneb.png.i
+data/src/com/bkeryah/entities/SysCategoryEmployer.java.i
 data/WebContent/investment/main_category.xhtml.i
 data/WebContent/pages/models/mission_modelold.xhtml.i
 data/target/classes/com/bkeryah/managedBean/ChargingBean.class.i
@@ -3385,7 +3397,7 @@ data/WebContent/pages/bower_components/jquery/src/serialize.js.i
 data/WebContent/reports/empty_records_list.jasper.i
 data/WebContent/resources/serenity-layout/images/special/bg-horizon-light-horizontal.png.i
 data/WebContent/WEB-INF/lib/commons-beanutils-1.8.2.jar.i
-data/target/classes/com/bkeryah/bean/EmpVac.class.i
+data/WebContent/reports/search_article - Copy.jasper.i
 data/WebContent/WEB-INF/lib/commons-beanutils-1.8.2.jar.d
 data/WebContent/resources/serenity-layout/images/special/bg-horizon-light-horizontal.png.d
 data/src/com/bkeryah/entities/SubMenuUserId.java.i
@@ -3422,7 +3434,7 @@ data/WebContent/dataTableCss2/fonts/less/font-awesome.less.i
 data/WebContent/reports/bill.jasper.i
 data/target/classes/com/bkeryah/bean/RecordMapClass.class.i
 data/target/classes/com/bkeryah/entities/HrsEmpTerminate.class.i
-data/target/classes/com/bkeryah/managedBean/GeneralizationBean.class.i
+data/WebContent/resources/serenity-layout/images/special/bg-cityscape-light-horizontal.png.i
 data/WebContent/pages/userMail.xhtml.orig.i
 data/WebContent/modelTemplates/services.xhtml.i
 data/WebContent/pages/bower_components/datatables/media/css/dataTables.bootstrap.min.css.i
@@ -3448,7 +3460,7 @@ data/src/com/bkeryah/hr/entities/Sys059.java.i
 data/WebContent/pages/bower_components/bootstrap/less/mixins/alerts.less.i
 data/WebContent/pages/licences/new_building_wall.xhtml.i
 data/WebContent/pages/exportRecords.xhtml.i
-data/src/com/bkeryah/mails/SpecialAutorisationExecutor.java.i
+data/WebContent/store/memoReceipt.xhtml.i
 data/WebContent/resources/jqueryCalendarsIslam/jquery.calendars-ar-DZ.js.i
 data/target/classes/com/bkeryah/projects/HealthCertificateBean.class.i
 data/WebContent/pages/bower_components/datatables-plugins/api/fnPagingInfo.js.i
@@ -3459,7 +3471,7 @@ data/WebContent/support/technical_users.xhtml.i
 data/target/classes/com/bkeryah/hr/entities/HrsGeneralAppreciation.class.i
 data/WebContent/resources/serenity-layout/images/special/bg-palm-light.png.d
 data/WebContent/resources/images/REQUIRED.png.i
-data/WebContent/store/store_temporary_receipt.xhtml.i
+data/src/com/bkeryah/entities/HealthLicenceJob.java.i
 data/WebContent/resources/serenity-layout/images/special/bg-palm-light.png.i
 data/WebContent/resources/images/edit-icon(1).png.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/date-de.js.i
@@ -3523,7 +3535,7 @@ data/target/classes/com/bkeryah/bean/WrkArchiveRecipentClass.class.i
 data/target/BkeryahArtifact-0.0.1-SNAPSHOT/pages/RecordsSearch.xhtml.i
 data/WebContent/pages/bower_components/bootstrap/less/mixins/reset-text.less.i
 data/WebContent/pages/bower_components/datatables-plugins/sorting/date-uk.js.i
-data/src/com/bkeryah/managedBean/UserMenuBean.java.i
+data/WebContent/dropDownMenuCss/css/bootstrap/less/core/button-groups.less.i
 data/src/com/bkeryah/managedBean/NationalIdBean.java.i
 data/WebContent/pages/bower_components/font-awesome/less/bordered-pulled.less.i
 data/src/com/bkeryah/penalties/ReqFinesSetup.java.i

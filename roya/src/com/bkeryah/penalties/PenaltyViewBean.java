@@ -59,9 +59,14 @@ public class PenaltyViewBean {
 	private String wrkAppComment;
 	private ArcUsers currentUser;
 	private HrScenario scenario;
+	private ReqFinesSetup selectedCodeFiner = new ReqFinesSetup();
+	private List<ReqFinesSetup> codesFines;
+	private boolean hideAddBtn = false;
 
 	@PostConstruct
 	private void init() {
+		// لائحة العقوبات
+		codesFines = dataAccessService.getCodesFines();
 		currentUser = Utils.findCurrentUser();
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -83,13 +88,19 @@ public class PenaltyViewBean {
 			// and get details
 		}
 		scenario = (HrScenario) dataAccessService.findEntityById(HrScenario.class, MailTypeEnum.PENALTY.getValue());
-		if (scenario != null)
+		if (scenario != null) {
 			if (stepNum == scenario.getStepsCount() + 1) {
 				enablePrint = true;
 			} else {
 				enablePrint = false;
 			}
-
+			// for manager edit fines
+			if (stepNum == scenario.getStepsCount() - 1) {
+				hideAddBtn = true;
+			} else {
+				hideAddBtn = false;
+			}
+		}
 		// activityTypes = dataAccessService.getAllLicActivityTypeList();
 		// 2 = dept id صحة البيئة
 		// supervisors = dataAccessService.getAllSupervisor(2);
@@ -105,7 +116,6 @@ public class PenaltyViewBean {
 			dataAccessService.acceptPenalty(finesMaster, arcRecordId, MailTypeEnum.PENALTY.getValue(), wrkAppComment,
 					Integer.parseInt(applicationPurpose.trim()));
 
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
@@ -148,6 +158,59 @@ public class PenaltyViewBean {
 		}
 
 		return "";
+	}
+
+	public void deleteFiner(ReqFinesDetails reqFinesSetup) {
+		if (finesMaster != null && finesMaster.getReqFinesDetailsList() != null
+				&& finesMaster.getReqFinesDetailsList().size() > 1) {
+			try {
+				dataAccessService.deleteObject(reqFinesSetup);
+				finesMaster = dataAccessService.findPenaltyByArchRecordId(arcRecordId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("removed.....");
+		}
+	}
+
+	public void calcFineValuesSum() {
+		Integer fineValue = selectedCodeFiner.getFineValue();
+		Integer fineNbr = selectedCodeFiner.getFineNbr();
+		if (fineValue != null && fineNbr != null && fineValue > 0 && fineNbr > 0) {
+			selectedCodeFiner.setFineValSum(fineValue * fineNbr);
+			System.out.println(selectedCodeFiner.getFineValSum());
+
+			// calcFineSum();
+		}
+	}
+
+	public String addCodeFiner() {
+		calcFineValuesSum();
+		ReqFinesDetails reqFinesDetails = addNewReqFinesDetails(selectedCodeFiner);
+		if (reqFinesDetails != null) {
+			reqFinesDetails.setFineNo(finesMaster.getFineNo());
+			try {
+				dataAccessService.saveObject(reqFinesDetails);
+				finesMaster = dataAccessService.findPenaltyByArchRecordId(arcRecordId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("saved.....");
+			selectedCodeFiner = new ReqFinesSetup();
+		}
+		return "";
+	}
+
+	private ReqFinesDetails addNewReqFinesDetails(ReqFinesSetup codeFines) {
+		ReqFinesDetails reqFinesDetails = new ReqFinesDetails();
+		reqFinesDetails.setFineCode(codeFines.getId());
+		reqFinesDetails.setFineCount(codeFines.getFineNbr());
+		reqFinesDetails.setFineValue(codeFines.getFineValue());
+		reqFinesDetails.setTypeValue(Integer.parseInt(codeFines.getTypeValue()));
+		reqFinesDetails.setRepeat(Integer.parseInt(codeFines.getRepeat()));
+		reqFinesDetails.setNotifyDTLsId(codeFines.getNotifyDTLsId());
+		reqFinesDetails.setFineDesc2(codeFines.getNotes());
+		return reqFinesDetails;
 	}
 
 	public IDataAccessService getDataAccessService() {
@@ -324,5 +387,29 @@ public class PenaltyViewBean {
 
 	public void setScenario(HrScenario scenario) {
 		this.scenario = scenario;
+	}
+
+	public ReqFinesSetup getSelectedCodeFiner() {
+		return selectedCodeFiner;
+	}
+
+	public void setSelectedCodeFiner(ReqFinesSetup selectedCodeFiner) {
+		this.selectedCodeFiner = selectedCodeFiner;
+	}
+
+	public List<ReqFinesSetup> getCodesFines() {
+		return codesFines;
+	}
+
+	public void setCodesFines(List<ReqFinesSetup> codesFines) {
+		this.codesFines = codesFines;
+	}
+
+	public boolean isHideAddBtn() {
+		return hideAddBtn;
+	}
+
+	public void setHideAddBtn(boolean hideAddBtn) {
+		this.hideAddBtn = hideAddBtn;
 	}
 }

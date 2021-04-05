@@ -8,7 +8,7 @@
 	<parameter name="reqNum" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT * from (
-		SELECT 
+	SELECT 
 reqs.artCode code ,
 reqs.artName name ,
  reqs.EMPNAME usrName, 
@@ -16,16 +16,21 @@ reqs.artName name ,
 reqs.UnitName itemUnit ,
 reqs.strName strName ,
 NVL(reqs.NOTES, '')  notes ,
- reqs.srfDate sarfDate ,
+reqs.srfDate sarfDate ,
+tsdd.TRANSFER_HDATE transDate ,
+tsdd.SERIAL_NUMBER transNo ,
 reqs.SERIALNUMBER EXSPECIAL_NO ,
-TRANSFER_OWNERSHIP.QTY transferQ , 
-( reqs.srfQ  - NVL(RETURN_STORE_DETAILS.QTY, 0) - NVL(TRANSFER_OWNERSHIP.QTY, 0) )   a3ohad ,
-RETURN_STORE_DETAILS.QTY RETURN_QTY ,
+tsdd.QTY transferQ , 
+( reqs.srfQ  - NVL(rsdD.QTY, 0) - NVL(tsdd.QTY, 0) )   a3ohad ,
+rsdD.QTY RETURN_QTY ,
 reqs.srfQ qtySarf ,
-RETURN_STORE.RET_HDATE R_datetransaction ,
-RETURN_STORE.SERIAL_NUMBER R_SPECIAL_NO
+rsdD.RET_HDATE R_datetransaction ,
+rsdD.SERIAL_NUMBER R_SPECIAL_NO 
 from
-RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE, (SELECT * from TRANSFER_OWNERSHIP WHERE nvl(TRANSFER_OWNERSHIP.STATUS ,'N')='Y')TRANSFER_OWNERSHIP,
+(SELECT rsd.QTY , rsd.EXCH_MASTER_ID , rsd.ART_ID , rs.SERIAL_NUMBER , RS.RET_HDATE FROM RETURN_STORE rs ,RETURN_STORE_DETAILS rsd WHERE nvl(rs.STATUS_Y_N ,'N')='Y' AND rs.USER_ID = $P{userId} AND  rsd.RET_ID  = rs.ID
+) rsdD , 
+(SELECT tsd.QTY , tsd.EXCH_MASTER_ID , tsd.ART_ID ,ts.SERIAL_NUMBER , ts.TRANSFER_HDATE from TRANSFER_OWNERSHIP ts ,TRANSFER_OWNERSHIP_DETAILS tsd WHERE nvl(ts.STATUS ,'N')='Y' AND ts.FROM_USER = $P{userId} AND tsd.TRANSFER_ID =  ts.ID ) tsdd,
+
 (
 
 SELECT
@@ -37,6 +42,7 @@ SELECT
 	NVL(ACCEPT_Y_N, 'P')status ,
 	art.NAME artName ,
 	art.code  artCode ,
+	art.id artId ,
 	DEPT_NAME,
     reqdet.INIT_COUNT srfQ ,
     TDR_ITEMUNIT.ITEMUNITNAME UnitName,
@@ -85,10 +91,12 @@ WHERE
 	AND TDR_INV_GNRL_REQ.ACCEPT_Y_N ='Y'
  )reqs
 where
-reqs.INV_G_R_NO = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
-AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID 
-AND reqs.INV_G_R_NO = TRANSFER_OWNERSHIP.EXCH_MASTER_ID (+)
-AND reqs.INV_G_R_NO = $P{reqNum}
+ reqs.INV_G_R_NO = $P{reqNum}
+AND reqs.INV_G_R_NO  = rsdD.EXCH_MASTER_ID  (+)
+AND reqs.artId = rsdD.ART_ID (+)
+AND reqs.INV_G_R_NO = tsdd.EXCH_MASTER_ID (+)
+AND reqs.artId = tsdd.ART_ID (+)
+
 UNION
 
 	SELECT
@@ -101,25 +109,26 @@ UNION
 	
 	NVL(ts.NOTES, '') notes ,
 	master.INV_G_R_DATE  sarfDate,
-    
-   
+    ts.TRANSFER_HDATE transDate ,
+   ts.SERIAL_NUMBER transNo ,
 	master.SERIALNUMBER EXSPECIAL_NO ,
 	1 transferQ,
-	TO_NUMBER(1 - NVL(RETURN_STORE_DETAILS.QTY, 0)) a3ohad ,
-	NVL(RETURN_STORE_DETAILS.QTY, 0)  RETURN_QTY ,
+	TO_NUMBER(1 - NVL(rsdD.QTY, 0)) a3ohad ,
+	NVL(rsdD.QTY, 0)  RETURN_QTY ,
 	0 qtySarf ,
-     RETURN_STORE.RET_HDATE R_datetransaction ,
-    RETURN_STORE.SERIAL_NUMBER R_SPECIAL_NO 
+    rsdD.RET_HDATE R_datetransaction ,
+    rsdD.SERIAL_NUMBER R_SPECIAL_NO 
 	FROM TRANSFER_OWNERSHIP ts ,article ar,
 	 TRANSFER_OWNERSHIP_DETAILS tsd ,
 	TDR_ITEMUNIT un ,TDR_INV_GNRL_REQ master , ARC_USERS usr ,WRK_DEPT
-	, WHS_WAREHOUSES  ,RETURN_STORE_DETAILS , (SELECT * from RETURN_STORE WHERE nvl(RETURN_STORE.STATUS_Y_N ,'N')='Y') RETURN_STORE
+	, WHS_WAREHOUSES  ,
+	(SELECT rsd.QTY , rsd.EXCH_MASTER_ID , rsd.ART_ID , rs.SERIAL_NUMBER , RS.RET_HDATE FROM RETURN_STORE rs ,RETURN_STORE_DETAILS rsd WHERE nvl(rs.STATUS_Y_N ,'N')='Y' AND rs.USER_ID = 6 AND  rsd.RET_ID  = rs.ID
+     ) rsdD
 	WHERE 
 	ts.TO_USER = $P{userId}
 	AND  ts.ID =  tsd.TRANSFER_ID
-	AND tsd.EXCH_MASTER_ID = RETURN_STORE_DETAILS.EXCH_MASTER_ID (+) 
+	AND tsd.EXCH_MASTER_ID = rsdD.EXCH_MASTER_ID (+)  
 	AND tsd.EXCH_MASTER_ID = $P{reqNum}
-    AND RETURN_STORE.ID(+) = RETURN_STORE_DETAILS.RET_ID
 	AND ts.STATUS = 'Y'
 	AND tsd.ART_ID  = ar.ID 
 	AND un.ITEMUNITID  = ar.ITEM_UNITE_ID 
@@ -139,6 +148,8 @@ UNION
 	<field name="transferQ" class="java.lang.Integer"/>
 	<field name="EXSPECIAL_NO" class="java.lang.Integer"/>
 	<field name="R_SPECIAL_NO" class="java.lang.Integer"/>
+	<field name="transNo" class="java.lang.String"/>
+	<field name="transDate" class="java.lang.String"/>
 	<field name="sarfDate" class="java.lang.String"/>
 	<field name="R_datetransaction" class="java.lang.String"/>
 	<field name="notes" class="java.lang.String"/>
@@ -232,7 +243,7 @@ UNION
 	<columnHeader>
 		<band height="62" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="2" width="60" height="60" uuid="9214f14b-ec07-4bc2-8270-501c22c97acf">
+				<reportElement x="-9" y="2" width="60" height="60" uuid="9214f14b-ec07-4bc2-8270-501c22c97acf">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -244,7 +255,7 @@ UNION
 				<textFieldExpression><![CDATA["ملاحـظات / مستودع الصرف"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="2" width="50" height="60" uuid="071f21a2-8b1c-4673-88ca-7c3c99ef906e">
+				<reportElement x="412" y="2" width="50" height="60" uuid="071f21a2-8b1c-4673-88ca-7c3c99ef906e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -256,7 +267,7 @@ UNION
 				<textFieldExpression><![CDATA["رصيد العهدة"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="500" y="2" width="40" height="60" uuid="c179e11f-3bf2-40ac-9263-a89bd0ac8fa3">
+				<reportElement x="552" y="2" width="40" height="60" uuid="c179e11f-3bf2-40ac-9263-a89bd0ac8fa3">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -269,7 +280,7 @@ UNION
 				<textFieldExpression><![CDATA["الوحدة"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="540" y="2" width="170" height="60" uuid="41495b94-a88b-4096-9091-4ac2ad2561df">
+				<reportElement x="592" y="2" width="126" height="60" uuid="41495b94-a88b-4096-9091-4ac2ad2561df">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -282,7 +293,7 @@ UNION
 				<textFieldExpression><![CDATA["إسم الصنف و وصفه"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="770" y="2" width="32" height="60" uuid="da564133-15d1-4fe4-ba19-53e53c6952fe">
+				<reportElement x="778" y="2" width="32" height="60" uuid="da564133-15d1-4fe4-ba19-53e53c6952fe">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
@@ -294,7 +305,7 @@ UNION
 				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="710" y="2" width="60" height="60" uuid="9e54b004-2778-4e06-beb1-b7c74aa65996">
+				<reportElement x="718" y="2" width="60" height="60" uuid="9e54b004-2778-4e06-beb1-b7c74aa65996">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
@@ -306,7 +317,7 @@ UNION
 				<textFieldExpression><![CDATA["رقم الصنف"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="23" width="30" height="39" uuid="4e829648-49fe-4f18-8e46-c3a4cc94ae01">
+				<reportElement x="522" y="23" width="30" height="39" uuid="4e829648-49fe-4f18-8e46-c3a4cc94ae01">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -318,7 +329,7 @@ UNION
 				<textFieldExpression><![CDATA["صرف"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="23" width="30" height="39" uuid="e9e5b1e8-6be9-459e-824b-a14455b4d919">
+				<reportElement x="462" y="23" width="30" height="39" uuid="e9e5b1e8-6be9-459e-824b-a14455b4d919">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -330,7 +341,7 @@ UNION
 				<textFieldExpression><![CDATA["مناقلة"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="2" width="90" height="21" uuid="96ab503a-6ce3-4b37-aeb3-4ed79551b256">
+				<reportElement x="462" y="2" width="90" height="21" uuid="96ab503a-6ce3-4b37-aeb3-4ed79551b256">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -342,7 +353,7 @@ UNION
 				<textFieldExpression><![CDATA["العـــدد"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="23" width="60" height="39" uuid="a6825700-e8d0-4c9a-9c73-31565ef12be6">
+				<reportElement x="361" y="23" width="51" height="39" uuid="a6825700-e8d0-4c9a-9c73-31565ef12be6">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -354,7 +365,7 @@ UNION
 				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="23" width="60" height="39" uuid="1debeb71-b2c2-4897-9a36-6d728ec4e911">
+				<reportElement x="311" y="23" width="50" height="39" uuid="1debeb71-b2c2-4897-9a36-6d728ec4e911">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -366,7 +377,7 @@ UNION
 				<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="2" width="120" height="21" uuid="c8cf1fbe-0995-442f-a03a-dc2b0f752ad7">
+				<reportElement x="311" y="2" width="101" height="21" uuid="c8cf1fbe-0995-442f-a03a-dc2b0f752ad7">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -378,7 +389,7 @@ UNION
 				<textFieldExpression><![CDATA["طلب صرف مواد"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="2" width="120" height="21" uuid="cceb1f2e-c463-4832-80b0-5989a87028d1">
+				<reportElement x="210" y="2" width="101" height="21" uuid="cceb1f2e-c463-4832-80b0-5989a87028d1">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -389,8 +400,8 @@ UNION
 				</textElement>
 				<textFieldExpression><![CDATA["مستند الإرجاع"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="90" y="23" width="30" height="39" uuid="33eb0081-3825-4e54-a0c4-63fbc6dd1348">
+			<staticText>
+				<reportElement x="81" y="23" width="28" height="39" uuid="469e1291-a46d-40b1-893b-01ffdca499c9">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -399,10 +410,10 @@ UNION
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["جديد"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="60" y="23" width="30" height="39" uuid="dad0d78b-e0c1-4269-8959-1ede84d31d96">
+				<text><![CDATA[جديد]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="23" width="30" height="39" uuid="483d718b-c39f-4b39-9bbb-f229d9f2753a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -411,10 +422,10 @@ UNION
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["مستعمل"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="60" y="2" width="60" height="21" uuid="480a808b-c773-4a99-bb5e-621289e88410">
+				<text><![CDATA[مستعمل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="2" width="58" height="21" uuid="f25328a6-e4c1-4014-b266-b7bdd8f13303">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -423,10 +434,10 @@ UNION
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["حالة الصنف"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[حالة الصنف]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="440" y="23" width="30" height="39" uuid="1a5ab863-61b4-48e5-86ee-e329ebf76ade">
+				<reportElement x="492" y="23" width="30" height="39" uuid="1a5ab863-61b4-48e5-86ee-e329ebf76ade">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -438,7 +449,7 @@ UNION
 				<textFieldExpression><![CDATA["إرجاع"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="23" width="60" height="39" uuid="ac9491d7-e9f0-4bf6-8af4-cdaa643dfa0f">
+				<reportElement x="260" y="23" width="51" height="39" uuid="ac9491d7-e9f0-4bf6-8af4-cdaa643dfa0f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -450,7 +461,7 @@ UNION
 				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="23" width="60" height="39" uuid="a43b26b1-69d3-4f1f-bb8a-62f789804684">
+				<reportElement x="210" y="23" width="50" height="39" uuid="a43b26b1-69d3-4f1f-bb8a-62f789804684">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -461,12 +472,48 @@ UNION
 				</textElement>
 				<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="109" y="23" width="60" height="39" uuid="bf1ff71d-ab30-4a3e-8632-1e4b23d2d14f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التاريخ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="2" width="101" height="21" uuid="ce4f786c-750a-4612-bdf9-14ec8d81cf2a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["طلب مناقلة "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="169" y="23" width="41" height="39" uuid="5450e207-12a4-4fe1-81e4-8736290a351c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="28" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="540" y="0" width="170" height="28" uuid="c59b0c9b-f5dc-41d3-96d8-d2d56f0c1ad4"/>
+				<reportElement x="592" y="0" width="126" height="28" uuid="c59b0c9b-f5dc-41d3-96d8-d2d56f0c1ad4"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -476,7 +523,7 @@ UNION
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="710" y="0" width="60" height="28" uuid="0d257c51-b293-4e8e-86d3-7db4b38ad83e"/>
+				<reportElement x="718" y="0" width="60" height="28" uuid="0d257c51-b293-4e8e-86d3-7db4b38ad83e"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -488,19 +535,19 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="770" y="0" width="32" height="28" uuid="3273670a-ca29-4683-88ce-55a2e7f1cd6a"/>
+				<reportElement x="778" y="0" width="32" height="28" uuid="3273670a-ca29-4683-88ce-55a2e7f1cd6a"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($V{COLUMN_COUNT}== null)?"":(""+$V{COLUMN_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+				<textFieldExpression><![CDATA[($V{REPORT_COUNT}== null)?"":(""+$V{REPORT_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="500" y="0" width="40" height="28" uuid="c3a6a7cb-5539-4517-9db2-4505325e0cc8"/>
+				<reportElement x="552" y="0" width="40" height="28" uuid="c3a6a7cb-5539-4517-9db2-4505325e0cc8"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -510,7 +557,7 @@ UNION
 				<textFieldExpression><![CDATA[$F{itemUnit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="470" y="0" width="30" height="28" uuid="295b6d68-399d-44b6-b94c-501d88838c74"/>
+				<reportElement x="522" y="0" width="30" height="28" uuid="295b6d68-399d-44b6-b94c-501d88838c74"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -522,7 +569,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="440" y="0" width="30" height="28" uuid="f15b19fc-ff75-4be4-828e-c7d72da9dbf1"/>
+				<reportElement x="492" y="0" width="30" height="28" uuid="f15b19fc-ff75-4be4-828e-c7d72da9dbf1"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -534,7 +581,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="0" width="30" height="28" uuid="c84eabba-7415-4174-8afc-b1e90d43679d"/>
+				<reportElement x="462" y="0" width="30" height="28" uuid="c84eabba-7415-4174-8afc-b1e90d43679d"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -546,7 +593,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="360" y="0" width="50" height="28" uuid="7ea48017-c609-402c-8edd-1690bae69395"/>
+				<reportElement x="412" y="0" width="50" height="28" uuid="7ea48017-c609-402c-8edd-1690bae69395"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -558,7 +605,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="300" y="0" width="60" height="28" uuid="a82c7e6a-d511-4386-98b8-fee03d43a45f"/>
+				<reportElement x="361" y="0" width="51" height="28" uuid="a82c7e6a-d511-4386-98b8-fee03d43a45f"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -570,7 +617,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="240" y="0" width="60" height="28" uuid="0b432a00-4989-482c-ae97-e7a8e3134802"/>
+				<reportElement x="311" y="0" width="50" height="28" uuid="0b432a00-4989-482c-ae97-e7a8e3134802"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -582,7 +629,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="180" y="0" width="60" height="28" uuid="548b8954-7e78-4edb-b742-f9c9352a968d"/>
+				<reportElement x="260" y="0" width="51" height="28" uuid="548b8954-7e78-4edb-b742-f9c9352a968d"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -594,7 +641,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="120" y="0" width="60" height="28" uuid="f0e94042-89f3-4887-b9ec-0b7ed2e425c6"/>
+				<reportElement x="210" y="0" width="50" height="28" uuid="f0e94042-89f3-4887-b9ec-0b7ed2e425c6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -606,7 +653,7 @@ UNION
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="90" y="0" width="30" height="28" uuid="9b756767-51e8-49d9-b75a-835ee8feaf02"/>
+				<reportElement x="81" y="0" width="28" height="28" uuid="9b756767-51e8-49d9-b75a-835ee8feaf02"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -615,7 +662,7 @@ UNION
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="60" y="0" width="30" height="28" uuid="f753f8e5-5720-4876-9b65-e1babaed9dec"/>
+				<reportElement x="51" y="0" width="30" height="28" uuid="f753f8e5-5720-4876-9b65-e1babaed9dec"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -624,7 +671,7 @@ UNION
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="60" height="28" uuid="39198dc9-a26f-44f6-97be-097a5d1aaba2"/>
+				<reportElement x="-9" y="0" width="60" height="28" uuid="39198dc9-a26f-44f6-97be-097a5d1aaba2"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -632,6 +679,30 @@ UNION
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[(TRIM($F{notes} )==null ?"_":$F{notes}) + " "+$F{strName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="109" y="0" width="60" height="28" uuid="98449d1b-06ac-489e-bf92-bf267f93f0e5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{transDate}== null )?"__":(""+$F{transDate}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="169" y="0" width="41" height="28" uuid="561c35e0-9cca-4d44-a074-15f9363c5f73"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{transNo}== null)?"__":(""+$F{transNo}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

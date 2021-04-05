@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -32,7 +33,13 @@ public class ReturnStore {
 	private Integer strNo;
 	@Column(name = "STATUS_Y_N")
 	private String status;
-
+	
+	@Column(name = "USER_ID")
+	private Integer userId;
+	
+	@Formula("(select u.EMPNAME from ARC_USERS u where u.user_id=USER_ID)")
+	private String employeeName;
+	
 	public Integer getReturnStoreId() {
 		return returnStoreId;
 	}
@@ -95,6 +102,22 @@ public class ReturnStore {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 
 }

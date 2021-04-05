@@ -217,7 +217,7 @@ body .ui-dialog .ui-dialog-titlebar {
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<p:outputLabel value="العدد المطلوب"></p:outputLabel>
 						</div>
-						<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<div class="ui-g-2 ui-md-3 ui-lg-2">
 							<p:inputText styleClass="form-control" id="count"
 								style="width:50%" required="true" type="number"
 								value="#{exchangeRequestBean.requestDetailsRecord.count}"
@@ -225,15 +225,27 @@ body .ui-dialog .ui-dialog-titlebar {
 
 							</p:inputText>
 						</div>
-						<div class="ui-g-12 ui-md-6 ui-lg-1">
+						<div class="ui-g-1 ui-md-2 ui-lg-1">
 							<h:panelGroup id="unit">
 								<div class="col-md-2">
 									<h:outputLabel styleClass="btxt" style="font-size:large"
-										value="  #{exchangeRequestBean.article.itemUnite.name eq null ? '  ':( exchangeRequestBean.article.itemUnite.name )} "></h:outputLabel>
+										value="#{exchangeRequestBean.article.itemUnite.name eq null ? '  ':( exchangeRequestBean.article.itemUnite.name )}"></h:outputLabel>
 								</div>
 							</h:panelGroup>
 						</div>
-
+						<div class="ui-g-1 ui-md-6 ui-lg-1">
+							<p:outputLabel value="نوع الصرف "
+								rendered="#{exchangeRequestBean.showForDept}"></p:outputLabel>
+						</div>
+						<div class="ui-g-2 ui-md-3 ui-lg-2">
+							<p:selectOneRadio id="console"
+								rendered="#{exchangeRequestBean.showForDept}"
+								value="#{exchangeRequestBean.request.forDept}">
+								<f:selectItem itemLabel="شخصي" itemValue="1" />
+								<f:selectItem itemLabel="للقسم" itemValue="2" />
+								<p:ajax process="@this"></p:ajax>
+							</p:selectOneRadio>
+						</div>
 					</div>
 
 					<br></br>

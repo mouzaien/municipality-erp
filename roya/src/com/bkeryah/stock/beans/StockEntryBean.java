@@ -303,8 +303,10 @@ public class StockEntryBean {
 
 	public void onRowCancel(RowEditEvent event) {
 		StockInDetails selectedItem = (StockInDetails) event.getObject();
-		articlesTotalPrice -= selectedItem.getTotal();
-		selectedItem.setPrice(0.00f);
+		if (selectedItem != null && selectedItem.getTotal() != null) {
+			articlesTotalPrice -= selectedItem.getTotal();
+			selectedItem.setPrice(0.00f);
+		}
 	}
 
 	public void loadReceiptDetailsList() {

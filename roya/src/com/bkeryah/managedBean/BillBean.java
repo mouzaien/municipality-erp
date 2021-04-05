@@ -51,7 +51,7 @@ public class BillBean {
 	private Double totalAmountBill;
 	private String url;
 	ISmsService smsService = new SmsService();
-
+	private Integer employerId;
 	/**
 	 * Search bill
 	 */
@@ -97,7 +97,7 @@ public class BillBean {
 		toEndDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("includeform:toEndDate");
 		billsList = dataAccessService.loadAllBillsListByAllFilters(fromStartDate, toStartDate, aplnumber,
-				(phoneNumber == null || phoneNumber.isEmpty())? null : new Long(phoneNumber), billStatus, itemIdFilter);
+				(phoneNumber == null || phoneNumber.isEmpty())? null : new Long(phoneNumber), billStatus, itemIdFilter , employerId);
 		billAmount = billsList.stream().mapToDouble(num -> num.getPayAmount()).sum();
 		billAmountBig = new BigDecimal(billAmount).setScale(2, RoundingMode.HALF_UP);
 
@@ -520,6 +520,14 @@ public class BillBean {
 
 	public void setBillAmountBig(BigDecimal billAmountBig) {
 		this.billAmountBig = billAmountBig;
+	}
+
+	public Integer getEmployerId() {
+		return employerId;
+	}
+
+	public void setEmployerId(Integer employerId) {
+		this.employerId = employerId;
 	}
 
 }

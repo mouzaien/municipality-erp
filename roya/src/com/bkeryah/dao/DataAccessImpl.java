@@ -24,7 +24,6 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,7 +33,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
@@ -95,6 +93,7 @@ import com.bkeryah.entities.PayLicBills;
 import com.bkeryah.entities.StockEntryMaster;
 import com.bkeryah.entities.StoreTemporeryReceiptMaster;
 import com.bkeryah.entities.investment.ContractDirect;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.RealEstate;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
@@ -7729,7 +7728,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	}
 
 	@Override
-	public List<Article> get3ohadByUserId(Integer userId) {
+	public List<Article> get3ohadByUserId(Integer userId, Integer deptId) {
 		System.out.println("user id " + userId);
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
@@ -7737,12 +7736,13 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		List<Article> articlesList = new ArrayList<Article>();
 		Article article = new Article();
 		try {
-			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_alouhad(?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.prc_get_user_alouhad(?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setInt(1, userId);
-			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+			callableStatement.setInt(2, deptId);
+			callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
 			callableStatement.executeUpdate();
-			rs = (ResultSet) callableStatement.getObject(2);
+			rs = (ResultSet) callableStatement.getObject(3);
 			while (rs.next()) {
 				article = new Article();
 				article.setReqType(rs.getInt("reqtYPE"));
@@ -7752,7 +7752,8 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				article.setUnitName(rs.getString("unit_name"));
 				article.setExchMasterId(rs.getInt("exmaster_id"));
 				article.setStrNo(rs.getInt("STRNO"));
-
+				article.setForDept(rs.getInt("forDept"));
+				article.setDeptId(rs.getInt("deptId"));
 				// article.setExchMasterDate(rs.getString("exmaster_date"));
 				articlesList.add(article);
 			}
@@ -7998,7 +7999,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 
 	@Override
 	public List<PayLicBills> loadBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus, Integer bandId) {
+			Long phoneNumber, Integer billStatus, Integer bandId, Integer employerId) {
 
 		if (fromStartDate == null || fromStartDate.isEmpty())
 			fromStartDate = "-1";
@@ -8016,6 +8017,8 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			billStatus = -1;
 		if (bandId == null)
 			bandId = -1;
+		if (employerId == null)
+			employerId = -1;
 
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
@@ -8025,7 +8028,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		try {
 			// String currentHijriDate =
 			// Utils.grigDatesConvert(Utils.getCurrentGrigdate());
-			String sql = "{call NEW_PKG_WEBKIT.getBillsListByAllFilters(?,?,?,?,?,?,?)}";
+			String sql = "{call NEW_PKG_WEBKIT.getBillsListByAllFilters(?,?,?,?,?,?,?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setString(1, fromStartDate);
 			callableStatement.setString(2, toStartDate);
@@ -8033,9 +8036,10 @@ public class DataAccessImpl implements DataAccess, Serializable {
 			callableStatement.setLong(4, phoneNumber);
 			callableStatement.setInt(5, billStatus);
 			callableStatement.setInt(6, bandId);
-			callableStatement.registerOutParameter(7, OracleTypes.CURSOR);
+			callableStatement.setInt(7, employerId);
+			callableStatement.registerOutParameter(8, OracleTypes.CURSOR);
 			callableStatement.execute();
-			rs = (ResultSet) callableStatement.getObject(7);
+			rs = (ResultSet) callableStatement.getObject(8);
 			int i = 0;
 			while (rs.next()) {
 				System.out.println(i++);
@@ -8119,18 +8123,37 @@ public class DataAccessImpl implements DataAccess, Serializable {
 		return realEstateList;
 	}
 
+	// public Integer getContractPayedStatus(Integer contractId) {
 	@Override
-	public Integer getContractPayedStatus(Integer contractId) {
+	public List<ContractsFees> getContractPayedStatus(Integer contractId) {
+		List<ContractsFees> fees = new ArrayList<ContractsFees>();
+		;
+		ContractsFees feesObj;
+		ResultSet rs = null;
 		CallableStatement callableStatement = null;
 		Connection connection = DataBaseConnectionClass.getConnection();
-		int countOfRows = -1;
 		try {
 			String sql = "{call NEW_PKG_WEBKIT.getContractPayedStatus(?,?)}";
 			callableStatement = connection.prepareCall(sql);
 			callableStatement.setInt(1, contractId);
-			callableStatement.registerOutParameter(2, OracleTypes.NUMBER);
+			callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 			callableStatement.execute();
-			countOfRows = ((BigDecimal) callableStatement.getObject(2)).intValue();
+			rs = (ResultSet) callableStatement.getObject(2);
+			int i = 0;
+			fees = new ArrayList<ContractsFees>();
+			while (rs.next()) {
+				feesObj = new ContractsFees();
+				feesObj.setContractId(rs.getInt("CONTRACT_ID"));
+				feesObj.setDueHDate(rs.getString("DUE_H_DATE"));
+				feesObj.setDueGDate(rs.getDate("DUE_G_DATE"));
+				feesObj.setFactId(rs.getString("FACT_ID"));
+				feesObj.setCountOfRows(rs.getInt("count_Num"));
+
+				fees.add(feesObj);
+			}
+			// countOfRows = ((BigDecimal)
+			// callableStatement.getObject(2)).intValue();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(" getContractPayedStatus : " + e.getMessage());
@@ -8144,7 +8167,94 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				e.printStackTrace();
 			}
 		}
-		return countOfRows;
+		return fees;
+	}
+
+	@Override
+	public List<ReqFinesMaster> loadListPenalities(String fineStatus, Integer fineTradeType, Integer fineSadad,
+			String licNo, String alpNo, String fromStartDate, String toStartDate, String deptId) {
+
+		if (fromStartDate == null || fromStartDate.isEmpty())
+			fromStartDate = "-1";
+
+		if (toStartDate == null || toStartDate.isEmpty())
+			toStartDate = "-1";
+
+		if (fineStatus == null || fineStatus.isEmpty())
+			fineStatus = "-1";
+
+		if (licNo == null || licNo.isEmpty())
+			licNo = "-1";
+
+		if (alpNo == null || alpNo.isEmpty())
+			alpNo = "-1";
+
+		if (fineTradeType == null)
+			fineTradeType = -1;
+
+		if (fineSadad == null)
+			fineSadad = -1;
+
+		ResultSet rs = null;
+		CallableStatement callableStatement = null;
+		Connection connection = DataBaseConnectionClass.getConnection();
+		ReqFinesMaster fine = new ReqFinesMaster();
+		List<ReqFinesMaster> fines = new ArrayList<ReqFinesMaster>();
+		try {
+			// String currentHijriDate =
+			// Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			String sql = "{call NEW_PKG_WEBKIT.getAllFines(?,?,?,?,?,?,?,?,?)}";
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setString(1, fromStartDate);
+			callableStatement.setString(2, toStartDate);
+			callableStatement.setString(3, fineStatus);
+			callableStatement.setString(4, licNo);
+			callableStatement.setString(5, alpNo);
+			callableStatement.setInt(6, fineTradeType);
+			callableStatement.setInt(7, fineSadad);
+			callableStatement.setString(8, deptId);
+			callableStatement.registerOutParameter(9, OracleTypes.CURSOR);
+			callableStatement.execute();
+			rs = (ResultSet) callableStatement.getObject(9);
+			int i = 0;
+			while (rs.next()) {
+
+				fine = new ReqFinesMaster();
+				fine.setFineNo(rs.getInt("FINE_NO"));
+				fine.setFineDate(rs.getString("FINE_DATE"));
+				fine.setfDeptNo(rs.getString("F_DEPT_NO"));
+				fine.setfName(rs.getString("F_NAME"));
+				fine.setfIdNo(rs.getString("F_ID_NO"));
+				fine.setfLicenceNo(rs.getString("F_LICENCE_NO"));
+				fine.setfAddress(rs.getString("F_ADDRESS"));
+				fine.setfSupervisorCode(rs.getString("F_SUPERVISOR_CODE"));
+				fine.setfTradeMarkName(rs.getString("F_TRADE_MARK_NAME"));
+				fine.setfLicStartDate(rs.getString("F_LIC_START_DATE"));
+				fine.setfLicEndDate(rs.getString("F_LIC_END_DATE"));
+				fine.setActivityType(rs.getInt("ACTIVITY_TYPE"));
+				fine.setfFineCase(rs.getLong("F_FINE_CASE"));
+				fine.setStatus(rs.getString("STATUS"));
+				fine.setPhoneNumber(rs.getString("PHONE_NUMBER"));
+				// fine.setMahlId(rs.getString("mahlId"));
+
+				fines.add(fine);
+			}
+			// System.out.println("UnusedRealEstatesList size " +
+			// realEstateList.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(" loadAllFinesList : " + e.getMessage());
+		} finally {
+			try {
+				if (callableStatement != null)
+					callableStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return fines;
 	}
 
 }

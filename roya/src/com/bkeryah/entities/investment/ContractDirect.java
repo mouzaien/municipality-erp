@@ -91,6 +91,10 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private Integer totalInstallment;// الاقساط الكلية
 	@Column(name = "FEES_BILLED_NBR")
 	private Integer billedInstallment;// الاقساط المفوترة
+
+	@Column(name = "OLD_PAYED_FEES")
+	private Integer oldPayedFees;// الاقساط المدفوعة السابقة
+
 	@Column(name = "SPECIAL_CONDITIONS")
 	private String specialConditions;// الشروط الخاصة
 	@Column(name = "CONTRACT_DURATION_RATIO")
@@ -135,6 +139,14 @@ public class ContractDirect implements Comparable<ContractDirect> {
 
 	@Transient
 	private Date invRepresentIdDate_G;
+	@Transient
+	private String invPhoneNo;
+	@Transient
+	private String smsDueHDate;
+	@Transient
+	private Date smsDueGDate;
+	@Transient
+	private String smsBillNo;
 
 	// @Formula("(SELECT * FROM PAY_LIC_BILLS B WHERE B.LIC_NO = ID AND
 	// B.LIC_TYPE = 'I' )")
@@ -636,5 +648,46 @@ public class ContractDirect implements Comparable<ContractDirect> {
 		}
 		this.invRepresentIdDate_G = invRepresentIdDate_G;
 	}
+
+	public Integer getOldPayedFees() {
+		return oldPayedFees;
+	}
+
+	public void setOldPayedFees(Integer oldPayedFees) {
+		this.oldPayedFees = oldPayedFees;
+	}
+
+	public String getInvPhoneNo() {
+		return invPhoneNo;
+	}
+
+	public void setInvPhoneNo(String invPhoneNo) {
+		this.invPhoneNo = invPhoneNo;
+	}
+
+	public String getSmsDueHDate() {
+		return smsDueHDate;
+	}
+
+	public void setSmsDueHDate(String smsDueHDate) {
+		this.smsDueHDate = smsDueHDate;
+	}
+
+	public String getSmsBillNo() {
+		return smsBillNo;
+	}
+
+	public void setSmsBillNo(String smsBillNo) {
+		this.smsBillNo = smsBillNo;
+	}
+
+	public Date getSmsDueGDate() {
+		return smsDueGDate;
+	}
+
+	public void setSmsDueGDate(Date smsDueGDate) {
+		this.smsDueGDate = smsDueGDate;
+	}
+
 
 }

@@ -1471,4 +1471,28 @@
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>searchTransfer</from-outcome>
+			<to-view-id>/store/searchTransferOwnerShip.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>searchReturnStore</from-outcome>
+			<to-view-id>/store/searchReturnStore.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>contract_message</from-outcome>
+			<to-view-id>/investment/contract_message.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

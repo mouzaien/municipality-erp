@@ -66,103 +66,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.bkeryah.entities.ArcApplicationType;
-import com.bkeryah.entities.ArcAttach;
-import com.bkeryah.entities.ArcDocumentStruct;
-import com.bkeryah.entities.ArcPeople;
-import com.bkeryah.entities.ArcPeopleModel;
-import com.bkeryah.entities.ArcPeoplePic;
-import com.bkeryah.entities.ArcRecAtt;
-import com.bkeryah.entities.ArcRecordLinking;
-import com.bkeryah.entities.ArcRecords;
-import com.bkeryah.entities.ArcRecordsLink;
-import com.bkeryah.entities.ArcUsers;
-import com.bkeryah.entities.ArcUsersExtension;
-import com.bkeryah.entities.Article;
-import com.bkeryah.entities.ArticleGroup;
-import com.bkeryah.entities.ArticleSubGroup;
-import com.bkeryah.entities.BillIssueCash;
-import com.bkeryah.entities.BillIssueDetail;
-import com.bkeryah.entities.BillIssueDig;
-import com.bkeryah.entities.BillIssueDigCash;
-import com.bkeryah.entities.BillIssueDigDetail;
-import com.bkeryah.entities.BillIssueRubish;
-import com.bkeryah.entities.Charging;
-import com.bkeryah.entities.DepartmentArcRecords;
-import com.bkeryah.entities.DeptArcRecords;
-import com.bkeryah.entities.DocumentScenario;
-import com.bkeryah.entities.DocumentsType;
-import com.bkeryah.entities.EmployeeInitiation;
-import com.bkeryah.entities.FinEntity;
-import com.bkeryah.entities.FinFinancialYear;
-import com.bkeryah.entities.HealthMasterLicence;
-import com.bkeryah.entities.HrEmployeeVacation;
-import com.bkeryah.entities.HrScenario;
-import com.bkeryah.entities.HrsEmpHistorical;
-import com.bkeryah.entities.HrsEmpTerminate;
-import com.bkeryah.entities.HrsEmployeeTraining;
-import com.bkeryah.entities.HrsGovJob4;
-import com.bkeryah.entities.HrsJobHistorical;
-import com.bkeryah.entities.HrsMasterFile;
-import com.bkeryah.entities.HrsSalaryScale;
-import com.bkeryah.entities.HrsSalaryScaleDgrs;
-import com.bkeryah.entities.HrsSalaryScaleId;
-import com.bkeryah.entities.HrsScenarioDocument;
-import com.bkeryah.entities.HrsSigns;
-import com.bkeryah.entities.HrsTrainingMandate;
-import com.bkeryah.entities.HrsTrainingPlace;
-import com.bkeryah.entities.HrsUserAbsent;
-import com.bkeryah.entities.InventoryMaster;
-import com.bkeryah.entities.InventoryRecord;
-import com.bkeryah.entities.ItemUnite;
-import com.bkeryah.entities.LicTrdArchive;
-import com.bkeryah.entities.MainMenu;
-import com.bkeryah.entities.MasterFile;
-import com.bkeryah.entities.NationalIdPlaces;
-import com.bkeryah.entities.NationalIdType;
-import com.bkeryah.entities.Nationality;
-import com.bkeryah.entities.PayBank;
-import com.bkeryah.entities.PayBillDetails;
-import com.bkeryah.entities.PayLicBills;
-import com.bkeryah.entities.PayMaster;
-import com.bkeryah.entities.Project;
-import com.bkeryah.entities.ProjectContract;
-import com.bkeryah.entities.RecDepts;
-import com.bkeryah.entities.ReturnStoreDetails;
-import com.bkeryah.entities.StoreTemporeryReceiptDetails;
-import com.bkeryah.entities.StoreTemporeryReceiptMaster;
-import com.bkeryah.entities.SubMenu;
-import com.bkeryah.entities.Supervisor;
-import com.bkeryah.entities.SysCategoryEmployer;
-import com.bkeryah.entities.SysProperties;
-import com.bkeryah.entities.SysTitle;
-import com.bkeryah.entities.TechnicalResponse;
-import com.bkeryah.entities.TechnicalUsers;
-import com.bkeryah.entities.TenderItems;
-import com.bkeryah.entities.TradIssueType;
-import com.bkeryah.entities.TransferOwnershipDetails;
-import com.bkeryah.entities.UserRoles;
-import com.bkeryah.entities.VacationsType;
-import com.bkeryah.entities.VisitsSupervisor;
-import com.bkeryah.entities.WhsWarehouses;
-import com.bkeryah.entities.WrkApplication;
-import com.bkeryah.entities.WrkApplicationId;
-import com.bkeryah.entities.WrkArchiveRcipent;
-import com.bkeryah.entities.WrkComment;
-import com.bkeryah.entities.WrkCommentType;
-import com.bkeryah.entities.WrkDept;
-import com.bkeryah.entities.WrkDept2;
-import com.bkeryah.entities.WrkInboxFolder;
-import com.bkeryah.entities.WrkJobs;
-import com.bkeryah.entities.WrkLetterFrom;
-import com.bkeryah.entities.WrkLetterTo;
-import com.bkeryah.entities.WrkProfile;
-import com.bkeryah.entities.WrkPurpose;
-import com.bkeryah.entities.WrkRefrentionalSetting;
-import com.bkeryah.entities.WrkRoles;
-import com.bkeryah.entities.WrkSection;
-import com.bkeryah.entities.WrkSpecialAddress;
-import com.bkeryah.entities.WrkUserFolderMail;
+import com.bkeryah.entities.*;
 import com.bkeryah.entities.investment.AnnoucementDetails;
 import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
@@ -260,6 +164,7 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 import customeExceptions.VacationAndInitException;
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
+import utilities.MsgEntry;
 import utilities.MyConstants;
 import utilities.Utils;
 
@@ -429,7 +334,6 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Override
 	@Transactional
 	public List<ReqFinesDetails> findLstFinesDetailsByFineNO(Integer fNo) {
-
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesDetails.class);
 		criteria.add(Restrictions.eq("fineNo", fNo));
 		return criteria.list();
@@ -443,7 +347,11 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
 		criteria.add(Restrictions.eq("licNo", fLicenceNo));
-		return (LicTrdMasterFile) criteria.list().get(0);
+		List<LicTrdMasterFile> ls = criteria.list();
+		if (ls != null && ls.size() > 0) {
+			return ls.get(0);
+		}
+		return null;
 
 	}
 
@@ -780,12 +688,11 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public ArcUsers loadUser(final String username, final String password) throws AuthenticationException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
 		criteria.add(Restrictions.sqlRestriction("UPPER(LOGIN_NAME) = UPPER(?)", username, StringType.INSTANCE));
-		// if (password != null) {
-		// Object[] params = { username, password };
-		// Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
-		// criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?,
-		// ?)", params, types));
-		// }
+		if (password != null) {
+			Object[] params = { username, password };
+			Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
+			criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?, ?)", params, types));
+		}
 		List<ArcUsers> result = criteria.list();
 		if (CollectionUtils.isEmpty(result))
 			throw new BadCredentialsException("bad credentials");
@@ -2769,12 +2676,13 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ReqFinesMaster> loadAllPenalities(String notification) {
+	public List<ReqFinesMaster> loadAllPenalities(String notification, Integer deptId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesMaster.class);
 		// if (notification)
 		// criteria.add(Restrictions.eq("type", 1));
 		if (!("-1".equalsIgnoreCase(notification))) // all fines if == -1
 			criteria.add(Restrictions.eq("status", notification));
+		criteria.add(Restrictions.eq("fDeptNo", Integer.toString(deptId)));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.addOrder(Order.desc("fineNo"));
 		return criteria.list();
@@ -5255,6 +5163,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		List<ContractsFees> list = new ArrayList<ContractsFees>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
 		criteria.add(Restrictions.eq("contractId", contractId));
+		criteria.addOrder(Order.asc("id"));
 		list = criteria.list();
 		return list;
 	}
@@ -5332,5 +5241,80 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return list;
 	}
 
-	
+	@Override
+	@Transactional
+	public List<ReturnStore> loadAllReturnStoreByEmpId(Integer empId, Integer strNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReturnStore.class);
+		if (empId != null)
+			criteria.add(Restrictions.eq("userId", empId));
+		if (strNo != null)
+			criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("status", "Y"));
+		List list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TransferOwnership.class);
+		if (empId != null)
+			criteria.add(Restrictions.eq("fromUser", empId));
+		if (strNo != null)
+			criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("status", "Y"));
+		List list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<User> getAllEmployeesByManager(Integer managerId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("mgrId", managerId));
+		List list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public PayLicBills getContInvBill(ContractsFees contrFee) {
+		try {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
+			criteria.add(Restrictions.eq("licenceNumber", contrFee.getContractId()));
+			criteria.add(Restrictions.eq("licenceType", "I"));
+			criteria.add(Restrictions.eq("billNumber", contrFee.getOldFactId()));
+			List list = criteria.list();
+			if (list != null && list.size() > 0)
+				return (PayLicBills) list.get(0);
+			else
+				return null;
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteContractDirect(ContractDirect contractDirect) {
+		PayLicBills cntctBill = loadBillByLicNo(contractDirect.getId());
+		List<ContractsFees> feesList = loadContractFeeslistbycontractId(contractDirect.getId());
+		try {
+			if (cntctBill==null) {
+				for (ContractsFees fees : feesList)
+					deleteObject(fees);
+				deleteObject(contractDirect);
+				System.out.println("contract deleted.");
+				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+				logger.info("delete contractDirect: id: " + contractDirect.getId());
+			} else {
+				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+				MsgEntry.addErrorMessage("تأكد ان العقد لم تصدر له فواتير ");
+			}
+		} catch (Exception e) {
+			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+			e.printStackTrace();
+		}
+	}
+
 }

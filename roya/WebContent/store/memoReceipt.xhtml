@@ -238,16 +238,16 @@
 					</h:panelGroup>
 					<h:panelGroup id="table">
 
-						<p:dataTable value="#{stockEntryBean.stockInDetailList}"
+						<p:dataTable value="#{stockEntryBean.stockInDetailList}" 
 							id="art_table" emptyMessage="لايوجد بيانات" var="storeItem"
 							rowIndexVar="rowIndex" editable="true">
 
 							<p:ajax event="rowEdit" listener="#{stockEntryBean.onRowEdit}"
 								immediate="true" delay="200"
 								update="total_price" process="price" />
-							<p:ajax event="rowEditCancel" immediate="true"
+							<p:ajax event="rowEditCancel" 
 								listener="#{stockEntryBean.onRowCancel}" delay="200"
-								update="total_price " process="price" />
+								update="total_price art_table" process="price" />
 							<p:column style="white-space: nowrap;text-align: center;"
 								headerText="رقم" width="5%">										
 										#{rowIndex+1} 									

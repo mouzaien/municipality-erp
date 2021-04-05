@@ -99,6 +99,7 @@ public class PayLicBills implements Serializable {
 		this.payInstallNumber = payLicBills.getPayInstallNumber();
 		this.chequeDate = payLicBills.getChequeDate();
 		this.paidBy = payLicBills.getPaidBy();
+		this.aplOwner =payLicBills.getAplOwner();
 	}
 
 	public PayLicBills() {

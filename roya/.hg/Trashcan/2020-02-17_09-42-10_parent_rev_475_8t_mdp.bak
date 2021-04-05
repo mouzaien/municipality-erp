@@ -1,0 +1,49 @@
+diff --git a/src/com/bkeryah/service/IDataAccessService.java b/src/com/bkeryah/service/IDataAccessService.java
+--- a/src/com/bkeryah/service/IDataAccessService.java
++++ b/src/com/bkeryah/service/IDataAccessService.java
+@@ -1998,9 +1998,6 @@
+ 
+ 	public List<Amana> getAllLicAmanaList();
+ 
+-	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan);
+-
+ 	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+ 
+ 	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+@@ -2045,4 +2042,7 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList);
+ 
+ 	public void deleteFeesList(List<ContractsFees> fessList);
++
++	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
++			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
+ }
+diff --git a/src/com/bkeryah/entities/investment/ContractDirect.java b/src/com/bkeryah/entities/investment/ContractDirect.java
+--- a/src/com/bkeryah/entities/investment/ContractDirect.java
++++ b/src/com/bkeryah/entities/investment/ContractDirect.java
+@@ -91,6 +91,10 @@
+ 	private Integer totalInstallment;// الاقساط الكلية
+ 	@Column(name = "FEES_BILLED_NBR")
+ 	private Integer billedInstallment;// الاقساط المفوترة
++	
++	@Column(name = "OLD_PAYED_FEES")
++	private Integer oldPayedFees;// الاقساط المدفوعة السابقة
++	
+ 	@Column(name = "SPECIAL_CONDITIONS")
+ 	private String specialConditions;// الشروط الخاصة
+ 	@Column(name = "CONTRACT_DURATION_RATIO")
+@@ -637,4 +641,12 @@
+ 		this.invRepresentIdDate_G = invRepresentIdDate_G;
+ 	}
+ 
++	public Integer getOldPayedFees() {
++		return oldPayedFees;
++	}
++
++	public void setOldPayedFees(Integer oldPayedFees) {
++		this.oldPayedFees = oldPayedFees;
++	}
++
+ }
+\ No newline at end of file

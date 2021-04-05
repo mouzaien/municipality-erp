@@ -69,7 +69,7 @@
 				<textFieldExpression><![CDATA["رقم الإيصال"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="567" y="0" width="145" height="38" uuid="59f1090d-394f-451b-bc01-b1df30f1f9c5">
+				<reportElement x="567" y="0" width="113" height="38" uuid="59f1090d-394f-451b-bc01-b1df30f1f9c5">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -94,7 +94,7 @@
 				<textFieldExpression><![CDATA["تاريخ الفاتورة"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="712" y="0" width="88" height="38" uuid="42ca96e7-9775-4ffa-bdf2-88713fcb2fd3">
+				<reportElement x="680" y="0" width="79" height="38" uuid="42ca96e7-9775-4ffa-bdf2-88713fcb2fd3">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
@@ -169,12 +169,24 @@
 				</textElement>
 				<textFieldExpression><![CDATA["حالة السداد"]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="759" y="0" width="43" height="38" uuid="dfe9615e-f34b-473e-9d0d-a7cdde4297fc">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تسلسل]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="567" y="0" width="145" height="30" uuid="0537723a-f263-47d7-85a0-5adabbd9ec36"/>
+				<reportElement x="567" y="0" width="113" height="30" uuid="0537723a-f263-47d7-85a0-5adabbd9ec36"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -199,7 +211,7 @@
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="712" y="0" width="88" height="30" uuid="2c3bd984-d1c1-452f-b303-25119930ade3"/>
+				<reportElement x="680" y="0" width="79" height="30" uuid="2c3bd984-d1c1-452f-b303-25119930ade3"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -279,6 +291,18 @@
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sadadStatus}== null?"":(""+$F{sadadStatus}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
+                .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
+                .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="759" y="0" width="43" height="30" uuid="1688f7d6-aebe-45f0-b714-1f41185a00b3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{REPORT_COUNT}== null)?"":(""+$V{REPORT_COUNT}).replaceAll("0", "\\\u0660").replaceAll("1", "\\\u0661")
                 .replaceAll("2", "\\\u0662").replaceAll("3", "\\\u0663").replaceAll("4", "\\\u0664").replaceAll("5", "\\\u0665")
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>

@@ -17,7 +17,7 @@
 				<p:commandButton value="طباعة" icon="ui-icon ui-icon-print "
 					onclick="this.form.target='_blank'" ajax="false"
 					action="#{storeReturnBean.print_documents_return}"
-					rendered="#{(storeReturnBean.enablePrint)}" styleClass="purple-btn"></p:commandButton>
+					 styleClass="purple-btn"></p:commandButton>
 				<h:panelGroup id="saveBtnGrp">
 					<p:commandButton value="حفظ" id="saveBtn"
 						icon="ui-icon ui-icon-assignment-return"
@@ -42,8 +42,9 @@
 					<div class="ui-g-2">
 						<p:selectOneMenu styleClass="form-control" id="stockNO"
 							placeholder="إختر المستودع" value="#{storeReturnBean.strNo}"
+							required="true" requiredMessage="إختر المستودع"
 							style="direction: rtl;height: 39px;">
-							<f:selectItem itemLabel="إختر مستودع"></f:selectItem>
+							<f:selectItem itemLabel="إختر مستودع" noSelectionOption="true"></f:selectItem>
 							<f:selectItems value="#{storeReturnBean.allWareHouses}" var="c"
 								itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
 						</p:selectOneMenu>

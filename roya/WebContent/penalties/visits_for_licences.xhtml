@@ -69,7 +69,8 @@
 								<f:selectItem itemLabel="إختر القطاع" noSelectionOption="true" />
 								<f:selectItems value="#{licencesVisitsBean.licSectionList}"
 									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
-								<f:ajax render="section inboxdt LicenceDepartment" event="change" execute="@this"
+								<f:ajax render="section inboxdt LicenceDepartment"
+									event="change" execute="@this"
 									listener="#{licencesVisitsBean.loadLics}" />
 							</p:selectOneMenu>
 						</div>
@@ -125,8 +126,8 @@
 						<p:dataTable var="visit" id="inboxdt"
 							value="#{licencesVisitsBean.visits}" emptyMessage="لايوجد بيانات"
 							rowIndexVar="rowIndex" paginatorPosition="bottom"
-							widgetVar="cellLicence" editable="true"
-							sortBy="#{visit.gDate}" sortOrder="descending" 
+							widgetVar="cellLicence" editable="true" sortBy="#{visit.gDate}"
+							sortOrder="descending"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							filteredValue="#{licencesListBean.filteredLicences}"
 							paginator="true" rows="10">
@@ -160,7 +161,7 @@
 											required="true" requiredMessage="إدخل تاريخ البداية"
 											value="#{visit.hDate}" onfocus="loadCalendar();"
 											styleClass="form-control form-controlCal">
-<!-- 											<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+											<!-- 											<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
 											<f:ajax execute="@this"></f:ajax>
 										</p:inputText>
 									</f:facet>
@@ -219,14 +220,15 @@
 								filterMatchMode="contains" width="10%">
 								#{licencesVisitsBean.getLicData(visit.sectionId)}
 							</p:column>
-							
+
 							<p:column style="text-align: center;" headerText="القسم "
-								 width="5%">
-								<p:selectOneMenu id="LicenceDepartment" style="width:100% ; opacity:1"
-								value="#{licencesVisitsBean.deparmentId}" disabled="true">
-								<f:selectItems value="#{licencesVisitsBean.licDepartmentList}"
-									var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
+								width="5%">
+								<p:selectOneMenu id="LicenceDepartment"
+									style="width:100% ; opacity:1"
+									value="#{licencesVisitsBean.deparmentId}" disabled="true">
+									<f:selectItems value="#{licencesVisitsBean.licDepartmentList}"
+										var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
 							</p:column>
 							<p:column width="5%" style="text-align:center" headerText="تعديل">
 								<p:rowEditor />
@@ -329,7 +331,7 @@
 								<!-- 						</div> -->
 								<!-- 						<div class="ui-g"> -->
 								<div class="ui-g-1" style="text-align: center">
-									<h:outputLabel value="تاريخ البداية"></h:outputLabel>
+									<h:outputLabel value="التاريخ"></h:outputLabel>
 								</div>
 								<div class="ui-g-2">
 									<p:inputText id="licBeginDate" style="width:100%"
@@ -337,9 +339,25 @@
 										value="#{licencesVisitsBean.beginDate}"
 										onfocus="loadCalendar();"
 										styleClass="form-control form-controlCal">
-										<f:validator validatorId="utilities.UmmAlQUraValidator" />
+									
 									</p:inputText>
 								</div>
+								<div class="ui-g-1">
+									<h:outputLabel styleClass="btxt" value="المراقب" />
+								</div>
+								<div class="ui-g-3">
+									<p:selectOneMenu styleClass="form-control"
+										requiredMessage="اختر المراقب" filter="true"
+										filterMatchMode="contains" required="true"
+										value="#{licencesVisitsBean.supervisorId}">
+										<f:ajax execute="@this"></f:ajax>
+										<f:selectItem itemLabel="اختر مراقب" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{licencesVisitsBean.supervisors}" var="visor"
+											itemLabel="#{visor.userName}" itemValue="#{visor.id}"></f:selectItems>
+									</p:selectOneMenu>
+								</div>
+
 								<!-- 							<div class="ui-g-2" style="text-align: center"> -->
 								<!-- 								<h:outputLabel value="تاريخ النهاية"></h:outputLabel> -->
 								<!-- 							</div> -->
@@ -347,7 +365,7 @@
 								<!-- 								<p:inputText id="licEndDate" -->
 								<!-- 									value="#{licencesVisitsBean.endDate}" onfocus="loadCalendar();" -->
 								<!-- 									style="width:100%" styleClass="form-control form-controlCal"> -->
-								<!-- 									<f:validator validatorId="utilities.UmmAlQUraValidator" /> -->
+							
 								<!-- 								</p:inputText> -->
 								<!-- 							</div> -->
 							</div>

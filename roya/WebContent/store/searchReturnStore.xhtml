@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+	<h:head>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/dropDownMenuCss/js/vendor/modernizr-2.8.3.min.js"></script>
+
+	</h:head>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center;">
+						استعلام عن الرجيع <span class="fa fa-fw fa-copy"></span>
+					</h1>
+					<div class="ui-g" dir="rtl">
+						<div class="ui-g-1">
+							<h:outputLabel value="المستودع" rendered="#{searchReturnBean.hideStores}" />
+						</div>
+						<div class="ui-g-2">
+							<p:selectOneMenu styleClass="form-control" id="stockNO"
+								placeholder="إختر المستودع"
+								rendered="#{searchReturnBean.hideStores}"
+								value="#{searchReturnBean.strNo}"
+								style="direction: rtl;height: 39px;">
+								<f:selectItems value="#{searchReturnBean.allWareHouses}" var="c"
+									itemLabel="#{c.storeName}" itemValue="#{c.storeNumber}" />
+								<p:ajax process="@this" update="tempTable"
+									listener="#{searchReturnBean.returnStorefilter}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-1">
+							<h:outputLabel value="اختر الموظف" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:selectOneMenu id="empList" filterMatchMode="contains"
+								filter="true" value="#{searchReturnBean.employerId}">
+								<f:selectItem itemLabel="الكل" noSelectionOption="true" />
+								<f:selectItems value="#{searchReturnBean.employersList}"
+									var="emp" itemLabel="#{emp.employeeName}"
+									itemValue="#{emp.userId}" />
+								<p:ajax process="@this" update="tempTable"
+									listener="#{searchReturnBean.returnStorefilter}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<br />
+
+					<p:dataTable var="tempItem" id="tempTable"
+						value="#{searchReturnBean.returnSaveList}"
+						emptyMessage="لايوجد بيانات" rowIndexVar="rowIndex"
+						paginatorPosition="bottom" widgetVar="vtWidget"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						filteredValue="#{searchReturnBean.returnFilterList}"
+						paginator="true" rows="10">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="ابحث فى كل الحقول:" />
+								<p:inputText id="globalFilter" onkeyup="PF('vtWidget').filter()"
+									style="width:150px" placeholder="كلمة البحث">
+								</p:inputText>
+							</p:outputPanel>
+						</f:facet>
+						<p:column headerText="الرقم" style="width:10%">
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+						<p:column headerText="تاريخ الارجاع"
+							filterBy="#{tempItem.returnHDate}" filterMatchMode="contains"
+							style="width:15%">
+							<h:outputText value="#{tempItem.returnHDate}" />
+						</p:column>
+
+						<p:column headerText="صاحب طلب الارجاع"
+							filterBy="#{tempItem.employeeName}" filterMatchMode="contains"
+							style="width:15%">
+							<h:outputText value="#{tempItem.employeeName}" />
+						</p:column>
+
+						<p:column width="7%" style="text-align:center"
+							headerText="#{msg['details']}">
+							<p:commandButton
+								action="#{searchReturnBean.loadRetDtls(tempItem)}"
+								icon="ui-icon-search" oncomplete="PF('temp_dlg').show()"
+								update="includeform:temp_dlgId">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+
+
+					<p:dialog widgetVar="temp_dlg" id="temp_dlgId" width="70%"
+						hideEffect="fade" showEffect="explode" dir="rtl" modal="true"
+						resizable="false">
+						<h:panelGroup id="table">
+							<div class="col-md-12 ">
+
+								<div class="table-responsive">
+									<hr></hr>
+									<table id="tabStore" class="table table-striped table-hover">
+										<thead>
+											<tr>
+												<th>رقم</th>
+												<th>رقم طلب الصرف</th>
+												<th>اسم الصنف</th>
+												<th>رمز الصنف</th>
+
+
+												<!-- 												<th>المواصفات</th> -->
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="det" varStatus="x"
+												value="#{searchReturnBean.returnDtls}">
+												<tr>
+													<td>#{x.index+1}</td>
+													<td>#{det.exchMasterId}</td>
+													<td>#{det.articleName}</td>
+													<td>#{det.articleCode}</td>
+
+
+													<!-- 													<td>#{det.notes}</td> -->
+
+												</tr>
+
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+						</h:panelGroup>
+
+						<br />
+						<div class="image-box-footer" align="left">
+							<p:commandButton value="طباعة" ajax="false"
+								onclick="this.form.target='_blank'" styleClass="purple-btn"
+								icon="ui-icon ui-icon-print"
+								action="#{searchReturnBean.printReturnStore}" />
+							<!-- immediate="true" styleClass="btn btn-primary" -->
+							<!-- 								onclick="this.form.target='_blank'" -->
+							<p:spacer height="10px"></p:spacer>
+							<p:commandButton value="رجوع" immediate="true"
+								styleClass="btn btn-primary" onclick="PF('temp_dlg').hide()" />
+
+						</div>
+
+					</p:dialog>
+
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</f:view>
+</html>

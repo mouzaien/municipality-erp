@@ -45,14 +45,16 @@ public class InvSubCategoryBean {
 
 	public void saveSubCategory() {
 		try {
-			if (subCategory != null && mainCategoryId != null) {
+			if (subCategory != null && mainCategoryId != null
+					&& (subCategory.getName() != null && subCategory.getName().trim().length()>2)) {
 				subCategory.setContMainCategoryid(mainCategoryId);
+				// System.out.println(subCategory.getName().trim());
 				dataAccessService.save(subCategory);
 				contractSubCategoryList = dataAccessService.loadAllContractSubcategory();
 				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 				setSubCategory(null);
 			} else {
-				MsgEntry.addErrorMessage("ادخل التصنيفالرئيسي و الفرعي قبل الحفظ");
+				MsgEntry.addErrorMessage("ادخل التصنيف الرئيسي و الفرعي قبل الحفظ");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PreDestroy;
+import javax.persistence.OrderBy;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -44,6 +44,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.Sort;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -55,6 +56,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.jdbc.Work;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -64,104 +66,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.bkeryah.entities.ArcApplicationType;
-import com.bkeryah.entities.ArcAttach;
-import com.bkeryah.entities.ArcDocumentStruct;
-import com.bkeryah.entities.ArcPeople;
-import com.bkeryah.entities.ArcPeopleModel;
-import com.bkeryah.entities.ArcPeoplePic;
-import com.bkeryah.entities.ArcRecAtt;
-import com.bkeryah.entities.ArcRecordLinking;
-import com.bkeryah.entities.ArcRecords;
-import com.bkeryah.entities.ArcRecordsLink;
-import com.bkeryah.entities.ArcUsers;
-import com.bkeryah.entities.ArcUsersExtension;
-import com.bkeryah.entities.Article;
-import com.bkeryah.entities.ArticleGroup;
-import com.bkeryah.entities.ArticleSubGroup;
-import com.bkeryah.entities.BillIssueCash;
-import com.bkeryah.entities.BillIssueDetail;
-import com.bkeryah.entities.BillIssueDig;
-import com.bkeryah.entities.BillIssueDigCash;
-import com.bkeryah.entities.BillIssueDigDetail;
-import com.bkeryah.entities.BillIssueRubish;
-import com.bkeryah.entities.Charging;
-import com.bkeryah.entities.DepartmentArcRecords;
-import com.bkeryah.entities.DeptArcRecords;
-import com.bkeryah.entities.DocumentScenario;
-import com.bkeryah.entities.DocumentsType;
-import com.bkeryah.entities.EmployeeInitiation;
-import com.bkeryah.entities.FinEntity;
-import com.bkeryah.entities.FinFinancialYear;
-import com.bkeryah.entities.HrEmployeeVacation;
-import com.bkeryah.entities.HrScenario;
-import com.bkeryah.entities.HrsEmpHistorical;
-import com.bkeryah.entities.HrsEmpTerminate;
-import com.bkeryah.entities.HrsEmployeeTraining;
-import com.bkeryah.entities.HrsGovJob4;
-import com.bkeryah.entities.HrsJobHistorical;
-import com.bkeryah.entities.HrsMasterFile;
-import com.bkeryah.entities.HrsSalaryScale;
-import com.bkeryah.entities.HrsSalaryScaleDgrs;
-import com.bkeryah.entities.HrsSalaryScaleId;
-import com.bkeryah.entities.HrsScenarioDocument;
-import com.bkeryah.entities.HrsSigns;
-import com.bkeryah.entities.HrsTrainingMandate;
-import com.bkeryah.entities.HrsTrainingPlace;
-import com.bkeryah.entities.HrsUserAbsent;
-import com.bkeryah.entities.InventoryMaster;
-import com.bkeryah.entities.InventoryRecord;
-import com.bkeryah.entities.ItemUnite;
-import com.bkeryah.entities.LicTrdArchive;
-import com.bkeryah.entities.MainMenu;
-import com.bkeryah.entities.MasterFile;
-import com.bkeryah.entities.NationalIdPlaces;
-import com.bkeryah.entities.NationalIdType;
-import com.bkeryah.entities.Nationality;
-import com.bkeryah.entities.PayBank;
-import com.bkeryah.entities.PayBillDetails;
-import com.bkeryah.entities.PayLicBills;
-import com.bkeryah.entities.PayMaster;
-import com.bkeryah.entities.Project;
-import com.bkeryah.entities.ProjectContract;
-import com.bkeryah.entities.RecDepts;
-import com.bkeryah.entities.ReturnStoreDetails;
-import com.bkeryah.entities.StoreTemporeryReceiptDetails;
-import com.bkeryah.entities.SubMenu;
-import com.bkeryah.entities.SysProperties;
-import com.bkeryah.entities.SysTitle;
-import com.bkeryah.entities.TechnicalResponse;
-import com.bkeryah.entities.TechnicalUsers;
-import com.bkeryah.entities.TenderItems;
-import com.bkeryah.entities.TradIssueType;
-import com.bkeryah.entities.UserRoles;
-import com.bkeryah.entities.VacationsType;
-import com.bkeryah.entities.WhsWarehouses;
-import com.bkeryah.entities.WrkApplication;
-import com.bkeryah.entities.WrkApplicationId;
-import com.bkeryah.entities.WrkComment;
-import com.bkeryah.entities.WrkCommentType;
-import com.bkeryah.entities.WrkDept;
-import com.bkeryah.entities.WrkInboxFolder;
-import com.bkeryah.entities.WrkJobs;
-import com.bkeryah.entities.WrkProfile;
-import com.bkeryah.entities.WrkPurpose;
-import com.bkeryah.entities.WrkRefrentionalSetting;
-import com.bkeryah.entities.WrkRoles;
-import com.bkeryah.entities.WrkSection;
-import com.bkeryah.entities.WrkSpecialAddress;
-import com.bkeryah.entities.WrkUserFolderMail;
+import com.bkeryah.entities.*;
 import com.bkeryah.entities.investment.AnnoucementDetails;
 import com.bkeryah.entities.investment.BuildingType;
 import com.bkeryah.entities.investment.Clause;
 import com.bkeryah.entities.investment.Contract;
 import com.bkeryah.entities.investment.ContractCancelReason;
+import com.bkeryah.entities.investment.ContractComponents;
 import com.bkeryah.entities.investment.ContractDirect;
 import com.bkeryah.entities.investment.ContractDirectType;
+import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
+import com.bkeryah.entities.investment.ContractsFees;
 import com.bkeryah.entities.investment.IntroContract;
 import com.bkeryah.entities.investment.InvNewspaper;
 import com.bkeryah.entities.investment.Investor;
@@ -179,8 +98,11 @@ import com.bkeryah.entities.licences.BldLicNew;
 import com.bkeryah.entities.licences.BldLicWall;
 import com.bkeryah.entities.licences.BldPaperTypes;
 import com.bkeryah.entities.licences.LicAgents;
+import com.bkeryah.entities.licences.LicVisits;
 import com.bkeryah.fng.entities.AutorizationSettings;
+import com.bkeryah.fng.entities.FngStatusAbsence;
 import com.bkeryah.fng.entities.FngTimeTable;
+import com.bkeryah.fng.entities.FngTypeAbsence;
 import com.bkeryah.fng.entities.FngUserTempShift;
 import com.bkeryah.fng.entities.TstFinger;
 import com.bkeryah.fng.entities.TstFingerId;
@@ -224,10 +146,10 @@ import com.bkeryah.hr.entities.Sys038;
 import com.bkeryah.hr.entities.Sys051;
 import com.bkeryah.hr.entities.Sys059;
 import com.bkeryah.hr.entities.Sys112;
-import com.bkeryah.hr.entities.UserVacSold;
 import com.bkeryah.model.AbsentModel;
 import com.bkeryah.model.User;
 import com.bkeryah.penalties.FineSection;
+import com.bkeryah.penalties.LicDepartment;
 import com.bkeryah.penalties.LicTrdMasterFile;
 import com.bkeryah.penalties.NotifFinesMaster;
 import com.bkeryah.penalties.ReqFinesDetails;
@@ -242,7 +164,6 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 import customeExceptions.VacationAndInitException;
 import oracle.jdbc.OracleTypes;
 import utilities.HijriCalendarUtil;
-import utilities.MsgEntry;
 import utilities.MyConstants;
 import utilities.Utils;
 
@@ -452,8 +373,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	}
 
-	@Override
 	@Transactional
+	@Override
 	public Integer save(Object myObject) {
 
 		Integer save = (Integer) sessionFactory.getCurrentSession().save(myObject);
@@ -763,11 +684,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public ArcUsers loadUser(final String username, final String password) throws AuthenticationException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
 		criteria.add(Restrictions.sqlRestriction("UPPER(LOGIN_NAME) = UPPER(?)", username, StringType.INSTANCE));
-		if (password != null) {
-			Object[] params = { username, password };
-			Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
-			criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?, ?)", params, types));
-		}
+		// if (password != null) {
+		// Object[] params = { username, password };
+		// Type[] types = { StringType.INSTANCE, StringType.INSTANCE };
+		// criteria.add(Restrictions.sqlRestriction("PASSWORD = wrk_password(?,
+		// ?)", params, types));
+		// }
 		List<ArcUsers> result = criteria.list();
 		if (CollectionUtils.isEmpty(result))
 			throw new BadCredentialsException("bad credentials");
@@ -937,8 +859,6 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	@Transactional
 	public HrsEmpHistorical getHRsEmpHistoricalByEmpNo(int employerNumber) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
-		// criteria.add(Restrictions.and(Restrictions.eq("id.empno",
-		// employerNumber), Restrictions.eq("flag", 1)));
 		criteria.add(Restrictions.eq("id.empno", employerNumber));
 		criteria.add(Restrictions.eq("flag", 1));
 		return (HrsEmpHistorical) criteria.uniqueResult();
@@ -1088,7 +1008,15 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.setProjection(Projections.property("executedDate"));
 		criteria.add(Restrictions.eq("employeNumber", employerNumber));
 		String executedDateTerminate = (String) criteria.uniqueResult();
-		return executedDateTerminate;
+		// return executedDateTerminate;
+		if (executedDateTerminate != null) {
+			Integer status = getActifEmployer(employerNumber);
+			if (status > 0)
+				return null;
+			else
+				return executedDateTerminate;
+		}
+		return null;
 	}
 
 	@Override
@@ -1796,6 +1724,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	}
 
+	@Transactional
 	@Override
 	public Integer getArchRecParentFromLinkByRecordId(Integer childArchRecordId) {
 		String hql = " Select arcRecordParentId FROM  ArcRecordsLink A Where A.arcRrecordChildId=:childArchRecordId   ";
@@ -2115,9 +2044,17 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	@Transactional
-	public List<Article> getAllArticles(Integer strNo) {
+	public List<Article> getAllArticles(Integer srtNo) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
-		criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("strNo", srtNo));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getAllArticlesByGroupId(Integer groupId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
+		criteria.add(Restrictions.eq("groupId", groupId));
 		return criteria.list();
 	}
 
@@ -2137,11 +2074,6 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 		return ids;
 
-	}
-
-	@Override
-	public List<WrkDept> findAllDepartments() {
-		return loadAll(WrkDept.class);
 	}
 
 	@Override
@@ -2262,8 +2194,8 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsJobCreation.class);
 		criteria.add(Restrictions.eq("categoryId", catid));
 		criteria.add(Restrictions.eq("jobstatus", status));
-		// if (rank != null)
-		// criteria.add(Restrictions.eq("rankCode", rank));
+		if (rank != null)
+			criteria.add(Restrictions.eq("rankCode", rank));
 		List<HrsJobCreation> jobs = criteria.list();
 		System.out.println("jobs size ----> " + jobs.size());
 		return jobs;
@@ -2672,6 +2604,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		List<ArcUsers> users = new ArrayList<ArcUsers>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ArcUsers.class);
 		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		if (departmentId != null)
 			criteria.add(Restrictions.eq("deptId", departmentId));
 		criteria.add(Restrictions.eq("isActive", 1));
@@ -2740,10 +2673,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ReqFinesMaster> loadAllPenalities(boolean notification) {
+	public List<ReqFinesMaster> loadAllPenalities(String notification) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesMaster.class);
-		if (notification)
-			criteria.add(Restrictions.eq("type", 1));
+		// if (notification)
+		// criteria.add(Restrictions.eq("type", 1));
+		if (!("-1".equalsIgnoreCase(notification))) // all fines if == -1
+			criteria.add(Restrictions.eq("status", notification));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.addOrder(Order.desc("fineNo"));
 		return criteria.list();
@@ -3702,7 +3637,18 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public List<RealEstate> loadAllRealEstates() {
-		return loadAll(RealEstate.class);
+		// List<RealEstate> list = loadAll(RealEstate.class);
+		List<RealEstate> list = orderedRealEstateList();
+		return list;
+	}
+
+	private List<RealEstate> orderedRealEstateList() {
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		criteria.addOrder(Order.desc("id"));
+		list = criteria.list();
+		return list;
+
 	}
 
 	@Override
@@ -3947,7 +3893,11 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public List<IntroContract> loadAllIntroContracts() {
-		return loadAll(IntroContract.class);
+		List<IntroContract> list = new ArrayList<IntroContract>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(IntroContract.class);
+		criteria.addOrder(Order.asc("id"));
+		list = criteria.list();
+		return list;
 	}
 
 	@Override
@@ -4027,8 +3977,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	public List<LicTrdMasterFile> loadLicences() {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class)
 				.setProjection(Projections.projectionList().add(Projections.property("licNo"), "licNo")
-						.add(Projections.property("trdName"), "trdName").add(Projections.property("aplOwner"),
-								"aplOwner"))
+						.add(Projections.property("trdName"), "trdName")
+						.add(Projections.property("phoneNumber"), "phoneNumber")
+						.add(Projections.property("licBeginDate"), "licBeginDate")
+						.add(Projections.property("licEndDate"), "licEndDate")
+						.add(Projections.property("licAdress"), "licAdress")
+						.add(Projections.property("aplOwner"), "aplOwner"))
 				.setResultTransformer(Transformers.aliasToBean(LicTrdMasterFile.class));
 		return criteria.list();
 	}
@@ -4063,15 +4017,12 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public Integer getNewVacPeriod(int findCurrentYear) {
-		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacationUpdate.class);
-			criteria.setProjection(Projections.property("days"));
-			criteria.add(Restrictions.eq("year", findCurrentYear));
-			return (Integer) criteria.uniqueResult();
-		} catch (Exception e) {
-			logger.error("getNewVacPeriod" + e.getMessage());
-		}
-		return 0;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacationUpdate.class);
+		criteria.setProjection(Projections.sum("days"));
+		// criteria.add(Restrictions.eq("year", findCurrentYear));
+
+		Integer days = Integer.parseInt(criteria.uniqueResult().toString());
+		return days;
 	}
 
 	@Override
@@ -4098,14 +4049,32 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return true;
 	}
 
+	@Transactional
 	@Override
 	public Integer getInitUserVacSold(int findCurrentYear, int empno) {
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserVacSold.class);
-			criteria.setProjection(Projections.property("initSold"));
-			criteria.add(Restrictions.eq("initYear", findCurrentYear));
-			criteria.add(Restrictions.eq("empno", empno));
+
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
+			criteria.setProjection(Projections.sqlProjection("(VAC_OLD_SOLD + VAC_CURR_YEAR_SOLD) as total",
+					new String[] { "total" }, new Type[] { IntegerType.INSTANCE }));
+			criteria.add(Restrictions.eq("currentYear", findCurrentYear));
+			criteria.add(Restrictions.eq("employeeNumber", empno));
+			/*
+			 * String hql =
+			 * " select w.oldSold + w.currentYearSold from HrsVacSold w where w.employeeNumber=:empno AND w.currentYear=:curryear "
+			 * ; Query query =
+			 * sessionFactory.getCurrentSession().createQuery(hql);
+			 * query.setParameter("empno", empno);
+			 * query.setParameter("curryear", findCurrentYear);
+			 */
 			return (Integer) criteria.uniqueResult();
+			// Criteria criteria =
+			// sessionFactory.getCurrentSession().createCriteria(HrsVacSold.class);
+			// criteria.setProjection(Projections.property("VAC_CURR_YEAR_SOLD"));
+			// criteria.setProjection(Projections.property("VAC_OLD_SOLD"));
+			// criteria.add(Restrictions.eq("VAC_CURR_YEAR", findCurrentYear));
+			// criteria.add(Restrictions.eq("empno", empno));
+			// return (Integer) criteria.uniqueResult();
 		} catch (Exception e) {
 			logger.error("getInitUserVacSold" + e.getMessage());
 		}
@@ -4332,6 +4301,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		return inventories;
 	}
 
+	@Transactional
 	@Override
 	public List<ReturnStoreDetails> getReturnStoreDetailsById(Integer id) {
 		List<ReturnStoreDetails> returnStoreDetails = new ArrayList<ReturnStoreDetails>();
@@ -4342,7 +4312,24 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 	}
 
 	@Override
-<<<<<<< local
+	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id) {
+		List<StoreTemporeryReceiptDetails> storeTemporeryReceiptDetails = new ArrayList<StoreTemporeryReceiptDetails>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptDetails.class);
+		criteria.add(Restrictions.eq("temporaryReceiptMasterId", id));
+		storeTemporeryReceiptDetails = criteria.list();
+		return storeTemporeryReceiptDetails;
+	}
+
+	@Override
+	public StoreTemporeryReceiptMaster getStrTemrReceiptMstrById(Integer id) {
+		StoreTemporeryReceiptMaster master = new StoreTemporeryReceiptMaster();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
+		criteria.add(Restrictions.eq("id", id));
+		master = (StoreTemporeryReceiptMaster) criteria.uniqueResult();
+		return master;
+	}
+
+	@Override
 	public List<Article> getAllArticles() {
 		return loadAll(Article.class);
 	}
@@ -4362,14 +4349,927 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		criteria.add(Restrictions.eq("stepId", 1));
 		return (HrsSigns) criteria.uniqueResult();
 	}
-=======
-	public List<StoreTemporeryReceiptDetails> getStoreTemporeryReceiptDetailsById(Integer id) {
-		List<StoreTemporeryReceiptDetails> storeTemporeryReceiptDetails = new ArrayList<StoreTemporeryReceiptDetails>();
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptDetails.class);
-		criteria.add(Restrictions.eq("temporaryReceiptMasterId", id));
-		storeTemporeryReceiptDetails = criteria.list();
-		return storeTemporeryReceiptDetails;
+
+	@Transactional
+	public void addOperation(Object dep_tr) {
+
+		sessionFactory.getCurrentSession().save(dep_tr);
+
 	}
 
->>>>>>> other
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public List<String> loadDepTrain(Integer emp_no, Integer month, Integer
+	// year) {
+	//
+	// List<String> list = new ArrayList<String>();
+	// String sql;
+	// try {
+	//
+	// sql = Utils.readSqlRequest("DeptTrainRequest");
+	//
+	// System.out.println(sql);
+	// Session currentSession = sessionFactory.getCurrentSession();
+	//
+	// Query salaryQuery = currentSession.createSQLQuery(sql);
+	//
+	// salaryQuery.setParameter("year", year);
+	//
+	// salaryQuery.setParameter("month", month);
+	//
+	// list = salaryQuery.list();
+	//
+	// return list;
+	// } catch (IOException e1) {
+	// e1.printStackTrace();
+	// } finally {
+	// }
+	// return list;
+	// }
+
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<DeputationTraining> loadStatus(Integer emp_number) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	// return criteria.list();
+	// } else {
+	//
+	// return criteria.list();
+	// }
+	// }
+	//
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<DeputationTraining> loadStatus(Integer emp_number, Integer
+	// month, Integer year) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(DeputationTraining.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	//
+	// return criteria.list();
+	//
+	// } else {
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	// return criteria.list();
+	// }
+	// }
+
+	// @Override
+	// @Transactional
+	// public void saveReward(RewardInfo rewardinfo) {
+	//
+	// sessionFactory.getCurrentSession().save(rewardinfo);
+	// }
+	//
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// @Transactional
+	// public List<RewardInfo> loadRewards(Integer emp_number) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+	// if (emp_number != 0)
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// return criteria.list();
+	// }
+	//
+	// public List<RewardInfo> loadRewards(Integer emp_number, Integer month,
+	// Integer year) {
+	// Criteria criteria =
+	// sessionFactory.getCurrentSession().createCriteria(RewardInfo.class);
+	//
+	// if (emp_number != 0) {
+	// criteria.add(Restrictions.eq("emp_no", emp_number));
+	//
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	//
+	// return criteria.list();
+	//
+	// } else {
+	// if (month != null)
+	// criteria.add(Restrictions.eq("month", month));
+	// if (year != null)
+	// criteria.add(Restrictions.eq("year", year));
+	// return criteria.list();
+	// }
+	// }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> loadReward(Integer emp_no, Integer month, Integer year) {
+		List<String> list = new ArrayList<String>();
+		String sql;
+		try {
+
+			sql = Utils.readSqlRequest("RewardRequest");
+
+			Session currentSession = sessionFactory.getCurrentSession();
+
+			Query salaryQuery = currentSession.createSQLQuery(sql);
+
+			salaryQuery.setParameter("year", year);
+
+			salaryQuery.setParameter("month", month);
+
+			list = salaryQuery.list();
+
+			return list;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+		}
+		return list;
+	}
+
+	public Integer getActifEmployer(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.setProjection(Projections.property("flag"));
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		criteria.add(Restrictions.eq("flag", 1));
+		Integer status = (Integer) criteria.uniqueResult();
+		return status;
+	}
+
+	@Override
+	@Transactional
+	public Integer getIdFromWorkAppByAppId(Integer appId) {
+		String hql = "select app.id.applicationId  from WrkApplication  app  where  app.arcRecordId=:appId ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("appId", appId);
+		List<Integer> list = query.list();
+		return list.get(0);
+	}
+
+	@Override
+	public List<WrkLetterFrom> loadAllWrkLetterFrom() {
+		return loadAll(WrkLetterFrom.class);
+
+	}
+
+	@Override
+	public List<WrkLetterTo> loadAllWrkLetterTo() {
+		return loadAll(WrkLetterTo.class);
+
+	}
+
+	@Override
+	public List<WrkPurpose> loadAllPurposes() {
+		return loadAll(WrkPurpose.class);
+
+	}
+
+	@Override
+	public List<WrkCommentType> loadAllCommentTypes() {
+		return loadAll(WrkCommentType.class);
+
+	}
+
+	@Override
+	public List<VacationsType> loadAllVacationTypes() {
+		return loadAll(VacationsType.class);
+
+	}
+
+	@Override
+	public List<SysCategoryEmployer> loadAllCategoryEmployers() {
+		return loadAll(SysCategoryEmployer.class);
+
+	}
+
+	@Override
+	public List<FngStatusAbsence> loadAllAbsenceStatus() {
+		return loadAll(FngStatusAbsence.class);
+
+	}
+
+	@Override
+	public List<FngTypeAbsence> loadAllAbsenceTypes() {
+		return loadAll(FngTypeAbsence.class);
+
+	}
+
+	@Override
+	public List<WhsWarehouses> getAllWhsWarehouses() {
+		return loadAll(WhsWarehouses.class);
+	}
+
+	// thapet
+	@Transactional
+	@Override
+	public List<WrkDept2> loadAllDepList() {
+		List<WrkDept2> depList = new ArrayList<WrkDept2>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept2.class);
+		depList = criteria.list();
+		return depList;
+	}
+
+	@Transactional
+	@Override
+	public List<WrkArchiveRcipent> loadAllWrkList() {
+		List<WrkArchiveRcipent> wrkList = new ArrayList<WrkArchiveRcipent>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkArchiveRcipent.class);
+		wrkList = criteria.list();
+		return wrkList;
+	}
+
+	@Override
+	public List<HrsUserAbsent> loadAllPromList() {
+		List<HrsUserAbsent> promList = new ArrayList<HrsUserAbsent>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsUserAbsent.class);
+		promList = criteria.list();
+		return promList;
+	}
+
+	@Override
+	public List<ItemUnite> loadAllUniteList() {
+		List<ItemUnite> uniteList = new ArrayList<ItemUnite>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ItemUnite.class);
+		uniteList = criteria.list();
+		return uniteList;
+	}
+
+	@Override
+	public List<HrsUserAbsent> findAllAllProm() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// @Override
+	// public List<WrkDept2> findAllAllDema() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+
+	@Override
+	public List<WrkDept> findAllDepartments() {
+		return loadAll(WrkDept.class);
+	}
+
+	@Transactional
+	@Override
+	public List<WrkDept> loadAllDemaList() {
+		List<WrkDept> demaList = new ArrayList<WrkDept>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkDept.class);
+		demaList = criteria.list();
+		return demaList;
+	}
+
+	@Override
+	public List<WrkSection> findAllAllSec() {
+		List<WrkSection> secList = new ArrayList<WrkSection>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
+		secList = criteria.list();
+		return secList;
+	}
+
+	@Transactional
+	@Override
+	public List<WrkSection> loadwrksectionByDepId(Integer selectdDeptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(WrkSection.class);
+		criteria.add(Restrictions.eq("deptId", selectdDeptId));
+		return criteria.list();
+	}
+
+	// AMR load emp History By EmpNo
+	@Override
+	@Transactional
+	public List<HrsEmpHistorical> getEmpHistoricalByEmpNo(Integer employerNumber) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HrsEmpHistorical.class);
+		criteria.add(Restrictions.eq("id.empno", employerNumber));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public Car getCarByArticleId(int artId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Car.class);
+		criteria.add(Restrictions.eq("artId", new Integer(artId)));
+		return (Car) criteria.uniqueResult();
+	}
+
+	@Override
+	@Transactional
+	public List<Car> getCarDetailsByArtId(Integer carArtId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Car.class);
+		criteria.add(Restrictions.eq("artId", carArtId));
+
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<Article> getArticlesBySubGroupId(Integer carArtId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Article.class);
+		criteria.add(Restrictions.eq("subGroupId", carArtId));
+
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<InventoryMaster> findInventoryMasterByGard_strNO(Integer gardId, Integer strNo) {
+		List<InventoryMaster> mstrGardList = new ArrayList<InventoryMaster>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(InventoryMaster.class);
+		criteria.add(Restrictions.eq("inventoryId", gardId));
+		criteria.add(Restrictions.eq("strno", strNo));
+		mstrGardList = criteria.list();
+		return mstrGardList;
+	}
+
+	@Override
+	@Transactional
+	public List<SysProperties> getDeansIdInSysProperties() {
+		List<SysProperties> propsList = new ArrayList<SysProperties>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SysProperties.class);
+		criteria.add(Restrictions.like("name", "%DEAN%"));
+		propsList = criteria.list();
+		return propsList;
+	}
+
+	@Override
+	@Transactional
+	public List<StoreTemporeryReceiptMaster> getStrTempRcptMstrByStrNo(Integer strNo) {
+		List<StoreTemporeryReceiptMaster> strTempList = new ArrayList<StoreTemporeryReceiptMaster>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
+		criteria.add(Restrictions.eq("strNo", strNo));
+		strTempList = criteria.list();
+
+		return strTempList;
+	}
+
+	@Override
+	@Transactional
+	public LicTrdMasterFile getLicencesByLicNo(String licNo) {
+		LicTrdMasterFile licTrd = new LicTrdMasterFile();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licNo", licNo));
+		licTrd = (LicTrdMasterFile) criteria.uniqueResult();
+		return licTrd;
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisits> findAllVisitsByLicId(Integer licNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicVisits.class);
+		criteria.add(Restrictions.eq("licId", licNo));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<User> getAllSupervisor(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public int deleteVisitByDateAndLicNo(Date currentDate, Integer licId) {
+		String hql = "  delete FROM  LicVisits  Where licId = :licId and gDate >= :gDate ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("licId", licId);
+		query.setParameter("gDate", currentDate);
+		return query.executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public List<Supervisor> findAllSupervisorsByDept(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Supervisor.class);
+		// criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+
+	}
+
+	@Override
+	@Transactional
+	public List<ArcUsers> findEmployeesByDept(Integer deptId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("deptId", deptId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<VisitsSupervisor> getAllVisitsBySuperId(Integer superId, Integer secId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(VisitsSupervisor.class);
+		if (superId != null)
+			criteria.add(Restrictions.eq("supervisorId", superId));
+		if (secId != null)
+			criteria.add(Restrictions.eq("sectionId", secId));
+		return criteria.list();
+
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicsBySectionId(Integer sectionId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licSection", sectionId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<LicVisits> getAllVisitsByLicIdBetweenDates(Integer licId, String beginDate, String endDate) {
+		String hql = " SELECT id FROM  LicVisits  Where licId = :licId and "
+				+ " TO_DATE(hDate, 'dd-mm-yyyy') BETWEEN  TO_DATE(:beginDate, 'dd-mm-yyyy' )"
+				+ " AND TO_DATE(:endDate, 'dd-mm-yyyy')";
+		// + " AND visitId NOT IN ( SELECT visitId FROM VisitsSupervisor)" ;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("licId", licId);
+		query.setParameter("beginDate", beginDate);
+		query.setParameter("endDate", endDate);
+		List<Integer> List = query.list();
+		List<LicVisits> Vis = new ArrayList<LicVisits>();
+		for (Integer id : List) {
+			LicVisits v = new LicVisits();
+			v.setId(id);
+			Vis.add(v);
+		}
+		return Vis;
+	}
+
+	@Override
+	@Transactional
+	public List<Supervisor> findAllActive() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Supervisor.class);
+		criteria.add(Restrictions.eq("status", 1));// 0 disactive 1 active
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<ContractComponents> loadAllContractComponents() {
+		return loadAll(ContractComponents.class);
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getAllLicencesListBySection(Integer sectionId, Integer deparmentId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicTrdMasterFile.class);
+		criteria.add(Restrictions.eq("licSection", sectionId));
+		criteria.add(Restrictions.eq("licDeparment", deparmentId));
+
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public ContractComponents getContractComponentsById(Integer contractTpyeId) {
+		ContractComponents master = new ContractComponents();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractComponents.class);
+		criteria.add(Restrictions.eq("id", contractTpyeId));
+		master = (ContractComponents) criteria.uniqueResult();
+		return master;
+	}
+
+	@Override
+	@Transactional
+	public int findMaxContractDirectNum() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractDirect.class);
+		criteria.setProjection(Projections.max("contractNum"));
+		Integer in = (Integer) criteria.uniqueResult();
+		return in == null ? 0 : in;
+	}
+
+	@Override
+	@Transactional
+	public List<LicDepartment> gatAllLicDepartmentBySection(Integer sectionId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LicDepartment.class);
+		criteria.add(Restrictions.eq("sectionId", sectionId));
+		return criteria.list();
+	}
+
+	@Override
+	@Transactional
+	public List<LicTrdMasterFile> getLicencesByActivityId(Integer activityId, Integer statusId) {
+
+		List<LicTrdMasterFile> licTrdList = new ArrayList<LicTrdMasterFile>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+
+			if (statusId == -1) {
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+
+					licTrdList = query.list();
+				} else {
+
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					licTrdList = query.list();
+
+				}
+			} else if (statusId == 1) {// Expiered منتهية
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile where TO_DATE(licEndDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				} else {
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId and TO_DATE(licEndDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				}
+			} else {// activie غير منتهية
+				if (activityId == -1) {
+					String hql = "FROM  LicTrdMasterFile where TO_DATE(licEndDate, 'dd-mm-yyyy') > TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				} else {
+					String hql = "FROM  LicTrdMasterFile where activtyType = :activityId and"
+							+ " TO_DATE(licEndDate, 'dd-mm-yyyy') > TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("activityId", activityId);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					licTrdList = query.list();
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return licTrdList;
+	}
+
+	@Override
+	@Transactional
+	public List<ContractInstallments> loadContractInstallments(Integer ConId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractInstallments.class);
+		criteria.add(Restrictions.eq("contractId", ConId));
+		return criteria.list();
+	}
+
+	@Override
+	public List<ContractComponents> getContractComponentsListByActivityId(Integer activityId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractComponents.class);
+		criteria.add(Restrictions.eq("contractTypeId", activityId));
+		return criteria.list();
+	}
+
+	@Override
+	public List<RealEstate> getRealEstatesListByActivityIdAndSiteId(Integer activityId, Integer siteId) {
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		if (activityId == -1) {
+			if (siteId == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				list = criteria.list();
+			} else {
+
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+				list = criteria.list();
+
+			}
+		} else {
+			if (siteId == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+				list = criteria.list();
+			} else {
+
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+				criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+				criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+				list = criteria.list();
+
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<Investor> loadAllInvestorsById(Integer id) {
+		List<Investor> list = new ArrayList<Investor>();
+
+		if (id != null) {
+			if (id == -1) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+				list = criteria.list();
+			} else {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+				criteria.add(Restrictions.eq("id", id));
+				list = criteria.list();
+			}
+		} else {
+			System.out.println("loadAllInvestorsById has null id value.");
+		}
+		return list;
+	}
+
+	@Override
+	public List<ContractDirect> loadendedContractDirectList(Integer status) {
+		List<ContractDirect> contractsList = new ArrayList<ContractDirect>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+			if (status != null) {
+				if (status == 1) {// منتهية
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else if (status == 0) {// غير منتهية
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') >  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else {
+					contractsList = new ArrayList<ContractDirect>();
+					String hql = "FROM  ContractDirect";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					contractsList = query.list();
+				}
+
+			} else {
+				contractsList = new ArrayList<ContractDirect>();
+				String hql = "FROM  ContractDirect";
+				Query query = sessionFactory.getCurrentSession().createQuery(hql);
+				contractsList = query.list();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return contractsList;
+	}
+
+	@Override
+	public List<ContractSubcategory> loadSuCategoryByMainCategoryId(Integer contractMaincatgId) {
+		List<ContractSubcategory> subCatgList = new ArrayList<ContractSubcategory>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractSubcategory.class);
+		criteria.add(Restrictions.eq("contMainCategoryid", contractMaincatgId));
+		subCatgList = criteria.list();
+		return subCatgList;
+	}
+
+	@Override
+	public List<RealEstate> getRealEstatesListByAllfliters(Integer activityId, Integer siteId, String components,
+			String street, Integer buildId, Integer district) {
+
+		List<RealEstate> list = new ArrayList<RealEstate>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		list = criteria.list();
+		if (activityId != null && activityId != -1) {
+
+			criteria.add(Restrictions.eq("activityTypeId", activityId.toString()));
+		}
+		if (siteId != null && siteId != -1) {
+			criteria.add(Restrictions.eq("siteTypeId", siteId.toString()));
+		}
+		if (components != null && !components.equals("-1")) {
+			criteria.add(Restrictions.eq("components", components));
+		}
+		if (street != null && !street.equals("-1")) {
+			criteria.add(Restrictions.eq("street", street));
+		}
+		if (buildId != null && buildId != -1) {
+			criteria.add(Restrictions.eq("buildTypeId", buildId));
+		}
+		if (district != null && district != -1) {
+			criteria.add(Restrictions.eq("district", district));
+		}
+		if (activityId == -1 && siteId == -1 && (components == null || components.equals("-1"))
+				&& (street == null || street.equals("-1")) && buildId == -1 && district == -1) {
+			criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
+		}
+		list = criteria.list();
+		return list;
+
+	}
+
+	@Override
+	public List<Investor> loadAllInvestorsByAllfliters(Integer investorId, Integer trdRecord, String mobile) {
+		List<Investor> list = new ArrayList<Investor>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+		// list = criteria.list();
+		if (investorId != null && investorId != -1) {
+			criteria.add(Restrictions.eq("id", investorId));
+		}
+		if (trdRecord != null && trdRecord != -1) {
+			criteria.add(Restrictions.eq("tradeRecord", trdRecord));
+		}
+		if (mobile != null && !mobile.equals("-1")) {
+			criteria.add(Restrictions.eq("mobile", mobile));
+		}
+
+		if (investorId == -1 && trdRecord == -1 && (mobile == null || mobile.equals("-1"))) {
+			criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+		}
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	public List<ContractDirect> loadContractDirectListByAllFilters(Integer contNum, String investorName, Integer status,
+			String fromStartDate, String toStartDate, String fromEndDate, String toEndDate) {
+		List<ContractDirect> contractsList = new ArrayList<ContractDirect>();
+		try {
+			String currentHijriDate = Utils.grigDatesConvert(Utils.getCurrentGrigdate());
+			System.out.println(currentHijriDate);
+			String hql = "FROM  ContractDirect";
+			if (status != null) {
+				if (status == 1) {// منتهية
+					hql += "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') <=  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				} else if (status == 0) {// غير منتهية
+					hql += "FROM  ContractDirect where TO_DATE(endDate, 'dd-mm-yyyy') >  TO_DATE(:currentHijriDate, 'dd-mm-yyyy' )";
+					Query query = sessionFactory.getCurrentSession().createQuery(hql);
+					query.setParameter("currentHijriDate", currentHijriDate);
+					contractsList = query.list();
+				}
+
+			}
+			if (investorName != null) {
+
+			}
+
+			else {
+				contractsList = new ArrayList<ContractDirect>();
+				hql = "FROM  ContractDirect";
+				Query query = sessionFactory.getCurrentSession().createQuery(hql);
+				contractsList = query.list();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return contractsList;
+	}
+
+	@Override
+	public HealthMasterLicence getHealthCertificateByApplId(Integer applId) {
+		HealthMasterLicence helthCert = new HealthMasterLicence();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HealthMasterLicence.class);
+		criteria.add(Restrictions.eq("applicationId", applId));
+		helthCert = (HealthMasterLicence) criteria.uniqueResult();
+		return helthCert;
+	}
+
+	@Override
+	public List<HealthMasterLicence> getAllHealthCertificate() {
+		List<HealthMasterLicence> list = new ArrayList<HealthMasterLicence>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(HealthMasterLicence.class);
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public int deleteContractMainCategory(Integer categoryId) {
+		String hql = "  delete FROM  ContractMainCategory  Where id = :categoryId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("categoryId", categoryId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public List<ContractsFees> loadContractFeeslistbycontractId(Integer contractId) {
+		List<ContractsFees> list = new ArrayList<ContractsFees>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+		criteria.add(Restrictions.eq("contractId", contractId));
+		criteria.addOrder(Order.asc("id"));
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
+			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus) {
+		List<PayLicBills> billsList = new ArrayList<PayLicBills>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
+		// if ((!("-1".equalsIgnoreCase(fromStartDate))) && fromStartDate !=
+		// null)
+		// criteria.add(Restrictions.ge("payHijriDate", fromStartDate));
+		// if ((!("-1".equalsIgnoreCase(toStartDate))) && toStartDate != null)
+		// criteria.add(Restrictions.le("payHijriDate", toStartDate));
+		//
+		// if (!("-1".equalsIgnoreCase(fromEndDate)))
+		// criteria.add(Restrictions.ge("contractId", toEndDate));
+		// if (!("-1".equalsIgnoreCase(toStartDate)))
+		// criteria.add(Restrictions.le("contractId", toEndDate));
+
+		// if ((!("-1".equalsIgnoreCase(aplnumber))) && aplnumber != null)
+		// criteria.add(Restrictions.eq("aplOwner", aplnumber));
+		// if ((!("-1".equalsIgnoreCase(phoneNumber))) && phoneNumber != null)
+		// criteria.add(Restrictions.eq("payInstallNumber", phoneNumber));
+		//
+		// if (billStatus != null && billStatus != -1)
+		// criteria.add(Restrictions.eq("billStatus", billStatus));
+
+		billsList = criteria.list();
+		return billsList;
+	}
+
+	@Override
+	public List<ContractsFees> getContractFessListByContractId(Integer contractId) {
+		List<ContractsFees> list = new ArrayList<ContractsFees>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ContractsFees.class);
+		criteria.add(Restrictions.eq("contractId", contractId));
+		list = criteria.list();
+
+		return list;
+	}
+
+	@Override
+	public PayLicBills getBillById(Integer billNumber) {
+		PayLicBills bill = new PayLicBills();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PayLicBills.class);
+		criteria.add(Restrictions.eq("billNumber", billNumber));
+		bill = (PayLicBills) criteria.uniqueResult();
+		return bill;
+	}
+
+	@Override
+	public int deleteSiteType(Integer siteTypeId) {
+		String hql = "  delete FROM  SiteType  Where id = :siteTypeId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("siteTypeId", siteTypeId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public int deleteIntroContract(Integer introId) {
+		String hql = "  delete FROM  IntroContract  Where id = :introId  ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("introId", introId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public List<TransferOwnershipDetails> loadTransferOwnerDetails(Integer transId) {
+		List<TransferOwnershipDetails> list = new ArrayList<TransferOwnershipDetails>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TransferOwnershipDetails.class);
+		criteria.add(Restrictions.eq("transferId", transId));
+		list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<ReturnStore> loadAllReturnStoreByEmpId(Integer empId, Integer strNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReturnStore.class);
+		if (empId != null)
+			criteria.add(Restrictions.eq("userId", empId));
+		if (strNo != null)
+			criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("status", "Y"));
+		List list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TransferOwnership.class);
+		if (empId != null)
+			criteria.add(Restrictions.eq("fromUser", empId));
+		if (strNo != null)
+			criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.eq("status", "Y"));
+		List list = criteria.list();
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public List<User> getAllEmployeesByManager(Integer managerId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("mgrId", managerId));
+		List list = criteria.list();
+		return list;
+	}
+
 }

@@ -21,8 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +75,7 @@ import com.bkeryah.entities.investment.ContractDirectType;
 import com.bkeryah.entities.investment.ContractFeesCanceled;
 import com.bkeryah.entities.investment.ContractInstallments;
 import com.bkeryah.entities.investment.ContractMainCategory;
+import com.bkeryah.entities.investment.ContractMessage;
 import com.bkeryah.entities.investment.ContractStatus;
 import com.bkeryah.entities.investment.ContractSubcategory;
 import com.bkeryah.entities.investment.ContractType;
@@ -1470,7 +1474,7 @@ public class DataAccessService implements IDataAccessService {
 		String CurrentTime = HijriCalendarUtil.findCurrentTime();
 		HrsSigns hrsSigns = new HrsSigns();
 		hrsSigns.setUserId(userId);
-		hrsSigns.setJobName(Utils.findCurrentUser().getFirstName());
+		hrsSigns.setJobName(Utils.findCurrentUser().getEmployeeName());
 		hrsSigns.setDate(CurrentHijriDate);
 		hrsSigns.setSignTime(CurrentTime);
 		hrsSigns.setArcRecordId(arcRecordId);
@@ -6066,8 +6070,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<ReqFinesMaster> loadAllPenalities(String notification) {
-		return commonDao.loadAllPenalities(notification);
+	public List<ReqFinesMaster> loadAllPenalities(String notification,Integer deptId) {
+		return commonDao.loadAllPenalities(notification,deptId);
 	}
 
 	@Override
@@ -8054,7 +8058,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber) {
+			Integer billBandNumber, String bayan) {
 		Integer contractId = commonDao.save(contractDirect);
 		contractDirect.setId(contractId);
 		Integer counter = 0;
@@ -8064,7 +8068,7 @@ public class DataAccessService implements IDataAccessService {
 				counter++;
 		}
 		if (counter > 0) {
-			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber);
+			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
 		}
 		for (ContractsFees contractsFees : contractFees) {
 			contractsFees.setContractId(contractDirect.getId());
@@ -8697,7 +8701,8 @@ public class DataAccessService implements IDataAccessService {
 					+ detail.getQty() + "\n";
 		}
 		String userComment = Utils.loadMessagesFromFile("subject.return") + " " + empName + " "
-				+ Utils.loadMessagesFromFile("forms.exchange") + ": " + items;
+				+ Utils.loadMessagesFromFile("forms.exchange"); // + ": " +
+																// items;
 
 		createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
 
@@ -8739,6 +8744,14 @@ public class DataAccessService implements IDataAccessService {
 	public Integer addTransferOnwerShipItems(TransferOwnership saveTransfer,
 			List<TransferOwnershipModel> transModelList) {
 		if (saveTransfer != null) {
+			ArcUsers sender = loadUserById(saveTransfer.getFromUser()); // from
+			// user
+			ArcUsers toUser = loadUserById(saveTransfer.getToUser());// to user
+			Integer toId = sender.getMgrId();
+			String userComment = Utils.loadMessagesFromFile("subject.transfer") + " " + sender.getEmployeeName() + " "
+					+ "الى : " + toUser.getEmployeeName();
+			// + " صنف " + saveTransfer.getArtName() + " الرمز -" +
+			// saveTransfer.getArticleCode()
 			Integer docId = (Integer) saveObject(saveTransfer);
 			for (TransferOwnershipModel trans : transModelList) {
 				TransferOwnershipDetails tsd = new TransferOwnershipDetails();
@@ -8752,11 +8765,6 @@ public class DataAccessService implements IDataAccessService {
 				tsd.setSerialNumber(trans.getSerialNumber());
 				saveObject(tsd);
 			}
-
-			ArcUsers sender = loadUserById(saveTransfer.getFromUser()); // from
-																		// user
-			ArcUsers toUser = loadUserById(saveTransfer.getToUser());// to user
-			Integer toId = sender.getMgrId();
 			Integer applicationUserDeptJob = getUserDeptJob(sender.getMgrId());
 
 			ArcRecords arcRecord = new ArcRecords();
@@ -8779,9 +8787,6 @@ public class DataAccessService implements IDataAccessService {
 
 			application.setApplicationPurpose(MyConstants.SIGNATURE_TYPE);
 			application.setApplicationStatus(MyConstants.STATUS_PERMISSION);
-
-			String userComment = Utils.loadMessagesFromFile("subject.transfer") + " " + empNameFrom + " " + "الى : "
-					+ empNameTO + " صنف " + saveTransfer.getArtName() + "  الرمز  -" + saveTransfer.getArticleCode();
 
 			createNewWrkApplication(recordId, application, userComment, false, applicationUserDeptJob);
 
@@ -9263,8 +9268,7 @@ public class DataAccessService implements IDataAccessService {
 		if (acceptCount == 3) {
 			ArcUsers user = (ArcUsers) commonDao.findEntityById(ArcUsers.class, transOwnership.getToUser());
 			userTo = user.getMgrId();
-		} else if (acceptCount == 5) {
-
+		} else if (acceptCount == 4) {
 			userTo = transOwnership.getToUser();
 		} else {
 			userTo = getNextScenarioUserId(modelType, app.getId().getApplicationId(), app.getArcRecordId(), 2,
@@ -9281,6 +9285,20 @@ public class DataAccessService implements IDataAccessService {
 			commonDao.update(transOwnership);
 			updateArcRecordsIncomeNo(app.getArcRecordId());
 		}
+
+	}
+
+	@Override
+	@Transactional
+	public void refuseReturnStore(WrkApplicationId wrkId, Integer recordId, ReturnStore returnStore,
+			String wrkAppComment, int applicationPurpose) {
+		if (wrkId == null) {
+			WrkApplication app = getWrkApplicationRecordById(recordId);
+			wrkId = app.getId();
+		}
+		WrkApplication newApplication = createNewWrkAppForRefuse(wrkId, wrkAppComment);
+		refuseModel(newApplication, wrkId, returnStore,
+				Utils.loadMessagesFromFile("reject.request.for") + " " + wrkAppComment, applicationPurpose);
 
 	}
 
@@ -9387,8 +9405,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<Article> find3ohadByUserId(Integer userId) {
-		return dataAccessDAO.get3ohadByUserId(userId);
+	public List<Article> find3ohadByUserId(Integer userId, Integer deptId) {
+		return dataAccessDAO.get3ohadByUserId(userId, deptId);
 	}
 
 	@Override
@@ -9853,7 +9871,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber) {
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber,
+			String bayan) {
 		ArcUsers currUser = Utils.findCurrentUser();
 		PayLicBills newBill = new PayLicBills();
 		newBill.setLicenceNumber(investContract.getId());
@@ -9866,6 +9885,7 @@ public class DataAccessService implements IDataAccessService {
 		newBill.setAplOwner(investContract.getInvRepresentNatId().toString());
 		newBill.setPayInstallNumber(investContract.getInvestor().getMobile() != null
 				? Long.parseLong(investContract.getInvestor().getMobile()) : new Long(0));
+		newBill.setBayan(bayan);
 		PayBillDetails det = new PayBillDetails();
 		det.setCreatedBy(currUser.getUserId());
 		det.setAmount(totalValue);
@@ -9883,8 +9903,8 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	@Override
 	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber) {
-		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber);
+			Integer billBandNumber, String bayan) {
+		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
 		for (ContractsFees contFees : contFeesList) {
 			if (contFees.getFactId() == null && contFees.getStatus() == 2)// مفوترة
 				contFees.setFactId(factId.toString());
@@ -9913,11 +9933,20 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber) {
-		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber);
+			Integer billBandNumber, String bayan, List<ContractsFees> oldFees) {
+		Integer factId = 0;
+//		if (contractDirect.getTotalBillValue() > 0){
+			//System.out.println("insert fact :"+contractDirect.getTotalBillValue());
+			//factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+//		}
+
+		for (ContractsFees contractsFees : oldFees) {
+			deleteObject(contractsFees);
+		}
+
 		for (ContractsFees contractsFees : contractFees) {
 			contractsFees.setContractId(contractDirect.getId());
-			if (contractsFees.getFactId() == null && contractsFees.getStatus() == 2)// مفوترة
+			if (contractsFees.getFactId() == null && factId > 0 && contractsFees.getStatus() == 2)// مفوترة
 				contractsFees.setFactId(factId.toString());
 			saveObject(contractsFees);
 		}
@@ -9934,17 +9963,18 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus, Integer bandId) {
+			Long phoneNumber, Integer billStatus, Integer bandId ,Integer employerId ) {
 		return dataAccessDAO.loadBillsListByAllFilters(fromStartDate, toStartDate, aplnumber, phoneNumber, billStatus,
-				bandId);
+				bandId ,  employerId);
 	}
 
 	@Transactional
 	@Override
-	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect) {
-		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), -1);
+	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect,
+			Integer billBandNumber, String bayan) {
+		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
 		for (ContractsFees contFees : contFeesList) {
-			if (contFees.getFactId() != null && contFees.isCheckfees())
+			if (contFees.getFactId() != null && contFees.isCheckfees() && contFees.getStatus().equals(2))
 				contFees.setFactId(factId.toString());
 			updateObject(contFees);
 		}
@@ -9979,7 +10009,7 @@ public class DataAccessService implements IDataAccessService {
 	}
 
 	@Override
-	public Integer getContractPayedStatus(Integer contractId) {
+	public List<ContractsFees> getContractPayedStatus(Integer contractId) {
 		// TODO Auto-generated method stub
 		return dataAccessDAO.getContractPayedStatus(contractId);
 	}
@@ -9989,4 +10019,132 @@ public class DataAccessService implements IDataAccessService {
 		return commonDao.loadTransferOwnerDetails(transId);
 	}
 
+	@Override
+	public List<TransferOwnership> loadAllTransferOwners() {
+		List list = commonDao.findAll(TransferOwnership.class);
+		List<TransferOwnership> transList = list;
+		if (transList != null)
+			transList = transList.stream().filter(i -> "Y".equalsIgnoreCase(i.getStatus()))
+					.collect(Collectors.toList());
+		return list;
+	}
+
+	@Override
+	public List<ReturnStore> loadAllReturnStore() {
+		List list = commonDao.findAll(ReturnStore.class);
+		List<ReturnStore> returnSaveList = list;
+		if (returnSaveList != null)
+			returnSaveList = returnSaveList.stream().filter(i -> "Y".equalsIgnoreCase(i.getStatus()))
+					.collect(Collectors.toList());
+		return list;
+	}
+
+	@Override
+	public List<ReturnStore> loadAllReturnStoreByEmpId(Integer empId, Integer strNo) {
+		return commonDao.loadAllReturnStoreByEmpId(empId, strNo);
+	}
+
+	@Override
+	public List<TransferOwnership> loadAllTransferOwnerByEmpId(Integer empId, Integer strNo) {
+		return commonDao.loadAllTransferOwnerByEmpId(empId, strNo);
+	}
+
+	@Override
+	public List<User> getAllEmployeesByManager(Integer managerId) {
+		return commonDao.getAllEmployeesByManager(managerId);
+	}
+
+	@Override
+	public void updateContractFessList(List<ContractsFees> fessList) {
+		try {
+			for (ContractsFees fess : fessList) {
+				updateObject(fess);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error(" updateContractFessList : " + ex.getMessage());
+		}
+
+	}
+
+	@Override
+	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList) {
+		try {
+			updateObject(contrectDirect);
+			// for (ContractsFees fess : fessList) {
+			// updateObject(fess);
+			// }
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error(" updateContractFessList : " + ex.getMessage());
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void deleteFeesList(List<ContractsFees> fessList) {
+
+		try {
+			for (ContractsFees selectedFees : fessList) {
+				deleteObject(selectedFees);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void updateContrFee(ContractsFees contrFee) {
+		try {
+			PayLicBills contrFeeBill = null;
+			if (contrFee.getFactId() != null && contrFee.getFactId().length() > 0)
+				contrFeeBill = (PayLicBills) commonDao.findEntityById(PayLicBills.class,
+						Integer.parseInt(contrFee.getFactId()));
+
+			if (contrFeeBill != null) {
+				contrFeeBill.setLicenceNumber(contrFee.getContractId());
+				updateObject(contrFeeBill);
+			} else {
+				contrFeeBill = contrFeeBill = (PayLicBills) commonDao.findEntityById(PayLicBills.class,
+						Integer.parseInt(contrFee.getOldFactId()));
+				if (contrFeeBill != null){
+					contrFeeBill.setLicenceNumber(null);
+					updateObject(contrFeeBill);
+				}
+			}
+			updateObject(contrFee);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+	}
+
+	@Override
+	@Transactional
+	public List<ReqFinesMaster> loadListPenalities(String fineStatus, Integer fineTradeType, Integer fineSadad,
+			String licNo, String alpNo, String fromStartDate, String toStartDate , String deptId) {
+		return dataAccessDAO.loadListPenalities(fineStatus, fineTradeType, fineSadad, licNo, alpNo, fromStartDate,
+				toStartDate ,  deptId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteContractDirect(ContractDirect contractDirect) {
+		commonDao.deleteContractDirect(contractDirect);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<ContractMessage> getAllContractMessagesList() {
+		List list = commonDao.findAll(ContractMessage.class);
+		return list;
+	}
+
+
+	
 }

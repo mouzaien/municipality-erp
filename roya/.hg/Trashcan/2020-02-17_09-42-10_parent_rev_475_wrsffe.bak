@@ -1,0 +1,172 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -692,9 +692,9 @@
+ 	private Integer feesDiscountDuration(ContractsFees fees, Integer discountStatus, Integer discountRemainder,
+ 			int count) {
+ 		// if (discountStatus == 1) {
+-		// if (contractType == 1 && (count <= 1 || discountDuration > 365)) {
+-		// fees.setDiscountExceptionel(365);
+-		// discountRemainder = discountDuration - 365;
++		// if (contractType == 1 && (count <= 1 || discountDuration > 360)) {
++		// fees.setDiscountExceptionel(360);
++		// discountRemainder = discountDuration - 360;
+ 		//
+ 		// } else if (contractType == 2 && (count <= 1 || discountDuration >
+ 		// 30)) {
+@@ -703,5 +703,5 @@
+ 		// } else
+ 		// fees.setDiscountduration(discountRemainder);
+ 
+-		if (contractType == 1 && (count < 1 || discountDuration > 365)) {
++		if (contractType == 1 && (count < 1 || discountDuration > 360)) {
+ 			if (discountStatus == 1) {
+@@ -707,6 +707,6 @@
+ 			if (discountStatus == 1) {
+-				fees.setDiscountduration(365);
+-				discountRemainder = discountDuration - 365;
++				fees.setDiscountduration(360);
++				discountRemainder = discountDuration - 360;
+ 			}
+ 			if (discountStatus == 0) {
+ 				fees.setDiscountduration(discountRemainder);
+@@ -835,8 +835,8 @@
+ 
+ 			switch (contractType) {
+ 			case 1:
+-				totalDiscount = ((contractDirect.getAnnualRent() / 365) * discountDuration) + discountExceptionel;
+-				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 365)
++				totalDiscount = ((contractDirect.getAnnualRent() / 360) * discountDuration) + discountExceptionel;
++				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 360)
+ 						* (reminderDiscountDuration - discountDuration));
+ 				break;
+ 			case 2:
+@@ -953,7 +953,7 @@
+ 		}
+ 	}
+ 
+-	public void oadSuCategoryByMainCategoryId() {
++	public void loadSuCategoryByMainCategoryId() {
+ 		if (contractMaincatgId != null && contractMaincatgId > 0) {
+ 			contractDirect.setContractMaincatgId(contractMaincatgId);
+ 		}
+@@ -1032,7 +1032,7 @@
+ 			dataAccessService.save(subCategory);
+ 			// contractSubcategoryList =
+ 			// dataAccessService.loadAllContractSubcategory();
+-			//loadSuCategoryByMainCategoryId();
++			loadSuCategoryByMainCategoryId();
+ 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+ 
+ 		} catch (
+diff --git a/src/utilities/HijriCalendarUtil.java b/src/utilities/HijriCalendarUtil.java
+--- a/src/utilities/HijriCalendarUtil.java
++++ b/src/utilities/HijriCalendarUtil.java
+@@ -795,6 +795,14 @@
+ 		yearsList.add(new YearClass(1460, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+ 		yearsList.add(new YearClass(1461, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
+ 		yearsList.add(new YearClass(1462, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, "2029/05/16"));
++		yearsList.add(new YearClass(1463, 29, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, "2041/01/04"));
++		yearsList.add(new YearClass(1464, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30, 30, "2041/12/25"));
++		yearsList.add(new YearClass(1465, 30, 29, 30, 29, 29, 30,  29, 29, 30, 29, 30, 30, "2042/12/14"));		
++		yearsList.add(new YearClass(1466, 30, 29, 30, 30, 29, 29,  30, 29, 29,  30, 29, 30, "2043/12/03"));
++		yearsList.add(new YearClass(1467, 30, 29, 30, 30, 30, 29, 29, 30, 29, 29, 30, 29, "2044/11/21"));		
++		yearsList.add(new YearClass(1468, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 29, 30, "2045/11/10"));		
++		yearsList.add(new YearClass(1469, 29, 30, 29, 30, 30, 29, 30, 30, 29,  30, 29, 29, "2046/10/31"));
++		yearsList.add(new YearClass(1470, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30,  29, 30, "2047/10/20"));
+ 		return yearsList;
+ 
+ 	}
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -926,7 +926,7 @@
+ 											<f:selectItem itemLabel="شهري" itemValue="2" />
+ 											<f:selectItem itemLabel="يومي" itemValue="3" />
+ 											<p:ajax listener="#{contractDirectBean.updateDurationLabel}"
+-												process="@this" update="yeanumber  total_installment" />
++												process="@this" update="total_installment" />
+ 										</p:selectOneMenu>
+ 									</div>
+ 									<div class="ui-g-1">
+@@ -943,7 +943,7 @@
+ 											value="#{contractDirectBean.yearsNum}">
+ 											<p:ajax process="@this"
+ 												listener="#{contractDirectBean.calculateInstallments}"
+-												update=" total_installment , yeanumber" />
++												update=" total_installment" />
+ 										</p:inputNumber>
+ 										<!-- 										<p:inputNumber id="dur_label" -->
+ 										<!-- 											rendered="#{!contractDirectBean.addMode}" -->
+@@ -961,7 +961,7 @@
+ 											process="@this">
+ 											<p:ajax
+ 												listener="#{contractDirectBean.calculateInstallments}"
+-												update="yeanumber,total_installment" />
++												update="total_installment" />
+ 										</p:inputText>
+ 									</div>
+ 								</div>
+@@ -977,20 +977,20 @@
+ 									</div>
+ 
+ 
+-									<div class="ui-g-1">
+-										<p:outputLabel value="أقساط مفوترة للدفع" styleClass="btxt" />
+-									</div>
+-									<div class="ui-g-3">
+-										<!-- maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}" -->
+-										<p:inputNumber process="@this"
+-											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.contractDirect.oldPayedFees)}"
+-											id="yeanumber" style="width: 100% "
+-											value="#{contractDirectBean.installmentNum}">
+-											<!--  disabled="#{!contractDirectBean.addMode}" -->
+-											<p:ajax update="totalLabel,disc_duration" process="@this"
+-												listener="#{contractDirectBean.calculateDiscount}" />
+-										</p:inputNumber>
+-									</div>
++<!-- 									<div class="ui-g-1"> -->
++<!-- 										<p:outputLabel value="أقساط مفوترة للدفع" styleClass="btxt" /> -->
++<!-- 									</div> -->
++<!-- 									<div class="ui-g-3"> -->
++<!-- 										maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.oldInstallment)}" -->
++<!-- 										<p:inputNumber process="@this" -->
++<!-- 											maxValue="#{(contractDirectBean.totalInstallmentCount - contractDirectBean.contractDirect.oldPayedFees)}" -->
++<!-- 											id="yeanumber" style="width: 100% " -->
++<!-- 											value="#{contractDirectBean.installmentNum}"> -->
++<!-- 											 disabled="#{!contractDirectBean.addMode}" -->
++<!-- 											<p:ajax update="totalLabel,disc_duration" process="@this" -->
++<!-- 												listener="#{contractDirectBean.calculateDiscount}" /> -->
++<!-- 										</p:inputNumber> -->
++<!-- 									</div> -->
+ 									<div class="ui-g-1">
+ 										<p:outputLabel value="قيمة القسط (ريال)" styleClass="btxt">
+ 											<span style="color: red; font-size: 30px"> * </span>
+@@ -1021,4 +1021,6 @@
+ 											styleClass="btxt" />
+ 									</div>
+ 									<div class="ui-g-1">
++<!-- 																				disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}" -->
++									
+ 										<p:inputNumber minValue="0" id="proc_period" lang="ar"
+@@ -1024,5 +1026,4 @@
+ 										<p:inputNumber minValue="0" id="proc_period" lang="ar"
+-											disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}"
+ 											style="width: 100%; opacity:1.0;" required="true"
+ 											process="@this" requiredMessage="مدة التجهيز مطلوبة"
+ 											value="#{contractDirectBean.contractDirect.processPeriod}">
+@@ -1037,5 +1038,7 @@
+ 									</div>
+ 									<div class="ui-g-2">
+ 										<p:outputLabel value="تعادل (%)" styleClass="btxt" />
++<!-- 																					disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}" -->
++										
+ 										<p:spacer width="5"></p:spacer>
+ 										<p:inputNumber process="@this"
+@@ -1040,6 +1043,5 @@
+ 										<p:spacer width="5"></p:spacer>
+ 										<p:inputNumber process="@this"
+-											disabled="#{contractDirectBean.contractDirect.operationId>0 or !contractDirectBean.addMode}"
+ 											value="#{contractDirectBean.contractDirect.contractDurationRetio}"
+ 											minValue="0" maxValue="100" symbol="%"></p:inputNumber>
+ 									</div>

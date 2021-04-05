@@ -132,6 +132,7 @@ public class ReqFinesSetup {
 	}
 
 	public String getFineDesc() {
+		fineDesc = "المخالفات والعقوبات";
 		return fineDesc;
 	}
 

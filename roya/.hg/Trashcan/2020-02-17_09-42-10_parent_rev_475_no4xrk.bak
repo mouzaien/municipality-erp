@@ -1,0 +1,87 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -596,7 +596,6 @@
+ 		String oldFeesHDueDate = new String();
+ 		try {
+ 			contractsFeesList = new ArrayList<ContractsFees>();
+-			fees = new ContractsFees();
+ 			for (int i = 1; i <= totalInstallmentCount; i++) {
+ 				fees = new ContractsFees();
+ 				fees.setOldFees(contractDirect.getOldPayedFees());
+@@ -600,15 +599,20 @@
+ 			for (int i = 1; i <= totalInstallmentCount; i++) {
+ 				fees = new ContractsFees();
+ 				fees.setOldFees(contractDirect.getOldPayedFees());
+-				// fees.setDiscountduration(discountDuration);
+-
+-				// 0 => total discount < installment
+-				// 1 => total discount > installment
+-				// if ((oldInstallment <= 0 || i > oldInstallment)) {
+-				// fee is not payed
+-				if ((i == 1 || (i - contractDirect.getOldPayedFees()) <= (installmentNum)) && installmentNum > 0) {
+-					//
+-
++				// fees payed
++				if (i <= contractDirect.getOldPayedFees()) {
++					fees.setStatus(3);
++				
++				}else if ((i - contractDirect.getOldPayedFees()) <= (installmentNum)) {
++					// fee factured
++						fees.setStatus(2);
++					
++					count++;
++				} else {
++					//fees not factured
++					fees.setStatus(1);
++				}
++				if (fees.getStatus().equals(3) || fees.getStatus().equals(2)) {
+ 					discountStatus = calculateFeesDiscount(fees);
+ 					discountRemainder = feesDiscountDuration(fees, discountStatus, discountRemainder, count);
+ 					fees.setOldFees(fees.getOldFees() + 1);
+@@ -612,12 +616,6 @@
+ 					discountStatus = calculateFeesDiscount(fees);
+ 					discountRemainder = feesDiscountDuration(fees, discountStatus, discountRemainder, count);
+ 					fees.setOldFees(fees.getOldFees() + 1);
+-
+-					if (i <= contractDirect.getOldPayedFees()) {
+-						fees.setStatus(3);
+-					} else {
+-						fees.setStatus(2);
+-						contractDirect.setTotalBillValue(contractDirect.getTotalBillValue()
+-								+ contractDirect.getAnnualRent() - fees.getDiscountAmount());
+-					}
++					contractDirect.setTotalBillValue(contractDirect.getTotalBillValue() + contractDirect.getAnnualRent()
++							- fees.getDiscountAmount());
+ 					count++;
+@@ -623,5 +621,3 @@
+ 					count++;
+-				} else {
+-					fees.setStatus(1);
+ 				}
+ 
+@@ -626,13 +622,5 @@
+ 				}
+ 
+-				// }
+-				//
+-				//
+-				// else {
+-				// if (i <= oldInstallment) {
+-				// fees.setStatus(3);
+-				// }
+-				// }
+ 				contractsFeesList.add(fees);
+ 				oldFeesHDueDate = setDueFeesDates(fees, dueHDate, oldFeesHDueDate, i);
+ 
+@@ -977,8 +965,8 @@
+ 		contractSubcategoryList = dataAccessService
+ 				.loadSuCategoryByMainCategoryId(selectesContract.getContractMaincatgId());
+ 		feesList = dataAccessService.getContractFessListByContractId(selectesContract.getId());
+-		if (feesList != null && feesList.size() > 0)
+-			contractDirect.setOldPayedFees(feesList.get(feesList.size() - 1).getOldFees());
++//		if (feesList != null && feesList.size() > 0)
++//			contractDirect.setOldPayedFees(feesList.get(feesList.size() - 1).getOldFees());
+ 		calculateInstallments();
+ 		if (contractDirect.getStartDate() != null)
+ 			oldStartdate = contractDirect.getStartDate();

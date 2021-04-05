@@ -1,0 +1,103 @@
+diff --git a/src/com/bkeryah/service/IDataAccessService.java b/src/com/bkeryah/service/IDataAccessService.java
+--- a/src/com/bkeryah/service/IDataAccessService.java
++++ b/src/com/bkeryah/service/IDataAccessService.java
+@@ -1998,9 +1998,6 @@
+ 
+ 	public List<Amana> getAllLicAmanaList();
+ 
+-	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan);
+-
+ 	public List<ContractsFees> getContractFessListByContractId(Integer contractId);
+ 
+ 	List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
+@@ -2045,4 +2042,7 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList);
+ 
+ 	public void deleteFeesList(List<ContractsFees> fessList);
++
++	Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
++			Integer billBandNumber, String bayan, List<ContractsFees> oldFees);
+ }
+diff --git a/src/com/bkeryah/service/DataAccessService.java b/src/com/bkeryah/service/DataAccessService.java
+--- a/src/com/bkeryah/service/DataAccessService.java
++++ b/src/com/bkeryah/service/DataAccessService.java
+@@ -9932,7 +9932,7 @@
+ 	@Override
+ 	@Transactional
+ 	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
+-			Integer billBandNumber, String bayan) {
++			Integer billBandNumber, String bayan,List<ContractsFees> oldFees ) {
+ 		Integer factId = 0;
+ 		if (contractDirect.getTotalBillValue() > 0)
+ 			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+@@ -9936,6 +9936,11 @@
+ 		Integer factId = 0;
+ 		if (contractDirect.getTotalBillValue() > 0)
+ 			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
++		
++		for (ContractsFees contractsFees : oldFees) {
++			deleteObject(contractsFees);
++		}
++		
+ 		for (ContractsFees contractsFees : contractFees) {
+ 			contractsFees.setContractId(contractDirect.getId());
+ 			if (contractsFees.getFactId() == null && factId > 0 && contractsFees.getStatus() == 2)// مفوترة
+@@ -9966,7 +9971,7 @@
+ 			Integer billBandNumber, String bayan) {
+ 		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+ 		for (ContractsFees contFees : contFeesList) {
+-			if (contFees.getFactId() != null && contFees.isCheckfees())
++			if (contFees.getFactId() != null && contFees.isCheckfees() && contFees.getStatus().equals(2))
+ 				contFees.setFactId(factId.toString());
+ 			updateObject(contFees);
+ 		}
+@@ -10063,9 +10068,9 @@
+ 	public void updateContractDirect(ContractDirect contrectDirect, List<ContractsFees> fessList) {
+ 		try {
+ 			updateObject(contrectDirect);
+-			for (ContractsFees fess : fessList) {
+-				updateObject(fess);
+-			}
++//			for (ContractsFees fess : fessList) {
++//				updateObject(fess);
++//			}
+ 		} catch (Exception ex) {
+ 			ex.printStackTrace();
+ 			logger.error(" updateContractFessList : " + ex.getMessage());
+@@ -10087,5 +10092,4 @@
+ 
+ 		}
+ 	}
+-
+-}
++}
+\ No newline at end of file
+diff --git a/src/com/bkeryah/entities/investment/ContractDirect.java b/src/com/bkeryah/entities/investment/ContractDirect.java
+--- a/src/com/bkeryah/entities/investment/ContractDirect.java
++++ b/src/com/bkeryah/entities/investment/ContractDirect.java
+@@ -91,6 +91,10 @@
+ 	private Integer totalInstallment;// الاقساط الكلية
+ 	@Column(name = "FEES_BILLED_NBR")
+ 	private Integer billedInstallment;// الاقساط المفوترة
++	
++	@Column(name = "OLD_PAYED_FEES")
++	private Integer oldPayedFees;// الاقساط المدفوعة السابقة
++	
+ 	@Column(name = "SPECIAL_CONDITIONS")
+ 	private String specialConditions;// الشروط الخاصة
+ 	@Column(name = "CONTRACT_DURATION_RATIO")
+@@ -637,4 +641,12 @@
+ 		this.invRepresentIdDate_G = invRepresentIdDate_G;
+ 	}
+ 
++	public Integer getOldPayedFees() {
++		return oldPayedFees;
++	}
++
++	public void setOldPayedFees(Integer oldPayedFees) {
++		this.oldPayedFees = oldPayedFees;
++	}
++
+ }
+\ No newline at end of file
