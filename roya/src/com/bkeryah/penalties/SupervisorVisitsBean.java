@@ -3,7 +3,9 @@ package com.bkeryah.penalties;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -192,6 +194,23 @@ public class SupervisorVisitsBean {
 			}
 		}
 		return null;
+	}
+
+	public String printVisitsList() {
+		String reportName = "/reports/visits_for_supervisors.jrxml";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		if (supervisorIds.size() == 1) {
+			for (Supervisor sur : supervisors) {
+				Integer id = Integer.parseInt(supervisorIds.get(0));
+				if (id.equals(sur.getId()))
+					parameters.put("supervisorName", sur.getUserName());
+			}
+		}
+		for (VisitsSupervisor visit : visitsSupervisors) {
+			visit.setLicNo(getLicData(visit.getLicId()));
+		}
+		Utils.printPdfReportFromListDataSource(reportName, parameters, visitsSupervisors);
+		return "";
 	}
 
 	public IDataAccessService getDataAccessService() {

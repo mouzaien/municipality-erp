@@ -43,7 +43,7 @@ public class PenalitySetupBean {
 		ReqFinesSetup CodesFiner = new ReqFinesSetup();
 		codesFinesList.add(CodesFiner);
 		itemsList = dataAccessService.loadAllPayMasters();
-		
+
 	}
 
 	public String printPenalityReport() {
@@ -58,8 +58,10 @@ public class PenalitySetupBean {
 
 		return "";
 	}
+
 	public void addPenality() {
 		try {
+			finesetup.setFineClass(1);
 			dataAccessService.save(finesetup);
 			codesFines = dataAccessService.getCodesFines();
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));

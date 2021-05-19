@@ -89,7 +89,7 @@ public class RealEstateBean {
 
 	public void save() {
 		try {
-//			realEstate.setComponents(contractComponent.getName());
+			// realEstate.setComponents(contractComponent.getName());
 			dataAccessService.save(realEstate);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 			realEstatesList.add(realEstate);
@@ -272,11 +272,24 @@ public class RealEstateBean {
 
 	public void deleteRealEstate() {
 		try {
-			dataAccessService.deleteObject(realEstate);
-			realEstatesList.remove(realEstate);
-			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-			logger.info("delete realEstate: id: " + realEstate.getId());
-		} catch (Exception e) {
+			List<RealEstate> unusedRealEstatesList = dataAccessService.loadAllUnusedRealEstatesList();
+			boolean inList = false;
+			for (RealEstate realObj : unusedRealEstatesList) {
+				if (realObj.getId().equals(realEstate.getId())) {
+					inList = true;
+				}
+			}
+			if (inList) {
+				dataAccessService.deleteObject(realEstate);
+				realEstatesList.remove(realEstate);
+				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+				logger.info("delete realEstate: id: " + realEstate.getId());
+			} else {
+				MsgEntry.addErrorMessage("هذا العقار مستخدم");
+			}
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 			MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
 			logger.error("delete realEstate: id: " + realEstate.getId());

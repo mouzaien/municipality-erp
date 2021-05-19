@@ -50,14 +50,23 @@
 			<h:form id="includeform">
 				<p:messages id="msgs" autoUpdate="true" closable="true"></p:messages>
 				<div class="image-box-footer">
+					<p:commandButton value="طباعة" ajax="false"
+						onclick="this.form.target='_blank'" styleClass="purple-btn"
+						icon="ui-icon ui-icon-print" immediate="true"
+						action="#{supervisorVisitsBean.printVisitsList}">
+					</p:commandButton>
+					<p:spacer width="10" height="10"></p:spacer>
 					<p:commandButton value="حساب زيارات" update="includeform:pngid"
 						immediate="true" styleClass="cyan-btn" rendered="false"
 						action="#{supervisorVisitsBean.showDlg}"
 						icon="ui-icon ui-icon-plus">
 					</p:commandButton>
+
 				</div>
+				<br />
 				<div class="card card-w-title" dir="rtl">
-					<h1 style="color: #7CB342; text-align: center">استعلام الزيارات</h1>
+					<h1 style="color: #7CB342; text-align: center">استعلام
+						الزيارات</h1>
 					<br></br>
 					<div class="ui-g">
 						<div class="ui-g-1">

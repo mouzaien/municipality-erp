@@ -111,15 +111,16 @@
 									rendered="#{penalItem.penaltyIsRecoreded != 'Y'}"
 									action="#{notifPenalitiesBean.addPenalty(penalItem)}">
 								</p:commandButton>
+							</p:column>
+							<p:column width="7%" style="text-align:center"
+								headerText=" طباعة المحضر">
+								<p:commandButton ajax="false" icon="ui-icon-print"
+									onclick="this.form.target='_blank'" styleClass="purple-btn"
+									action="#{notifPenalitiesBean.printNotifReport}">
+									<f:setPropertyActionListener value="#{penalItem}"
+										target="#{notifPenalitiesBean.notifFinesMaster}" />
+								</p:commandButton>
 
-								<!-- 							<p:column width="5%" style="text-align:center" headerText=" طباعة"> -->
-								<!-- 								<p:commandButton ajax="false" icon="ui-icon-print" -->
-								<!-- 									onclick="this.form.target='_blank'" -->
-								<!-- 									action="#{notifPenalitiesBean.printNotifReport}"> -->
-								<!-- 									<f:setPropertyActionListener value="#{penalItem}" -->
-								<!-- 										target="#{notifPenalitiesBean.notifFinesMaster}" /> -->
-								<!-- 								</p:commandButton> -->
-								<!-- </p:column> -->
 							</p:column>
 						</p:dataTable>
 						<br />
@@ -211,6 +212,7 @@
 												<h:inputTextarea disabled="true" style="opacity;1"
 													value="#{notfiItem.observation}" />
 											</p:column>
+
 										</p:dataTable>
 									</div>
 

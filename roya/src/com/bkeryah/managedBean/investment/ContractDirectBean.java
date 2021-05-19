@@ -515,6 +515,7 @@ public class ContractDirectBean {
 					contract.setPayStatus(0);// غير مسددة
 					contract.setSmsDueHDate(feesLst.get(feesLst.size() - 1).getDueHDate());
 					contract.setSmsDueGDate(feesLst.get(feesLst.size() - 1).getDueGDate());
+					// if (feesLst.get(feesLst.size() - 1).getFactId() != null)
 					contract.setSmsBillNo(feesLst.get(feesLst.size() - 1).getFactId());
 				} else {
 					contract.setPayStatus(1);// مسددة
@@ -1190,7 +1191,8 @@ public class ContractDirectBean {
 			ContractsFees oldFee = contrOldFees.get(contractsFees.getDueHDate());
 			if (oldFee != null) {
 				if (oldFee.getStatus().equals(2)) {
-					contractsFees.setStatus(oldFee.getStatus());
+					if (!contractsFees.getStatus().equals(3))
+						contractsFees.setStatus(oldFee.getStatus());
 					contractsFees.setFactId(oldFee.getFactId());
 					contractsFees.setDiscountAmount(oldFee.getDiscountAmount());
 					contractsFees.setDiscountduration(oldFee.getDiscountduration());
@@ -1242,7 +1244,7 @@ public class ContractDirectBean {
 			contMSGObj.setSendDateG(new Date());
 			contMSGObj.setSendDateH(HijriCalendarUtil.findCurrentHijriDate());
 			contMSGObj.setPhoneNo(contractDirect.getInvestor().getMobile());
-			contMSGObj.setBillNo(Integer.parseInt(contractDirect.getSmsBillNo()));
+			contMSGObj.setBillNo(Long.parseLong(contractDirect.getSmsBillNo()));
 			contMSGObj.setTreadeRecord(contractDirect.getInvestor().getTradeRecord());
 			contMSGObj.setMessageTxt(messageTxt);
 			smsService = new SmsService();
@@ -1254,10 +1256,16 @@ public class ContractDirectBean {
 			// resetFields();
 			System.out.println(messageTxt);
 
-			dataAccessService.save(contMSGObj);
-			MsgEntry.addInfoMessage("تم الإرسال");
+			if (RESPONSE.getError()!=1) {
+				MsgEntry.addErrorMessage("لم يتم الأرسال ... ويرجى مراجعة مدير التقنيةوالتأكد من رصيد باقة الرسائل");
+			} else {
+
+				dataAccessService.save(contMSGObj);
+				MsgEntry.addInfoMessage("تم الإرسال");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			MsgEntry.addErrorMessage("لم يتم الإرسال");
 		}
 	}
 

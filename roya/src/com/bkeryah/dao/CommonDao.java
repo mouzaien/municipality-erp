@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PreDestroy;
-import javax.persistence.OrderBy;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -44,7 +43,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.Sort;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -2690,7 +2688,9 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 
 	@Override
 	public List<ReqFinesSetup> getCodesFines() {
-		return loadAll(ReqFinesSetup.class);
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReqFinesSetup.class);
+		criteria.add(Restrictions.eq("fineClass", 1));
+		return criteria.list();
 	}
 
 	@Override
@@ -3650,6 +3650,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		List<RealEstate> list = new ArrayList<RealEstate>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(RealEstate.class);
 		criteria.addOrder(Order.desc("id"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = criteria.list();
 		return list;
 
@@ -5300,7 +5301,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		PayLicBills cntctBill = loadBillByLicNo(contractDirect.getId());
 		List<ContractsFees> feesList = loadContractFeeslistbycontractId(contractDirect.getId());
 		try {
-			if (cntctBill==null) {
+			if (cntctBill == null) {
 				for (ContractsFees fees : feesList)
 					deleteObject(fees);
 				deleteObject(contractDirect);

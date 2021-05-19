@@ -343,9 +343,9 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="35" splitType="Stretch">
+		<band height="38" splitType="Stretch">
 			<textField>
-				<reportElement x="760" y="0" width="42" height="35" uuid="0d4cb321-db83-4eb8-8970-4acbb5226819"/>
+				<reportElement x="760" y="0" width="42" height="38" uuid="0d4cb321-db83-4eb8-8970-4acbb5226819"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -357,7 +357,7 @@ WHERE
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="580" y="0" width="180" height="35" uuid="eda0085b-1ba7-4b29-a66c-f9fc4b126e94"/>
+				<reportElement x="580" y="0" width="180" height="38" uuid="eda0085b-1ba7-4b29-a66c-f9fc4b126e94"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -369,7 +369,7 @@ WHERE
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="0" width="300" height="35" uuid="718a2eaa-b80a-4448-99ec-0815f7fe413b"/>
+				<reportElement x="280" y="0" width="300" height="38" uuid="718a2eaa-b80a-4448-99ec-0815f7fe413b"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -379,7 +379,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{ART_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="213" y="0" width="67" height="35" uuid="a465cab0-c335-4286-b078-90efe4b6fc9e"/>
+				<reportElement x="213" y="0" width="67" height="38" uuid="a465cab0-c335-4286-b078-90efe4b6fc9e"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -389,7 +389,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{UNIT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="143" y="0" width="70" height="35" uuid="cd9a3da3-0cea-4c82-93e6-48467f5645ef"/>
+				<reportElement x="143" y="0" width="70" height="38" uuid="cd9a3da3-0cea-4c82-93e6-48467f5645ef"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -401,7 +401,7 @@ WHERE
                 .replaceAll("6", "\\\u0666").replaceAll("7", "\\\u0667").replaceAll("8", "\\\u0668").replaceAll("9", "\\\u0669")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="143" height="35" uuid="b2eda959-88a4-4dd6-ba3e-4b390f9507e9"/>
+				<reportElement x="0" y="0" width="143" height="38" uuid="b2eda959-88a4-4dd6-ba3e-4b390f9507e9"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>

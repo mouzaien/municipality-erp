@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="royaTest"/>
 	<queryString language="SQL">
-		<![CDATA[select FINE_CODE sub,FINE_ACTION type,FINE_MINIMUM_VALUE min,FINE_SUPERMUM_VALUE max from REQ_FINES_SETUP]]>
+		<![CDATA[select FINE_CODE sub,FINE_ACTION type,FINE_MINIMUM_VALUE min,FINE_SUPERMUM_VALUE max from REQ_FINES_SETUP where FINE_CLASS = 1]]>
 	</queryString>
 	<field name="type" class="java.lang.String"/>
 	<field name="sub" class="java.lang.String"/>

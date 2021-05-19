@@ -1,6 +1,8 @@
 package com.bkeryah.managedBean.reqfin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +22,7 @@ import com.bkeryah.penalties.NotifFinesMastR;
 import com.bkeryah.service.IDataAccessService;
 import com.sun.faces.util.Util;
 
+import utilities.HijriCalendarUtil;
 import utilities.Utils;
 
 @ManagedBean
@@ -39,52 +42,53 @@ public class NotifPenalitiesBean {
 
 	@PostConstruct
 	private void init() {
-		
-		notifPenalitiesList= dataAccessService.getAllNotifList();
-		//loadNotifPenalities();
+
+		notifPenalitiesList = dataAccessService.getAllNotifList();
+		// loadNotifPenalities();
 	}
-//
-//	public void loadNotifPenalities() {
-//		notifPenalitiesList = dataAccessService
-//				.loadAllNotifPenalities((StringUtils.isEmpty(status)) ? null : Integer.parseInt(status));
-//	}
+	//
+	// public void loadNotifPenalities() {
+	// notifPenalitiesList = dataAccessService
+	// .loadAllNotifPenalities((StringUtils.isEmpty(status)) ? null :
+	// Integer.parseInt(status));
+	// }
 
 	public void loadSelectedNotification(NotifFinesMastR mstr) {
-		if(mstr != null){
-		notifFinesMaster = mstr;
-		User sup=(User) dataAccessService.findEntityById(User.class, mstr.getSupervisorId());
-		if (sup != null) {
-			// supervisor Name
-			supervisorName = sup.getEmployeeName();
-		}
-		Utils.openDialog("details_dlg");  
+		if (mstr != null) {
+			notifFinesMaster = mstr;
+			User sup = (User) dataAccessService.findEntityById(User.class, mstr.getSupervisorId());
+			if (sup != null) {
+				// supervisor Name
+				supervisorName = sup.getEmployeeName();
+			}
+			Utils.openDialog("details_dlg");
 		}
 	}
 
-	
-	public String addPenalty (NotifFinesMastR mstr){
+	public String addPenalty(NotifFinesMastR mstr) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest HttpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 		HttpSession httpSession = HttpRequest.getSession(false);
 		httpSession.setAttribute("notifMstr", mstr);
 		return "penalty";
 	}
-//	public String printNotifReport() {
-//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//		String reportName = "";
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		reportName = "/reports/notif_penality.jasper";
-//		parameters.put("notif_id", notifFinesMaster.getNotifId());
-//		try {
-//			parameters.put("visitDate",
-//					HijriCalendarUtil.ConvertgeorgianDatetoHijriDate(sdf.format(notifFinesMaster.getNotifDate())));
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//		parameters.put("now", HijriCalendarUtil.findCurrentHijriDate());
-//		Utils.printPdfReport(reportName, parameters);
-//		return "";
-//	}
+
+	public String printNotifReport() {
+		try {
+			String reportName = "/reports/penality_report.jasper";
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("fine_no", notifFinesMaster.getId());
+			parameters.put("now", HijriCalendarUtil.findCurrentHijriDate());
+			// parameters.put("SUBREPORT_DIR",
+			// FacesContext.getCurrentInstance().getExternalContext()
+			// .getRealPath("/reports/sub_penality_report.jasper"));
+			Utils.printPdfReport(reportName, parameters);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "";
+	}
 
 	public String printBillReport() {
 		// String reportName = "/reports/bill.jasper";
@@ -98,45 +102,59 @@ public class NotifPenalitiesBean {
 		// Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
+
 	public void setDataAccessService(IDataAccessService dataAccessService) {
 		this.dataAccessService = dataAccessService;
 	}
+
 	public NotifFinesMastR getNotifFinesMaster() {
 		return notifFinesMaster;
 	}
+
 	public void setNotifFinesMaster(NotifFinesMastR notifFinesMaster) {
 		this.notifFinesMaster = notifFinesMaster;
 	}
+
 	public List<NotifFinesMastR> getNotifPenalitiesList() {
 		return notifPenalitiesList;
 	}
+
 	public void setNotifPenalitiesList(List<NotifFinesMastR> notifPenalitiesList) {
 		this.notifPenalitiesList = notifPenalitiesList;
 	}
+
 	public List<NotifFinesMastR> getFilteredNotifPenalities() {
 		return filteredNotifPenalities;
 	}
+
 	public void setFilteredNotifPenalities(List<NotifFinesMastR> filteredNotifPenalities) {
 		this.filteredNotifPenalities = filteredNotifPenalities;
 	}
+
 	public Integer getFineNo() {
 		return fineNo;
 	}
+
 	public void setFineNo(Integer fineNo) {
 		this.fineNo = fineNo;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	public NotifFinesDetails getSelectedDetails() {
 		return selectedDetails;
 	}
+
 	public void setSelectedDetails(NotifFinesDetails selectedDetails) {
 		this.selectedDetails = selectedDetails;
 	}
@@ -149,5 +167,4 @@ public class NotifPenalitiesBean {
 		this.supervisorName = supervisorName;
 	}
 
-	
 }

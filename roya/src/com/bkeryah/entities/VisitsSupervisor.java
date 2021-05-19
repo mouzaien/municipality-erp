@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,6 +44,9 @@ public class VisitsSupervisor {
 	
 	@Formula("(select s.user_id from SUPERVISORS s where s.id = SUPERVISOR_ID)")
 	private Integer userId;
+	
+	@Transient 
+	public String licNo;
 	
 	public Integer getId() {
 		return id;
@@ -114,6 +118,14 @@ public class VisitsSupervisor {
 
 	public void setgDate(Date gDate) {
 		this.gDate = gDate;
+	}
+
+	public String getLicNo() {
+		return licNo;
+	}
+
+	public void setLicNo(String licNo) {
+		this.licNo = licNo;
 	}
 
 	

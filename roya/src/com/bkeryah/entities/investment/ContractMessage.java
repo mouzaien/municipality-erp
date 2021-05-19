@@ -28,7 +28,7 @@ public class ContractMessage {
 	@Column(name = "PHONE_NO")
 	private String phoneNo;
 	@Column(name = "BILL_NO")
-	private Integer billNo;
+	private Long billNo;
 	@Column(name = "FEES_ID")
 	private Integer feesId;
 	@Column(name = "TRADE_RECORD")
@@ -76,11 +76,11 @@ public class ContractMessage {
 		this.phoneNo = phoneNo;
 	}
 
-	public Integer getBillNo() {
+	public Long getBillNo() {
 		return billNo;
 	}
 
-	public void setBillNo(Integer billNo) {
+	public void setBillNo(Long billNo) {
 		this.billNo = billNo;
 	}
 

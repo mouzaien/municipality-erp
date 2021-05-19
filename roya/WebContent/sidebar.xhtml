@@ -259,10 +259,9 @@
 								</p:submenu>
 							</secc:authorize>
 							<secc:authorize ifAnyGranted="ROLE_SUPPORT, ROLE_FINES">
-								<p:submenu  label="المخالفات"
-									icon="ui-icon ui-icon-security">
-									<p:menuitem  value="الرخص"
-										action="SearchPenality" icon="ui-icon ui-icon-pan-tool" />
+								<p:submenu label="المخالفات" icon="ui-icon ui-icon-security">
+									<p:menuitem value="الرخص" action="SearchPenality"
+										icon="ui-icon ui-icon-pan-tool" />
 
 									<p:menuitem value="#{msg['fines']}" action="penalty_setup"
 										icon="fa fa-fw fa-leanpub" />
@@ -286,8 +285,8 @@
 
 									<p:menuitem id="sa_add_recruit" value="المراقبين"
 										action="recruit_supervisor" icon="ui-icon ui-icon-pan-tool" />
-									<p:menuitem id="sa_add_" value="الزيارات" action="visits"
-										icon="ui-icon ui-icon-pan-tool" />
+									<!-- 									<p:menuitem id="sa_add_" value="الزيارات" action="visits" -->
+									<!-- 										icon="ui-icon ui-icon-pan-tool" /> -->
 
 
 									<p:menuitem id="superV" value="استعلام الزيارات"

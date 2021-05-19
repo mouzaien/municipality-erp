@@ -200,23 +200,23 @@
 							<!-- 								<h:outputText value="#{realEstateItem.numRealEstate}" /> -->
 							<!-- 							</p:column> -->
 							<p:column headerText="رقم العقار"
-								style="width:10% ;text-align:center"
+								style="width:9% ;text-align:center"
 								filterBy="#{realEstateItem.id}" filterMatchMode="contains">
 								<h:outputText value="#{realEstateItem.id}" />
 							</p:column>
-							<p:column headerText="نوع النشاط" style="width:15%"
+							<p:column headerText="نوع النشاط" style="width:14%"
 								filterBy="#{realEstateItem.activityName}"
 								filterMatchMode="contains">
 								<h:outputText value="#{realEstateItem.activityName}" />
 							</p:column>
-							<p:column headerText="مكونات النشاط" style="width:15%"
+							<p:column headerText="مكونات النشاط" style="width:14%"
 								filterBy="#{realEstateItem.components}"
 								filterMatchMode="contains">
 								<h:outputText value="#{realEstateItem.components}" />
 
 							</p:column>
 							<p:column headerText="نوع العقار"
-								style="width:15%;text-align:center;"
+								style="width:14%;text-align:center;"
 								filterBy="#{realEstateItem.siteName}" filterMatchMode="contains">
 								<h:outputText value="#{realEstateItem.siteName}" />
 							</p:column>
@@ -224,22 +224,34 @@
 
 							<p:column headerText="نوع البناء"
 								filterBy="#{realEstateItem.buildName}"
-								filterMatchMode="contains" style="width:10%;text-align:center;">
+								filterMatchMode="contains" style="width:9%;text-align:center;">
 								<h:outputLabel value="#{realEstateItem.buildName}" />
 							</p:column>
 							<p:column headerText="الشارع" filterBy="#{realEstateItem.street}"
-								filterMatchMode="contains" style="width:15%;">
+								filterMatchMode="contains" style="width:14%;">
 								<h:outputText value="#{realEstateItem.street}" />
 
 							</p:column>
 
-							<p:column headerText="الحي" style="width:15%;text-align:center;"
+							<p:column headerText="الحي" style="width:14%;text-align:center;"
 								filterBy="#{realEstateItem.districtName}"
 								filterMatchMode="contains">
 
 								<h:outputLabel value="#{realEstateItem.districtName}" />
 
 							</p:column>
+
+							<p:column width="7%" style="text-align:center" headerText="حذف">
+								<p:commandButton onclick="PF('delete_realestate_dlg').show()"
+									immediate="true" styleClass="red-btn" process="@this"
+									icon="ui-icon-remove">
+									<f:setPropertyActionListener value="#{realEstateItem}"
+										target="#{realEstateBean.realEstate}" />
+								</p:commandButton>
+							</p:column>
+
+
+
 							<!-- 								التفاااااااااااااااااصيل /////////////////////////////////////////////////////////////////// -->
 
 							<!-- 							<p:column width="7%" style="text-align:center" -->
@@ -635,14 +647,14 @@
 							<br />
 							<div class="image-box-footer" align="left">
 								<p:commandButton value="حفظ" styleClass="btn btn-primary"
-									update="@form,realEstateTable" process="realEstate_dlgId"
+									update="realEstateTable" process="realEstate_dlgId"
 									rendered="#{realEstateBean.addMode}" immediate="false"
 									action="#{realEstateBean.save}" style="margin-left:3px;"
 									ajax="true" oncomplete="PF('realEstate_dlg').hide();">
 								</p:commandButton>
 								<p:spacer width="10px" height="10px"></p:spacer>
 								<p:commandButton value="تعديل" styleClass="btn btn-primary"
-									update="@form,realEstateTable" process="realEstate_dlgId"
+									update="realEstateTable" process="realEstate_dlgId"
 									rendered="#{!realEstateBean.addMode}"
 									action="#{realEstateBean.update}" style="margin-left:3px;"
 									oncomplete="PF('realEstate_dlg').hide();">
@@ -788,6 +800,32 @@
 								</p:commandButton>
 							</div>
 						</h:panelGroup>
+					</p:dialog>
+					<p:dialog widgetVar="delete_realestate_dlg"
+						id="delete_realestate_dlgId" header="تأكيد عملية الحذف"
+						width="20%" style="text-align: center'" dir="rtl" modal="true"
+						resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:outputLabel value="هل تريد إتمام عملية الحذف ؟!"
+									styleClass="btxt" />
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="نعم" styleClass="green-btn"
+								update="realEstateTable" icon="fa fa-check"
+								action="#{realEstateBean.deleteRealEstate}" immediate="true"
+								oncomplete="PF('delete_realestate_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+							<p:commandButton value="لا" styleClass="red-btn"
+								action="#{invMainCategoryBean.cancelDelete}" icon="fa fa-remove"
+								immediate="true"
+								oncomplete="PF('delete_realestate_dlg').hide();">
+							</p:commandButton>
+						</div>
 					</p:dialog>
 				</div>
 			</h:form>

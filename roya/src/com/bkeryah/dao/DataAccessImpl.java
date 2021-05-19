@@ -8127,7 +8127,6 @@ public class DataAccessImpl implements DataAccess, Serializable {
 	@Override
 	public List<ContractsFees> getContractPayedStatus(Integer contractId) {
 		List<ContractsFees> fees = new ArrayList<ContractsFees>();
-		;
 		ContractsFees feesObj;
 		ResultSet rs = null;
 		CallableStatement callableStatement = null;
