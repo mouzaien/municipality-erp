@@ -2,6 +2,9 @@ package com.bkeryah.managedBean.investment;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.Character.UnicodeBlock;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +18,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -29,8 +34,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.context.RequestContext;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.server.ServletServerHttpRequest;
+
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.PayBillDetails;
 import com.bkeryah.entities.PayLicBills;
@@ -154,6 +158,14 @@ public class ContractDirectBean {
 	ISmsService smsService = new SmsService();
 	private List<ContractMessage> contractMsgList = new ArrayList<ContractMessage>();
 	private List<ContractMessage> filterContractMsgList;
+	private String phoneNo = new String();
+	public static final String HOST_NAME = "smtp.gmail.com";
+	public static final int PORT = 465;
+	public String emailFrom = new String();
+	public String emailTo = new String();
+	public String subject = new String();
+	public String emailMessage = new String();
+	private String tradRecod = new String();
 
 	@PostConstruct
 	public void init() {
@@ -313,11 +325,8 @@ public class ContractDirectBean {
 			Utils.openDialog("addDialog");
 		} else if (contractDirect.getOperationId() == ContractOperationEnum.SMS.getAction()) {
 			// تنبية اشعارات رسائل الجوال
-			messageTxt = "رقم الجوال : " + contractDirect.getInvestor().getMobile() + "\n" + "رقم العقد : "
-					+ contractDirect.getContractNum() + "\n" + "رقم السجل : "
-					+ contractDirect.getInvestor().getTradeRecord() + "\n" + "رقم الفاتورة : "
-					+ contractDirect.getSmsBillNo() + "\n" + "تاريخ الإستحقاق : " + contractDirect.getSmsDueHDate()
-					+ "\n";
+			messageTxt = "تم إصدار فاتورة رقم " + contractDirect.getSmsBillNo() + " للعقد رقم  "
+					+ contractDirect.getContractNum() + " بتاريخ إستحقاق " + contractDirect.getSmsDueHDate();
 			Utils.openDialog("sendSMS_dlg");
 		} else if (contractDirect.getOperationId() == ContractOperationEnum.DELETE.getAction()) {
 			// حذف العقد
@@ -437,6 +446,9 @@ public class ContractDirectBean {
 				// contractDirect.getEndDate()));
 				contractDirect.setContractStatId(contractStatus);
 				contractDirect.setContractDate(new Date());
+				// Integer usrId =
+				// dataAccessService.getPropertiesValue("PRESIDENT_ID");
+				contractDirect.setPresidentId(dataAccessService.getPropertiesValue("PRESIDENT_ID"));
 
 				if (newcontractNum != null && newcontractNum > 0) {
 					contractDirect.setContractNum(newcontractNum);
@@ -1248,7 +1260,10 @@ public class ContractDirectBean {
 			contMSGObj.setTreadeRecord(contractDirect.getInvestor().getTradeRecord());
 			contMSGObj.setMessageTxt(messageTxt);
 			smsService = new SmsService();
-			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), messageTxt);
+			// messageTxt = contractDirect.getSmsBillNo();
+
+			String message = URLEncoder.encode(messageTxt, "UTF-8");
+			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), message);
 			// ResponseTypeEnum RESPONSE =
 			// smsService.sendMessage(contractDirect.getInvestor().getMobile(),messageTxt);
 
@@ -1256,8 +1271,8 @@ public class ContractDirectBean {
 			// resetFields();
 			System.out.println(messageTxt);
 
-			if (RESPONSE.getError()!=1) {
-				MsgEntry.addErrorMessage("لم يتم الأرسال ... ويرجى مراجعة مدير التقنيةوالتأكد من رصيد باقة الرسائل");
+			if (RESPONSE.getError() != 1) {
+				MsgEntry.addErrorMessage("لم يتم الأرسال ... ويرجى مراجعة مدير التقنية والتأكد من رصيد باقة الرسائل");
 			} else {
 
 				dataAccessService.save(contMSGObj);
@@ -1269,22 +1284,63 @@ public class ContractDirectBean {
 		}
 	}
 
-	// public String loadContractMessagerList() {
-	// contractMsgList = dataAccessService.getAllContractMessagesList();
-	// FacesContext context = FacesContext.getCurrentInstance();
-	// context.getExternalContext().getSessionMap().put("contractMsgList",
-	// contractMsgList);
-	// return "contract_message";
-	// }
-	//
-	// public String contractMessagerInit() {
-	// contractMsgList = dataAccessService.getAllContractMessagesList();
-	// FacesContext context = FacesContext.getCurrentInstance();
-	// contractMsgList = new ArrayList<>();
-	// contractMsgList = (List<ContractMessage>)
-	// context.getExternalContext().getSessionMap().get("contractMsgList");
-	// return "";
-	// }
+	public void openSMSDialog() {
+		Utils.openDialog("sendNewSMS_dlg");
+	}
+
+	public void openEmailDialog() {
+		Utils.openDialog("sendEmail_dlg");
+	}
+
+	public void sendNewSmsMessage() {
+		try {
+			smsService = new SmsService();
+			ResponseTypeEnum RESPONSE = smsService.sendMessage(phoneNo, URLEncoder.encode(messageTxt, "UTF-8"));
+			System.out.println(messageTxt);
+			if (RESPONSE.getError() != 1) {
+				MsgEntry.addErrorMessage("لم يتم الأرسال ... ويرجى مراجعة مدير التقنيةوالتأكد من رصيد باقة الرسائل");
+			} else {
+				MsgEntry.addInfoMessage("تم الإرسال");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgEntry.addErrorMessage("لم يتم الإرسال");
+		}
+	}
+
+	public void sendEmailMessage() {
+		try {
+			HtmlEmail email = new HtmlEmail();
+			email.setHostName(HOST_NAME);
+			email.setSmtpPort(PORT);
+			email.setSSLOnConnect(true);
+
+			email.setSubject("Some subject");
+			email.setFrom(emailFrom, "بلدية محافظة المذنب", String.valueOf(StandardCharsets.UTF_8));
+			email.addTo(emailTo);
+			email.setHtmlMsg(emailMessage);
+			email.send();
+			MsgEntry.addInfoMessage("تم الإرسال");
+		} catch (EmailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} // public String loadContractMessagerList() {
+		// contractMsgList = dataAccessService.getAllContractMessagesList();
+		// FacesContext context = FacesContext.getCurrentInstance();
+		// context.getExternalContext().getSessionMap().put("contractMsgList",
+		// contractMsgList);
+		// return "contract_message";
+		// }
+		//
+		// public String contractMessagerInit() {
+		// contractMsgList = dataAccessService.getAllContractMessagesList();
+		// FacesContext context = FacesContext.getCurrentInstance();
+		// contractMsgList = new ArrayList<>();
+		// contractMsgList = (List<ContractMessage>)
+		// context.getExternalContext().getSessionMap().get("contractMsgList");
+		// return "";
+		// }
 
 	public String printAllContractsAction() {
 		compaerFeesAndBillDates();
@@ -2388,6 +2444,54 @@ public class ContractDirectBean {
 
 	public void setFilterContractMsgList(List<ContractMessage> filterContractMsgList) {
 		this.filterContractMsgList = filterContractMsgList;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public String getEmailFrom() {
+		return emailFrom;
+	}
+
+	public void setEmailFrom(String emailFrom) {
+		this.emailFrom = emailFrom;
+	}
+
+	public String getEmailTo() {
+		return emailTo;
+	}
+
+	public void setEmailTo(String emailTo) {
+		this.emailTo = emailTo;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getEmailMessage() {
+		return emailMessage;
+	}
+
+	public void setEmailMessage(String emailMessage) {
+		this.emailMessage = emailMessage;
+	}
+
+	public String getTradRecod() {
+		return tradRecod;
+	}
+
+	public void setTradRecod(String tradRecod) {
+		this.tradRecod = tradRecod;
 	}
 
 }

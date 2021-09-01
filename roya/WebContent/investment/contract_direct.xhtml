@@ -57,6 +57,17 @@
 								postProcessor="#{contractDirectBean.postProcessXLS}"
 								target="allusersettingdt" fileName="العقود"></p:dataExporter>
 						</p:commandButton>
+						
+						<p:spacer width="10" height="10"></p:spacer>
+<!-- 						<p:commandButton value="إرسال رسالة" ajax="false" -->
+<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+<!-- 							action="#{contractDirectBean.openSMSDialog}" immediate="true"> -->
+<!-- 						</p:commandButton> -->
+<!-- 						<p:spacer width="10" height="10"></p:spacer> -->
+<!-- 						<p:commandButton value="إرسال إيميل" ajax="false" -->
+<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+<!-- 							action="#{contractDirectBean.openEmailDialog}" immediate="true"> -->
+<!-- 						</p:commandButton> -->
 						<!-- <p:spacer width="10" height="10"></p:spacer> -->
 						<!-- <p:commandButton value="أرشيف الرسائل" styleClass="purple-btn" -->
 						<!-- 	action="#{contractDirectBean.loadContractMessagerList}" -->
@@ -1935,6 +1946,119 @@
 							<p:spacer width="10px" />
 						</div>
 					</p:dialog>
+					<p:dialog widgetVar="sendNewSMS_dlg" id="sendNewSMS_dlgId"
+						header="رسالة جديدة" width="30%" style="text-align: center'"
+						dir="rtl" modal="true" resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="رقم الجوال" styleClass="btxt" />
+							</div>
+							<div class="ui-g-1">
+								<p:inputText value="#{contractDirectBean.phoneNo}"
+									styleClass="btxt" placeholder="966*********">
+									<f:validator validatorId="utilities.PhoneNumberValidator" />
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="رقم السجل" styleClass="btxt" />
+							</div>
+							<div class="ui-g-1">
+								<p:inputText value="#{contractDirectBean.tradRecod}"
+									styleClass="btxt" placeholder="أدخل رقم السجل">
+									<f:validator validatorId="nationalIdValidator" />
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="نص الرسالة " styleClass="btxt" />
+							</div>
+							<div class="ui-g-1">
+								<p:inputTextarea value="#{contractDirectBean.messageTxt}"
+									cols="65" rows="10" styleClass="btxt"
+									placeholder="أدخل نص الرسالة">
+									<p:ajax process="@this" />
+								</p:inputTextarea>
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="إرسال" styleClass="cyan-btn"
+								update="allusersettingdt" icon="fa fa-send" immediate="true"
+								action="#{contractDirectBean.sendNewSmsMessage}"
+								oncomplete="PF('sendNewSMS_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+						</div>
+					</p:dialog>
+					<p:dialog widgetVar="sendEmail_dlg" id="sendEmail_dlgId"
+						header="رسالة جديدة" width="40%" style="text-align: center'"
+						dir="rtl" modal="true" resizable="false">
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="المِرسل" styleClass="btxt" />
+							</div>
+							<div class="ui-g-8">
+								<p:inputText value="#{contractDirectBean.emailFrom}"
+									style="width: 100%" styleClass="btxt"
+									placeholder="*****@gmail.com">
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="المُرسل إليه" styleClass="btxt" />
+							</div>
+							<div class="ui-g-8">
+								<p:inputText value="#{contractDirectBean.emailTo}"
+									style="width: 100%" styleClass="btxt"
+									placeholder="*****@gmail.com">
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="الموضوع/ العنوان" styleClass="btxt" />
+							</div>
+							<div class="ui-g-8">
+								<p:inputText value="#{contractDirectBean.subject}"
+									style="width: 100%" styleClass="btxt"
+									placeholder="موضوع الرسالة">
+									<p:ajax process="@this" />
+								</p:inputText>
+							</div>
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-2">
+								<p:outputLabel value="نص الرسالة " styleClass="btxt" />
+							</div>
+							<div class="ui-g-8">
+								<p:inputTextarea value="#{contractDirectBean.emailMessage}"
+									style="width: 100%" cols="65" rows="10" styleClass="btxt"
+									placeholder="أدخل نص الرسالة">
+									<p:ajax process="@this" />
+								</p:inputTextarea>
+							</div>
+						</div>
+						<br />
+						<div class="image-box-footer" align="center">
+							<p:commandButton value="إرسال" styleClass="cyan-btn"
+								update="allusersettingdt" icon="fa fa-send" immediate="true"
+								action="#{contractDirectBean.sendEmailMessage}"
+								oncomplete="PF('sendEmail_dlg').hide();">
+
+							</p:commandButton>
+							<p:spacer width="10px" />
+						</div>
+					</p:dialog>
+
 					<p:dialog widgetVar="delete_dlg" id="delete_dlgId"
 						header="تأكيد عملية الحذف" width="20%" style="text-align: center'"
 						dir="rtl" modal="true" resizable="false">

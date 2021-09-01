@@ -1,0 +1,12 @@
+diff --git a/WebContent/store/memoReceipt.xhtml b/WebContent/store/memoReceipt.xhtml
+--- a/WebContent/store/memoReceipt.xhtml
++++ b/WebContent/store/memoReceipt.xhtml
+@@ -76,7 +76,7 @@
+ 									<!-- rendered="#{stockEntryBean.checkReceipt}" -->
+ 									<f:selectItem itemLabel="إختر رقم إشعار" itemValue=""></f:selectItem>
+ 									<f:selectItems var="S" value="#{stockEntryBean.tempMstrList}"
+-										itemLabel="#{S.documentNumber}" itemValue="#{S.id}">
++										itemLabel="#{S.specialNumber}" itemValue="#{S.id}">
+ 									</f:selectItems>
+ 									<p:ajax
+ 										update="art_table notif_date suppId stockNO rcpt_ch_box"

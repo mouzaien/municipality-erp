@@ -75,6 +75,10 @@
 											icon="ui-icon ui-icon-wb-sunny"
 											action="#{mainManagedBean.updateContent('VACATION')}" />
 									</secc:authorize>
+									<secc:authorize ifAnyGranted="ROLE_SUPPORT,ROLE_SEND_SMS">
+										<p:menuitem value="إرسال رسالة" action="sendingSMSMessages"
+											icon="fa fa-fw fa-search-plus" />
+									</secc:authorize>
 									<secc:authorize ifAnyGranted="ROLE_SUPPORT">
 										<p:menuitem id="menu2_Service"
 											value="#{msg['start.work.menu']}" icon="fa fa-fw fa-ioxhost"

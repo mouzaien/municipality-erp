@@ -4,8 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -180,6 +182,7 @@ import com.bkeryah.testssss.EmployeeForDropDown;
 
 import customeExceptions.VacationAndInitException;
 import oracle.jdbc.OracleTypes;
+import service.ISmsService;
 import service.SmsService;
 import sms.sender.ResponseTypeEnum;
 import utilities.FtpTransferFile;
@@ -198,6 +201,7 @@ public class DataAccessService implements IDataAccessService {
 
 	private DataAccess dataAccessDAO;
 	private ICommonDao commonDao;
+	ISmsService smsService;
 	// private HijriCalendarUtil hijri = new HijriCalendarUtil();
 
 	protected static final Logger logger = Logger.getLogger(DataAccessService.class);
@@ -6070,8 +6074,8 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public List<ReqFinesMaster> loadAllPenalities(String notification,Integer deptId) {
-		return commonDao.loadAllPenalities(notification,deptId);
+	public List<ReqFinesMaster> loadAllPenalities(String notification, Integer deptId) {
+		return commonDao.loadAllPenalities(notification, deptId);
 	}
 
 	@Override
@@ -8063,12 +8067,22 @@ public class DataAccessService implements IDataAccessService {
 		contractDirect.setId(contractId);
 		Integer counter = 0;
 		Integer factId = -1;
+
 		for (ContractsFees contFees : contractFees) {
 			if (contFees.getStatus() != null && contFees.getStatus() == 2) // مفوترة
 				counter++;
 		}
 		if (counter > 0) {
-			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+			smsService = new SmsService();
+			String msg;
+			try {
+				factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+				msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
+				ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		for (ContractsFees contractsFees : contractFees) {
 			contractsFees.setContractId(contractDirect.getId());
@@ -9904,11 +9918,21 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
 			Integer billBandNumber, String bayan) {
-		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
-		for (ContractsFees contFees : contFeesList) {
-			if (contFees.getFactId() == null && contFees.getStatus() == 2)// مفوترة
-				contFees.setFactId(factId.toString());
-			updateObject(contFees);
+		Integer factId;
+		smsService = new SmsService();
+		String msg;
+		try {
+			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+			msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
+			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
+			for (ContractsFees contFees : contFeesList) {
+				if (contFees.getFactId() == null && contFees.getStatus() == 2)// مفوترة
+					contFees.setFactId(factId.toString());
+				updateObject(contFees);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -9935,10 +9959,12 @@ public class DataAccessService implements IDataAccessService {
 	public Integer saveContractDirectFess(ContractDirect contractDirect, List<ContractsFees> contractFees,
 			Integer billBandNumber, String bayan, List<ContractsFees> oldFees) {
 		Integer factId = 0;
-//		if (contractDirect.getTotalBillValue() > 0){
-			//System.out.println("insert fact :"+contractDirect.getTotalBillValue());
-			//factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
-//		}
+		// if (contractDirect.getTotalBillValue() > 0){
+		// System.out.println("insert fact
+		// :"+contractDirect.getTotalBillValue());
+		// factId = insertInvestBill(contractDirect,
+		// contractDirect.getTotalBillValue(), billBandNumber, bayan);
+		// }
 
 		for (ContractsFees contractsFees : oldFees) {
 			deleteObject(contractsFees);
@@ -9963,20 +9989,32 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public List<PayLicBills> loadAllBillsListByAllFilters(String fromStartDate, String toStartDate, String aplnumber,
-			Long phoneNumber, Integer billStatus, Integer bandId ,Integer employerId ) {
+			Long phoneNumber, Integer billStatus, Integer bandId, Integer employerId) {
 		return dataAccessDAO.loadBillsListByAllFilters(fromStartDate, toStartDate, aplnumber, phoneNumber, billStatus,
-				bandId ,  employerId);
+				bandId, employerId);
 	}
 
 	@Transactional
 	@Override
 	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect,
 			Integer billBandNumber, String bayan) {
-		Integer factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
-		for (ContractsFees contFees : contFeesList) {
-			if (contFees.getFactId() != null && contFees.isCheckfees() && contFees.getStatus().equals(2))
-				contFees.setFactId(factId.toString());
-			updateObject(contFees);
+
+		Integer factId;
+		smsService = new SmsService();
+		String msg;
+		try {
+			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+			msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
+			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
+
+			for (ContractsFees contFees : contFeesList) {
+				if (contFees.getFactId() != null && contFees.isCheckfees() && contFees.getStatus().equals(2))
+					contFees.setFactId(factId.toString());
+				updateObject(contFees);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -10094,7 +10132,7 @@ public class DataAccessService implements IDataAccessService {
 
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void updateContrFee(ContractsFees contrFee) {
@@ -10110,7 +10148,7 @@ public class DataAccessService implements IDataAccessService {
 			} else {
 				contrFeeBill = contrFeeBill = (PayLicBills) commonDao.findEntityById(PayLicBills.class,
 						Integer.parseInt(contrFee.getOldFactId()));
-				if (contrFeeBill != null){
+				if (contrFeeBill != null) {
 					contrFeeBill.setLicenceNumber(null);
 					updateObject(contrFeeBill);
 				}
@@ -10126,16 +10164,16 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public List<ReqFinesMaster> loadListPenalities(String fineStatus, Integer fineTradeType, Integer fineSadad,
-			String licNo, String alpNo, String fromStartDate, String toStartDate , String deptId) {
+			String licNo, String alpNo, String fromStartDate, String toStartDate, String deptId) {
 		return dataAccessDAO.loadListPenalities(fineStatus, fineTradeType, fineSadad, licNo, alpNo, fromStartDate,
-				toStartDate ,  deptId);
+				toStartDate, deptId);
 	}
 
 	@Override
 	@Transactional
 	public void deleteContractDirect(ContractDirect contractDirect) {
 		commonDao.deleteContractDirect(contractDirect);
-		
+
 	}
 
 	@Override
@@ -10145,6 +10183,4 @@ public class DataAccessService implements IDataAccessService {
 		return list;
 	}
 
-
-	
 }

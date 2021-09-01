@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:body>
+	<ui:composition template="/template.xhtml">
+		<p:growl autoUpdate="true" showDetail="false" />
+
+		<ui:define name="content">
+			<h:form id="includeform">
+				<p:messages autoUpdate="true" closable="true"></p:messages>
+				<p:growl autoUpdate="true"></p:growl>
+
+				<div class="card card-w-title" dir="rtl">
+
+					<h1 style="color: #7CB342; text-align: center">
+						إرسال رسالة<span class="fa fa-fw fa-file-text-o"></span>
+					</h1>
+
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<p:outputLabel value="رقم الجوال" styleClass="btxt" />
+						</div>
+						<div class="ui-g-1">
+							<p:inputText value="#{contractMessageBean.phoneNo}"
+								styleClass="btxt" placeholder="966*********">
+								<f:validator validatorId="utilities.PhoneNumberValidator" />
+								<p:ajax process="@this" />
+							</p:inputText>
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<p:outputLabel value="رقم السجل" styleClass="btxt" />
+						</div>
+						<div class="ui-g-1">
+							<p:inputText value="#{contractMessageBean.tradRecod}"
+								styleClass="btxt" placeholder="أدخل رقم السجل">
+								<f:validator validatorId="nationalIdValidator" />
+								<p:ajax process="@this" />
+							</p:inputText>
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-2">
+							<p:outputLabel value="نص الرسالة " styleClass="btxt" />
+						</div>
+						<div class="ui-g-1">
+							<p:inputTextarea value="#{contractMessageBean.messageTxt}"
+								cols="65" rows="10" styleClass="btxt"
+								placeholder="أدخل نص الرسالة">
+								<p:ajax process="@this" />
+							</p:inputTextarea>
+						</div>
+					</div>
+					<br />
+					<div class="image-box-footer" align="center">
+						<p:commandButton value="إرسال" styleClass="cyan-btn"
+							icon="fa fa-send" immediate="true"
+							action="#{contractMessageBean.sendNewSmsMessage}">
+						</p:commandButton>
+						<p:spacer width="10px" />
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

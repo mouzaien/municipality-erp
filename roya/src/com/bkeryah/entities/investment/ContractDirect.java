@@ -106,6 +106,9 @@ public class ContractDirect implements Comparable<ContractDirect> {
 	private Integer usrSectionId;
 	@Column(name = "USER_DEPT_ID")
 	private Integer usrDeptId;
+	@Column(name = "PRESIDENT_ID")
+	private Integer presidentId;
+
 	@Transient
 	private List<ContractOperationEnum> actionsList = new ArrayList<>();
 	@Transient
@@ -689,5 +692,12 @@ public class ContractDirect implements Comparable<ContractDirect> {
 		this.smsDueGDate = smsDueGDate;
 	}
 
+	public Integer getPresidentId() {
+		return presidentId;
+	}
+
+	public void setPresidentId(Integer presidentId) {
+		this.presidentId = presidentId;
+	}
 
 }

@@ -58,21 +58,25 @@
 	RS.NUM_PLAN,
 	RS.SITE_TYPE_NB,
 	dis.NAME AS DISTRICT,
-	b.NAME as BUILD_TYPE_NAME
+	b.NAME as BUILD_TYPE_NAME,
+	pres.EMPNAME AS PRESIDENT_NAME
+	
 FROM
 	contract_direct c,
 	investor inv,
 	real_estate rs,
 	INV_SITES sity ,
 	LIC_DISTRICT dis,
-	BUILDING_TYPE b
+	BUILDING_TYPE b,
+	ARC_USERS pres
 WHERE
 	C.REAL_ESTATE_ID = RS.ID
 	AND RS.SITE_LYPE_ID = SITY.id
 	AND C.INVESTOR_ID = INV.ID
 	AND RS.DISTRICT = DIS.ID
 	AND RS.BUILD_TYPE = b.ID
-	AND C.ID = $P{contractId}]]>
+	AND C.ID = $P{contractId}
+	AND pres.USER_ID = C.PRESIDENT_ID]]>
 	</queryString>
 	<field name="CONTID" class="java.lang.String"/>
 	<field name="CONTRACT_INTRO" class="java.lang.String"/>
@@ -124,6 +128,7 @@ WHERE
 	<field name="SITE_TYPE_NB" class="java.math.BigDecimal"/>
 	<field name="ONE_TIME_RENT" class="java.math.BigDecimal"/>
 	<field name="ONE_TIME_RENT_AR" class="java.lang.String"/>
+	<field name="PRESIDENT_NAME" class="java.lang.String"/>
 	<variable name="conType" class="java.lang.String">
 		<variableExpression><![CDATA[$F{CONTRACT_TYPE}==1?"سنة" : $F{CONTRACT_TYPE}==2?"ِشهر" : "يوم"]]></variableExpression>
 	</variable>
@@ -315,7 +320,7 @@ WHERE
 					<font fontName="Arial" size="12"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA["فهد بن صالح الجلعود"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PRESIDENT_NAME}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="35" y="102" width="70" height="20" uuid="f0d9b8ac-33e3-4780-8b91-378fe6166ef6"/>
@@ -1575,7 +1580,7 @@ WHERE
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
-				<textFieldExpression><![CDATA["فهد بن صالح الجلعود"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PRESIDENT_NAME}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="336" y="270" width="158" height="28" uuid="784919b1-1d53-4025-a187-c1611a1b96d5"/>

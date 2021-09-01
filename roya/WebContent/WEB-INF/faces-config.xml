@@ -1490,8 +1490,17 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>contract_message</from-outcome>
+			<from-outcome>contract_message
+			</from-outcome>
 			<to-view-id>/investment/contract_message.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>sendingSMSMessages</from-outcome>
+			<to-view-id>/support/sendingSMSMessages.xhtml</to-view-id>
 			<redirect></redirect>
 		</navigation-case>
 	</navigation-rule>

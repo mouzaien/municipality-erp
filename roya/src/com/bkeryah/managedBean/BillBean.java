@@ -3,6 +3,7 @@ package com.bkeryah.managedBean;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,7 +98,8 @@ public class BillBean {
 		toEndDate = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("includeform:toEndDate");
 		billsList = dataAccessService.loadAllBillsListByAllFilters(fromStartDate, toStartDate, aplnumber,
-				(phoneNumber == null || phoneNumber.isEmpty())? null : new Long(phoneNumber), billStatus, itemIdFilter , employerId);
+				(phoneNumber == null || phoneNumber.isEmpty()) ? null : new Long(phoneNumber), billStatus, itemIdFilter,
+				employerId);
 		billAmount = billsList.stream().mapToDouble(num -> num.getPayAmount()).sum();
 		billAmountBig = new BigDecimal(billAmount).setScale(2, RoundingMode.HALF_UP);
 
@@ -116,10 +118,11 @@ public class BillBean {
 		totalAmountBill = 0.0;
 		return "bill";
 	}
-	public String saveBayan(){
+
+	public String saveBayan() {
 		try {
 			dataAccessService.updateObject(payLicBill);
-			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));	
+			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,7 +130,7 @@ public class BillBean {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Save a bill
 	 * 
@@ -144,7 +147,7 @@ public class BillBean {
 			consultMode = true;
 			smsService = new SmsService();
 			ResponseTypeEnum RESPONSE = smsService.sendMessage(payLicBill.getPayInstallNumber().toString(),
-					"تم اصدار فاتورة لك برقم:  " + payLicBill.getBillNumber());
+					URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + payLicBill.getBillNumber(), "UTF-8"));
 			// FacesContext.getCurrentInstance().getExternalContext().redirect("bill.xhtml");
 			// resetFields();
 

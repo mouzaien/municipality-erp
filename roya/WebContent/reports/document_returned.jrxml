@@ -120,7 +120,7 @@ WHERE
 	AND m.ID = $P{docId}
 	AND st_user.SIGN_USER_ID = us.user_id
 	AND dep.id = us.dept_id
-	AND boss.user_id = st_boss.SIGN_USER_ID
+	AND boss.user_id = us.MGR_ID
 	AND privld.SIGN_USER_ID = priv.user_id]]>
 	</queryString>
 	<field name="NUM" class="java.lang.Integer"/>
