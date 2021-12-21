@@ -1,0 +1,151 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -166,6 +166,8 @@
+ 	public String subject = new String();
+ 	public String emailMessage = new String();
+ 	private String tradRecod = new String();
++	private String bossName ;
++	private String bossJobTitle ;
+ 
+ 	@PostConstruct
+ 	public void init() {
+@@ -351,7 +353,7 @@
+ 		// break;
+ 		// }
+ 		contractDirect.setStatus(ContractOperationEnum.CANCEL.getAction());
+-
++		loadSuCategoryByMainCategoryId(contractDirect);
+ 		if (contractDirect.getOperationId() > 0) {
+ 			contractDirect.setContractStatId(contractDirect.getOperationId());
+ 		}
+@@ -468,7 +470,7 @@
+ 				// saveBill(cotractId);
+ 
+ 				if (contractDirect.getContractStatId() != null) {
+-					// نمديد او تجديد
++					// تمديد او تجديد
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
+@@ -472,4 +474,5 @@
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
++						contractDirect.setStatus(ContractOperationEnum.RENEW.getAction());
+ 						newContractDirect = contractDirect;
+@@ -475,4 +478,6 @@
+ 						newContractDirect = contractDirect;
++						newContractDirect.setContractStatId(ContractOperationEnum.NEW.getAction());
++						newContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -476,5 +481,6 @@
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
+@@ -479,4 +485,5 @@
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
++						contractDirect.setStatus(ContractOperationEnum.GIVE_UP.getAction());
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
+@@ -481,5 +488,7 @@
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
++						asignedContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
++						asignedContractDirect.setStatusName(ContractOperationEnum.NEW.getName());
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -483,6 +492,7 @@
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 						assigned = false;
+ 						// متنازل عنه
+ 					} else {// جديد
+@@ -1388,7 +1398,7 @@
+ 		return "";
+ 	}
+ 
+-	public String printContractReport() {
++	public String printContractReport(String docType) {
+ 		String reportName = "/reports/standard_contract.jrxml";
+ 		String contStringDay = "";
+ 		Map<String, Object> parameters = new HashMap<String, Object>();
+@@ -1398,7 +1408,17 @@
+ 		// reportName = getReportName();
+ 		parameters.put("contractId", contractDirect.getId());
+ 		parameters.put("stringStartDay", contStringDay);
+-		Utils.printPdfReport(reportName, parameters);
++		parameters.put("bossName", bossName);
++		parameters.put("bossJobTitle", bossJobTitle);
++		if (bossName == null || bossJobTitle == null) {
++			MsgEntry.addErrorMessage(" الرجاء اختر الرئيس وصفته");
++		} else {
++
++			if (docType.equals("pdf"))
++				Utils.printPdfReport(reportName, parameters);
++			if (docType.equals("docx"))
++				Utils.printDocxReport(reportName, parameters);
++		}
+ 		return "";
+ 	}
+ 
+@@ -2494,4 +2514,20 @@
+ 		this.tradRecod = tradRecod;
+ 	}
+ 
++	public String getBossName() {
++		return bossName;
++	}
++
++	public void setBossName(String bossName) {
++		this.bossName = bossName;
++	}
++
++	public String getBossJobTitle() {
++		return bossJobTitle;
++	}
++
++	public void setBossJobTitle(String bossJobTitle) {
++		this.bossJobTitle = bossJobTitle;
++	}
++
+ }
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml
++++ b/pom.xml
+@@ -135,7 +135,12 @@
+ 		<artifactId>commons-email</artifactId>
+ 		<version>1.5</version>
+ 	</dependency>
+-		
++
++	<dependency>
++		<groupId>net.sf.jasperreports</groupId>
++		<artifactId>jasperreports</artifactId>
++		<version>6.13.0</version>
++	</dependency>
+ 		
+ 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+ 		<!-- <dependency> -->
+diff --git a/src/utilities/ContractOperationEnum.java b/src/utilities/ContractOperationEnum.java
+--- a/src/utilities/ContractOperationEnum.java
++++ b/src/utilities/ContractOperationEnum.java
+@@ -1,7 +1,7 @@
+ package utilities;
+ 
+ public enum ContractOperationEnum {
+-	NEW(1, Utils.loadMessagesFromFile("delete")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
++	NEW(1, Utils.loadMessagesFromFile("new")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
+ 			Utils.loadMessagesFromFile("cancel")), STOPPED(4, Utils.loadMessagesFromFile("sadad")), GIVE_UP(5,
+ 					Utils.loadMessagesFromFile("give_up")), BILL(6, Utils.loadMessagesFromFile("bills")), DELETE(7,
+ 							Utils.loadMessagesFromFile("delete")), SADAD(8,

@@ -1,0 +1,82 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -715,9 +715,9 @@
+ 	private Integer feesDiscountDuration(ContractsFees fees, Integer discountStatus, Integer discountRemainder,
+ 			int count) {
+ 		// if (discountStatus == 1) {
+-		// if (contractType == 1 && (count <= 1 || discountDuration > 360)) {
+-		// fees.setDiscountExceptionel(360);
+-		// discountRemainder = discountDuration - 360;
++		// if (contractType == 1 && (count <= 1 || discountDuration > 365)) {
++		// fees.setDiscountExceptionel(365);
++		// discountRemainder = discountDuration - 365;
+ 		//
+ 		// } else if (contractType == 2 && (count <= 1 || discountDuration >
+ 		// 30)) {
+@@ -726,5 +726,5 @@
+ 		// } else
+ 		// fees.setDiscountduration(discountRemainder);
+ 
+-		if (contractType == 1 && (count < 1 || discountDuration > 360)) {
++		if (contractType == 1 && (count < 1 || discountDuration > 365)) {
+ 			if (discountStatus == 1) {
+@@ -730,6 +730,6 @@
+ 			if (discountStatus == 1) {
+-				fees.setDiscountduration(360);
+-				discountRemainder = discountDuration - 360;
++				fees.setDiscountduration(365);
++				discountRemainder = discountDuration - 365;
+ 			}
+ 			if (discountStatus == 0) {
+ 				fees.setDiscountduration(discountRemainder);
+@@ -858,8 +858,8 @@
+ 
+ 			switch (contractType) {
+ 			case 1:
+-				totalDiscount = ((contractDirect.getAnnualRent() / 360) * discountDuration) + discountExceptionel;
+-				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 360)
++				totalDiscount = ((contractDirect.getAnnualRent() / 365) * discountDuration) + discountExceptionel;
++				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 365)
+ 						* (reminderDiscountDuration - discountDuration));
+ 				break;
+ 			case 2:
+diff --git a/WebContent/reports/document_returned.jrxml b/WebContent/reports/document_returned.jrxml
+--- a/WebContent/reports/document_returned.jrxml
++++ b/WebContent/reports/document_returned.jrxml
+@@ -11,7 +11,7 @@
+ 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+ 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+ 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
++	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="orcl-db"/>
+ 	<parameter name="docId" class="java.lang.Integer"/>
+ 	<parameter name="STORE_NAME" class="java.lang.String"/>
+ 	<queryString language="SQL">
+@@ -77,7 +77,7 @@
+ 		rq.id = s.doc_id
+ 		AND r.id = s.arc_record_id
+ 		AND r.app_type = 250
+-		AND s.SIGN_STEP_ID = 3
++		AND s.SIGN_STEP_ID = 4
+ 		AND s.doc_id = $P{docId} )st_boss ,
+ 	(
+ 	SELECT
+@@ -92,7 +92,7 @@
+ 		rq.id = doc_id
+ 		AND r.id = s.arc_record_id
+ 		AND r.app_type = 250
+-		AND s.SIGN_STEP_ID = 4
++		AND s.SIGN_STEP_ID = 5
+ 		AND s.doc_id = $P{docId} )st_dean,
+ 	(
+ 	SELECT
+@@ -108,7 +108,7 @@
+ 		rq.id = s.doc_id
+ 		AND r.id = s.arc_record_id
+ 		AND r.app_type = 250
+-		AND s.SIGN_STEP_ID = 5
++		AND s.SIGN_STEP_ID = 3
+ 		AND s.doc_id = $P{docId} )privld
+ WHERE
+ 	m.ID = det.ret_id

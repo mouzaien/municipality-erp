@@ -116,6 +116,8 @@ public class AskingVehicleBean {
 			System.out.println("artId" + car.getArtId());
 			// articleStore.setArticleUnite(articleItem.getArticleUnite());
 			articleStore.setHistoryList(dataAccessService.getArticleHistory(car.getArtId(), new Integer(13)));
+			List<StoreRequestModel> list  =dataAccessService.getArticleHistory(car.getArtId(), new Integer(23));
+			articleStore.getHistoryList().addAll(list);
 			Utils.updateUIComponent("includeform:exchange_dlgId");
 			Utils.openDialog("exchange_dlg");
 		}
@@ -124,7 +126,8 @@ public class AskingVehicleBean {
 
 	// PRINT roport about car movements
 	public String printArticleMovements() {
-		String reportName = "/reports/car_artical_card.jrxml";
+//		String reportName = "/reports/car_artical_card.jrxml";
+		String reportName = "/reports/car_movement_card.jrxml";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		Integer availablebQty = 0;
 		parameters.put("item_Id", selectedItemId);// "259306";
@@ -161,12 +164,15 @@ public class AskingVehicleBean {
 				strReqModelList.add(requestModel);
 				break;
 			case 3:// requestChange
+			case 6:// rage3RequestChange
 				requestModel.setQtyOutput(requestdets.getQtyOutput());
 				availablebQty = availablebQty - requestModel.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);
 				break;
 			case 5:// rage3
+				requestModel.setSupplierName(requestdets.getRequesterName());
+				requestModel.setQtyInput(requestdets.getQtyOutput());
 				availablebQty = requestdets.getQtyOutput();
 				requestModel.setQtyAvailable(availablebQty);
 				strReqModelList.add(requestModel);

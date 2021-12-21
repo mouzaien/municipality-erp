@@ -1,0 +1,361 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -166,6 +166,8 @@
+ 	public String subject = new String();
+ 	public String emailMessage = new String();
+ 	private String tradRecod = new String();
++	private String bossName ;
++	private String bossJobTitle ;
+ 
+ 	@PostConstruct
+ 	public void init() {
+@@ -351,7 +353,7 @@
+ 		// break;
+ 		// }
+ 		contractDirect.setStatus(ContractOperationEnum.CANCEL.getAction());
+-
++		loadSuCategoryByMainCategoryId(contractDirect);
+ 		if (contractDirect.getOperationId() > 0) {
+ 			contractDirect.setContractStatId(contractDirect.getOperationId());
+ 		}
+@@ -468,7 +470,7 @@
+ 				// saveBill(cotractId);
+ 
+ 				if (contractDirect.getContractStatId() != null) {
+-					// نمديد او تجديد
++					// تمديد او تجديد
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
+@@ -472,4 +474,5 @@
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
++						contractDirect.setStatus(ContractOperationEnum.RENEW.getAction());
+ 						newContractDirect = contractDirect;
+@@ -475,4 +478,6 @@
+ 						newContractDirect = contractDirect;
++						newContractDirect.setContractStatId(ContractOperationEnum.NEW.getAction());
++						newContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -476,5 +481,6 @@
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
+@@ -479,4 +485,5 @@
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
++						contractDirect.setStatus(ContractOperationEnum.GIVE_UP.getAction());
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
+@@ -481,5 +488,7 @@
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
++						asignedContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
++						asignedContractDirect.setStatusName(ContractOperationEnum.NEW.getName());
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -483,6 +492,7 @@
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 						assigned = false;
+ 						// متنازل عنه
+ 					} else {// جديد
+@@ -1388,7 +1398,7 @@
+ 		return "";
+ 	}
+ 
+-	public String printContractReport() {
++	public String printContractReport(String docType) {
+ 		String reportName = "/reports/standard_contract.jrxml";
+ 		String contStringDay = "";
+ 		Map<String, Object> parameters = new HashMap<String, Object>();
+@@ -1398,7 +1408,17 @@
+ 		// reportName = getReportName();
+ 		parameters.put("contractId", contractDirect.getId());
+ 		parameters.put("stringStartDay", contStringDay);
+-		Utils.printPdfReport(reportName, parameters);
++		parameters.put("bossName", bossName);
++		parameters.put("bossJobTitle", bossJobTitle);
++		if (bossName == null || bossJobTitle == null) {
++			MsgEntry.addErrorMessage(" الرجاء اختر الرئيس وصفته");
++		} else {
++
++			if (docType.equals("pdf"))
++				Utils.printPdfReport(reportName, parameters);
++			if (docType.equals("docx"))
++				Utils.printDocxReport(reportName, parameters);
++		}
+ 		return "";
+ 	}
+ 
+@@ -2494,4 +2514,20 @@
+ 		this.tradRecod = tradRecod;
+ 	}
+ 
++	public String getBossName() {
++		return bossName;
++	}
++
++	public void setBossName(String bossName) {
++		this.bossName = bossName;
++	}
++
++	public String getBossJobTitle() {
++		return bossJobTitle;
++	}
++
++	public void setBossJobTitle(String bossJobTitle) {
++		this.bossJobTitle = bossJobTitle;
++	}
++
+ }
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml
++++ b/pom.xml
+@@ -135,7 +135,12 @@
+ 		<artifactId>commons-email</artifactId>
+ 		<version>1.5</version>
+ 	</dependency>
+-		
++
++	<dependency>
++		<groupId>net.sf.jasperreports</groupId>
++		<artifactId>jasperreports</artifactId>
++		<version>6.13.0</version>
++	</dependency>
+ 		
+ 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+ 		<!-- <dependency> -->
+diff --git a/src/utilities/ContractOperationEnum.java b/src/utilities/ContractOperationEnum.java
+--- a/src/utilities/ContractOperationEnum.java
++++ b/src/utilities/ContractOperationEnum.java
+@@ -1,7 +1,7 @@
+ package utilities;
+ 
+ public enum ContractOperationEnum {
+-	NEW(1, Utils.loadMessagesFromFile("delete")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
++	NEW(1, Utils.loadMessagesFromFile("new")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
+ 			Utils.loadMessagesFromFile("cancel")), STOPPED(4, Utils.loadMessagesFromFile("sadad")), GIVE_UP(5,
+ 					Utils.loadMessagesFromFile("give_up")), BILL(6, Utils.loadMessagesFromFile("bills")), DELETE(7,
+ 							Utils.loadMessagesFromFile("delete")), SADAD(8,
+diff --git a/src/utilities/Utils.java b/src/utilities/Utils.java
+--- a/src/utilities/Utils.java
++++ b/src/utilities/Utils.java
+@@ -68,6 +68,8 @@
+ import net.sf.jasperreports.engine.JasperReport;
+ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+ import net.sf.jasperreports.engine.export.JRPdfExporter;
++import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
++import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
+ 
+ public class Utils {
+ 
+@@ -686,6 +688,7 @@
+ 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+ 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
+ 			exporter.exportReport();
++			
+ 
+ 		} catch (Exception e) {
+ 			throw new RuntimeException("It's not possible to generate the pdf report.", e);
+@@ -1106,4 +1109,46 @@
+ 		context.update(ComponentName);
+ 
+ 	}
++	
++	public static void printDocxReport(String reportName, Map<String, Object> parameters ) {
++		// get HttpServletResponse
++		FacesContext context = FacesContext.getCurrentInstance();
++		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
++
++		// set correct content type
++		response.setContentType("application/docx");
++		Connection connection = null;
++		OutputStream stream = null;
++		try {
++			// get OutputStream
++			stream = response.getOutputStream();
++			connection = DataBaseConnectionClass.getConnection(); // opens a
++			String reportingPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath(reportName);
++			String jrsFile = reportingPath.replace("jasper", "jrxml");
++			JasperReport jasperReport = JasperCompileManager.compileReport(jrsFile);
++			JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, connection);
++			JRDocxExporter  exporter = new JRDocxExporter();
++            exporter.setParameter(JRDocxExporterParameter.JASPER_PRINT, print);
++            exporter.setParameter(JRDocxExporterParameter.OUTPUT_STREAM, stream);
++            response.setHeader("Content-Disposition", "attachment;filename=contract.docx");
++			response.setContentType("application/docx");
++			exporter.exportReport();
++			
++
++		} catch (Exception e) {
++			throw new RuntimeException("It's not possible to generate the pdf report.", e);
++		} finally {
++			// it's your responsibility to close the connection, don't forget
++			// it!
++			try {
++				if (stream != null)
++					stream.close();
++				if (connection != null)
++					connection.close();
++			} catch (Exception e) {
++			}
++		}
++		// mark response as completed
++		context.responseComplete();
++	}
+ }
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -57,5 +57,5 @@
+ 								postProcessor="#{contractDirectBean.postProcessXLS}"
+ 								target="allusersettingdt" fileName="العقود"></p:dataExporter>
+ 						</p:commandButton>
+-						
++
+ 						<p:spacer width="10" height="10"></p:spacer>
+@@ -61,13 +61,13 @@
+ 						<p:spacer width="10" height="10"></p:spacer>
+-<!-- 						<p:commandButton value="إرسال رسالة" ajax="false" -->
+-<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+-<!-- 							action="#{contractDirectBean.openSMSDialog}" immediate="true"> -->
+-<!-- 						</p:commandButton> -->
+-<!-- 						<p:spacer width="10" height="10"></p:spacer> -->
+-<!-- 						<p:commandButton value="إرسال إيميل" ajax="false" -->
+-<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+-<!-- 							action="#{contractDirectBean.openEmailDialog}" immediate="true"> -->
+-<!-- 						</p:commandButton> -->
++						<!-- 						<p:commandButton value="إرسال رسالة" ajax="false" -->
++						<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
++						<!-- 							action="#{contractDirectBean.openSMSDialog}" immediate="true"> -->
++						<!-- 						</p:commandButton> -->
++						<!-- 						<p:spacer width="10" height="10"></p:spacer> -->
++						<!-- 						<p:commandButton value="إرسال إيميل" ajax="false" -->
++						<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
++						<!-- 							action="#{contractDirectBean.openEmailDialog}" immediate="true"> -->
++						<!-- 						</p:commandButton> -->
+ 						<!-- <p:spacer width="10" height="10"></p:spacer> -->
+ 						<!-- <p:commandButton value="أرشيف الرسائل" styleClass="purple-btn" -->
+ 						<!-- 	action="#{contractDirectBean.loadContractMessagerList}" -->
+@@ -558,4 +558,20 @@
+ 							<!-- 									action="#{contractDirectBean.printBillReport(userItem.id)}"> -->
+ 							<!-- 								</p:commandButton> -->
+ 							<!-- 							</p:column> -->
++							<!-- <p:column width="5%" style="text-align:center" headerText="طباعة"> -->
++							<!-- 	<p:commandButton ajax="false" icon="ui-icon-print" -->
++							<!-- 		styleClass="purple-btn" onclick="this.form.target='_blank'" -->
++							<!-- 		immediate="true" -->
++							<!-- 		action="#{contractDirectBean.printContractReport}"> -->
++							<!-- 		<f:setPropertyActionListener value="#{userItem}" -->
++							<!-- 			target="#{contractDirectBean.contractDirect}" /> -->
++							<!-- 	</p:commandButton> -->
++							<!-- 									<h:commandButton styleClass="btn btn-primary" -->
++							<!-- 										action="#{contractDirectBean.printContractReport}" -->
++							<!-- 										rendered="#{!contractDirectBean.addMode}" -->
++							<!-- 										onclick="this.form.target='_blank'" value="طباعة"> -->
++							<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
++							<!-- 											target="#{contractDirectBean.contract}" /> -->
++							<!-- 									</h:commandButton> -->
++							<!-- </p:column> -->
+ 							<p:column width="5%" style="text-align:center" headerText="طباعة">
+@@ -561,8 +577,7 @@
+ 							<p:column width="5%" style="text-align:center" headerText="طباعة">
+-								<p:commandButton ajax="false" icon="ui-icon-print"
+-									styleClass="purple-btn" onclick="this.form.target='_blank'"
+-									immediate="true"
+-									action="#{contractDirectBean.printContractReport}">
++								<p:commandButton ajax="true" icon="ui-icon-print"
++									styleClass="purple-btn" oncomplete="PF('print_dlg').show();"
++									process="@this" immediate="true">
+ 									<f:setPropertyActionListener value="#{userItem}"
+ 										target="#{contractDirectBean.contractDirect}" />
+ 								</p:commandButton>
+@@ -566,14 +581,6 @@
+ 									<f:setPropertyActionListener value="#{userItem}"
+ 										target="#{contractDirectBean.contractDirect}" />
+ 								</p:commandButton>
+-
+-								<!-- 									<h:commandButton styleClass="btn btn-primary" -->
+-								<!-- 										action="#{contractDirectBean.printContractReport}" -->
+-								<!-- 										rendered="#{!contractDirectBean.addMode}" -->
+-								<!-- 										onclick="this.form.target='_blank'" value="طباعة"> -->
+-								<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
+-								<!-- 											target="#{contractDirectBean.contract}" /> -->
+-								<!-- 									</h:commandButton> -->
+ 							</p:column>
+ 						</p:dataTable>
+ 
+@@ -2082,6 +2089,61 @@
+ 							</p:commandButton>
+ 						</div>
+ 					</p:dialog>
++					<p:dialog widgetVar="print_dlg" id="print_dlgId"
++						header="طباعة العقد " width="50%" style="text-align: center'"
++						dir="rtl" modal="true" resizable="false">
++						<div class="ui-g">
++							<div class="ui-g-3">
++								<p:outputLabel value="إختر رئيس البلدية" styleClass="btxt" />
++							</div>
++							<div class="ui-g-8">
++								<p:selectOneMenu value="#{contractDirectBean.bossName}"
++									rendered="true" requiredMessage="الرجاء إختر رئيس البلدية"
++									filter="true" filterMatchMode="contains" style="width:100%">
++									<f:selectItem itemLabel="الكل" noSelectionOption="true" />
++									<f:selectItems itemLabel="#{user.fullName}"
++										itemValue="#{user.fullName}" var="user"
++										value="#{loadingDataBean.employersList}" />
++
++									<p:ajax update="allusersettingdt" process="@this"
++										listener="#{contractDirectBean.loadContractDirectListByAllFilters}"></p:ajax>
++								</p:selectOneMenu>
++							</div>
++						</div>
++						<div class="ui-g">
++							<div class="ui-g-3">
++								<p:outputLabel value="إختر صفة الرئيس" styleClass="btxt" />
++							</div>
++							<div class="ui-g-8">
++								<p:selectOneMenu value="#{contractDirectBean.bossJobTitle}"
++									rendered="true" requiredMessage="الرجاء إختر صفة الرئيس"
++									filter="true" filterMatchMode="contains" style="width:100%">
++									<f:selectItem itemLabel="إختر " noSelectionOption="true" />
++									<f:selectItem itemLabel="رئيس بلدية محافظة المذنب"
++										itemValue="رئيس بلدية محافظة المذنب" />
++									<f:selectItem itemLabel="رئيس بلدية محافظة المذنب المكلف"
++										itemValue="رئيس بلدية محافظة المذنب المكلف" />
++									<p:ajax process="@this"></p:ajax>
++								</p:selectOneMenu>
++							</div>
++						</div>
++
++						<br />
++						<div class="image-box-footer" align="center">
++							<p:commandButton value="Word" styleClass="blue-btn"
++								update="allusersettingdt" icon="fa fa-file-word-o" ajax="false"
++								immediate="true"
++								action="#{contractDirectBean.printContractReport('docx')}">
++							</p:commandButton>
++							<p:spacer width="10px" />
++							<p:commandButton value="PDF" styleClass="red-btn" ajax="false"
++								immediate="true" icon="fa fa-file-pdf-o"
++								onclick="this.form.target='_blank'"
++								action="#{contractDirectBean.printContractReport('pdf')}">
++							</p:commandButton>
++						</div>
++
++					</p:dialog>
+ 				</h:form>
+ 			</ui:define>
+ 		</ui:composition>

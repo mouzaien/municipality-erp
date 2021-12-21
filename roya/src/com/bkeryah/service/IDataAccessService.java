@@ -1580,7 +1580,7 @@ public interface IDataAccessService {
 	public List<ContractDirect> loadAllContractDirects(Integer contractTypeId);
 
 	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber, String bayan);
+			List<PayBillDetails> billDetailList, String bayan);
 
 	public List<FuelSupply> loadAllFuelSupplies();
 
@@ -1988,11 +1988,11 @@ public interface IDataAccessService {
 
 	public void contractsFeesList(List<ContractsFees> contractsFeesList);
 
-	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber,
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue,List<PayBillDetails> billDetailList,
 			String bayan);
 
 	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber, String bayan);
+			List<PayBillDetails> billDetailList, String bayan);
 
 	public List<PayLicBills> getPayLicBillslistByFilters(String fromStartDate, String toStartDate, String fromEndDate,
 			String toEndDate, String aplnumber, String phoneNumber, Integer billStatus);
@@ -2005,7 +2005,7 @@ public interface IDataAccessService {
 			Long phoneNumber, Integer billStatus, Integer bandId , Integer employerId);
 
 	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber, String bayan);
+			List<PayBillDetails> billDetailList, String bayan);
 
 	public PayLicBills getBillById(Integer billNumber);
 

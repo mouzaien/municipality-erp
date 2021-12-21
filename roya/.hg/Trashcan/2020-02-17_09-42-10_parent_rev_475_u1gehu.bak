@@ -1,0 +1,524 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -166,6 +166,8 @@
+ 	public String subject = new String();
+ 	public String emailMessage = new String();
+ 	private String tradRecod = new String();
++	private String bossName ;
++	private String bossJobTitle ;
+ 
+ 	@PostConstruct
+ 	public void init() {
+@@ -351,7 +353,7 @@
+ 		// break;
+ 		// }
+ 		contractDirect.setStatus(ContractOperationEnum.CANCEL.getAction());
+-
++		loadSuCategoryByMainCategoryId(contractDirect);
+ 		if (contractDirect.getOperationId() > 0) {
+ 			contractDirect.setContractStatId(contractDirect.getOperationId());
+ 		}
+@@ -468,7 +470,7 @@
+ 				// saveBill(cotractId);
+ 
+ 				if (contractDirect.getContractStatId() != null) {
+-					// نمديد او تجديد
++					// تمديد او تجديد
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
+@@ -472,4 +474,5 @@
+ 					if (contractDirect.getOperationId() == ContractOperationEnum.RENEW.getAction()) {
+ 						ContractDirect newContractDirect = new ContractDirect();
+ 						contractDirect.setContractStatId(ContractOperationEnum.RENEW.getAction());
++						contractDirect.setStatus(ContractOperationEnum.RENEW.getAction());
+ 						newContractDirect = contractDirect;
+@@ -475,4 +478,6 @@
+ 						newContractDirect = contractDirect;
++						newContractDirect.setContractStatId(ContractOperationEnum.NEW.getAction());
++						newContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -476,5 +481,6 @@
+ 						newContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(newContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
+@@ -479,4 +485,5 @@
+ 					} else if (contractDirect.getOperationId() == ContractOperationEnum.GIVE_UP.getAction()) {
+ 						contractDirect.setContractStatId(ContractOperationEnum.GIVE_UP.getAction());
++						contractDirect.setStatus(ContractOperationEnum.GIVE_UP.getAction());
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
+@@ -481,5 +488,7 @@
+ 						ContractDirect asignedContractDirect = new ContractDirect();
+ 						asignedContractDirect = contractDirect;
++						asignedContractDirect.setStatus(ContractOperationEnum.NEW.getAction());
++						asignedContractDirect.setStatusName(ContractOperationEnum.NEW.getName());
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
+@@ -483,6 +492,7 @@
+ 						asignedContractDirect.setContractNum(contractDirect.getContractNum());
+ 						cotractId = dataAccessService.saveContractDirect(asignedContractDirect, contractsFeesList,
+ 								billBandNumber, bayan);
++						dataAccessService.updateObject(contractDirect);
+ 						assigned = false;
+ 						// متنازل عنه
+ 					} else {// جديد
+@@ -1388,7 +1398,7 @@
+ 		return "";
+ 	}
+ 
+-	public String printContractReport() {
++	public String printContractReport(String docType) {
+ 		String reportName = "/reports/standard_contract.jrxml";
+ 		String contStringDay = "";
+ 		Map<String, Object> parameters = new HashMap<String, Object>();
+@@ -1398,7 +1408,17 @@
+ 		// reportName = getReportName();
+ 		parameters.put("contractId", contractDirect.getId());
+ 		parameters.put("stringStartDay", contStringDay);
+-		Utils.printPdfReport(reportName, parameters);
++		parameters.put("bossName", bossName);
++		parameters.put("bossJobTitle", bossJobTitle);
++		if (bossName == null || bossJobTitle == null) {
++			MsgEntry.addErrorMessage(" الرجاء اختر الرئيس وصفته");
++		} else {
++
++			if (docType.equals("pdf"))
++				Utils.printPdfReport(reportName, parameters);
++			if (docType.equals("docx"))
++				Utils.printDocxReport(reportName, parameters);
++		}
+ 		return "";
+ 	}
+ 
+@@ -2494,4 +2514,20 @@
+ 		this.tradRecod = tradRecod;
+ 	}
+ 
++	public String getBossName() {
++		return bossName;
++	}
++
++	public void setBossName(String bossName) {
++		this.bossName = bossName;
++	}
++
++	public String getBossJobTitle() {
++		return bossJobTitle;
++	}
++
++	public void setBossJobTitle(String bossJobTitle) {
++		this.bossJobTitle = bossJobTitle;
++	}
++
+ }
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml
++++ b/pom.xml
+@@ -135,7 +135,12 @@
+ 		<artifactId>commons-email</artifactId>
+ 		<version>1.5</version>
+ 	</dependency>
+-		
++
++	<dependency>
++		<groupId>net.sf.jasperreports</groupId>
++		<artifactId>jasperreports</artifactId>
++		<version>6.13.0</version>
++	</dependency>
+ 		
+ 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+ 		<!-- <dependency> -->
+diff --git a/src/utilities/ContractOperationEnum.java b/src/utilities/ContractOperationEnum.java
+--- a/src/utilities/ContractOperationEnum.java
++++ b/src/utilities/ContractOperationEnum.java
+@@ -1,7 +1,7 @@
+ package utilities;
+ 
+ public enum ContractOperationEnum {
+-	NEW(1, Utils.loadMessagesFromFile("delete")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
++	NEW(1, Utils.loadMessagesFromFile("new")), RENEW(2, Utils.loadMessagesFromFile("renew")), CANCEL(3,
+ 			Utils.loadMessagesFromFile("cancel")), STOPPED(4, Utils.loadMessagesFromFile("sadad")), GIVE_UP(5,
+ 					Utils.loadMessagesFromFile("give_up")), BILL(6, Utils.loadMessagesFromFile("bills")), DELETE(7,
+ 							Utils.loadMessagesFromFile("delete")), SADAD(8,
+diff --git a/src/utilities/Utils.java b/src/utilities/Utils.java
+--- a/src/utilities/Utils.java
++++ b/src/utilities/Utils.java
+@@ -68,6 +68,8 @@
+ import net.sf.jasperreports.engine.JasperReport;
+ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+ import net.sf.jasperreports.engine.export.JRPdfExporter;
++import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
++import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
+ 
+ public class Utils {
+ 
+@@ -686,6 +688,7 @@
+ 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+ 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
+ 			exporter.exportReport();
++			
+ 
+ 		} catch (Exception e) {
+ 			throw new RuntimeException("It's not possible to generate the pdf report.", e);
+@@ -1106,4 +1109,46 @@
+ 		context.update(ComponentName);
+ 
+ 	}
++	
++	public static void printDocxReport(String reportName, Map<String, Object> parameters ) {
++		// get HttpServletResponse
++		FacesContext context = FacesContext.getCurrentInstance();
++		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
++
++		// set correct content type
++		response.setContentType("application/docx");
++		Connection connection = null;
++		OutputStream stream = null;
++		try {
++			// get OutputStream
++			stream = response.getOutputStream();
++			connection = DataBaseConnectionClass.getConnection(); // opens a
++			String reportingPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath(reportName);
++			String jrsFile = reportingPath.replace("jasper", "jrxml");
++			JasperReport jasperReport = JasperCompileManager.compileReport(jrsFile);
++			JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, connection);
++			JRDocxExporter  exporter = new JRDocxExporter();
++            exporter.setParameter(JRDocxExporterParameter.JASPER_PRINT, print);
++            exporter.setParameter(JRDocxExporterParameter.OUTPUT_STREAM, stream);
++            response.setHeader("Content-Disposition", "attachment;filename=contract.docx");
++			response.setContentType("application/docx");
++			exporter.exportReport();
++			
++
++		} catch (Exception e) {
++			throw new RuntimeException("It's not possible to generate the pdf report.", e);
++		} finally {
++			// it's your responsibility to close the connection, don't forget
++			// it!
++			try {
++				if (stream != null)
++					stream.close();
++				if (connection != null)
++					connection.close();
++			} catch (Exception e) {
++			}
++		}
++		// mark response as completed
++		context.responseComplete();
++	}
+ }
+diff --git a/WebContent/investment/contract_direct.xhtml b/WebContent/investment/contract_direct.xhtml
+--- a/WebContent/investment/contract_direct.xhtml
++++ b/WebContent/investment/contract_direct.xhtml
+@@ -57,5 +57,5 @@
+ 								postProcessor="#{contractDirectBean.postProcessXLS}"
+ 								target="allusersettingdt" fileName="العقود"></p:dataExporter>
+ 						</p:commandButton>
+-						
++
+ 						<p:spacer width="10" height="10"></p:spacer>
+@@ -61,13 +61,13 @@
+ 						<p:spacer width="10" height="10"></p:spacer>
+-<!-- 						<p:commandButton value="إرسال رسالة" ajax="false" -->
+-<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+-<!-- 							action="#{contractDirectBean.openSMSDialog}" immediate="true"> -->
+-<!-- 						</p:commandButton> -->
+-<!-- 						<p:spacer width="10" height="10"></p:spacer> -->
+-<!-- 						<p:commandButton value="إرسال إيميل" ajax="false" -->
+-<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
+-<!-- 							action="#{contractDirectBean.openEmailDialog}" immediate="true"> -->
+-<!-- 						</p:commandButton> -->
++						<!-- 						<p:commandButton value="إرسال رسالة" ajax="false" -->
++						<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
++						<!-- 							action="#{contractDirectBean.openSMSDialog}" immediate="true"> -->
++						<!-- 						</p:commandButton> -->
++						<!-- 						<p:spacer width="10" height="10"></p:spacer> -->
++						<!-- 						<p:commandButton value="إرسال إيميل" ajax="false" -->
++						<!-- 							styleClass="green-btn" icon="fa fa-fw fa-send" -->
++						<!-- 							action="#{contractDirectBean.openEmailDialog}" immediate="true"> -->
++						<!-- 						</p:commandButton> -->
+ 						<!-- <p:spacer width="10" height="10"></p:spacer> -->
+ 						<!-- <p:commandButton value="أرشيف الرسائل" styleClass="purple-btn" -->
+ 						<!-- 	action="#{contractDirectBean.loadContractMessagerList}" -->
+@@ -558,4 +558,20 @@
+ 							<!-- 									action="#{contractDirectBean.printBillReport(userItem.id)}"> -->
+ 							<!-- 								</p:commandButton> -->
+ 							<!-- 							</p:column> -->
++							<!-- <p:column width="5%" style="text-align:center" headerText="طباعة"> -->
++							<!-- 	<p:commandButton ajax="false" icon="ui-icon-print" -->
++							<!-- 		styleClass="purple-btn" onclick="this.form.target='_blank'" -->
++							<!-- 		immediate="true" -->
++							<!-- 		action="#{contractDirectBean.printContractReport}"> -->
++							<!-- 		<f:setPropertyActionListener value="#{userItem}" -->
++							<!-- 			target="#{contractDirectBean.contractDirect}" /> -->
++							<!-- 	</p:commandButton> -->
++							<!-- 									<h:commandButton styleClass="btn btn-primary" -->
++							<!-- 										action="#{contractDirectBean.printContractReport}" -->
++							<!-- 										rendered="#{!contractDirectBean.addMode}" -->
++							<!-- 										onclick="this.form.target='_blank'" value="طباعة"> -->
++							<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
++							<!-- 											target="#{contractDirectBean.contract}" /> -->
++							<!-- 									</h:commandButton> -->
++							<!-- </p:column> -->
+ 							<p:column width="5%" style="text-align:center" headerText="طباعة">
+@@ -561,8 +577,7 @@
+ 							<p:column width="5%" style="text-align:center" headerText="طباعة">
+-								<p:commandButton ajax="false" icon="ui-icon-print"
+-									styleClass="purple-btn" onclick="this.form.target='_blank'"
+-									immediate="true"
+-									action="#{contractDirectBean.printContractReport}">
++								<p:commandButton ajax="true" icon="ui-icon-print"
++									styleClass="purple-btn" oncomplete="PF('print_dlg').show();"
++									process="@this" immediate="true">
+ 									<f:setPropertyActionListener value="#{userItem}"
+ 										target="#{contractDirectBean.contractDirect}" />
+ 								</p:commandButton>
+@@ -566,14 +581,6 @@
+ 									<f:setPropertyActionListener value="#{userItem}"
+ 										target="#{contractDirectBean.contractDirect}" />
+ 								</p:commandButton>
+-
+-								<!-- 									<h:commandButton styleClass="btn btn-primary" -->
+-								<!-- 										action="#{contractDirectBean.printContractReport}" -->
+-								<!-- 										rendered="#{!contractDirectBean.addMode}" -->
+-								<!-- 										onclick="this.form.target='_blank'" value="طباعة"> -->
+-								<!-- 										<f:setPropertyActionListener value="#{userItem}" -->
+-								<!-- 											target="#{contractDirectBean.contract}" /> -->
+-								<!-- 									</h:commandButton> -->
+ 							</p:column>
+ 						</p:dataTable>
+ 
+@@ -2082,6 +2089,61 @@
+ 							</p:commandButton>
+ 						</div>
+ 					</p:dialog>
++					<p:dialog widgetVar="print_dlg" id="print_dlgId"
++						header="طباعة العقد " width="50%" style="text-align: center'"
++						dir="rtl" modal="true" resizable="false">
++						<div class="ui-g">
++							<div class="ui-g-3">
++								<p:outputLabel value="إختر رئيس البلدية" styleClass="btxt" />
++							</div>
++							<div class="ui-g-8">
++								<p:selectOneMenu value="#{contractDirectBean.bossName}"
++									rendered="true" requiredMessage="الرجاء إختر رئيس البلدية"
++									filter="true" filterMatchMode="contains" style="width:100%">
++									<f:selectItem itemLabel="الكل" noSelectionOption="true" />
++									<f:selectItems itemLabel="#{user.fullName}"
++										itemValue="#{user.fullName}" var="user"
++										value="#{loadingDataBean.employersList}" />
++
++									<p:ajax update="allusersettingdt" process="@this"
++										listener="#{contractDirectBean.loadContractDirectListByAllFilters}"></p:ajax>
++								</p:selectOneMenu>
++							</div>
++						</div>
++						<div class="ui-g">
++							<div class="ui-g-3">
++								<p:outputLabel value="إختر صفة الرئيس" styleClass="btxt" />
++							</div>
++							<div class="ui-g-8">
++								<p:selectOneMenu value="#{contractDirectBean.bossJobTitle}"
++									rendered="true" requiredMessage="الرجاء إختر صفة الرئيس"
++									filter="true" filterMatchMode="contains" style="width:100%">
++									<f:selectItem itemLabel="إختر " noSelectionOption="true" />
++									<f:selectItem itemLabel="رئيس بلدية محافظة المذنب"
++										itemValue="رئيس بلدية محافظة المذنب" />
++									<f:selectItem itemLabel="رئيس بلدية محافظة المذنب المكلف"
++										itemValue="رئيس بلدية محافظة المذنب المكلف" />
++									<p:ajax process="@this"></p:ajax>
++								</p:selectOneMenu>
++							</div>
++						</div>
++
++						<br />
++						<div class="image-box-footer" align="center">
++							<p:commandButton value="Word" styleClass="blue-btn"
++								update="allusersettingdt" icon="fa fa-file-word-o" ajax="false"
++								immediate="true"
++								action="#{contractDirectBean.printContractReport('docx')}">
++							</p:commandButton>
++							<p:spacer width="10px" />
++							<p:commandButton value="PDF" styleClass="red-btn" ajax="false"
++								immediate="true" icon="fa fa-file-pdf-o"
++								onclick="this.form.target='_blank'"
++								action="#{contractDirectBean.printContractReport('pdf')}">
++							</p:commandButton>
++						</div>
++
++					</p:dialog>
+ 				</h:form>
+ 			</ui:define>
+ 		</ui:composition>
+diff --git a/WebContent/reports/all_investors_report.jasper b/WebContent/reports/all_investors_report.jasper
+index 0f2a67c91234883019b799940a2cbe0bb95b1168..63b440a8902d43b2cd1e168acc36f302166ad175
+GIT binary patch
+literal 26926
+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
+Lw1>r|W9okaAta><
+

@@ -4716,6 +4716,7 @@ public class CommonDao extends HibernateTemplate implements ICommonDao, Serializ
 		List<StoreTemporeryReceiptMaster> strTempList = new ArrayList<StoreTemporeryReceiptMaster>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(StoreTemporeryReceiptMaster.class);
 		criteria.add(Restrictions.eq("strNo", strNo));
+		criteria.add(Restrictions.ne("status", MyConstants.NO));
 		strTempList = criteria.list();
 
 		return strTempList;

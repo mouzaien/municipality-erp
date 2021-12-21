@@ -1,0 +1,119 @@
+diff --git a/WebContent/resources/primefaces-serenity-amber/theme.css b/WebContent/resources/primefaces-serenity-amber/theme.css
+--- a/WebContent/resources/primefaces-serenity-amber/theme.css
++++ b/WebContent/resources/primefaces-serenity-amber/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++  body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-bluegrey/theme.css b/WebContent/resources/primefaces-serenity-bluegrey/theme.css
+--- a/WebContent/resources/primefaces-serenity-bluegrey/theme.css
++++ b/WebContent/resources/primefaces-serenity-bluegrey/theme.css
+@@ -316,6 +316,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++  body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-deeppurple/theme.css b/WebContent/resources/primefaces-serenity-deeppurple/theme.css
+--- a/WebContent/resources/primefaces-serenity-deeppurple/theme.css
++++ b/WebContent/resources/primefaces-serenity-deeppurple/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++  body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-indigo/theme.css b/WebContent/resources/primefaces-serenity-indigo/theme.css
+--- a/WebContent/resources/primefaces-serenity-indigo/theme.css
++++ b/WebContent/resources/primefaces-serenity-indigo/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++      body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-lime/theme.css b/WebContent/resources/primefaces-serenity-lime/theme.css
+--- a/WebContent/resources/primefaces-serenity-lime/theme.css
++++ b/WebContent/resources/primefaces-serenity-lime/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++      body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-pink/theme.css b/WebContent/resources/primefaces-serenity-pink/theme.css
+--- a/WebContent/resources/primefaces-serenity-pink/theme.css
++++ b/WebContent/resources/primefaces-serenity-pink/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++      body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {
+diff --git a/WebContent/resources/primefaces-serenity-teal/theme.css b/WebContent/resources/primefaces-serenity-teal/theme.css
+--- a/WebContent/resources/primefaces-serenity-teal/theme.css
++++ b/WebContent/resources/primefaces-serenity-teal/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++      body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {

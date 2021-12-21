@@ -1,0 +1,17 @@
+diff --git a/WebContent/resources/primefaces-serenity-pink/theme.css b/WebContent/resources/primefaces-serenity-pink/theme.css
+--- a/WebContent/resources/primefaces-serenity-pink/theme.css
++++ b/WebContent/resources/primefaces-serenity-pink/theme.css
+@@ -314,6 +314,13 @@
+     body .ui-button.blue-grey-btn.ui-state-focus {
+       outline: 0 none;
+       background-color: #7b96a3; }
++      body .ui-button.blue-btn {
++    background-color: #0293d9; }
++    body .ui-button.blue-btn.ui-state-hover {
++      background-color: #026596; }
++    body .ui-button.blue-btn.ui-state-focus {
++      outline: 0 none;
++      background-color: #2fafed; }
+   body .ui-button.cyan-btn {
+     background-color: #00BCD4; }
+     body .ui-button.cyan-btn.ui-state-hover {

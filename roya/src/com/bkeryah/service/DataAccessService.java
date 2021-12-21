@@ -8062,7 +8062,7 @@ public class DataAccessService implements IDataAccessService {
 	@Override
 	@Transactional
 	public Integer saveContractDirect(ContractDirect contractDirect, List<ContractsFees> contractFees,
-			Integer billBandNumber, String bayan) {
+			List<PayBillDetails> billDetailList, String bayan) {
 		Integer contractId = commonDao.save(contractDirect);
 		contractDirect.setId(contractId);
 		Integer counter = 0;
@@ -8076,7 +8076,7 @@ public class DataAccessService implements IDataAccessService {
 			smsService = new SmsService();
 			String msg;
 			try {
-				factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+				factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billDetailList, bayan);
 				msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
 				ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
 			} catch (Exception e) {
@@ -9885,7 +9885,7 @@ public class DataAccessService implements IDataAccessService {
 
 	@Override
 	@Transactional
-	public Integer insertInvestBill(ContractDirect investContract, double totalValue, Integer billBandNumber,
+	public Integer insertInvestBill(ContractDirect investContract, double totalValue,List<PayBillDetails> billDetailList,
 			String bayan) {
 		ArcUsers currUser = Utils.findCurrentUser();
 		PayLicBills newBill = new PayLicBills();
@@ -9900,29 +9900,29 @@ public class DataAccessService implements IDataAccessService {
 		newBill.setPayInstallNumber(investContract.getInvestor().getMobile() != null
 				? Long.parseLong(investContract.getInvestor().getMobile()) : new Long(0));
 		newBill.setBayan(bayan);
-		PayBillDetails det = new PayBillDetails();
-		det.setCreatedBy(currUser.getUserId());
-		det.setAmount(totalValue);
-		det.setBillGYear(Calendar.getInstance().get(Calendar.YEAR));
-		det.setPayMaster(billBandNumber);
-		det.setPayDetails(billBandNumber);
-		// det.setPayMaster(1438);
-		// det.setPayDetails(1438);
-		det.setCreatedIn(new Date());
-		List<PayBillDetails> billDetailList = new ArrayList<>();
-		billDetailList.add(det);
+		// PayBillDetails det = new PayBillDetails();
+		// det.setCreatedBy(currUser.getUserId());
+		// det.setAmount(totalValue);
+		// det.setBillGYear(Calendar.getInstance().get(Calendar.YEAR));
+		// det.setPayMaster(billBandNumber);
+		// det.setPayDetails(billBandNumber);
+		// // det.setPayMaster(1438);
+		// // det.setPayDetails(1438);
+		// det.setCreatedIn(new Date());
+		// List<PayBillDetails> billDetailList = new ArrayList<>();
+		// billDetailList.add(det);
 		return saveBill(newBill, billDetailList);
 	}
 
 	@Transactional
 	@Override
 	public void updatecontractFeesList(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber, String bayan) {
+			List<PayBillDetails> billDetailList, String bayan) {
 		Integer factId;
 		smsService = new SmsService();
 		String msg;
 		try {
-			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billDetailList, bayan);
 			msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
 			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
 			for (ContractsFees contFees : contFeesList) {
@@ -9997,13 +9997,13 @@ public class DataAccessService implements IDataAccessService {
 	@Transactional
 	@Override
 	public void updatecontractFeesBills(List<ContractsFees> contFeesList, ContractDirect contractDirect,
-			Integer billBandNumber, String bayan) {
+			List<PayBillDetails> billDetailList, String bayan) {
 
 		Integer factId;
 		smsService = new SmsService();
 		String msg;
 		try {
-			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billBandNumber, bayan);
+			factId = insertInvestBill(contractDirect, contractDirect.getTotalBillValue(), billDetailList, bayan);
 			msg = URLEncoder.encode("تم اصدار فاتورة لك برقم:  " + factId, "UTF-8");
 			ResponseTypeEnum RESPONSE = smsService.sendMessage(contractDirect.getInvestor().getMobile(), msg);
 

@@ -1,0 +1,43 @@
+diff --git a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+--- a/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
++++ b/src/com/bkeryah/managedBean/investment/ContractDirectBean.java
+@@ -715,9 +715,9 @@
+ 	private Integer feesDiscountDuration(ContractsFees fees, Integer discountStatus, Integer discountRemainder,
+ 			int count) {
+ 		// if (discountStatus == 1) {
+-		// if (contractType == 1 && (count <= 1 || discountDuration > 360)) {
+-		// fees.setDiscountExceptionel(360);
+-		// discountRemainder = discountDuration - 360;
++		// if (contractType == 1 && (count <= 1 || discountDuration > 365)) {
++		// fees.setDiscountExceptionel(365);
++		// discountRemainder = discountDuration - 365;
+ 		//
+ 		// } else if (contractType == 2 && (count <= 1 || discountDuration >
+ 		// 30)) {
+@@ -726,5 +726,5 @@
+ 		// } else
+ 		// fees.setDiscountduration(discountRemainder);
+ 
+-		if (contractType == 1 && (count < 1 || discountDuration > 360)) {
++		if (contractType == 1 && (count < 1 || discountDuration > 365)) {
+ 			if (discountStatus == 1) {
+@@ -730,6 +730,6 @@
+ 			if (discountStatus == 1) {
+-				fees.setDiscountduration(360);
+-				discountRemainder = discountDuration - 360;
++				fees.setDiscountduration(365);
++				discountRemainder = discountDuration - 365;
+ 			}
+ 			if (discountStatus == 0) {
+ 				fees.setDiscountduration(discountRemainder);
+@@ -858,8 +858,8 @@
+ 
+ 			switch (contractType) {
+ 			case 1:
+-				totalDiscount = ((contractDirect.getAnnualRent() / 360) * discountDuration) + discountExceptionel;
+-				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 360)
++				totalDiscount = ((contractDirect.getAnnualRent() / 365) * discountDuration) + discountExceptionel;
++				reminderDiscountAmount = ((contractDirect.getAnnualRent() / 365)
+ 						* (reminderDiscountDuration - discountDuration));
+ 				break;
+ 			case 2:
