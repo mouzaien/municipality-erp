@@ -41,7 +41,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.primefaces.context.RequestContext;
@@ -77,7 +77,7 @@ public class Utils {
 	private static Map<String, String> hoursMap;
 	private static Map<String, String> minutesMap;
 	public static int year = Calendar.getInstance().get(Calendar.YEAR);
-	protected static final Logger logger = Logger.getLogger(Utils.class);
+	protected static final Logger logger = LogManager.getLogger(Utils.class);
 	private static Properties prop = new Properties();
 	private static ApplicationContext applicationContext;
 	private static IDataAccessService dataAccessService;

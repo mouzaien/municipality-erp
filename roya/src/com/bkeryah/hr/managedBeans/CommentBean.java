@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.ArcAttach;
 import com.bkeryah.entities.WrkApplication;
@@ -32,7 +32,7 @@ import utilities.Utils;
 @ViewScoped
 public class CommentBean extends Scanner {
 
-	protected static final Logger logger = Logger.getLogger(CommentBean.class);
+	protected static final Logger logger = LogManager.getLogger(CommentBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private WrkComment wrkComment = new WrkComment();

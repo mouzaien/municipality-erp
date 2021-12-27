@@ -14,7 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.investment.AnncementNews;
 import com.bkeryah.entities.investment.AnnoucementDetails;
@@ -47,7 +47,7 @@ public class AnnouncementBean {
 	private List<Announcement> announcements = new ArrayList<Announcement>();
 	private List<AnnoucementDetails> annoucementDetails = new ArrayList<AnnoucementDetails>();
 	private List<RealEstate> realEstates = new ArrayList<RealEstate>();
-	protected static final Logger logger = Logger.getLogger(AnnouncementBean.class);
+	protected static final Logger logger = LogManager.getLogger(AnnouncementBean.class);
 	private SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy HH:mm");
 	private List<InvNewspaper> newspapersList;
 	private boolean addMode;

@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+
 import oracle.jdbc.OracleTypes;
 
 /**
@@ -93,7 +95,7 @@ public class getFile extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(getFile.class.getName()).log(Level.SEVERE, null, ex);
+           // LogManager.getLogger(getFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

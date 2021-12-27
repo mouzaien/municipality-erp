@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.entities.ArcUsers;
@@ -35,7 +35,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class PenaltyViewBean {
-	protected static final Logger logger = Logger.getLogger(PenaltyViewBean.class);
+	protected static final Logger logger = LogManager.getLogger(PenaltyViewBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<User> supervisors;

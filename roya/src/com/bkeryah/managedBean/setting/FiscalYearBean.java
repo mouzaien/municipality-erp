@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.FinFinancialYear;
 import com.bkeryah.service.IDataAccessService;
@@ -19,7 +19,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class FiscalYearBean {
-	private static Logger logger = Logger.getLogger(ItemUniteBean.class);
+	private static Logger logger = LogManager.getLogger(ItemUniteBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private FinFinancialYear year = new FinFinancialYear();

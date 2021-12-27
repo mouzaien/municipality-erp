@@ -11,7 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Article;
 import com.bkeryah.fuel.entities.Car;
@@ -33,7 +33,7 @@ public class VehicleBean{
 	private Car car = new Car();
 	private boolean addMode;
 	private Integer carBrandId;
-	private static final Logger logger = Logger.getLogger(VehicleBean.class);
+	private static final Logger logger = LogManager.getLogger(VehicleBean.class);
 
 	@PostConstruct
 	public void init() {

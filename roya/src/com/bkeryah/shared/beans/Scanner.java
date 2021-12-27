@@ -16,7 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -30,7 +30,7 @@ import utilities.Utils;
 
 public class Scanner {
 	protected List<AttachmentModel> attachList = new ArrayList<>();
-	protected static final Logger logger = Logger.getLogger(Scanner.class);
+	protected static final Logger logger = LogManager.getLogger(Scanner.class);
 	private boolean activeSend;
 	private boolean activeUploadScanner;
 	public UploadedFile file;

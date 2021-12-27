@@ -1,7 +1,7 @@
 package com.bkeryah.licences;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.context.ApplicationContext;
 
 import com.bkeryah.service.IDataAccessService;
@@ -11,7 +11,7 @@ import utilities.Utils;
 public abstract class AbstractExecutor {
 	private static ApplicationContext applicationContext;
 	protected IDataAccessService dataAccessService;
-	protected final Logger logger = Logger.getLogger(this.getClass());
+	protected final Logger logger = LogManager.getLogger(this.getClass());
 	protected Integer reqType;
 	protected String error;
 	protected String emptyError = " can't be empty";

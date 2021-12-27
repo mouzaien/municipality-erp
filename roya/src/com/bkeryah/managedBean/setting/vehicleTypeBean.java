@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.fuel.entities.VehicleType;
 import com.bkeryah.service.IDataAccessService;
@@ -19,7 +19,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class vehicleTypeBean {
-	private static Logger logger = Logger.getLogger(vehicleTypeBean.class);
+	private static Logger logger = LogManager.getLogger(vehicleTypeBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private VehicleType type = new VehicleType();

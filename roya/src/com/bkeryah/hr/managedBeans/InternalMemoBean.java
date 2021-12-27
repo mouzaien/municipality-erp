@@ -13,7 +13,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -44,7 +44,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class InternalMemoBean extends Scanner {
-	protected static final Logger logger = Logger.getLogger(InternalMemoBean.class);
+	protected static final Logger logger = LogManager.getLogger(InternalMemoBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private WrkApplication wrkApplication = new WrkApplication();

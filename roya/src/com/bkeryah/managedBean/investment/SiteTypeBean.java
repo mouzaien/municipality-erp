@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.investment.SiteType;
@@ -25,7 +25,7 @@ public class SiteTypeBean {
 	private static final long serialVersionUID = 1L;
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	private static final Logger logger = Logger.getLogger(ContractDirectBean.class);
+	private static final Logger logger = LogManager.getLogger(ContractDirectBean.class);
 	private SiteType siteType = new SiteType();
 	private List<SiteType> siteTypesList = new ArrayList<SiteType>();
 	private String siteTypeName;

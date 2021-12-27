@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -114,7 +114,7 @@ public class MailDefenationBean extends Scanner {
 	private boolean canAmeenSign;
 	private int roleId;
 	private boolean presidentFlag;
-	protected static final Logger logger = Logger.getLogger(DataAccessService.class);
+	protected static final Logger logger = LogManager.getLogger(DataAccessService.class);
 	private String sendToUserName;
 	private String SendToUserLastName;
 	private List<String> commentCopyReciever;

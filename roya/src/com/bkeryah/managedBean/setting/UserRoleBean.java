@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.UserRoles;
@@ -25,7 +25,7 @@ public class UserRoleBean {
 	private Integer employerId;
 	private List<String> selectedRoles;
 	private ArcUsers selectedUser;
-	protected static final Logger logger = Logger.getLogger(UserRoleBean.class);
+	protected static final Logger logger = LogManager.getLogger(UserRoleBean.class);
 
 	@PostConstruct
 	public void init() {

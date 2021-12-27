@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.WrkDept;
 import com.bkeryah.service.IDataAccessService;
@@ -23,7 +23,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class Departments {
-	private static Logger logger = Logger.getLogger(Departments.class);
+	private static Logger logger = LogManager.getLogger(Departments.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private WrkDept department = new WrkDept();

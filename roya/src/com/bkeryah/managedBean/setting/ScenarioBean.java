@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.ArcApplicationType;
@@ -33,7 +33,7 @@ public class ScenarioBean {
 	private boolean addMode;
 	private List<ArcApplicationType> modelList;
 	private List<SysProperties> propertiesList;
-	protected static final Logger logger = Logger.getLogger(ScenarioBean.class);
+	protected static final Logger logger = LogManager.getLogger(ScenarioBean.class);
 
 	@PostConstruct
 	public void init() {

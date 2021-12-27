@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.WrkRefrentionalSetting;
 import com.bkeryah.model.User;
@@ -20,7 +20,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class ReferralBean {
-	private static Logger logger = Logger.getLogger(AttachmentsBean.class);
+	private static Logger logger = LogManager.getLogger(AttachmentsBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private WrkRefrentionalSetting referral = new WrkRefrentionalSetting();

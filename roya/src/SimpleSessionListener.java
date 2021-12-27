@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.ArcUsers;
 
@@ -13,7 +13,7 @@ public class SimpleSessionListener implements HttpSessionListener, Serializable 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected static final Logger logger = Logger.getLogger(SimpleSessionListener.class);
+	protected static final Logger logger = LogManager.getLogger(SimpleSessionListener.class);
 	private static int activeSessions;
 
 	@Override

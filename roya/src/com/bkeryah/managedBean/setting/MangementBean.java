@@ -18,12 +18,12 @@ import com.bkeryah.service.IDataAccessService;
 import utilities.MsgEntry;
 import utilities.Utils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 @ManagedBean
 @ViewScoped
 public class MangementBean {
-	private static Logger logger = Logger.getLogger(MangementBean.class);
+	private static Logger logger = LogManager.getLogger(MangementBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private User mangers = new User();

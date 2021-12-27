@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.swing.text.Highlighter;
 
 import org.apache.http.util.TextUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 
 import com.bkeryah.entities.ArcPeopleModel;
@@ -30,7 +30,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class LicPenaltyBean {
-	protected static final Logger logger = Logger.getLogger(LicPenaltyBean.class);
+	protected static final Logger logger = LogManager.getLogger(LicPenaltyBean.class);
 
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;

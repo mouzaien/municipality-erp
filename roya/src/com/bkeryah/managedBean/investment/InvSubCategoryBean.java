@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
@@ -28,7 +28,7 @@ public class InvSubCategoryBean {
 	private static final long serialVersionUID = 1L;
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	private static final Logger logger = Logger.getLogger(ContractDirectBean.class);
+	private static final Logger logger = LogManager.getLogger(ContractDirectBean.class);
 	private List<ContractSubcategory> contractSubCategoryList = new ArrayList<ContractSubcategory>();
 	private List<ContractSubcategory> filteredCategories = new ArrayList<ContractSubcategory>();
 	private ContractSubcategory subCategory = new ContractSubcategory();

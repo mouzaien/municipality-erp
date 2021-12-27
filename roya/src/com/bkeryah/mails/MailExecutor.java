@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.bean.UserMailObj;
 import com.bkeryah.entities.WrkApplication;
@@ -20,7 +20,7 @@ public abstract class MailExecutor<T>{
 	/**
 	 * 
 	 */
-	protected static final Logger logger = Logger.getLogger(MailExecutor.class);
+	protected static final Logger logger = LogManager.getLogger(MailExecutor.class);
 	protected WrkApplicationId wrkApplicationId;
 
 	protected String contentHtml = "./models/edit_form.xhtml";

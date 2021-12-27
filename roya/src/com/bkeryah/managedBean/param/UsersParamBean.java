@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.context.RequestContext;
 
 import com.bkeryah.bean.SysTitleClass;
@@ -31,7 +31,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class UsersParamBean {
-	private static Logger logger = Logger.getLogger(UsersParamBean.class);
+	private static Logger logger = LogManager.getLogger(UsersParamBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<User> usersList;

@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -84,7 +84,7 @@ public class ContractDirectBean {
 	private List<ContractMainCategory> contractMainCategoryList = new ArrayList<ContractMainCategory>();
 	private List<ContractSubcategory> contractSubcategoryList = new ArrayList<ContractSubcategory>();
 	private List<ContractStatus> contractStatusList = new ArrayList<ContractStatus>();
-	private static final Logger logger = Logger.getLogger(ContractDirectBean.class);
+	private static final Logger logger = LogManager.getLogger(ContractDirectBean.class);
 
 	private String selecteStartDate = new String();
 	private Date selecteStartDate_G;

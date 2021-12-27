@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.investment.IntroContract;
@@ -25,7 +25,7 @@ public class ContractIntroBean {
 	private static final long serialVersionUID = 1L;
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	private static final Logger logger = Logger.getLogger(ContractDirectBean.class);
+	private static final Logger logger = LogManager.getLogger(ContractDirectBean.class);
 	private String introName;
 	private String introDescription;
 	private IntroContract introdaction = new IntroContract();

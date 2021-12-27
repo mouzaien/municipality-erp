@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.ProjectContract;
@@ -22,7 +22,7 @@ import utilities.Utils;
 public class ContractsParamBean {
 	String TAG = this.getClass().getSimpleName();
 
-	private static Logger logger = Logger.getLogger(ContractsParamBean.class);
+	private static Logger logger = LogManager.getLogger(ContractsParamBean.class);
 
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;

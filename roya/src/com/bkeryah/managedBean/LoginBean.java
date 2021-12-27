@@ -35,7 +35,7 @@ import utilities.Utils;
 public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	// private static final Logger logger = Logger.getLogger(LoginBean.class);
+	// private static final Logger logger = LogManager.getLogger(LoginBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	@ManagedProperty(value = "#{authenticationManager}")

@@ -13,7 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -38,7 +38,7 @@ public class RequestBean {
 
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	protected static final Logger logger = Logger.getLogger(FngMonitoringBean.class);
+	protected static final Logger logger = LogManager.getLogger(FngMonitoringBean.class);
 	private String subject;
 	private String description;
 	private List<UserRequest> userRequests = new ArrayList<>();

@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -45,7 +45,7 @@ import utilities.Utils;
 public class FngMonitoringBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	protected static final Logger logger = Logger.getLogger(FngMonitoringBean.class);
+	protected static final Logger logger = LogManager.getLogger(FngMonitoringBean.class);
 
 	// private TestBean testBean;
 	private List<TstFinger> tstFingersList = new ArrayList<>();

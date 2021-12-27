@@ -15,7 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.context.RequestContext;
 
 import com.bkeryah.entities.PayLicBills;
@@ -57,7 +57,7 @@ public class ContractsBean {
 	private List<ContractMainCategory> contractMainCategoryList = new ArrayList<ContractMainCategory>();
 	private List<ContractSubcategory> contractSubcategoryList = new ArrayList<ContractSubcategory>();
 	private List<ContractStatus> contractStatusList = new ArrayList<ContractStatus>();
-	private static final Logger logger = Logger.getLogger(ContractsBean.class);
+	private static final Logger logger = LogManager.getLogger(ContractsBean.class);
 
 	private boolean higriMode = true;
 

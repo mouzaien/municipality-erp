@@ -3,12 +3,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import utilities.Utils;
 
 public class SessionListener implements HttpSessionListener {
-	protected static final Logger logger = Logger.getLogger(SessionListener.class);
+	protected static final Logger logger = LogManager.getLogger(SessionListener.class);
 	private static int activeSessions;
 
 	@Override

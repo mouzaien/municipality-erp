@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.context.RequestContext;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import utilities.Utils;
 @ViewScoped
 @ManagedBean
 public class MangDepartments {
-	private static Logger logger = Logger.getLogger(MangDepartments.class);
+	private static Logger logger = LogManager.getLogger(MangDepartments.class);
 
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAceessService;

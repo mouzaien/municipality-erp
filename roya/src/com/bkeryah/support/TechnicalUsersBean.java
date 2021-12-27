@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.TechnicalUsers;
 import com.bkeryah.service.IDataAccessService;
@@ -23,7 +23,7 @@ public class TechnicalUsersBean {
 	private List<TechnicalUsers> technicalUsersList;
 	private List<TechnicalUsers>filteredTechnicalUsersList;
 	private TechnicalUsers technicalUser = new TechnicalUsers();
-	protected static final Logger logger = Logger.getLogger(TechnicalUsersBean.class);
+	protected static final Logger logger = LogManager.getLogger(TechnicalUsersBean.class);
 
 	@PostConstruct
 	public void init() {

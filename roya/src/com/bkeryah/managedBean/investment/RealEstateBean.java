@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -65,7 +65,7 @@ public class RealEstateBean {
 	private String newComponetsName;
 	private Integer addedactivityId;
 
-	private static final Logger logger = Logger.getLogger(RealEstateBean.class);
+	private static final Logger logger = LogManager.getLogger(RealEstateBean.class);
 
 	@PostConstruct
 	public void init() {

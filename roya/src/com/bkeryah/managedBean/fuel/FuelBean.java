@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 
 import com.bkeryah.fuel.entities.FuelSupply;
@@ -43,7 +43,7 @@ public class FuelBean{
 	private boolean activeAddBtn;
 	private FuelTransaction lastTransaction;
 	private FuelSupply fuelSupply;
-	private static final Logger logger = Logger.getLogger(FuelBean.class);
+	private static final Logger logger = LogManager.getLogger(FuelBean.class);
 
 	@PostConstruct
 	public void init() {

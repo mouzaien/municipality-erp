@@ -28,7 +28,7 @@
 //	 * 
 //	 */
 //	private static final long serialVersionUID = 1L;
-//	private final static Logger LOGGER = Logger.getLogger(UploadFileServlet.class.getCanonicalName());
+//	private final static Logger LOGGER = LogManager.getLogger(UploadFileServlet.class.getCanonicalName());
 //
 //	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 //			throws ServletException, IOException {

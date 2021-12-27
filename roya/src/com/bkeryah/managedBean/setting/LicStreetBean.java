@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.LicCities;
 import com.bkeryah.entities.LicStreet;
@@ -20,7 +20,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class LicStreetBean {
-	private static Logger logger = Logger.getLogger(SectionsBean.class);
+	private static Logger logger = LogManager.getLogger(SectionsBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private LicStreet street = new LicStreet();

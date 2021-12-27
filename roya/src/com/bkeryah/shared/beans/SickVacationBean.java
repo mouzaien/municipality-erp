@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.FileUploadEvent;
 
 import com.bkeryah.bean.UserMailObj;
@@ -57,7 +57,7 @@ public class SickVacationBean extends Scanner {
 	private WrkApplicationId wrkId;
 	private boolean disableAccept;
 	private List<ArcAttach> attachs = new ArrayList<ArcAttach>();
-	protected static final Logger logger = Logger.getLogger(SickVacationBean.class);
+	protected static final Logger logger = LogManager.getLogger(SickVacationBean.class);
 
 	private boolean higriMode;
 	private String higriDate;

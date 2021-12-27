@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Project;
 import com.bkeryah.service.IDataAccessService;
@@ -18,7 +18,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class ProjectsParamBean {
-	private static Logger logger = Logger.getLogger(ProjectsParamBean.class);
+	private static Logger logger = LogManager.getLogger(ProjectsParamBean.class);
 	private boolean addMode;
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;

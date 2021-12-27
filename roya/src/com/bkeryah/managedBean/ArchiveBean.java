@@ -18,7 +18,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
@@ -101,7 +101,7 @@ public class ArchiveBean extends Scanner implements Serializable {
 	private boolean enableSubject;
 	List<AttachmentModel> attachList = new ArrayList<AttachmentModel>();
 	private List<ArcAttach> attachs = new ArrayList<ArcAttach>();
-	protected static final Logger logger = Logger.getLogger(Scanner.class);
+	protected static final Logger logger = LogManager.getLogger(Scanner.class);
 	ArcUsers currentUser = Utils.findCurrentUser();
 
 	private Integer tabActiveIndex = 0;

@@ -482,7 +482,7 @@ public class HijriCalendarUtil {
 			int diff = Days.daysBetween(new DateTime(date1), new DateTime(date2)).getDays();
 			x = diff;
 		} catch (ParseException ex) {
-			Logger.getLogger(HijriCalendarUtil.class.getName()).log(Level.SEVERE, null, ex);
+			//LogManager.getLogger(HijriCalendarUtil.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return x;

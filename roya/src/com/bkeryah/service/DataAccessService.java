@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.UploadedFile;
@@ -204,7 +204,7 @@ public class DataAccessService implements IDataAccessService {
 	ISmsService smsService;
 	// private HijriCalendarUtil hijri = new HijriCalendarUtil();
 
-	protected static final Logger logger = Logger.getLogger(DataAccessService.class);
+	protected static final Logger logger = LogManager.getLogger(DataAccessService.class);
 
 	public DataAccess getDataAccessDAO() {
 		return dataAccessDAO;

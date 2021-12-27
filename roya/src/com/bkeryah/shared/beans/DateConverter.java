@@ -11,14 +11,14 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import utilities.HijriCalendarUtil;
 
 @FacesConverter(value = "dateConverter")
 public class DateConverter implements Converter {
 
-	private static Logger log = Logger.getLogger(DateConverter.class);
+	private static Logger log = LogManager.getLogger(DateConverter.class);
 	private static final String MM_DD_YY = "MM/dd/yy";
 	private static final String MM_DD_YYYY = "MM/dd/yyyy";
 	private SimpleDateFormat yyyyConvertor;

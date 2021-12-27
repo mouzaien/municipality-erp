@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Supervisor;
 import com.bkeryah.model.User;
@@ -29,7 +29,7 @@ import utilities.Utils;
 @ViewScoped
 public class NotifPenalitiesBean {
 
-	protected static final Logger logger = Logger.getLogger(NotifPenalitiesBean.class);
+	protected static final Logger logger = LogManager.getLogger(NotifPenalitiesBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private NotifFinesMastR notifFinesMaster;

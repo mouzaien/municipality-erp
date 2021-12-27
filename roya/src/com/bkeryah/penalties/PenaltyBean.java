@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 import org.springframework.util.CollectionUtils;
 
@@ -28,7 +28,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class PenaltyBean {
-	protected static final Logger logger = Logger.getLogger(PenaltyBean.class);
+	protected static final Logger logger = LogManager.getLogger(PenaltyBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private Integer arcPeople;

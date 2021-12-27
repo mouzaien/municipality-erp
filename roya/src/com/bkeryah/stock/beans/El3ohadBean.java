@@ -11,7 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.ArcUsers;
 import com.bkeryah.entities.Article;
@@ -24,7 +24,7 @@ import utilities.Utils;
 @ManagedBean(name = "el3ohadBean")
 @ViewScoped
 public class El3ohadBean {
-	private static Logger logger = Logger.getLogger(El3ohadBean.class);
+	private static Logger logger = LogManager.getLogger(El3ohadBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private ArcUsers currentUser;

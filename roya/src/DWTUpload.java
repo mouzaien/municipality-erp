@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -38,7 +38,7 @@ public class DWTUpload extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static Logger LOGGER = Logger.getLogger(DWTUpload.class.getCanonicalName());
+	private final static Logger LOGGER = LogManager.getLogger(DWTUpload.class.getCanonicalName());
 
 	private CommentBean commentBean;
 
@@ -120,7 +120,7 @@ public class DWTUpload extends HttpServlet {
 
 	private String getFileName(final Part part) {
 		final String partHeader = part.getHeader("content-disposition");
-		LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+		//LOGGER.log(Level.INFO, null,"Part Header = {0}", partHeader,null,null,null);
 		for (String content : part.getHeader("content-disposition").split(";")) {
 			if (content.trim().startsWith("filename")) {
 				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");

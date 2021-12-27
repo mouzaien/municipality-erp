@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.investment.ContractComponents;
@@ -21,7 +21,7 @@ import utilities.MsgEntry;
 public class ContractComponentsBeen {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
-	private static final Logger logger = Logger.getLogger(ContractTypeBeen.class);
+	private static final Logger logger = LogManager.getLogger(ContractTypeBeen.class);
 	private ContractComponents contComponent = new ContractComponents();
 	private List<ContractComponents> ContractComponentList;
 	private List<ContractComponents> ContractComponentfilter;

@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Project;
 import com.bkeryah.entities.SysCategoryEmployer;
@@ -27,7 +27,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class SettingsDataBean {
-	private static Logger logger = Logger.getLogger(SettingsDataBean.class);
+	private static Logger logger = LogManager.getLogger(SettingsDataBean.class);
 	private boolean addMode;
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;

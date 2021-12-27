@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.bkeryah.entities.HrEmployeeVacation;
@@ -24,7 +24,7 @@ import utilities.MsgEntry;
 @ViewScoped
 public class EmployersBean {
 
-	protected static final Logger logger = Logger.getLogger(CommentBean.class);
+	protected static final Logger logger = LogManager.getLogger(CommentBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 

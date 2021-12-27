@@ -43,7 +43,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.hibernate.SessionFactory;
 import org.primefaces.context.RequestContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,7 +119,7 @@ import utilities.Utils;
 
 public class DataAccessImpl implements DataAccess, Serializable {
 	private SessionFactory sessionFactory;
-	protected static final Logger logger = Logger.getLogger(DataAccessImpl.class);
+	protected static final Logger logger = LogManager.getLogger(DataAccessImpl.class);
 
 	@Override
 	public UserClass login(String User_name, String Password) {

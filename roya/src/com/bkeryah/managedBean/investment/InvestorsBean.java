@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -47,7 +47,7 @@ public class InvestorsBean {
 	private List<InvestorStatus> investorStatusList = new ArrayList<InvestorStatus>();
 
 	private boolean addMode = true;
-	private static final Logger logger = Logger.getLogger(InvestorsBean.class);
+	private static final Logger logger = LogManager.getLogger(InvestorsBean.class);
 
 	private Integer idType;
 

@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.investment.AnnoucementDetails;
 import com.bkeryah.entities.investment.Tender;
@@ -29,7 +29,7 @@ public class TendersBean {
 	private Double area;
 	private Tender tender = new Tender();
 	private boolean checked;
-	private static final Logger logger = Logger.getLogger(TendersBean.class);
+	private static final Logger logger = LogManager.getLogger(TendersBean.class);
 
 	// @PostConstruct
 	// public void init() {

@@ -11,7 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.StreamedContent;
 
@@ -48,7 +48,7 @@ public class HrsOverTimeBean {
 	private static DecimalFormat format = new DecimalFormat(".##");
 	private boolean cantPrint;
 	private Integer numReport;
-	private static final Logger logger = Logger.getLogger(HrsOverTimeBean.class);
+	private static final Logger logger = LogManager.getLogger(HrsOverTimeBean.class);
 
 	@PostConstruct
 	public void init() {

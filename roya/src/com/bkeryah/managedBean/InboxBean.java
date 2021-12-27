@@ -23,7 +23,7 @@
 //import javax.servlet.http.HttpSession;
 //
 //import org.apache.commons.io.FilenameUtils;
-//import org.apache.log4j.Logger;
+//import org.apache.logging.log4j.*;
 //import org.primefaces.component.tabview.TabView;
 //import org.primefaces.context.RequestContext;
 //import org.primefaces.event.FileUploadEvent;
@@ -75,7 +75,7 @@
 //	/**
 //	 * 
 //	 */
-//	private static final Logger logger = Logger.getLogger(InboxBean.class);
+//	private static final Logger logger = LogManager.getLogger(InboxBean.class);
 //	private static final long serialVersionUID = 1L;
 //
 //	List<UserMailClass> inboxList;

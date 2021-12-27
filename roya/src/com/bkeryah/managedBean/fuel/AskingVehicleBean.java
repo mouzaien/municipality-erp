@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.bean.StoreRequestModel;
 import com.bkeryah.entities.Article;
@@ -43,7 +43,7 @@ public class AskingVehicleBean {
 	private Integer carArtId;
 	private Integer subGroupId;
 	private Integer selectedItemId;
-	private static final Logger logger = Logger.getLogger(AskingVehicleBean.class);
+	private static final Logger logger = LogManager.getLogger(AskingVehicleBean.class);
 
 	@PostConstruct
 	public void init() {

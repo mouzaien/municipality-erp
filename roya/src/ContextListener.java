@@ -1,10 +1,10 @@
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 public class ContextListener implements ServletContextListener {
-	private static final Logger logger = Logger.getLogger(ContextListener.class);
+	private static final Logger logger = LogManager.getLogger(ContextListener.class);
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg) {

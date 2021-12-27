@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.bkeryah.fuel.entities.FuelSupply;
 import com.bkeryah.fuel.entities.FuelTransaction;
@@ -28,7 +28,7 @@ public class FuelSupplyBean{
 	private List<FuelSupply> filteredFuelSuppliesList;
 	private FuelSupply fuelSupply = new FuelSupply();
 	private boolean addMode;
-	private static final Logger logger = Logger.getLogger(FuelSupplyBean.class);
+	private static final Logger logger = LogManager.getLogger(FuelSupplyBean.class);
 
 	@PostConstruct
 	public void init() {

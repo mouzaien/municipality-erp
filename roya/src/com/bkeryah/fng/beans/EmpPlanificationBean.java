@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.fileupload.RequestContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.primefaces.event.SelectEvent;
 
 import com.bkeryah.fng.entities.FngTimeTable;
@@ -32,7 +32,7 @@ import utilities.Utils;
 @ManagedBean
 @ViewScoped
 public class EmpPlanificationBean {
-	protected static final Logger logger = Logger.getLogger(PenaltyBean.class);
+	protected static final Logger logger = LogManager.getLogger(PenaltyBean.class);
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<User> employersList;
