@@ -70,6 +70,13 @@ public class Car  implements Comparable<Car>{
 	
 	@Formula("(select m.NAME from car_model m where  m.ID = car_model)")
 	private String modelName;
+	
+	@Transient
+	private String carLastMovement;
+	@Transient
+	private String vehicleT;
+	@Transient
+	private String cModel;
 
 	public Integer getId() {
 		return id;
@@ -215,5 +222,48 @@ public class Car  implements Comparable<Car>{
 
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
+	}
+
+	/**
+	 * @return the carLastMovement
+	 */
+	public String getCarLastMovement() {
+		return carLastMovement;
+	}
+
+	/**
+	 * @param carLastMovement the carLastMovement to set
+	 */
+	public void setCarLastMovement(String carLastMovement) {
+		this.carLastMovement = carLastMovement;
+	}
+
+	/**
+	 * @return the vehicleT
+	 */
+	public String getVehicleT() {
+		vehicleT =  vehicleType.getName();
+		return vehicleT;
+	}
+
+	/**
+	 * @param vehicleT the vehicleT to set
+	 */
+	public void setVehicleT(String vehicleT) {
+		this.vehicleT = vehicleT;
+	}
+
+	/**
+	 * @return the cModel
+	 */
+	public String getcModel() {
+		return cModel;
+	}
+
+	/**
+	 * @param cModel the cModel to set
+	 */
+	public void setcModel(String cModel) {
+		this.cModel = cModel;
 	}
 }

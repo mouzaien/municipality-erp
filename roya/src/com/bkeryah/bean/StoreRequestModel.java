@@ -1,6 +1,7 @@
 package com.bkeryah.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class StoreRequestModel implements Serializable {
@@ -23,7 +24,9 @@ public class StoreRequestModel implements Serializable {
 	private String requesterName;
 	private Integer storeNo;
 	private List<StoreRequestModel> historyList;
-
+	private String lastMovement ;
+	private Date transactionGDate ;
+	
 	public StoreRequestModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -177,5 +180,34 @@ public class StoreRequestModel implements Serializable {
 	public void setStoreNo(Integer storeNo) {
 		this.storeNo = storeNo;
 	}
+
+	/**
+	 * @return the lastMovement
+	 */
+	public String getLastMovement() {
+		return lastMovement;
+	}
+
+	/**
+	 * @param lastMovement the lastMovement to set
+	 */
+	public void setLastMovement(String lastMovement) {
+		this.lastMovement = lastMovement;
+	}
+
+	/**
+	 * @return the transactionGDate
+	 */
+	public Date getTransactionGDate() {
+		return transactionGDate;
+	}
+
+	/**
+	 * @param transactionGDate the transactionGDate to set
+	 */
+	public void setTransactionGDate(Date transactionGDate) {
+		this.transactionGDate = transactionGDate;
+	}
+
 
 }

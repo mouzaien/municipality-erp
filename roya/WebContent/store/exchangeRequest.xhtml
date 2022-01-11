@@ -218,12 +218,12 @@ body .ui-dialog .ui-dialog-titlebar {
 							<p:outputLabel value="العدد المطلوب"></p:outputLabel>
 						</div>
 						<div class="ui-g-2 ui-md-3 ui-lg-2">
-							<p:inputText styleClass="form-control" id="count"
+							<p:spinner styleClass="form-control" id="count"  min="1" dir="ltr"
 								style="width:50%" required="true" type="number"
 								value="#{exchangeRequestBean.requestDetailsRecord.count}"
 								requiredMessage="من فضلك ادخل  ارقام فقط  فى خانة العدد ">
 
-							</p:inputText>
+							</p:spinner>
 						</div>
 						<div class="ui-g-1 ui-md-2 ui-lg-1">
 							<h:panelGroup id="unit">

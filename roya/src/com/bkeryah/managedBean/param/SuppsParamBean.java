@@ -56,8 +56,9 @@ public class SuppsParamBean {
 			// System.out.println(" finEntity.getFinEntityTypeUser()" +
 			// finEntity.getFinEntityTypeUser());
 			if (finEntity == null || (finEntity.getFinEntityName().isEmpty())
-					|| finEntity.getFinEntityName().isEmpty()) {
+					|| finEntity.getFinEntityName().isEmpty()|| finEntity.getFinEntityTypeUser().isEmpty()) {
 				MsgEntry.addErrorMessage(Utils.loadMessagesFromFile("error.operation"));
+				MsgEntry.addErrorMessage("الرجاء التأكد من ادخال الجهة والمورد");
 
 			} else {
 				dataAccessService.saveObject(finEntity);

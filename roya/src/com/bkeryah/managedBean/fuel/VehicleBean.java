@@ -15,7 +15,10 @@ import org.apache.logging.log4j.*;
 
 import com.bkeryah.entities.Article;
 import com.bkeryah.fuel.entities.Car;
+import com.bkeryah.fuel.entities.CarBrand;
 import com.bkeryah.fuel.entities.CarModel;
+import com.bkeryah.fuel.entities.FuelType;
+import com.bkeryah.fuel.entities.VehicleType;
 import com.bkeryah.service.IDataAccessService;
 
 import utilities.MsgEntry;
@@ -23,7 +26,7 @@ import utilities.Utils;
 
 @ManagedBean
 @ViewScoped
-public class VehicleBean{
+public class VehicleBean {
 	@ManagedProperty(value = "#{dataAccessService}")
 	private IDataAccessService dataAccessService;
 	private List<Car> carsList;
@@ -34,61 +37,63 @@ public class VehicleBean{
 	private boolean addMode;
 	private Integer carBrandId;
 	private static final Logger logger = LogManager.getLogger(VehicleBean.class);
+	private List<CarBrand> carBrandsList;
+	private List<VehicleType> vehicleTypeList;
+	private List<FuelType> fuelTypeList;
 
 	@PostConstruct
 	public void init() {
 		carsList = dataAccessService.loadAllCars();
 		Collections.sort(carsList);
 		carsArticle = dataAccessService.getAllArticlesByGroupId(9);
-	
-		//getAllArticles
+
+		// getAllArticles
 	}
-	
-	public void addCar(){
+
+	public void addCar() {
 		car = new Car();
 		addMode = true;
 	}
-	
+
 	public void loadSelectedCar() {
-//		addMode = false;
+		// addMode = false;
 		addMode = true;
 		carBrandId = car.getModel().getBrandId();
 		loadCarModels();
 	}
-	
+
 	public void loadCarModels() {
-		if(carBrandId != null){
+		if (carBrandId != null) {
 			carModelsList = dataAccessService.loadCarModelByBrandId(carBrandId);
 		}
 	}
-	
+
 	public String printCarsReport() {
 		String reportName = "";
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		reportName = "/reports/cars_list.jasper";
-		parameters.put("LOGO_DIR",
-				FacesContext.getCurrentInstance().getExternalContext().getRealPath(Utils.loadMessagesFromFile("report.logo")));
+		parameters.put("LOGO_DIR", FacesContext.getCurrentInstance().getExternalContext()
+				.getRealPath(Utils.loadMessagesFromFile("report.logo")));
 		Utils.printPdfReport(reportName, parameters);
 		return "";
 	}
-	
-	public void save(){
-		try{
-			System.out.println("car.getArtId() >>" +car.getArtId());
-			Article art= dataAccessService.getArticleById(car.getArtId());
+
+	public void save() {
+		try {
+			System.out.println("car.getArtId() >>" + car.getArtId());
+			Article art = dataAccessService.getArticleById(car.getArtId());
 			car.setCarCode(art.getCode());
-			if(car.getId() == null){
-			dataAccessService.save(car);
-			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-			//carsList.add((Car) dataAccessService.findEntityById(Car.class, car.getId()));
-			
-			car = new Car();
-			logger.info("add car: id: " + car.getId());
-			}
-			else
-			{
+			if (car.getId() == null) {
+				dataAccessService.save(car);
+				MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
+				// carsList.add((Car)
+				// dataAccessService.findEntityById(Car.class, car.getId()));
+
+				car = new Car();
+				logger.info("add car: id: " + car.getId());
+			} else {
 				update();
-				
+
 			}
 			carsList = dataAccessService.loadAllCars();
 			System.out.println(carsList.size());
@@ -100,12 +105,13 @@ public class VehicleBean{
 			logger.error("add car: id: " + car.getId());
 		}
 	}
-	
-	public void update(){
-		try{
+
+	public void update() {
+		try {
 			dataAccessService.updateObject(car);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
-//			carsList.add((Car) dataAccessService.findEntityById(Car.class, car.getId()));
+			// carsList.add((Car) dataAccessService.findEntityById(Car.class,
+			// car.getId()));
 			car = new Car();
 			logger.info("add car: id: " + car.getId());
 		} catch (Exception e) {
@@ -114,9 +120,9 @@ public class VehicleBean{
 			logger.error("add car: id: " + car.getId());
 		}
 	}
-	
-	public void deleteCar(){
-		try{
+
+	public void deleteCar() {
+		try {
 			dataAccessService.deleteObject(car);
 			carsList.remove(car);
 			MsgEntry.addAcceptFlashInfoMessage(Utils.loadMessagesFromFile("success.operation"));
@@ -127,7 +133,7 @@ public class VehicleBean{
 			logger.error("delete car: id: " + car.getId());
 		}
 	}
-	
+
 	public IDataAccessService getDataAccessService() {
 		return dataAccessService;
 	}
@@ -190,6 +196,57 @@ public class VehicleBean{
 
 	public void setCarsArticle(List<Article> carsArticle) {
 		this.carsArticle = carsArticle;
+	}
+
+	/**
+	 * @return the carBrandsList
+	 */
+	public List<CarBrand> getCarBrandsList() {
+		if ((carBrandsList == null) || (carBrandsList.isEmpty()))
+			carBrandsList = dataAccessService.loadAllCarBrands();
+		return carBrandsList;
+	}
+
+	/**
+	 * @param carBrandsList
+	 *            the carBrandsList to set
+	 */
+	public void setCarBrandsList(List<CarBrand> carBrandsList) {
+		this.carBrandsList = carBrandsList;
+	}
+
+	/**
+	 * @return the vehicleTypeList
+	 */
+	public List<VehicleType> getVehicleTypeList() {
+		if ((vehicleTypeList == null) || (vehicleTypeList.isEmpty()))
+			vehicleTypeList = dataAccessService.loadAllVehicleTypes();
+		return vehicleTypeList;
+	}
+
+	/**
+	 * @param vehicleTypeList
+	 *            the vehicleTypeList to set
+	 */
+	public void setVehicleTypeList(List<VehicleType> vehicleTypeList) {
+		this.vehicleTypeList = vehicleTypeList;
+	}
+
+	/**
+	 * @return the fuelTypeList
+	 */
+	public List<FuelType> getFuelTypeList() {
+		if ((fuelTypeList == null) || (fuelTypeList.isEmpty()))
+			fuelTypeList = dataAccessService.loadAllFuelTypes();
+		return fuelTypeList;
+	}
+
+	/**
+	 * @param fuelTypeList
+	 *            the fuelTypeList to set
+	 */
+	public void setFuelTypeList(List<FuelType> fuelTypeList) {
+		this.fuelTypeList = fuelTypeList;
 	}
 
 }

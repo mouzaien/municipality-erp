@@ -132,7 +132,7 @@
 										noSelectionOption="true" />
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}"
-										value="#{loadingDataBean.carBrandsList}" />
+										value="#{vehicleBean.carBrandsList}" />
 									<p:ajax event="change" update="includeform:models_list"
 										process="@this" listener="#{vehicleBean.loadCarModels}" />
 								</p:selectOneMenu>
@@ -166,7 +166,7 @@
 									<!-- 								<f:selectItem itemLabel="أختر صنف المركبة" itemValue="" noSelectionOption="true" /> -->
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}"
-										value="#{loadingDataBean.vehicleTypeList}" />
+										value="#{vehicleBean.vehicleTypeList}" />
 								</p:selectOneMenu>
 							</div>
 						</div>
@@ -180,7 +180,7 @@
 									<!-- 								<f:selectItem itemLabel="أختر نوع المحروقات" itemValue="" noSelectionOption="true" /> -->
 									<f:selectItems var="cont" itemValue="#{cont.id}"
 										itemLabel="#{cont.name}"
-										value="#{loadingDataBean.fuelTypeList}" />
+										value="#{vehicleBean.fuelTypeList}" />
 								</p:selectOneMenu>
 
 							</div>

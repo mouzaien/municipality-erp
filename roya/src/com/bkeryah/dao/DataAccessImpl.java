@@ -6619,6 +6619,7 @@ public class DataAccessImpl implements DataAccess, Serializable {
 				store.setQtyOutput(rs.getInt("qty"));
 				store.setArticleUnite(rs.getString("ITEMUNITNAME"));
 				store.setTransactionDate(rs.getString("datetransaction"));
+				store.setTransactionGDate(Utils.convertHDateToGDate(rs.getString("datetransaction")));
 				store.setRequesterName(rs.getString("requester_name"));
 				store.setSupplierName(rs.getString("supplier"));
 				store.setStoreNo(rs.getInt("strno"));

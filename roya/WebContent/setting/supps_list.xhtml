@@ -172,7 +172,8 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 								<h:outputLabel for="basic" value="الجهة " />
 							</div>
 							<div class="ui-g-10">
-								<p:inputText id="suppType"
+								<p:inputText id="suppType" rendered="true"
+								requiredMessage="ادخل المورد (مورد / مقاول)" placeholder="مورد / مقاول"
 									value="#{suppsParamBean.finEntity.finEntityTypeUser}"
 									style="width:100%">
 								</p:inputText>
@@ -182,7 +183,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 						<div align="center">
 							<div class="iamge-box-footer" align="left">
 								<p:commandButton value="حفظ" icon="fa fa-save"
-									rendered="#{suppsParamBean.addMode}"
+									rendered="#{suppsParamBean.addMode}" immediate="false"
 									action="#{suppsParamBean.savefinEntity}" update="@form"
 									onsuccess="PF('mydialog').hide(); ">
 								</p:commandButton>
